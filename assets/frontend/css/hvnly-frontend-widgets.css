@@ -1,0 +1,1087 @@
+
+/* ============================================
+    WIDGET COMPONENTS
+============================================ */
+.hvnly-sidebar--single
+.hvnly-property-single__widget {
+    background: var(--hvnly-card-bg);
+    border: var(--hvnly-card-border);
+    border-radius: var(--hvnly-card-radius);
+    box-shadow: var(--hvnly-shadow-lg);
+    padding: var(--hvnly-space-md);
+    margin-bottom: var(--hvnly-space-sm);
+    transition: all var(--hvnly-transition-time);
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.hvnly-sidebar--single
+.hvnly-property-single__widget:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+}
+.hvnly-sidebar--single
+.hvnly-property-single__widget-title {
+    font-size: var(--hvnly-font-size-lg);
+    font-weight: var(--hvnly-font-weight-semibold);
+    color: var(--hvnly-text-primary);
+    margin-bottom: var(--hvnly-space-lg);
+    padding-bottom: var(--hvnly-space-md);
+    border-bottom: 2px solid rgba(var(--hvnly-primary-rgb), 0.1);
+    position: relative;
+}
+.hvnly-sidebar--single
+.hvnly-property-single__widget-title::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--hvnly-brand-primary);
+}
+
+/* Featured Properties Widget */
+.hvnly-sidebar--single
+.hvnly-property-single__widget--featured .hvnly-property-single__widget-title {
+    color: var(--hvnly-brand-primary);
+}
+.hvnly-sidebar--single
+.hvnly-property-single__featured-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hvnly-space-md);
+}
+.hvnly-sidebar--single
+.hvnly-property-single__featured-item a{
+    display: flex;
+    align-items: flex-start;
+    gap: var(--hvnly-space-md);
+    padding: var(--hvnly-space-md);
+    background: rgba(var(--hvnly-primary-rgb), 0.03);
+    border-radius: var(--hvnly-border-radius-md);
+    border: 1px solid rgba(var(--hvnly-primary-rgb), 0.1);
+    transition: all var(--hvnly-transition-time);
+    cursor: pointer;
+    min-width: 0; /* Prevent text overflow */
+}
+.hvnly-sidebar--single
+.hvnly-property-single__featured-item a:hover {
+    border-color: var(--hvnly-brand-primary);
+    transform: translateX(4px);
+}
+.hvnly-sidebar--single
+.hvnly-property-single__featured-image {
+    width: 80px;
+    height: 60px;
+    border-radius: var(--hvnly-border-radius-md);
+    overflow: hidden;
+    flex-shrink: 0;margin-top: 15px;
+}
+.hvnly-sidebar--single
+.hvnly-property-single__featured-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.hvnly-sidebar--single
+.hvnly-property-single__featured-item:hover 
+.hvnly-sidebar--single
+.hvnly-property-single__featured-image img {
+    transform: scale(1.1);
+}
+.hvnly-sidebar--single
+.hvnly-property-single__featured-info {
+    flex: 1;
+    min-width: 0; /* Prevent text overflow */
+}
+.hvnly-sidebar--single
+.hvnly-property-single__featured-info h5 {
+    font-size: var(--hvnly-font-size-sm);
+    font-weight: var(--hvnly-font-weight-semibold);
+    margin-bottom: var(--hvnly-space-xs);
+    line-height: 1.3;
+    word-wrap: break-word;
+}
+.hvnly-sidebar--single
+.hvnly-property-single__featured-price {
+    font-size: var(--hvnly-font-size-md);
+    font-weight: var(--hvnly-font-weight-bold);
+    color: var(--hvnly-price-color);
+}
+.hvnly-sidebar--single .hvnly-property-single__featured-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: var(--hvnly-space-sm);
+    padding-top: var(--hvnly-space-sm);
+    border-top: 1px solid var(--hvnly-border-color);
+}
+
+.hvnly-sidebar--single .hvnly-property-single__featured-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hvnly-space-xs);
+    background: var(--hvnly-color-bg-light);
+    padding: var(--hvnly-space-xs) var(--hvnly-space-sm);
+    border-radius: var(--hvnly-border-radius-sm);
+    font-size: var(--hvnly-font-size-meta);
+    color: var(--hvnly-text-secondary);
+    transition: all var(--hvnly-transition-time);
+}
+
+.hvnly-sidebar--single .hvnly-property-single__featured-meta-item:hover {
+    background: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+    transform: translateY(-2px);
+    box-shadow: var(--hvnly-shadow-card);
+}
+
+.hvnly-sidebar--single .hvnly-property-single__featured-meta-item i {
+    color: var(--hvnly-brand-primary);
+    font-size: calc(var(--hvnly-font-size-md) * 1.1);
+    transition: all var(--hvnly-transition-time);
+}
+
+.hvnly-sidebar--single .hvnly-property-single__featured-meta-item:hover i {
+    color: var(--hvnly-color-white);
+}
+
+.hvnly-sidebar--single .hvnly-meta-value {
+    font-weight: var(--hvnly-font-weight-semibold);
+    color: var(--hvnly-text-primary);
+    margin-right: 2px;
+}
+
+.hvnly-sidebar--single .hvnly-property-single__featured-meta-item:hover .hvnly-meta-value {
+    color: var(--hvnly-color-white);
+}
+
+.hvnly-sidebar--single .hvnly-meta-label {
+    font-weight: var(--hvnly-font-weight-regular);
+    opacity: 0.8;
+}
+
+/* Alternative pill-style design (uncomment to use instead) */
+
+.hvnly-sidebar--single .hvnly-property-single__featured-meta-item {
+    background: linear-gradient(135deg, var(--hvnly-color-bg-light) 0%, #ffffff 100%);
+    border: 1px solid var(--hvnly-border-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.hvnly-sidebar--single .hvnly-property-single__featured-meta-item i {
+    background: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+    padding: 4px;
+    border-radius: 50%;
+    font-size: 10px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Compact version for small sidebars */
+@media (max-width: 768px) {
+    .hvnly-sidebar--single .hvnly-property-single__featured-meta {
+        gap: var(--hvnly-space-xs);
+    }
+    
+    .hvnly-sidebar--single .hvnly-property-single__featured-meta-item {
+        padding: 2px var(--hvnly-space-sm);
+    }
+    
+    .hvnly-sidebar--single .hvnly-meta-label {
+        display: none;
+    }
+    
+    .hvnly-sidebar--single .hvnly-property-single__featured-meta-item:hover .hvnly-meta-label {
+        display: inline;
+    }
+}
+
+
+/* Property Agent Widget */
+.hvnly-property-single__widget--agent {
+    background: linear-gradient(135deg, rgba(var(--hvnly-primary-rgb), 0.05) 0%, rgba(var(--hvnly-secondary-rgb), 0.05) 100%);
+    border: 1px solid rgba(var(--hvnly-primary-rgb), 0.1);
+}
+
+.hvnly-property-single__agent-header {
+    display: flex;
+    align-items: center;
+    gap: var(--hvnly-space-lg);
+    margin-bottom: var(--hvnly-space-lg);
+}
+.hvnly-property-single__agent-header
+.hvnly-property-single__agent-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--hvnly-brand-primary);
+    box-shadow: var(--hvnly-shadow-sm);
+    flex-shrink: 0;
+}
+
+.hvnly-property-single__agent-info h5 {
+    font-size: var(--hvnly-font-size-lg);
+    font-weight: var(--hvnly-font-weight-semibold);
+    margin-bottom: var(--hvnly-space-xs);
+    word-wrap: break-word;
+}
+
+.hvnly-property-single__agent-info p {
+    font-size: var(--hvnly-font-size-sm);
+    color: var(--hvnly-text-secondary);
+}
+.hvnly-sidebar--single
+.hvnly-property-single__agent-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hvnly-space-sm);
+    margin-top: var(--hvnly-space-lg);
+}
+.hvnly-sidebar--single
+.hvnly-property-single__agent-btn a{color: var(--hvnly-color-white);}
+.hvnly-sidebar--single
+.hvnly-property-single__agent-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--hvnly-space-sm);
+    padding: var(--hvnly-space-md);
+    background: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+    border: none;
+    border-radius: var(--hvnly-border-radius-md);
+    font-size: var(--hvnly-font-size-sm);
+    font-weight: var(--hvnly-font-weight-medium);
+    cursor: pointer;
+    transition: all var(--hvnly-transition-time);
+}
+
+.hvnly-property-single__agent-btn:hover {
+    background: var(--hvnly-button-bg-hover);
+    transform: translateY(-2px);
+}
+
+.hvnly-property-single__agent-btn--secondary {
+    background: transparent;
+    color: var(--hvnly-brand-primary);
+    border: 2px solid var(--hvnly-brand-primary);
+}
+
+.hvnly-property-single__agent-btn--secondary:hover {
+    background: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+}
+
+/* Property Amenities Widget */
+
+.hvnly-property-single__widget--documents {
+    background: linear-gradient(135deg, rgba(0, 194, 168, 0.05) 0%, rgba(0, 184, 148, 0.05) 100%);
+    border: 1px solid rgba(0, 194, 168, 0.1);
+}
+.hvnly-property-single__amenities-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--hvnly-space-sm);
+}
+
+.hvnly-property-single__amenity-item {
+    display: flex;
+    align-items: center;
+    gap: var(--hvnly-space-md);
+    padding: var(--hvnly-space-md);
+    background: var(--hvnly-color-white);
+    border-radius: var(--hvnly-border-radius-md);
+    border: 1px solid rgba(0, 194, 168, 0.1);
+    transition: all var(--hvnly-transition-time);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hvnly-property-single__amenity-item:hover {
+    border-color: var(--hvnly-brand-primary);
+    transform: translateX(4px);
+    box-shadow: var(--hvnly-shadow-sm);
+}
+
+.hvnly-property-single__amenity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 194, 168, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--hvnly-status-rent);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.hvnly-property-single__amenity-text {
+    flex: 1;
+    font-size: var(--hvnly-font-size-sm);
+    font-weight: var(--hvnly-font-weight-medium);
+    word-wrap: break-word;
+}
+
+.hvnly-property-single__amenity-item:hover .hvnly-property-single__amenity-icon {
+    background: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+}
+
+/* Contact Widget */
+.hvnly-property-single__widget--contact {
+    background: linear-gradient(135deg, var(--hvnly-brand-primary) 0%, var(--hvnly-brand-secondary) 100%);
+    color: var(--hvnly-color-white);
+}
+
+.hvnly-property-single__widget--contact .hvnly-property-single__widget-title {
+    color: var(--hvnly-color-white);
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+.hvnly-property-single__contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hvnly-space-md);
+}
+
+.hvnly-property-single__form-group {
+    margin-bottom: 0;
+}
+
+.hvnly-property-single__form-input {
+    width: 100%;
+    padding: var(--hvnly-space-md);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--hvnly-border-radius-md);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--hvnly-color-white);
+    font-size: var(--hvnly-font-size-md);
+    transition: all var(--hvnly-transition-time);
+    box-sizing: border-box;
+}
+
+.hvnly-property-single__form-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.hvnly-property-single__form-input:focus {
+    outline: none;
+    border-color: var(--hvnly-color-white);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.hvnly-property-single__form-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Buttons */
+.hvnly-property-single__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--hvnly-space-sm);
+    padding: var(--hvnly-button-padding);
+    background: var(--hvnly-button-bg);
+    color: var(--hvnly-button-color);
+    border: none;
+    border-radius: var(--hvnly-button-radius);
+    font-size: var(--hvnly-font-size-md);
+    font-weight: var(--hvnly-font-weight-semibold);
+    cursor: pointer;
+    transition: all var(--hvnly-transition-time);
+    text-decoration: none;
+}
+
+.hvnly-property-single__btn:hover {
+    background: var(--hvnly-button-bg-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--hvnly-shadow-sm);
+}
+
+.hvnly-property-single__btn--full {
+    width: 100%;
+}
+
+.hvnly-property-single__btn--outline {
+    background: transparent;
+    border: 2px solid var(--hvnly-color-white);
+    color: var(--hvnly-color-white);
+}
+
+.hvnly-property-single__btn--outline:hover {
+    background: var(--hvnly-color-white);
+    color: var(--hvnly-brand-primary);
+}
+
+/* Mortgage Calculator Widget */
+.hvnly-property-single__widget--mortgage {
+    background: rgba(var(--hvnly-primary-rgb), 0.03);
+    border: 1px solid rgba(var(--hvnly-primary-rgb), 0.1);
+}
+
+.hvnly-property-single__widget--mortgage .hvnly-property-single__form-input {
+    background: var(--hvnly-color-white);
+    border: 1px solid var(--hvnly-border-color);
+    color: var(--hvnly-text-primary);
+}
+
+.hvnly-property-single__widget--mortgage .hvnly-property-single__form-input::placeholder {
+    color: var(--hvnly-text-secondary);
+}
+
+.hvnly-property-single__widget--mortgage .hvnly-property-single__form-input:focus {
+    border-color: var(--hvnly-brand-primary);
+    background: var(--hvnly-color-white);
+}
+
+.hvnly-property-single__mortgage-result {
+    background: linear-gradient(135deg, var(--hvnly-brand-primary) 0%, var(--hvnly-button-bg-hover) 100%);
+    color: var(--hvnly-color-white);
+    padding: var(--hvnly-space-xl);
+    border-radius: var(--hvnly-border-radius-md);
+    margin-top: var(--hvnly-space-lg);
+    text-align: center;
+}
+
+.hvnly-property-single__mortgage-amount {
+    font-size: var(--hvnly-font-size-2xl);
+    font-weight: var(--hvnly-font-weight-bold);
+    margin-bottom: var(--hvnly-space-xs);
+}
+
+
+
+/* Mortgage Calculator Widget - Enhanced Styles */
+.hvnly-property-single__widget--mortgage {
+    background: linear-gradient(135deg, rgba(var(--hvnly-primary-rgb), 0.03) 0%, rgba(var(--hvnly-secondary-rgb), 0.03) 100%);
+    border: 1px solid rgba(var(--hvnly-primary-rgb), 0.15);
+}
+
+.hvnly-property-single__widget--mortgage .hvnly-property-single__form-input {
+    background: var(--hvnly-color-white);
+    border: 2px solid var(--hvnly-border-color);
+    color: var(--hvnly-text-primary);
+    transition: all 0.2s ease;
+    height: 46px;
+    font-size: var(--hvnly-font-size-md);
+}
+
+.hvnly-property-single__widget--mortgage .hvnly-property-single__form-input:focus {
+    border-color: var(--hvnly-brand-primary);
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.1);
+    background: var(--hvnly-color-white);
+    outline: none;
+}
+
+.hvnly-property-single__widget--mortgage .hvnly-property-single__form-input::placeholder {
+    color: var(--hvnly-text-secondary);
+}
+
+.hvnly-property-single__mortgage-result {
+    background: linear-gradient(135deg, var(--hvnly-brand-primary) 0%, var(--hvnly-brand-secondary) 100%);
+    color: var(--hvnly-color-white);
+    padding: var(--hvnly-space-xl);
+    border-radius: var(--hvnly-border-radius-lg);
+    margin-top: var(--hvnly-space-lg);
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.hvnly-property-single__mortgage-amount {
+    font-size: var(--hvnly-font-size-2xl);
+    font-weight: var(--hvnly-font-weight-bold);
+    margin-bottom: var(--hvnly-space-xs);
+}
+
+/* Price Display */
+.hvnly-mortgage-price-display {
+    background: rgba(var(--hvnly-primary-rgb), 0.08);
+    border-radius: var(--hvnly-border-radius-md);
+    padding: var(--hvnly-space-md);
+    margin-bottom: var(--hvnly-space-lg);
+    text-align: center;
+    border: 1px solid rgba(var(--hvnly-primary-rgb), 0.15);
+}
+
+.hvnly-mortgage-price-label {
+    font-size: var(--hvnly-font-size-sm);
+    color: var(--hvnly-text-secondary);
+    display: block;
+    margin-bottom: var(--hvnly-space-xs);
+}
+
+.hvnly-mortgage-price-value {
+    font-size: var(--hvnly-font-size-xl);
+    font-weight: var(--hvnly-font-weight-bold);
+    color: var(--hvnly-brand-primary);
+}
+
+/* Down Payment Section */
+.hvnly-mortgage-downpayment {
+    margin-bottom: var(--hvnly-space-lg);
+}
+
+.hvnly-mortgage-downpayment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--hvnly-font-size-sm);
+    color: var(--hvnly-text-primary);
+    font-weight: var(--hvnly-font-weight-medium);
+    margin-bottom: var(--hvnly-space-xs);
+}
+
+.hvnly-mortgage-downpayment-percent {
+    background: var(--hvnly-color-gray-200);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: var(--hvnly-font-size-xs);
+}
+
+.hvnly-mortgage-downpayment-inputs {
+    display: flex;
+    gap: var(--hvnly-space-xs);
+}
+
+.hvnly-mortgage-amount-input {
+    flex: 2;
+    position: relative;
+}
+
+.hvnly-mortgage-amount-input .currency-symbol {
+    position: absolute;
+    left: 6px;
+    top: 45%;
+    transform: translateY(-50%);
+    color: var(--hvnly-text-secondary);
+    font-weight: var(--hvnly-font-weight-medium);
+}
+
+.hvnly-mortgage-amount-input input {
+    padding-left: 30px !important;
+}
+
+.hvnly-mortgage-slider-input {
+    flex: 1;
+}
+
+.hvnly-mortgage-slider-input input[type=range] {
+    width: 100%;
+    height: 46px;
+    accent-color: var(--hvnly-brand-primary);
+}
+.hvnly-mortgage-slider-input input[type="range"] {
+    width: 100%;
+    height: 46px;
+    accent-color: var(--hvnly-brand-primary);
+    border: none;
+}
+
+/* Remove only focus ring */
+.hvnly-mortgage-slider-input input[type="range"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+/* Term Buttons */
+.hvnly-sidebar--single
+.hvnly-mortgage-term-section {
+    margin-bottom: var(--hvnly-space-lg);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-term-label {
+    font-size: var(--hvnly-font-size-sm);
+    color: var(--hvnly-text-primary);
+    font-weight: var(--hvnly-font-weight-medium);
+    display: block;
+    margin-bottom: var(--hvnly-space-xs);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-term-buttons {
+    display: flex;
+    gap: var(--hvnly-space-sm);
+    flex-wrap: wrap;
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-term-btn {
+    flex: 1;
+    padding: var(--hvnly-space-sm);
+    background: var(--hvnly-color-bg-light);
+    color: var(--hvnly-text-primary);
+    border: 1px solid var(--hvnly-border-color);
+    border-radius: var(--hvnly-border-radius-sm);
+    font-weight: var(--hvnly-font-weight-medium);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: var(--hvnly-font-size-sm);
+    min-width: 60px;
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-term-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--hvnly-shadow-sm);
+    border-color: var(--hvnly-brand-primary);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-term-btn.active {
+    background: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+    border-color: var(--hvnly-brand-primary);
+}
+
+/* Interest Rate */
+.hvnly-sidebar--single
+.hvnly-mortgage-interest {
+    margin-bottom: var(--hvnly-space-lg);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-interest-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--hvnly-font-size-sm);
+    color: var(--hvnly-text-primary);
+    font-weight: var(--hvnly-font-weight-medium);
+    margin-bottom: var(--hvnly-space-xs);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-market-rate {
+    background: rgba(0, 196, 168, 0.1);
+    color: var(--hvnly-brand-success);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-medium);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-interest-input {
+    position: relative;
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-interest-input .percent-symbol {
+    position: absolute;
+    right: var(--hvnly-space-md);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--hvnly-text-secondary);
+}
+
+/* Advanced Options */
+.hvnly-sidebar--single
+.hvnly-mortgage-advanced-toggle {
+    background: none;
+    border: none;
+    color: var(--hvnly-brand-primary);
+    font-size: var(--hvnly-font-size-sm);
+    font-weight: var(--hvnly-font-weight-medium);
+    cursor: pointer;
+    margin-bottom: var(--hvnly-space-md);
+    display: flex;
+    align-items: center;
+    gap: var(--hvnly-space-xs);
+    width: 100%;
+    padding: var(--hvnly-space-xs) 0;
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-advanced-toggle svg {
+    transition: transform 0.3s ease;
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-advanced-toggle.active svg {
+    transform: rotate(90deg);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-advanced-panel {
+    display: none;
+    margin-bottom: var(--hvnly-space-lg);
+    animation: slideDown 0.3s ease;
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-advanced-panel.show {
+    display: block;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Breakdown Styles */
+.hvnly-sidebar--single
+.hvnly-mortgage-breakdown {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: var(--hvnly-space-lg);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--hvnly-space-xs);
+    font-size: var(--hvnly-font-size-sm);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-summary {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--hvnly-border-radius-sm);
+    padding: var(--hvnly-space-md);
+    margin-top: var(--hvnly-space-lg);
+    font-size: var(--hvnly-font-size-xs);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+/* Action Buttons */
+.hvnly-sidebar--single
+.hvnly-mortgage-actions {
+    display: flex;
+    gap: var(--hvnly-space-sm);
+    margin-top: var(--hvnly-space-lg);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-preapprove {
+    flex: 1;
+    background: var(--hvnly-brand-primary);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-pdf {
+    flex: 1;
+    background: transparent;
+    border: 2px solid var(--hvnly-brand-primary);
+    color: var(--hvnly-brand-primary);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-pdf:hover {
+    background: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+}
+.hvnly-sidebar--single
+.hvnly-mortgage-note {
+    font-size: var(--hvnly-font-size-xs);
+    color: var(--hvnly-text-secondary);
+    text-align: center;
+    margin-top: var(--hvnly-space-md);
+}
+
+/* Agent Listings Carousel Widget — dedicated namespace */
+.hvnly-property-single__widget--agent-listings {
+    overflow: hidden;
+}
+
+.hvnly-agent-listings-widget {
+    width: 100%;
+    max-width: 100%;
+}
+
+.hvnly-agent-listings-carousel {
+    margin-top: 0;
+}
+
+.hvnly-agent-listings-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--hvnly-space-sm);
+    margin-bottom: var(--hvnly-space-md);
+}
+
+.hvnly-agent-listings-heading {
+    flex: 1;
+    min-width: 0;
+}
+
+.hvnly-agent-listings-title {
+    font-size: var(--hvnly-font-size-md);
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    line-height: 1.3;
+    margin: 0 0 var(--hvnly-space-xs);
+    color: var(--hvnly-text-primary);
+}
+
+.hvnly-agent-listings-subtitle {
+    font-size: var(--hvnly-font-size-sm);
+    color: var(--hvnly-text-secondary);
+    margin: 0;
+}
+
+.hvnly-agent-listings-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--hvnly-space-xs);
+    flex-shrink: 0;
+}
+
+.hvnly-agent-listings-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid var(--hvnly-color-gray-200, #e5e7eb);
+    border-radius: var(--hvnly-radius-sm, 6px);
+    background: var(--hvnly-card-bg, #fff);
+    color: var(--hvnly-text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.hvnly-agent-listings-nav-btn:hover:not(:disabled) {
+    border-color: var(--hvnly-primary-color);
+    color: var(--hvnly-primary-color);
+}
+
+.hvnly-agent-listings-nav-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.hvnly-agent-listings-nav-btn:focus-visible {
+    outline: 2px solid var(--hvnly-primary-color);
+    outline-offset: 2px;
+}
+
+/* Carousel engine structure (sidebar: 1 slide visible) */
+.hvnly-agent-listings-container {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+}
+
+.hvnly-agent-listings-track {
+    display: flex;
+    transition: transform 0.3s ease;
+    gap: 0;
+}
+
+.hvnly-agent-listings-slide {
+    flex: 0 0 100%;
+    padding: 0;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.hvnly-agent-listings-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--hvnly-card-bg, #fff);
+    border: var(--hvnly-card-border, 1px solid var(--hvnly-color-gray-200, #e5e7eb));
+    border-radius: var(--hvnly-card-radius, 10px);
+    box-shadow: var(--hvnly-card-shadow, 0 1px 3px rgba(0, 0, 0, 0.06));
+    overflow: hidden;
+}
+
+.hvnly-agent-listings-image {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--hvnly-color-gray-100, #f3f4f6) 0%, var(--hvnly-color-gray-200, #e5e7eb) 100%);
+}
+
+.hvnly-agent-listings-image a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.hvnly-agent-listings-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hvnly-agent-listings-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--hvnly-primary-color);
+    font-size: 2rem;
+}
+
+.hvnly-agent-listings-status {
+    position: absolute;
+    top: var(--hvnly-space-sm);
+    left: var(--hvnly-space-sm);
+    z-index: 1;
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--hvnly-text-secondary);
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+}
+
+.hvnly-agent-listings-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hvnly-space-xs);
+    padding: var(--hvnly-space-md);
+}
+
+.hvnly-agent-listings-price {
+    font-size: var(--hvnly-font-size-md);
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    color: var(--hvnly-primary-color);
+    line-height: 1.3;
+}
+
+.hvnly-agent-listings-card-title {
+    margin: 0;
+    font-size: var(--hvnly-font-size-md);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    line-height: 1.35;
+}
+
+.hvnly-agent-listings-card-title a {
+    color: var(--hvnly-text-primary);
+    text-decoration: none;
+}
+
+.hvnly-agent-listings-card-title a:hover {
+    color: var(--hvnly-primary-color);
+}
+
+.hvnly-agent-listings-location {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--hvnly-space-xs);
+    font-size: var(--hvnly-font-size-sm);
+    color: var(--hvnly-text-secondary);
+    line-height: 1.4;
+}
+
+.hvnly-agent-listings-location i {
+    margin-top: 2px;
+    flex-shrink: 0;
+    color: var(--hvnly-primary-color);
+}
+
+.hvnly-agent-listings-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--hvnly-space-sm);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--hvnly-font-size-sm);
+    color: var(--hvnly-text-secondary);
+}
+
+.hvnly-agent-listings-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.hvnly-agent-listings-meta-item i {
+    color: var(--hvnly-primary-color);
+    font-size: 0.85em;
+}
+
+.hvnly-agent-listings-meta-item + .hvnly-agent-listings-meta-item {
+    position: relative;
+    padding-left: var(--hvnly-space-sm);
+}
+
+.hvnly-agent-listings-meta-item + .hvnly-agent-listings-meta-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 12px;
+    background: var(--hvnly-color-gray-300, #d1d5db);
+}
+
+.hvnly-agent-listings-card
+.hvnly-agent-listings-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--hvnly-space-xs);
+    width: 100%;
+    margin-top: var(--hvnly-space-xs);
+    padding: var(--hvnly-space-sm) var(--hvnly-space-md);
+    border-radius: var(--hvnly-radius-sm, 6px);
+    background: var(--hvnly-primary-color);
+    color: var(--hvnly-color-white, #fff);
+    font-size: var(--hvnly-font-size-sm);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.hvnly-agent-listings-cta:hover {
+    background: var(--hvnly-brand-primary-dark, #5a4fe0);
+    color: var(--hvnly-color-white, #fff);
+}
+
+.hvnly-agent-listings-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--hvnly-space-xs);
+    margin-top: var(--hvnly-space-sm);
+}
+
+/* Dots are injected by the shared carousel engine */
+.hvnly-agent-listings-carousel .hvnly-property-single__carousel-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--hvnly-color-gray-300, #d1d5db);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.hvnly-agent-listings-carousel .hvnly-property-single__carousel-dot:hover {
+    background: var(--hvnly-primary-color);
+}
+
+.hvnly-agent-listings-carousel .hvnly-property-single__carousel-dot--active {
+    background: var(--hvnly-primary-color);
+    transform: scale(1.15);
+}
+
+.hvnly-agent-listings-carousel .hvnly-property-single__carousel-dot:focus-visible {
+    outline: 2px solid var(--hvnly-primary-color);
+    outline-offset: 2px;
+}

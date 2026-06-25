@@ -1,0 +1,83 @@
+/**
+ * Critical Settings boot styles — visible before the React bundle loads.
+ */
+#HvnlyNab_admin_dashboard_wrap.hvnly-settings-is-loading {
+  min-height: calc(100vh - 32px);
+  position: relative;
+}
+
+#HvnlyNab_admin_dashboard_wrap.hvnly-settings-is-loading #HvnlyNab_admin_dashboard {
+  visibility: hidden;
+  pointer-events: none;
+  height: 0;
+  overflow: hidden;
+}
+
+.hvnly-settings-preloader--boot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.hvnly-settings-preloader--boot .hvnly-settings-preloader__content {
+  width: min(90%, 480px);
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(108, 96, 254, 0.12);
+  border: 1px solid #e8e8ef;
+}
+
+.hvnly-settings-preloader--boot .hvnly-settings-preloader__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.hvnly-settings-preloader--boot .hvnly-settings-preloader__stage {
+  margin: 0 0 1.5rem;
+  font-size: 0.95rem;
+  color: #64648c;
+}
+
+.hvnly-settings-preloader--boot .hvnly-settings-preloader__spinner {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 1.5rem;
+  border: 3px solid #f0f0f5;
+  border-top-color: #6c60fe;
+  border-radius: 50%;
+  animation: hvnly-settings-boot-spin 0.9s linear infinite;
+}
+
+.hvnly-settings-preloader--boot .hvnly-settings-preloader__track {
+  height: 4px;
+  background: #e8e8ef;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.hvnly-settings-preloader--boot .hvnly-settings-preloader__bar {
+  height: 100%;
+  width: 42%;
+  background: linear-gradient(90deg, #6c60fe, #8b5cf6);
+  border-radius: 2px;
+}
+
+@keyframes hvnly-settings-boot-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

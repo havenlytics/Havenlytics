@@ -1,0 +1,94 @@
+/**
+ * Havenlytics Elementor Property Agents widget — layout helpers only.
+ *
+ * Same markup/CSS as native /agents/ archive; these rules only adapt the grid
+ * to the Elementor column width (container queries).
+ *
+ * @package Havenlytics
+ * @since   3.0.2
+ */
+
+.elementor-widget-hvnly_property_agents,
+.elementor-widget-hvnly_property_agents > .elementor-widget-container,
+.hvnly-property-agents-widget {
+	width: 100%;
+	max-width: 100%;
+	overflow: visible;
+	min-width: 0;
+	container-type: inline-size;
+	container-name: hvnly-agents-widget;
+}
+
+.hvnly-property-agents-widget.hvnly-content-wrapper {
+	display: block;
+	min-height: 0;
+}
+
+.hvnly-property-agents-widget .hvnly-property--archive {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hvnly-property-agents-widget .hvnly-property--archive__cards {
+	display: grid !important;
+	width: 100%;
+	min-width: 0;
+}
+
+.hvnly-property-agents-widget .hvnly-agent-card {
+	min-width: 0;
+	width: 100%;
+}
+
+@container hvnly-agents-widget (max-width: 1099px) {
+	.hvnly-property-agents-widget[data-columns="4"] .hvnly-property--archive__cards,
+	.hvnly-property-agents-widget .hvnly-property--archive[data-columns="4"] .hvnly-property--archive__cards {
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)) !important;
+	}
+}
+
+@container hvnly-agents-widget (max-width: 839px) {
+	.hvnly-property-agents-widget[data-columns="3"] .hvnly-property--archive__cards,
+	.hvnly-property-agents-widget .hvnly-property--archive[data-columns="3"] .hvnly-property--archive__cards {
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)) !important;
+	}
+}
+
+@container hvnly-agents-widget (max-width: 559px) {
+	.hvnly-property-agents-widget[data-columns="2"] .hvnly-property--archive__cards,
+	.hvnly-property-agents-widget[data-columns="3"] .hvnly-property--archive__cards,
+	.hvnly-property-agents-widget[data-columns="4"] .hvnly-property--archive__cards,
+	.hvnly-property-agents-widget .hvnly-property--archive[data-columns="2"] .hvnly-property--archive__cards,
+	.hvnly-property-agents-widget .hvnly-property--archive[data-columns="3"] .hvnly-property--archive__cards,
+	.hvnly-property-agents-widget .hvnly-property--archive[data-columns="4"] .hvnly-property--archive__cards {
+		grid-template-columns: 1fr !important;
+	}
+}
+
+.elementor-editor-active .hvnly-property-agents-widget,
+.elementor-preview .hvnly-property-agents-widget {
+	width: 100%;
+}
+
+.elementor-editor-active .hvnly-property-agents-widget .hvnly-property--archive__cards,
+.elementor-preview .hvnly-property-agents-widget .hvnly-property--archive__cards {
+	width: 100%;
+	min-width: 0;
+}
+
+/* Pagination — match native /agents/ archive inside Elementor (override theme link styles) */
+.hvnly-property-agents-widget .hvnly-property--archive .hvnly-property-pagination-item {
+	text-decoration: none;
+	color: var(--hvnly-text-secondary, #555);
+}
+
+.hvnly-property-agents-widget .hvnly-property--archive a.hvnly-property-pagination-item:hover,
+.hvnly-property-agents-widget .hvnly-property--archive a.hvnly-property-pagination-item:focus {
+	text-decoration: none;
+	color: var(--hvnly-color-white, #fff);
+}
+
+.hvnly-property-agents-widget .hvnly-property--archive .hvnly-property-pagination-item.active {
+	color: var(--hvnly-color-white, #fff);
+}

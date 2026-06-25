@@ -1,0 +1,167 @@
+/**
+ * Havenlytics Mortgage Calculator — supplemental widget styles.
+ * Base layout lives in hvnly-frontend-widgets.css.
+ */
+
+.hvnly-mortgage-unavailable {
+	padding: var(--hvnly-space-md, 16px);
+	border: 1px solid var(--hvnly-border-color, rgba(var(--hvnly-primary-rgb), 0.15));
+	border-radius: var(--hvnly-border-radius-sm, 6px);
+	background: rgba(var(--hvnly-primary-rgb), 0.04);
+}
+
+.hvnly-mortgage-unavailable__price {
+	display: block;
+	font-size: var(--hvnly-font-size-lg, 1.125rem);
+	font-weight: var(--hvnly-font-weight-semibold, 600);
+	color: var(--hvnly-text-primary, #1a1a1a);
+	margin: 0 0 var(--hvnly-space-sm, 8px);
+}
+
+.hvnly-mortgage-unavailable__message {
+	margin: 0;
+	font-size: var(--hvnly-font-size-sm, 0.875rem);
+	line-height: 1.5;
+	color: var(--hvnly-text-secondary, #666);
+}
+
+.hvnly-mortgage-calculator-root[hidden] {
+	display: none !important;
+}
+
+.hvnly-mortgage-field-label {
+	display: block;
+	margin-bottom: var(--hvnly-space-xs, 4px);
+	font-size: var(--hvnly-font-size-sm, 0.875rem);
+	color: var(--hvnly-text-primary, #1a1a1a);
+	font-weight: var(--hvnly-font-weight-medium, 500);
+}
+
+.hvnly-mortgage-field-note {
+	font-size: var(--hvnly-font-size-xs, 0.75rem);
+	color: var(--hvnly-text-secondary, #666);
+	font-weight: var(--hvnly-font-weight-regular, 400);
+	margin-left: var(--hvnly-space-xs, 4px);
+}
+
+.hvnly-mortgage-input-with-symbol {
+	position: relative;
+}
+
+.hvnly-mortgage-input-with-symbol .currency-symbol {
+	position: absolute;
+	left: 6px;
+	top: 45%;
+	transform: translateY(-50%);
+	color: var(--hvnly-text-secondary, #666);
+	z-index: 1;
+}
+
+.hvnly-mortgage-input-with-padding {
+	padding-left: calc(var(--hvnly-space-md, 16px) * 2 + 10px) !important;
+}
+
+.hvnly-mortgage-result-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	margin-bottom: var(--hvnly-space-md, 16px);
+}
+
+.hvnly-mortgage-result-label {
+	font-size: var(--hvnly-font-size-sm, 0.875rem);
+	opacity: 0.9;
+}
+
+.hvnly-property-single__mortgage-amount[aria-live="polite"] {
+	min-width: 4rem;
+	text-align: right;
+}
+
+.hvnly-mortgage-amortization-toggle {
+	width: 100%;
+	background: none;
+	border: 1px solid var(--hvnly-border-color, rgba(var(--hvnly-primary-rgb), 0.15));
+	border-radius: var(--hvnly-border-radius-sm, 6px);
+	padding: var(--hvnly-space-md, 16px);
+	display: flex;
+	align-items: center;
+	gap: var(--hvnly-space-sm, 8px);
+	cursor: pointer;
+	transition: all var(--hvnly-transition-time, 0.2s ease);
+	color: var(--hvnly-text-primary, #1a1a1a);
+}
+
+.hvnly-mortgage-amortization-toggle:hover,
+.hvnly-mortgage-amortization-toggle:focus-visible {
+	background: rgba(var(--hvnly-primary-rgb), 0.05);
+	border-color: var(--hvnly-primary-color);
+	outline: none;
+}
+
+.hvnly-mortgage-amortization-table-container {
+	max-height: 300px;
+	overflow-y: auto;
+	margin-top: var(--hvnly-space-md, 16px);
+	border: 1px solid var(--hvnly-border-color, rgba(var(--hvnly-primary-rgb), 0.15));
+	border-radius: var(--hvnly-border-radius-sm, 6px);
+}
+
+.hvnly-mortgage-amortization-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: var(--hvnly-font-size-xs, 0.75rem);
+}
+
+.hvnly-mortgage-amortization-table th {
+	padding: var(--hvnly-space-sm, 8px);
+	text-align: left;
+	font-weight: var(--hvnly-font-weight-semibold, 600);
+	position: sticky;
+	top: 0;
+	background: var(--hvnly-color-bg-white, #fff);
+	border-bottom: 2px solid var(--hvnly-border-color, rgba(var(--hvnly-primary-rgb), 0.15));
+}
+
+.hvnly-mortgage-amortization-table td {
+	padding: var(--hvnly-space-sm, 8px);
+	border-bottom: 1px solid var(--hvnly-border-color, rgba(var(--hvnly-primary-rgb), 0.15));
+}
+
+.hvnly-mortgage-amortization-table tr:last-child td {
+	border-bottom: none;
+}
+
+.hvnly-mortgage-amortization-table tr:hover td {
+	background: rgba(var(--hvnly-primary-rgb), 0.02);
+}
+
+.hvnly-input-suffix {
+	position: absolute;
+	right: var(--hvnly-space-md, 16px);
+	top: 50%;
+	transform: translateY(-50%);
+	color: var(--hvnly-text-secondary, #666);
+}
+
+.hvnly-mortgage-advanced-toggle:focus-visible,
+.hvnly-mortgage-term-btn:focus-visible {
+	outline: 2px solid var(--hvnly-primary-color);
+	outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+	.hvnly-mortgage-downpayment-inputs {
+		flex-direction: column;
+		gap: var(--hvnly-space-sm, 8px);
+	}
+
+	.hvnly-mortgage-term-buttons {
+		flex-wrap: wrap;
+	}
+
+	.hvnly-mortgage-term-btn {
+		flex: 1 1 calc(50% - 4px);
+		min-width: calc(50% - 4px);
+	}
+}

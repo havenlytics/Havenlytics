@@ -1,0 +1,207 @@
+/**
+ * Havenlytics Elementor Property Archive widget — scoped UI fixes only.
+ *
+ * @package Havenlytics
+ * @since   3.1.0
+ */
+
+/* Grid column settings (override archive inline JS + responsive defaults) */
+.hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view {
+    --hvnly-grid-columns: 2;
+    grid-template-columns: repeat(var(--hvnly-grid-columns, 2), 1fr) !important;
+}
+
+.hvnly-all-properties-widget[data-columns="1"] .hvnly-property-grid-view.hvnly-grid-view,
+.hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view[data-columns="1"] {
+    --hvnly-grid-columns: 1;
+    grid-template-columns: repeat(1, 1fr) !important;
+}
+
+.hvnly-all-properties-widget[data-columns="2"] .hvnly-property-grid-view.hvnly-grid-view,
+.hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view[data-columns="2"] {
+    --hvnly-grid-columns: 2;
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+
+.hvnly-all-properties-widget[data-columns="3"] .hvnly-property-grid-view.hvnly-grid-view,
+.hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view[data-columns="3"] {
+    --hvnly-grid-columns: 3;
+    grid-template-columns: repeat(3, 1fr) !important;
+}
+
+.hvnly-all-properties-widget[data-columns="4"] .hvnly-property-grid-view.hvnly-grid-view,
+.hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view[data-columns="4"] {
+    --hvnly-grid-columns: 4;
+    grid-template-columns: repeat(4, 1fr) !important;
+}
+
+/* Map placeholder — instance-scoped visibility */
+.hvnly-all-properties-widget .hvnly-map-placeholder {
+    display: none;
+    width: 100%;
+    min-height: 500px;
+}
+
+.hvnly-all-properties-widget .hvnly-map-placeholder.is-visible {
+    display: block !important;
+}
+
+.hvnly-all-properties-widget .hvnly-map-placeholder .hvnly-map-view,
+.hvnly-all-properties-widget .hvnly-map-placeholder #hvnly-properties-map,
+.hvnly-all-properties-widget .hvnly-map-placeholder .leaflet-container {
+    width: 100% !important;
+    min-height: 550px  !important;
+    height: 550px  !important;
+}
+
+@media (max-width: 1024px) {
+    .hvnly-all-properties-widget[data-columns="3"] .hvnly-property-grid-view.hvnly-grid-view,
+    .hvnly-all-properties-widget[data-columns="4"] .hvnly-property-grid-view.hvnly-grid-view,
+    .hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view[data-columns="3"],
+    .hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view[data-columns="4"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .hvnly-all-properties-widget[data-columns="2"] .hvnly-property-grid-view.hvnly-grid-view,
+    .hvnly-all-properties-widget[data-columns="3"] .hvnly-property-grid-view.hvnly-grid-view,
+    .hvnly-all-properties-widget[data-columns="4"] .hvnly-property-grid-view.hvnly-grid-view,
+    .hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view[data-columns="2"],
+    .hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view[data-columns="3"],
+    .hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view[data-columns="4"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Elementor editor preview — layout stability only */
+.elementor-editor-active .hvnly-all-properties-widget,
+.elementor-preview .hvnly-all-properties-widget {
+    min-width: 0;
+}
+
+.elementor-editor-active .hvnly-all-properties-widget .hvnly-with-sidebar__contents__grids,
+.elementor-preview .hvnly-all-properties-widget .hvnly-with-sidebar__contents__grids {
+    min-width: 0;
+    align-items: start;
+}
+
+.elementor-editor-active .hvnly-all-properties-widget .hvnly-property-filter-sidebar,
+.elementor-preview .hvnly-all-properties-widget .hvnly-property-filter-sidebar {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.elementor-editor-active .hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view,
+.elementor-preview .hvnly-all-properties-widget .hvnly-property-grid-view.hvnly-grid-view {
+    width: 100%;
+    min-width: 0;
+    gap: 20px !important;
+    grid-template-columns: repeat(var(--hvnly-grid-columns, 2), minmax(0, 1fr)) !important;
+}
+
+.elementor-editor-active .hvnly-all-properties-widget .hvnly-property-grid-list-item,
+.elementor-preview .hvnly-all-properties-widget .hvnly-property-grid-list-item {
+    min-width: 0;
+}
+
+.hvnly-elementor-widget .hvnly-map-placeholder .hvnly-map-view {
+    width: 100% !important;
+    min-height: inherit !important;
+    height: inherit !important;
+}
+
+/* Filter sidebar sticky — match native archive (overflow-x on widget breaks position:sticky) */
+.hvnly-all-properties-widget {
+    overflow: visible;
+}
+
+.elementor-widget-hvnly_all_properties,
+.elementor-widget-hvnly_all_properties > .elementor-widget-container {
+    overflow: visible;
+}
+
+.hvnly-all-properties-widget .hvnly-with-sidebar__contents__grids {
+    align-items: start;
+}
+
+.hvnly-all-properties-widget .hvnly-with-sidebar__contents__grids .hvnly-property-filter-sidebar,
+.hvnly-all-properties-widget #hvnly-filter-sidebar {
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    height: fit-content;
+}
+
+@media (max-width: 1024px) {
+    .hvnly-all-properties-widget .hvnly-with-sidebar__contents__grids .hvnly-property-filter-sidebar,
+    .hvnly-all-properties-widget #hvnly-filter-sidebar {
+        position: static;
+        max-height: none;
+    }
+}
+
+/* Instance-scoped pagination + load-more (match native archive layout) */
+.hvnly-all-properties-widget .hvnly-property--grid--listings > [id^="hvnly-property-pagination"],
+.hvnly-all-properties-widget .hvnly-property--grid--listings > [id^="hvnly-load-more-container"],
+.hvnly-all-properties-widget .hvnly-property--grid--listings > .hvnly-load-more-wrapper,
+.hvnly-all-properties-widget .hvnly-property--grid--listings > .hvnly-property-load-more-container,
+.hvnly-all-properties-widget .hvnly-property--grid--listings > div > .hvnly-property-load-more-container {
+    order: 3;
+    width: 100%;
+}
+
+.hvnly-all-properties-widget .hvnly-property-load-more-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.hvnly-all-properties-widget [id^="hvnly-property-pagination"] .hvnly-property-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0;
+    gap: 0.5rem;
+}
+
+.hvnly-all-properties-widget [id^="hvnly-property-pagination"] .hvnly-property-pagination-info {
+    text-align: center;
+    color: var(--hvnly-text-secondary);
+    font-size: 0.9rem;
+}
+
+.hvnly-all-properties-widget [id^="hvnly-property-pagination"] .hvnly-property-pagination-list {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.hvnly-all-properties-widget [id^="hvnly-property-pagination"] .hvnly-property-pagination-item {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--hvnly-button-radius);
+    background: var(--hvnly-color-bg-white);
+    border: 1px solid var(--hvnly-border-color);
+    color: var(--hvnly-text-secondary);
+    font-weight: var(--hvnly-font-weight-semibold);
+    transition: all var(--hvnly-transition-time);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.hvnly-all-properties-widget [id^="hvnly-property-pagination"] .hvnly-property-pagination-item:hover {
+    background: var(--hvnly-brand-secondary);
+    color: var(--hvnly-color-white);
+    border-color: var(--hvnly-brand-secondary);
+}
+
+.hvnly-all-properties-widget [id^="hvnly-property-pagination"] .hvnly-property-pagination-item.active {
+    background: var(--hvnly-brand-primary);
+    border-color: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+}

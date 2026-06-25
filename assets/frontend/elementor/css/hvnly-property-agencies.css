@@ -1,0 +1,93 @@
+/**
+ * Havenlytics Elementor Property Agencies widget — layout helpers only.
+ *
+ * Same markup/CSS as native /agencies/ archive; these rules only adapt the grid
+ * to the Elementor column width (container queries).
+ *
+ * @package Havenlytics
+ * @since   3.0.3
+ */
+
+.elementor-widget-hvnly_property_agencies,
+.elementor-widget-hvnly_property_agencies > .elementor-widget-container,
+.hvnly-property-agencies-widget {
+	width: 100%;
+	max-width: 100%;
+	overflow: visible;
+	min-width: 0;
+	container-type: inline-size;
+	container-name: hvnly-agencies-widget;
+}
+
+.hvnly-property-agencies-widget.hvnly-content-wrapper {
+	display: block;
+	min-height: 0;
+}
+
+.hvnly-property-agencies-widget .hvnly-property--archive {
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hvnly-property-agencies-widget .hvnly-property--archive__cards {
+	display: grid !important;
+	width: 100%;
+	min-width: 0;
+}
+
+.hvnly-property-agencies-widget .hvnly-agency-card {
+	min-width: 0;
+	width: 100%;
+}
+
+@container hvnly-agencies-widget (max-width: 1099px) {
+	.hvnly-property-agencies-widget[data-columns="4"] .hvnly-property--archive__cards,
+	.hvnly-property-agencies-widget .hvnly-property--archive[data-columns="4"] .hvnly-property--archive__cards {
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)) !important;
+	}
+}
+
+@container hvnly-agencies-widget (max-width: 839px) {
+	.hvnly-property-agencies-widget[data-columns="3"] .hvnly-property--archive__cards,
+	.hvnly-property-agencies-widget .hvnly-property--archive[data-columns="3"] .hvnly-property--archive__cards {
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)) !important;
+	}
+}
+
+@container hvnly-agencies-widget (max-width: 559px) {
+	.hvnly-property-agencies-widget[data-columns="2"] .hvnly-property--archive__cards,
+	.hvnly-property-agencies-widget[data-columns="3"] .hvnly-property--archive__cards,
+	.hvnly-property-agencies-widget[data-columns="4"] .hvnly-property--archive__cards,
+	.hvnly-property-agencies-widget .hvnly-property--archive[data-columns="2"] .hvnly-property--archive__cards,
+	.hvnly-property-agencies-widget .hvnly-property--archive[data-columns="3"] .hvnly-property--archive__cards,
+	.hvnly-property-agencies-widget .hvnly-property--archive[data-columns="4"] .hvnly-property--archive__cards {
+		grid-template-columns: 1fr !important;
+	}
+}
+
+.elementor-editor-active .hvnly-property-agencies-widget,
+.elementor-preview .hvnly-property-agencies-widget {
+	width: 100%;
+}
+
+.elementor-editor-active .hvnly-property-agencies-widget .hvnly-property--archive__cards,
+.elementor-preview .hvnly-property-agencies-widget .hvnly-property--archive__cards {
+	width: 100%;
+	min-width: 0;
+}
+
+.hvnly-property-agencies-widget .hvnly-property--archive .hvnly-property-pagination-item {
+	text-decoration: none;
+	color: var(--hvnly-text-secondary, #555);
+}
+
+.hvnly-property-agencies-widget .hvnly-property--archive a.hvnly-property-pagination-item:hover,
+.hvnly-property-agencies-widget .hvnly-property--archive a.hvnly-property-pagination-item:focus {
+	text-decoration: none;
+	color: var(--hvnly-color-white, #fff);
+}
+
+.hvnly-property-agencies-widget .hvnly-property--archive .hvnly-property-pagination-item.active {
+	color: var(--hvnly-color-white, #fff);
+}

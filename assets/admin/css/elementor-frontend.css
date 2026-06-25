@@ -1,0 +1,43 @@
+/**
+ * Havenlytics Elementor Frontend Styles
+ * Additional styling for Elementor widget preview
+ *
+ * @since 2.2.1
+ */
+
+/* Widget container styling */
+.elementor-widget-hvnly_all_properties {
+    margin-bottom: 20px;
+}
+
+/* Live preview enhancements */
+.elementor-editor-active .elementor-widget-hvnly_all_properties {
+    min-height: 100px;
+    transition: all 0.3s ease;
+}
+
+.elementor-editor-active .elementor-widget-hvnly_all_properties:hover {
+    outline: 2px solid #6C60FE;
+    outline-offset: 4px;
+    border-radius: 8px;
+}
+
+/* Placeholder for empty widget */
+.elementor-widget-hvnly_all_properties .hvnly-all-properties-widget:empty {
+    min-height: 200px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #eef2f6 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.elementor-widget-hvnly_all_properties .hvnly-all-properties-widget:empty::after {
+    content: "Havenlytics Property Widget";
+    font-size: 14px;
+    color: #6C60FE;
+    background: rgba(108, 96, 254, 0.1);
+    padding: 8px 16px;
+    border-radius: 20px;
+}

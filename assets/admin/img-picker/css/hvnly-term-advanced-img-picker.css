@@ -1,0 +1,477 @@
+/**
+ * Advanced Term Image Picker Styles - Havenlytics Design System
+ * 
+ * Provides beautiful image upload interface for taxonomy terms
+ * Features: Professional preview, hover effects, responsive design
+ * 
+ * @package Havenlytics
+ * @since 1.0.0
+ */
+
+/* Main Container Styles */
+.hvnly-term-advanced-img-upload-container {
+    margin: 12px 0;
+}
+
+.hvnly-term-img-selection-interface {
+    max-width: 220px;
+    gap: 20px;
+    margin-bottom: 16px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dcdcde;
+    transition: all 0.3s ease;
+}
+
+.hvnly-term-img-selection-interface:hover {
+    border-color: var(--hvnly-brand-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced Image Preview with Hover Effects */
+.hvnly-term-img-preview-area {
+    flex: 0 0 200px;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 6px;
+    border: 2px dashed #dcdcde;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+}
+
+.hvnly-term-img-preview-area.hvnly-term-has-image {
+    border-style: solid;
+    border-color: var(--hvnly-brand-primary);
+    background: #f0f6fc;
+    box-shadow: 0 4px 12px rgba(0, 124, 186, 0.1);
+}
+
+.hvnly-term-img-preview-area:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced Selected Image State */
+.hvnly-term-img-selected {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.hvnly-term-img-selected img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.hvnly-term-img-selected:hover img {
+    transform: scale(1.05);
+}
+
+/* Enhanced Overlay with Action Icons */
+.hvnly-term-img-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgb(108 96 254) 0%, rgb(108 96 254) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.hvnly-term-img-selected:hover .hvnly-term-img-overlay {
+    opacity: 1;
+}
+
+/* Action Icons Container */
+.hvnly-term-img-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Individual Action Buttons */
+.hvnly-term-img-action-btn {
+    background: #ffffff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.hvnly-term-img-action-btn:hover {
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hvnly-term-img-action-btn:active {
+    transform: translateY(0) scale(1);
+}
+
+/* Specific Action Button Styles */
+.hvnly-term-img-action-edit {
+    background: #ffb900;
+}
+
+.hvnly-term-img-action-remove {
+    background: #dc3232;
+}
+
+/* Action Button Icons */
+.hvnly-term-img-action-btn .dashicons {
+    color: #ffffff;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+}
+
+.hvnly-term-img-action-btn:hover .dashicons {
+    transform: scale(1.2);
+}
+
+/* Tooltips for Action Buttons */
+.hvnly-term-img-action-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1d2327;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.hvnly-term-img-action-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
+    bottom: -35px;
+}
+
+/* Placeholder State */
+.hvnly-term-img-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #646970;
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    justify-content: center;
+}
+
+.hvnly-term-img-preview-area:hover .hvnly-term-img-placeholder {
+    color: var(--hvnly-brand-primary);
+    background: #f0f6fc;
+}
+
+.hvnly-term-img-placeholder .dashicons {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 8px;
+    color: #8c8f94;
+    transition: all 0.3s ease;
+}
+
+.hvnly-term-img-preview-area:hover .hvnly-term-img-placeholder .dashicons {
+    transform: scale(1.1);
+    color: var(--hvnly-brand-primary);
+}
+
+/* Control Buttons */
+.hvnly-term-img-controls {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.hvnly-term-img-controls .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 160px;
+    padding: 8px 16px;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    border: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 12px;
+}
+
+.hvnly-term-img-controls .button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.hvnly-term-img-controls .button:hover:before {
+    left: 100%;
+}
+
+/* Upload Button */
+.hvnly-term-img-upload-trigger {
+    background: var(--hvnly-brand-primary);
+    color: #ffffff;
+    border: 1px solid var(--hvnly-brand-primary);
+}
+
+.hvnly-term-img-upload-trigger:hover {
+    background: #005a87;
+    border-color: #005a87;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 124, 186, 0.2);
+}
+
+/* Clear Button */
+.hvnly-term-img-clear-trigger {
+    background: #ffffff;
+    color: #646970;
+    border: 1px solid #dcdcde;
+}
+
+.hvnly-term-img-clear-trigger:hover {
+    background: #fcf0f1;
+    color: #dc3232;
+    border-color: #dc3232;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 50, 50, 0.1);
+}
+
+/* Button Icons */
+.hvnly-term-img-controls .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s;
+}
+
+.hvnly-term-img-upload-trigger:hover .dashicons {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.hvnly-term-img-clear-trigger:hover .dashicons {
+    transform: scale(1.1);
+}
+
+/* Admin Column Styles */
+.column-hvnly_term_img {
+    width: 80px;
+    text-align: center;
+}
+
+.column-hvnly_term_img img {
+    border-radius: 4px;
+    border: 2px solid #dcdcde;
+    transition: all 0.3s;
+}
+
+.column-hvnly_term_img img:hover {
+    border-color: var(--hvnly-brand-primary);
+    transform: scale(1.1);
+}
+
+.column-hvnly_term_img .dashicons {
+    transition: all 0.3s;
+}
+
+.column-hvnly_term_img .dashicons:hover {
+    color: var(--hvnly-brand-primary);
+    transform: scale(1.2);
+}
+
+/* Form Field Specific Styles */
+.form-field.hvnly-term-advanced-img-upload-wrap {
+
+    /* border-radius: 8px; */
+    /* padding: 20px; */
+    margin-bottom: 20px;
+}
+
+.form-field.hvnly-term-advanced-img-upload-wrap label {
+    
+    margin-bottom: 16px;
+    display: block;
+   
+}
+
+.form-field.hvnly-term-advanced-img-upload-wrap .description {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #646970;
+    line-height: 1.5;
+}
+
+/* Edit Form Specific Styles */
+.hvnly-term-advanced-img-upload-wrap .hvnly-term-advanced-img-upload-container {
+    margin-top: 8px;
+}
+
+/* Success State Animation */
+.hvnly-term-img-success .hvnly-term-img-preview-area {
+    animation: hvnly-term-pulse-success 2s ease;
+}
+
+@keyframes hvnly-term-pulse-success {
+    0% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hvnly-term-img-selection-interface {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+    
+    .hvnly-term-img-preview-area {
+        flex: none;
+        min-height: 120px;
+    }
+    
+    .hvnly-term-img-controls {
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+    .hvnly-term-img-controls .button {
+        flex: 1;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .hvnly-term-img-selection-interface {
+        padding: 16px;
+    }
+    
+    .hvnly-term-img-preview-area {
+        min-height: 100px;
+    }
+    
+    .hvnly-term-img-controls {
+        flex-direction: column;
+    }
+    
+    .form-field.hvnly-term-advanced-img-upload-wrap {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .hvnly-term-img-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .hvnly-term-img-action-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .hvnly-term-img-action-btn .dashicons {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hvnly-term-img-preview-area {
+        min-height: 80px;
+    }
+    
+    .hvnly-term-img-placeholder {
+        padding: 16px;
+    }
+    
+    .hvnly-term-img-placeholder .dashicons {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+    }
+    
+    .hvnly-term-img-controls .button {
+        padding: 8px;
+        font-size: 11px;
+    }
+}
+
+/* Focus States for Accessibility */
+.hvnly-term-img-upload-trigger:focus,
+.hvnly-term-img-clear-trigger:focus,
+.hvnly-term-img-action-btn:focus {
+    outline: 2px solid var(--hvnly-brand-primary);
+    outline-offset: 2px;
+}
+
+.hvnly-term-img-preview-area:focus {
+    outline: 2px solid var(--hvnly-brand-primary);
+    outline-offset: 2px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .hvnly-term-img-preview-area,
+    .hvnly-term-img-action-btn,
+    .hvnly-term-img-overlay,
+    .hvnly-term-img-selected img {
+        transition: none;
+    }
+    
+    .hvnly-term-img-action-btn:hover {
+        transform: none;
+    }
+}

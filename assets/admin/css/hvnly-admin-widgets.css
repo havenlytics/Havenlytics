@@ -1,0 +1,161 @@
+/**
+ * Havenlytics Admin Widget Styles
+ *
+ * @package Havenlytics
+ * @since 2.0.0
+ */
+
+.hvnly-widget-field {
+    margin: 1em 0;
+}
+
+.hvnly-widget-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.hvnly-widget-field small {
+    display: block;
+    color: #666;
+    margin-top: 3px;
+    font-style: italic;
+}
+
+.hvnly-widget-field input[type="text"],
+.hvnly-widget-field input[type="email"],
+.hvnly-widget-field input[type="url"],
+.hvnly-widget-field input[type="number"],
+.hvnly-widget-field select,
+.hvnly-widget-field textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.hvnly-widget-field input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.hvnly-widget-field .checkbox-group {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 8px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.hvnly-widget-field .checkbox-group label {
+    display: block;
+    margin: 3px 0;
+    font-weight: normal;
+}
+
+.hvnly-widget-preview {
+    margin-top: 15px;
+    padding: 10px;
+    background: #f5f5f5;
+    border-left: 3px solid #6C60FE;
+    border-radius: 3px;
+}
+
+.hvnly-widget-preview h4 {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hvnly-widget-preview ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.hvnly-widget-preview li {
+    margin-bottom: 5px;
+    color: #666;
+}
+
+/**
+ * Havenlytics Widget Admin Styles
+ */
+.hvnly-widget-featured-properties .widget-content p {
+    margin: 1em 0;
+}
+
+.hvnly-widget-featured-properties .widget-content label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.hvnly-widget-featured-properties .widget-content input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.hvnly-widget-featured-properties .widget-content small {
+    color: #666;
+    display: block;
+    margin-top: 3px;
+}
+
+/* HAVENLYTICS block inserter category (Appearance → Widgets left sidebar) */
+.block-editor-block-categories-list__item button[aria-label="HAVENLYTICS"],
+.block-editor-block-categories-list__item button[aria-label*="HAVENLYTICS"] {
+    font-weight: 600;
+    background-image: url("../img/havenlytics-icon16x16.svg");
+    background-repeat: no-repeat;
+    background-position: 12px center;
+    background-size: 16px 16px;
+    padding-left: 36px !important;
+}
+
+.block-editor-block-categories-list__item:first-child button {
+    color: #6c60fe;
+}
+
+.hvnly-widget-category-icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+}
+
+.hvnly-widget-block-icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.block-editor-block-icon .hvnly-widget-block-icon {
+    max-width: 24px;
+    max-height: 24px;
+}
+
+.block-editor-inserter__panel-header .hvnly-widget-category-icon + .block-editor-inserter__panel-title {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Legacy widgets screen + block widget expanded forms */
+.widget[id*="hvnly_"] .widget-top .widget-title h3::before,
+.widget[id*="hvnly_"] .widget-title h3::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    vertical-align: -2px;
+    background: url("../img/havenlytics-icon16x16.svg") center center / contain no-repeat;
+}
+
+.widget[id*="hvnly_"] .widget-top .widget-title h3,
+.widget[id*="hvnly_"] .widget-title h3 {
+    display: inline-flex;
+    align-items: center;
+}

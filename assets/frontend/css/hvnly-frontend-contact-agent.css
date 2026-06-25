@@ -1,0 +1,362 @@
+/**
+ * Contact Agent modal and form (Phase 2 — UI only).
+ *
+ * @package Havenlytics
+ * @since   3.0.2
+ */
+
+.hvnly-contact-agent__modal {
+	position: fixed;
+	inset: 0;
+	z-index: 999999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--hvnly-space-md, 1rem);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.hvnly-contact-agent__modal:not([hidden]) {
+	display: flex;
+}
+
+.hvnly-contact-agent__modal--active {
+	opacity: 1;
+	visibility: visible;
+}
+
+.hvnly-contact-agent__overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(10, 15, 35, 0.75);
+}
+
+.hvnly-contact-agent__dialog {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	max-width: 520px;
+	max-height: min(90vh, 720px);
+	overflow: auto;
+	background: var(--hvnly-color-white, #fff);
+	border-radius: var(--hvnly-radius-lg, 12px);
+	box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+	padding: var(--hvnly-space-xl, 1.5rem);
+	transform: translateY(12px) scale(0.98);
+	transition: transform 0.25s ease;
+}
+
+.hvnly-contact-agent__modal--active .hvnly-contact-agent__dialog {
+	transform: translateY(0) scale(1);
+}
+
+.hvnly-contact-agent__header {
+	margin-bottom: var(--hvnly-space-lg, 1.25rem);
+	padding-right: 2.5rem;
+}
+
+.hvnly-contact-agent__close {
+	position: absolute;
+	top: var(--hvnly-space-md, 1rem);
+	right: var(--hvnly-space-md, 1rem);
+	z-index: 2;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: none;
+	border-radius: var(--hvnly-radius-md, 8px);
+	background: transparent;
+	color: var(--hvnly-color-muted, #64748b);
+	cursor: pointer;
+	transition: background 0.2s ease, color 0.2s ease;
+}
+
+.hvnly-contact-agent__close:hover,
+.hvnly-contact-agent__close:focus-visible {
+	background: var(--hvnly-color-surface, #f1f5f9);
+	color: var(--hvnly-color-heading, #0a0f23);
+	outline: none;
+}
+
+.hvnly-contact-agent__agent-chip {
+	display: flex;
+	align-items: center;
+	gap: var(--hvnly-space-sm, 0.75rem);
+	margin-bottom: var(--hvnly-space-md, 1rem);
+	padding: var(--hvnly-space-sm, 0.75rem);
+	background: var(--hvnly-color-surface, #f8fafc);
+	border-radius: var(--hvnly-radius-md, 8px);
+}
+
+.hvnly-contact-agent__agent-avatar {
+	flex-shrink: 0;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.hvnly-contact-agent__agent-meta {
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+	min-width: 0;
+}
+
+.hvnly-contact-agent__agent-role {
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--hvnly-color-muted, #64748b);
+}
+
+.hvnly-contact-agent__agent-name {
+	font-size: 0.9375rem;
+	font-weight: 600;
+	color: var(--hvnly-color-heading, #0a0f23);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.hvnly-contact-agent__form.is-submitting {
+	opacity: 0.75;
+	pointer-events: none;
+}
+
+.hvnly-contact-agent__feedback:focus {
+	outline: 2px solid var(--hvnly-brand-primary, #2563eb);
+	outline-offset: 2px;
+}
+
+.hvnly-contact-agent__title {
+	margin: 0 0 var(--hvnly-space-xs, 0.25rem);
+	font-size: 1.375rem;
+	line-height: 1.3;
+	color: var(--hvnly-color-heading, #0a0f23);
+}
+
+.hvnly-contact-agent__subtitle {
+	margin: 0;
+	font-size: 0.9375rem;
+	color: var(--hvnly-color-muted, #64748b);
+}
+
+.hvnly-contact-agent__field {
+	margin-bottom: var(--hvnly-space-md, 1rem);
+}
+
+.hvnly-contact-agent__field label {
+	display: block;
+	margin-bottom: var(--hvnly-space-xs, 0.25rem);
+	font-weight: 600;
+	font-size: 0.875rem;
+	color: var(--hvnly-color-heading, #0a0f23);
+}
+
+.hvnly-contact-agent__required {
+	color: var(--hvnly-color-danger, #dc2626);
+}
+
+.hvnly-contact-agent__input,
+.hvnly-contact-agent__textarea,
+.hvnly-contact-agent__select {
+	width: 100%;
+	padding: 0.625rem 0.75rem;
+	border: 1px solid var(--hvnly-border-color, #e2e8f0);
+	border-radius: var(--hvnly-radius-md, 8px);
+	font: inherit;
+	color: inherit;
+	background: var(--hvnly-color-white, #fff);
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hvnly-contact-agent__field--agent-select {
+	margin-bottom: var(--hvnly-space-lg, 1.25rem);
+}
+
+.hvnly-contact-agent__input:focus,
+.hvnly-contact-agent__textarea:focus,
+.hvnly-contact-agent__select:focus {
+	outline: none;
+	border-color: var(--hvnly-brand-primary, #2563eb);
+	box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.hvnly-contact-agent__textarea {
+	resize: vertical;
+	min-height: 120px;
+}
+
+.hvnly-contact-agent__field--honeypot {
+	position: absolute;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.hvnly-contact-agent__feedback {
+	margin-bottom: var(--hvnly-space-md, 1rem);
+	padding: 0.75rem 1rem;
+	border-radius: var(--hvnly-radius-md, 8px);
+	font-size: 0.875rem;
+}
+
+.hvnly-contact-agent__feedback--info {
+	background: #eff6ff;
+	color: #1e40af;
+	border: 1px solid #bfdbfe;
+}
+
+.hvnly-contact-agent__feedback--success {
+	background: #ecfdf5;
+	color: #065f46;
+	border: 1px solid #a7f3d0;
+}
+
+.hvnly-contact-agent__feedback--error {
+	background: #fef2f2;
+	color: #991b1b;
+	border: 1px solid #fecaca;
+}
+
+.hvnly-contact-agent__btn[disabled] {
+	opacity: 0.65;
+	cursor: not-allowed;
+}
+
+.hvnly-contact-agent__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--hvnly-space-sm, 0.5rem);
+	justify-content: flex-end;
+}
+
+.hvnly-contact-agent__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 44px;
+	padding: 0.625rem 1.25rem;
+	border-radius: var(--hvnly-radius-md, 8px);
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.hvnly-contact-agent__btn--primary {
+	border: none;
+	background: var(--hvnly-brand-primary, #2563eb);
+	color: var(--hvnly-color-white, #fff);
+}
+
+.hvnly-contact-agent__btn--primary:hover {
+	background: var(--hvnly-button-bg-hover, #1d4ed8);
+}
+
+.hvnly-contact-agent__btn--secondary {
+	background: transparent;
+	color: var(--hvnly-brand-primary, #2563eb);
+	border: 2px solid var(--hvnly-brand-primary, #2563eb);
+}
+
+.hvnly-contact-agent__btn--secondary:hover {
+	background: var(--hvnly-brand-primary, #2563eb);
+	color: var(--hvnly-color-white, #fff);
+}
+
+.hvnly-property-single__agent-btn--contact {
+	border: none;
+	font: inherit;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.hvnly-property-single__agent-actions--contact-agent {
+	margin-top: var(--hvnly-space-sm, 0.5rem);
+}
+
+body.hvnly-contact-agent-open {
+	overflow: hidden;
+}
+
+@media (max-width: 575px) {
+	.hvnly-contact-agent__modal {
+		padding: 0;
+		align-items: flex-end;
+	}
+
+	.hvnly-contact-agent__dialog {
+		max-height: 92vh;
+		border-radius: var(--hvnly-radius-lg, 12px) var(--hvnly-radius-lg, 12px) 0 0;
+		padding: var(--hvnly-space-lg, 1.25rem);
+	}
+
+	.hvnly-contact-agent__actions {
+		flex-direction: column;
+	}
+
+	.hvnly-contact-agent__btn {
+		width: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hvnly-contact-agent__modal,
+	.hvnly-contact-agent__dialog,
+	.hvnly-contact-agent__input,
+	.hvnly-contact-agent__textarea,
+	.hvnly-contact-agent__btn,
+	.hvnly-contact-agent__close {
+		transition: none;
+	}
+}
+
+.hvnly-contact-agent__availability-notice {
+	margin: 0 0 var(--hvnly-space-md, 1rem);
+	padding: 0.75rem 1rem;
+	border-radius: var(--hvnly-radius-md, 8px);
+	font-size: var(--hvnly-font-size-sm, 0.875rem);
+	line-height: 1.45;
+}
+
+.hvnly-contact-agent__availability-notice--busy {
+	background: rgba(255, 181, 7, 0.12);
+	border-left: 3px solid #ffb507;
+	color: var(--hvnly-text-primary, #1e1e2f);
+}
+
+.hvnly-contact-agent__availability-notice--away {
+	background: rgba(var(--hvnly-primary-rgb), 0.1);
+	border-left: 3px solid var(--hvnly-primary-color);
+	color: var(--hvnly-text-primary, #1e1e2f);
+}
+
+.hvnly-contact-agent__availability-notice--offline {
+	background: rgba(85, 85, 85, 0.08);
+	border-left: 3px solid #888;
+	color: var(--hvnly-text-secondary, #64648c);
+}
+
+.hvnly-contact-agent__open-btn--disabled,
+.hvnly-contact-agent__open-btn--disabled:hover {
+	opacity: 0.65;
+	cursor: not-allowed;
+}
+
+.hvnly-contact-agent__form--offline .hvnly-contact-agent__input,
+.hvnly-contact-agent__form--offline .hvnly-contact-agent__textarea,
+.hvnly-contact-agent__form--offline .hvnly-contact-agent__select {
+	opacity: 0.6;
+	pointer-events: none;
+}

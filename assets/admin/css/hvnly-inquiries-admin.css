@@ -1,0 +1,245 @@
+/**
+ * Property Inquiries admin styles.
+ *
+ * @package Havenlytics
+ * @since   3.0.2
+ */
+
+.hvnly-inquiries-admin__stats {
+	display: flex;
+	gap: 1rem;
+	margin: 1rem 0 1.25rem;
+}
+
+.hvnly-inquiries-admin__stat {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.35rem 0.75rem;
+	border-radius: 999px;
+	background: #f0f4f8;
+	font-size: 13px;
+	font-weight: 600;
+	color: #1e293b;
+}
+
+.hvnly-inquiries-admin__stat--new {
+	background: #eeecff;
+	color: #6c60fe;
+}
+
+.hvnly-inquiries-admin__status {
+	display: inline-block;
+	padding: 0.15rem 0.55rem;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: capitalize;
+}
+
+.hvnly-inquiries-admin__status--new {
+	background: #eeecff;
+	color: #6c60fe;
+}
+
+.hvnly-inquiries-admin__status--read {
+	background: #f3f0ff;
+	color: #764ba2;
+}
+
+.hvnly-inquiries-admin__status--replied {
+	background: #eeecff;
+	color: #6c60fe;
+	border: 1px solid rgba(108, 96, 254, 0.25);
+}
+
+.hvnly-inquiries-admin__status--archived {
+	background: #f3f0ff;
+	color: #764ba2;
+	opacity: 0.85;
+}
+
+.hvnly-inquiries-admin__view-link {
+	font-size: 12px;
+}
+
+.hvnly-inquiries-admin__phone {
+	color: #64748b;
+	font-size: 12px;
+}
+
+.hvnly-inquiries-admin__detail-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 1rem;
+	margin: 1.5rem 0;
+}
+
+.hvnly-inquiries-admin__panel {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 1rem 1.25rem;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.hvnly-inquiries-admin__panel h2 {
+	margin: 0 0 0.75rem;
+	font-size: 14px;
+}
+
+.hvnly-inquiries-admin__panel--message {
+	margin-bottom: 1rem;
+}
+
+.hvnly-inquiries-admin__dl {
+	margin: 0;
+	display: grid;
+	grid-template-columns: 120px 1fr;
+	gap: 0.35rem 1rem;
+}
+
+.hvnly-inquiries-admin__dl dt {
+	margin: 0;
+	font-weight: 600;
+	color: #475569;
+}
+
+.hvnly-inquiries-admin__dl dd {
+	margin: 0;
+}
+
+.hvnly-inquiries-admin__message-body {
+	white-space: pre-wrap;
+	line-height: 1.6;
+	color: #1e293b;
+}
+
+.hvnly-inquiries-admin__detail-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.hvnly-inquiries-admin .tablenav .actions select {
+	margin-right: 4px;
+}
+
+.hvnly-inquiries-admin__panel--conversation,
+.hvnly-inquiries-admin__panel--reply {
+	margin-bottom: 1rem;
+}
+
+.hvnly-inquiries-admin__thread {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.hvnly-inquiries-admin__thread-item {
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	padding: 1rem 1.1rem;
+	background: #fff;
+}
+
+.hvnly-inquiries-admin__thread-item--inbound {
+	border-left: 4px solid #764ba2;
+	background: #faf9ff;
+}
+
+.hvnly-inquiries-admin__thread-item--outbound {
+	border-left: 4px solid #6c60fe;
+	background: #f8f7ff;
+}
+
+.hvnly-inquiries-admin__thread-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem 0.75rem;
+	align-items: center;
+	margin-bottom: 0.65rem;
+	font-size: 12px;
+	color: #764ba2;
+}
+
+.hvnly-inquiries-admin__thread-meta strong {
+	color: #1d2327;
+	font-size: 13px;
+}
+
+.hvnly-inquiries-admin__thread-label {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.1rem 0.5rem;
+	border-radius: 999px;
+	background: #eeecff;
+	color: #6c60fe;
+	font-weight: 600;
+}
+
+.hvnly-inquiries-admin__thread-label--sent {
+	background: #eeecff;
+	color: #6c60fe;
+}
+
+.hvnly-inquiries-admin__thread-label--failed {
+	background: #f3f0ff;
+	color: #764ba2;
+}
+
+.hvnly-inquiries-admin__thread-body {
+	white-space: pre-wrap;
+	line-height: 1.65;
+	color: #1d2327;
+}
+
+.hvnly-inquiries-admin__reply-help {
+	margin: 0 0 0.85rem;
+	color: #764ba2;
+	font-size: 13px;
+}
+
+.hvnly-inquiries-admin__reply-input {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	min-height: 140px;
+	margin-bottom: 0.75rem;
+	padding: 12px 14px;
+	border: 1px solid #c3c4c7;
+	border-radius: 8px;
+	font-size: 14px;
+	line-height: 1.6;
+	resize: vertical;
+	box-sizing: border-box;
+}
+
+.hvnly-inquiries-admin__reply-input:focus {
+	border-color: #6c60fe;
+	box-shadow: 0 0 0 1px #6c60fe;
+	outline: none;
+}
+
+.hvnly-inquiries-admin__reply-footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.hvnly-inquiries-admin__reply-counter {
+	font-size: 12px;
+	color: #764ba2;
+}
+
+.hvnly-inquiries-admin__reply-submit.button-primary {
+	background: #6c60fe;
+	border-color: #6c60fe;
+}
+
+.hvnly-inquiries-admin__reply-submit.button-primary:hover,
+.hvnly-inquiries-admin__reply-submit.button-primary:focus {
+	background: #5a50e6;
+	border-color: #5a50e6;
+}

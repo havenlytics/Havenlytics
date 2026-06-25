@@ -1,0 +1,1483 @@
+/**
+ * Havenlytics Property Card Embed Styles
+ *
+ * Grid/list property card UI when rendered inside embed contexts:
+ * - .hvnly-property--grid--listings (native archive)
+ * - .hvnly-property-display-shortcode .hvnly-property-archive-container
+ * - .hvnly-agent-single__listings .hvnly-agent-single__properties
+ * - .hvnly-agency-single__properties .hvnly-agency-single__property-item
+ *
+ * Extracted from hvnly-frontend-property-ajax-filter-search.css (Phase 1).
+ * See assets/frontend/css/CSS-MANIFEST.md for ownership rules.
+ *
+ * @package Havenlytics
+ * @since   3.0.3
+ */
+
+.hvnly-list-view .hvnly-property-grid-list-item {
+    display: flex;
+    flex-direction: row;
+}
+.hvnly-list-view .hvnly-property-grid-list-thumb {
+    width: 450px;
+    height: auto;
+    flex-shrink: 0;
+}
+.hvnly-list-view .hvnly-property--grid-list--single__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hvnly-list-view .hvnly-property--grid-list--features {
+    gap: 2rem;
+}
+
+/* ======================
+    PROPERTY CARD STYLES
+======================= */
+.hvnly-agency-single__properties .hvnly-agency-single__property-item .hvnly-property-grid-list-item ,
+.hvnly-agent-single__listings .hvnly-agent-single__properties .hvnly-property-grid-list-item ,
+.hvnly-property-display-shortcode .hvnly-property-archive-container .hvnly-property-grid-list-item ,
+.hvnly-property--grid--listings .hvnly-property-grid-list-item {
+    background: var(--hvnly-card-bg);
+    border-radius: var(--hvnly-card-radius);
+    overflow: hidden;
+    box-shadow: var(--hvnly-card-shadow);
+    transition: all var(--hvnly-transition-time);
+}
+
+/* .hvnly-property--grid--listings .hvnly-property-grid-list-item .hvnly-property-grid-list-thumb a.hvnly-property-gallery-link{display: block;} */
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item .hvnly-property-grid-list-item:hover,
+.hvnly-agent-single__listings .hvnly-agent-single__properties .hvnly-property-grid-list-item:hover,
+.hvnly-property-display-shortcode .hvnly-property-archive-container .hvnly-property-grid-list-item:hover,
+.hvnly-property--grid--listings .hvnly-property-grid-list-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.hvnly-property-grid-list-thumb {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item .hvnly-property-card-image,
+.hvnly-agent-single__listings .hvnly-agent-single__properties .hvnly-property-card-image,
+.hvnly-property-display-shortcode .hvnly-property-archive-container .hvnly-property-card-image,
+.hvnly-property--grid--listings .hvnly-property-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--hvnly-transition-time);
+}
+.hvnly-agency-single__properties .hvnly-agency-single__property-item .hvnly-property-grid-list-item:hover 
+.hvnly-agency-single__properties .hvnly-agency-single__property-item .hvnly-property-card-image ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties .hvnly-property-grid-list-item:hover 
+.hvnly-agent-single__listings .hvnly-agent-single__properties .hvnly-property-card-image ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container .hvnly-property-grid-list-item:hover 
+.hvnly-property-display-shortcode .hvnly-property-archive-container .hvnly-property-card-image ,
+
+.hvnly-property--grid--listings .hvnly-property-grid-list-item:hover 
+.hvnly-property--grid--listings .hvnly-property-card-image 
+{
+    transform: scale(1.05);
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item .hvnly-property--grid-list--overlay,
+.hvnly-agent-single__listings .hvnly-agent-single__properties .hvnly-property--grid-list--overlay,
+.hvnly-property-display-shortcode .hvnly-property-archive-container .hvnly-property--grid-list--overlay, 
+.hvnly-property--grid--listings .hvnly-property--grid-list--overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.5) 0%,
+        transparent 50%,
+        rgba(0, 0, 0, 0.5) 100%
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+    z-index: 2;
+}
+.hvnly-agency-single__properties .hvnly-agency-single__property-item .hvnly-property--grid-list--overlay .hvnly-property--grid-list-top--overlay,
+.hvnly-agent-single__listings .hvnly-agent-single__properties .hvnly-property--grid-list--overlay .hvnly-property--grid-list-top--overlay,
+.hvnly-property-display-shortcode .hvnly-property-archive-container .hvnly-property--grid-list--overlay .hvnly-property--grid-list-top--overlay, 
+.hvnly-property--grid--listings .hvnly-property--grid-list-top--overlay {
+    display: flex;
+    justify-content: space-between;
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list-top--overlay 
+.hvnly-property-grid-list-top-badge-left ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list-top--overlay 
+.hvnly-property-grid-list-top-badge-left ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property--grid-list-top--overlay 
+.hvnly-property-grid-list-top-badge-left ,
+
+.hvnly-property--grid--listings 
+.hvnly-property--grid-list-top--overlay 
+.hvnly-property-grid-list-top-badge-left 
+{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list-top--overlay 
+.hvnly-property-grid-list-top-badge-right ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list-top--overlay 
+.hvnly-property-grid-list-top-badge-right ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property--grid-list-top--overlay 
+.hvnly-property-grid-list-top-badge-right ,
+
+.hvnly-property--grid--listings 
+.hvnly-property--grid-list-top--overlay 
+.hvnly-property-grid-list-top-badge-right 
+{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 5px;
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item  .hvnly-property--grid-list--bottom-overlay ,
+.hvnly-agent-single__listings .hvnly-agent-single__properties  .hvnly-property--grid-list--bottom-overlay ,
+.hvnly-property-display-shortcode .hvnly-property-archive-container  .hvnly-property--grid-list--bottom-overlay ,
+.hvnly-property--grid--listings .hvnly-property--grid-list--bottom-overlay 
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list--bottom-overlay 
+.hvnly-property-grid-list-bottom-badge-left ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list--bottom-overlay 
+.hvnly-property-grid-list-bottom-badge-left ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container 
+.hvnly-property--grid-list--bottom-overlay 
+.hvnly-property-grid-list-bottom-badge-left ,
+
+.hvnly-property--grid--listings 
+.hvnly-property--grid-list--bottom-overlay 
+.hvnly-property-grid-list-bottom-badge-left 
+{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list--bottom-overlay 
+.hvnly-property-grid-list-bottom-badge-right ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list--bottom-overlay 
+.hvnly-property-grid-list-bottom-badge-right ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container 
+.hvnly-property--grid-list--bottom-overlay 
+.hvnly-property-grid-list-bottom-badge-right ,
+
+.hvnly-property--grid--listings 
+.hvnly-property--grid-list--bottom-overlay 
+.hvnly-property-grid-list-bottom-badge-right 
+{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 5px;
+}
+
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property-grid-list-tag ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property-grid-list-tag ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property-grid-list-tag ,
+
+.hvnly-property--grid--listings 
+.hvnly-property-grid-list-tag 
+{
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    background: var(--hvnly-brand-accent);
+    color: var(--hvnly-color-white);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: var(--hvnly-font-weight-regular);
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list--favorite ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list--favorite ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property--grid-list--favorite ,
+
+.hvnly-property--grid--listings 
+.hvnly-property--grid-list--favorite 
+{
+    width: 32px;
+    height: 32px;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.9) ;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--hvnly-text-primary);
+    transition: all var(--hvnly-transition-time) !important;
+    border: 0 !important;
+    padding: 0 !important;
+}
+
+.hvnly-property-field-footer 
+.hvnly-property--grid-list--footer
+.hvnly-property--grid-list--favorite {
+
+    background: var(--hvnly-brand-primary);color: var(--hvnly-color-white);
+   
+}
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list--favorite i ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list--favorite i ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property--grid-list--favorite i ,
+
+.hvnly-property--grid--listings 
+.hvnly-property--grid-list--favorite i
+{font-size: var(--hvnly-font-size-xs);}
+
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list--favorite:hover ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list--favorite:hover ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property--grid-list--favorite:hover ,
+
+.hvnly-property--grid--listings 
+.hvnly-property--grid-list--favorite:hover 
+{
+    /* background: var(--hvnly-color-white); */
+    color: var(--hvnly-color-white);
+    transform: scale(1.1);
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property-grid-list-bottom-badge-left
+.hvnly-property-field-mode-preset
+.hvnly-property-grid-list-price-header ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property-grid-list-bottom-badge-left
+.hvnly-property-field-mode-preset
+.hvnly-property-grid-list-price-header ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container 
+.hvnly-property-grid-list-bottom-badge-left
+.hvnly-property-field-mode-preset
+.hvnly-property-grid-list-price-header ,
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property-grid-list-bottom-badge-left
+.hvnly-property-field-mode-default
+.hvnly-property-grid-list-price-header ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property-grid-list-bottom-badge-left
+.hvnly-property-field-mode-default
+.hvnly-property-grid-list-price-header ,
+
+.hvnly-property--grid--listings 
+.hvnly-property-grid-list-bottom-badge-left
+.hvnly-property-field-mode-preset
+.hvnly-property-grid-list-price-header ,
+
+.hvnly-property--grid--listings 
+.hvnly-property-grid-list-bottom-badge-left
+.hvnly-property-field-mode-default
+.hvnly-property-grid-list-price-header ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property-grid-list-bottom-badge-left
+.hvnly-property-field-mode-default
+.hvnly-property-grid-list-price-header
+{
+    font-size: var(--hvnly-font-size-price);
+    font-weight: var(--hvnly-font-weight-regular);
+    color: var(--hvnly-color-white);
+    background: var(--hvnly-brand-primary);
+    padding: 5px 15px;
+    border-radius: var(--hvnly-button-radius);
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property-grid-list-price-header ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property-grid-list-price-header ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container 
+.hvnly-property-grid-list-price-header ,
+
+.hvnly-property--grid--listings 
+.hvnly-property-grid-list-price-header {
+    font-size: var(--hvnly-font-size-md-price);
+    font-weight: var(--hvnly-font-weight-bold);
+    color: var(--hvnly-text-primary);
+    /* margin-bottom: 0.2rem; */
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property-view-count-field 
+.hvnly-property-view-count ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property-view-count-field 
+.hvnly-property-view-count ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container 
+.hvnly-property-view-count-field 
+.hvnly-property-view-count ,
+
+.hvnly-property--grid--listings 
+.hvnly-property-view-count-field 
+.hvnly-property-view-count ,
+.hvnly-property-field-schedule-tour 
+.hvnly-property-schedule-tour,
+.hvnly-property-field-rating-star
+.hvnly-property-rating-star
+{
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-regular);
+    color: var(--hvnly-color-white);
+    background: var(--hvnly-brand-primary);
+    padding: 5px 8px;
+    border-radius: var(--hvnly-button-radius);display: inline-block;
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property-view-count-field 
+.hvnly-property-view-count i ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property-view-count-field 
+.hvnly-property-view-count i ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container 
+.hvnly-property-view-count-field 
+.hvnly-property-view-count i ,
+
+.hvnly-property--grid--listings 
+.hvnly-property-view-count-field 
+.hvnly-property-view-count i ,
+.hvnly-property-field-schedule-tour 
+.hvnly-property-schedule-tour i,
+.hvnly-property-field-rating-star
+.hvnly-property-rating-star i
+{
+    font-size: var(--hvnly-font-size-xs);
+}
+.hvnly-property--grid-list--single__content {
+    padding: var(--hvnly-card-padding);
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--hvnly-color-bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--hvnly-text-secondary);
+    flex-shrink: 0;
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--header .hvnly-property--grid-list--title-header {
+    flex: 1;
+}
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--header .hvnly-property--grid-list--title-header .hvnly-property--grid-list--title {
+    font-size: var(--hvnly-font-size-title);
+    font-weight: var(--hvnly-font-weight-semibold);
+    color: var(--hvnly-text-primary);
+    margin-bottom: 0;
+    line-height: 1.3;margin-top: 0;
+}
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--header .hvnly-property--grid-list--title-header .hvnly-property--grid-list--title a:hover {
+    color: var(--hvnly-brand-secondary);
+    /* text-decoration: underline; */
+}
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--stars {
+    display: flex;
+    gap: 0.125rem;
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--stars .filled {
+    color: #f39c12;
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--rating-value {
+    font-weight: var(--hvnly-font-weight-semibold);
+    color: var(--hvnly-text-primary);
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--rating-reviews {
+    color: var(--hvnly-text-secondary);
+    font-size: 0.875rem;
+}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--hvnly-text-secondary);
+    font-size: 0.95rem;
+}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--location i{
+    color: var(--hvnly-status-off)
+}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--excerpt {
+    margin-bottom: 1rem;
+    color: var(--hvnly-text-secondary);
+    line-height: 1.5;
+    font-size: var(--hvnly-font-size-excerpt);
+}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--features {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid var(--hvnly-border-color);
+    border-bottom: 1px solid var(--hvnly-border-color);
+    background-color: #F7F6FF;
+    padding-top: 1rem;
+}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--feature {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--hvnly-text-secondary);
+    font-size: 14px;
+}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--feature .hvnly-property--feature-lists{ color: var(--hvnly-status-off);}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--feature i{ color: var(--hvnly-status-off);}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--feature .hvnly-property-feature-number{ color:var(--hvnly-text-secondary); font-weight: var(--hvnly-font-weight-semibold);}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--details {
+    margin-bottom: 1rem;
+}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--hvnly-text-secondary);
+    font-size: 0.95rem;
+}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--detail-icon {
+    width: 24px;
+    text-align: center;
+    color: var(--hvnly-brand-primary);
+}
+
+.hvnly-property--grid-list--single__content 
+.hvnly-property--grid-list--footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid var(--hvnly-border-color);
+}
+
+.hvnly-property--grid-list--single__content .hvnly-btn-primary {
+    display: inline-block;
+    padding: 10px 15px;
+    background: var(--hvnly-button-bg);
+    border-radius: var(--hvnly-button-radius);
+    text-decoration: none;
+    color: var(--hvnly-button-color);
+    font-weight: var(--hvnly-font-weight-medium);
+    cursor: pointer;
+    transition: all var(--hvnly-transition-time);
+    font-size: 14px;
+}
+
+.hvnly-property--grid-list--single__content .hvnly-btn-primary:hover {
+    background: var(--hvnly-button-bg-hover);
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--action-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--hvnly-button-radius);
+    background: var(--hvnly-color-bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--hvnly-text-secondary);
+    transition: all var(--hvnly-transition-time);
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--action-btn:hover {
+    background: var(--hvnly-border-color);
+    color: var(--hvnly-brand-primary);
+}
+
+.hvnly-property--grid-list--single__content .hvnly-property--grid-list--views {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--hvnly-text-secondary);
+    font-size: 0.875rem;
+}
+
+/* ========== PROPERTY GALLERY CAROUSEL ========== */
+.hvnly-agency-single__properties .hvnly-agency-single__property-item  .hvnly-property-gallery-main ,
+.hvnly-agent-single__listings .hvnly-agent-single__properties  .hvnly-property-gallery-main ,
+.hvnly-property-display-shortcode .hvnly-property-archive-container  .hvnly-property-gallery-main ,
+.hvnly-property--grid--listings .hvnly-property-gallery-main 
+{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item  .hvnly-property-carousel-gallery ,
+.hvnly-agent-single__listings .hvnly-agent-single__properties  .hvnly-property-carousel-gallery ,
+.hvnly-property-display-shortcode .hvnly-property-archive-container  .hvnly-property-carousel-gallery ,
+.hvnly-property--grid--listings .hvnly-property-carousel-gallery 
+{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hvnly-property-carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.hvnly-property-carousel-slide {
+    min-width: 100%;
+    height: 240px;
+    background-size: cover;
+    background-position: center;
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-list-view .hvnly-property-carousel-slide ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-list-view .hvnly-property-carousel-slide ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container 
+.hvnly-list-view .hvnly-property-carousel-slide ,
+
+.hvnly-property--grid--listings 
+.hvnly-list-view .hvnly-property-carousel-slide 
+{
+    height: auto;
+}
+
+.hvnly-property-carousel-nav {
+    position: absolute;
+    top: 35%;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+}
+
+.hvnly-property-grid-list-item:hover .hvnly-property-carousel-nav {
+    opacity: 1;
+}
+
+.hvnly-property-carousel-nav-btn {
+    background-color: rgba(255, 255, 255, 0.85) !important;
+    border: none !important;
+    width: 32px;
+    height: 32px;
+    border-radius: 50% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    cursor: pointer;
+    transition: all 0.3s ease !important;
+    font-size: 12px !important;
+    color: var(--hvnly-brand-primary) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    padding: 0 !important;
+}
+
+.hvnly-property-carousel-nav-btn:hover {
+    background: var(--hvnly-brand-primary) !important;
+    transform: scale(1.1);
+    color: var(--hvnly-color-bg-white) !important;
+}
+
+.hvnly-property-carousel-indicators {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    z-index: 3;
+}
+
+.hvnly-property-carousel-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hvnly-property-carousel-indicator.hvnly-property-carousel-active {
+    background: var(--hvnly-color-bg-white);
+    transform: scale(1.3);
+}
+
+/* Carousel styles */
+.hvnly-property-carousel-indicator.active {
+    background: var(--hvnly-brand-secondary);
+}
+/* Property posted date and time badge */
+.hvnly-property-grid-list-top-badge-left .hvnly-property-date-posted {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hvnly-space-xs);
+    padding: 4px 8px;
+    border-radius: var(--hvnly-border-radius-lg);
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-regular);
+    line-height: var(--hvnly-font-size-md);
+    color:var(--hvnly-text-primary);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--hvnly-transition-time);
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-property-date-posted i {
+    font-size: 12px;
+    flex-shrink: 0;
+    color: var(--hvnly-text-primary);
+}
+
+
+
+/*  Grid overlay  All Badge css*/
+
+/* Property Badges Styles with Dropdown */
+.hvnly-property-grid-list-top-badge-left .hvnly-property-thumbnail-badges--labels,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-property-thumbnail-badges--labels,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-property-thumbnail-badges--labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hvnly-space-xs);
+    align-items: center;
+    z-index: 20;
+    position: relative;
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-property-thumbnail-badge ,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-property-thumbnail-badge ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-property-thumbnail-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hvnly-space-xs);
+    padding: 4px 8px;
+    border-radius: var(--hvnly-border-radius-lg);
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-regular);
+    line-height: var(--hvnly-font-size-md);
+    color: var(--hvnly-color-white);
+    background-color: var(--hvnly-brand-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--hvnly-transition-time);
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-badge-dropdown-container,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badge-dropdown-container ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badge-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-badge-more-indicator,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badge-more-indicator,
+.hvnly-property--grid-list--footer .hvnly-property-type-more-indicator,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badge-more-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-regular);
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--hvnly-transition-time);
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-badge-more-indicator:hover,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badge-more-indicator:hover,
+.hvnly-property--grid-list--footer .hvnly-property-type-more-indicator:hover ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badge-more-indicator:hover {
+    background-color: var(--hvnly-brand-secondary);
+    transform: scale(1.05);
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-badges-dropdown,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badges-dropdown ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badges-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: var(--hvnly-space-xs);
+    background: var(--hvnly-color-white);
+    border-radius: var(--hvnly-border-radius-md);
+    box-shadow: var(--hvnly-shadow-card);
+    border: 1px solid var(--hvnly-border-color);
+    padding: var(--hvnly-space-sm);
+    min-width: 140px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--hvnly-transition-time);
+}
+
+/* Fix for bottom badge dropdowns to show above */
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badges-dropdown ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badges-dropdown {
+    bottom: 100%;
+    top: auto;
+    margin-top: 0;
+    margin-bottom: var(--hvnly-space-xs);
+    transform: translateY(10px);
+}
+
+.hvnly-property--grid-list--footer .hvnly-property-types-dropdown {
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: var(--hvnly-space-xs);
+    background: var(--hvnly-color-white);
+    border-radius: var(--hvnly-border-radius-md);
+    box-shadow: var(--hvnly-shadow-card);
+    border: 1px solid var(--hvnly-border-color);
+    padding: var(--hvnly-space-sm);
+    min-width: 140px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all var(--hvnly-transition-time);
+}
+
+.hvnly-property-grid-list-top-badge-left 
+.hvnly-badge-dropdown-container:hover 
+.hvnly-badges-dropdown,
+.hvnly-property-grid-list-bottom-badge-left 
+.hvnly-badge-dropdown-container:hover 
+.hvnly-badges-dropdown,
+.hvnly-property--grid-list--footer .hvnly-property-type-dropdown-container:hover .hvnly-property-types-dropdown ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badge-dropdown-container:hover .hvnly-badges-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Fix hover transform for bottom badge dropdowns */
+.hvnly-property-grid-list-bottom-badge-left 
+.hvnly-badge-dropdown-container:hover 
+.hvnly-badges-dropdown ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badge-dropdown-container:hover .hvnly-badges-dropdown {
+    transform: translateY(0);
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-badges-dropdown .hvnly-property-thumbnail-badge,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badges-dropdown .hvnly-property-thumbnail-badge,
+.hvnly-property--grid-list--footer .hvnly-property-types-dropdown .hvnly-property-type-link ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badges-dropdown .hvnly-property-thumbnail-badge {
+    margin-bottom: var(--hvnly-space-xs);
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-badges-dropdown .hvnly-property-thumbnail-badge:last-child,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badges-dropdown .hvnly-property-thumbnail-badge:last-child,
+.hvnly-property--grid-list--footer .hvnly-property-types-dropdown .hvnly-property-type-link:last-child ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badges-dropdown .hvnly-property-thumbnail-badge:last-child {
+    margin-bottom: 0;
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-property-thumbnail-badge i,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-property-thumbnail-badge i,
+.hvnly-property--grid-list--footer .hvnly-property-type-link i ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-property-thumbnail-badge i {
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-badge-text,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badge-text,
+.hvnly-property--grid-list--footer .hvnly-property-type-text ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badge-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Display all badges style */
+.hvnly-property-grid-list-top-badge-left .hvnly-badges-display-all,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badges-display-all,
+.hvnly-property--grid-list--footer .hvnly-property-types-display-all ,
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-badges-display-all {
+    flex-wrap: wrap;
+}
+
+/* Property Types Styles for footer */
+.hvnly-property--grid-list--footer .hvnly-property-field-types .hvnly-property-type-label{font-size: var(--hvnly-font-size-xs); font-weight: var(--hvnly-font-weight-medium); color: var(--hvnly-text-secondary); margin-right: 6px;}
+
+.hvnly-property--grid-list--footer .hvnly-property-field-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hvnly-space-xs);
+    align-items: center;
+    z-index: 20;
+    position: relative;
+}
+
+.hvnly-property--grid-list--footer .hvnly-property-type-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hvnly-space-xs);
+    padding: 4px 8px;
+    border-radius: var(--hvnly-border-radius-lg);
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-regular);
+    line-height: var(--hvnly-font-size-md);
+    color: var(--hvnly-color-white);
+    background-color: var(--hvnly-brand-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--hvnly-transition-time);
+    text-decoration: none;
+}
+
+.hvnly-property--grid-list--footer .hvnly-property-type-link:hover {
+    color: var(--hvnly-color-white);
+    text-decoration: none;
+    background-color: var(--hvnly-brand-secondary);
+}
+
+.hvnly-property--grid-list--footer .hvnly-property-type-dropdown-container {
+    position: relative;
+    display: inline-block;
+    z-index: 1001;
+}
+
+/* Responsive */
+   .hvnly-agency-single__properties .hvnly-agency-single__property-item .hvnly-property-view-count-field .hvnly-property-view-count,
+   .hvnly-agent-single__listings .hvnly-agent-single__properties .hvnly-property-view-count-field .hvnly-property-view-count,
+   .hvnly-property-display-shortcode .hvnly-property-archive-container .hvnly-property-view-count-field .hvnly-property-view-count, 
+    .hvnly-property--grid--listings .hvnly-property-view-count-field .hvnly-property-view-count, 
+    .hvnly-property-field-schedule-tour .hvnly-property-schedule-tour, 
+    .hvnly-property-field-rating-star .hvnly-property-rating-star {
+        font-size: 14px;
+       
+    }
+
+    .hvnly-property-grid-list-top-badge-left .hvnly-property-thumbnail-badge {
+        /* font-size: 10px;
+        padding: 3px 6px; */
+    }
+
+    .hvnly-property-grid-list-top-badge-left .hvnly-badge-more-indicator,
+    .hvnly-property--grid-list--footer .hvnly-property-type-more-indicator {
+        /* width: 22px;
+        height: 22px;
+        font-size: 10px; */
+    }
+
+    .hvnly-property-grid-list-top-badge-left .hvnly-badges-dropdown {
+        min-width: 120px;
+    }
+
+    .hvnly-property--grid-list--footer .hvnly-property-types-dropdown {
+        min-width: 120px;
+        right: 0;
+        left: auto;
+    }
+
+    .hvnly-property-grid-list-top-badge-left .hvnly-badges-display-all .hvnly-property-thumbnail-badge,
+    .hvnly-property--grid-list--footer .hvnly-property-types-display-all .hvnly-property-type-link {
+        margin-bottom: 2px;
+    }
+
+    .hvnly-property--grid-list--footer .hvnly-property-type-link {
+        /* font-size: 10px;
+        padding: 3px 6px; */
+    }
+/* Property Status Styles with Dropdown */
+.hvnly-property-grid-list-top-badge-left .hvnly-thumbnail-status--labels,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-thumbnail-status--labels
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hvnly-space-xs);
+    align-items: center;
+    z-index: 20;
+    position: relative;
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-thumbnail-status,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-thumbnail-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hvnly-space-xs);
+    padding: 4px 8px;
+    border-radius: var(--hvnly-border-radius-lg);
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-regular);
+  line-height: var(--hvnly-font-size-md);
+    color: var(--hvnly-color-white);
+    background-color: var(--hvnly-brand-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--hvnly-transition-time);
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-status-dropdown-container , 
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-status-more-indicator, 
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-more-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-regular);
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--hvnly-transition-time);
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-status-more-indicator:hover , 
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-more-indicator:hover {
+    background-color: var(--hvnly-brand-secondary);
+    transform: scale(1.05);
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-status-dropdown, 
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: var(--hvnly-space-xs);
+    background: var(--hvnly-color-white);
+    border-radius: var(--hvnly-border-radius-md);
+    box-shadow: var(--hvnly-shadow-card);
+    border: 1px solid var(--hvnly-border-color);
+    padding: var(--hvnly-space-sm);
+    min-width: 140px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--hvnly-transition-time);
+}
+
+/* Property Posted Styles css */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-property-field-time .hvnly-property-date-posted{    text-decoration: none;
+    font-size: 14px;
+    color: var(--hvnly-text-secondary);}
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-property-field-time .hvnly-property-date-posted i {
+    font-size: 14px;
+    color: var(--hvnly-status-off);
+}
+
+/* ============================================
+   FOOTER SPECIFIC STATUS DROPDOWN STYLES
+   (Bottom to top animation on hover)
+   ============================================ */
+
+/* Add footer to the status labels selector */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-thumbnail-status--labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hvnly-space-xs);
+    align-items: center;
+    z-index: 20;
+    position: relative;
+}
+
+/* Footer status badge styling */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-thumbnail-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hvnly-space-xs);
+    padding: 4px 8px;
+    border-radius: var(--hvnly-border-radius-lg);
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-regular);
+    line-height: var(--hvnly-font-size-md);
+    color: var(--hvnly-color-white);
+    background-color: var(--hvnly-brand-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--hvnly-transition-time);
+}
+
+/* Footer status dropdown container */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Footer status more indicator */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-more-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--hvnly-brand-primary);
+    color: var(--hvnly-color-white);
+    font-size: var(--hvnly-font-size-xs);
+    font-weight: var(--hvnly-font-weight-regular);
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--hvnly-transition-time);
+}
+
+/* Footer status more indicator hover */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-more-indicator:hover {
+    background-color: var(--hvnly-brand-secondary);
+    transform: scale(1.05);
+}
+
+/* Footer status dropdown - positioned bottom to top */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-dropdown {
+    position: absolute;
+    bottom: 100%; /* Changed from top: 100% to bottom: 100% */
+    top: auto; /* Reset top positioning */
+    left: 0;
+    margin-top: 0;
+    margin-bottom: var(--hvnly-space-xs); /* Changed from margin-top to margin-bottom */
+    background: var(--hvnly-color-white);
+    border-radius: var(--hvnly-border-radius-md);
+    box-shadow: var(--hvnly-shadow-card);
+    border: 1px solid var(--hvnly-border-color);
+    padding: var(--hvnly-space-sm);
+    min-width: 140px;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px); /* Changed from -10px to 10px for bottom animation */
+    transition: all var(--hvnly-transition-time);
+}
+
+/* Show footer dropdown on hover (bottom to top animation) */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-dropdown-container:hover .hvnly-status-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Animate from bottom to top */
+}
+
+/* Footer dropdown status items */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-dropdown .hvnly-thumbnail-status {
+    margin-bottom: var(--hvnly-space-xs);
+    width: 100%;
+    justify-content: flex-start;
+}
+
+/* Remove margin from last status item in footer dropdown */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-dropdown .hvnly-thumbnail-status:last-child {
+    margin-bottom: 0;
+}
+
+/* Footer status icon sizing */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-thumbnail-status i {
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+/* Footer status text truncation */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Footer display all statuses */
+.hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-display-all {
+    flex-wrap: wrap;
+}
+
+/* ============================================
+   RESPONSIVE STYLES FOR FOOTER STATUS
+   ============================================ */
+
+@media (max-width: 768px) {
+    /* Mobile footer status styling */
+    .hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-thumbnail-status {
+        /* font-size: 10px;
+        padding: 3px 6px; */
+    }
+    
+    /* Mobile footer more indicator */
+    .hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-more-indicator {
+        /* width: 22px;
+        height: 22px;
+        font-size: 10px; */
+    }
+    
+    /* Mobile footer dropdown positioning */
+    .hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-dropdown {
+        min-width: 120px;
+        right: 0;
+        left: auto;
+    }
+    
+    /* Mobile footer display all spacing */
+    .hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-status-display-all .hvnly-thumbnail-status {
+        margin-bottom: 2px;
+    }
+}
+
+
+/* Fix for bottom status dropdowns to show above */
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown {
+    bottom: 100%;
+    top: auto;
+    margin-top: 0;
+    margin-bottom: var(--hvnly-space-xs);
+    transform: translateY(10px);
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-status-dropdown-container:hover .hvnly-status-dropdown ,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown-container:hover .hvnly-status-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Fix hover transform for bottom status dropdowns */
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown-container:hover .hvnly-status-dropdown {
+    transform: translateY(0);
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-status-dropdown .hvnly-thumbnail-status , 
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown .hvnly-thumbnail-status {
+    margin-bottom: var(--hvnly-space-xs);
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-status-dropdown .hvnly-thumbnail-status:last-child ,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown .hvnly-thumbnail-status:last-child {
+    margin-bottom: 0;
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-thumbnail-status i ,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-thumbnail-status i {
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.hvnly-property-grid-list-top-badge-left .hvnly-status-text , 
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Display all statuses style */
+.hvnly-property-grid-list-top-badge-left .hvnly-status-display-all, 
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-display-all {
+    flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hvnly-property-grid-list-top-badge-left .hvnly-thumbnail-status , 
+    .hvnly-property-grid-list-bottom-badge-left .hvnly-thumbnail-status {
+        /* font-size: 10px;
+        padding: 3px 6px; */
+    }
+
+    .hvnly-property-grid-list-top-badge-left .hvnly-status-more-indicator , 
+    .hvnly-property-grid-list-bottom-badge-left .hvnly-status-more-indicator {
+        /* width: 22px;
+        height: 22px;
+        font-size: 10px; */
+    }
+
+    .hvnly-property-grid-list-top-badge-left .hvnly-status-dropdown,
+    .hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown {
+        min-width: 120px;
+    }
+
+    .hvnly-property-grid-list-top-badge-left .hvnly-status-display-all .hvnly-thumbnail-status ,
+    .hvnly-property-grid-list-bottom-badge-left .hvnly-status-display-all .hvnly-thumbnail-status {
+        margin-bottom: 2px;
+    }
+    
+    /* Ensure bottom dropdowns still show above on mobile */
+    .hvnly-property-grid-list-bottom-badge-left .hvnly-badges-dropdown,
+    .hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown {
+        bottom: 100%;
+        top: auto;
+    }
+}
+
+/* Fix for bottom dropdowns overflow and z-index */
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badge-dropdown-container,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown-container {
+    overflow: visible;
+}
+
+.hvnly-property-grid-list-bottom-badge-left .hvnly-badges-dropdown,
+.hvnly-property-grid-list-bottom-badge-left .hvnly-status-dropdown {
+    z-index: 1000;
+}
+
+
+/* ========== PROPERTY CONTENT FEATURES  ========== */
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset ,
+
+.hvnly-property--grid--listings 
+.hvnly-property-grid-view 
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset 
+{
+display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    color: var(--hvnly-text-secondary);
+    font-size: 14px;
+}
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset 
+.hvnly-property-content-feature-icon ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset 
+.hvnly-property-content-feature-icon ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset 
+.hvnly-property-content-feature-icon ,
+
+.hvnly-property--grid--listings 
+.hvnly-property-grid-view 
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset 
+.hvnly-property-content-feature-icon
+{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(var(--hvnly-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+
+}
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset i ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset i ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset i ,
+
+.hvnly-property--grid--listings 
+.hvnly-property-grid-view 
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset 
+i{
+        font-size: 14px;
+    color: var(--hvnly-status-off);
+}
+
+.hvnly-agency-single__properties .hvnly-agency-single__property-item
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset a ,
+
+.hvnly-agent-single__listings .hvnly-agent-single__properties
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset a ,
+
+.hvnly-property-display-shortcode .hvnly-property-archive-container
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset a ,
+
+.hvnly-property--grid--listings 
+.hvnly-property-grid-view 
+.hvnly-property--grid-list--single__content
+.hvnly-property-field-content 
+.hvnly-property--grid-list--content 
+.hvnly-property-contact-info-mode-preset a
+{
+    text-decoration: none;
+    font-size: 14px;    color: var(--hvnly-text-secondary);
+}

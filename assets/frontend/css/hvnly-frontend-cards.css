@@ -1,0 +1,754 @@
+/**
+ * Havenlytics unified agent & agency card design system.
+ *
+ * Scoped under .hvnly-agent-card and .hvnly-agency-card only.
+ *
+ * @package Havenlytics
+ * @since   3.0.2
+ */
+
+/* =========================================================
+   AGENT CARD
+   ========================================================= */
+
+.hvnly-agent-card {
+  --hvnly-agent-card-radius: var(--hvnly-card-radius, 12px);
+  --hvnly-agent-card-media-ratio: 62.5%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--hvnly-card-bg, #fff);
+  border: var(--hvnly-card-border, 1px solid var(--hvnly-border-color, #e4e4ed));
+  border-radius: var(--hvnly-agent-card-radius);
+  box-shadow: var(--hvnly-shadow-card, 0 10px 30px rgba(15, 23, 42, 0.06));
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.hvnly-agent-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--hvnly-shadow-card-hover, 0 16px 40px rgba(var(--hvnly-primary-rgb), 0.14));
+  border-color: rgba(var(--hvnly-primary-rgb), 0.22);
+}
+
+.hvnly-agent-card--primary,
+.hvnly-agent-widget__card--primary.hvnly-agent-card {
+  border-color: rgba(var(--hvnly-primary-rgb), 0.35);
+  box-shadow: 0 12px 36px rgba(var(--hvnly-primary-rgb), 0.12);
+}
+.hvnly-property--archive__cards
+.hvnly-agent-card__media {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(var(--hvnly-primary-rgb), 0.08), rgba(var(--hvnly-secondary-rgb), 0.06));border-radius: 12px;
+}
+
+.hvnly-agent-card__photo-link {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  text-decoration: none;
+}
+
+.hvnly-agent-card__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.35s ease;
+}
+
+.hvnly-agent-card:hover .hvnly-agent-card__photo {
+  transform: scale(1.04);
+}
+
+.hvnly-agent-card__photo--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  background: linear-gradient(135deg, rgba(var(--hvnly-primary-rgb), 0.12), rgba(var(--hvnly-secondary-rgb), 0.08));
+  color: var(--hvnly-primary-color);
+  font-size: 3.5rem;
+}
+
+.hvnly-agent-card__photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0) 45%, rgba(15, 23, 42, 0.45) 100%);
+  pointer-events: none;
+}
+
+.hvnly-agent-card__ribbon-group {
+  position: absolute;
+  top: var(--hvnly-space-sm, 0.75rem);
+  left: var(--hvnly-space-sm, 0.75rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  z-index: 2;
+  max-width: calc(100% - 1.5rem);
+}
+
+.hvnly-agent-card__ribbon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: var(--hvnly-font-size-xs, 0.6875rem);
+  font-weight: var(--hvnly-font-weight-semibold, 600);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--hvnly-color-white, #fff);
+  background: var(--hvnly-primary-color);
+  box-shadow: 0 4px 12px rgba(var(--hvnly-primary-rgb), 0.25);
+}
+
+.hvnly-agent-card__ribbon--primary {
+  background: var(--hvnly-brand-secondary, var(--hvnly-secondary-color));
+}
+
+.hvnly-agent-card__ribbon--featured {
+  background: linear-gradient(135deg, #ffb507, #ff9aa2);
+  color: #1e1e2f;
+}
+
+.hvnly-agent-card__ribbon--verified {
+  background: var(--hvnly-brand-success, #00b46a);
+}
+
+.hvnly-agent-card__overlay-badge {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-size: var(--hvnly-font-size-xs, 0.75rem);
+  font-weight: var(--hvnly-font-weight-semibold, 600);
+  line-height: 1.2;
+  backdrop-filter: blur(8px);
+}
+
+.hvnly-agent-card__overlay-badge--listings {
+  top: var(--hvnly-space-sm, 0.75rem);
+  right: var(--hvnly-space-sm, 0.75rem);
+  color: var(--hvnly-text-primary, #1e1e2f);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+}
+
+.hvnly-agent-card__overlay-badge--status {
+  bottom: var(--hvnly-space-sm, 0.75rem);
+  left: var(--hvnly-space-sm, 0.75rem);
+  color: var(--hvnly-color-white, #fff);
+}
+
+.hvnly-agent-card__overlay-badge--available {
+  background: rgba(0, 180, 106, 0.92);
+}
+
+.hvnly-agent-card__overlay-badge--busy {
+  background: rgba(255, 181, 7, 0.92);
+  color: #1e1e2f;
+}
+
+.hvnly-agent-card__overlay-badge--offline {
+  background: rgba(85, 85, 85, 0.88);
+}
+
+.hvnly-agent-card__overlay-badge--away {
+  background: rgba(var(--hvnly-primary-rgb), 0.92);
+}
+
+.hvnly-agent-availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--hvnly-font-size-xs, 0.75rem);
+  font-weight: var(--hvnly-font-weight-semibold, 600);
+  line-height: 1.2;
+}
+
+.hvnly-agent-availability__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.hvnly-agent-availability--available .hvnly-agent-availability__dot {
+  background: #00b46a;
+  box-shadow: 0 0 0 2px rgba(0, 180, 106, 0.2);
+}
+
+.hvnly-agent-availability--busy .hvnly-agent-availability__dot {
+  background: #ffb507;
+  box-shadow: 0 0 0 2px rgba(255, 181, 7, 0.25);
+}
+
+.hvnly-agent-availability--away .hvnly-agent-availability__dot {
+  background: var(--hvnly-primary-color);
+  box-shadow: 0 0 0 2px rgba(var(--hvnly-primary-rgb), 0.25);
+}
+
+.hvnly-agent-availability--offline .hvnly-agent-availability__dot {
+  background: #888;
+  box-shadow: 0 0 0 2px rgba(136, 136, 136, 0.25);
+}
+
+.hvnly-agent-availability--available .hvnly-agent-availability__label {
+  color: #00b46a;
+}
+
+.hvnly-agent-availability--busy .hvnly-agent-availability__label {
+  color: #c58d00;
+}
+
+.hvnly-agent-availability--away .hvnly-agent-availability__label {
+  color: var(--hvnly-primary-color);
+}
+
+.hvnly-agent-availability--offline .hvnly-agent-availability__label {
+  color: #666;
+}
+
+.hvnly-agent-availability--profile {
+  margin-top: 0.35rem;
+}
+
+.hvnly-agent-availability--inline {
+  margin-top: 0.25rem;
+}
+
+.hvnly-agent-availability--admin {
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: #f5f5f8;
+}
+
+.hvnly-agent-card__status-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+.hvnly-agent-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--hvnly-space-sm, 0.65rem);
+  padding: 15px;
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__name {
+  margin: 0;
+  font-size: var(--hvnly-font-size-lg, 1.125rem);
+  font-weight: var(--hvnly-font-weight-semibold, 600);
+  line-height: 1.3;
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__name a {
+  color: var(--hvnly-text-primary, #1e1e2f);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__name a:hover {
+  color: var(--hvnly-primary-color);
+}
+
+.hvnly-agent-card__position {
+  margin: 0;
+  color: var(--hvnly-primary-color);
+  font-size: var(--hvnly-font-size-sm, 0.875rem);
+  font-weight: var(--hvnly-font-weight-medium, 500);
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__agency {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  color: var(--hvnly-text-secondary, #555);
+  font-size: var(--hvnly-font-size-sm, 0.875rem);
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__agency a {
+  color: inherit;
+  text-decoration: none;
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__agency a:hover {
+  color: var(--hvnly-primary-color);
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__agency-logo {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.hvnly-agent-card__location {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  color: var(--hvnly-text-secondary, #555);
+  font-size: var(--hvnly-font-size-sm, 0.8125rem);
+}
+
+.hvnly-agent-card__location i {
+  color: var(--hvnly-primary-color);
+  opacity: 0.85;
+}
+
+.hvnly-agent-card__rating {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  font-size: var(--hvnly-font-size-sm, 0.8125rem);
+  color: var(--hvnly-text-secondary, #555);
+}
+
+.hvnly-agent-card__rating .fas,
+.hvnly-agent-card__rating .far {
+  color: #fbbf24;
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.15rem;
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: var(--hvnly-tag-bg, #f8f8f8);
+  color: var(--hvnly-tag-color, #1e1e2f);
+  font-size: var(--hvnly-font-size-xs, 0.75rem);
+  font-weight: var(--hvnly-font-weight-medium, 500);
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__stat i {
+  color: var(--hvnly-primary-color);
+  font-size: 0.7rem;
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__actions {
+  /* display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem; */
+  margin-top: auto;
+  /* padding-top: var(--hvnly-space-md, 1rem); */
+}
+.hvnly-property--archive__grid--list
+.hvnly-agent-card__body
+.hvnly-agent-card__actions {
+    margin-top: auto;
+    padding-top: var(--hvnly-space-md, 1rem);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__actions--property {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.hvnly-agent-card__body
+.hvnly-agent-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  min-height: 42px;
+  padding: 0.65rem 0.85rem;
+  font-size: var(--hvnly-font-size-sm, 0.8125rem);
+  font-weight: var(--hvnly-font-weight-semibold, 600);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hvnly-agent-card__btn i {
+  font-size: 0.85em;
+}
+
+.hvnly-agent-card__contact-modal {
+  margin-top: 0.5rem;
+}
+
+.hvnly-agent-card__contact-modal .hvnly-agent-card__btn,
+.hvnly-agent-card__contact-modal .hvnly-property-single__agent-btn {
+  width: 100%;
+}
+
+.hvnly-agent-card__social {
+  margin-top: var(--hvnly-space-sm, 0.5rem);
+  padding-top: var(--hvnly-space-sm, 0.5rem);
+  border-top: 1px solid var(--hvnly-border-color, #e4e4ed);
+}
+
+.hvnly-agent-card__body
+.hvnly-btn-primary {
+    background-color: var(--hvnly-button-bg);
+    color: var(--hvnly-button-color);
+    border-color: var(--hvnly-button-bg);margin: 10px 0;
+}
+/* Property widget slider compatibility */
+.hvnly-agent-widget__track .hvnly-agent-card {
+  height: auto;
+}
+
+.hvnly-agent-widget--stack .hvnly-agent-card,
+.hvnly-property--archive__cards .hvnly-agent-card {
+  min-height: 100%;
+}
+
+/* Compact property sidebar widget */
+.hvnly-property-single__widget-area .hvnly-agent-card--property .hvnly-agent-card__photo-link {
+  max-height: 210px;
+}
+
+.hvnly-property-single__widget-area .hvnly-agent-card--property .hvnly-agent-card__actions--property {
+  grid-template-columns: 1fr;
+}
+
+/* List view (property archives) */
+.hvnly-property--archive__grid--list .hvnly-agent-card {
+  flex-direction: row;
+}
+
+.hvnly-property--archive__grid--list .hvnly-agent-card__media {
+  flex: 0 0 min(42%, 320px);
+  max-width: 320px;
+}
+
+.hvnly-property--archive__grid--list .hvnly-agent-card__photo-link {
+  height: 100%;
+  min-height: 220px;
+  aspect-ratio: auto;
+}
+
+.hvnly-property--archive__grid--list .hvnly-agent-card__body {
+  justify-content: center;
+}
+
+/* =========================================================
+   AGENCY CARD
+   ========================================================= */
+
+.hvnly-agency-card {
+  --hvnly-agency-card-radius: var(--hvnly-card-radius, 12px);
+  --hvnly-agency-media-height: 148px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--hvnly-card-bg, #fff);
+  border: var(--hvnly-card-border, 1px solid var(--hvnly-border-color, #e4e4ed));
+  border-radius: var(--hvnly-agency-card-radius);
+  box-shadow: var(--hvnly-shadow-card, 0 10px 30px rgba(15, 23, 42, 0.06));
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.hvnly-property--archive__cards .hvnly-agency-card {
+  min-height: 100%;
+}
+
+.hvnly-agency-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--hvnly-shadow-card-hover, 0 16px 40px rgba(var(--hvnly-primary-rgb), 0.14));
+  border-color: rgba(var(--hvnly-primary-rgb), 0.22);
+}
+
+.hvnly-agency-card__media {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--hvnly-agency-media-height);
+  padding: var(--hvnly-space-lg, 1.25rem);
+  overflow: hidden;
+}
+
+.hvnly-agency-card__media-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(var(--hvnly-secondary-rgb), 0.18) 0%, transparent 42%),
+    radial-gradient(circle at 10% 90%, rgba(var(--hvnly-primary-rgb), 0.14) 0%, transparent 45%),
+    linear-gradient(145deg, rgba(var(--hvnly-primary-rgb), 0.1) 0%, rgba(248, 248, 252, 1) 58%, rgba(255, 255, 255, 1) 100%);
+  pointer-events: none;
+}
+
+.hvnly-agency-card__media-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image: radial-gradient(rgba(var(--hvnly-primary-rgb), 0.18) 1px, transparent 1px);
+  background-size: 14px 14px;
+  pointer-events: none;
+}
+
+.hvnly-agency-card__logo-link {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.hvnly-agency-card__logo {
+  width: 88px;
+  height: 88px;
+  border-radius: 16px;
+  object-fit: contain;
+  padding: 0.45rem;
+  background: var(--hvnly-color-white, #fff);
+  border: 1px solid rgba(var(--hvnly-primary-rgb), 0.12);
+  box-shadow:
+    0 10px 28px rgba(15, 23, 42, 0.1),
+    0 0 0 4px rgba(255, 255, 255, 0.65);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hvnly-agency-card:hover .hvnly-agency-card__logo {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow:
+    0 14px 32px rgba(var(--hvnly-primary-rgb), 0.18),
+    0 0 0 4px rgba(255, 255, 255, 0.75);
+}
+
+.hvnly-agency-card__logo--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(var(--hvnly-primary-rgb), 0.12), rgba(var(--hvnly-secondary-rgb), 0.08));
+  color: var(--hvnly-primary-color);
+  font-size: 2rem;
+}
+
+.hvnly-agency-card__overlay-badge {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  font-size: var(--hvnly-font-size-xs, 0.75rem);
+  font-weight: var(--hvnly-font-weight-semibold, 600);
+  line-height: 1.2;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+}
+
+.hvnly-agency-card__overlay-badge--listings {
+  top: var(--hvnly-space-sm, 0.75rem);
+  right: var(--hvnly-space-sm, 0.75rem);
+  color: var(--hvnly-text-primary, #1e1e2f);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.hvnly-agency-card__overlay-badge--team {
+  top: var(--hvnly-space-sm, 0.75rem);
+  left: var(--hvnly-space-sm, 0.75rem);
+  color: var(--hvnly-color-white, #fff);
+  background: rgba(var(--hvnly-primary-rgb), 0.92);
+}
+
+.hvnly-agency-card__overlay-badge i {
+  font-size: 0.72rem;
+  opacity: 0.92;
+}
+
+.hvnly-agency-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--hvnly-space-sm, 0.65rem);
+  padding: var(--hvnly-space-md, 1.25rem);
+}
+
+.hvnly-agency-card__identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.hvnly-agency-card__body
+.hvnly-agency-card__label {
+  display: block;
+  margin: 0;
+  font-size: var(--hvnly-font-size-xs, 0.6875rem);
+  font-weight: var(--hvnly-font-weight-semibold, 600);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--hvnly-primary-color);
+}
+.hvnly-agency-card__body
+.hvnly-agency-card__name {
+  margin: 0;
+  font-size: var(--hvnly-font-size-lg, 1.125rem);
+  font-weight: var(--hvnly-font-weight-semibold, 600);
+  line-height: 1.35;
+}
+.hvnly-agency-card__body
+.hvnly-agency-card__name a {
+  color: var(--hvnly-text-primary, #1e1e2f);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.hvnly-agency-card__body
+.hvnly-agency-card__name a:hover {
+  color: var(--hvnly-primary-color);
+}
+.hvnly-agency-card__body
+.hvnly-agency-card__excerpt {
+  margin: 0;
+  color: var(--hvnly-text-secondary, #555);
+  font-size: var(--hvnly-font-size-sm, 0.875rem);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.hvnly-agency-card__body
+.hvnly-agency-card__location {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  color: var(--hvnly-text-secondary, #555);
+  font-size: var(--hvnly-font-size-sm, 0.8125rem);
+}
+.hvnly-agency-card__body
+.hvnly-agency-card__location i {
+  color: var(--hvnly-primary-color);
+  opacity: 0.85;
+}
+
+.hvnly-agency-card__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.1rem;
+}
+
+.hvnly-agency-card__stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: var(--hvnly-tag-bg, #f8f8f8);
+  color: var(--hvnly-tag-color, #1e1e2f);
+  font-size: var(--hvnly-font-size-xs, 0.75rem);
+  font-weight: var(--hvnly-font-weight-medium, 500);
+}
+
+.hvnly-agency-card__stat i {
+  color: var(--hvnly-primary-color);
+  font-size: 0.7rem;
+}
+
+.hvnly-agency-card__actions {
+  margin-top: auto;
+  padding-top: var(--hvnly-space-md, 1rem);
+}
+.hvnly-agency-card__body
+.hvnly-agency-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.65rem 0.85rem;
+  font-size: var(--hvnly-font-size-sm, 0.8125rem);
+  font-weight: var(--hvnly-font-weight-semibold, 600);
+  text-decoration: none;
+  color: var(--hvnly-color-white);
+ 
+}
+
+.hvnly-agency-card__btn i {
+  font-size: 0.85em;
+  transition: transform 0.2s ease;
+}
+
+.hvnly-agency-card:hover .hvnly-agency-card__btn i {
+  transform: translateX(3px);
+}
+
+/* Legacy header/count-badge hooks — kept for backward compatibility if extended elsewhere */
+.hvnly-agency-card__header,
+.hvnly-agency-card__count-badges,
+.hvnly-agency-card__count-badge,
+.hvnly-agency-card__meta,
+.hvnly-agency-card__meta-item {
+  display: none;
+}
+
+.hvnly-property--archive__grid--list .hvnly-agency-card {
+  flex-direction: row;
+}
+
+.hvnly-property--archive__grid--list .hvnly-agency-card__media {
+  flex: 0 0 240px;
+  max-width: 240px;
+  min-height: 100%;
+  border-right: 1px solid var(--hvnly-border-color, #e4e4ed);
+}
+
+.hvnly-property--archive__grid--list .hvnly-agency-card__body {
+  justify-content: center;
+}
+
+.hvnly-property--archive__grid--list .hvnly-agency-card__excerpt {
+  -webkit-line-clamp: 2;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .hvnly-agent-card__actions,
+  .hvnly-agent-card__actions--property {
+    grid-template-columns: 1fr;
+  }
+
+  .hvnly-property--archive__grid--list .hvnly-agent-card,
+  .hvnly-property--archive__grid--list .hvnly-agency-card {
+    flex-direction: column;
+  }
+
+  .hvnly-property--archive__grid--list .hvnly-agent-card__media,
+  .hvnly-property--archive__grid--list .hvnly-agency-card__media {
+    flex: none;
+    max-width: none;
+    width: 100%;
+    min-height: var(--hvnly-agency-media-height, 148px);
+    border-right: none;
+    border-bottom: 1px solid var(--hvnly-border-color, #e4e4ed);
+  }
+}

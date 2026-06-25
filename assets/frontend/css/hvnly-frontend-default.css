@@ -1,0 +1,435 @@
+/* Havenlytics CSS Variables & Reset */
+/* Import Google Fonts */
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap'); */
+:root {
+  /* ======================
+     Typography & Fonts
+  ======================= */
+  /* --hvnly-bodyFont: "Plus Jakarta Sans", sans-serif;
+  --hvnly-headingFont: 'Montserrat', sans-serif;  */
+
+    /* =========================================
+     FOUNDATION TOKENS
+     (Never change dynamically)
+  ========================================= */
+  --hvnly-color-white: #ffffff;
+  --hvnly-color-black: #000000;
+  --hvnly-color-gray-100: #f8f9fa;
+  --hvnly-color-gray-200: #e4e4ed;
+  --hvnly-color-gray-500: #6c757d;
+  --hvnly-color-gray-800: #333;
+  --hvnly-color-bg-light: #F8F8F8;
+  --hvnly-color-bg-white: #FFFFFF;
+
+  /* =========================================
+     BRAND TOKENS
+  ========================================= */
+  --hvnly-brand-primary: #6C60FE;
+  --hvnly-brand-secondary: #764ba2;
+  --hvnly-primary-color: var(--hvnly-brand-primary);
+  --hvnly-secondary-color: var(--hvnly-brand-secondary);
+  --hvnly-primary-rgb: 108, 96, 254;
+  --hvnly-secondary-rgb: 118, 75, 162;
+  --hvnly-brand-accent: #FF9AA2;
+  --hvnly-brand-success: #00B46A;
+  --hvnly-brand-error: #FF4D4F;
+  --hvnly-brand-warning: #FFB507;
+
+  /* =========================================
+     STATUS TOKENS
+  ========================================= */
+  --hvnly-status-sale: var(--hvnly-primary-color);
+  --hvnly-status-rent: #00C2A8;
+  --hvnly-status-pending: #FFB507;
+  --hvnly-status-sold: #FF4D4F;
+  --hvnly-status-off: #9192A3;
+
+  /* =========================================
+     TYPOGRAPHY TOKENS
+  ========================================= */
+  --hvnly-font-family-base: var(--hvnly-bodyFont);
+  --hvnly-font-size-xs: 0.75rem;
+  --hvnly-font-size-sm: 0.875rem;
+  --hvnly-font-size-md: 1rem;
+  --hvnly-font-size-lg: 1.25rem;
+  --hvnly-font-size-xl: 1.5rem;
+  --hvnly-font-size-title: 24px;
+  --hvnly-font-size-price: 1.2rem;
+  --hvnly-font-size-md-price: 1.4rem;
+  --hvnly-font-size-meta: 0.875rem;
+  --hvnly-font-size-excerpt: 0.95rem;
+  --hvnly-font-size-label: 0.9rem;
+  
+  --hvnly-font-weight-light: 300;
+  --hvnly-font-weight-regular: 400;
+  --hvnly-font-weight-medium: 500;
+  --hvnly-font-weight-semibold: 600;
+  --hvnly-font-weight-bold: 700;
+  --hvnly-font-weight-extrabold: 700;
+
+  --hvnly-text-primary: #1E1E2F;
+  --hvnly-text-color: var(--hvnly-text-primary);
+  --hvnly-text-secondary: #555555;
+
+  /* =========================================
+     SPACING TOKENS
+  ========================================= */
+  --hvnly-space-xs: 0.25rem;
+  --hvnly-space-sm: 0.5rem;
+  --hvnly-space-md: 1rem;
+  --hvnly-space-lg: 1.5rem;
+  --hvnly-space-xl: 2rem;
+  --hvnly-space-2xl: 3rem;
+
+  /* =========================================
+     BORDER & SHADOW TOKENS
+  ========================================= */
+  --hvnly-border-color: #E4E4ED;
+  --hvnly-border-radius-xs: 4px;
+  --hvnly-border-radius-sm: 6px;
+  --hvnly-border-radius-md: 8px;
+  --hvnly-border-radius-lg: 12px;
+  
+  --hvnly-shadow-card: 0px 4px 24px rgba(189, 189, 189, 0.24);
+  --hvnly-shadow-card-hover: 0 4px 12px rgba(0,0,0,0.08);
+
+  /* =========================================
+     COMPONENT TOKENS
+  ========================================= */
+  /* Card */
+  --hvnly-card-bg: var(--hvnly-color-bg-white);
+  --hvnly-card-border: 1px solid var(--hvnly-border-color);
+  --hvnly-card-radius: 8px;
+  --hvnly-card-shadow: var(--hvnly-shadow-card);
+  --hvnly-card-padding: 1.5rem;
+
+  /* Button */
+  --hvnly-button-bg: var(--hvnly-brand-primary);
+  --hvnly-button-bg-hover: var(--hvnly-brand-secondary);
+  --hvnly-button-color: var(--hvnly-color-white);
+  --hvnly-button-radius: 4px;
+  --hvnly-button-padding: 0.75rem 1.5rem;
+
+  /* Form */
+  --hvnly-input-border: var(--hvnly-border-color);
+  --hvnly-input-focus: var(--hvnly-brand-primary);
+  --hvnly-input-radius: 4px;
+
+  /* Pagination */
+  --hvnly-pagination-active-bg: var(--hvnly-brand-primary);
+  --hvnly-pagination-active-color: var(--hvnly-color-white);
+  --hvnly-pagination-hover-bg: #f0f0f0;
+
+  /* Property Features */
+  --hvnly-feature-icon-size: 1.25rem;
+  --hvnly-feature-icon-color: currentColor;
+  --hvnly-price-color: var(--hvnly-brand-primary);
+  --hvnly-sqft-color: var(--hvnly-text-secondary);
+
+  /* Media & Visuals */
+  --hvnly-image-ratio: 75%;
+  --hvnly-image-hover-scale: 1.05;
+  --hvnly-video-bg: #1E1E2F;
+
+  /* Map */
+  --hvnly-map-marker-bg: var(--hvnly-brand-primary);
+  --hvnly-map-marker-color: var(--hvnly-color-white);
+  --hvnly-map-cluster-bg: var(--hvnly-brand-error);
+
+  /* Additional Components */
+  --hvnly-ribbon-bg: var(--hvnly-brand-accent);
+  --hvnly-tag-bg: var(--hvnly-color-bg-light);
+  --hvnly-tag-color: var(--hvnly-text-primary);
+
+  /* Slider */
+  --hvnly-slider-track: #eee;
+  --hvnly-slider-thumb: var(--hvnly-brand-primary);
+  --hvnly-slider-range: var(--hvnly-brand-secondary);
+
+  /* Transition */
+  --hvnly-transition-time: 0.3s ease;
+  --hvnly-transition-hover-time: 0.5s ease;
+
+  /* Container widths — defaults; overridden by DynamicStyleGenerator from admin settings */
+  --hvnly-container-xs: 100%;
+  --hvnly-container-sm: 540px;
+  --hvnly-container-md: 720px;
+  --hvnly-container-lg: 960px;
+  --hvnly-container-xl: 1140px;
+  --hvnly-container-xxl: 1320px;
+  --hvnly-container-xxxl: 1399px;
+  --hvnly-container-4k: 1400px;
+}
+/* ======================
+   Havenlytics CSS Reset
+======================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+
+}
+
+body {
+  /* font-family: var(--hvnly-font-family-base);
+  font-size: var(--hvnly-font-size-md, 1rem);
+  font-weight: var(--hvnly-font-weight-regular, 400);
+  line-height: var(--hvnly-line-height-normal, 1.5);
+  color: var(--hvnly-text-primary);
+  background-color: var(--hvnly-color-bg-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+}
+/* Headings & Paragraphs */
+.hvnly-content-wrapper h1, .hvnly-property-display-shortcode h1,
+.hvnly-content-wrapper h2, .hvnly-property-display-shortcode h2,
+.hvnly-content-wrapper h3, .hvnly-property-display-shortcode h3,
+.hvnly-content-wrapper h4, .hvnly-property-display-shortcode h4,
+.hvnly-content-wrapper h5, .hvnly-property-display-shortcode h5,
+.hvnly-content-wrapper h6, .hvnly-property-display-shortcode h6 
+{
+  /* font-family: var(--hvnly-headingFont);
+  font-weight: var(--hvnly-font-weight-bold);
+  color: var(--hvnly-text-primary); */
+  margin-bottom: var(--hvnly-space-md);
+}
+
+.hvnly-content-wrapper p, .hvnly-property-display-shortcode p {
+  color: var(--hvnly-text-primary);
+  margin-bottom: var(--hvnly-space-md);
+}
+
+/* Links */
+.hvnly-content-wrapper a , .hvnly-property-display-shortcode a {
+  color: var(--hvnly-text-primary);
+  text-decoration: none !important;
+  transition: all var(--hvnly-transition-time);   
+ 
+}
+
+.hvnly-content-wrapper a:hover, .hvnly-property-display-shortcode a:hover {
+  /* color: var(--hvnly-button-bg-hover); */    
+  transition: all var(--hvnly-transition-hover-time);
+}
+
+/* Lists */
+.hvnly-content-wrapper ul,
+.hvnly-property-display-shortcode ul,
+.hvnly-content-wrapper ol,
+.hvnly-property-display-shortcode ol 
+{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Media */
+.hvnly-content-wrapper img,
+.hvnly-property-display-shortcode img,
+.hvnly-content-wrapper picture,
+.hvnly-property-display-shortcode picture,
+.hvnly-property-display-shortcode video 
+.hvnly-content-wrapper video 
+{
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.hvnly-content-wrapper  svg, canvas{
+  display: block;
+
+}
+
+/* ======================
+   Modern Inputs & Form Controls
+======================= */
+.hvnly-property-display-shortcode .hvnly-property-search-form label.hvnly-property-search-label,
+.hvnly-content-wrapper .hvnly-property-search-form label.hvnly-property-search-label
+{    display: block;
+    font-size: var(--hvnly-font-size-label);
+    font-weight: var(--hvnly-font-weight-regular);
+    margin-bottom: 0.35rem;
+    color: var(--hvnly-text-primary);}
+
+.hvnly-content-wrapper input[type=date], 
+.hvnly-property-display-shortcode input[type=date], 
+.hvnly-content-wrapper input[type=email], 
+.hvnly-property-display-shortcode input[type=email], 
+.hvnly-content-wrapper input[type=number], 
+.hvnly-content-wrapper input[type=password], 
+.hvnly-property-display-shortcode input[type=password], 
+.hvnly-content-wrapper input[type=search], 
+.hvnly-property-display-shortcode input[type=search], 
+.hvnly-content-wrapper input[type=tel], 
+.hvnly-property-display-shortcode input[type=tel], 
+.hvnly-content-wrapper input[type=text], 
+.hvnly-property-display-shortcode input[type=text], 
+.hvnly-content-wrapper input[type=url], 
+.hvnly-property-display-shortcode input[type=url], 
+.hvnly-content-wrapper select, 
+.hvnly-property-display-shortcode select, 
+.hvnly-content-wrapper textarea
+.hvnly-property-display-shortcode textarea
+{
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--hvnly-text-primary);
+  background-color: var(--hvnly-color-bg-white);
+  border: 1px solid var(--hvnly-input-border) !important;
+  border-radius: var(--hvnly-input-radius);
+  padding: 0.59rem 1rem!important;;
+  transition: all var(--hvnly-transition-time);
+  outline: none;
+  line-height: 1.5;
+}
+
+.hvnly-content-wrapper input:focus,
+.hvnly-property-display-shortcode input:focus,
+.hvnly-content-wrapper select:focus,
+.hvnly-property-display-shortcode select:focus,
+.hvnly-content-wrapper textarea:focus 
+.hvnly-property-display-shortcode textarea:focus {
+  border-color: var(--hvnly-input-focus) !important;
+  box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.15);
+}
+
+/* Placeholder */
+.hvnly-content-wrapper input::placeholder,
+.hvnly-property-display-shortcode input::placeholder,
+.hvnly-content-wrapper textarea::placeholder 
+.hvnly-property-display-shortcode textarea::placeholder 
+{
+  color: var(--hvnly-color-gray-500);
+  opacity: 0.7;
+}
+
+/* Disabled Inputs */
+.hvnly-content-wrapper input:disabled,
+.hvnly-content-wrapper textarea:disabled,
+.hvnly-content-wrapper select:disabled ,
+.hvnly-property-display-shortcode input:disabled,
+.hvnly-property-display-shortcode textarea:disabled,
+.hvnly-property-display-shortcode select:disabled 
+{
+  background-color: var(--hvnly-color-bg-light);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ======================
+   Buttons (Global Reset + Enhancement)
+======================= */
+.hvnly-content-wrapper button,
+.hvnly-content-wrapper input[type="button"],
+.hvnly-content-wrapper input[type="submit"],
+.hvnly-content-wrapper input[type="reset"] ,
+
+.hvnly-property-display-shortcode button,
+.hvnly-property-display-shortcode input[type="button"],
+.hvnly-property-display-shortcode input[type="submit"],
+.hvnly-property-display-shortcode input[type="reset"] 
+{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  /* font-size: var(--hvnly-font-size-label, 1rem);
+  font-weight: var(--hvnly-font-weight-medium);
+  padding: var(--hvnly-button-padding);
+  border-radius: var(--hvnly-button-radius);
+  border: 1px solid var(--hvnly-button-bg);
+  background-color: var(--hvnly-button-bg);
+  color: var(--hvnly-button-color); */
+  cursor: pointer;
+  transition: all var(--hvnly-transition-time);
+  position: relative;    
+  border: 0;
+  overflow: hidden;
+  outline:0
+}
+
+/* Button Hover */
+/* .hvnly-content-wrapper button:hover, */
+.hvnly-content-wrapper [type=button]:focus, 
+.hvnly-content-wrapper [type=button]:hover, 
+.hvnly-content-wrapper [type=submit]:focus, 
+.hvnly-content-wrapper [type=submit]:hover,
+.hvnly-content-wrapper  button:focus, 
+.hvnly-content-wrapper  button:hover,
+.hvnly-content-wrapper input[type="button"]:focus,
+.hvnly-content-wrapper input[type="button"]:hover,
+.hvnly-content-wrapper input[type="submit"]:hover,
+.hvnly-content-wrapper input[type="submit"]:focus,
+.hvnly-content-wrapper input[type="reset"]:hover,
+
+.hvnly-property-display-shortcode [type=button]:focus, 
+.hvnly-property-display-shortcode [type=button]:hover, 
+.hvnly-property-display-shortcode [type=submit]:focus, 
+.hvnly-property-display-shortcode [type=submit]:hover,
+.hvnly-property-display-shortcode  button:focus, 
+.hvnly-property-display-shortcode  button:hover,
+.hvnly-property-display-shortcode input[type="button"]:focus,
+.hvnly-property-display-shortcode input[type="button"]:hover,
+.hvnly-property-display-shortcode input[type="submit"]:hover,
+.hvnly-property-display-shortcode input[type="submit"]:focus,
+.hvnly-property-display-shortcode input[type="reset"]:hover
+ {
+  background-color: var(--hvnly-button-bg-hover);
+  /* transform: translateY(-1px); */
+}
+
+/* Button Focus */
+.hvnly-content-wrapper button:focus-visible,
+.hvnly-property-display-shortcode button:focus-visible
+ {
+  outline: 2px solid var(--hvnly-brand-primary);
+  outline-offset: 2px;
+}
+
+/* Disabled Button */
+.hvnly-content-wrapper button:disabled,
+.hvnly-content-wrapper input[type="submit"]:disabled,
+.hvnly-property-display-shortcode button:disabled,
+.hvnly-property-display-shortcode input[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Reset Button Variant */
+.hvnly-content-wrapper input[type="reset"] {
+  background-color: var(--hvnly-color-bg-light);
+  color: var(--hvnly-text-primary);
+  border-color: var(--hvnly-border-color);
+}
+
+.hvnly-content-wrapper input[type="reset"]:hover {
+  background-color: var(--hvnly-border-color);
+  color: var(--hvnly-color-black);
+}
+
+/* ======================
+   Global Utility Enhancements
+======================= */
+.hvnly-content-wrapper .hvnly-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.hvnly-content-wrapper .hvnly-form-label {
+  display: block;
+  font-weight: var(--hvnly-font-weight-medium);
+  margin-bottom: 0.5rem;
+  color: var(--hvnly-text-primary);
+}
+
+.hvnly-content-wrapper .hvnly-text-center {
+  text-align: center;
+}

@@ -1,0 +1,265 @@
+/**
+
+ * Agents section field admin UI.
+
+ *
+
+ * @package Havenlytics
+
+ * @since   3.0.2
+
+ */
+
+
+
+.hvnly-agents-section-field {
+
+	margin-bottom: 16px;
+
+}
+
+
+
+.hvnly-agents-section-field__picker-label {
+
+	display: block;
+
+	margin-bottom: 4px;
+
+	font-weight: 600;
+
+}
+
+
+
+.hvnly-agents-section-field__list {
+
+	margin: 0 0 12px;
+
+	padding: 0;
+
+	list-style: none;
+
+}
+
+
+
+.hvnly-agents-section-field__empty {
+
+	display: none;
+
+	margin: 0 0 12px;
+
+	font-style: italic;
+
+	color: #646970;
+
+}
+
+
+
+.hvnly-agents-section-field__empty.is-visible {
+
+	display: block;
+
+}
+
+
+
+.hvnly-agents-section-field__select {
+
+	margin-top: 8px;
+
+}
+
+/* Picker stays blank after each add — never inherit required-field input error styling */
+
+.hvnly__dyamic_metabox_tab__field[data-field-type="agents"] .hvnly-agents-section-field__select {
+
+	border-color: #8c8f94;
+
+}
+
+.hvnly__dyamic_metabox_tab__field.hvnly-field-error[data-field-type="agents"] .hvnly-agents-section-field__select {
+
+	border-color: #8c8f94 !important;
+
+	box-shadow: none;
+
+	background-color: #fff;
+
+}
+
+
+
+.hvnly-agents-section-field__sidebar-toggle {
+
+	margin-top: 18px;
+
+	padding: 14px 16px;
+
+	background: #f6f7f7;
+
+	border: 1px solid #dcdcde;
+
+	border-radius: 8px;
+
+}
+
+
+
+.hvnly-agents-section-field__toggle-header {
+
+	display: flex;
+
+	align-items: flex-start;
+
+	justify-content: space-between;
+
+	gap: 16px;
+
+}
+
+
+
+.hvnly-agents-section-field__toggle-header .description {
+
+	margin: 6px 0 0;
+
+}
+
+
+
+.hvnly-agents-section-field__switch {
+
+	position: relative;
+
+	display: inline-flex;
+
+	flex-shrink: 0;
+
+	width: 52px;
+
+	height: 30px;
+
+	cursor: pointer;
+
+}
+
+
+
+.hvnly-agents-section-field__switch input {
+
+	position: absolute;
+
+	opacity: 0;
+
+	width: 0;
+
+	height: 0;
+
+}
+
+
+
+.hvnly-agents-section-field__switch-slider {
+
+	position: absolute;
+
+	inset: 0;
+
+	background: #c3c4c7;
+
+	border-radius: 999px;
+
+	transition: background 0.2s ease;
+
+}
+
+
+
+.hvnly-agents-section-field__switch-slider::before {
+
+	content: "";
+
+	position: absolute;
+
+	top: 3px;
+
+	left: 3px;
+
+	width: 24px;
+
+	height: 24px;
+
+	background: #fff;
+
+	border-radius: 50%;
+
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+
+	transition: transform 0.2s ease;
+
+}
+
+
+
+.hvnly-agents-section-field__switch input:checked + .hvnly-agents-section-field__switch-slider {
+
+	background: #2563eb;
+
+}
+
+
+
+.hvnly-agents-section-field__switch input:checked + .hvnly-agents-section-field__switch-slider::before {
+
+	transform: translateX(22px);
+
+}
+
+
+
+.hvnly-agents-section-field__switch input:focus-visible + .hvnly-agents-section-field__switch-slider {
+
+	outline: 2px solid #2563eb;
+
+	outline-offset: 2px;
+
+}
+
+
+
+.hvnly-agents-section-field__toggle-status {
+
+	display: none;
+
+	margin: 10px 0 0;
+
+	font-size: 12px;
+
+	color: #50575e;
+
+}
+
+
+
+.hvnly-agents-section-field__toggle-status.is-visible {
+
+	display: flex;
+
+	align-items: center;
+
+	gap: 6px;
+
+}
+
+
+
+.hvnly-agents-section-field__toggle-status.is-hidden {
+
+	display: none;
+
+}
+
+

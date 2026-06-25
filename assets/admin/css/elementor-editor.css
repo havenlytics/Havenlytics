@@ -1,0 +1,148 @@
+/**
+ * Havenlytics Elementor Editor Styles
+ * Advanced custom styling for Elementor integration
+ */
+
+/* ============================================
+   Custom Category Styling
+   ============================================ */
+.elementor-panel .elementor-category-havenlytics .elementor-element {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.elementor-panel .elementor-category-havenlytics .elementor-element:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(108, 96, 254, 0.15);
+}
+
+/* Custom SVG icon — Elementor uses data-library-element-type on panel buttons */
+.elementor-panel .elementor-element[data-library-element-type="hvnly_all_properties"] .icon .eicon-gallery-grid,
+.elementor-panel .elementor-element[data-widget-type="hvnly_all_properties"] .icon .eicon-gallery-grid,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agents"] .icon .eicon-gallery-grid,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agents"] .icon .eicon-gallery-grid,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agencies"] .icon .eicon-gallery-grid,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agencies"] .icon .eicon-gallery-grid {
+    position: relative !important;
+    background: transparent !important;
+    color: transparent !important;
+}
+
+.elementor-panel .elementor-element[data-library-element-type="hvnly_all_properties"] .icon .eicon-gallery-grid::before,
+.elementor-panel .elementor-element[data-widget-type="hvnly_all_properties"] .icon .eicon-gallery-grid::before,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agents"] .icon .eicon-gallery-grid::before,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agents"] .icon .eicon-gallery-grid::before,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agencies"] .icon .eicon-gallery-grid::before,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agencies"] .icon .eicon-gallery-grid::before {
+    display: none !important;
+}
+
+.elementor-panel .elementor-element[data-library-element-type="hvnly_all_properties"] .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-widget-type="hvnly_all_properties"] .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agents"] .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agents"] .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agencies"] .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agencies"] .icon .eicon-gallery-grid::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    background: url("../img/havenlytics-icon20x20.svg") center center no-repeat;
+    background-size: contain;
+    transition: all 0.3s ease;
+}
+
+.elementor-panel .elementor-element[data-library-element-type="hvnly_all_properties"]:hover .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-widget-type="hvnly_all_properties"]:hover .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agents"]:hover .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agents"]:hover .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agencies"]:hover .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agencies"]:hover .icon .eicon-gallery-grid::after {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Havenlytics category — first in panel (CSS fallback if PHP reorder is overridden) */
+#elementor-panel-categories {
+    display: flex;
+    flex-direction: column;
+}
+
+#elementor-panel-category-havenlytics {
+    order: -9999;
+}
+
+/* ============================================
+   Category Header Styling
+   ============================================ */
+.elementor-panel .elementor-category-havenlytics .elementor-panel-heading {
+    background: linear-gradient(135deg, rgba(108, 96, 254, 0.05) 0%, rgba(138, 123, 255, 0.08) 100%);
+    border-left: 3px solid #6C60FE;
+}
+
+.elementor-panel .elementor-category-havenlytics .elementor-panel-heading-title {
+    color: #1E1E2F;
+    font-weight: 600;
+}
+
+/* ============================================
+   Widget Card Styling in Panel
+   ============================================ */
+.elementor-panel .elementor-element[data-library-element-type="hvnly_all_properties"],
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agents"],
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agencies"] {
+    background: linear-gradient(145deg, #ffffff 0%, #f8f9fc 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(108, 96, 254, 0.1);
+}
+
+.elementor-panel .elementor-element[data-library-element-type="hvnly_all_properties"] .elementor-element-title-wrapper,
+.elementor-panel .elementor-element[data-widget-type="hvnly_all_properties"] .elementor-element-title-wrapper,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agents"] .elementor-element-title-wrapper,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agents"] .elementor-element-title-wrapper,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agencies"] .elementor-element-title-wrapper,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agencies"] .elementor-element-title-wrapper {
+    color: #6C60FE;
+    font-weight: 500;
+}
+
+/* ============================================
+   Live Preview Enhancement
+   ============================================ */
+.elementor-widget-hvnly_all_properties,
+.elementor-widget-hvnly_property_agents,
+.elementor-widget-hvnly_property_agencies {
+    transition: all 0.3s ease;
+}
+
+.elementor-widget-hvnly_all_properties:hover,
+.elementor-widget-hvnly_property_agents:hover,
+.elementor-widget-hvnly_property_agencies:hover {
+    box-shadow: 0 4px 15px rgba(108, 96, 254, 0.15);
+}
+
+/* ============================================
+   Dashboard Icon Animation
+   ============================================ */
+@keyframes hvnly-icon-pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.elementor-panel .elementor-element[data-library-element-type="hvnly_all_properties"].hvnly-highlight .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-widget-type="hvnly_all_properties"].hvnly-highlight .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agents"].hvnly-highlight .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agents"].hvnly-highlight .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-library-element-type="hvnly_property_agencies"].hvnly-highlight .icon .eicon-gallery-grid::after,
+.elementor-panel .elementor-element[data-widget-type="hvnly_property_agencies"].hvnly-highlight .icon .eicon-gallery-grid::after {
+    animation: hvnly-icon-pulse 1s ease infinite;
+}
