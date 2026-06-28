@@ -5,10 +5,10 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4 
-Stable tag: 3.1.2
+Stable tag: 3.1.3
 License: GPLv2 or later 
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Build modern real estate websites with advanced AJAX search, interactive maps, agent and agency archives, Elementor widgets, and a drag-and-drop property builder — no coding required.
+Build modern real estate websites with property listings, AJAX search, interactive maps, Elementor widgets, and visual builders.
 
 == Description ==
 
@@ -27,11 +27,12 @@ Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpr
 = Quick Start =
 
 1. Install and activate Havenlytics.
-2. (Optional) Install **Havenlytics Realty** from WordPress.org.
-3. Run the Property Setup wizard and import demo listings.
-4. Customize settings, builders, and pages.
+2. (Optional) Install the free Havenlytics Realty companion theme from WordPress.org.
+3. Run the Property Setup Wizard.
+4. Import the demo property listings using Quick Property Setup.
+5. After the import is complete, click **View Website** to preview the demo site or **Return to Dashboard** to continue customizing.
 
-**Setup & import tutorial:** [youtube https://www.youtube.com/watch?v=cEVQ0uhwiHc]
+**Setup & Import Tutorial:** [youtube https://www.youtube.com/watch?v=cEVQ0uhwiHc]
 
 = Who It's For =
 
@@ -293,6 +294,13 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 
 
 == Changelog ==
+
+= 3.1.3 - 2026-06-29 =
+
+* Improved: WordPress.org documentation and readme structure.
+* Improved: Refined plugin short description for the WordPress.org directory.
+* Improved: Documentation and version update.
+* Improved: Minor maintenance release.
 
 = 3.1.2 - 2026-06-28 =
 
