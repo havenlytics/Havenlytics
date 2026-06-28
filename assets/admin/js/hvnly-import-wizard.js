@@ -86,7 +86,7 @@ const WIZARD_SLUG_TO_STEP = {
     review: 4,
 };
 let wizardUrlRoutingBound = false;
-let propertyImportQuantity = 10;
+let propertyImportQuantity = window.hvnlyImportWizard?.defaultImportQuantity || 25;
 let isImporting = false;
 let selectedDepartment = 'sale';
 
@@ -126,6 +126,29 @@ let currentBatch = 0;
 let currentImported = 0;
 let currentCsrfToken = '';
 let currentImportSessionId = '';
+
+// Location step modification tracking (intent-aware).
+//
+// hvnlyLocationStepModified: true once the user touches the Location step in any
+//   way (typing an address, editing coordinates, moving the marker, clicking the
+//   map, or picking an autocomplete suggestion).
+//
+// hvnlyCoordinatesUserEntered: true ONLY when the latitude/longitude originate
+//   from a deliberate user action — manual coordinate typing, marker drag, or
+//   map click. Coordinates that were auto-populated by geocoding a typed address
+//   do NOT set this flag, so an address-only edit stays an address-only override
+//   and never destroys each property's own demo coordinates.
+//
+// The map manager reports its source ('manual' | 'geocode') through this hook;
+// direct field typing is wired up in the DOMContentLoaded handler.
+let hvnlyLocationStepModified = false;
+let hvnlyCoordinatesUserEntered = false;
+window.hvnlyImportWizardMarkLocationModified = function (source) {
+    hvnlyLocationStepModified = true;
+    if (source === 'manual') {
+        hvnlyCoordinatesUserEntered = true;
+    }
+};
 
 function escapeHtml(unsafe) {
     if (!unsafe) return '';
@@ -517,9 +540,24 @@ async function startImportProcess() {
     let youtubeTitleValue = youtubeTitleInput && youtubeTitleInput.value ? youtubeTitleInput.value.trim() : 'Property Tour';
     let youtubeThumbnailValue = youtubeThumbInput && youtubeThumbInput.value ? youtubeThumbInput.value.trim() : '';
     let galleryTitleValue = galleryTitleInput && galleryTitleInput.value ? galleryTitleInput.value.trim() : 'Property Gallery';
-    let mapAddressValue = mapAddressInput && mapAddressInput.value ? mapAddressInput.value.trim() : 'Austin, TX';
-    let mapLatValue = mapLatInput && mapLatInput.value ? mapLatInput.value.trim() : '30.2672';
-    let mapLngValue = mapLngInput && mapLngInput.value ? mapLngInput.value.trim() : '-97.7431';
+    // Send the raw values exactly as typed. Empty fields stay empty so the PHP
+    // importer never mistakes a blank input for an intentional override and can
+    // preserve each demo property's own map data.
+    let mapAddressValue = mapAddressInput && mapAddressInput.value ? mapAddressInput.value.trim() : '';
+    let mapLatValue = mapLatInput && mapLatInput.value ? mapLatInput.value.trim() : '';
+    let mapLngValue = mapLngInput && mapLngInput.value ? mapLngInput.value.trim() : '';
+
+    // True only when the user actually interacted with the Location step. The
+    // runtime flag is the primary signal; a non-empty field is treated as a
+    // safety-net fallback. Drives the import decision: false => keep demo map;
+    // true => override the user-changed fields.
+    const locationModified = hvnlyLocationStepModified
+        || !!(mapAddressValue || mapLatValue || mapLngValue);
+
+    // No value-based fallback here on purpose: a coordinate's source cannot be
+    // inferred from its value. When uncertain we default to "not user-entered",
+    // which is the non-destructive choice (demo coordinates are preserved).
+    const coordinatesUserEntered = hvnlyCoordinatesUserEntered;
     
     // Extract YouTube video ID from whatever URL the user entered.
     // If the field is empty we leave both values blank — the PHP importer
@@ -550,6 +588,8 @@ async function startImportProcess() {
         selected_department: selectedDepartment,
         map_provider: selectedMapProvider,
         // Map values
+        location_modified: locationModified ? 1 : 0,
+        coordinates_user_entered: coordinatesUserEntered ? 1 : 0,
         map_address: mapAddressValue,
         map_latitude: mapLatValue,
         map_longitude: mapLngValue,
@@ -1462,6 +1502,31 @@ document.addEventListener('DOMContentLoaded', function() {
     setupQuantitySlider();
     setupCacheImportToggle();
     setupImportResumePrompt();
+
+    // Track genuine user edits on the Location fields. Programmatic updates from
+    // the map manager (input.value = ...) do not dispatch 'input', so these only
+    // fire on real typing.
+    //
+    // Typing in the address field marks the step modified but leaves coordinates
+    // as system-generated (address-only override). Typing directly into latitude
+    // or longitude marks the coordinates as user-entered (full override) — this
+    // is essential because the map manager's own coordinate sync only fires when
+    // BOTH coordinates are valid, so a single-field coordinate edit would
+    // otherwise go untracked.
+    const addressField = document.getElementById('map-address');
+    if (addressField) {
+        addressField.addEventListener('input', function () {
+            window.hvnlyImportWizardMarkLocationModified();
+        });
+    }
+    ['map-latitude', 'map-longitude'].forEach((id) => {
+        const field = document.getElementById(id);
+        if (field) {
+            field.addEventListener('input', function () {
+                window.hvnlyImportWizardMarkLocationModified('manual');
+            });
+        }
+    });
 
     const closeButton = document.querySelector('.hvnly--property--import-close-button');
     if (closeButton) {

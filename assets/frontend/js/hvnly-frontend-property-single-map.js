@@ -193,7 +193,8 @@
             }
 
             if (container.offsetHeight === 0) {
-                container.style.height = '400px';
+                const responsiveHeight = getComputedStyle(container).getPropertyValue('--hvnly-media-height').trim();
+                container.style.height = responsiveHeight || '360px';
             }
 
             const map = L.map(container, {
@@ -261,7 +262,7 @@
         style.id = styleId;
         style.textContent = `
             .hvnly-property-single__map {
-                height: 400px;
+                height: var(--hvnly-media-height, 360px);
                 width: 100%;
                 background: #f5f5f5;
                 border-radius: 12px;

@@ -910,9 +910,17 @@
 .hvnly-property-grid-list-top-badge-left .hvnly-property-thumbnail-badge i,
 .hvnly-property-grid-list-bottom-badge-left .hvnly-property-thumbnail-badge i,
 .hvnly-property--grid-list--footer .hvnly-property-type-link i ,
+.hvnly-property--grid-list--footer .hvnly-property-type-link .hvnly-property-type-image ,
 .hvnly-property-field-footer .hvnly-property--grid-list--footer .hvnly-property-thumbnail-badge i {
     font-size: 12px;
     flex-shrink: 0;
+}
+
+.hvnly-property--grid-list--footer .hvnly-property-type-link .hvnly-property-type-image {
+    width: 12px;
+    height: 12px;
+    object-fit: cover;
+    border-radius: 2px;
 }
 
 .hvnly-property-grid-list-top-badge-left .hvnly-badge-text,

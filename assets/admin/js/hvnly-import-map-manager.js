@@ -158,7 +158,11 @@
             }
 
             if (!opts.isDefaultSeed && typeof window.hvnlyImportWizardMarkLocationModified === 'function') {
-                window.hvnlyImportWizardMarkLocationModified();
+                // An address-bearing call originates from geocoding (typed address
+                // or autocomplete suggestion); the coordinates were system-generated.
+                // A call without an address originates from a direct coordinate edit,
+                // a marker drag, or a map click — i.e. user-entered coordinates.
+                window.hvnlyImportWizardMarkLocationModified(opts.address ? 'geocode' : 'manual');
             }
         },
 

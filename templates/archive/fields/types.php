@@ -55,6 +55,9 @@ if ($hvnly_display_all) {
     <?php foreach ($hvnly_display_property_types as $hvnly_property_type): 
         $hvnly_icon_data = get_term_meta($hvnly_property_type->term_id, '_hvnly_advanced_icon_data', true);
         $hvnly_icon_class = is_array($hvnly_icon_data) && isset($hvnly_icon_data['class']) ? $hvnly_icon_data['class'] : '';
+        $hvnly_type_image_url = function_exists('hvnly_get_term_advanced_image_url')
+            ? hvnly_get_term_advanced_image_url($hvnly_property_type->term_id)
+            : '';
     ?>
         <div class="hvnly-property-type-label"><?php echo esc_html__('Type:', 'havenlytics'); ?></div>
         <a href="#" 
@@ -63,7 +66,9 @@ if ($hvnly_display_all) {
            data-taxonomy="hvnly_prop_types"
            data-term-slug="<?php echo esc_attr($hvnly_property_type->slug); ?>"
            data-term-id="<?php echo esc_attr($hvnly_property_type->term_id); ?>">
-            <?php if (!empty($hvnly_icon_class)): ?>
+            <?php if (!empty($hvnly_type_image_url)): ?>
+                <img class="hvnly-property-type-image" src="<?php echo esc_url($hvnly_type_image_url); ?>" alt="" />
+            <?php elseif (!empty($hvnly_icon_class)): ?>
                 <i class="<?php echo esc_attr($hvnly_icon_class); ?>"></i>
             <?php endif; ?>
             <span class="hvnly-property-type-text"><?php echo esc_html($hvnly_property_type->name); ?></span>
@@ -80,6 +85,9 @@ if ($hvnly_display_all) {
                 <?php foreach ($hvnly_remaining_property_types as $hvnly_property_type): 
                     $hvnly_icon_data = get_term_meta($hvnly_property_type->term_id, '_hvnly_advanced_icon_data', true);
                     $hvnly_icon_class = is_array($hvnly_icon_data) && isset($hvnly_icon_data['class']) ? $hvnly_icon_data['class'] : '';
+                    $hvnly_type_image_url = function_exists('hvnly_get_term_advanced_image_url')
+                        ? hvnly_get_term_advanced_image_url($hvnly_property_type->term_id)
+                        : '';
                 ?>
                     <a href="#" 
                        class="hvnly-property-type-link" 
@@ -87,7 +95,9 @@ if ($hvnly_display_all) {
                        data-taxonomy="hvnly_prop_types"
                        data-term-slug="<?php echo esc_attr($hvnly_property_type->slug); ?>"
                        data-term-id="<?php echo esc_attr($hvnly_property_type->term_id); ?>">
-                        <?php if (!empty($hvnly_icon_class)): ?>
+                        <?php if (!empty($hvnly_type_image_url)): ?>
+                            <img class="hvnly-property-type-image" src="<?php echo esc_url($hvnly_type_image_url); ?>" alt="" />
+                        <?php elseif (!empty($hvnly_icon_class)): ?>
                             <i class="<?php echo esc_attr($hvnly_icon_class); ?>"></i>
                         <?php endif; ?>
                         <span class="hvnly-property-type-text"><?php echo esc_html($hvnly_property_type->name); ?></span>

@@ -602,14 +602,6 @@ class DnDCardBuilder
                         'mode' => 'both',
                         'value' => ['value' => '2'],
                         'order' => 2
-                    ],
-                    [
-                        'id' => 'feature-sqft',
-                        'type' => 'sqft',
-                        'label' => __('Square Feet', 'havenlytics'),
-                        'mode' => 'both',
-                        'value' => ['value' => '2,980'],
-                        'order' => 3
                     ]
                 ]
             ],

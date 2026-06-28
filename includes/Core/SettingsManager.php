@@ -730,9 +730,9 @@ class SettingsManager
         
         $defaults = [
             'hvnly_EnableBreadcrumbs' => true,
-            'hvnly_EnableBackToTop' => true,
-            'hvnly_EnablePrintButton' => true,
-            'hvnly_EnableSaveProperty' => true,
+            'hvnly_EnableBackToTop' => false,
+            'hvnly_EnablePrintButton' => false,
+            'hvnly_EnableSaveProperty' => false,
             'hvnly_EnableShareButton' => true,
         ];
         
@@ -766,7 +766,7 @@ class SettingsManager
         $property_details = $this->get_property_details_settings();
         return isset($property_details['hvnly_EnableBackToTop']) 
             ? (bool) $property_details['hvnly_EnableBackToTop'] 
-            : true;
+            : false;
     }
 
     /**
@@ -780,7 +780,7 @@ class SettingsManager
         $property_details = $this->get_property_details_settings();
         return isset($property_details['hvnly_EnablePrintButton']) 
             ? (bool) $property_details['hvnly_EnablePrintButton'] 
-            : true;
+            : false;
     }
     
     /**
@@ -794,7 +794,7 @@ class SettingsManager
         $property_details = $this->get_property_details_settings();
         return isset($property_details['hvnly_EnableSaveProperty']) 
             ? (bool) $property_details['hvnly_EnableSaveProperty'] 
-            : true;
+            : false;
     }
 
     /**

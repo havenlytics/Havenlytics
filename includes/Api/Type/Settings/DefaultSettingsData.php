@@ -592,9 +592,9 @@ class DefaultSettingsData
     {
         return [
             'hvnly_EnableBreadcrumbs' => true,
-            'hvnly_EnableBackToTop' => true,
-            'hvnly_EnablePrintButton' => true,
-            'hvnly_EnableSaveProperty' => true,
+            'hvnly_EnableBackToTop' => false,
+            'hvnly_EnablePrintButton' => false,
+            'hvnly_EnableSaveProperty' => false,
             'hvnly_EnableShareButton' => true,
         ];
     }

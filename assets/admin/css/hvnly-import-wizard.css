@@ -1286,7 +1286,7 @@ input:checked+.hvnly--property--import-toggle-slider:before {
 .hvnly-wizard-sticky-footer {
     position: sticky;
     bottom: 0;
-    z-index: 100;
+    z-index: 99999;
     margin-top: 0;
     flex-shrink: 0;
     border-radius: var(--hvnly-radius) var(--hvnly-radius) 0 0;

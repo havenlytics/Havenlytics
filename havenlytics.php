@@ -12,7 +12,7 @@
  * Plugin Name:       Havenlytics – Real Estate Plugin with Advanced Search, Maps & Property Builder
  * Plugin URI:        https://wordpress.org/plugins/havenlytics/
  * Description:       Powerful WordPress real estate plugin with property listings, AJAX search, maps, galleries, drag-and-drop layouts, built for future AI features.
- * Version:           3.1.1
+ * Version:           3.1.2
  * Author:            Havenlytics
  * Author URI:        https://havenlytics.com
  * Requires at least: 6.0
@@ -31,7 +31,7 @@ defined('ABSPATH') || exit;
  * Define plugin constants for paths, URLs, and configuration
  * These constants are used throughout the plugin for easy reference
  */
-define('HVNLYNAB_VERSION', '3.1.1');
+define('HVNLYNAB_VERSION', '3.1.2');
 define('HVNLYNAB_FILE', __FILE__);
 define('HVNLYNAB_BASENAME', plugin_basename(HVNLYNAB_FILE));
 define('HVNLYNAB_SLUG', 'havenlytics');
@@ -416,20 +416,27 @@ final class HvnlyNab
          */
         register_activation_hook(__FILE__, function () {
             try {
-                $was_installed = (bool) get_option( \HvnlyNab\Core\Installer::DB_VERSION_KEY, false );
-
                 /**
                  * Safe activation: full install on first run, migrations-only on updates.
                  */
                 \HvnlyNab\Core\Installer::activate();
 
                 /**
-                 * One-time welcome redirect — fresh installs only, never on plugin updates.
+                 * One-time onboarding redirect, re-armed on every MANUAL activation
+                 * (fresh install OR deactivate → reactivate).
+                 *
+                 * Plugin UPDATES are excluded automatically: WordPress reactivates
+                 * plugins silently during an update (activate_plugin( ..., $silent = true )),
+                 * so this activation hook never fires on a normal update. The hook firing
+                 * is therefore the authoritative signal of a deliberate activation.
+                 *
+                 * Resetting the "done" marker lets the redirect fire once per activation;
+                 * the destination (Import Wizard vs Settings) is resolved later from the
+                 * current property count in HookManager::get_activation_redirect_url().
                  */
-                if ( ! $was_installed && ! get_option( 'hvnly_activation_redirect_done' ) ) {
-                    update_option( 'hvnly_activation_redirect', 1 );
-                    set_transient( 'hvnly_activation_redirect', 1, HOUR_IN_SECONDS );
-                }
+                delete_option( 'hvnly_activation_redirect_done' );
+                update_option( 'hvnly_activation_redirect', 1 );
+                set_transient( 'hvnly_activation_redirect', 1, HOUR_IN_SECONDS );
 
 
                 /**

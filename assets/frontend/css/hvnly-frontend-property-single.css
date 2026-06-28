@@ -27,6 +27,23 @@
     /* Additional Variables */
     --hvnly-button-bg-hover: var(--hvnly-brand-secondary);
     --hvnly-pagination-hover-bg: var(--hvnly-brand-secondary);
+
+    /* Responsive media block height (shared by single-property map & video) */
+    --hvnly-media-height: clamp(320px, 22vw, 360px);
+}
+
+/* Responsive height bands for the map & video content blocks.
+   Desktop/laptop use the fluid clamp above; tablet & mobile step down. */
+@media (max-width: 1024px) {
+    :root {
+        --hvnly-media-height: clamp(280px, 30vw, 300px);
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --hvnly-media-height: clamp(220px, 34vw, 260px);
+    }
 }
 
 /* SVG Icon Styling */
@@ -795,6 +812,21 @@
 
 }
 
+/* Map block: responsive height shared with the video block */
+.hvnly-property-single__map {
+    height: var(--hvnly-media-height);
+    width: 100%;
+    background: #f5f5f5;
+    border-radius: var(--hvnly-card-radius, 12px);
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.hvnly-property-single__map-placeholder {
+    height: var(--hvnly-media-height);
+}
+
 .hvnly-property-single__location-card .hvnly-property-single__location-content .hvnly-property-single__location-actions a.hvnly-button--small{    padding: 9.5px 20px;
     background: var(--hvnly-brand-secondary);
     border: 1px solid var(--hvnly-brand-secondary);
@@ -1162,7 +1194,7 @@ button.hvnly-property-single__action-btn {
     border: var(--hvnly-card-border);
     box-shadow: var(--hvnly-card-shadow);
     padding: 0;
-    margin-bottom: var(--hvnly-space-xl);
+    /* margin-bottom: var(--hvnly-space-xl); */
     overflow: hidden;
     position: relative;
     max-width: 100%; /* Ensure gallery doesn't exceed container */
@@ -1170,7 +1202,7 @@ button.hvnly-property-single__action-btn {
 
 .hvnly-property-single__gallery-main {
     position: relative;
-    height: 500px;
+    height: 400px;
     overflow: hidden;
     background: linear-gradient(135deg, rgba(var(--hvnly-primary-rgb), 0.02) 0%, rgba(255, 255, 255, 0.01) 100%);
     border-radius: var(--hvnly-card-radius) var(--hvnly-card-radius) 0 0;
@@ -1707,14 +1739,8 @@ button.hvnly-property-single__action-btn {
 .hvnly-property-single__video-container {
     position: relative;
     width: 100%;
-    height: 500px;
+    height: var(--hvnly-media-height);
     overflow: hidden;
-}
-
-@media (min-width: 768px) {
-    .hvnly-property-single__video-container {
-        height: 600px;
-    }
 }
 
 .hvnly-property-single__video-container .hvnly-property-single__video-placeholder {
@@ -2572,7 +2598,7 @@ button.hvnly-property-single__carousel-btn {
     justify-content: center;
     box-shadow: var(--hvnly-shadow-card);
 }
-
+button.hvnly-property-single__carousel-btn:focus i{ color: var(--hvnly-color-white)}
 button.hvnly-property-single__carousel-btn:hover:not(:disabled) {
     background: var(--hvnly-brand-primary);
     color: var(--hvnly-color-white);
@@ -3516,10 +3542,6 @@ html {
     .hvnly-property-single__agent-avatar {
         width: 60px;
         height: 60px;
-    }
-    
-    .hvnly-property-single__video-container {
-        height: 300px;
     }
     
     .hvnly-property-single__fancybox-close,

@@ -633,7 +633,19 @@
   }
 }
 
-@media (max-width: 479px) {
+
+
+@media (max-width: 767px) {
+
+  .hvnly-property--agents--archive .hvnly-property--archive__toolbar
+  .hvnly-property--archive__actions,
+  .hvnly-property--agencies--archive .hvnly-property--archive__toolbar
+  .hvnly-property--archive__actions
+   {
+   flex-direction: unset;
+    justify-content: flex-start;
+  }
+
   .hvnly-property--archive {
     padding-left: 0.75rem;
     padding-right: 0.75rem;

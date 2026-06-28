@@ -5,22 +5,16 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4 
-Stable tag: 3.1.1
+Stable tag: 3.1.2
 License: GPLv2 or later 
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Build modern real estate websites with advanced search, filters, maps, agent/agency archives, Elementor widgets, and a drag-and-drop property builder.
+Build modern real estate websites with advanced AJAX search, interactive maps, agent and agency archives, Elementor widgets, and a drag-and-drop property builder — no coding required.
 
 == Description ==
 
-Build fast, modern real estate websites in minutes with Havenlytics.
+**Havenlytics** is a WordPress real estate plugin for agencies, agents, developers, and property directories. Create and manage listings with visual builders, smart filters, maps, galleries, and import tools — on any theme.
 
-Havenlytics is a powerful WordPress real estate plugin designed for agents, agencies, and developers. Create, manage, and showcase property listings with advanced AJAX search, smart filters, interactive maps, and a visual drag-and-drop builder, all without coding.
-
-Whether you're building a small property site or a large-scale listing platform, Havenlytics gives you full control over layouts, performance, and user experience.
-
-Designed for modern real estate websites of all sizes.
-
-Havenlytics works with any WordPress theme – no dedicated theme required, though we offer an optional companion theme for a complete solution.
+Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpress.org/themes/havenlytics-realty/) companion theme is optional.
 
 📘 Documentation: https://havenlytics.com/documentation/
 🚀 Live Demo: https://demo.havenlytics.com/
@@ -28,9 +22,18 @@ Havenlytics works with any WordPress theme – no dedicated theme required, thou
 🎨 Official Theme: https://wordpress.org/themes/havenlytics-realty/ (optional)
 💬 Community: https://facebook.com/groups/havenlytics/
 📺 YouTube: https://www.youtube.com/@havenlytics
-🆘 Support: https://havenlytics.com/support/
+📧 Support: https://havenlytics.com/support/
 
-= Perfect For =
+= Quick Start =
+
+1. Install and activate Havenlytics.
+2. (Optional) Install **Havenlytics Realty** from WordPress.org.
+3. Run the Property Setup wizard and import demo listings.
+4. Customize settings, builders, and pages.
+
+**Setup & import tutorial:** [youtube https://www.youtube.com/watch?v=cEVQ0uhwiHc]
+
+= Who It's For =
 
 - Real estate agencies and brokerages
 - Property listing websites and directories
@@ -40,114 +43,63 @@ Havenlytics works with any WordPress theme – no dedicated theme required, thou
 - Individual real estate agents
 
 
-= Why Choose Havenlytics? =
+= Why Havenlytics =
 
-🏗️ Built for Real Estate
-Designed specifically for property listings – not a generic directory plugin. Every feature is crafted with real estate professionals in mind, from property management to client engagement.
+🏗️ **Built for real estate** — Purpose-built for property listings, not a generic directory plugin.
 
-🎨 Drag & Drop Property Builder
-Create and customize property layouts visually without writing a single line of code. Build unique property cards, forms, and listing pages with intuitive drag-and-drop controls.
+🎨 **Visual builders** — Drag-and-drop property forms, search filters, and listing cards without code.
 
-⚡ Fast AJAX Search & Filters
-Deliver instant, real-time results with advanced filtering options including price ranges, bedrooms, bathrooms, location, status, and custom fields. No page reloads – just smooth, responsive search.
+⚡ **Fast AJAX search** — Real-time results with price, beds, baths, location, status, and custom field filters.
 
-📈 Scalable & High Performance
-Optimized for speed and large property datasets. Whether you have 10 or 10,000 properties, Havenlytics maintains lightning-fast performance with built-in caching and optimized database queries.
+📈 **Scalable** — Built-in caching and optimized queries for small sites and large catalogs.
 
-👨‍💻 Developer-Friendly
-Includes 50+ action hooks and filters, a complete REST API, template override system, and extensive documentation. Build custom integrations and extend functionality with ease.
+👨‍💻 **Developer-friendly** — 50+ hooks and filters, REST API, and theme template overrides (`your-theme/havenlytics/`).
 
-🌍 Multilingual Ready
-Fully translation-ready with .pot file included. Compatible with WPML and Polylang for creating multilingual property websites.
+🌍 **Translation-ready** — `.pot` file included; compatible with WPML and Polylang.
 
-🔒 Secure & Compliant
-Built with WordPress coding standards, security best practices, and GDPR-ready features. Regular security audits and updates ensure your site stays protected.
+🔒 **Secure** — WordPress coding standards, capability checks, and GDPR-ready options.
 
-📺 Watch Demo Video:
-[youtube https://www.youtube.com/watch?v=2LQrba9rIrg]
 
 = Core Features =
 
-✅ Elementor Integration
-Three dedicated Elementor widgets under the **Havenlytics** category — Property Archive, Property Agents, and Property Agency — with responsive layouts, AJAX search, style controls, and global settings sync.
+✅ **Property Import Wizard** — Guided demo import with media, maps, documents, agents, and custom fields.
 
-✅ Agent & Agency Management
-Agent profiles, agency taxonomies, availability badges (Available, Busy, Away, Offline), property assignment, and archive pages with grid/list views.
+✅ **Drag & Drop Search Builder** — Advanced search forms and sidebar filters.
 
-✅ Drag & Drop Search Builder
-Create advanced property search forms and sidebar filters without writing code.
+✅ **Interactive Maps** — Leaflet or Google Maps with markers, clustering, and location search.
 
-✅ Property Import Wizard
-Quickly import and configure property listings using a guided setup process with media, maps, and custom field support.
+✅ **Media & Documents** — Galleries, videos, virtual tours, PDFs, and floor plans.
 
-✅ AJAX Search & Smart Filtering  
-Fast, real-time search with advanced filtering options.
+✅ **Agent & Agency Management** — Profiles, taxonomies, availability badges, and archive pages.
 
-✅ Interactive Maps Integration  
-Display properties using maps with markers, clustering, and location search.
+✅ **Elementor Widgets** — Property Archive, Property Agents, and Property Agency (see below).
 
-✅ Media & Gallery System  
-Support for images, videos, virtual tours, and embedded content.
+✅ **Performance & Cache** — Cache dashboard and optimization tools.
 
-✅ Document Management  
-Attach PDFs, brochures, floor plans, and more.
+✅ **Email & Contact Agent** — Transactional emails, inquiry forms, and admin inbox.
 
-✅ Performance Dashboard & Cache System  
-Monitor and optimize performance easily.
+✅ **Shortcodes** — 50+ property variations; copy-ready examples in **Settings → Shortcodes**.
 
-✅ Email Notifications & Templates  
-Centralized Email settings tab for transactional emails — import success notifications, customizable sender details, merge tags, and an extensible template system for future agent and account emails.
+✅ **REST API & Template Overrides** — Extend and customize for client projects.
 
-✅ Template Override System  
-Developers can fully customize layouts via theme overrides.
+**Also includes:** Grid, list, and map layouts; social sharing; mortgage calculator widget; 160+ currencies; dynamic CSS; property view counter; department badges; custom price labels; and responsive single-property templates.
 
-✅ REST API Support  
-Integrate with external apps and automate workflows.
+= Email Notifications =
 
-✅ SEO-Friendly Structure  
-Optimized markup and fast loading for better search visibility.
+1. Go to **Havenlytics → Settings → Email**
+2. Set sender name and email (optional)
+3. Customize import success subject and message with merge tags
+4. On the Import wizard, keep **Email Notifications** checked for a completion email
 
-✅ Shortcodes & Layout Control  
-Display properties, agents, and agencies anywhere using shortcodes — with 50+ property variations and copy-ready examples in **Settings → Shortcodes**.
+Contact Agent emails are configured under **Settings → Contact Agent**.
 
-= Additional Features =
+= Elementor Widgets =
 
-- Responsive grid, list, and map layouts
-- Contact Agent inquiry forms with email notifications and admin inbox
-- Agent availability status with contact form gating for offline agents
-- Global property share popup (platform list driven from settings)
-- WordPress sidebar widgets – mortgage calculator, featured/related properties, agent card
-- Property view counter and popularity tracking
-- Popup media modals with gallery support
-- Social sharing integration (Facebook, Twitter, LinkedIn, Pinterest, WhatsApp)
-- Branded transactional emails (import success, inquiry notifications)
-- Dynamic CSS with real-time variable generation
-- Global color and typography settings
-- Currency management with 160+ currencies
-- Agent listings carousel for single property pages
-- Department badge display on property cards
-- Custom price labels with toggle switch
+Requires Elementor (Free or Pro). Find widgets under the **Havenlytics** category or search **HVN**.
 
-= How to configure Email notifications =
+**Quick steps:** Edit a page with Elementor → drag a Havenlytics widget → customize → publish.
 
-1. Go to Havenlytics → Settings → Email
-2. Set your global sender name and email address (optional — defaults to site name and admin email)
-3. Customize the Property Import Success subject and message using merge tags
-4. On the Property Import wizard, keep **Email Notifications** checked to receive a success email when import completes
-
-Contact Agent inquiry emails are configured separately under Havenlytics → Settings → Contact Agent.
-
-= How to Use Elementor Widgets =
-
-1. Install and activate Elementor (Free or Pro)
-2. Edit any page with Elementor
-3. In the Elementor panel, open the **Havenlytics** category or search for **HVN**
-4. Drag the desired widget onto your page
-5. Customize content and style controls, then publish
-
-== Elementor Widgets ==
-
-All Havenlytics Elementor widgets appear under the **Havenlytics** widget category. Search for **HVN** in the Elementor panel to find them quickly.
+**Tip:** Use shortcodes for simple pages, or Elementor widgets when building mixed layouts.
 
 = HVN: Property Archive =
 
@@ -167,7 +119,7 @@ Full property listing archive — same system as the property grid/list/search s
 
 **Behavior:**
 * AJAX filtering, pagination, and load more
-* Inherits global Havenlytics search and preloader settings
+* Inherits global Havenlytics search settings
 * Multiple widget instances supported per page
 
 = HVN: Property Agents =
@@ -194,97 +146,44 @@ Agency archive matching the native `/property-agencies/` page — same card layo
 * Default view — grid or list
 * Order by name or date added (asc/desc)
 
-**Tip:** Prefer shortcodes for simple page content, or Elementor widgets when you need visual layout control alongside other Elementor sections.
+= Sidebar Widgets =
 
-== WordPress Sidebar Widgets ==
+Classic WordPress widgets for single property sidebars (**Appearance → Widgets**, **HAVENLYTICS** category):
 
-Havenlytics also registers classic WordPress widgets for single property sidebars (Appearance → Widgets):
+* **Featured Properties** — highlight selected listings
+* **Property Agent** — agent card for the current property
+* **Mortgage Calculator** — tax, insurance, HOA, and PMI options
+* **Related Properties** — similar listings on single property pages
+* **Agent Listings Carousel** — other listings from the assigned agent
 
-* **Havenlytics: Featured Properties** — highlight selected listings
-* **Havenlytics: Property Agent** — agent card for the current property
-* **Havenlytics: Mortgage Calculator** — interactive calculator with tax, insurance, HOA, and PMI options
-* **Havenlytics: Related Properties** — similar listings on single property pages
-* **Havenlytics: Agent Listings Carousel** — carousel of other listings from the property agent
+Add to the **Havenlytics - Single Property Sidebar** area (not Elementor widgets).
 
-These are not Elementor widgets — add them to the **Havenlytics - Single Property Sidebar** widget area or your theme's sidebar. In the block widget editor, find them under the **HAVENLYTICS** category.
+= Automatically Created Pages =
 
-= What Makes Havenlytics Different =
+Pages are created only when a matching slug does not already exist.
 
-👉 **Lightweight & Clean Code**  
-No unnecessary bloat — just focused, efficient real estate functionality for better performance and stability.
+**On every activation (including updates):** Property Grid (`/property-grid/`), Property Lists (`/property-lists/`), Property Search (`/property-search/`), Agents (`/property-agents/`), Agency (`/property-agencies/`).
 
-👉 **Developer-Friendly**  
-Includes 50+ hooks, filters, and a complete REST API for maximum extensibility.
+**On fresh installations only:** Rent (`/rent/`), Sale (`/sale/`), Commercial (`/commercial/`), Let (`/let/`) — each with a department-filtered property grid shortcode.
 
-👉 **User-Centered Experience**  
-Intuitive UI for both admins and users, making property management simple and effective.
+Each page includes the matching shortcode. Replace with Elementor widgets from the **Havenlytics** category if preferred.
 
-== Official Theme ==
+= Shortcodes =
 
-Havenlytics is theme-independent. You can activate it on any WordPress theme and display listings with shortcodes, Elementor widgets, template overrides, and sidebar widgets.
+Display listings, agents, and agencies anywhere. Copy-ready examples and 50+ variations: **Havenlytics → Settings → Shortcodes**.
 
-Havenlytics Realty is the official companion theme from the Havenlytics team. It is the recommended option when you want layouts, single property templates, and widget areas designed alongside the plugin – but it is optional, not a requirement.
-
-Theme: https://wordpress.org/themes/havenlytics-realty/
-Live Demo: https://demo.havenlytics.com/
-
-The live demo shows Havenlytics and Havenlytics Realty used together. Install the plugin on your current theme, or pair both products for a ready-made real estate site setup.
-
-== Getting Started ==
-
-1. Install and activate the Havenlytics plugin.
-2. (Optional) Install the official Havenlytics Realty theme.
-3. Complete the Property Setup wizard.
-4. Import demo property listings.
-5. Follow the complete video tutorial.
-
-Official Theme: [https://wordpress.org/themes/havenlytics-realty/](https://wordpress.org/themes/havenlytics-realty/)
-
-Setup & Import Video: [youtube https://www.youtube.com/watch?v=cEVQ0uhwiHc]
-
-== Installation ==
-
-1. Upload the plugin files to the `/wp-content/plugins/havenlytics` directory, or install the plugin through the WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Navigate to "Havenlytics" in your admin menu to configure settings
-4. Use shortcodes or Elementor widgets to display properties, agents, and agencies on your pages
-
-== Automatically Created Pages ==
-
-The following pages are automatically created on plugin activation (if not already present):
-
-- Property Grid — Havenlytics (`/property-grid/`)
-- Property Lists — Havenlytics (`/property-lists/`)
-- Property Search — Havenlytics (`/property-search/`)
-- Agents — Havenlytics (`/property-agents/`)
-- Agency — Havenlytics (`/property-agencies/`)
-
-Each page is pre-filled with the matching shortcode. You can rebuild or replace content with Elementor widgets from the **Havenlytics** category.
-
-== Shortcodes ==
-
-Easily display real estate listings, agents, and agencies using Havenlytics shortcodes.
-
-Copy-ready examples and 50+ property variations are available under **Havenlytics → Settings → Shortcodes**.
-
-📺 Tutorial Video:  
-[youtube https://www.youtube.com/watch?v=DJ2IYECJ_YA]
-
-= Property Shortcodes =
+**Shortcode tutorial:** [youtube https://www.youtube.com/watch?v=DJ2IYECJ_YA]
 
 = [hvnly_property_grid] =
-Display properties in a responsive grid layout.  
-Live Demo: [https://demo.havenlytics.com/property-grid/](https://demo.havenlytics.com/property-grid/)
+Responsive property grid. See the [live demo](https://demo.havenlytics.com/property-grid/).
 
 = [hvnly_property_lists] =
-Display properties in a vertical list layout.  
-Live Demo: [https://demo.havenlytics.com/property-lists/](https://demo.havenlytics.com/property-lists/)
+Vertical property list layout. See the [live demo](https://demo.havenlytics.com/property-lists/).
 
 = [hvnly_property_search] =
-Display advanced property search with filters.  
-Live Demo: [https://demo.havenlytics.com/property-search/](https://demo.havenlytics.com/property-search/)
+Advanced search with filters. See the [live demo](https://demo.havenlytics.com/property-search/).
 
-Supports extensive attributes — department, price range, bedrooms, bathrooms, location, status, columns, pagination, default view, and custom CSS class. See **Settings → Shortcodes** for all variations.
+Supports department, price, beds, baths, location, status, columns, pagination, default view, and custom CSS class.
 
 = Agent & Agency Shortcodes =
 
@@ -314,92 +213,99 @@ Auto-created page slug: `property-agencies`
 
 **Legacy alias:** `[hvnly_agencies]`
 
+== Installation ==
+
+1. Install via **Plugins → Add New** or upload to `/wp-content/plugins/havenlytics/`.
+2. Activate through the **Plugins** screen.
+3. Follow the **Quick Start** steps above (setup wizard and demo import).
+4. Display listings with shortcodes, Elementor widgets, or the auto-created pages.
 
 == Frequently Asked Questions ==
 
 = Do I need the Havenlytics Realty theme? =
 
-No. Havenlytics is a standalone plugin and works with any WordPress theme. Havenlytics Realty is an optional companion theme on WordPress.org if you prefer layouts built specifically for Havenlytics property listings.
+No. Havenlytics works with any WordPress theme. [Havenlytics Realty](https://wordpress.org/themes/havenlytics-realty/) is an optional companion theme if you want matched layouts and widget areas.
 
-= Does Havenlytics work with my existing theme? =
+= How do I customize layouts and design? =
 
-Yes. Use shortcodes, Elementor widgets, the template override system (`your-theme/havenlytics/`), and WordPress sidebar widgets with your active theme. Havenlytics Realty is recommended for a matched design but is not required.
+Use the Property Builder for field layouts, shortcodes or Elementor widgets for archives, and theme template overrides in `your-theme/havenlytics/` for full control.
 
-= How do I change the layout? =
+= How do I add custom fields or documents? =
 
-Use either the [hvnly_property_grid] or [hvnly_property_lists] or [hvnly_property_search] shortcode depending on your preferred layout. You can also customize layouts through the Property Builder in the admin area.
-
-= Can I customize the design? =
-
-Yes! You can override templates by placing files in your theme's havenlytics/ directory, or use the visual Property Builder to customize without code.
-
-= How do I add custom fields? =
-
-Use the Property Builder's "Add Property Form" tab to drag and drop custom fields into your property submission form.
-
-= How do I create property documents? =
-
-Add a "Property Documents" group in your property form builder. This creates a repeater field where you can add multiple documents with icons, labels, and URLs.
+Use the Property Builder **Add Property Form** tab for custom fields. Add a **Property Documents** group for repeatable PDFs and brochures with icons, labels, and URLs.
 
 = Does it support maps? =
 
-Yes! Havenlytics includes Leaflet maps with marker clustering. You can add multiple map groups per property with address autocomplete.
+Yes — Leaflet (OpenStreetMap) or Google Maps with markers, clustering, and per-property map groups.
 
 = Is it mobile responsive? =
 
-Absolutely. All templates are fully responsive and work beautifully on phones, tablets, and desktops.
+Yes. All frontend templates are responsive across phones, tablets, and desktops.
 
 = How do I clear the cache? =
 
-Go to Havenlytics → Cache Dashboard. You can clear specific caches (search, sidebar, terms) or clear everything with one click.
+Go to **Havenlytics → Cache Dashboard** and clear search, sidebar, term caches, or everything at once.
 
 = Does Havenlytics work with Elementor? =
 
-Yes. Havenlytics includes three Elementor widgets — **HVN: Property Archive**, **HVN: Property Agents**, and **HVN: Property Agency** — under the Havenlytics category. They support responsive layouts, AJAX filtering, style controls, and integration with global Havenlytics settings. The mortgage calculator is available as a WordPress sidebar widget, not an Elementor widget.
+Yes — three widgets under the **Havenlytics** category: Property Archive, Property Agents, and Property Agency. The mortgage calculator is a WordPress sidebar widget, not an Elementor widget.
 
-= How do I display agents or agencies on a page? =
+= How do I display agents or agencies? =
 
-Use `[hvnly_property_agents]` or `[hvnly_property_agencies]` shortcodes, or drag **HVN: Property Agents** / **HVN: Property Agency** Elementor widgets onto your page. Copy-ready examples are in **Havenlytics → Settings → Shortcodes**. Auto-created pages are available at `/property-agents/` and `/property-agencies/` after activation.
+Use `[hvnly_property_agents]` or `[hvnly_property_agencies]`, the matching Elementor widgets, or the auto-created `/property-agents/` and `/property-agencies/` pages.
 
 = How does Contact Agent work? =
 
-Enable Contact Agent under **Havenlytics → Settings → Contact Agent**. Visitors can submit inquiries from property and agent pages. Admins receive email notifications; inquiries are stored under **Havenlytics → Inquiries**. Agents marked **Offline** hide the contact form automatically.
+Enable under **Settings → Contact Agent**. Visitors submit inquiries from property and agent pages; admins get email notifications and an **Inquiries** inbox. Offline agents hide the contact form.
 
 = Does Havenlytics send email notifications? =
 
-Yes. Havenlytics includes a dedicated **Email** settings tab for transactional emails. When you complete the Property Import wizard with **Email Notifications** enabled, the admin who ran the import receives a branded success email. Contact Agent inquiry, auto-reply, and admin reply emails are configured under **Contact Agent** settings.
+Yes. Configure import success emails under **Settings → Email**. Contact Agent emails are under **Settings → Contact Agent**.
 
-= Can developers extend it? =
+= Can developers extend Havenlytics? =
 
-Yes! Havenlytics includes 50+ action hooks and filters, a complete REST API, and an extensible field types system.
+Yes — 50+ hooks and filters, REST API, and extensible field types.
 
 = Can I hire your development team? =
 
-Yes! Visit: https://havenlytics.com/ for custom development services.
+Visit [havenlytics.com](https://havenlytics.com/) for custom development services.
 
 == Screenshots ==
-1. Advanced Filter Property Search
-2. Property Grid Shortcode
-3. Property Lists Shortcode
-4. Manage Search Fields 
-5. Property Installing Setup 
-6. Property Ajax Map Search Result
-7. Single Property Gallery Carousel with Popup
-8. Single Property Popup Video with Popup Modal
-9. Single Property map
-10. Property Builder 
-11. Property Builder field
-12. Havenlytics Cache Management
-13. Havenlytics Settings - Light Mode 
-14. Havenlytics Settings - Dark Mode
-15. Elementor Widget - HVN Property Archive
-16. Elementor Widget - HVN Property Agents
-17. Elementor Widget - HVN Property Agency
+1. Advanced Property Search with Filters
+2. Property Grid Layout
+3. Property List Layout
+4. Search Builder — Manage Fields
+5. Property Import Setup Wizard
+6. AJAX Map Search Results
+7. Single Property Gallery Carousel
+8. Single Property Video Modal
+9. Single Property Map
+10. Property Builder
+11. Property Builder — Custom Fields
+12. Cache Management Dashboard
+13. Settings Panel — Light Mode
+14. Settings Panel — Dark Mode
+15. Elementor Widget — Property Archive
+16. Elementor Widget — Property Agents
+17. Elementor Widget — Property Agency
 18. Single Agent Profile Page
-19. Property Agent Inquiries Form
+19. Contact Agent Inquiry Form
 
 
 == Changelog ==
+
+= 3.1.2 - 2026-06-28 =
+
+* New: Property Types now support optional image upload in the admin (same workflow as Property Locations); the frontend keeps image → icon → text fallback.
+* New: Demo import assigns stock images to default Property Types only (user-created types are never overwritten).
+* New: Fresh installs automatically create Rent, Sale, Commercial, and Let department pages with property grid shortcodes (existing pages with matching slugs are respected).
+* New: Demo import populates preset Email, Phone, and Website contact fields on every imported property.
+* Improved: Demo import uses 25 unique properties with no duplicate "(Copy)" titles; import quantity is capped to the unique dataset size.
+* Improved: Import map location logic respects user intent — address-only edits no longer overwrite per-property demo coordinates when geocoding fills latitude/longitude.
+* Improved: Fresh-install and reactivation onboarding redirects to the Import Wizard or Settings based on property count.
+* Improved: New installations default Back to Top, Print, and Save Property buttons to off on single property pages (existing saved settings are preserved).
+* Improved: Default Property Card layout shows three feature items (Beds, Baths, Receptions) on fresh installs and reset-to-default — reduces awkward wrapping on listing cards.
+* Improved: Single property map and video blocks use responsive heights for a more balanced layout on laptops, tablets, and mobile devices.
 
 = 3.1.1 - 2026-06-25 =
 

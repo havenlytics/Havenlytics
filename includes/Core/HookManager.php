@@ -185,6 +185,18 @@ class HookManager {
 		}
 
 		/**
+		 * Fresh installs set a one-time onboarding redirect flag from the activation
+		 * hook (havenlytics.php) using the authoritative pre-install check. install()
+		 * has already written the DB version by the time this runs, so never treat a
+		 * legitimately pending fresh-install flag as a stale update flag — just ensure
+		 * the redirect can still fire in the same request (covers TGMPA).
+		 */
+		if ( $this->has_activation_redirect_flag() && ! get_option( 'hvnly_activation_redirect_done' ) ) {
+			add_action( 'admin_menu', array( $this, 'maybe_redirect_after_activation' ), 9999 );
+			return;
+		}
+
+		/**
 		 * Plugin updates also fire activated_plugin — never hijack admin navigation on upgrade.
 		 */
 		if ( get_option( \HvnlyNab\Core\Installer::DB_VERSION_KEY, '' ) ) {
@@ -204,17 +216,26 @@ class HookManager {
 	/**
 	 * Resolve the one-time post-activation redirect URL from property state.
 	 *
+	 * Fresh installs (no listings in any meaningful status) are guided into the
+	 * Demo Import Wizard on its first (department) step; any site that already has
+	 * at least one property — published, draft, pending or private — is sent to
+	 * Settings instead.
+	 *
 	 * @return string Admin URL for Import Wizard (no properties) or Settings dashboard.
 	 */
 	private function get_activation_redirect_url() {
-		$property_count  = wp_count_posts( 'hvnly_property' );
-		$published_count = isset( $property_count->publish ) ? absint( $property_count->publish ) : 0;
+		$counts = wp_count_posts( 'hvnly_property' );
 
-		if ( $published_count > 0 ) {
+		$existing_properties = 0;
+		foreach ( array( 'publish', 'draft', 'pending', 'private' ) as $status ) {
+			$existing_properties += isset( $counts->$status ) ? absint( $counts->$status ) : 0;
+		}
+
+		if ( $existing_properties > 0 ) {
 			return admin_url( 'edit.php?post_type=hvnly_property&page=hvnly_property_settings' );
 		}
 
-		return admin_url( 'edit.php?post_type=hvnly_property&page=hvnly-property-import' );
+		return admin_url( 'edit.php?post_type=hvnly_property&page=hvnly-property-import&step=department' );
 	}
 
 	/**

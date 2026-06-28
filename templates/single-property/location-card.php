@@ -208,9 +208,7 @@ $hvnly_map_id       = 'hvnly-map-' . $hvnly_property_id . '-' . $hvnly_map_suffi
 
                 data-address="<?php echo esc_attr( $hvnly_address ); ?>"
 
-                data-title="<?php echo esc_attr( get_the_title( $hvnly_property_id ) ); ?>"
-
-                style="height: 400px; width: 100%; background: #f5f5f5;">
+                data-title="<?php echo esc_attr( get_the_title( $hvnly_property_id ) ); ?>">
 
                 <!-- Map will be initialized by JavaScript -->
 
@@ -227,8 +225,6 @@ $hvnly_map_id       = 'hvnly-map-' . $hvnly_property_id . '-' . $hvnly_map_suffi
                     align-items: center;
 
                     justify-content: center;
-
-                    height: 400px;
 
                     background: #f5f5f5;
 

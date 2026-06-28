@@ -566,11 +566,15 @@ class PropertyCardRenderer {
 			if ( $args['include_meta'] ) {
 				$icon_data   = get_term_meta( $term->term_id, '_hvnly_advanced_icon_data', true );
 				$icon_class  = is_array( $icon_data ) && isset( $icon_data['class'] ) ? $icon_data['class'] : '';
+				$image_url   = function_exists( 'hvnly_get_term_advanced_image_url' )
+					? hvnly_get_term_advanced_image_url( $term->term_id )
+					: '';
 				$term_meta_color = get_term_meta( $term->term_id, 'hvnly_badge_background_color', true );
 				$display_option = get_term_meta( $term->term_id, 'hvnly_badge_display_option', true );
 
 				$term_data['color']        = $term_meta_color;
 				$term_data['icon']         = $icon_class;
+				$term_data['image']        = $image_url;
 				$term_data['display_all']  = ! empty( $display_option );
 			}
 
@@ -665,6 +669,9 @@ class PropertyCardRenderer {
 		$primary_term = $terms[0];
 		$icon_data    = get_term_meta( $primary_term->term_id, '_hvnly_advanced_icon_data', true );
 		$icon_class   = is_array( $icon_data ) && isset( $icon_data['class'] ) ? $icon_data['class'] : '';
+		$image_url    = function_exists( 'hvnly_get_term_advanced_image_url' )
+			? hvnly_get_term_advanced_image_url( $primary_term->term_id )
+			: '';
 		$term_color   = get_term_meta( $primary_term->term_id, 'hvnly_badge_background_color', true );
 
 		return array(
@@ -673,6 +680,7 @@ class PropertyCardRenderer {
 			'slug'  => $primary_term->slug,
 			'color' => $term_color,
 			'icon'  => $icon_class,
+			'image' => $image_url,
 		);
 	}
 

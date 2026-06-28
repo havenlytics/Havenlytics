@@ -72,6 +72,9 @@ class Installer
         
         // Step 2: Create required plugin pages with shortcodes.
         self::create_required_pages();
+
+        // Step 2b: Department listing pages (fresh install only — not run on existing-site activate).
+        self::create_department_pages();
         
         // Step 3: Schedule recurring cron events for maintenance.
         Scheduler::schedule_events();
@@ -269,6 +272,81 @@ class Installer
             }
             
             // Insert new page with custom slug.
+            $page_id = wp_insert_post([
+                'post_title'   => $page['full_title'],
+                'post_name'    => $page['slug'],
+                'post_content' => $page['shortcode'],
+                'post_status'  => 'publish',
+                'post_type'    => 'page',
+                'post_author'  => $current_user_id,
+            ]);
+
+            if (!is_wp_error($page_id) && $page_id > 0) {
+                update_option($page['option_key'], $page_id);
+                update_post_meta($page_id, '_hvnly_property_auto_created', true);
+                update_post_meta($page_id, '_hvnly_plugin_page', '1');
+            }
+        }
+    }
+
+    /**
+     * Create department property grid pages on fresh install only.
+     *
+     * Skips when a page with the target slug already exists (manual pages are respected).
+     *
+     * @since 3.1.2
+     * @return void
+     */
+    private static function create_department_pages(): void
+    {
+        $pages = [
+            [
+                'title'      => __('Rent', 'havenlytics'),
+                'full_title' => 'Rent -- Havenlytics',
+                'shortcode'  => "[hvnly_property_grid department='rent']",
+                'option_key' => 'hvnly_department_rent_page_id',
+                'slug'       => 'rent',
+            ],
+            [
+                'title'      => __('Sale', 'havenlytics'),
+                'full_title' => 'Sale -- Havenlytics',
+                'shortcode'  => "[hvnly_property_grid department='sale']",
+                'option_key' => 'hvnly_department_sale_page_id',
+                'slug'       => 'sale',
+            ],
+            [
+                'title'      => __('Commercial', 'havenlytics'),
+                'full_title' => 'Commercial -- Havenlytics',
+                'shortcode'  => "[hvnly_property_grid department='commercial']",
+                'option_key' => 'hvnly_department_commercial_page_id',
+                'slug'       => 'commercial',
+            ],
+            [
+                'title'      => __('Let', 'havenlytics'),
+                'full_title' => 'Let -- Havenlytics',
+                'shortcode'  => "[hvnly_property_grid department='let']",
+                'option_key' => 'hvnly_department_let_page_id',
+                'slug'       => 'let',
+            ],
+        ];
+
+        foreach ($pages as $page) {
+            $existing_id = get_option($page['option_key']);
+            if ($existing_id && get_post($existing_id)) {
+                continue;
+            }
+
+            $existing_page = get_page_by_path($page['slug'], OBJECT, 'page');
+            if ($existing_page instanceof \WP_Post) {
+                continue;
+            }
+
+            $current_user_id = get_current_user_id();
+            if (!$current_user_id) {
+                $admin_user = get_users(['role' => 'administrator', 'number' => 1]);
+                $current_user_id = !empty($admin_user) ? $admin_user[0]->ID : 1;
+            }
+
             $page_id = wp_insert_post([
                 'post_title'   => $page['full_title'],
                 'post_name'    => $page['slug'],

@@ -155,7 +155,7 @@ function hvnly_is_back_to_top_enabled()
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->is_back_to_top_enabled();
     }
-    return true;
+    return false;
 }
 
 /**
@@ -170,7 +170,7 @@ function hvnly_is_print_button_enabled()
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->is_print_button_enabled();
     }
-    return true;
+    return false;
 }
 /**
  * Check if save property button is enabled from settings
@@ -184,7 +184,7 @@ function hvnly_is_save_property_enabled()
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->is_save_property_enabled();
     }
-    return true;
+    return false;
 }
 /**
  * Check if share button is enabled from settings
@@ -294,6 +294,33 @@ function hvnly_get_term_badge_background_color( $term_id ) {
     }
 
     return $color;
+}
+
+/**
+ * Term advanced image URL for taxonomy term image fields.
+ *
+ * @param int    $term_id Term ID.
+ * @param string $size    Image size.
+ * @return string Image URL or empty string.
+ */
+function hvnly_get_term_advanced_image_url( $term_id, $size = 'thumbnail' ) {
+    $term_id = absint( $term_id );
+    if ( ! $term_id ) {
+        return '';
+    }
+
+    $raw = get_term_meta( $term_id, '_hvnly_term_advanced_image_data', true );
+    if ( ! is_array( $raw ) ) {
+        return '';
+    }
+
+    $attachment_id = absint( $raw['id'] ?? 0 );
+    if ( $attachment_id <= 0 ) {
+        return '';
+    }
+
+    $url = wp_get_attachment_image_url( $attachment_id, $size );
+    return is_string( $url ) ? $url : '';
 }
 
 /**

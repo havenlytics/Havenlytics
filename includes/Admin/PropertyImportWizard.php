@@ -16,6 +16,7 @@ use HvnlyNab\Admin\Data\TabData;
 use HvnlyNab\Admin\Data\DemoData;
 use HvnlyNab\Admin\Data\UkImportLocations;
 use HvnlyNab\Admin\Importer\PropertyLocationTermImageSeeder;
+use HvnlyNab\Admin\Importer\PropertyTypeTermImageSeeder;
 use HvnlyNab\Agent\PropertyAgentResolver;
 use HvnlyNab\Core\PermalinkSettings;
 use HvnlyNab\Core\SectionIdentity;
@@ -588,7 +589,8 @@ div.update-nag,
             'imported'         => get_option( $this->import_option, false ),
             'importCount'      => absint( get_option( $this->count_option, 0 ) ),
             'totalProperties'  => absint( wp_count_posts( $this->post_type )->publish ?? 0 ),
-            'maxImportLimit'   => 50,
+            'maxImportLimit'        => $this->get_demo_import_limit(),
+            'defaultImportQuantity' => $this->get_demo_import_limit(),
             'batchSize'        => 1,
             'importAjaxTimeout'=> 240000,
             'importMaxRetries' => 5,
@@ -1644,7 +1646,8 @@ div.update-nag,
 
             $batch           = absint( filter_input( INPUT_POST, 'batch', FILTER_VALIDATE_INT ) ?: 0 );
             $imported        = absint( filter_input( INPUT_POST, 'imported', FILTER_VALIDATE_INT ) ?: 0 );
-            $total_to_import = min( absint( filter_input( INPUT_POST, 'total_to_import', FILTER_VALIDATE_INT ) ?: 25 ), 50 );
+            $demo_import_limit = $this->get_demo_import_limit();
+            $total_to_import   = min( absint( filter_input( INPUT_POST, 'total_to_import', FILTER_VALIDATE_INT ) ?: $demo_import_limit ), $demo_import_limit );
 
             $raw_options = $this->get_import_options_from_request();
             $options     = $this->sanitize_import_options( $raw_options );
@@ -1812,7 +1815,7 @@ div.update-nag,
         if ( ! is_array( $options ) ) {
             return $sanitized;
         }
-        $boolean_keys = array( 'email_notifications', 'include_images', 'enable_cache_after_import', 'location_modified' );
+        $boolean_keys = array( 'email_notifications', 'include_images', 'enable_cache_after_import', 'location_modified', 'coordinates_user_entered' );
 
         foreach ( $options as $key => $value ) {
             $safe_key = sanitize_key( $key );
@@ -1888,7 +1891,7 @@ div.update-nag,
             'session_id'          => $session_id,
             'imported'            => 0,
             'current_batch'       => 0,
-            'total_to_import'     => max( 1, min( 50, $total_to_import ) ),
+            'total_to_import'     => max( 1, min( $this->get_demo_import_limit(), $total_to_import ) ),
             'status'              => 'running',
             'prep_step'           => 0,
             'media_cache'         => array(),
@@ -2256,6 +2259,7 @@ div.update-nag,
             }
             $this->ensure_taxonomies_exist();
             $this->maybe_seed_location_term_images_batch( $options, (int) $imported );
+            $this->maybe_seed_property_type_term_images_batch( $options, (int) $imported );
             $this->ensure_demo_agent_ecosystem( $options, (int) $imported, false );
             $this->maybe_backfill_demo_agent_images_batch( $options, 2 );
             $this->check_rate_limit();
@@ -2263,6 +2267,7 @@ div.update-nag,
             $batch_size = $this->get_import_batch_size( $options, (int) $batch, (int) $imported );
             $demo_properties = DemoData::get_demo_properties_data();
             $total_properties_available = count( $demo_properties );
+            $total_to_import = min( (int) $total_to_import, $total_properties_available );
             $remaining = $total_to_import - $imported;
 
             if ( $remaining <= 0 ) {
@@ -2315,11 +2320,6 @@ div.update-nag,
                     $dept_data      = isset( $departments[ $dept_key ] ) && is_array( $departments[ $dept_key ] ) ? $departments[ $dept_key ] : [];
 
                     $property_data = $demo_properties[ $property_index ];
-                    if ( $i >= $total_properties_available ) {
-                        $copy_number = floor( $i / $total_properties_available ) + 1;
-                        /* translators: %d: duplicate property copy number. */
-                        $property_data['title'] = $property_data['title'] . ' ' . sprintf( __( '(Copy %d)', 'havenlytics' ), $copy_number );
-                    }
 
                     $property_data['department'] = sanitize_key( $dept_key );
                     $property_data['demo_property_index'] = $property_index;
@@ -2328,7 +2328,12 @@ div.update-nag,
                     $property_data = $this->merge_taxonomy_data( $property_data, $dept_data, $demo_properties, $property_index );
                     $property_data = $this->merge_common_options( $property_data, $options );
                     if ( ! $this->wizard_provided_custom_location( $options ) ) {
+                        // No full custom location: give each property its own diverse
+                        // demo location, then overlay only the individual fields the
+                        // user explicitly changed. Empty inputs never replace valid
+                        // demo coordinates (partial override is non-destructive).
                         $property_data = $this->apply_diverse_import_location( $property_data, $i );
+                        $property_data = $this->apply_partial_location_override( $property_data, $options );
                     }
 
                     $this->log_import_location_trace( $i, $property_index, $property_data, $options );
@@ -2371,6 +2376,8 @@ div.update-nag,
                 $this->maybe_backfill_demo_agent_images_batch( $options, 5 );
 
                 $this->finish_location_term_image_seeding();
+
+                $this->finish_property_type_term_image_seeding();
 
                 $this->finalize_permalinks_after_import();
 
@@ -2630,6 +2637,26 @@ div.update-nag,
     }
 
     /**
+     * Whether the latitude/longitude were entered by the user rather than
+     * auto-generated by geocoding a typed address.
+     *
+     * User-entered means: manual coordinate typing, marker drag, or map click.
+     * Only user-entered coordinates may replace each property's own demo
+     * coordinates (a full custom location). Geocoded coordinates that merely
+     * accompany an address edit must not.
+     *
+     * @param array<string, mixed> $options Sanitized import options.
+     * @return bool
+     */
+    private function import_coordinates_user_entered( array $options ): bool {
+        if ( ! array_key_exists( 'coordinates_user_entered', $options ) ) {
+            return false;
+        }
+
+        return rest_sanitize_boolean( $options['coordinates_user_entered'] );
+    }
+
+    /**
      * Whether the wizard supplied a custom map location for all properties.
      *
      * @param array<string, mixed> $options Sanitized import options.
@@ -2637,6 +2664,13 @@ div.update-nag,
      */
     private function wizard_provided_custom_location( array $options ): bool {
         if ( ! $this->import_location_modified( $options ) ) {
+            return false;
+        }
+
+        // A full override requires user-entered coordinates. Auto-geocoded
+        // coordinates that merely accompany an address edit are an address-only
+        // override and are handled by apply_partial_location_override().
+        if ( ! $this->import_coordinates_user_entered( $options ) ) {
             return false;
         }
 
@@ -2792,7 +2826,13 @@ div.update-nag,
      * @return void
      */
     private function log_import_location_trace( int $import_index, int $property_index, array $property_data, array $options ): void {
-        $source = $this->wizard_provided_custom_location( $options ) ? 'CUSTOM' : 'UK';
+        if ( $this->wizard_provided_custom_location( $options ) ) {
+            $source = 'CUSTOM';
+        } elseif ( $this->import_location_modified( $options ) ) {
+            $source = 'ADDRESS_ONLY';
+        } else {
+            $source = 'DEMO';
+        }
 
         $this->log_error(
             sprintf(
@@ -2834,6 +2874,70 @@ div.update-nag,
     }
 
     /**
+     * Overlay only the location fields the user explicitly changed.
+     *
+     * Runs on top of a resolved diverse demo location. When the user leaves the
+     * Location step untouched ( location_modified === false ) the demo data is
+     * returned unchanged. When the user fills in some fields, only those
+     * non-empty values overwrite the demo data; blank inputs are ignored so
+     * valid demo coordinates are never replaced with empty strings.
+     *
+     * @param array<string, mixed> $property_data Property payload (already carries demo location).
+     * @param array<string, mixed> $options       Sanitized import options.
+     * @return array<string, mixed>
+     */
+    private function apply_partial_location_override( array $property_data, array $options ): array {
+        if ( ! $this->import_location_modified( $options ) ) {
+            return $property_data;
+        }
+
+        // Address-level fields are always safe to overlay from the user's input.
+        // Hard-coded wizard defaults such as building_number / street /
+        // reference_number are intentionally excluded so they never clobber demo
+        // values during a partial override.
+        $overlay_fields = array(
+            'map_address',
+            'full_address',
+            'address_line_1',
+            'address_line_2',
+            'town_city',
+            'country_state',
+            'zip_code',
+            'country_location',
+        );
+
+        // Coordinates are overlaid ONLY when the user actually entered them
+        // (manual typing, marker drag, or map click). Auto-geocoded coordinates
+        // that merely accompanied an address edit must never replace each
+        // property's own demo latitude/longitude.
+        $coordinates_user_entered = $this->import_coordinates_user_entered( $options );
+
+        if ( $coordinates_user_entered ) {
+            $overlay_fields[] = 'map_latitude';
+            $overlay_fields[] = 'latitude';
+            $overlay_fields[] = 'map_longitude';
+            $overlay_fields[] = 'longitude';
+        }
+
+        foreach ( $overlay_fields as $field ) {
+            $property_data = $this->apply_setup_string_override( $property_data, $options, $field, false );
+        }
+
+        // Keep the latitude/longitude mirrors aligned with the map coordinates,
+        // but only when coordinates were user-entered (otherwise demo values stay).
+        if ( $coordinates_user_entered ) {
+            if ( ! empty( $property_data['map_latitude'] ) ) {
+                $property_data['latitude'] = $property_data['map_latitude'];
+            }
+            if ( ! empty( $property_data['map_longitude'] ) ) {
+                $property_data['longitude'] = $property_data['map_longitude'];
+            }
+        }
+
+        return $property_data;
+    }
+
+    /**
      * Progressively assign stock images to UK location terms (empty meta only).
      *
      * @param array<string, mixed> $options  Sanitized import options.
@@ -2868,6 +2972,43 @@ div.update-nag,
         }
 
         $seeder = new PropertyLocationTermImageSeeder();
+        $seeder->finish_pending( array( $this, 'log_error' ) );
+    }
+
+    /**
+     * Progressively assign stock images to default demo property type terms (empty meta only).
+     *
+     * @param array<string, mixed> $options  Sanitized import options.
+     * @param int                  $imported Properties already imported in this run.
+     * @return void
+     */
+    private function maybe_seed_property_type_term_images_batch( array $options = array(), int $imported = 0 ): void {
+        if ( ! class_exists( PropertyTypeTermImageSeeder::class ) ) {
+            return;
+        }
+
+        $include_images = ! isset( $options['include_images'] ) || ! empty( $options['include_images'] );
+        $limit          = $include_images ? 1 : 2;
+
+        if ( 0 === $imported ) {
+            $limit = 1;
+        }
+
+        $seeder = new PropertyTypeTermImageSeeder();
+        $seeder->run( $limit, array( $this, 'log_error' ) );
+    }
+
+    /**
+     * Assign any remaining demo property type term images after the final import batch.
+     *
+     * @return void
+     */
+    private function finish_property_type_term_image_seeding(): void {
+        if ( ! class_exists( PropertyTypeTermImageSeeder::class ) ) {
+            return;
+        }
+
+        $seeder = new PropertyTypeTermImageSeeder();
         $seeder->finish_pending( array( $this, 'log_error' ) );
     }
 
@@ -3193,6 +3334,49 @@ div.update-nag,
         }
         
         $this->log_debug( 'Address & Neighborhood meta added' );
+    }
+
+    /**
+     * Maximum demo properties available for import (unique dataset size).
+     *
+     * @return int
+     */
+    private function get_demo_import_limit(): int {
+        return max( 1, count( DemoData::get_demo_properties_data() ) );
+    }
+
+    /**
+     * Populate builder preset contact fields on imported demo properties.
+     *
+     * Uses the canonical preset meta keys from the Property Builder preset
+     * field system (preset_hvnly_property_field_*).
+     *
+     * @param array<string, mixed> $meta_input Meta input array (by reference).
+     * @param array<string, mixed> $data       Property payload.
+     * @return void
+     */
+    private function add_demo_contact_preset_meta( array &$meta_input, array $data ): void {
+        $defaults = array(
+            'email'   => 'contact@example.com',
+            'phone'   => '+1 (555) 123-4567',
+            'website' => 'https://havenlytics.com',
+        );
+
+        $email = ! empty( $data['contact_email'] )
+            ? sanitize_email( (string) $data['contact_email'] )
+            : $defaults['email'];
+
+        $phone = ! empty( $data['contact_phone'] )
+            ? sanitize_text_field( (string) $data['contact_phone'] )
+            : $defaults['phone'];
+
+        $website = ! empty( $data['contact_website'] )
+            ? esc_url_raw( (string) $data['contact_website'] )
+            : $defaults['website'];
+
+        $meta_input['preset_hvnly_property_field_email']   = $email;
+        $meta_input['preset_hvnly_property_field_phone']   = $phone;
+        $meta_input['preset_hvnly_property_field_website'] = $website;
     }
 
     /**
@@ -3571,6 +3755,9 @@ private function create_demo_property( $data, $options = [] ) {
     
     // SECTION 2: Address & Neighborhood
     $this->add_address_neighborhood_meta( $meta_input, $data );
+
+    // Preset contact fields (Email, Phone, Website) for card/footer display.
+    $this->add_demo_contact_preset_meta( $meta_input, $data );
     
     // System fields
     $meta_input['_hvnly_property_views'] = $this->validate_numeric( wp_rand( 50, 500 ), 0, 10000 );

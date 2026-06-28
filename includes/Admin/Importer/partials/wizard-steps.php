@@ -9,8 +9,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-$hvnly_max_import       = 50;
-$hvnly_default_quantity = 10;
+$hvnly_demo_count       = class_exists( '\HvnlyNab\Admin\Data\DemoData' )
+    ? count( \HvnlyNab\Admin\Data\DemoData::get_demo_properties_data() )
+    : 25;
+$hvnly_max_import       = max( 1, $hvnly_demo_count );
+$hvnly_default_quantity = $hvnly_max_import;
 $hvnly_google_api_key   = function_exists('hvnly_get_google_maps_api_key') ? hvnly_get_google_maps_api_key() : '';
 $hvnly_map_provider     = function_exists('hvnly_get_map_provider') ? hvnly_get_map_provider() : 'leaflet';
 $hvnly_allowed_providers = ['leaflet', 'openstreetmap', 'google'];
@@ -226,7 +229,7 @@ $hvnly_initial_step = max( 1, min( 4, (int) $hvnly_initial_step ) );
                         <div class="hvnly--property--import-form-row hvnly-location-step__address-row">
                             <div class="hvnly--property--import-form-label"><?php esc_html_e('Property Address', 'havenlytics'); ?></div>
                             <div class="hvnly--property--import-form-controls">
-                                <input type="text" class="hvnly--property--import-text-input" id="map-address" placeholder="<?php esc_attr_e('Enter property address', 'havenlytics'); ?>" autocomplete="off" value="Austin, TX">
+                                <input type="text" class="hvnly--property--import-text-input" id="map-address" placeholder="<?php esc_attr_e('Enter property address', 'havenlytics'); ?>" autocomplete="off" value="">
                                 <div id="map-places-notice" class="hvnly-map-places-notice" hidden></div>
                                 <div class="autocomplete-results" id="autocomplete-results"></div>
                             </div>
@@ -235,13 +238,13 @@ $hvnly_initial_step = max( 1, min( 4, (int) $hvnly_initial_step ) );
                             <div class="hvnly--property--import-form-row">
                                 <div class="hvnly--property--import-form-label"><?php esc_html_e('Latitude', 'havenlytics'); ?></div>
                                 <div class="hvnly--property--import-form-controls">
-                                    <input type="text" class="hvnly--property--import-text-input" id="map-latitude" placeholder="<?php esc_attr_e('Latitude', 'havenlytics'); ?>" value="30.2672">
+                                    <input type="text" class="hvnly--property--import-text-input" id="map-latitude" placeholder="<?php esc_attr_e('Latitude', 'havenlytics'); ?>" value="">
                                 </div>
                             </div>
                             <div class="hvnly--property--import-form-row">
                                 <div class="hvnly--property--import-form-label"><?php esc_html_e('Longitude', 'havenlytics'); ?></div>
                                 <div class="hvnly--property--import-form-controls">
-                                    <input type="text" class="hvnly--property--import-text-input" id="map-longitude" placeholder="<?php esc_attr_e('Longitude', 'havenlytics'); ?>" value="-97.7431">
+                                    <input type="text" class="hvnly--property--import-text-input" id="map-longitude" placeholder="<?php esc_attr_e('Longitude', 'havenlytics'); ?>" value="">
                                 </div>
                             </div>
                         </div>

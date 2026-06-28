@@ -725,17 +725,17 @@ class SettingsSchema
                 ],
                 'hvnly_EnableBackToTop' => [
                     'type' => 'boolean',
-                    'default' => true,
+                    'default' => false,
                     'sanitize' => 'rest_sanitize_boolean',
                 ],
                 'hvnly_EnablePrintButton' => [
                     'type' => 'boolean',
-                    'default' => true,
+                    'default' => false,
                     'sanitize' => 'rest_sanitize_boolean',
                 ],
                 'hvnly_EnableSaveProperty' => [
                     'type' => 'boolean',
-                    'default' => true,
+                    'default' => false,
                     'sanitize' => 'rest_sanitize_boolean',
                 ],
                 'hvnly_EnableShareButton' => [
