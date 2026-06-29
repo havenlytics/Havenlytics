@@ -5,7 +5,7 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4 
-Stable tag: 3.1.3
+Stable tag: 3.1.4
 License: GPLv2 or later 
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Build modern real estate websites with property listings, AJAX search, interactive maps, Elementor widgets, and visual builders.
@@ -16,13 +16,13 @@ Build modern real estate websites with property listings, AJAX search, interacti
 
 Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpress.org/themes/havenlytics-realty/) companion theme is optional.
 
-📘 Documentation: https://havenlytics.com/documentation/
-🚀 Live Demo: https://demo.havenlytics.com/
-🌐 Official Website: https://havenlytics.com/
-🎨 Official Theme: https://wordpress.org/themes/havenlytics-realty/ (optional)
-💬 Community: https://facebook.com/groups/havenlytics/
-📺 YouTube: https://www.youtube.com/@havenlytics
-📧 Support: https://havenlytics.com/support/
+📘 Documentation: [https://havenlytics.com/documentation/](https://havenlytics.com/documentation/)
+🚀 Live Demo: [https://demo.havenlytics.com/](https://demo.havenlytics.com/)
+🌐 Official Website: [https://havenlytics.com/](https://havenlytics.com/)
+🎨 Official Theme: [https://wordpress.org/themes/havenlytics-realty/](https://wordpress.org/themes/havenlytics-realty/) (optional)
+💬 Community: [https://facebook.com/groups/havenlytics/](https://facebook.com/groups/havenlytics/)
+📺 YouTube: [https://www.youtube.com/@havenlytics](https://www.youtube.com/@havenlytics)
+📧 Support: [https://havenlytics.com/support/](https://havenlytics.com/support/)
 
 = Quick Start =
 
@@ -32,7 +32,9 @@ Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpr
 4. Import the demo property listings using Quick Property Setup.
 5. After the import is complete, click **View Website** to preview the demo site or **Return to Dashboard** to continue customizing.
 
-**Setup & Import Tutorial:** [youtube https://www.youtube.com/watch?v=cEVQ0uhwiHc]
+🎥 Watch: Build a Complete Real Estate Website in **30 Seconds**
+
+[youtube https://www.youtube.com/watch?v=AiYDMJPgsTY]
 
 = Who It's For =
 
@@ -84,6 +86,12 @@ Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpr
 ✅ **REST API & Template Overrides** — Extend and customize for client projects.
 
 **Also includes:** Grid, list, and map layouts; social sharing; mortgage calculator widget; 160+ currencies; dynamic CSS; property view counter; department badges; custom price labels; and responsive single-property templates.
+
+🎥 Search Builder — Complete Tutorial
+
+[youtube https://www.youtube.com/watch?v=d2mJra8RYM8]
+
+Learn how to build advanced property search forms using the Havenlytics Search Builder. Customize search fields, filters, layouts, and create powerful search experiences without writing code.
 
 = Email Notifications =
 
@@ -294,6 +302,13 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 
 
 == Changelog ==
+
+= 3.1.4 - 2026-06-30 =
+
+* Improved: Responsive layout for the Agents Archive.
+* Improved: Responsive layout for the Agency Single → Agency Agents section.
+* Improved: Minor UI and responsive improvements.
+* Improved: Maintenance release.
 
 = 3.1.3 - 2026-06-29 =
 

@@ -1036,9 +1036,14 @@
 
 
     .hvnly-property-single__meta {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: var(--hvnly-space-sm);    padding: var(--hvnly-space-md) 0;
     }
+    .hvnly-property-single__meta-item {
+        border-color: var(--hvnly-brand-primary);
+       
+    }
+
 
 }
 .hvnly-property-single__meta-item {
@@ -1518,7 +1523,7 @@ button.hvnly-property-single__action-btn {
     border: var(--hvnly-card-border);
     box-shadow: var(--hvnly-card-shadow);
     padding: var(--hvnly-card-padding);
-    margin-bottom: var(--hvnly-space-xl);
+    margin-bottom: var(--hvnly-space-md);
     max-width: 100%;
     overflow: hidden;
     box-sizing: border-box;
@@ -2555,7 +2560,7 @@ a.hvnly-property-single__fancybox-property-button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--hvnly-space-xl);
+    margin-bottom: var(--hvnly-space-md);
     padding: 0 var(--hvnly-space-md);
 }
 
@@ -2617,7 +2622,7 @@ button.hvnly-property-single__carousel-btn:disabled {
     position: relative;
     overflow: hidden;
     padding: 10px 0;
-    margin: 0 -15px;
+    margin: 0 auto;
     max-width: 100%;
 }
 
@@ -5032,7 +5037,7 @@ body.hvnly-agent-single .hvnly-agent-single__listings .hvnly-agent-single__listi
 
     .hvnly-property-single__repeater-table td {
         padding: 0.35rem 0;
-        border-bottom: none;
+        border-bottom: none;        text-align: center;
     }
 
     .hvnly-property-single__repeater-table td::before {
@@ -5059,6 +5064,18 @@ body.hvnly-agent-single .hvnly-agent-single__listings .hvnly-agent-single__listi
         padding: var(--hvnly-space-md, 0.875rem) var(--hvnly-space-md, 1rem);
         font-size: var(--hvnly-font-size-sm, 0.9375rem);
     }
+    .hvnly-agent-single__company {
+      
+        flex-wrap: unset;
+    }
+    .hvnly-agency-profile__head {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        flex-direction: column;
+    }
+
+
 }
 
 @media (prefers-color-scheme: dark) {
