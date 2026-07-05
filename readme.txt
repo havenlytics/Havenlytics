@@ -5,7 +5,7 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4 
-Stable tag: 3.1.4
+Stable tag: 3.1.5
 License: GPLv2 or later 
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Build modern real estate websites with property listings, AJAX search, interactive maps, Elementor widgets, and visual builders.
@@ -302,6 +302,20 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 
 
 == Changelog ==
+
+= 3.1.5 - 2026-07-05 =
+
+* Improved: Import Wizard department card UI for a cleaner and more balanced appearance.
+* Improved: Import Complete screen spacing, typography, and visual hierarchy.
+* Improved: Responsive layout across the entire Import Wizard workflow.
+* Improved: Professional inquiry form UX with inline validation, loading states, and premium success/error notices.
+* Improved: Submit button loading spinner and duplicate submission protection across all Contact Agent forms.
+* Improved: Live field validation with accessible error messaging for name, email, phone, and message fields.
+* Improved: Success notifications now include inquiry reference IDs and expected response time.
+* Improved: Accessibility enhancements including aria-invalid, aria-live regions, and focus management.
+* Improved: Minor UI refinements and consistency improvements.
+* Fixed: Small responsive issues within the Property Import interface.
+* Maintenance: Inquiry system UX polish, frontend validation alignment with server-side rules, and production maintenance.
 
 = 3.1.4 - 2026-06-30 =
 

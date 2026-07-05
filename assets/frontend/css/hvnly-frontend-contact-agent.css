@@ -360,3 +360,237 @@ body.hvnly-contact-agent-open {
 	opacity: 0.6;
 	pointer-events: none;
 }
+
+/* =========================================================
+   Inquiry form UX — validation, loading, notices (3.1.5)
+   ========================================================= */
+
+@keyframes hvnly-ca-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes hvnly-inquiry-notice-in {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.hvnly-contact-agent__btn-spinner {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	margin-right: 0.5em;
+	border: 2px solid currentColor;
+	border-right-color: transparent;
+	border-radius: 50%;
+	vertical-align: -0.125em;
+	animation: hvnly-ca-spin 0.65s linear infinite;
+}
+
+.hvnly-contact-agent__btn.is-loading,
+.hvnly-agents-section__submit.is-loading,
+.hvnly-agent-sidebar__submit.is-loading,
+.hvnly-agent-single__submit.is-loading {
+	pointer-events: none;
+}
+
+.js-hvnly-contact-agent-form.is-submitting {
+	pointer-events: none;
+}
+
+.js-hvnly-contact-agent-form.is-submitting .hvnly-contact-agent__field:not(.hvnly-contact-agent__field--honeypot),
+.js-hvnly-contact-agent-form.is-submitting .hvnly-agents-section__field,
+.js-hvnly-contact-agent-form.is-submitting .hvnly-agent-sidebar__field,
+.js-hvnly-contact-agent-form.is-submitting .hvnly-agent-single__field {
+	opacity: 0.72;
+}
+
+.hvnly-inquiry-form__field {
+	position: relative;
+}
+
+.hvnly-inquiry-form__field--has-status input,
+.hvnly-inquiry-form__field--has-status textarea,
+.hvnly-inquiry-form__field--has-status select,
+.hvnly-inquiry-form__field.is-field-valid input,
+.hvnly-inquiry-form__field.is-field-valid textarea,
+.hvnly-inquiry-form__field.is-field-invalid input,
+.hvnly-inquiry-form__field.is-field-invalid textarea {
+	padding-right: 2.5rem;
+}
+
+.hvnly-inquiry-form__status {
+	position: absolute;
+	right: 0.75rem;
+	bottom: 0.7rem;
+	width: 1.25rem;
+	height: 1.25rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	font-size: 0.75rem;
+	font-weight: 700;
+	line-height: 1;
+	pointer-events: none;
+}
+
+.hvnly-inquiry-form__field.is-field-valid .hvnly-inquiry-form__status {
+	background: #ecfdf5;
+	color: #059669;
+	border: 1px solid #a7f3d0;
+}
+
+.hvnly-inquiry-form__field.is-field-invalid .hvnly-inquiry-form__status {
+	background: #fef2f2;
+	color: #dc2626;
+	border: 1px solid #fecaca;
+}
+
+.hvnly-inquiry-form__field.is-field-valid input,
+.hvnly-inquiry-form__field.is-field-valid textarea,
+.hvnly-inquiry-form__field.is-field-valid select,
+.js-hvnly-contact-agent-form .hvnly-agents-section__field.is-field-valid input,
+.js-hvnly-contact-agent-form .hvnly-agents-section__field.is-field-valid textarea,
+.js-hvnly-contact-agent-form .hvnly-agent-sidebar__field.is-field-valid input,
+.js-hvnly-contact-agent-form .hvnly-agent-sidebar__field.is-field-valid textarea,
+.js-hvnly-contact-agent-form .hvnly-agent-single__field.is-field-valid input,
+.js-hvnly-contact-agent-form .hvnly-agent-single__field.is-field-valid textarea {
+	border-color: #34d399;
+	box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.14);
+}
+
+.hvnly-inquiry-form__field.is-field-invalid input,
+.hvnly-inquiry-form__field.is-field-invalid textarea,
+.hvnly-inquiry-form__field.is-field-invalid select,
+.js-hvnly-contact-agent-form .hvnly-agents-section__field.is-field-invalid input,
+.js-hvnly-contact-agent-form .hvnly-agents-section__field.is-field-invalid textarea,
+.js-hvnly-contact-agent-form .hvnly-agent-sidebar__field.is-field-invalid input,
+.js-hvnly-contact-agent-form .hvnly-agent-sidebar__field.is-field-invalid textarea,
+.js-hvnly-contact-agent-form .hvnly-agent-single__field.is-field-invalid input,
+.js-hvnly-contact-agent-form .hvnly-agent-single__field.is-field-invalid textarea {
+	border-color: #f87171;
+	box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.14);
+}
+
+.hvnly-inquiry-form__hint {
+	margin: 0.35rem 0 0;
+	font-size: 0.8125rem;
+	line-height: 1.45;
+	color: #dc2626;
+}
+
+.hvnly-inquiry-form__field.is-field-valid .hvnly-inquiry-form__hint {
+	color: #059669;
+}
+
+.hvnly-inquiry-form__notice-card {
+	animation: hvnly-inquiry-notice-in 0.28s ease;
+}
+
+.hvnly-inquiry-form__notice-icon {
+	width: 2.5rem;
+	height: 2.5rem;
+	margin: 0 auto 0.75rem;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.125rem;
+	font-weight: 700;
+}
+
+.hvnly-inquiry-form__notice-icon--success {
+	background: #ecfdf5;
+	color: #059669;
+	border: 1px solid #a7f3d0;
+}
+
+.hvnly-inquiry-form__notice-icon--error {
+	background: #fef2f2;
+	color: #dc2626;
+	border: 1px solid #fecaca;
+}
+
+.hvnly-inquiry-form__notice-title {
+	margin: 0 0 0.5rem;
+	font-size: 1.125rem;
+	font-weight: 700;
+	line-height: 1.3;
+	color: var(--hvnly-color-heading, #0a0f23);
+}
+
+.hvnly-inquiry-form__notice-lead {
+	margin: 0 0 0.5rem;
+	font-size: 0.9375rem;
+	line-height: 1.55;
+	color: var(--hvnly-text-secondary, #475569);
+}
+
+.hvnly-inquiry-form__notice-body {
+	margin: 0 0 0.75rem;
+	font-size: 0.875rem;
+	line-height: 1.55;
+	color: var(--hvnly-text-secondary, #475569);
+}
+
+.hvnly-inquiry-form__notice-meta {
+	margin: 0.35rem 0 0;
+	font-size: 0.8125rem;
+	line-height: 1.5;
+	color: var(--hvnly-text-secondary, #64748b);
+}
+
+.hvnly-inquiry-form__reference {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.8125rem;
+	letter-spacing: 0.03em;
+	color: #047857;
+}
+
+.hvnly-contact-agent__feedback.hvnly-inquiry-form__notice--success,
+.hvnly-agent-sidebar__feedback.hvnly-inquiry-form__notice--success,
+.hvnly-agents-section__feedback.hvnly-inquiry-form__notice--success,
+.hvnly-agent-single__feedback.hvnly-inquiry-form__notice--success {
+	background: #ecfdf5;
+	color: #065f46;
+	border: 1px solid #a7f3d0;
+	padding: 1rem 1.125rem;
+	text-align: center;
+}
+
+.hvnly-contact-agent__feedback.hvnly-inquiry-form__notice--error,
+.hvnly-agent-sidebar__feedback.hvnly-inquiry-form__notice--error,
+.hvnly-agents-section__feedback.hvnly-inquiry-form__notice--error,
+.hvnly-agent-single__feedback.hvnly-inquiry-form__notice--error {
+	background: #fef2f2;
+	color: #991b1b;
+	border: 1px solid #fecaca;
+	padding: 1rem 1.125rem;
+	text-align: center;
+}
+
+.js-hvnly-contact-agent-form.is-success .hvnly-contact-agent__actions,
+.js-hvnly-contact-agent-form.is-success .hvnly-agents-section__submit,
+.js-hvnly-contact-agent-form.is-success .hvnly-agent-sidebar__submit {
+	margin-top: 0;
+}
+
+.hvnly-inquiry-form__field:has(textarea) .hvnly-inquiry-form__status {
+	bottom: auto;
+	top: 2.35rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hvnly-contact-agent__btn-spinner,
+	.hvnly-inquiry-form__notice-card {
+		animation: none;
+	}
+}
