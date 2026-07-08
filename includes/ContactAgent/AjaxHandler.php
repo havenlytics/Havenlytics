@@ -196,6 +196,7 @@ class AjaxHandler {
 		return array(
 			'property_id'             => isset( $_POST['property_id'] ) ? absint( wp_unslash( $_POST['property_id'] ) ) : 0,
 			'agent_id'                => isset( $_POST['agent_id'] ) ? absint( wp_unslash( $_POST['agent_id'] ) ) : 0,
+			'source'                  => isset( $_POST['source'] ) ? sanitize_key( (string) wp_unslash( $_POST['source'] ) ) : '',
 			'sender_name'             => isset( $_POST['sender_name'] ) ? wp_unslash( $_POST['sender_name'] ) : '',
 			'sender_email'            => isset( $_POST['sender_email'] ) ? wp_unslash( $_POST['sender_email'] ) : '',
 			'sender_phone'            => isset( $_POST['sender_phone'] ) ? wp_unslash( $_POST['sender_phone'] ) : '',

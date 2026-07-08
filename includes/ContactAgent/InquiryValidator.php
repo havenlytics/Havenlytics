@@ -44,31 +44,53 @@ class InquiryValidator {
 	public function validate( array $payload ) {
 		$property_id        = isset( $payload['property_id'] ) ? absint( $payload['property_id'] ) : 0;
 		$requested_agent_id = isset( $payload['agent_id'] ) ? absint( $payload['agent_id'] ) : 0;
-		$is_agent_profile   = $property_id <= 0
-			&& $requested_agent_id > 0
-			&& function_exists( 'hvnly_is_valid_agent' )
-			&& hvnly_is_valid_agent( $requested_agent_id );
+		$source             = isset( $payload['source'] ) ? sanitize_key( (string) $payload['source'] ) : '';
+		$is_agent_profile   = ContactAgentConstants::SOURCE_AGENT_PROFILE === $source;
 
-		if ( $property_id <= 0 && ! $is_agent_profile ) {
+		if ( $property_id <= 0 ) {
 			return new \WP_Error(
 				'hvnly_contact_agent_invalid_property',
-				__( 'A valid property is required.', 'havenlytics' ),
+				__( 'Please select a valid property.', 'havenlytics' ),
 				array( 'status' => 400 )
 			);
 		}
 
-		if ( ! $is_agent_profile ) {
-			$property = get_post( $property_id );
+		$property = get_post( $property_id );
+		if (
+			! $property
+			|| 'hvnly_property' !== $property->post_type
+			|| 'publish' !== $property->post_status
+			|| ! empty( $property->post_password )
+		) {
+			return new \WP_Error(
+				'hvnly_contact_agent_invalid_property',
+				__( 'This property is not available for inquiries.', 'havenlytics' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		if ( $is_agent_profile ) {
 			if (
-				! $property
-				|| 'hvnly_property' !== $property->post_type
-				|| 'publish' !== $property->post_status
+				$requested_agent_id <= 0
+				|| ! function_exists( 'hvnly_is_valid_agent' )
+				|| ! hvnly_is_valid_agent( $requested_agent_id )
 			) {
 				return new \WP_Error(
-					'hvnly_contact_agent_invalid_property',
-					__( 'This property is not available for inquiries.', 'havenlytics' ),
+					'hvnly_contact_agent_invalid_agent',
+					__( 'This agent is not available for inquiries.', 'havenlytics' ),
 					array( 'status' => 400 )
 				);
+			}
+
+			if ( class_exists( '\HvnlyNab\Agent\AgentPropertiesQuery' ) ) {
+				$assigned_ids = \HvnlyNab\Agent\AgentPropertiesQuery::get_assigned_property_ids( $requested_agent_id );
+				if ( empty( $assigned_ids ) || ! in_array( $property_id, array_map( 'absint', $assigned_ids ), true ) ) {
+					return new \WP_Error(
+						'hvnly_contact_agent_invalid_property',
+						__( 'This property is not available for this agent.', 'havenlytics' ),
+						array( 'status' => 400 )
+					);
+				}
 			}
 		}
 
@@ -164,7 +186,7 @@ class InquiryValidator {
 			'sender_email' => $email,
 			'sender_phone' => $phone,
 			'message'      => $message,
-			'source'       => $is_agent_profile ? ContactAgentConstants::SOURCE_AGENT_PROFILE : ContactAgentConstants::DEFAULT_SOURCE,
+			'source'       => $is_agent_profile ? ContactAgentConstants::SOURCE_AGENT_PROFILE : ( $source ? $source : ContactAgentConstants::DEFAULT_SOURCE ),
 		);
 
 		/**

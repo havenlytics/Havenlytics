@@ -34,6 +34,7 @@ final class InquiryEmailContextBuilder {
 			'inquiry'        => $inquiry,
 			'agent'          => $agent,
 			'property_id'    => $property_id,
+			'property_id_display' => $property_id > 0 ? (string) $property_id : '',
 			'property_title' => $property_id > 0 ? get_the_title( $property_id ) : '',
 			'property_url'   => $property_id > 0 ? get_permalink( $property_id ) : '',
 			'site_name'      => wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
@@ -144,6 +145,9 @@ final class InquiryEmailContextBuilder {
 			'agent_name'     => (string) ( $context['agent_name'] ?? '' ),
 			'agent_email'    => (string) ( $context['agent_email'] ?? '' ),
 			'agent_phone'    => (string) ( $context['agent_phone'] ?? '' ),
+			'property_id'    => (string) ( $context['property_id_display'] ?? '' ),
+			'property_status' => (string) ( $context['property_status'] ?? '' ),
+			'property_type'   => (string) ( $context['property_type'] ?? '' ),
 			'property_title' => (string) ( $context['property_title'] ?? '' ),
 			'property_url'   => (string) ( $context['property_url'] ?? '' ),
 			'property_image' => (string) ( $context['property_image'] ?? '' ),
@@ -185,6 +189,8 @@ final class InquiryEmailContextBuilder {
 				'property_bedrooms'  => '',
 				'property_bathrooms' => '',
 				'property_area'      => '',
+				'property_status'    => '',
+				'property_type'      => '',
 			);
 		}
 
@@ -216,6 +222,18 @@ final class InquiryEmailContextBuilder {
 			$location = implode( ', ', wp_list_pluck( $terms, 'name' ) );
 		}
 
+		$status = '';
+		$status_terms = get_the_terms( $property_id, 'hvnly_prop_status' );
+		if ( $status_terms && ! is_wp_error( $status_terms ) ) {
+			$status = implode( ', ', wp_list_pluck( $status_terms, 'name' ) );
+		}
+
+		$type = '';
+		$type_terms = get_the_terms( $property_id, 'hvnly_prop_types' );
+		if ( $type_terms && ! is_wp_error( $type_terms ) ) {
+			$type = implode( ', ', wp_list_pluck( $type_terms, 'name' ) );
+		}
+
 		$bedrooms  = (string) get_post_meta( $property_id, '_hvnly_property_bedrooms', true );
 		$bathrooms = (string) get_post_meta( $property_id, '_hvnly_property_bathrooms', true );
 		$area      = (string) get_post_meta( $property_id, '_hvnly_property_sqft', true );
@@ -228,6 +246,8 @@ final class InquiryEmailContextBuilder {
 			'property_bedrooms'  => sanitize_text_field( $bedrooms ),
 			'property_bathrooms' => sanitize_text_field( $bathrooms ),
 			'property_area'      => sanitize_text_field( $area ),
+			'property_status'    => sanitize_text_field( $status ),
+			'property_type'      => sanitize_text_field( $type ),
 		);
 	}
 

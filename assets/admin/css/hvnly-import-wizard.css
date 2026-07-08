@@ -1514,25 +1514,32 @@ input:checked+.hvnly--property--import-toggle-slider:before {
 
     .hvnly--property--import-step-progress-container,
     .hvnly-wizard-stepper-shell {
-        padding: var(--hvnly-space-md);
+        padding: var(--hvnly-space-sm) var(--hvnly-space-md);
     }
 
     .hvnly-wizard-stepper__header {
         flex-direction: column;
         align-items: flex-start;
         gap: var(--hvnly-space-xs);
+        margin-bottom: var(--hvnly-space-sm);
     }
 
     .hvnly-wizard-stepper__marker,
     .hvnly--property--import-step-icon {
-        width: 44px;
-        height: 44px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .hvnly-wizard-stepper__item,
+    .hvnly--property--import-step-item {
+        gap: 0.4rem;
     }
 
     .hvnly-wizard-stepper__track {
-        top: 22px;
+        top: 18px;
         left: 10%;
         right: 10%;
+        height: 3px;
     }
 
     .hvnly-wizard-stepper__label,
@@ -1543,6 +1550,20 @@ input:checked+.hvnly--property--import-toggle-slider:before {
 
     .hvnly--property--import-step-title {
         font-size: var(--hvnly-font-size-xs);
+    }
+
+    .hvnly--property--import-progress-container {
+        margin: var(--hvnly-space-lg) 0;
+    }
+
+    .hvnly--property--import-progress-bar {
+        height: 6px;
+        border-radius: 999px;
+        margin-bottom: var(--hvnly-space-sm);
+    }
+
+    .hvnly--property--import-progress-fill {
+        border-radius: 999px;
     }
 
     .hvnly--property--import-map-coordinates {

@@ -71,6 +71,28 @@ $hvnly_availability_notice = function_exists( 'hvnly_get_agent_availability_noti
 	? hvnly_get_agent_availability_notice( $hvnly_availability )
 	: '';
 
+$hvnly_assigned_properties = array();
+if ( class_exists( '\HvnlyNab\Agent\AgentPropertiesQuery' ) ) {
+	$hvnly_assigned_ids = \HvnlyNab\Agent\AgentPropertiesQuery::get_assigned_property_ids( $hvnly_agent_id );
+	if ( ! empty( $hvnly_assigned_ids ) ) {
+		$hvnly_assigned_properties = get_posts(
+			array(
+				'post_type'           => 'hvnly_property',
+				'post_status'         => 'publish',
+				'post__in'            => array_map( 'absint', $hvnly_assigned_ids ),
+				'orderby'             => 'post__in',
+				'posts_per_page'      => -1,
+				'has_password'        => false,
+				'no_found_rows'       => true,
+				'ignore_sticky_posts' => true,
+			)
+		);
+	}
+}
+
+$hvnly_assigned_properties = is_array( $hvnly_assigned_properties ) ? array_values( $hvnly_assigned_properties ) : array();
+$hvnly_property_count      = count( $hvnly_assigned_properties );
+
 ?>
 
 <aside class="hvnly-agent-single__sidebar-card" id="hvnly-agent-contact">
@@ -158,6 +180,11 @@ $hvnly_availability_notice = function_exists( 'hvnly_get_agent_availability_noti
 				</div>
 			<?php endif; ?>
 
+			<?php if ( $hvnly_property_count <= 0 ) : ?>
+				<p class="hvnly-agent-single__contact-subtitle">
+					<?php esc_html_e( 'This agent currently has no active listings available for inquiry.', 'havenlytics' ); ?>
+				</p>
+			<?php else : ?>
 			<form
 
 				id="<?php echo esc_attr( $hvnly_form_id ); ?>"
@@ -172,7 +199,41 @@ $hvnly_availability_notice = function_exists( 'hvnly_get_agent_availability_noti
 
 			>
 
-				<input type="hidden" name="property_id" value="0" />
+				<input type="hidden" name="source" value="contact_agent_profile" />
+
+				<?php if ( 1 === $hvnly_property_count ) : ?>
+					<input type="hidden" name="property_id" value="<?php echo esc_attr( (string) absint( $hvnly_assigned_properties[0]->ID ) ); ?>" />
+				<?php else : ?>
+					<div class="hvnly-agent-single__field">
+						<label for="<?php echo esc_attr( $hvnly_form_id ); ?>-property">
+							<?php esc_html_e( 'Property', 'havenlytics' ); ?>
+							<span class="hvnly-agent-single__required">*</span>
+						</label>
+						<select
+							id="<?php echo esc_attr( $hvnly_form_id ); ?>-property"
+							name="property_id"
+							class="hvnly-contact-agent__select"
+							required
+						>
+							<option value=""><?php esc_html_e( 'Select Property…', 'havenlytics' ); ?></option>
+							<?php foreach ( $hvnly_assigned_properties as $hvnly_property ) : ?>
+								<?php
+								if ( ! $hvnly_property instanceof \WP_Post ) {
+									continue;
+								}
+								$hvnly_prop_id    = absint( $hvnly_property->ID );
+								$hvnly_prop_title = get_the_title( $hvnly_prop_id );
+								if ( $hvnly_prop_id <= 0 || '' === trim( (string) $hvnly_prop_title ) ) {
+									continue;
+								}
+								?>
+								<option value="<?php echo esc_attr( (string) $hvnly_prop_id ); ?>">
+									<?php echo esc_html( (string) $hvnly_prop_title ); ?>
+								</option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				<?php endif; ?>
 
 				<input type="hidden" name="agent_id" class="js-hvnly-contact-agent-id" value="<?php echo esc_attr( (string) $hvnly_agent_id ); ?>" />
 
@@ -275,6 +336,7 @@ $hvnly_availability_notice = function_exists( 'hvnly_get_agent_availability_noti
 				</div>
 
 			</form>
+			<?php endif; ?>
 
 		</div>
 

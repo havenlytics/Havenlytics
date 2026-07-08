@@ -13,7 +13,7 @@ $hvnly_demo_count       = class_exists( '\HvnlyNab\Admin\Data\DemoData' )
     ? count( \HvnlyNab\Admin\Data\DemoData::get_demo_properties_data() )
     : 25;
 $hvnly_max_import       = max( 1, $hvnly_demo_count );
-$hvnly_default_quantity = $hvnly_max_import;
+$hvnly_default_quantity = min( 10, $hvnly_max_import );
 $hvnly_google_api_key   = function_exists('hvnly_get_google_maps_api_key') ? hvnly_get_google_maps_api_key() : '';
 $hvnly_map_provider     = function_exists('hvnly_get_map_provider') ? hvnly_get_map_provider() : 'leaflet';
 $hvnly_allowed_providers = ['leaflet', 'openstreetmap', 'google'];

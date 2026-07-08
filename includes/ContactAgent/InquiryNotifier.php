@@ -324,10 +324,9 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 					$subject = sprintf(
 
-						/* translators: %s: site name */
-
-						__( 'We received your inquiry — {{site_name}}', 'havenlytics' ),
-
+						/* translators: 1: property title, 2: site name */
+						__( 'We received your inquiry • %1$s — %2$s', 'havenlytics' ),
+						(string) ( $context['property_title'] ?? '' ),
 						(string) ( $context['site_name'] ?? '' )
 
 					);
@@ -343,13 +342,10 @@ class InquiryNotifier implements InquiryNotifierInterface {
 			case ContactAgentConstants::EMAIL_TYPE_ADMIN:
 
 				$subject = sprintf(
-
-					/* translators: %d: inquiry ID */
-
-					__( '[Havenlytics] New property inquiry #%d', 'havenlytics' ),
-
+					/* translators: 1: property title, 2: inquiry ID */
+					__( 'New Property Inquiry • %1$s (#%2$d)', 'havenlytics' ),
+					(string) ( $context['property_title'] ?? '' ),
 					(int) ( $context['inquiry_id'] ?? 0 )
-
 				);
 
 				break;
@@ -363,8 +359,7 @@ class InquiryNotifier implements InquiryNotifierInterface {
 				$subject = sprintf(
 
 					/* translators: %s: property title */
-
-					__( 'New inquiry for %s', 'havenlytics' ),
+					__( 'New Property Inquiry • %s', 'havenlytics' ),
 
 					(string) ( $context['property_title'] ?? '' )
 

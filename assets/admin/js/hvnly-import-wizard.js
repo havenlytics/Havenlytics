@@ -86,7 +86,7 @@ const WIZARD_SLUG_TO_STEP = {
     review: 4,
 };
 let wizardUrlRoutingBound = false;
-let propertyImportQuantity = window.hvnlyImportWizard?.defaultImportQuantity || 25;
+let propertyImportQuantity = window.hvnlyImportWizard?.defaultImportQuantity || 10;
 let isImporting = false;
 let selectedDepartment = 'sale';
 

@@ -26,6 +26,12 @@ final class Assets
             'script' => '0.js',
             'style'  => '0.css',
         ],
+        'hvnly_property_page_hvnly_property_reports_analytics' => [
+            'folder' => 'reports',
+            'asset'  => 'reports.asset.php',
+            'script' => '0.js',
+            'style'  => '0.css',
+        ],
     ];
 
     public function __construct()
@@ -81,7 +87,7 @@ final class Assets
         $allowed_pages = [
             'hvnly_property_page_hvnly_property_settings',
             'hvnly_property_page_hvnly_property_builder',
-            // 'hvnly_property_page_hvnly_property_reports_analytics',
+            'hvnly_property_page_hvnly_property_reports_analytics',
             'hvnly_property_page_hvnly_property_cache',
             'hvnly_property_page_hvnly-property-setup',
         ];
@@ -106,7 +112,7 @@ final class Assets
             return;
         }
 
-        if ($hook_suffix === 'hvnly_property_page_hvnly_property_builder' || $hook_suffix === 'hvnly_property_page_hvnly_property_settings') {
+        if ($hook_suffix === 'hvnly_property_page_hvnly_property_builder' || $hook_suffix === 'hvnly_property_page_hvnly_property_settings' || $hook_suffix === 'hvnly_property_page_hvnly_property_reports_analytics') {
             $this->enqueue_admin_boot_styles($default_version);
         }
 
@@ -131,14 +137,14 @@ final class Assets
                 'style'    => 'builder.css',
                 'localize' => true,
             ],
-            // 'hvnly_property_page_hvnly_property_reports_analytics' => [
-            //     'handle'   => 'hvlynab-reports-admin',
-            //     'folder'   => 'reports',
-            //     'asset'    => 'reports.asset.php',
-            //     'script'   => 'reports.js',
-            //     'style'    => 'reports.css',
-            //     'localize' => true,
-            // ],
+            'hvnly_property_page_hvnly_property_reports_analytics' => [
+                'handle'   => 'hvlynab-reports-admin',
+                'folder'   => 'reports',
+                'asset'    => 'reports.asset.php',
+                'script'   => 'reports.js',
+                'style'    => 'reports.css',
+                'localize' => true,
+            ],
         ];
 
         if (isset($pages[$hook_suffix])) {
@@ -297,7 +303,7 @@ final class Assets
             wp_enqueue_style(
                 $page['handle'],
                 HVNLYNAB_BUILD_URL . '/' . $page['folder'] . '/' . $style_name,
-                $chunk_handles['styles'],
+                array_merge(['hvnly-admin-boot'], $chunk_handles['styles']),
                 $main_asset['version'] ?? $version
             );
         }

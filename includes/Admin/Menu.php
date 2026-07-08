@@ -40,14 +40,14 @@ final class Menu
             [$this, 'render_builder']
         );
 
-        // add_submenu_page(
-        //     self::PARENT_SLUG,
-        //     esc_html__('Reports & Analytics', 'havenlytics'),
-        //     esc_html__('Reports & Analytics', 'havenlytics'),
-        //     $capability,
-        //     'hvnly_property_reports_analytics',
-        //     [$this, 'render_reports']
-        // );
+        add_submenu_page(
+            self::PARENT_SLUG,
+            esc_html__('Analytics', 'havenlytics'),
+            esc_html__('Analytics', 'havenlytics'),
+            $capability,
+            'hvnly_property_reports_analytics',
+            [$this, 'render_reports']
+        );
 
         
         // Cache menu item removed - now handled by CacheAdmin.php
@@ -75,14 +75,19 @@ final class Menu
 
     public function render_reports(): void
     {
-        echo '<div id="HvnlyNab_reports_analytics_render" class="HvnlyNab_reports_analytics_render"></div>';
+        ?>
+        <div id="HvnlyNab_reports_analytics_wrap" class="HvnlyNab_reports_analytics_wrap hvnly-admin-is-loading">
+            <?php AdminPreloader::render( 'analytics' ); ?>
+            <div id="HvnlyNab_reports_analytics_render" class="HvnlyNab_reports_analytics_render"></div>
+        </div>
+        <?php
     }
 
     public function builder_admin_body_class(string $classes): string
     {
         $screen = function_exists('get_current_screen') ? get_current_screen() : null;
 
-        if ($screen && in_array($screen->id, ['hvnly_property_page_hvnly_property_builder', 'hvnly_property_page_hvnly_property_settings'], true)) {
+        if ($screen && in_array($screen->id, ['hvnly_property_page_hvnly_property_builder', 'hvnly_property_page_hvnly_property_settings', 'hvnly_property_page_hvnly_property_reports_analytics'], true)) {
             $classes .= ' hvnly-admin-page-loading';
         }
 

@@ -5,14 +5,14 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4 
-Stable tag: 3.1.5
+Stable tag: 3.1.6
 License: GPLv2 or later 
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Build modern real estate websites with property listings, AJAX search, interactive maps, Elementor widgets, and visual builders.
+Build modern real estate websites with property listings, AJAX search, interactive maps, analytics, Elementor widgets, and visual builders.
 
 == Description ==
 
-**Havenlytics** is a WordPress real estate plugin for agencies, agents, developers, and property directories. Create and manage listings with visual builders, smart filters, maps, galleries, and import tools — on any theme.
+**Havenlytics** is a WordPress real estate plugin for agencies, agents, developers, and property directories. Create and manage listings with visual builders, smart filters, maps, galleries, import tools, and an admin **Analytics** dashboard — on any theme.
 
 Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpress.org/themes/havenlytics-realty/) companion theme is optional.
 
@@ -29,8 +29,9 @@ Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpr
 1. Install and activate Havenlytics.
 2. (Optional) Install the free Havenlytics Realty companion theme from WordPress.org.
 3. Run the Property Setup Wizard.
-4. Import the demo property listings using Quick Property Setup.
-5. After the import is complete, click **View Website** to preview the demo site or **Return to Dashboard** to continue customizing.
+4. Import demo property listings using Quick Property Setup.
+5. Review **Properties → Analytics** for listing and inquiry performance.
+6. After import, click **View Website** to preview the demo site or **Return to Dashboard** to continue customizing.
 
 🎥 Watch: Build a Complete Real Estate Website in **30 Seconds**
 
@@ -48,44 +49,54 @@ Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpr
 
 = Why Havenlytics =
 
-🏗️ **Built for real estate** — Purpose-built for property listings, not a generic directory plugin.
+🏠 **Purpose-built for real estate** — Listings, agents, agencies, and inquiries in one plugin — not a generic directory tool.
+
+📊 **Analytics dashboard** — Property stats, view tracking, and inquiry reports in the WordPress admin.
 
 🎨 **Visual builders** — Drag-and-drop property forms, search filters, and listing cards without code.
 
-⚡ **Fast AJAX search** — Real-time results with price, beds, baths, location, status, and custom field filters.
+🔍 **AJAX search & maps** — Real-time filters with Leaflet or Google Maps, markers, and clustering.
 
-📈 **Scalable** — Built-in caching and optimized queries for small sites and large catalogs.
+⚡ **Fast performance** — Built-in caching, optimized queries, and a cache dashboard for larger catalogs.
 
-👨‍💻 **Developer-friendly** — 50+ hooks and filters, REST API, and theme template overrides (`your-theme/havenlytics/`).
+👨‍💻 **Developer-ready** — REST API, 50+ hooks and filters, template overrides, and extensible architecture.
 
 🌍 **Translation-ready** — `.pot` file included; compatible with WPML and Polylang.
 
-🔒 **Secure** — WordPress coding standards, capability checks, and GDPR-ready options.
+🔒 **Security-focused** — Capability checks, nonces, and WordPress coding standards throughout.
 
 
 = Core Features =
 
+✅ **Analytics Dashboard** — Property statistics, view tracking, inquiry analytics, charts, tables, and CSV export.
+
 ✅ **Property Import Wizard** — Guided demo import with media, maps, documents, agents, and custom fields.
 
-✅ **Drag & Drop Search Builder** — Advanced search forms and sidebar filters.
+✅ **Search Builder** — Drag-and-drop advanced search forms and sidebar filters.
+
+✅ **Property Builder** — Visual property form and card layout editor.
 
 ✅ **Interactive Maps** — Leaflet or Google Maps with markers, clustering, and location search.
 
-✅ **Media & Documents** — Galleries, videos, virtual tours, PDFs, and floor plans.
+✅ **Contact Agent & Inquiries** — Inquiry forms, email notifications, and admin inbox.
 
 ✅ **Agent & Agency Management** — Profiles, taxonomies, availability badges, and archive pages.
 
-✅ **Elementor Widgets** — Property Archive, Property Agents, and Property Agency (see below).
+✅ **Documentation System** — In-plugin guides and links to full documentation at havenlytics.com.
+
+✅ **Elementor Widgets** — Property Archive, Property Agents, and Property Agency.
 
 ✅ **Performance & Cache** — Cache dashboard and optimization tools.
 
-✅ **Email & Contact Agent** — Transactional emails, inquiry forms, and admin inbox.
+✅ **REST API** — Extend settings, builders, and integrations for client projects.
 
-✅ **Shortcodes** — 50+ property variations; copy-ready examples in **Settings → Shortcodes**.
+✅ **Template Overrides** — Override templates in `your-theme/havenlytics/`.
 
-✅ **REST API & Template Overrides** — Extend and customize for client projects.
+✅ **Hooks & Filters** — 50+ extension points for agencies and custom workflows.
 
-**Also includes:** Grid, list, and map layouts; social sharing; mortgage calculator widget; 160+ currencies; dynamic CSS; property view counter; department badges; custom price labels; and responsive single-property templates.
+✅ **Translation Ready** — Full i18n support with included `.pot` file.
+
+**Also includes:** 50+ shortcodes; grid, list, and map layouts; property view counter; 160+ currencies; mortgage calculator widget; media galleries, videos, and documents; and responsive single-property templates.
 
 🎥 Search Builder — Complete Tutorial
 
@@ -227,7 +238,10 @@ Auto-created page slug: `property-agencies`
 1. Install via **Plugins → Add New** or upload to `/wp-content/plugins/havenlytics/`.
 2. Activate through the **Plugins** screen.
 3. Follow the **Quick Start** steps above (setup wizard and demo import).
-4. Display listings with shortcodes, Elementor widgets, or the auto-created pages.
+4. Open **Properties → Analytics** to review property and inquiry performance.
+5. Display listings with shortcodes, Elementor widgets, or the auto-created pages.
+
+📘 Full documentation: [https://havenlytics.com/documentation/](https://havenlytics.com/documentation/)
 
 == Frequently Asked Questions ==
 
@@ -273,35 +287,71 @@ Yes. Configure import success emails under **Settings → Email**. Contact Agent
 
 = Can developers extend Havenlytics? =
 
-Yes — 50+ hooks and filters, REST API, and extensible field types.
+Yes. Havenlytics is built for agencies and developers who need reliable extension points:
+
+* **REST API** — Settings, builders, analytics, and plugin integrations via `hvnlynab/v1`
+* **Hooks & filters** — 50+ actions and filters across listings, search, import, and inquiries
+* **Template overrides** — Copy templates to `your-theme/havenlytics/` without editing plugin files
+* **Extensible architecture** — Modular services, migration-safe data, and filterable REST class maps
+* **WordPress coding standards** — Capability checks, nonces, prepared queries, and PHPCS-friendly code
+
+See the [developer documentation](https://havenlytics.com/docs/category/developers-doc/) for integration guides.
+
+= What is the Analytics Dashboard? =
+
+Havenlytics includes a built-in **Analytics Dashboard** under **Properties → Analytics**. It provides insights into properties, agents, agencies, inquiries, property views, and listing activity — without requiring third-party analytics services.
+
+= Does Havenlytics track property views? =
+
+Yes. Havenlytics automatically tracks individual property views on the frontend and displays those statistics in the Analytics Dashboard.
+
+= Can I export Analytics reports? =
+
+Yes. Analytics data can be exported as CSV for use in Microsoft Excel, Google Sheets, LibreOffice, and other spreadsheet applications.
+
+= Does Analytics require Google Analytics? =
+
+No. Havenlytics Analytics works independently using your own WordPress data. You may still use Google Analytics or other tools alongside Havenlytics if you prefer.
 
 = Can I hire your development team? =
 
 Visit [havenlytics.com](https://havenlytics.com/) for custom development services.
 
 == Screenshots ==
-1. Advanced Property Search with Filters
-2. Property Grid Layout
-3. Property List Layout
+
+1. Analytics Dashboard — property statistics, views, and inquiry reports
+2. Advanced Property Search with Filters
+3. Property Builder
 4. Search Builder — Manage Fields
 5. Property Import Setup Wizard
 6. AJAX Map Search Results
-7. Single Property Gallery Carousel
-8. Single Property Video Modal
-9. Single Property Map
-10. Property Builder
-11. Property Builder — Custom Fields
-12. Cache Management Dashboard
-13. Settings Panel — Light Mode
-14. Settings Panel — Dark Mode
-15. Elementor Widget — Property Archive
-16. Elementor Widget — Property Agents
-17. Elementor Widget — Property Agency
-18. Single Agent Profile Page
-19. Contact Agent Inquiry Form
+7. Property Grid Layout
+8. Single Property Page — video, gallery, map, and details
+9. Contact Agent Inquiry Form
+10. Documentation — in-plugin guides and help links
+11. Elementor Widget — Property Archive
+12. Elementor Widget — Property Agents
+13. Elementor Widget — Property Agency
+14. Settings Panel
+15. Cache Management Dashboard
 
 
 == Changelog ==
+
+= 3.1.6 - 2026-07-08 =
+
+* New: Analytics Dashboard in the WordPress admin — property statistics, view tracking, inquiry metrics, charts, tables, date filters, and CSV export.
+* New: REST API analytics endpoints for overview, charts, tables, and exports.
+* Improved: Admin boot loading for Analytics aligned with Settings and Property Builder — smoother initial render and reduced layout shift.
+* Improved: Faster analytics data aggregation with optimized queries and sensible caching for dashboard performance.
+* Improved: Inquiry analytics integrated with the existing Contact Agent inquiry system.
+* Improved: Responsive admin layout for Analytics across desktop, tablet, and mobile widths.
+* Improved: Contextual empty states with helpful guidance when data is not yet available.
+* Improved: WordPress.org readme, documentation presentation, and developer section.
+* Improved: Minor UI polish and stability improvements across the admin experience.
+* Maintenance: Performance optimizations, developer experience refinements, and internal compatibility updates.
+* Fixed: Resolved WordPress Playground admin styling issue affecting Property Settings and Property Builder pages.
+* Improved: Havenlytics admin CSS variables and typography load consistently across supported environments.
 
 = 3.1.5 - 2026-07-05 =
 

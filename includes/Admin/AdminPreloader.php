@@ -27,13 +27,15 @@ final class AdminPreloader {
 	 */
 	public static function render( string $context = 'admin' ): void {
 		$titles = array(
-			'settings' => __( 'Settings Dashboard', 'havenlytics' ),
-			'builder'  => __( 'Property Builder', 'havenlytics' ),
+			'settings'  => __( 'Settings Dashboard', 'havenlytics' ),
+			'builder'   => __( 'Property Builder', 'havenlytics' ),
+			'analytics' => __( 'Analytics', 'havenlytics' ),
 		);
 
 		$stages = array(
-			'settings' => __( 'Loading settings…', 'havenlytics' ),
-			'builder'  => __( 'Loading configuration…', 'havenlytics' ),
+			'settings'  => __( 'Loading settings…', 'havenlytics' ),
+			'builder'   => __( 'Loading configuration…', 'havenlytics' ),
+			'analytics' => __( 'Loading analytics…', 'havenlytics' ),
 		);
 
 		$title = $titles[ $context ] ?? __( 'Havenlytics', 'havenlytics' );

@@ -1,6 +1,104 @@
 /**
- * Unified Havenlytics admin boot styles — Settings + Property Builder.
+ * Unified Havenlytics admin boot styles — Settings, Property Builder, and Analytics.
+ * Design tokens load here so React bundles always inherit CSS variables,
+ * including WordPress Playground and other environments that block external @import.
  */
+
+:root {
+  --hvnly-color-white: #ffffff;
+  --hvnly-color-black: #000000;
+  --hvnly-color-gray-100: #f8f9fa;
+  --hvnly-color-gray-200: #e4e4ed;
+  --hvnly-color-gray-500: #6c757d;
+  --hvnly-color-gray-800: #333;
+  --hvnly-color-bg-light: #f8f8f8;
+  --hvnly-color-bg-off-light: #f3f4f6;
+  --hvnly-color-bg-white: #ffffff;
+
+  --hvnly-brand-primary: #6c60fe;
+  --hvnly-brand-secondary: #764ba2;
+  --hvnly-brand-accent: #ff9aa2;
+  --hvnly-brand-success: #00b46a;
+  --hvnly-brand-error: #ff4d4f;
+  --hvnly-brand-warning: #ffb507;
+
+  --hvnly-bodyFont: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --hvnly-headingFont: "Inter", var(--hvnly-bodyFont);
+  --hvnly-interFont: var(--hvnly-headingFont);
+  --hvnly-montserratHeadingFont: var(--hvnly-headingFont);
+
+  --hvnly-font-size-xs: 0.75rem;
+  --hvnly-font-size-sm: 0.875rem;
+  --hvnly-font-size-md: 1rem;
+  --hvnly-font-size-lg: 1.25rem;
+  --hvnly-font-size-xl: 1.5rem;
+  --hvnly-font-size-title: 24px;
+  --hvnly-font-size-price: 1.2rem;
+  --hvnly-font-size-md-price: 1.4rem;
+  --hvnly-font-size-meta: 0.875rem;
+  --hvnly-font-size-excerpt: 0.95rem;
+  --hvnly-font-size-label: 0.9rem;
+
+  --hvnly-font-weight-light: 300;
+  --hvnly-font-weight-regular: 400;
+  --hvnly-font-weight-medium: 500;
+  --hvnly-font-weight-semibold: 600;
+  --hvnly-font-weight-bold: 700;
+
+  --hvnly-text-primary: #1e1e2f;
+  --hvnly-text-secondary: #555;
+
+  --hvnly-space-xs: 0.25rem;
+  --hvnly-space-sm: 0.5rem;
+  --hvnly-space-md: 1rem;
+  --hvnly-space-lg: 1.5rem;
+  --hvnly-space-xl: 2rem;
+  --hvnly-space-2xl: 3rem;
+
+  --hvnly-border-color: #e4e4ed;
+  --hvnly-border-radius-xs: 4px;
+  --hvnly-border-radius-sm: 6px;
+  --hvnly-border-radius-md: 8px;
+  --hvnly-border-radius-lg: 12px;
+  --hvnly-radius: var(--hvnly-border-radius-md);
+
+  --hvnly-shadow-card: 0 4px 24px rgba(189, 189, 189, 0.24);
+  --hvnly-shadow: var(--hvnly-shadow-card);
+
+  --hvnly-card-bg: var(--hvnly-color-bg-white);
+  --hvnly-card-border: 1px solid var(--hvnly-border-color);
+  --hvnly-card-radius: 8px;
+  --hvnly-card-shadow: var(--hvnly-shadow-card);
+  --hvnly-card-padding: 1.5rem;
+
+  --hvnly-primary-color: var(--hvnly-brand-primary);
+  --hvnly-primary-rgb: 108, 96, 254;
+  --hvnly-transition-time: 0.3s ease;
+  --hvnly-focus-ring: 0 0 0 3px rgba(108, 96, 254, 0.22);
+
+  --hvnly-dark-text-primary: #f0f0f0;
+  --hvnly-dark-text-secondary: #b0b0b0;
+  --hvnly-dark-border: #444;
+  --hvnly-dark-bg-light: #1e1e2f;
+  --hvnly-dark-bg-white: #252538;
+  --hvnly-dark-shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+body.hvnly_property_page_hvnly_property_builder,
+body.hvnly_property_page_hvnly_property_settings,
+body.hvnly_property_page_hvnly_property_reports_analytics {
+  background-color: var(--hvnly-color-bg-light);
+  color: var(--hvnly-text-primary);
+  font-family: var(--hvnly-bodyFont);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+body.hvnly_property_page_hvnly_property_builder #wpwrap,
+body.hvnly_property_page_hvnly_property_settings #wpwrap,
+body.hvnly_property_page_hvnly_property_reports_analytics #wpwrap {
+  font-family: var(--hvnly-bodyFont);
+}
 
 body.hvnly-admin-page-loading #adminmenuwrap,
 body.hvnly-admin-page-loading #adminmenuback,
@@ -10,7 +108,10 @@ body.hvnly_property_page_hvnly_property_builder:has(#HvnlyNab_property_builder_r
 body.hvnly_property_page_hvnly_property_builder:has(#HvnlyNab_property_builder_render.hvnly-admin-is-loading) #adminmenu,
 body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading) #adminmenuwrap,
 body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading) #adminmenuback,
-body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading) #adminmenu {
+body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading) #adminmenu,
+body.hvnly_property_page_hvnly_property_reports_analytics:has(#HvnlyNab_reports_analytics_wrap.hvnly-admin-is-loading) #adminmenuwrap,
+body.hvnly_property_page_hvnly_property_reports_analytics:has(#HvnlyNab_reports_analytics_wrap.hvnly-admin-is-loading) #adminmenuback,
+body.hvnly_property_page_hvnly_property_reports_analytics:has(#HvnlyNab_reports_analytics_wrap.hvnly-admin-is-loading) #adminmenu {
   display: none !important;
 }
 
@@ -22,14 +123,18 @@ body.hvnly_property_page_hvnly_property_builder:has(#HvnlyNab_property_builder_r
 body.hvnly_property_page_hvnly_property_builder:has(#HvnlyNab_property_builder_render.hvnly-admin-is-loading) #wpbody-content,
 body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading) #wpcontent,
 body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading) #wpbody,
-body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading) #wpbody-content {
+body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading) #wpbody-content,
+body.hvnly_property_page_hvnly_property_reports_analytics:has(#HvnlyNab_reports_analytics_wrap.hvnly-admin-is-loading) #wpcontent,
+body.hvnly_property_page_hvnly_property_reports_analytics:has(#HvnlyNab_reports_analytics_wrap.hvnly-admin-is-loading) #wpbody,
+body.hvnly_property_page_hvnly_property_reports_analytics:has(#HvnlyNab_reports_analytics_wrap.hvnly-admin-is-loading) #wpbody-content {
   margin-left: 0 !important;
   padding-left: 0 !important;
 }
 
 body.hvnly-admin-page-loading #HvnlyNab_property_builder_render,
 body.hvnly_property_page_hvnly_property_builder:has(#HvnlyNab_property_builder_render.hvnly-admin-is-loading) #HvnlyNab_property_builder_render,
-body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading) #HvnlyNab_admin_dashboard_wrap {
+body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading) #HvnlyNab_admin_dashboard_wrap,
+body.hvnly_property_page_hvnly_property_reports_analytics:has(#HvnlyNab_reports_analytics_wrap.hvnly-admin-is-loading) #HvnlyNab_reports_analytics_wrap {
   margin-left: 0;
   margin-top: 0;
   min-height: 100vh;
@@ -37,13 +142,15 @@ body.hvnly_property_page_hvnly_property_settings:has(#HvnlyNab_admin_dashboard_w
 }
 
 #HvnlyNab_property_builder_render.hvnly-admin-is-loading,
-#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading {
+#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading,
+#HvnlyNab_reports_analytics_wrap.hvnly-admin-is-loading {
   min-height: 100vh;
   position: relative;
 }
 
 #HvnlyNab_property_builder_render.hvnly-admin-is-loading .hvnly-builder-app-root,
-#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading #HvnlyNab_admin_dashboard {
+#HvnlyNab_admin_dashboard_wrap.hvnly-admin-is-loading #HvnlyNab_admin_dashboard,
+#HvnlyNab_reports_analytics_wrap.hvnly-admin-is-loading #HvnlyNab_reports_analytics_render {
   visibility: hidden;
   pointer-events: none;
   height: 0;

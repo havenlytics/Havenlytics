@@ -14,6 +14,7 @@ use HvnlyNab\Api\Type\Builders\MetaCleanup;
 use HvnlyNab\Api\Type\Settings\PluginSettingsAPI;
 use HvnlyNab\Api\Type\Settings\PluginInfoAPI;
 use HvnlyNab\Api\Type\Settings\PriceOnCallTextAPI;
+use HvnlyNab\Api\Type\Analytics\AnalyticsAPI;
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
@@ -60,6 +61,7 @@ class Controller
                 PluginSettingsAPI::class,
                 PluginInfoAPI::class,
                 PriceOnCallTextAPI::class,
+                AnalyticsAPI::class,
             ]
         );
 

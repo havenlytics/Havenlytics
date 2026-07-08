@@ -20,6 +20,79 @@ defined( 'ABSPATH' ) || exit;
 class InquiryRepository implements InquiryRepositoryInterface {
 
 	/**
+	 * @var string[]|null
+	 */
+	private static $cached_columns = null;
+
+	/**
+	 * @return string[]
+	 */
+	private function table_columns(): array {
+		if ( is_array( self::$cached_columns ) ) {
+			return self::$cached_columns;
+		}
+
+		global $wpdb;
+
+		$table = InquirySchema::table_name();
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$columns = $wpdb->get_col( "DESCRIBE {$table}" );
+
+		self::$cached_columns = is_array( $columns ) ? array_values( array_filter( array_map( 'strval', $columns ) ) ) : array();
+
+		return self::$cached_columns;
+	}
+
+	/**
+	 * @param string $column Column name.
+	 * @return bool
+	 */
+	private function has_column( string $column ): bool {
+		return in_array( $column, $this->table_columns(), true );
+	}
+
+	/**
+	 * @param int    $property_id Property ID.
+	 * @return string
+	 */
+	private function resolve_property_title( int $property_id ): string {
+		if ( $property_id <= 0 ) {
+			return '';
+		}
+
+		$title = get_the_title( $property_id );
+
+		return is_string( $title ) ? $title : '';
+	}
+
+	/**
+	 * @param int    $agent_id Agent identifier.
+	 * @param string $agent_type Agent type (cpt/user).
+	 * @return string
+	 */
+	private function resolve_agent_name( int $agent_id, string $agent_type ): string {
+		$agent_id   = absint( $agent_id );
+		$agent_type = sanitize_key( $agent_type );
+
+		if ( $agent_id <= 0 ) {
+			return '';
+		}
+
+		if ( InquiryAgentResolver::TYPE_CPT === $agent_type ) {
+			$title = get_the_title( $agent_id );
+			return is_string( $title ) ? $title : '';
+		}
+
+		$user = get_user_by( 'id', $agent_id );
+		if ( $user instanceof \WP_User ) {
+			return (string) $user->display_name;
+		}
+
+		return '';
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function create( array $data ) {
@@ -35,11 +108,13 @@ class InquiryRepository implements InquiryRepositoryInterface {
 
 		$property_id = isset( $data['property_id'] ) ? absint( $data['property_id'] ) : 0;
 		$agent_id    = isset( $data['agent_id'] ) ? absint( $data['agent_id'] ) : 0;
+		$agent_type  = isset( $data['agent_type'] ) ? sanitize_key( (string) $data['agent_type'] ) : InquiryAgentResolver::TYPE_USER;
 
 		if ( $agent_id <= 0 && $property_id > 0 ) {
 			$resolution = InquiryAgentResolver::resolve_for_submission( $property_id, 0 );
 			if ( ! is_wp_error( $resolution ) ) {
 				$agent_id = isset( $resolution['agent_id'] ) ? absint( $resolution['agent_id'] ) : 0;
+				$agent_type = isset( $resolution['agent_type'] ) ? sanitize_key( (string) $resolution['agent_type'] ) : $agent_type;
 			} elseif ( function_exists( 'hvnly_get_property_agent' ) ) {
 				$agent = hvnly_get_property_agent( $property_id );
 				if ( is_array( $agent ) && ! empty( $agent['id'] ) ) {
@@ -63,6 +138,18 @@ class InquiryRepository implements InquiryRepositoryInterface {
 		);
 
 		$formats = array( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
+
+		// Backward-compatible: only persist extra columns if they exist on this install.
+		if ( $this->has_column( 'property_title' ) ) {
+			$row['property_title'] = $this->resolve_property_title( $property_id );
+			array_splice( $formats, 1, 0, '%s' );
+		}
+
+		if ( $this->has_column( 'agent_name' ) ) {
+			$row['agent_name'] = $this->resolve_agent_name( $agent_id, $agent_type );
+			$agent_name_pos    = $this->has_column( 'property_title' ) ? 3 : 2;
+			array_splice( $formats, $agent_name_pos, 0, '%s' );
+		}
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$inserted = $wpdb->insert( InquirySchema::table_name(), $row, $formats );

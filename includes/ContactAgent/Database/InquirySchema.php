@@ -62,7 +62,9 @@ final class InquirySchema {
 		$sql = "CREATE TABLE {$table} (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			property_id bigint(20) unsigned NOT NULL,
+			property_title varchar(255) NOT NULL DEFAULT '',
 			agent_id bigint(20) unsigned NOT NULL DEFAULT 0,
+			agent_name varchar(255) NOT NULL DEFAULT '',
 			sender_name varchar(100) NOT NULL,
 			sender_email varchar(100) NOT NULL,
 			sender_phone varchar(30) NOT NULL DEFAULT '',
