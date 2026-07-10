@@ -1567,6 +1567,7 @@ class Havenlytics_Type extends Custom_Metabox {
             $styles = [
                 'hvnly-admin-fontawesome-all' => HVNLYNAB_ASSETS_URL . '/admin/css/fontawesome-all.min.css',
                 'hvnly-admin-leaflet'         => HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-admin-leaflet.css',
+                'hvnly-admin-fonts'           => HVNLYNAB_ASSETS_URL . '/admin/css/fonts.css',
                 'hvnly-admin-metabox'         => HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-admin-metabox.css',
             ];
 

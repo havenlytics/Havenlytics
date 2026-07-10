@@ -22,8 +22,8 @@
   --hvnly-brand-error: #ff4d4f;
   --hvnly-brand-warning: #ffb507;
 
-  --hvnly-bodyFont: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  --hvnly-headingFont: "Inter", var(--hvnly-bodyFont);
+  --hvnly-bodyFont: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --hvnly-headingFont: var(--hvnly-bodyFont);
   --hvnly-interFont: var(--hvnly-headingFont);
   --hvnly-montserratHeadingFont: var(--hvnly-headingFont);
 

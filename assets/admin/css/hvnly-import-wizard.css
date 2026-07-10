@@ -96,8 +96,8 @@
     --hvnly-transition-time: 0.3s ease;
 
     /* Align with admin metabox tokens (no new palette) */
-    --hvnly-bodyFont: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --hvnly-headingFont: "Inter", var(--hvnly-bodyFont);
+    --hvnly-bodyFont: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --hvnly-headingFont: var(--hvnly-bodyFont);
     --hvnly-color-bg-off-light: #f3f4f6;
     --hvnly-status-pending: #FFB507;
     --hvnly-status-rent: #00C2A8;

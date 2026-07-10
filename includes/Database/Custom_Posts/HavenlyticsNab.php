@@ -86,6 +86,7 @@ class HavenlyticsNab extends Custom_Posts
             'supports'           => ['title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments'],
             'publicly_queryable' => $this->public_query,
             'show_in_menu'       => true,
+            'menu_position'      => 3,
             'rewrite'            => [
                 'slug'       => class_exists( '\HvnlyNab\Core\PermalinkSettings' )
                     ? \HvnlyNab\Core\PermalinkSettings::get_property_single_slug()

@@ -40,6 +40,8 @@ class InquiryReplyService {
 		?InquiryReplyRepository $reply_repository = null,
 		?InquiryReplyNotifier $notifier = null
 	) {
+		ContactAgentFunctionsLoader::load();
+
 		$this->inquiry_repository = $inquiry_repository ?? new InquiryRepository();
 		$this->reply_repository   = $reply_repository ?? new InquiryReplyRepository();
 		$this->notifier           = $notifier ?? new InquiryReplyNotifier();

@@ -1,0 +1,51 @@
+/**
+ * Havenlytics Admin Fonts (self-hosted)
+ *
+ * Inter font files are bundled locally under `assets/admin/fonts/inter/`.
+ * License: SIL Open Font License 1.1 (see `assets/admin/fonts/inter/LICENSE-Inter.txt`).
+ */
+
+/* Variable font for modern browsers */
+@supports (font-variation-settings: normal) {
+  @font-face {
+    font-family: "Inter";
+    src: url("../fonts/inter/Inter-VariableFont_slnt,wght.woff2") format("woff2");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 100 900;
+  }
+}
+
+/* Static fallbacks for older environments */
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter/Inter-Regular.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter/Inter-Medium.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter/Inter-SemiBold.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/inter/Inter-Bold.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+}
+

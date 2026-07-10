@@ -81,6 +81,7 @@ class ComposerStaticInit58189fc8f1c14b3e7f1c13fc3d5f5560
         'HvnlyNab\\ContactAgent\\ContactAgentBootstrap' => __DIR__ . '/../..' . '/includes/ContactAgent/ContactAgentBootstrap.php',
         'HvnlyNab\\ContactAgent\\ContactAgentConstants' => __DIR__ . '/../..' . '/includes/ContactAgent/ContactAgentConstants.php',
         'HvnlyNab\\ContactAgent\\ContactAgentFrontend' => __DIR__ . '/../..' . '/includes/ContactAgent/ContactAgentFrontend.php',
+        'HvnlyNab\\ContactAgent\\ContactAgentFunctionsLoader' => __DIR__ . '/../..' . '/includes/ContactAgent/ContactAgentFunctionsLoader.php',
         'HvnlyNab\\ContactAgent\\ContactAgentModule' => __DIR__ . '/../..' . '/includes/ContactAgent/ContactAgentModule.php',
         'HvnlyNab\\ContactAgent\\ContactAgentSettings' => __DIR__ . '/../..' . '/includes/ContactAgent/ContactAgentSettings.php',
         'HvnlyNab\\ContactAgent\\Contracts\\InquiryNotifierInterface' => __DIR__ . '/../..' . '/includes/ContactAgent/Contracts/InquiryNotifierInterface.php',

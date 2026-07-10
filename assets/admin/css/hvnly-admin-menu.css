@@ -1,0 +1,154 @@
+/* Scoped menu styling for Havenlytics custom admin menus only. */
+
+:root {
+  --hvnly-admin-menu-active: var(--hvnly-brand-primary);
+}
+
+/* Top-level menu backgrounds (hover/current/open) - with !important to override WP defaults */
+#adminmenu li#menu-posts-hvnly_property:hover > a.menu-top,
+#adminmenu li#menu-posts-hvnly_property.current > a.menu-top,
+#adminmenu li#menu-posts-hvnly_property.wp-has-current-submenu > a.menu-top,
+#adminmenu li#menu-posts-hvnly_property.wp-menu-open > a.menu-top,
+#adminmenu li#menu-posts-hvnly_property.opensub > a.menu-top,
+#adminmenu li#menu-posts-hvnly_agent:hover > a.menu-top,
+#adminmenu li#menu-posts-hvnly_agent.current > a.menu-top,
+#adminmenu li#menu-posts-hvnly_agent.wp-has-current-submenu > a.menu-top,
+#adminmenu li#menu-posts-hvnly_agent.wp-menu-open > a.menu-top,
+#adminmenu li#menu-posts-hvnly_agent.opensub > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_property_builder:hover > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_property_builder.current > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_property_builder.wp-has-current-submenu > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_property_builder.wp-menu-open > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_property_builder.opensub > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics:hover > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics.current > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics.wp-has-current-submenu > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics.wp-menu-open > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics.opensub > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_inquiries:hover > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_inquiries.current > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_inquiries.wp-has-current-submenu > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_inquiries.wp-menu-open > a.menu-top,
+#adminmenu li#toplevel_page_hvnly_inquiries.opensub > a.menu-top,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent:hover > a.menu-top,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.current > a.menu-top,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.wp-has-current-submenu > a.menu-top,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.wp-menu-open > a.menu-top,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.opensub > a.menu-top {
+  background: var(--hvnly-admin-menu-active) !important;
+  color: #fff !important;
+}
+
+#adminmenu li#menu-posts-hvnly_property:hover > a.menu-top div.wp-menu-image:before,
+#adminmenu li#menu-posts-hvnly_property.current > a.menu-top div.wp-menu-image:before,
+#adminmenu li#menu-posts-hvnly_property.wp-has-current-submenu > a.menu-top div.wp-menu-image:before,
+#adminmenu li#menu-posts-hvnly_property.wp-menu-open > a.menu-top div.wp-menu-image:before,
+#adminmenu li#menu-posts-hvnly_property.opensub > a.menu-top div.wp-menu-image:before,
+#adminmenu li#menu-posts-hvnly_agent:hover > a.menu-top div.wp-menu-image:before,
+#adminmenu li#menu-posts-hvnly_agent.current > a.menu-top div.wp-menu-image:before,
+#adminmenu li#menu-posts-hvnly_agent.wp-has-current-submenu > a.menu-top div.wp-menu-image:before,
+#adminmenu li#menu-posts-hvnly_agent.wp-menu-open > a.menu-top div.wp-menu-image:before,
+#adminmenu li#menu-posts-hvnly_agent.opensub > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_builder:hover > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_builder.current > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_builder.wp-has-current-submenu > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_builder.wp-menu-open > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_builder.opensub > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics:hover > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics.current > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics.wp-has-current-submenu > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics.wp-menu-open > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics.opensub > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_inquiries:hover > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_inquiries.current > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_inquiries.wp-has-current-submenu > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_inquiries.wp-menu-open > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_inquiries.opensub > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent:hover > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.current > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.wp-has-current-submenu > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.wp-menu-open > a.menu-top div.wp-menu-image:before,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.opensub > a.menu-top div.wp-menu-image:before {
+  color: #fff !important;
+}
+
+/* Active submenu item highlight for these menus only. */
+#adminmenu li#menu-posts-hvnly_property ul.wp-submenu li.current > a,
+#adminmenu li#menu-posts-hvnly_agent ul.wp-submenu li.current > a,
+#adminmenu li#toplevel_page_hvnly_property_builder ul.wp-submenu li.current > a,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics ul.wp-submenu li.current > a,
+#adminmenu li#toplevel_page_hvnly_inquiries ul.wp-submenu li.current > a,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent ul.wp-submenu li.current > a {
+  color: var(--hvnly-admin-menu-active) !important;
+  background: color-mix(in srgb, var(--hvnly-admin-menu-active) 18%, transparent) !important;
+}
+
+/* Submenu hover/focus/keyboard focus for Havenlytics menus only (prevents WP blue highlight). */
+#adminmenu li#menu-posts-hvnly_property ul.wp-submenu a:hover,
+#adminmenu li#menu-posts-hvnly_property ul.wp-submenu a:focus,
+#adminmenu li#menu-posts-hvnly_property ul.wp-submenu a:focus-visible,
+#adminmenu li#menu-posts-hvnly_agent ul.wp-submenu a:hover,
+#adminmenu li#menu-posts-hvnly_agent ul.wp-submenu a:focus,
+#adminmenu li#menu-posts-hvnly_agent ul.wp-submenu a:focus-visible,
+#adminmenu li#toplevel_page_hvnly_property_builder ul.wp-submenu a:hover,
+#adminmenu li#toplevel_page_hvnly_property_builder ul.wp-submenu a:focus,
+#adminmenu li#toplevel_page_hvnly_property_builder ul.wp-submenu a:focus-visible,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics ul.wp-submenu a:hover,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics ul.wp-submenu a:focus,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics ul.wp-submenu a:focus-visible,
+#adminmenu li#toplevel_page_hvnly_inquiries ul.wp-submenu a:hover,
+#adminmenu li#toplevel_page_hvnly_inquiries ul.wp-submenu a:focus,
+#adminmenu li#toplevel_page_hvnly_inquiries ul.wp-submenu a:focus-visible,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent ul.wp-submenu a:hover,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent ul.wp-submenu a:focus,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent ul.wp-submenu a:focus-visible {
+  color: #fff !important;
+  background: var(--hvnly-admin-menu-active) !important;
+}
+
+/* Focus state for menu items - matching WordPress core focus selector */
+#adminmenu li#menu-posts-hvnly_property > a.menu-top:focus,
+#adminmenu li#menu-posts-hvnly_agent > a.menu-top:focus,
+#adminmenu li#toplevel_page_hvnly_property_builder > a.menu-top:focus,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics > a.menu-top:focus,
+#adminmenu li#toplevel_page_hvnly_inquiries > a.menu-top:focus,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent > a.menu-top:focus {
+  background: var(--hvnly-admin-menu-active) !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--hvnly-admin-menu-active) 65%, #fff) !important;
+}
+
+#adminmenu li#menu-posts-hvnly_property > a.menu-top:focus div.wp-menu-image:before,
+#adminmenu li#menu-posts-hvnly_agent > a.menu-top:focus div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_builder > a.menu-top:focus div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics > a.menu-top:focus div.wp-menu-image:before,
+#adminmenu li#toplevel_page_hvnly_inquiries > a.menu-top:focus div.wp-menu-image:before,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent > a.menu-top:focus div.wp-menu-image:before {
+  color: #fff !important;
+}
+
+/* Override default WordPress hover states that might interfere */
+#adminmenu li#menu-posts-hvnly_property.menu-top:hover,
+#adminmenu li#menu-posts-hvnly_property.menu-top.opensub,
+#adminmenu li#menu-posts-hvnly_agent.menu-top:hover,
+#adminmenu li#menu-posts-hvnly_agent.menu-top.opensub,
+#adminmenu li#toplevel_page_hvnly_property_builder.menu-top:hover,
+#adminmenu li#toplevel_page_hvnly_property_builder.menu-top.opensub,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics.menu-top:hover,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics.menu-top.opensub,
+#adminmenu li#toplevel_page_hvnly_inquiries.menu-top:hover,
+#adminmenu li#toplevel_page_hvnly_inquiries.menu-top.opensub,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.menu-top:hover,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.menu-top.opensub {
+  background: var(--hvnly-admin-menu-active) !important;
+}
+
+/* Reset any transitions to avoid flicker */
+#adminmenu li#menu-posts-hvnly_property > a,
+#adminmenu li#menu-posts-hvnly_agent > a,
+#adminmenu li#toplevel_page_hvnly_property_builder > a,
+#adminmenu li#toplevel_page_hvnly_property_reports_analytics > a,
+#adminmenu li#toplevel_page_hvnly_inquiries > a,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent > a {
+  transition: none !important;
+}

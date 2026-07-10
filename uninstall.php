@@ -206,6 +206,7 @@ $wpdb->query(
 // Clear all scheduled cron events
 $hvnly_cron_hooks = array(
     'hvnly_daily_cache_cleanup',
+    'hvnly_daily_analytics_cleanup',
     'hvnly_weekly_optimization',
     'hvnly_monthly_cleanup',
 );

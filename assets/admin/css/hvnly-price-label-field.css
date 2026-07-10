@@ -158,7 +158,7 @@
     border-radius: var(--hvnly-input-radius, 4px) !important;
     font-size: 15px;
     background: var(--hvnly-color-bg-white, #ffffff);
-    font-family: var(--hvnly-bodyFont, 'Poppins', sans-serif);
+    font-family: var(--hvnly-bodyFont, 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
     transition: all var(--hvnly-transition-time, 0.3s ease);
     box-shadow: 0 1px 2px rgba(var(--hvnly-text-primary-rgb), 0.03) !important;
     height: auto;

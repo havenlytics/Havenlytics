@@ -123,33 +123,43 @@ class InquiryRepository implements InquiryRepositoryInterface {
 			}
 		}
 
-		$row = array(
-			'property_id'  => $property_id,
-			'agent_id'       => $agent_id,
-			'sender_name'    => isset( $data['sender_name'] ) ? (string) $data['sender_name'] : '',
-			'sender_email'   => isset( $data['sender_email'] ) ? (string) $data['sender_email'] : '',
-			'sender_phone'   => isset( $data['sender_phone'] ) ? (string) $data['sender_phone'] : '',
-			'message'        => isset( $data['message'] ) ? (string) $data['message'] : '',
-			'source'         => isset( $data['source'] ) ? (string) $data['source'] : ContactAgentConstants::DEFAULT_SOURCE,
-			'status'         => ContactAgentConstants::STATUS_NEW,
-			'ip_address'     => isset( $data['ip_address'] ) ? (string) $data['ip_address'] : '',
-			'user_agent'     => isset( $data['user_agent'] ) ? (string) $data['user_agent'] : '',
-			'created_at'     => current_time( 'mysql', true ),
-		);
+		// Build row + formats in the exact same order.
+		// wpdb::insert() maps formats positionally, so the formats array must match
+		// the insertion order of $row (not just the set of keys).
+		$row     = array();
+		$formats = array();
 
-		$formats = array( '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' );
+		$row['property_id'] = $property_id;
+		$formats[]          = '%d';
 
 		// Backward-compatible: only persist extra columns if they exist on this install.
 		if ( $this->has_column( 'property_title' ) ) {
 			$row['property_title'] = $this->resolve_property_title( $property_id );
-			array_splice( $formats, 1, 0, '%s' );
+			$formats[]             = '%s';
 		}
+
+		$row['agent_id'] = $agent_id;
+		$formats[]       = '%d';
 
 		if ( $this->has_column( 'agent_name' ) ) {
 			$row['agent_name'] = $this->resolve_agent_name( $agent_id, $agent_type );
-			$agent_name_pos    = $this->has_column( 'property_title' ) ? 3 : 2;
-			array_splice( $formats, $agent_name_pos, 0, '%s' );
+			$formats[]         = '%s';
 		}
+
+		$row['sender_name']  = isset( $data['sender_name'] ) ? (string) $data['sender_name'] : '';
+		$row['sender_email'] = isset( $data['sender_email'] ) ? (string) $data['sender_email'] : '';
+		$row['sender_phone'] = isset( $data['sender_phone'] ) ? (string) $data['sender_phone'] : '';
+		$row['message']      = isset( $data['message'] ) ? (string) $data['message'] : '';
+		$row['source']       = isset( $data['source'] ) ? (string) $data['source'] : ContactAgentConstants::DEFAULT_SOURCE;
+		$row['status']       = ContactAgentConstants::STATUS_NEW;
+		$row['ip_address']   = isset( $data['ip_address'] ) ? (string) $data['ip_address'] : '';
+		$row['user_agent']   = isset( $data['user_agent'] ) ? (string) $data['user_agent'] : '';
+		$row['created_at']   = current_time( 'mysql', true );
+
+		$formats = array_merge(
+			$formats,
+			array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+		);
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$inserted = $wpdb->insert( InquirySchema::table_name(), $row, $formats );
@@ -493,7 +503,7 @@ class InquiryRepository implements InquiryRepositoryInterface {
 	 * @return array<string, mixed>
 	 */
 	private function normalize_row( array $row ): array {
-		return array(
+		$normalized = array(
 			'id'           => isset( $row['id'] ) ? (int) $row['id'] : 0,
 			'property_id'  => isset( $row['property_id'] ) ? (int) $row['property_id'] : 0,
 			'agent_id'     => isset( $row['agent_id'] ) ? (int) $row['agent_id'] : 0,
@@ -508,6 +518,16 @@ class InquiryRepository implements InquiryRepositoryInterface {
 			'user_agent'   => isset( $row['user_agent'] ) ? (string) $row['user_agent'] : '',
 			'created_at'   => isset( $row['created_at'] ) ? (string) $row['created_at'] : '',
 		);
+
+		if ( isset( $row['agent_name'] ) ) {
+			$normalized['agent_name'] = (string) $row['agent_name'];
+		}
+
+		if ( isset( $row['property_title'] ) ) {
+			$normalized['property_title'] = (string) $row['property_title'];
+		}
+
+		return $normalized;
 	}
 
 	/**

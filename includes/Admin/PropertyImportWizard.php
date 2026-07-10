@@ -531,6 +531,16 @@ div.update-nag,
 
         $version = defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '2.2.1';
 
+        $fonts_css_path = HVNLYNAB_ASSETS_PATH . '/admin/css/fonts.css';
+        if ( file_exists( $fonts_css_path ) ) {
+            wp_enqueue_style(
+                'hvnly-admin-fonts',
+                HVNLYNAB_ASSETS_URL . '/admin/css/fonts.css',
+                [],
+                $version
+            );
+        }
+
         wp_enqueue_style(
             'leaflet',
             esc_url( HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/css/leaflet.css' ),
@@ -545,7 +555,7 @@ div.update-nag,
             true
         );
         
-        wp_enqueue_style( 'hvnly-import-wizard', HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-import-wizard.css', [], $version );
+        wp_enqueue_style( 'hvnly-import-wizard', HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-import-wizard.css', [ 'hvnly-admin-fonts' ], $version );
         wp_enqueue_script(
             'hvnly-import-map-manager',
             HVNLYNAB_ASSETS_URL . '/admin/js/hvnly-import-map-manager.js',

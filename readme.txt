@@ -5,7 +5,7 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4 
-Stable tag: 3.1.6
+Stable tag: 3.1.8
 License: GPLv2 or later 
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Build modern real estate websites with property listings, AJAX search, interactive maps, analytics, Elementor widgets, and visual builders.
@@ -337,6 +337,21 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 
 
 == Changelog ==
+
+= 3.1.8 - 2026-07-10 =
+
+* Fixed: Analytics Today's Views, This Week Views, and This Month Views now use real daily analytics buckets instead of non-resetting counters.
+* Fixed: Top Viewed Properties ranking now orders by actual lifetime view totals.
+* Fixed: Analytics CSV export Today and This Month columns now match dashboard calculations.
+* Improved: Property view tracking ignores preview, admin, autosave, bot, and rapid refresh spam while preserving cookie-based unique visitor logic.
+* Improved: Daily analytics cleanup cron is now scheduled automatically on install and existing sites.
+* Maintenance: Stability, analytics accuracy, and WordPress.org release hardening.
+* New: Analytics Dashboard in the WordPress admin — charts, tables, date filters, and CSV export.
+* New: Agent inquiry property selection to correctly associate inquiries with listings.
+* Improved: Self-hosted Inter typography across all Havenlytics admin pages (WordPress.org compliant; no remote fonts).
+* Improved: Analytics performance, loading experience, and UI polish.
+* Improved: Inquiry emails, admin inquiry management, and upgrade reliability.
+* Fixed: Inquiry submission regressions and edge cases discovered during production hardening.
 
 = 3.1.6 - 2026-07-08 =
 

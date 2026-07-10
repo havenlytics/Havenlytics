@@ -45,6 +45,20 @@ class PropertyViewTracker {
 	const VIEW_COOKIE = 'hvnly_property_views';
 
 	/**
+	 * Cookie name for per-property view rate limiting
+	 *
+	 * @var string
+	 */
+	const VIEW_RATE_COOKIE = 'hvnly_property_view_rate';
+
+	/**
+	 * Minimum seconds between counted views for the same property in one browser.
+	 *
+	 * @var int
+	 */
+	const VIEW_COOLDOWN_SECONDS = 60;
+
+	/**
 	 * Cache group for view counts
 	 *
 	 * @var string
@@ -79,6 +93,10 @@ class PropertyViewTracker {
 		}
 
 		$property_id = get_the_ID();
+
+		if ( ! $property_id || $this->should_skip_tracking( $property_id ) ) {
+			return;
+		}
 		
 		// Prevent duplicate tracking in same request
 		if ( in_array( $property_id, $this->tracked_properties, true ) ) {
@@ -91,9 +109,141 @@ class PropertyViewTracker {
 
 		$this->increment_view_count( $property_id, $is_unique );
 		$this->record_view_analytics( $property_id, $user_id, $is_unique );
+		$this->mark_view_cooldown( $property_id );
 
 		// Clear cache for this property
 		$this->clear_property_view_cache( $property_id );
+	}
+
+	/**
+	 * Determine whether the current request should be excluded from view tracking.
+	 *
+	 * @param int $property_id Property ID.
+	 * @return bool
+	 */
+	private function should_skip_tracking( $property_id ) {
+		if ( is_admin() || wp_doing_ajax() || wp_doing_cron() ) {
+			return true;
+		}
+
+		if ( is_preview() || is_customize_preview() ) {
+			return true;
+		}
+
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return true;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only preview context detection.
+		if ( isset( $_GET['preview'] ) || isset( $_GET['elementor-preview'] ) ) {
+			return true;
+		}
+
+		if ( $this->is_bot_user_agent() ) {
+			return true;
+		}
+
+		return $this->is_within_view_cooldown( $property_id );
+	}
+
+	/**
+	 * Detect common crawler and bot user agents.
+	 *
+	 * @return bool
+	 */
+	private function is_bot_user_agent() {
+		if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
+			return false;
+		}
+
+		$user_agent = strtolower( sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) );
+		$patterns   = array(
+			'bot',
+			'spider',
+			'crawl',
+			'slurp',
+			'mediapartners',
+			'facebookexternalhit',
+			'whatsapp',
+			'preview',
+			'curl/',
+			'wget/',
+			'python-requests',
+			'headless',
+			'googlebot',
+			'bingbot',
+			'yandex',
+			'baiduspider',
+			'duckduckbot',
+			'semrush',
+			'ahrefs',
+			'mj12bot',
+			'petalbot',
+		);
+
+		foreach ( $patterns as $pattern ) {
+			if ( false !== strpos( $user_agent, $pattern ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check whether the same browser recently counted a view for this property.
+	 *
+	 * @param int $property_id Property ID.
+	 * @return bool
+	 */
+	private function is_within_view_cooldown( $property_id ) {
+		$cookie_value = isset( $_COOKIE[ self::VIEW_RATE_COOKIE ] )
+			? sanitize_text_field( wp_unslash( $_COOKIE[ self::VIEW_RATE_COOKIE ] ) )
+			: '';
+
+		$rate_map = $cookie_value ? json_decode( $cookie_value, true ) : array();
+		if ( ! is_array( $rate_map ) ) {
+			return false;
+		}
+
+		$property_id = absint( $property_id );
+		$last_view   = isset( $rate_map[ $property_id ] ) ? absint( $rate_map[ $property_id ] ) : 0;
+
+		return $last_view > 0 && ( time() - $last_view ) < self::VIEW_COOLDOWN_SECONDS;
+	}
+
+	/**
+	 * Record the latest counted view timestamp for cooldown enforcement.
+	 *
+	 * @param int $property_id Property ID.
+	 * @return void
+	 */
+	private function mark_view_cooldown( $property_id ) {
+		$cookie_value = isset( $_COOKIE[ self::VIEW_RATE_COOKIE ] )
+			? sanitize_text_field( wp_unslash( $_COOKIE[ self::VIEW_RATE_COOKIE ] ) )
+			: '';
+
+		$rate_map = $cookie_value ? json_decode( $cookie_value, true ) : array();
+		if ( ! is_array( $rate_map ) ) {
+			$rate_map = array();
+		}
+
+		$property_id = absint( $property_id );
+		$rate_map[ $property_id ] = time();
+
+		if ( count( $rate_map ) > 50 ) {
+			$rate_map = array_slice( $rate_map, -50, 50, true );
+		}
+
+		setcookie(
+			self::VIEW_RATE_COOKIE,
+			wp_json_encode( $rate_map ),
+			time() + ( 30 * DAY_IN_SECONDS ),
+			COOKIEPATH,
+			COOKIE_DOMAIN,
+			is_ssl(),
+			true
+		);
 	}
 
 	/**
@@ -332,21 +482,46 @@ class PropertyViewTracker {
 		$properties = wp_cache_get( $cache_key, self::CACHE_GROUP );
 
 		if ( false === $properties ) {
-			$args = array(
-				'post_type'      => 'hvnly_property',
-				'posts_per_page' => $limit,
-				'meta_key'       => self::VIEW_COUNT_META,
-				'orderby'        => 'meta_value_num',
-				'order'          => 'DESC',
-				'meta_query'     => array(
-					array(
-						'key'     => self::VIEW_COUNT_META,
-						'compare' => 'EXISTS',
-					),
-				),
+			$property_ids = get_posts(
+				array(
+					'post_type'      => 'hvnly_property',
+					'post_status'    => 'any',
+					'posts_per_page' => -1,
+					'fields'         => 'ids',
+					'no_found_rows'  => true,
+				)
 			);
 
-			$properties = get_posts( $args );
+			$scores = array();
+			foreach ( $property_ids as $property_id ) {
+				$views_data = get_post_meta( $property_id, self::VIEW_COUNT_META, true );
+				if ( ! is_array( $views_data ) ) {
+					continue;
+				}
+
+				$total = isset( $views_data['total'] ) ? absint( $views_data['total'] ) : 0;
+				if ( $total > 0 ) {
+					$scores[ (int) $property_id ] = $total;
+				}
+			}
+
+			if ( empty( $scores ) ) {
+				$properties = array();
+			} else {
+				arsort( $scores );
+				$top_ids = array_slice( array_keys( $scores ), 0, absint( $limit ) );
+
+				$properties = get_posts(
+					array(
+						'post_type'      => 'hvnly_property',
+						'post_status'    => 'any',
+						'posts_per_page' => count( $top_ids ),
+						'post__in'       => $top_ids,
+						'orderby'        => 'post__in',
+					)
+				);
+			}
+
 			wp_cache_set( $cache_key, $properties, self::CACHE_GROUP, HOUR_IN_SECONDS );
 		}
 

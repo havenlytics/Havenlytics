@@ -66,6 +66,7 @@ return array(
     'HvnlyNab\\ContactAgent\\ContactAgentBootstrap' => $baseDir . '/includes/ContactAgent/ContactAgentBootstrap.php',
     'HvnlyNab\\ContactAgent\\ContactAgentConstants' => $baseDir . '/includes/ContactAgent/ContactAgentConstants.php',
     'HvnlyNab\\ContactAgent\\ContactAgentFrontend' => $baseDir . '/includes/ContactAgent/ContactAgentFrontend.php',
+    'HvnlyNab\\ContactAgent\\ContactAgentFunctionsLoader' => $baseDir . '/includes/ContactAgent/ContactAgentFunctionsLoader.php',
     'HvnlyNab\\ContactAgent\\ContactAgentModule' => $baseDir . '/includes/ContactAgent/ContactAgentModule.php',
     'HvnlyNab\\ContactAgent\\ContactAgentSettings' => $baseDir . '/includes/ContactAgent/ContactAgentSettings.php',
     'HvnlyNab\\ContactAgent\\Contracts\\InquiryNotifierInterface' => $baseDir . '/includes/ContactAgent/Contracts/InquiryNotifierInterface.php',

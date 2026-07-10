@@ -10,6 +10,7 @@ namespace HvnlyNab\ContactAgent\Admin;
 
 use HvnlyNab\Agent\AgentConstants;
 use HvnlyNab\ContactAgent\ContactAgentConstants;
+use HvnlyNab\ContactAgent\ContactAgentFunctionsLoader;
 use HvnlyNab\ContactAgent\Database\InquirySchema;
 use HvnlyNab\ContactAgent\InquiryReplyRepository;
 use HvnlyNab\ContactAgent\InquiryReplyService;
@@ -25,8 +26,17 @@ defined( 'ABSPATH' ) || exit;
  */
 class InquiryAdminPage {
 
-	/** @var string */
+	/** @var string Parent menu slug. */
 	public const MENU_SLUG = 'hvnly_inquiries';
+
+	/** @var string Inquiries submenu slug (must differ from parent or WP hides the submenu). */
+	public const SUBMENU_SLUG = 'hvnly_marketing_inquiries';
+
+	/** Admin hook suffix for the Inquiries submenu screen. */
+	public const HOOK_INQUIRIES = 'marketing_page_hvnly_marketing_inquiries';
+
+	/** Menu position — grouped before WordPress Posts (5). */
+	private const MENU_POSITION = 4.3;
 
 	/** @var InquiryRepository */
 	private $repository;
@@ -52,11 +62,18 @@ class InquiryAdminPage {
 	 * @return void
 	 */
 	public function register(): void {
+		ContactAgentFunctionsLoader::load();
+
 		InquiryUnreadCounter::register();
 
 		add_action( 'admin_menu', array( $this, 'register_menu' ), 25 );
+		add_action( 'admin_menu', array( $this, 'register_legacy_menu' ), 26 );
+		add_action( 'admin_menu', array( $this, 'cleanup_menu' ), 999 );
+		add_action( 'admin_init', array( $this, 'maybe_redirect_legacy_inquiries_request' ), 5 );
 		add_action( 'admin_init', array( $this, 'handle_actions' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_filter( 'parent_file', array( $this, 'highlight_parent_menu' ), 10 );
+		add_filter( 'submenu_file', array( $this, 'highlight_submenu' ), 10, 2 );
 	}
 
 	/**
@@ -64,16 +81,169 @@ class InquiryAdminPage {
 	 */
 	public function register_menu(): void {
 		$capability = apply_filters( 'hvnly_admin_capability', 'manage_options' );
-		$menu_title   = esc_html__( 'Inquiries', 'havenlytics' ) . InquiryUnreadCounter::menu_badge_html( InquiryUnreadCounter::get_count() );
+		$menu_title = esc_html__( 'Marketing', 'havenlytics' );
 
-		add_submenu_page(
-			'edit.php?post_type=hvnly_property',
-			esc_html__( 'Property Inquiries', 'havenlytics' ),
+		add_menu_page(
+			esc_html__( 'Marketing', 'havenlytics' ),
 			$menu_title,
 			$capability,
 			self::MENU_SLUG,
+			array( $this, 'render_page' ),
+			'dashicons-megaphone',
+			self::MENU_POSITION
+		);
+
+		$submenu_title = esc_html__( 'Inquiries', 'havenlytics' ) . InquiryUnreadCounter::menu_badge_html( InquiryUnreadCounter::get_count() );
+		add_submenu_page(
+			self::MENU_SLUG,
+			esc_html__( 'Property Inquiries', 'havenlytics' ),
+			$submenu_title,
+			$capability,
+			self::SUBMENU_SLUG,
 			array( $this, 'render_page' )
 		);
+	}
+
+	/**
+	 * Native WordPress menu behavior: remove auto-generated parent duplicate only.
+	 *
+	 * @return void
+	 */
+	public function cleanup_menu(): void {
+		remove_submenu_page( self::MENU_SLUG, self::MENU_SLUG );
+	}
+
+	/**
+	 * @param string $page Admin page query arg.
+	 * @return bool
+	 */
+	private function is_inquiries_admin_page( string $page ): bool {
+		return in_array( $page, array( self::MENU_SLUG, self::SUBMENU_SLUG ), true );
+	}
+
+	/**
+	 * @param string $parent_file Parent menu file.
+	 * @return string
+	 */
+	public function highlight_parent_menu( string $parent_file ): string {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only menu routing.
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( (string) $_GET['page'] ) ) : '';
+		if ( $this->is_inquiries_admin_page( $page ) ) {
+			return self::MENU_SLUG;
+		}
+
+		return $parent_file;
+	}
+
+	/**
+	 * @param string|null $submenu_file Submenu file.
+	 * @param string      $parent_file  Parent menu file.
+	 * @return string|null
+	 */
+	public function highlight_submenu( $submenu_file, string $parent_file ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only menu routing.
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( (string) $_GET['page'] ) ) : '';
+		if ( self::MENU_SLUG === $parent_file && $this->is_inquiries_admin_page( $page ) ) {
+			return self::SUBMENU_SLUG;
+		}
+
+		return $submenu_file;
+	}
+
+	/**
+	 * Redirect legacy CPT inquiries URLs to the canonical Marketing screen.
+	 *
+	 * Detail views are often opened via edit.php?post_type=hvnly_property&page=hvnly_inquiries&inquiry_id=...
+	 * which makes WordPress treat the screen as part of the Havenlytics CPT menu. Redirecting
+	 * preserves bookmarks while ensuring the screen truly belongs to Marketing.
+	 *
+	 * @return void
+	 */
+	public function maybe_redirect_legacy_inquiries_request(): void {
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		global $pagenow;
+
+		// Only legacy CPT route: edit.php?post_type=hvnly_property&page=hvnly_inquiries...
+		if ( 'edit.php' !== $pagenow ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only routing.
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_key( wp_unslash( (string) $_GET['post_type'] ) ) : '';
+		if ( 'hvnly_property' !== $post_type ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only routing.
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( (string) $_GET['page'] ) ) : '';
+		if ( self::MENU_SLUG !== $page ) {
+			return;
+		}
+
+		// Preserve inquiry_id when present.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- passthrough for legacy bookmarks only.
+		$inquiry_id = isset( $_GET['inquiry_id'] ) ? absint( wp_unslash( (string) $_GET['inquiry_id'] ) ) : 0;
+
+		$target_args = array( 'page' => self::SUBMENU_SLUG );
+		if ( $inquiry_id > 0 ) {
+			$target_args['inquiry_id'] = $inquiry_id;
+		}
+
+		wp_safe_redirect( add_query_arg( $target_args, admin_url( 'admin.php' ) ), 301 );
+		exit;
+	}
+
+	/**
+	 * Legacy CPT submenu entry point for bookmarks.
+	 *
+	 * @return void
+	 */
+	public function register_legacy_menu(): void {
+		$capability = apply_filters( 'hvnly_admin_capability', 'manage_options' );
+
+		$hook = add_submenu_page(
+			'edit.php?post_type=hvnly_property',
+			esc_html__( 'Property Inquiries', 'havenlytics' ),
+			esc_html__( 'Inquiries', 'havenlytics' ),
+			$capability,
+			self::MENU_SLUG,
+			array( $this, 'render_legacy_redirect_placeholder' )
+		);
+		if ( is_string( $hook ) && '' !== $hook ) {
+			add_action( 'load-' . $hook, array( $this, 'redirect_legacy_inquiries' ) );
+		}
+	}
+
+	/**
+	 * @return void
+	 */
+	public function render_legacy_redirect_placeholder(): void {
+		// Intentionally empty; redirect runs on load-{$hook}.
+	}
+
+	/**
+	 * @return void
+	 */
+	public function redirect_legacy_inquiries(): void {
+		// Safety guard: only redirect when on the legacy CPT screen.
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( $screen && 'hvnly_property_page_' . self::MENU_SLUG !== $screen->id ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- passthrough for legacy bookmarks only.
+		$inquiry_id = isset( $_GET['inquiry_id'] ) ? absint( wp_unslash( (string) $_GET['inquiry_id'] ) ) : 0;
+
+		$target_args = array( 'page' => self::SUBMENU_SLUG );
+		if ( $inquiry_id > 0 ) {
+			$target_args['inquiry_id'] = $inquiry_id;
+		}
+
+		wp_safe_redirect( add_query_arg( $target_args, admin_url( 'admin.php' ) ), 301 );
+		exit;
 	}
 
 	/**
@@ -81,22 +251,38 @@ class InquiryAdminPage {
 	 * @return void
 	 */
 	public function enqueue_assets( string $hook_suffix ): void {
-		if ( 'hvnly_property_page_' . self::MENU_SLUG !== $hook_suffix ) {
+		if (
+			'hvnly_property_page_' . self::MENU_SLUG !== $hook_suffix
+			&& 'toplevel_page_' . self::MENU_SLUG !== $hook_suffix
+			&& self::HOOK_INQUIRIES !== $hook_suffix
+		) {
 			return;
+		}
+
+		$version = defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '3.0.2';
+
+		$fonts_css_path = HVNLYNAB_ASSETS_PATH . '/admin/css/fonts.css';
+		if ( file_exists( $fonts_css_path ) ) {
+			wp_enqueue_style(
+				'hvnly-admin-fonts',
+				HVNLYNAB_ASSETS_URL . '/admin/css/fonts.css',
+				array(),
+				$version
+			);
 		}
 
 		wp_enqueue_style(
 			'hvnly-inquiries-admin',
 			HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-inquiries-admin.css',
-			array(),
-			defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '3.0.2'
+			array( 'hvnly-admin-fonts' ),
+			$version
 		);
 
 		wp_enqueue_script(
 			'hvnly-inquiries-admin',
 			HVNLYNAB_ASSETS_URL . '/admin/js/hvnly-inquiries-admin.js',
 			array(),
-			defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '3.0.2',
+			$version,
 			true
 		);
 	}
@@ -112,10 +298,10 @@ class InquiryAdminPage {
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		if ( ! isset( $_GET['page'] ) || self::MENU_SLUG !== sanitize_key( wp_unslash( $_GET['page'] ) ) ) {
+		if ( ! isset( $_GET['page'] ) || ! $this->is_inquiries_admin_page( sanitize_key( wp_unslash( (string) $_GET['page'] ) ) ) ) {
 			// Bulk actions POST to same page without page in GET during form submit — check POST too.
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing
-			if ( ! isset( $_POST['page'] ) || self::MENU_SLUG !== sanitize_key( wp_unslash( $_POST['page'] ) ) ) {
+			if ( ! isset( $_POST['page'] ) || ! $this->is_inquiries_admin_page( sanitize_key( wp_unslash( (string) $_POST['page'] ) ) ) ) {
 				return;
 			}
 		}
@@ -365,7 +551,7 @@ class InquiryAdminPage {
     </div>
 
     <form method="post">
-        <input type="hidden" name="page" value="<?php echo esc_attr( self::MENU_SLUG ); ?>" />
+        <input type="hidden" name="page" value="<?php echo esc_attr( self::SUBMENU_SLUG ); ?>" />
         <?php
 				wp_nonce_field( 'bulk-' . self::MENU_SLUG );
 				$list_table->display();
@@ -539,7 +725,7 @@ class InquiryAdminPage {
         <form method="post" class="hvnly-inquiries-admin__reply-form"
             data-max-length="<?php echo esc_attr( (string) $max_length ); ?>">
             <?php wp_nonce_field( 'hvnly_inquiry_reply_' . $inquiry_id ); ?>
-            <input type="hidden" name="page" value="<?php echo esc_attr( self::MENU_SLUG ); ?>" />
+            <input type="hidden" name="page" value="<?php echo esc_attr( self::SUBMENU_SLUG ); ?>" />
             <input type="hidden" name="hvnly_inquiry_reply" value="1" />
             <input type="hidden" name="inquiry_id" value="<?php echo esc_attr( (string) $inquiry_id ); ?>" />
             <label class="screen-reader-text"
@@ -616,7 +802,6 @@ class InquiryAdminPage {
 			return '&mdash;';
 		}
 
-		$html = '';
 		$agent_post_id = 0;
 
 		if ( ! empty( $agent['id'] ) && AgentConstants::POST_TYPE === get_post_type( (int) $agent['id'] ) ) {
@@ -625,11 +810,20 @@ class InquiryAdminPage {
 			$agent_post_id = (int) $inquiry['agent_id'];
 		}
 
+		$html      = esc_html( (string) $agent['name'] );
 		$edit_link = $agent_post_id > 0 ? get_edit_post_link( $agent_post_id ) : '';
+
 		if ( $edit_link ) {
-			$html .= '<a href="' . esc_url( $edit_link ) . '">' . esc_html( (string) $agent['name'] ) . '</a>';
-		} else {
-			$html .= esc_html( (string) $agent['name'] );
+			$html .= '<br /><a href="' . esc_url( $edit_link ) . '">(' . esc_html__( 'Edit Agent', 'havenlytics' ) . ')</a>';
+		}
+
+		$profile_url = ! empty( $agent['profile_url'] ) ? (string) $agent['profile_url'] : '';
+		if ( '' === $profile_url && $agent_post_id > 0 ) {
+			$profile_url = (string) get_permalink( $agent_post_id );
+		}
+
+		if ( '' !== $profile_url ) {
+			$html .= ' <a href="' . esc_url( $profile_url ) . '" class="hvnly-inquiries-admin__view-link" target="_blank" rel="noopener noreferrer">(' . esc_html__( 'View Profile', 'havenlytics' ) . ')</a>';
 		}
 
 		if ( ! empty( $agent['email'] ) && is_email( (string) $agent['email'] ) ) {

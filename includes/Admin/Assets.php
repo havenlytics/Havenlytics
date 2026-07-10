@@ -8,6 +8,10 @@ if (!defined('ABSPATH')) {
 
 final class Assets
 {
+    private const ADMIN_FONTS_HANDLE = 'hvnly-admin-fonts';
+
+    private const ADMIN_FONTS_CSS = '/admin/css/fonts.css';
+
     /**
      * React admin screens and their required build bundle files.
      *
@@ -26,7 +30,25 @@ final class Assets
             'script' => '0.js',
             'style'  => '0.css',
         ],
+        'toplevel_page_hvnly_property_builder' => [
+            'folder' => 'builder',
+            'asset'  => 'builder.asset.php',
+            'script' => '0.js',
+            'style'  => '0.css',
+        ],
         'hvnly_property_page_hvnly_property_reports_analytics' => [
+            'folder' => 'reports',
+            'asset'  => 'reports.asset.php',
+            'script' => '0.js',
+            'style'  => '0.css',
+        ],
+        'toplevel_page_hvnly_property_reports_analytics' => [
+            'folder' => 'reports',
+            'asset'  => 'reports.asset.php',
+            'script' => '0.js',
+            'style'  => '0.css',
+        ],
+        'analytics_page_hvnly_analytics_overview' => [
             'folder' => 'reports',
             'asset'  => 'reports.asset.php',
             'script' => '0.js',
@@ -88,6 +110,11 @@ final class Assets
             'hvnly_property_page_hvnly_property_settings',
             'hvnly_property_page_hvnly_property_builder',
             'hvnly_property_page_hvnly_property_reports_analytics',
+            'toplevel_page_hvnly_property_builder',
+            'toplevel_page_hvnly_property_reports_analytics',
+            'analytics_page_hvnly_analytics_overview',
+            'toplevel_page_hvnly_inquiries',
+            'marketing_page_hvnly_marketing_inquiries',
             'hvnly_property_page_hvnly_property_cache',
             'hvnly_property_page_hvnly-property-setup',
         ];
@@ -101,6 +128,21 @@ final class Assets
             $default_version
         );
 
+        // Scoped admin menu styling for Havenlytics custom menus only.
+        $menu_css_path = HVNLYNAB_ASSETS_PATH . '/admin/css/hvnly-admin-menu.css';
+        if (file_exists($menu_css_path)) {
+            wp_enqueue_style(
+                'hvnly-admin-menu',
+                HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-admin-menu.css',
+                [],
+                $default_version
+            );
+        }
+
+        if (in_array($hook_suffix, $allowed_pages, true)) {
+            $this->enqueue_admin_fonts_styles($default_version);
+        }
+
         if ($hook_suffix === 'hvnly_property_page_hvnly-property-setup') {
             $this->enqueue_setup_assets($default_version);
             return;
@@ -112,7 +154,26 @@ final class Assets
             return;
         }
 
-        if ($hook_suffix === 'hvnly_property_page_hvnly_property_builder' || $hook_suffix === 'hvnly_property_page_hvnly_property_settings' || $hook_suffix === 'hvnly_property_page_hvnly_property_reports_analytics') {
+        if (
+            $hook_suffix === 'hvnly_property_page_hvnly_property_builder'
+            || $hook_suffix === 'hvnly_property_page_hvnly_property_settings'
+            || $hook_suffix === 'hvnly_property_page_hvnly_property_reports_analytics'
+            || $hook_suffix === 'toplevel_page_hvnly_property_builder'
+            || $hook_suffix === 'toplevel_page_hvnly_property_reports_analytics'
+            || $hook_suffix === 'analytics_page_hvnly_analytics_overview'
+            || $hook_suffix === 'toplevel_page_hvnly_inquiries'
+            || $hook_suffix === 'marketing_page_hvnly_marketing_inquiries'
+        ) {
+            $this->enqueue_admin_boot_styles($default_version);
+        }
+
+        // Agent CPT screens (list + edit) need brand tokens for branded menu states.
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only enqueue routing.
+        $post_type = isset($_GET['post_type']) ? sanitize_key( wp_unslash( (string) $_GET['post_type'] ) ) : '';
+        if (
+            in_array( $hook_suffix, [ 'edit.php', 'post.php', 'post-new.php' ], true )
+            && 'hvnly_agent' === $post_type
+        ) {
             $this->enqueue_admin_boot_styles($default_version);
         }
 
@@ -137,7 +198,31 @@ final class Assets
                 'style'    => 'builder.css',
                 'localize' => true,
             ],
+            'toplevel_page_hvnly_property_builder' => [
+                'handle'   => 'hvlynab-builder-admin',
+                'folder'   => 'builder',
+                'asset'    => 'builder.asset.php',
+                'script'   => 'builder.js',
+                'style'    => 'builder.css',
+                'localize' => true,
+            ],
             'hvnly_property_page_hvnly_property_reports_analytics' => [
+                'handle'   => 'hvlynab-reports-admin',
+                'folder'   => 'reports',
+                'asset'    => 'reports.asset.php',
+                'script'   => 'reports.js',
+                'style'    => 'reports.css',
+                'localize' => true,
+            ],
+            'toplevel_page_hvnly_property_reports_analytics' => [
+                'handle'   => 'hvlynab-reports-admin',
+                'folder'   => 'reports',
+                'asset'    => 'reports.asset.php',
+                'script'   => 'reports.js',
+                'style'    => 'reports.css',
+                'localize' => true,
+            ],
+            'analytics_page_hvnly_analytics_overview' => [
                 'handle'   => 'hvlynab-reports-admin',
                 'folder'   => 'reports',
                 'asset'    => 'reports.asset.php',
@@ -153,6 +238,7 @@ final class Assets
         }
 
         $this->enqueue_sticky_sidebar();
+
     }
 
     private function enqueue_setup_assets($version): void
@@ -253,6 +339,21 @@ final class Assets
         );
     }
 
+    private function enqueue_admin_fonts_styles(string $version): void
+    {
+        $css_file = HVNLYNAB_ASSETS_PATH . self::ADMIN_FONTS_CSS;
+        if (!file_exists($css_file)) {
+            return;
+        }
+
+        wp_enqueue_style(
+            self::ADMIN_FONTS_HANDLE,
+            HVNLYNAB_ASSETS_URL . self::ADMIN_FONTS_CSS,
+            [],
+            $version
+        );
+    }
+
     /** @deprecated 3.0.4 Use enqueue_admin_boot_styles(). */
     private function enqueue_builder_boot_styles(string $version): void
     {
@@ -308,6 +409,8 @@ final class Assets
             );
         }
 
+        $this->enqueue_admin_boot_fallback_script($page['handle']);
+
         if (!empty($page['localize'])) {
             $current_user = wp_get_current_user();
 
@@ -343,6 +446,18 @@ final class Assets
                 ]
             );
         }
+    }
+
+    /**
+     * Dismiss PHP boot chrome if React fails to mount (prevents stuck full-screen preloader).
+     */
+    private function enqueue_admin_boot_fallback_script(string $handle): void
+    {
+        wp_add_inline_script(
+            $handle,
+            "(function(){var bootDismissed=false;function dismissHvnlyAdminBoot(){if(bootDismissed){return;}bootDismissed=true;var preloader=document.getElementById('hvnly-admin-static-preloader');if(preloader){preloader.remove();}['HvnlyNab_admin_dashboard_wrap','HvnlyNab_property_builder_render','HvnlyNab_reports_analytics_wrap'].forEach(function(id){document.getElementById(id)?.classList.remove('hvnly-admin-is-loading');});document.body.classList.remove('hvnly-admin-page-loading');}window.setTimeout(function(){if(document.body.classList.contains('hvnly-admin-page-loading')){dismissHvnlyAdminBoot();}},20000);})();",
+            'after'
+        );
     }
 
     /**
@@ -453,31 +568,34 @@ final class Assets
 
     /**
      * Register WordPress core React vendor scripts when missing (some admin screens).
+     *
+     * Both react and react-dom must exist — bundles externalize React. Other plugins
+     * sometimes register only `react`, which leaves react-dom missing and breaks mounts.
      */
     private function ensure_react_runtime_scripts(): void
     {
-        if (wp_script_is('react', 'registered')) {
-            return;
-        }
-
         $suffix = function_exists('wp_scripts_get_suffix') ? wp_scripts_get_suffix() : '.min';
         $base   = includes_url('js/dist/vendor/');
 
-        wp_register_script(
-            'react',
-            $base . 'react' . $suffix . '.js',
-            [],
-            '18.3.1.1',
-            true
-        );
+        if (!wp_script_is('react', 'registered')) {
+            wp_register_script(
+                'react',
+                $base . 'react' . $suffix . '.js',
+                [],
+                '18.3.1.1',
+                true
+            );
+        }
 
-        wp_register_script(
-            'react-dom',
-            $base . 'react-dom' . $suffix . '.js',
-            ['react'],
-            '18.3.1.1',
-            true
-        );
+        if (!wp_script_is('react-dom', 'registered')) {
+            wp_register_script(
+                'react-dom',
+                $base . 'react-dom' . $suffix . '.js',
+                ['react'],
+                '18.3.1.1',
+                true
+            );
+        }
     }
 
     /**

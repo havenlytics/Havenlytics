@@ -230,6 +230,9 @@ class ThemeRecommendationNotice {
 			'hvnly_property_page_hvnly_property_builder',
 			'hvnly_property_page_hvnly_property_reports_analytics',
 			'hvnly_property_page_hvnly_inquiries',
+			'toplevel_page_hvnly_property_builder',
+			'toplevel_page_hvnly_property_reports_analytics',
+			'toplevel_page_hvnly_inquiries',
 			'hvnly_property_page_hvnly_property_cache',
 			'hvnly_property_page_hvnly-property-import',
 		);

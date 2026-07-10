@@ -159,10 +159,19 @@
                 return;
             }
 
+            // Avoid console.log in production bundles; debug mode uses console.debug.
+            // eslint-disable-next-line no-console
+            const log = (typeof console !== 'undefined' && typeof console.debug === 'function') ? console.debug : null;
+            if (!log) {
+                return;
+            }
+
             if (payload !== null && payload !== undefined) {
-                console.log('[Havenlytics Map]', label, payload);
+                // eslint-disable-next-line no-console
+                log('[Havenlytics Map]', label, payload);
             } else {
-                console.log('[Havenlytics Map]', label);
+                // eslint-disable-next-line no-console
+                log('[Havenlytics Map]', label);
             }
         }
 

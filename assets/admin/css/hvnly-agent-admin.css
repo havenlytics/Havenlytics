@@ -4,12 +4,15 @@
  * @package Havenlytics
  * @since   3.0.2
  */
-#adminmenu li#toplevel_page_edit-post_type-hvnly_agent a.wp-has-current-submenu {
+ #adminmenu li#toplevel_page_edit-post_type-hvnly_agent a.wp-has-current-submenu {
     background: #6c60fe !important;
     color: #fff;
 }
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent ul.wp-submenu-wrap li.current a{
+    color: #6c60fe !important;
+   
+}
 #adminmenu li#menu-posts-hvnly_property a:focus,
-
 #adminmenu li#menu-posts-hvnly_property a:hover {
     background: #6c60fe;
     color: #fff;
@@ -61,6 +64,48 @@
     background: #6c60fe;
     color: #fff;
 }
+
+/* Agents menu - hover and focus states matching other Havenlytics menus */
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent a.menu-top:hover,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent a.menu-top:focus {
+    background: #6c60fe !important;
+    color: #fff !important;
+}
+
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent a.menu-top:hover .wp-menu-image:before,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent a.menu-top:focus .wp-menu-image:before {
+    color: #fff !important;
+}
+
+/* Agents menu - when submenu is open/hovered */
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.wp-has-current-submenu > a.menu-top,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.current > a.menu-top,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent:hover > a.menu-top {
+    background: #6c60fe !important;
+    color: #fff !important;
+}
+
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.wp-has-current-submenu > a.menu-top .wp-menu-image:before,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent.current > a.menu-top .wp-menu-image:before,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent:hover > a.menu-top .wp-menu-image:before {
+    color: #fff !important;
+}
+
+/* Agents menu - parent highlight when submenu items are hovered */
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent:has(.wp-submenu li:hover) > a.menu-top {
+    background: #6c60fe !important;
+    color: #fff !important;
+}
+
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent:has(.wp-submenu li:hover) > a.menu-top .wp-menu-image:before {
+    color: #fff !important;
+}
+
+/* Reset transitions for agents menu */
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent > a {
+    transition: none !important;
+}
+
 .hvnly-agent-metabox {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

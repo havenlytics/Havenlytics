@@ -7,8 +7,8 @@
   /* ======================
      Typography & Fonts
   ======================= */
-  --hvnly-bodyFont: "Poppins", sans-serif;
-  --hvnly-headingFont: "Inter", sans-serif;
+  --hvnly-bodyFont: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --hvnly-headingFont: var(--hvnly-bodyFont);
 
   /* =========================================
      FOUNDATION TOKENS

@@ -79,10 +79,7 @@ class ContactAgentBootstrap {
 	 * @return void
 	 */
 	private function load_functions(): void {
-		$file = HVNLYNAB_INCLUDES . '/Functions/contact-agent-functions.php';
-		if ( file_exists( $file ) ) {
-			require_once $file;
-		}
+		ContactAgentFunctionsLoader::load();
 	}
 
 	/**

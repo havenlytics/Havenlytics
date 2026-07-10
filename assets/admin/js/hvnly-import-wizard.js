@@ -28,46 +28,7 @@
     });
 })();
 
-/**
- * Temporary debug probe: log any pb-card-builder fetch on the import screen.
- * Enable with HVNLYNAB_DEBUG + WP_DEBUG_LOG (server) and hvnlyImportWizard.debug (client).
- */
-(function installPbCardBuilderDebugProbe() {
-    if (!window.hvnlyImportWizard?.debug || window.__hvnlyPbCardDebugProbe) {
-        return;
-    }
-
-    window.__hvnlyPbCardDebugProbe = true;
-    window.__hvnlyImportForensics = window.__hvnlyImportForensics || {
-        pageLoadedAt: Date.now(),
-        lastAction: 'page_load',
-        importBatch: null,
-        screen: window.location.pathname + window.location.search,
-    };
-
-    const logForensics = (method, url) => {
-        const f = window.__hvnlyImportForensics;
-        console.group('[HAVENLYTICS DEBUG] pb-card-builder request');
-        console.log('URL:', url);
-        console.log('Method:', method);
-        console.log('Timestamp:', new Date().toISOString());
-        console.log('Previous action:', f.lastAction);
-        console.log('Import batch:', f.importBatch);
-        console.log('Screen:', f.screen);
-        console.trace('[HAVENLYTICS DEBUG] pb-card-builder request');
-        console.groupEnd();
-    };
-
-    const originalFetch = window.fetch.bind(window);
-    window.fetch = function (...args) {
-        const input = args[0];
-        const url = String(input?.url || input || '');
-        if (url.indexOf('pb-card-builder') !== -1) {
-            logForensics(args[1]?.method || 'GET', url);
-        }
-        return originalFetch(...args);
-    };
-})();
+// NOTE: release builds must not ship console debug probes.
 
 // Current step tracking
 let currentStep = 1;

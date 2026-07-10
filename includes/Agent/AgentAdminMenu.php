@@ -20,17 +20,20 @@ final class AgentAdminMenu {
 	/** @var string Top-level menu slug. */
 	public const MENU_SLUG = 'edit.php?post_type=hvnly_agent';
 
-	/** @var int Menu position — immediately after Havenlytics (position 2). */
-	private const MENU_POSITION = 3;
+    /** @var int Menu position — grouped before WordPress Posts (5). */
+    private const MENU_POSITION = 4;
 
 	/**
 	 * Register hooks.
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'register_menus' ), 9 );
-		add_filter( 'parent_file', array( $this, 'highlight_parent_menu' ) );
-		add_filter( 'submenu_file', array( $this, 'highlight_submenu' ), 10, 2 );
+		add_filter( 'parent_file', array( $this, 'highlight_parent_menu' ), 99 );
+		add_filter( 'submenu_file', array( $this, 'highlight_submenu' ), 99, 2 );
 	}
+
+	/** @var string Agencies submenu slug (matches WordPress core submenu_file on edit-tags.php). */
+	private const AGENCIES_SUBMENU_SLUG = 'edit-tags.php?taxonomy=hvnly_agent_agency';
 
 	/**
 	 * @return void
@@ -71,7 +74,7 @@ final class AgentAdminMenu {
 			esc_html__( 'Agencies', 'havenlytics' ),
 			esc_html__( 'Agencies', 'havenlytics' ),
 			$agency_cap,
-			'edit-tags.php?taxonomy=' . AgentConstants::TAXONOMY_AGENCY . '&post_type=' . AgentConstants::POST_TYPE
+			self::AGENCIES_SUBMENU_SLUG
 		);
 	}
 
@@ -82,12 +85,7 @@ final class AgentAdminMenu {
 	 * @return string
 	 */
 	public function highlight_parent_menu( string $parent_file ): string {
-		global $current_screen;
-
-		if (
-			isset( $current_screen->taxonomy )
-			&& AgentConstants::TAXONOMY_AGENCY === $current_screen->taxonomy
-		) {
+		if ( $this->is_agency_taxonomy_screen() ) {
 			return self::MENU_SLUG;
 		}
 
@@ -102,16 +100,30 @@ final class AgentAdminMenu {
 	 * @return string|null
 	 */
 	public function highlight_submenu( $submenu_file, string $parent_file ) {
-		global $current_screen;
-
-		if (
-			self::MENU_SLUG === $parent_file
-			&& isset( $current_screen->taxonomy )
-			&& AgentConstants::TAXONOMY_AGENCY === $current_screen->taxonomy
-		) {
-			return 'edit-tags.php?taxonomy=' . AgentConstants::TAXONOMY_AGENCY . '&post_type=' . AgentConstants::POST_TYPE;
+		if ( ! $this->is_agency_taxonomy_screen() ) {
+			return $submenu_file;
 		}
 
-		return $submenu_file;
+		return self::AGENCIES_SUBMENU_SLUG;
+	}
+
+	/**
+	 * Detect the Agencies taxonomy admin screen reliably for menu highlighting.
+	 *
+	 * @return bool
+	 */
+	private function is_agency_taxonomy_screen(): bool {
+		global $pagenow;
+
+		if ( ! in_array( $pagenow, array( 'edit-tags.php', 'term.php' ), true ) ) {
+			return false;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only menu routing.
+		if ( ! isset( $_GET['taxonomy'] ) ) {
+			return false;
+		}
+
+		return AgentConstants::TAXONOMY_AGENCY === sanitize_key( wp_unslash( (string) $_GET['taxonomy'] ) );
 	}
 }

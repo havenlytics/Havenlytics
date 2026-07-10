@@ -74,10 +74,7 @@ final class ContactAgentAjaxRegistrar {
 	 * @return void
 	 */
 	private static function bootstrap_dependencies(): void {
-		$functions = HVNLYNAB_INCLUDES . '/Functions/contact-agent-functions.php';
-		if ( is_readable( $functions ) ) {
-			require_once $functions;
-		}
+		ContactAgentFunctionsLoader::load();
 
 		if ( class_exists( ContactAgentSettings::class ) ) {
 			ContactAgentSettings::init();

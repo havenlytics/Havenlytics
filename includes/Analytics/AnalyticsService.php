@@ -94,11 +94,12 @@ class AnalyticsService {
 	 * @return array<string, int>
 	 */
 	private function get_live_overview_metrics(): array {
-		$view_totals = $this->aggregate_view_totals();
+		$period_views = $this->aggregate_period_views();
 
 		return array(
-			'todaysViews'        => $view_totals['today'],
-			'thisMonthViews'     => $view_totals['this_month'],
+			'todaysViews'        => $period_views['today'],
+			'thisWeekViews'      => $period_views['this_week'],
+			'thisMonthViews'     => $period_views['this_month'],
 			'thisMonthInquiries' => $this->count_inquiries_in_range(
 				gmdate( 'Y-m-01', strtotime( current_time( 'Y-m-d' ) ) ),
 				current_time( 'Y-m-d' )
@@ -662,11 +663,34 @@ class AnalyticsService {
 	 * @return array<int, array<string, mixed>>
 	 */
 	private function get_top_viewed_properties_table( int $limit ): array {
-		$tracker = new PropertyViewTracker();
-		$posts   = $tracker->get_top_viewed_properties( $limit, 'all' );
-		$rows    = array();
 		$view_meta = $this->get_view_counts_by_post();
+		$scores    = array();
 
+		foreach ( $view_meta as $property_id => $views ) {
+			$total = isset( $views['total'] ) ? (int) $views['total'] : 0;
+			if ( $total > 0 ) {
+				$scores[ (int) $property_id ] = $total;
+			}
+		}
+
+		if ( empty( $scores ) ) {
+			return array();
+		}
+
+		arsort( $scores );
+		$top_ids = array_slice( array_keys( $scores ), 0, $limit );
+
+		$posts = get_posts(
+			array(
+				'post_type'      => 'hvnly_property',
+				'post_status'    => 'any',
+				'posts_per_page' => count( $top_ids ),
+				'orderby'        => 'post__in',
+				'post__in'       => $top_ids,
+			)
+		);
+
+		$rows = array();
 		foreach ( $posts as $post ) {
 			$views  = $view_meta[ $post->ID ] ?? array();
 			$rows[] = array(
@@ -899,20 +923,116 @@ class AnalyticsService {
 	private function export_view_rows(): array {
 		$table     = $this->get_top_viewed_properties_table( 500 );
 		$view_meta = $this->get_view_counts_by_post();
+		$today     = current_time( 'Y-m-d' );
+		$month_key = current_time( 'Y-m' );
 		$rows      = array();
 
 		foreach ( $table as $item ) {
+			$property_id = (int) $item['id'];
 			$views  = $view_meta[ (int) $item['id'] ] ?? array();
+			$period = $this->get_property_period_views( $property_id, $today, $month_key );
 			$rows[] = array(
 				$item['title'],
 				isset( $views['total'] ) ? (int) $views['total'] : 0,
 				isset( $views['unique'] ) ? (int) $views['unique'] : 0,
-				isset( $views['today'] ) ? (int) $views['today'] : 0,
-				isset( $views['this_month'] ) ? (int) $views['this_month'] : 0,
+				$period['today'],
+				$period['this_month'],
 			);
 		}
 
 		return $rows;
+	}
+
+	/**
+	 * Aggregate real "today / this week / this month" view totals from daily analytics buckets.
+	 *
+	 * @return array{today: int, this_week: int, this_month: int}
+	 */
+	private function aggregate_period_views(): array {
+		$totals = array(
+			'today'      => 0,
+			'this_week'  => 0,
+			'this_month' => 0,
+		);
+
+		$today      = current_time( 'Y-m-d' );
+		$today_ts   = strtotime( $today );
+		$week_start = gmdate( 'Y-m-d', strtotime( 'monday this week', $today_ts ) );
+		$month_key  = current_time( 'Y-m' );
+
+		foreach ( $this->get_view_analytics_by_post() as $analytics ) {
+			if ( ! is_array( $analytics ) ) {
+				continue;
+			}
+
+			$totals['today'] += $this->sum_daily_views_in_range( $analytics, $today, $today );
+			$totals['this_week'] += $this->sum_daily_views_in_range( $analytics, $week_start, $today );
+			$totals['this_month'] += $this->sum_daily_views_in_month( $analytics, $month_key );
+		}
+
+		return $totals;
+	}
+
+	/**
+	 * Get real "today / this month" view totals for a single property from daily buckets.
+	 *
+	 * @param int    $property_id Property ID.
+	 * @param string $today       Y-m-d.
+	 * @param string $month_key   Y-m.
+	 * @return array{today: int, this_month: int}
+	 */
+	private function get_property_period_views( int $property_id, string $today, string $month_key ): array {
+		$analytics_by_post = $this->get_view_analytics_by_post();
+		$analytics         = $analytics_by_post[ $property_id ] ?? array();
+
+		if ( empty( $analytics ) || ! is_array( $analytics ) ) {
+			return array(
+				'today'      => 0,
+				'this_month' => 0,
+			);
+		}
+
+		return array(
+			'today'      => $this->sum_daily_views_in_range( $analytics, $today, $today ),
+			'this_month' => $this->sum_daily_views_in_month( $analytics, $month_key ),
+		);
+	}
+
+	/**
+	 * Sum daily totals in [start, end] inclusive.
+	 *
+	 * @param array<string, array<string, mixed>> $analytics Daily buckets.
+	 * @param string                             $start     Y-m-d.
+	 * @param string                             $end       Y-m-d.
+	 * @return int
+	 */
+	private function sum_daily_views_in_range( array $analytics, string $start, string $end ): int {
+		$total = 0;
+		foreach ( $analytics as $date => $stats ) {
+			if ( $date < $start || $date > $end || ! is_array( $stats ) ) {
+				continue;
+			}
+			$total += isset( $stats['total'] ) ? (int) $stats['total'] : 0;
+		}
+		return $total;
+	}
+
+	/**
+	 * Sum daily totals in a month.
+	 *
+	 * @param array<string, array<string, mixed>> $analytics Daily buckets.
+	 * @param string                             $month_key Y-m.
+	 * @return int
+	 */
+	private function sum_daily_views_in_month( array $analytics, string $month_key ): int {
+		$total = 0;
+		foreach ( $analytics as $date => $stats ) {
+			if ( ! is_string( $date ) || 0 !== strpos( $date, $month_key ) || ! is_array( $stats ) ) {
+				continue;
+			}
+			$total += isset( $stats['total'] ) ? (int) $stats['total'] : 0;
+		}
+		return $total;
 	}
 
 	/**

@@ -46,6 +46,7 @@ class Scheduler
      *
      * Scheduled events:
      * - Daily cache cleanup: Removes expired cache entries
+     * - Daily analytics cleanup: Prunes old per-property view analytics buckets
      * - Weekly optimization: Performance and database optimization
      * - Monthly cleanup: Comprehensive system maintenance
      *
@@ -60,6 +61,14 @@ class Scheduler
          */
         if (!wp_next_scheduled('hvnly_daily_cache_cleanup')) {
             wp_schedule_event(time(), 'daily', 'hvnly_daily_cache_cleanup');
+        }
+
+        /**
+         * Schedule daily analytics cleanup event
+         * Prunes per-property view analytics older than the retention window
+         */
+        if (!wp_next_scheduled('hvnly_daily_analytics_cleanup')) {
+            wp_schedule_event(time(), 'daily', 'hvnly_daily_analytics_cleanup');
         }
 
         /**
@@ -95,6 +104,11 @@ class Scheduler
          * Remove daily cache cleanup event
          */
         wp_clear_scheduled_hook('hvnly_daily_cache_cleanup');
+
+        /**
+         * Remove daily analytics cleanup event
+         */
+        wp_clear_scheduled_hook('hvnly_daily_analytics_cleanup');
 
         /**
          * Remove weekly optimization event
