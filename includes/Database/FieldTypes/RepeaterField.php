@@ -260,9 +260,9 @@ class RepeaterField extends BaseFieldType {
 		<div class="hvnly-repeater-item" data-item-index="<?php echo esc_attr( (string) $index ); ?>">
 			<div class="hvnly-repeater-item-header">
 				<span class="hvnly-repeater-drag-handle dashicons dashicons-menu" aria-hidden="true"></span>
-				<strong class="hvnly-repeater-item-title">
+						<strong class="hvnly-repeater-item-title">
 					<?php if ( ! empty( $icon ) ) : ?>
-						<i class="fas fa-<?php echo esc_attr( ltrim( (string) $icon, 'fa-' ) ); ?>" aria-hidden="true"></i>
+						<i class="fas fa-<?php echo esc_attr( $this->normalize_icon_name( (string) $icon ) ); ?>" aria-hidden="true"></i>
 					<?php endif; ?>
 					<?php echo $title ? esc_html( $title ) : esc_html__( 'New Row', 'havenlytics' ); ?>
 				</strong>
@@ -282,7 +282,7 @@ class RepeaterField extends BaseFieldType {
 						<input type="text" class="hvnly-document-icon-input widefat hvnly-repeater-icon-input" name="<?php echo esc_attr( $field_name ); ?>_icons[]" value="<?php echo esc_attr( $icon ); ?>" placeholder="<?php esc_attr_e( 'school', 'havenlytics' ); ?>" />
 						<div class="hvnly-document-icon-preview">
 							<?php if ( ! empty( $icon ) ) : ?>
-								<i class="fas fa-<?php echo esc_attr( ltrim( (string) $icon, 'fa-' ) ); ?>"></i>
+								<i class="fas fa-<?php echo esc_attr( $this->normalize_icon_name( (string) $icon ) ); ?>"></i>
 							<?php endif; ?>
 						</div>
 						<button type="button" class="button hvnly-document-icon-selector">
@@ -296,5 +296,28 @@ class RepeaterField extends BaseFieldType {
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Normalize a Font Awesome icon name for CSS class output.
+	 *
+	 * Strips a literal "fa-" prefix only. Do not use ltrim( $icon, 'fa-' ):
+	 * PHP treats the 2nd argument as a character mask and corrupts names like "file-pdf".
+	 * Stored meta values are never modified.
+	 *
+	 * @param string $icon Raw icon value from meta/UI.
+	 * @return string Bare icon name suitable for "fas fa-{name}".
+	 */
+	private function normalize_icon_name( $icon ) {
+		$icon = trim( (string) $icon );
+		if ( '' === $icon ) {
+			return '';
+		}
+
+		if ( 0 === strpos( $icon, 'fa-' ) ) {
+			return substr( $icon, 3 );
+		}
+
+		return $icon;
 	}
 }

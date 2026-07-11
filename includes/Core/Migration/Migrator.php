@@ -144,6 +144,8 @@ class Migrator {
 
         self::register('3.0.9', Handlers\Version309Handler::class);
 
+        self::register('3.1.9-section-alias-dedupe', Handlers\Version319SectionAliasDedupeHandler::class);
+
     }
 
 

@@ -13,6 +13,7 @@ namespace HvnlyNab\Core\Migration\Handlers;
 
 use HvnlyNab\Core\Migration\Interfaces\MigrationInterface;
 use HvnlyNab\Core\Migration\Traits\MigrationTrait;
+use HvnlyNab\Core\SectionIdentity;
 
 // Prevent direct access.
 if (!defined('ABSPATH')) {
@@ -70,10 +71,10 @@ class Version224Handler implements MigrationInterface {
             return true;
         }
         
-        // Check if missing sections
+        // Check if missing sections via SectionIdentity (sole alias source of truth).
         $missing = [];
-        if (!isset($sections['sec_additional_info']) && !isset($sections['sec_additional_info_legacy'])) {
-            $missing[] = 'sec_additional_info';
+        if ( ! SectionIdentity::has_equivalent_section( $sections, SectionIdentity::SEC_PROPERTY_DETAILS ) ) {
+            $missing[] = SectionIdentity::SEC_PROPERTY_DETAILS;
         }
         if (!isset($sections['sec_address_neighborhood']) && !isset($sections['sec_address_neighborhood_legacy'])) {
             $missing[] = 'sec_address_neighborhood';
@@ -113,9 +114,10 @@ class Version224Handler implements MigrationInterface {
         
         $updated = false;
         
-        // Add Additional Information section if missing
-        if (!isset($sections['sec_additional_info']) && !isset($sections['sec_additional_info_legacy'])) {
-            $sections['sec_additional_info'] = $this->get_additional_info_section();
+        // Add Additional Information only when SectionIdentity finds no equivalent.
+        if ( ! SectionIdentity::has_equivalent_section( $sections, SectionIdentity::SEC_PROPERTY_DETAILS ) ) {
+            $section = $this->get_additional_info_section();
+            $sections[ SectionIdentity::SEC_PROPERTY_DETAILS ] = $section;
             $updated = true;
             $this->log('Added Additional Information section');
         }
@@ -152,7 +154,7 @@ class Version224Handler implements MigrationInterface {
      */
     private function get_additional_info_section(): array {
         return [
-            'id' => 'sec_additional_info',
+            'id' => SectionIdentity::SEC_PROPERTY_DETAILS,
             'title' => 'Additional Information',
             'icon' => 'fas fa-info-circle',
             'required' => false,

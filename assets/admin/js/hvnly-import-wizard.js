@@ -87,6 +87,13 @@ let currentBatch = 0;
 let currentImported = 0;
 let currentCsrfToken = '';
 let currentImportSessionId = '';
+let currentImportXhr = null;
+let pausePollTimer = null;
+let importRequestInFlight = false;
+
+/** Forward-only timeline: once a stage is reached, never move backward. */
+const IMPORT_STAGE_ORDER = ['prepare', 'properties', 'images', 'sections', 'complete'];
+let highestImportStageIndex = 0;
 
 // Location step modification tracking (intent-aware).
 //
@@ -403,8 +410,26 @@ window.importBatch = function(batch, imported, importData, csrfToken, retryAttem
     const isNewSession = !!newSession;
 
     if (importCancelled) { handleImportCancellation(); return; }
-    if (importPaused) { setTimeout(() => { if (!importPaused && !importCancelled) window.importBatch(batch, imported, importData, csrfToken, attempt, currentImportSessionId, false); }, 1000); return; }
-    jQuery.ajax({
+    if (importPaused) {
+        if (pausePollTimer) {
+            clearTimeout(pausePollTimer);
+        }
+        pausePollTimer = setTimeout(() => {
+            pausePollTimer = null;
+            if (!importPaused && !importCancelled && !importRequestInFlight) {
+                window.importBatch(batch, imported, importData, csrfToken, attempt, currentImportSessionId, false);
+            }
+        }, 1000);
+        return;
+    }
+
+    // Single-flight: never start a second batch while one is in progress.
+    if (importRequestInFlight) {
+        return;
+    }
+
+    importRequestInFlight = true;
+    currentImportXhr = jQuery.ajax({
         url: hvnlyImportWizard.ajaxurl,
         type: 'POST',
         timeout: ajaxTimeout,
@@ -421,6 +446,8 @@ window.importBatch = function(batch, imported, importData, csrfToken, retryAttem
             options: importData
         },
         success: function(response) {
+            importRequestInFlight = false;
+            currentImportXhr = null;
             if (importCancelled) { handleImportCancellation(); return; }
             if (response.success) {
                 const data = response.data;
@@ -428,18 +455,44 @@ window.importBatch = function(batch, imported, importData, csrfToken, retryAttem
                     currentImportSessionId = data.session_id;
                 }
                 if (typeof data.imported !== 'undefined') {
-                    currentImported = parseInt(data.imported, 10) || currentImported;
+                    const importedCount = parseInt(data.imported, 10);
+                    if (!Number.isNaN(importedCount)) {
+                        currentImported = importedCount;
+                    }
                 }
                 if (typeof data.next_batch !== 'undefined') {
-                    currentBatch = parseInt(data.next_batch, 10) || currentBatch;
+                    const nextBatch = parseInt(data.next_batch, 10);
+                    if (!Number.isNaN(nextBatch)) {
+                        currentBatch = nextBatch;
+                    }
+                }
+                if (data.cancelled) {
+                    importCancelled = true;
+                    handleImportCancellation();
+                    return;
                 }
                 updateProgress(data);
                 if (data.complete) { setTimeout(() => showCelebration(data.imported), 500); }
-                else if (!importCancelled && !importPaused) { window.importBatch(data.next_batch, data.imported, importData, csrfToken, 0, currentImportSessionId, false); }
+                else if (!importCancelled && !importPaused) {
+                    const resumeBatch = Number.isNaN(parseInt(data.next_batch, 10))
+                        ? currentBatch
+                        : parseInt(data.next_batch, 10);
+                    const resumeImported = Number.isNaN(parseInt(data.imported, 10))
+                        ? currentImported
+                        : parseInt(data.imported, 10);
+                    window.importBatch(resumeBatch, resumeImported, importData, csrfToken, 0, currentImportSessionId, false);
+                }
             } else { handleImportError(response.data || 'Import error', null, importData, csrfToken); }
         },
         error: function(xhr, status, error) {
-            if (importCancelled) { handleImportCancellation(); return; }
+            importRequestInFlight = false;
+            currentImportXhr = null;
+
+            // Aborted by Cancel — do not treat as a failure.
+            if (importCancelled || status === 'abort') {
+                handleImportCancellation();
+                return;
+            }
 
             const httpStatus = xhr && xhr.status ? parseInt(xhr.status, 10) : 0;
             const isRetryable = status === 'timeout'
@@ -454,7 +507,7 @@ window.importBatch = function(batch, imported, importData, csrfToken, retryAttem
                     importMessage.textContent = `Connection interrupted. Retrying batch ${batch + 1} (${attempt + 1}/${maxRetries})…`;
                 }
                 setTimeout(function() {
-                    if (!importCancelled && !importPaused) {
+                    if (!importCancelled && !importPaused && !importRequestInFlight) {
                         window.importBatch(batch, imported, importData, csrfToken, attempt + 1, currentImportSessionId, false);
                     }
                 }, 3000);
@@ -467,11 +520,45 @@ window.importBatch = function(batch, imported, importData, csrfToken, retryAttem
     });
 };
 
+function canStartFreshImport() {
+    const resume = window.hvnlyImportWizard?.importResume;
+    if (currentImportSessionId && currentImported > 0) {
+        return false;
+    }
+    if (resume?.can_resume && resume.session_id) {
+        return false;
+    }
+    return true;
+}
+
+function startOrResumeImportFromWizard() {
+    if (isImporting || importRequestInFlight) {
+        return;
+    }
+
+    if (!canStartFreshImport()) {
+        resumeInterruptedImport();
+        return;
+    }
+
+    startImportProcess();
+}
+
 async function startImportProcess() {
     if (window.__hvnlyImportForensics) {
         window.__hvnlyImportForensics.lastAction = 'import_start';
         window.__hvnlyImportForensics.importBatch = 0;
     }
+
+    if (isImporting || importRequestInFlight) {
+        return;
+    }
+
+    if (!canStartFreshImport()) {
+        resumeInterruptedImport();
+        return;
+    }
+
     const maxLimit = window.hvnlyImportWizard?.maxImportLimit || 50;
     if (propertyImportQuantity > maxLimit) { propertyImportQuantity = maxLimit; }
     
@@ -616,6 +703,20 @@ function formatElapsedTime(ms) {
 
 function setImportStage(stageKey) {
     const stages = document.querySelectorAll('#importStages [data-stage]');
+    let targetIndex = IMPORT_STAGE_ORDER.indexOf(stageKey);
+    if (targetIndex < 0) {
+        targetIndex = highestImportStageIndex;
+        stageKey = IMPORT_STAGE_ORDER[targetIndex] || 'prepare';
+    }
+
+    // Forward-only: never reopen an earlier stage after progress.
+    if (targetIndex < highestImportStageIndex) {
+        targetIndex = highestImportStageIndex;
+        stageKey = IMPORT_STAGE_ORDER[targetIndex];
+    } else {
+        highestImportStageIndex = targetIndex;
+    }
+
     let reached = false;
     stages.forEach((item) => {
         const key = item.getAttribute('data-stage');
@@ -631,10 +732,29 @@ function setImportStage(stageKey) {
 
 function inferImportStage(percent, message) {
     const text = (message || '').toLowerCase();
-    if (percent >= 100 || text.includes('complete')) return 'complete';
-    if (text.includes('image') || text.includes('media') || text.includes('gallery')) return 'images';
-    if (text.includes('section') || text.includes('field') || text.includes('meta')) return 'sections';
-    if (text.includes('import') || text.includes('propert') || percent > 0) return 'properties';
+    if (percent >= 100 || text.includes('complete')) {
+        return 'complete';
+    }
+    if (text.includes('image') || text.includes('media') || text.includes('gallery')) {
+        return 'images';
+    }
+    if (text.includes('section') || text.includes('field') || text.includes('meta')) {
+        return 'sections';
+    }
+    // Prep / bootstrap responses (percent often 0) must stay on prepare.
+    // Do not treat "property builder" as the Creating Properties stage.
+    if (
+        text.includes('initializ')
+        || text.includes('agent')
+        || text.includes('agenc')
+        || text.includes('prepar')
+        || text.includes('builder')
+    ) {
+        return 'prepare';
+    }
+    if (text.includes('imported') || text.includes('resum') || text.includes('propert') || percent > 0) {
+        return 'properties';
+    }
     return 'prepare';
 }
 
@@ -676,7 +796,7 @@ function setWizardPhase(phase) {
     setPanelHidden(resultView, phase !== 'complete');
 }
 
-function showImportLoader(quantity) {
+function showImportLoader(quantity, resetStage = true) {
     setWizardPhase('importing');
 
     const title = document.getElementById('importLoaderTitle');
@@ -688,7 +808,10 @@ function showImportLoader(quantity) {
     if (message) message.textContent = `Preparing to import ${quantity} properties. Please wait…`;
     if (progressFill) progressFill.style.width = '0%';
     if (progressText) progressText.textContent = '0%';
-    setImportStage('prepare');
+    if (resetStage) {
+        highestImportStageIndex = 0;
+        setImportStage('prepare');
+    }
     startImportElapsedTimer();
 }
 
@@ -793,7 +916,6 @@ function showCelebration(importedCount) {
 
     if (celebration) {
         celebration.classList.add('active');
-        triggerConfetti();
     }
 }
 
@@ -816,8 +938,12 @@ function showErrorPopup(message, details, showResume) {
         isImporting = false;
         hideImportLoader();
         hideImportResultView();
+        // Keep interrupted session context so Skip/Complete resume instead of starting duplicates.
         currentStep = 4;
         showStep(4);
+        if (showResume && (currentImportSessionId || window.hvnlyImportWizard?.importResume?.can_resume)) {
+            setupImportResumePrompt();
+        }
     });
     document.getElementById('resumeImportErrorBtn')?.addEventListener('click', () => {
         document.querySelectorAll('.hvnly--property--import-error-popup, .hvnly--property--import-error-overlay').forEach(el => el.remove());
@@ -831,6 +957,10 @@ function resumeInterruptedImport() {
     const csrfToken = currentCsrfToken || document.getElementById('hvnly_csrf_token')?.value || '';
 
     if (!importData || !sessionId || !csrfToken) {
+        return;
+    }
+
+    if (importRequestInFlight) {
         return;
     }
 
@@ -850,7 +980,7 @@ function resumeInterruptedImport() {
     importData.total_to_import = total;
 
     hideImportResultView();
-    showImportLoader(total);
+    showImportLoader(total, false);
     updateProgress({
         imported,
         total,
@@ -899,6 +1029,12 @@ function handleImportError(msg, details, importData, csrfToken) {
 function handleImportCancellation() {
     isImporting = false;
     importCancelled = true;
+    importRequestInFlight = false;
+    currentImportXhr = null;
+    if (pausePollTimer) {
+        clearTimeout(pausePollTimer);
+        pausePollTimer = null;
+    }
     stopImportElapsedTimer();
     showImportResultView(`<div class="hvnly--property--import-completion-screen"><div class="hvnly--property--import-completion-icon" style="background:var(--hvnly-brand-warning);"><i class="fas fa-stop-circle"></i></div><h2 class="hvnly--property--import-completion-title">Import Cancelled</h2><p>Imported ${currentImported} of ${currentImportData?.total_to_import || 0} properties.</p><div class="hvnly--property--import-completion-actions"><a href="edit.php?post_type=hvnly_property" class="hvnly--property--import-completion-button primary">View Properties</a><button class="hvnly--property--import-completion-button secondary" id="resumeImportBtn">Resume</button><button class="hvnly--property--import-completion-button secondary" id="restartImportBtn">Start Over</button></div></div>`);
     document.getElementById('resumeImportBtn')?.addEventListener('click', () => {
@@ -911,6 +1047,14 @@ function handleImportCancellation() {
         importCancelled = false;
         importPaused = false;
         hideImportResultView();
+        // If properties were already created, keep session so Complete/Skip resume
+        // instead of creating a duplicate import.
+        if (!(currentImported > 0 || window.hvnlyImportWizard?.importResume?.can_resume)) {
+            currentImportSessionId = '';
+            currentImported = 0;
+            currentBatch = 0;
+            currentImportData = null;
+        }
         setWizardPhase('setup');
         currentStep = 1;
         showStep(1);
@@ -924,64 +1068,52 @@ function addCancellationButtons() {
         document.getElementById('cancelImportBtn')?.addEventListener('click', () => {
             if (confirm(hvnlyImportWizard.strings.cancelConfirm)) {
                 importCancelled = true;
-                jQuery.ajax({ url: hvnlyImportWizard.ajaxurl, type: 'POST', data: { action: 'hvnly_cancel_import', nonce: hvnlyImportWizard.nonce, csrf_token: currentCsrfToken }, complete: () => handleImportCancellation() });
+                importPaused = false;
+                if (pausePollTimer) {
+                    clearTimeout(pausePollTimer);
+                    pausePollTimer = null;
+                }
+                if (currentImportXhr && typeof currentImportXhr.abort === 'function') {
+                    try {
+                        currentImportXhr.abort();
+                    } catch (e) {
+                        // Ignore abort errors.
+                    }
+                }
+                jQuery.ajax({
+                    url: hvnlyImportWizard.ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'hvnly_cancel_import',
+                        nonce: hvnlyImportWizard.nonce,
+                        csrf_token: currentCsrfToken
+                    },
+                    complete: () => handleImportCancellation()
+                });
             }
         });
         document.getElementById('pauseImportBtn')?.addEventListener('click', function() {
             if (importPaused) {
                 importPaused = false;
                 this.innerHTML = '<i class="fas fa-pause-circle"></i> Pause';
-                if (!importCancelled) window.importBatch(currentBatch, currentImported, currentImportData, currentCsrfToken, 0, currentImportSessionId, false);
+                if (pausePollTimer) {
+                    clearTimeout(pausePollTimer);
+                    pausePollTimer = null;
+                }
+                if (!importCancelled && !importRequestInFlight) {
+                    window.importBatch(currentBatch, currentImported, currentImportData, currentCsrfToken, 0, currentImportSessionId, false);
+                }
             } else {
                 importPaused = true;
                 this.innerHTML = '<i class="fas fa-play-circle"></i> Resume';
+                const importMessage = document.getElementById('importMessage');
+                if (importMessage && importRequestInFlight) {
+                    importMessage.textContent = 'Pausing after the current property finishes…';
+                }
             }
         });
     }
 }
-
-// =========================================
-// CONFETTI
-// =========================================
-
-let W = window.innerWidth, H = window.innerHeight, canvas = document.getElementById("confetti-canvas"), context = canvas?.getContext("2d"), particles = [], animationId = null;
-const colors = ["#6C60FE", "#764ba2", "#00B46A", "#FF9AA2", "#FFB507", "#00C2A8", "#FF4D4F"];
-
-function randomFromTo(from, to) { return Math.floor(Math.random() * (to - from + 1) + from); }
-function confettiParticle() {
-    this.x = Math.random() * W;
-    this.y = Math.random() * H - H;
-    this.r = randomFromTo(11, 33);
-    this.d = Math.random() * 150 + 11;
-    this.color = colors[Math.floor(Math.random() * colors.length)];
-    this.tilt = Math.floor(Math.random() * 33) - 11;
-    this.tiltAngleIncremental = Math.random() * 0.07 + 0.05;
-    this.tiltAngle = 0;
-    this.draw = function() { context.beginPath(); context.lineWidth = this.r / 2; context.strokeStyle = this.color; context.moveTo(this.x + this.tilt + this.r / 3, this.y); context.lineTo(this.x + this.tilt, this.y + this.tilt + this.r / 5); context.stroke(); };
-}
-function Draw() {
-    animationId = requestAnimationFrame(Draw);
-    context.clearRect(0, 0, W, H);
-    for (var i = 0; i < 150; i++) if (particles[i]) particles[i].draw();
-    for (var i = 0; i < 150; i++) {
-        let p = particles[i];
-        if (!p) continue;
-        p.tiltAngle += p.tiltAngleIncremental;
-        p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2;
-        p.tilt = Math.sin(p.tiltAngle - i / 3) * 15;
-        if (p.x > W + 30 || p.x < -30 || p.y > H) { p.x = Math.random() * W; p.y = -30; p.tilt = Math.floor(Math.random() * 10) - 20; }
-    }
-}
-function triggerConfetti() {
-    if (!canvas || !context) return;
-    W = window.innerWidth; H = window.innerHeight;
-    canvas.width = W; canvas.height = H;
-    particles = [];
-    for (var i = 0; i < 150; i++) particles.push(new confettiParticle());
-    Draw();
-}
-function stopConfetti() { if (animationId) cancelAnimationFrame(animationId); if (context) context.clearRect(0, 0, W, H); }
-window.addEventListener("resize", () => { W = window.innerWidth; H = window.innerHeight; if (canvas) { canvas.width = W; canvas.height = H; } });
 
 // =========================================
 // URL STEP ROUTING
@@ -1306,7 +1438,7 @@ function setupNavigationButtons() {
             if (currentStep < totalSteps && !isImporting) {
                 showStep(currentStep + 1);
             } else if (currentStep === totalSteps && !isImporting) {
-                startImportProcess();
+                startOrResumeImportFromWizard();
             }
         });
     }
@@ -1316,7 +1448,8 @@ function setupNavigationButtons() {
                 if (currentStep < totalSteps) {
                     showStep(currentStep + 1);
                 } else {
-                    startImportProcess();
+                    // Final step: never force a brand-new session when one can be resumed.
+                    startOrResumeImportFromWizard();
                 }
             }
         });
@@ -1496,7 +1629,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('celebration-dashboard')?.addEventListener('click', () => {
         document.getElementById('celebrationModal')?.classList.remove('active');
-        stopConfetti();
     });
     
     const docButton = document.querySelector('.hvnly--property--import-doc-button');

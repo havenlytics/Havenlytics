@@ -136,6 +136,14 @@
 }
 
 .hvnly-faq-remove-item.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 30px;
+	height: auto;
+	padding: 4px 10px;
+	line-height: 1.4;
+	font-size: 13px;
 	color: var(--hvnly-brand-error, #ff4d4f);
 	border-color: color-mix(in srgb, var(--hvnly-brand-error, #ff4d4f) 35%, var(--hvnly-border-color, #e4e4ed));
 	background: var(--hvnly-background, var(--hvnly-color-bg-white, #ffffff));
@@ -148,13 +156,19 @@
 }
 
 .hvnly-faq-repeater-actions {
-	padding: 0 var(--hvnly-card-padding, 1.5rem) var(--hvnly-card-padding, 1.5rem);
+	padding: 0 var(--hvnly-card-padding, 1.5rem) var(--hvnly-space-md, 1rem);
 }
 
 .hvnly-faq-add-item.button {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--hvnly-space-xs, 0.25rem);
+	justify-content: center;
+	gap: 6px;
+	min-height: 32px;
+	height: auto;
+	padding: 4px 12px;
+	line-height: 1.4;
+	font-size: 13px;
 	background: var(--hvnly-primary-color, var(--hvnly-brand-primary));
 	border-color: var(--hvnly-primary-color, var(--hvnly-brand-primary));
 	color: var(--hvnly-color-white, #ffffff);
@@ -167,9 +181,14 @@
 }
 
 .hvnly-faq-add-item .dashicons {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	font-size: 16px;
 	width: 16px;
 	height: 16px;
+	line-height: 1;
+	margin: 0;
 }
 
 .hvnly-faq-repeater-item.ui-sortable-placeholder {

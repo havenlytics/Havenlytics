@@ -355,6 +355,13 @@ class DnDSections
                 $tabs = \HvnlyNab\Core\GroupFieldIdentity::deduplicate_sections( $tabs );
             }
 
+            // Collapse legacy/canonical section ID pairs via SectionIdentity
+            // (sole source of truth) so duplicate alias tabs cannot be re-saved.
+            if ( class_exists( '\HvnlyNab\Core\SectionIdentity' ) ) {
+                $section_dedupe = SectionIdentity::deduplicate_equivalent_sections( $tabs );
+                $tabs           = $section_dedupe['sections'];
+            }
+
             $meta_remap_scheduled = false;
             if ( class_exists( '\HvnlyNab\Core\DataPreservation\BuilderMetaMigrator' ) && ! empty( $before_config ) ) {
                 $remap = \HvnlyNab\Core\DataPreservation\BuilderMetaMigrator::build_remap_between_configs(

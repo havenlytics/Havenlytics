@@ -227,6 +227,7 @@ class ThemeRecommendationNotice {
 			'edit-hvnly_agent_agency',
 			'hvnly_agent_agency',
 			'hvnly_property_page_hvnly_property_settings',
+			'hvnly_property_page_hvnly_property_documentation',
 			'hvnly_property_page_hvnly_property_builder',
 			'hvnly_property_page_hvnly_property_reports_analytics',
 			'hvnly_property_page_hvnly_inquiries',

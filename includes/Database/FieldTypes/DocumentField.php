@@ -237,11 +237,11 @@ private function get_field_base_name($field) {
         <div class="hvnly-document-field-row">
             <label>
                 <?php esc_html_e('Document Label', 'havenlytics'); ?>
-                <span class="hvnly-required">*</span>
+                <span class="hvnly-required" aria-hidden="true">*</span>
             </label>
             <input type="text" class="hvnly-document-label-input widefat"
                 name="<?php echo esc_attr($field_name); ?>_labels[]" value="<?php echo esc_attr($label); ?>"
-                placeholder="<?php esc_attr_e('e.g., Floor Plan, Brochure, EPC', 'havenlytics'); ?>" required />
+                placeholder="<?php esc_attr_e('e.g., Floor Plan, Brochure, EPC', 'havenlytics'); ?>" />
         </div>
 
         <!-- URL Type Selector -->
@@ -263,12 +263,12 @@ private function get_field_base_name($field) {
         <div class="hvnly-document-field-row">
             <label>
                 <?php esc_html_e('Document URL', 'havenlytics'); ?>
-                <span class="hvnly-required">*</span>
+                <span class="hvnly-required" aria-hidden="true">*</span>
             </label>
             <div class="hvnly-document-url-field">
                 <input type="url" class="hvnly-document-url-input widefat"
                     name="<?php echo esc_attr($field_name); ?>_urls[]" value="<?php echo esc_attr($url); ?>"
-                    placeholder="<?php echo esc_attr($this->get_url_placeholder($url_type)); ?>" required />
+                    placeholder="<?php echo esc_attr($this->get_url_placeholder($url_type)); ?>" />
                 <button type="button" class="button hvnly-document-upload-btn" data-type="document">
                     <span class="dashicons dashicons-upload"></span>
                     <?php esc_html_e('Upload', 'havenlytics'); ?>

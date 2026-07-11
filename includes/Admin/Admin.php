@@ -33,6 +33,7 @@ final class Admin
         $services = [
             Menu::class,
             Assets::class,
+            DocumentationPage::class,
             PropertyImportWizard::class,
             SetupWizardNotice::class,
             ThemeRecommendationNotice::class,

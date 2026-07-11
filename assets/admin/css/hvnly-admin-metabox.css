@@ -1724,9 +1724,14 @@ button.hvnly-popup-remove-preview {
     
    #hvnly_dynamic_metabox_tabs__main__wrapper 
 .hvnly__dyamic_metabox_tab__wrapper  .hvnly__dyamic_metabox_tab__nav ul {
-        display: block;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
         padding: 0 15px;
+        margin: 0;
+        list-style: none;
     }
     
     #hvnly_dynamic_metabox_tabs__main__wrapper 
@@ -2210,8 +2215,88 @@ Property Features Taxonomy Image Upload Styles */
 
 .wp-core-ui
 .hvnly-checkbox-repeater-actions button.hvnly-checkbox-repeater-add-item span.dashicons{
-    color: #fff
-    /* vertical-align: top; */
+    color: #fff;
+    vertical-align: middle;
+    line-height: 1;
+    margin-top: 0;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+/* Property Features — compact WP-admin style Add / Move / Remove controls */
+#hvnly_dynamic_metabox_tabs__main__wrapper
+.hvnly__dyamic_metabox_tab__checkbox
+.hvnly__dyamic_metabox_tab__field-input
+.hvnly-checkbox-repeater-add-item.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 32px;
+    height: auto;
+    padding: 4px 12px;
+    line-height: 1.4;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+#hvnly_dynamic_metabox_tabs__main__wrapper
+.hvnly__dyamic_metabox_tab__checkbox
+.hvnly__dyamic_metabox_tab__field-input
+.hvnly-checkbox-repeater-add-item.button .dashicons {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 1;
+    margin: 0;
+    vertical-align: middle;
+}
+
+#hvnly_dynamic_metabox_tabs__main__wrapper
+.hvnly__dyamic_metabox_tab__checkbox
+.hvnly__dyamic_metabox_tab__field-input
+.hvnly-checkbox-repeater-item-actions .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    padding: 0;
+    line-height: 1;
+}
+
+#hvnly_dynamic_metabox_tabs__main__wrapper
+.hvnly__dyamic_metabox_tab__checkbox
+.hvnly__dyamic_metabox_tab__field-input
+.hvnly-checkbox-repeater-item-actions .button .dashicons {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 1;
+    margin: 0;
+}
+
+@media screen and (max-width: 600px) {
+    #hvnly_dynamic_metabox_tabs__main__wrapper
+    .hvnly__dyamic_metabox_tab__checkbox
+    .hvnly__dyamic_metabox_tab__field-input
+    .hvnly-checkbox-repeater-item {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    #hvnly_dynamic_metabox_tabs__main__wrapper
+    .hvnly__dyamic_metabox_tab__checkbox
+    .hvnly__dyamic_metabox_tab__field-input
+    .hvnly-checkbox-repeater-item-content {
+        flex: 1 1 100%;
+        margin-right: 0;
+    }
 }
 /* ======================
    Required Field Border - Red Border ONLY on Empty Fields

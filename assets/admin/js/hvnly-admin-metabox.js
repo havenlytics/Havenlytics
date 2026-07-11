@@ -455,14 +455,15 @@
         }
 
         /**
-         * Check if a number field has valid value (not empty and not zero)
+         * Check if a number field has a valid (non-empty) value.
+         * Zero is a valid number and must match PHP NumberField::validate().
          */
         isValidNumberValue(value) {
             if (value === null || value === undefined || value === '') {
                 return false;
             }
             const num = parseFloat(value);
-            return !isNaN(num) && num !== 0;
+            return !isNaN(num);
         }
 
         /**
@@ -508,6 +509,24 @@
                     }
                 });
                 isEmpty = !hasValidDocument;
+            } else if (fieldType === 'faq') {
+                let hasValidFaq = false;
+                $field.find('.hvnly-faq-question-input').each((itemIndex, input) => {
+                    if (($(input).val() || '').trim() !== '') {
+                        hasValidFaq = true;
+                    }
+                });
+                isEmpty = !hasValidFaq;
+                $input = $field.find('.hvnly-faq-question-input').first();
+            } else if (fieldType === 'repeater') {
+                let hasValidRow = false;
+                $field.find('.hvnly-repeater-title-input').each((itemIndex, input) => {
+                    if (($(input).val() || '').trim() !== '') {
+                        hasValidRow = true;
+                    }
+                });
+                isEmpty = !hasValidRow;
+                $input = $field.find('.hvnly-repeater-title-input').first();
             } else if (fieldType === 'video') {
                 $input = $field.find('input[name$="_url"], input[type="url"]').first();
                 const urlVal = $input.val();
@@ -808,7 +827,7 @@
             return false;
         }
         const num = parseFloat(value);
-        return !isNaN(num) && num !== 0;
+        return !isNaN(num);
     };
 
     $(() => {

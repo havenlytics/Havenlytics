@@ -5,7 +5,7 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4 
-Stable tag: 3.1.8
+Stable tag: 3.1.9
 License: GPLv2 or later 
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Build modern real estate websites with property listings, AJAX search, interactive maps, analytics, Elementor widgets, and visual builders.
@@ -338,6 +338,29 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 
 == Changelog ==
 
+= 3.1.9 - 2026-07-11 =
+
+* New: Added Documentation admin page with quick links to documentation, video tutorials, support resources, and system information.
+* Improved: Redesigned Import Wizard interface with a modern onboarding experience, polished progress timeline, improved setup flow, and refined responsive layout.
+* Improved: Property Builder usability with responsive improvements, scroll-to-top support, and refined action button styling.
+* Improved: Admin Settings responsive navigation and mobile experience.
+* Improved: Analytics dashboard responsive layout and overall admin interface consistency.
+* Improved: Admin menu organization, highlighting, branding, and navigation consistency across Havenlytics modules.
+* Improved: Inquiry management interface with improved Marketing navigation and single inquiry workflow.
+* Improved: Import Wizard reliability for Playground and slow hosting environments.
+* Fixed: Import Wizard final-step timeout/error by completing the import response before heavy leftover image finishers.
+* Fixed: Skip Now / Complete after a failed or interrupted import no longer starts a duplicate import session.
+* Fixed: Cancel Import now aborts the in-flight request and stops the server batch before the next property.
+* Fixed: Pause/Resume no longer double-schedules batches; Pause waits for the current property, then holds reliably.
+* Fixed: Import progress timeline no longer resets completed stages or moves backwards during import.
+* Fixed: Duplicate "Additional Information" Builder sections caused by legacy section aliases during upgrades.
+* Fixed: Property Builder compatibility with dynamic custom metabox sections and fields.
+* Improved: Server refuses new import sessions when the wizard is locked or an interrupted session already exists.
+* Improved: Analytics accuracy for dashboard statistics, reporting, and CSV exports.
+* Improved: Property view tracking reliability and scheduled analytics maintenance.
+* Improved: Playground reliability for Import Wizard race conditions and long-running final batches.
+* Maintenance: Builder compatibility, migration safety, analytics reliability, and Import Wizard stability hardening.
+
 = 3.1.8 - 2026-07-10 =
 
 * Fixed: Analytics Today's Views, This Week Views, and This Month Views now use real daily analytics buckets instead of non-resetting counters.
@@ -346,6 +369,9 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 * Improved: Property view tracking ignores preview, admin, autosave, bot, and rapid refresh spam while preserving cookie-based unique visitor logic.
 * Improved: Daily analytics cleanup cron is now scheduled automatically on install and existing sites.
 * Maintenance: Stability, analytics accuracy, and WordPress.org release hardening.
+
+= 3.1.7 - 2026-07-10 =
+
 * New: Analytics Dashboard in the WordPress admin — charts, tables, date filters, and CSV export.
 * New: Agent inquiry property selection to correctly associate inquiries with listings.
 * Improved: Self-hosted Inter typography across all Havenlytics admin pages (WordPress.org compliant; no remote fonts).
@@ -733,6 +759,12 @@ Havenlytics 3.0.0 delivers a stable Property Builder and Import foundation, reli
 = 1.0.10 (2025-07-27) =
 * Minor Owl Carousel JS bug fix
 
+== Upgrade Notice ==
+
+= 3.1.9 =
+Recommended update. Fixes an Import Wizard timeout on the final step and several import-session edge cases (Skip Now, Cancel, Pause/Resume). Also improves Analytics accuracy following the 3.1.6–3.1.8 releases. No manual action required.
+
+
 == Support ==
 
 Need help? Please use the official support forum:
@@ -742,11 +774,10 @@ https://wordpress.org/support/plugin/havenlytics/
 
 We welcome contributions! You can:
 
-- Report bugs on our GitHub repository
-- Submit feature requests
-- Translate the plugin into your language
-- Write documentation
-- Join our community discussions
+- Report bugs and request features via the [official support forum](https://wordpress.org/support/plugin/havenlytics/)
+- Translate the plugin into your language via [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/havenlytics)
+- Write documentation or share feedback via [havenlytics.com/support](https://havenlytics.com/support/)
+- Join our community discussions on [Facebook](https://facebook.com/groups/havenlytics/)
 
 == Privacy Policy ==
 

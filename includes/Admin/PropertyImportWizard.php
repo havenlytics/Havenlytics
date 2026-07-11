@@ -541,6 +541,16 @@ div.update-nag,
             );
         }
 
+        $fa_css_path = HVNLYNAB_ASSETS_PATH . '/admin/css/fontawesome-all.min.css';
+        if ( file_exists( $fa_css_path ) ) {
+            wp_enqueue_style(
+                'hvnly-admin-fontawesome-all',
+                HVNLYNAB_ASSETS_URL . '/admin/css/fontawesome-all.min.css',
+                [],
+                $version
+            );
+        }
+
         wp_enqueue_style(
             'leaflet',
             esc_url( HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/css/leaflet.css' ),
@@ -555,7 +565,7 @@ div.update-nag,
             true
         );
         
-        wp_enqueue_style( 'hvnly-import-wizard', HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-import-wizard.css', [ 'hvnly-admin-fonts' ], $version );
+        wp_enqueue_style( 'hvnly-import-wizard', HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-import-wizard.css', [ 'hvnly-admin-fonts', 'hvnly-admin-fontawesome-all' ], $version );
         wp_enqueue_script(
             'hvnly-import-map-manager',
             HVNLYNAB_ASSETS_URL . '/admin/js/hvnly-import-map-manager.js',
@@ -1772,7 +1782,20 @@ div.update-nag,
                 wp_send_json_error( 'Insufficient permissions.' );
                 return;
             }
-            $this->clear_import_run_state();
+
+            // Keep session data so Resume can continue; mark cancelled so in-flight
+            // batches stop before creating the next property.
+            $state = $this->load_import_run_state_raw();
+            if ( ! empty( $state['session_id'] ) ) {
+                $this->update_import_run_state(
+                    array(
+                        'status' => 'cancelled',
+                    )
+                );
+            } else {
+                $this->clear_import_run_state();
+            }
+
             $this->log_error( 'Import cancelled by user at ' . current_time( 'mysql' ) );
             wp_send_json_success( [ 'message' => 'Import cancelled successfully.' ] );
         } catch ( \Exception $e ) {
@@ -1934,6 +1957,24 @@ div.update-nag,
         $stored = $this->load_import_run_state_raw();
 
         if ( $new_session && 0 === $client_batch && 0 === $client_imported ) {
+            if ( $this->is_import_wizard_locked() ) {
+                throw new \RuntimeException(
+                    esc_html__( 'Demo import is already complete or properties already exist. Starting a new import is blocked to prevent duplicates.', 'havenlytics' )
+                );
+            }
+
+            $stored_status   = (string) ( $stored['status'] ?? '' );
+            $stored_imported = absint( $stored['imported'] ?? 0 );
+            if (
+                ! empty( $stored['session_id'] )
+                && $stored_imported > 0
+                && in_array( $stored_status, array( 'running', 'cancelled', 'paused' ), true )
+            ) {
+                throw new \RuntimeException(
+                    esc_html__( 'An interrupted import session already exists. Please resume it instead of starting a new import.', 'havenlytics' )
+                );
+            }
+
             $state = $this->build_fresh_import_run_state( wp_generate_uuid4(), $total_to_import, $options );
             update_option( $this->import_run_option, $state, false );
 
@@ -1942,13 +1983,25 @@ div.update-nag,
 
         if (
             ! empty( $stored['session_id'] )
-            && 'running' === ( $stored['status'] ?? '' )
+            && in_array( (string) ( $stored['status'] ?? '' ), array( 'running', 'cancelled', 'paused' ), true )
             && ( '' === $client_session || hash_equals( (string) $stored['session_id'], $client_session ) )
         ) {
+            // Resume after cancel/pause: mark running again for this request.
+            if ( 'running' !== ( $stored['status'] ?? '' ) ) {
+                $this->update_import_run_state( array( 'status' => 'running' ) );
+                $stored['status'] = 'running';
+            }
+
             return $stored;
         }
 
         if ( 0 === $client_batch && 0 === $client_imported ) {
+            if ( $this->is_import_wizard_locked() ) {
+                throw new \RuntimeException(
+                    esc_html__( 'Demo import is already complete or properties already exist. Starting a new import is blocked to prevent duplicates.', 'havenlytics' )
+                );
+            }
+
             $state = $this->build_fresh_import_run_state( wp_generate_uuid4(), $total_to_import, $options );
             update_option( $this->import_run_option, $state, false );
 
@@ -1985,9 +2038,10 @@ div.update-nag,
     private function get_client_resume_payload(): array {
         $state = $this->load_import_run_state_raw();
 
+        $status = (string) ( $state['status'] ?? '' );
         if (
             empty( $state['session_id'] )
-            || 'running' !== ( $state['status'] ?? '' )
+            || ! in_array( $status, array( 'running', 'cancelled', 'paused' ), true )
             || empty( $state['import_options'] )
             || ! is_array( $state['import_options'] )
         ) {
@@ -2078,6 +2132,19 @@ div.update-nag,
      */
     private function clear_import_run_state(): void {
         delete_option( $this->import_run_option );
+    }
+
+    /**
+     * Whether the active import session was cancelled.
+     *
+     * Reloads option state so concurrent cancel AJAX is visible mid-batch.
+     *
+     * @return bool
+     */
+    private function is_import_run_cancelled(): bool {
+        $state = $this->load_import_run_state_raw();
+
+        return ! empty( $state['session_id'] ) && 'cancelled' === ( $state['status'] ?? '' );
     }
 
     /**
@@ -2318,6 +2385,28 @@ div.update-nag,
             $errors = [];
 
             for ( $i = $start; $i < $end; $i++ ) {
+                if ( $this->is_import_run_cancelled() ) {
+                    $this->update_import_run_state(
+                        array(
+                            'imported'      => $imported + $imported_count,
+                            'current_batch' => $imported + $imported_count,
+                            'status'        => 'cancelled',
+                        )
+                    );
+
+                    return [
+                        'batch'      => $imported + $imported_count,
+                        'next_batch' => $imported + $imported_count,
+                        'imported'   => $imported + $imported_count,
+                        'total'      => $total_to_import,
+                        'complete'   => false,
+                        'cancelled'  => true,
+                        'percent'    => $total_to_import > 0 ? round( ( ( $imported + $imported_count ) / $total_to_import ) * 100 ) : 0,
+                        'message'    => sprintf( 'Import cancelled after %d of %d properties.', $imported + $imported_count, $total_to_import ),
+                        'errors'     => ! empty( $errors ) ? $errors : null,
+                    ];
+                }
+
                 try {
                     $existing_id = $this->find_property_by_import_index( $session_id, $i );
                     if ( $existing_id > 0 ) {
@@ -2373,22 +2462,17 @@ div.update-nag,
                 if ( $new_total_imported > $total_to_import ) {
                     $new_total_imported = $total_to_import;
                 }
+
+                // Mark complete first so the client gets a reliable success response.
+                // Heavy leftover image finishers are intentionally skipped here — they
+                // already run incrementally during batches and can time out on Playground.
                 update_option( $this->import_option, true );
                 update_option( $this->count_option, $new_total_imported );
                 $this->update_rate_limit();
                 $this->apply_import_cache_preference( $options );
                 $this->enable_contact_agent_after_import();
-
                 $this->maybe_send_import_success_email( $new_total_imported, $options );
-
                 $this->maybe_backfill_demo_agent_assignments();
-
-                $this->maybe_backfill_demo_agent_images_batch( $options, 5 );
-
-                $this->finish_location_term_image_seeding();
-
-                $this->finish_property_type_term_image_seeding();
-
                 $this->finalize_permalinks_after_import();
 
                 $this->update_import_run_state(

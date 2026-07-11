@@ -95,6 +95,15 @@ final class Menu
             [$this, 'render_settings']
         );
 
+        add_submenu_page(
+            self::PARENT_SLUG,
+            esc_html__('Documentation', 'havenlytics'),
+            esc_html__('Documentation', 'havenlytics'),
+            $capability,
+            DocumentationPage::PAGE_SLUG,
+            [DocumentationPage::class, 'render']
+        );
+
         $legacy_builder_hook = add_submenu_page(
             self::PARENT_SLUG,
             esc_html__('Property Builder', 'havenlytics'),
@@ -306,6 +315,7 @@ final class Menu
             $screens[] = $tax;
         }
         $screens[] = 'hvnly_property_page_hvnly_property_settings';
+        $screens[] = 'hvnly_property_page_' . DocumentationPage::PAGE_SLUG;
         $screens[] = 'hvnly_property_page_hvnly_property_builder';
         $screens[] = 'hvnly_property_page_hvnly_property_reports_analytics';
         $screens[] = 'hvnly_property_page_hvnly_inquiries';

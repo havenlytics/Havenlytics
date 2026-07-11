@@ -49,7 +49,10 @@ $hvnly_repeater_id = 'hvnly-repeater-' . absint( $hvnly_property_id ) . '-' . sa
 					$hvnly_repeater_title = sanitize_text_field( (string) ( $hvnly_repeater_item['title'] ?? '' ) );
 					$hvnly_repeater_value = sanitize_text_field( (string) ( $hvnly_repeater_item['value'] ?? '' ) );
 					$hvnly_repeater_icon  = sanitize_text_field( (string) ( $hvnly_repeater_item['icon'] ?? '' ) );
-					$hvnly_repeater_icon  = ltrim( $hvnly_repeater_icon, 'fa-' );
+					// Strip literal "fa-" prefix only — never ltrim(..., 'fa-') (character mask corrupts names).
+					if ( 0 === strpos( $hvnly_repeater_icon, 'fa-' ) ) {
+						$hvnly_repeater_icon = substr( $hvnly_repeater_icon, 3 );
+					}
 					if ( '' === $hvnly_repeater_title && '' === $hvnly_repeater_value ) {
 						continue;
 					}

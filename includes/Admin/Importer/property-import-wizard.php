@@ -50,12 +50,10 @@ $hvnly_step_progress_pct = $hvnly_initial_step > 1 ? ( ( ( $hvnly_initial_step -
     <!-- CSRF Token -->
     <input type="hidden" id="hvnly_csrf_token" value="<?php echo esc_attr(wp_create_nonce('hvnly_import_csrf')); ?>">
 
-    <canvas id="confetti-canvas"></canvas>
-
     <div class="hvnly--property--import-celebration" id="celebrationModal">
         <div class="hvnly--property--import-celebration-content">
             <h2 class="hvnly--property--import-celebration-title">
-                <?php echo esc_html__('Import Complete! 🎉', 'havenlytics'); ?></h2>
+                <?php echo esc_html__('Import Complete!', 'havenlytics'); ?></h2>
             <p class="hvnly--property--import-celebration-description">
                 <?php echo esc_html__('Your properties, demo agents, and agencies have been successfully imported! Explore agent profiles, agency pages, and Contact Agent on your listings.', 'havenlytics'); ?>
             </p>
