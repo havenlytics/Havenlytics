@@ -2308,6 +2308,30 @@ Property Features Taxonomy Image Upload Styles */
     /* No red border here - only subtle indication */
 }
 
+/* Sprint 31A: uniform required indicator for GROUP widgets.
+   Gallery / Video / Documents / Agents / Repeater / FAQ renderers never print
+   the BaseFieldType asterisk, so a required group looked optional in the
+   editor. Scalar fields keep their inline star; group wrappers (identified by
+   a non-empty data-group-type) get an equivalent badge — same red, same
+   meaning, zero markup changes. */
+.hvnly__dyamic_metabox_tab__field.hvnly-field-required:not([data-group-type=""])::before {
+    content: "Required";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(220, 50, 50, 0.08);
+    border: 1px solid rgba(220, 50, 50, 0.25);
+    color: #dc3232;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+}
+
 /* ERROR state - Red border ONLY for fields that are empty/missing values */
 .hvnly__dyamic_metabox_tab__field.hvnly-field-error {
     border-left: 3px solid #dc3232 !important;

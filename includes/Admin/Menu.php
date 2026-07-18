@@ -315,6 +315,7 @@ final class Menu
             $screens[] = $tax;
         }
         $screens[] = 'hvnly_property_page_hvnly_property_settings';
+        $screens[] = 'hvnly_property_page_hvnly-property-onboarding';
         $screens[] = 'hvnly_property_page_' . DocumentationPage::PAGE_SLUG;
         $screens[] = 'hvnly_property_page_hvnly_property_builder';
         $screens[] = 'hvnly_property_page_hvnly_property_reports_analytics';

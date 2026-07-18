@@ -431,7 +431,7 @@ final class Assets
                         'name' => $current_user->display_name,
                         'email' => $current_user->user_email,
                         'caps' => array_keys(array_filter($current_user->allcaps)),
-                        'avatar' => get_avatar_url($current_user->ID, ['size' => 36])
+                        'avatar' => \HvnlyNab\Common\AvatarService::resolve_for_user((int) $current_user->ID, 36)
                     ],
                     'urls' => [
                         'admin' => admin_url(),
@@ -442,10 +442,57 @@ final class Assets
                         'date_format' => get_option('date_format'),
                         'time_format' => get_option('time_format')
                     ],
+                    'themeRecommendation' => $this->get_theme_recommendation_data(),
                     'debug' => function_exists( 'hvnly_is_debug_logging_enabled' ) && hvnly_is_debug_logging_enabled(),
                 ]
             );
         }
+    }
+
+    /**
+     * Theme-recommendation state + action URLs for the Settings sidebar card.
+     *
+     * Mirrors the display rules in ThemeRecommendationNotice: the card shows
+     * for 'installed' (with an Activate action) and 'not_installed' (with an
+     * Install action), and is hidden entirely when the theme is active.
+     *
+     * @since 3.2.0
+     * @return array<string,string>
+     */
+    private function get_theme_recommendation_data(): array
+    {
+        $slug = ThemeRecommendationNotice::get_theme_slug();
+
+        /*
+         * Activation URL — matches WordPress core's themes.php activate flow:
+         * action=activate, stylesheet=<slug>, _wpnonce=<switch-theme_<slug>>.
+         *
+         * NOTE: wp_nonce_url() returns esc_html()'d output (ampersands become
+         * "&#038;"), which is correct for echoing directly into HTML but
+         * corrupts the query string once the value is passed through
+         * wp_localize_script (JSON) and assigned as a JS href — the browser
+         * does not decode the entities, so `stylesheet`/`_wpnonce` are lost.
+         * For a URL consumed by JS we build it with add_query_arg (+ the core
+         * nonce) so the ampersands stay raw, then esc_url_raw() for the
+         * non-display context. This is the WordPress-recommended pattern for
+         * nonce'd URLs outside of direct HTML output.
+         */
+        $activate_url = add_query_arg(
+            array(
+                'action'     => 'activate',
+                'stylesheet' => $slug,
+                '_wpnonce'   => wp_create_nonce('switch-theme_' . $slug),
+            ),
+            admin_url('themes.php')
+        );
+
+        return [
+            'state'        => ThemeRecommendationNotice::get_theme_state(),
+            'installUrl'   => esc_url_raw(admin_url('theme-install.php?search=havenlytics')),
+            'activateUrl'  => esc_url_raw($activate_url),
+            'themesUrl'    => esc_url_raw(admin_url('themes.php')),
+            'learnMoreUrl' => 'https://havenlytics.com/property-theme/',
+        ];
     }
 
     /**

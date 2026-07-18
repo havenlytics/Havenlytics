@@ -184,15 +184,6 @@ private function load_template_functions(): void {
         );
 
         wp_add_inline_style('elementor-editor', $icon_css);
-
-        wp_add_inline_style(
-            'elementor-editor',
-            '#hvnly-property-global-share-popup, .hvnly-property-share-popup-overlay {' .
-            'display: none !important; visibility: hidden !important; opacity: 0 !important;' .
-            'pointer-events: none !important; z-index: -1 !important; position: absolute !important;' .
-            'width: 0 !important; height: 0 !important; overflow: hidden !important;' .
-            '} body.hvnly-property-share-popup-open { overflow: visible !important; }'
-        );
     }
 
     public function register_widgets($widgets_manager): void {
@@ -408,7 +399,6 @@ private function load_template_functions(): void {
             'hvnly-frontend-property-ajax-filter' => HVNLYNAB_ASSETS_URL . '/frontend/css/property-search/hvnly-frontend-property-ajax-filter-search.css',
             'hvnly-frontend-property-archive' => HVNLYNAB_ASSETS_URL . '/frontend/css/property-search/hvnly-frontend-property-archive.css',
             'hvnly-frontend-property-map' => HVNLYNAB_ASSETS_URL . '/frontend/css/property-search/hvnly-frontend-property-map.css',
-            'hvnly-frontend-property-share' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-property-share.css',
             'hvnly-frontend-property-responsive' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-property-responsive.css',
         ];
 
@@ -622,7 +612,6 @@ private function load_template_functions(): void {
             'hvnly-frontend-property-ajax-filter' => HVNLYNAB_ASSETS_URL . '/frontend/css/property-search/hvnly-frontend-property-ajax-filter-search.css',
             'hvnly-frontend-property-archive' => HVNLYNAB_ASSETS_URL . '/frontend/css/property-search/hvnly-frontend-property-archive.css',
             'hvnly-frontend-property-map' => HVNLYNAB_ASSETS_URL . '/frontend/css/property-search/hvnly-frontend-property-map.css',
-            'hvnly-frontend-property-share' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-property-share.css',
             'hvnly-frontend-property-responsive' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-property-responsive.css',
         ];
         
@@ -706,17 +695,6 @@ private function load_template_functions(): void {
      * Enqueue Elementor-specific CSS overrides
      */
     private function enqueue_elementor_specific_styles(): void {
-        if ($this->is_elementor_editor_context()) {
-            wp_add_inline_style(
-                'hvnly-frontend-property-share',
-                '#hvnly-property-global-share-popup, .hvnly-property-share-popup-overlay {' .
-                'display: none !important; visibility: hidden !important; opacity: 0 !important;' .
-                'pointer-events: none !important; z-index: -1 !important; position: absolute !important;' .
-                'width: 0 !important; height: 0 !important; overflow: hidden !important;' .
-                '} body.hvnly-property-share-popup-open { overflow: visible !important; }'
-            );
-        }
-
         $elementor_css = "
             /* Havenlytics Elementor Widget Styles */
             .hvnly-all-properties-widget {

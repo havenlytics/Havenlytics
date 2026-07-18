@@ -44,6 +44,40 @@ function hvnly_is_agent_post( int $post_id = 0 ): bool {
 }
 
 /**
+ * Resolve an avatar URL for an agent and/or WordPress user.
+ *
+ * Thin wrapper around the single avatar helper, {@see \HvnlyNab\Common\AvatarService}.
+ * Priority: Agent uploaded avatar → Gravatar → Havenlytics placeholder. Never empty.
+ *
+ * @since 3.2.0
+ *
+ * @param int    $agent_id   Agent CPT post ID (0 for a plain user).
+ * @param int    $user_id    Linked WordPress user ID (0 = auto-resolve).
+ * @param int    $size       Requested pixel size (Gravatar).
+ * @param string $image_size Registered image size for the featured image.
+ * @return string Non-empty avatar URL.
+ */
+function hvnly_get_agent_avatar_url( int $agent_id = 0, int $user_id = 0, int $size = 96, string $image_size = 'medium' ): string {
+	return \HvnlyNab\Common\AvatarService::resolve_url( $agent_id, $user_id, $size, $image_size );
+}
+
+/**
+ * Resolve an avatar URL for a WordPress user, preferring a linked Agent CPT photo.
+ *
+ * Thin wrapper around {@see \HvnlyNab\Common\AvatarService::resolve_for_user()}.
+ * Priority: Agent uploaded avatar → Gravatar → Havenlytics placeholder. Never empty.
+ *
+ * @since 3.2.0
+ *
+ * @param int $user_id WordPress user ID.
+ * @param int $size    Requested pixel size.
+ * @return string Non-empty avatar URL.
+ */
+function hvnly_get_user_avatar_url( int $user_id, int $size = 96 ): string {
+	return \HvnlyNab\Common\AvatarService::resolve_for_user( $user_id, $size );
+}
+
+/**
  * Retrieve the Agent repository.
  *
  * @since 3.0.2
@@ -242,7 +276,7 @@ function hvnly_get_default_sidebar_contact(): array {
 			'phone'        => '',
 			'whatsapp'     => '',
 			'position'     => __( 'Site Administrator', 'havenlytics' ),
-			'avatar'       => get_avatar_url( $user->ID, array( 'size' => 200 ) ),
+			'avatar'       => hvnly_get_user_avatar_url( (int) $user->ID, 200 ),
 			'is_fallback'  => true,
 		);
 	} else {
@@ -256,7 +290,7 @@ function hvnly_get_default_sidebar_contact(): array {
 			'phone'        => '',
 			'whatsapp'     => '',
 			'position'     => __( 'Site Administrator', 'havenlytics' ),
-			'avatar'       => '',
+			'avatar'       => \HvnlyNab\Common\AvatarService::placeholder_url(),
 			'is_fallback'  => true,
 		);
 	}

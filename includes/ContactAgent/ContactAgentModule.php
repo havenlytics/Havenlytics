@@ -8,15 +8,16 @@
 
 namespace HvnlyNab\ContactAgent;
 
-use HvnlyNab\ContactAgent\Admin\InquiryAdminPage;
-use HvnlyNab\ContactAgent\Admin\InquiryListTable;
 use HvnlyNab\ContactAgent\Contracts\InquiryNotifierInterface;
 use HvnlyNab\ContactAgent\Contracts\InquiryRepositoryInterface;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Wires Contact Agent services for later phases without registering runtime behavior.
+ * Wires Contact Agent runtime services.
+ *
+ * Admin-only classes (InquiryListTable / InquiryAdminPage) are NOT constructed here.
+ * They load only via wp-admin Admin::get_services() → InquiryAdminPage.
  *
  * @since 3.0.2
  */
@@ -56,16 +57,6 @@ final class ContactAgentModule {
 	 * @var AjaxHandler
 	 */
 	private $ajax_handler;
-
-	/**
-	 * @var InquiryListTable
-	 */
-	private $admin_list_table;
-
-	/**
-	 * @var InquiryAdminPage
-	 */
-	private $admin_page;
 
 	/**
 	 * @var bool
@@ -137,13 +128,11 @@ final class ContactAgentModule {
 	 */
 	private function wire_dependencies(): void {
 		$services = array(
-			'repository'       => InquiryRepository::class,
-			'validator'        => InquiryValidator::class,
-			'notifier'         => InquiryNotifier::class,
-			'rate_limiter'     => RateLimiter::class,
-			'spam_guard'       => SpamGuard::class,
-			'admin_list_table' => InquiryListTable::class,
-			'admin_page'       => InquiryAdminPage::class,
+			'repository'   => InquiryRepository::class,
+			'validator'    => InquiryValidator::class,
+			'notifier'     => InquiryNotifier::class,
+			'rate_limiter' => RateLimiter::class,
+			'spam_guard'   => SpamGuard::class,
 		);
 
 		/**
@@ -155,13 +144,15 @@ final class ContactAgentModule {
 		 */
 		$services = apply_filters( 'hvnly_contact_agent_service_classes', $services );
 
-		$this->repository       = $this->resolve_service( $services['repository'] ?? InquiryRepository::class, InquiryRepositoryInterface::class );
-		$this->validator        = $this->resolve_service( $services['validator'] ?? InquiryValidator::class, InquiryValidator::class );
-		$this->notifier         = $this->resolve_service( $services['notifier'] ?? InquiryNotifier::class, InquiryNotifierInterface::class );
-		$this->rate_limiter     = $this->resolve_service( $services['rate_limiter'] ?? RateLimiter::class, RateLimiter::class );
-		$this->spam_guard       = $this->resolve_service( $services['spam_guard'] ?? SpamGuard::class, SpamGuard::class );
-		$this->admin_list_table = $this->resolve_service( $services['admin_list_table'] ?? InquiryListTable::class, InquiryListTable::class );
-		$this->admin_page       = $this->resolve_service( $services['admin_page'] ?? InquiryAdminPage::class, InquiryAdminPage::class );
+		// Never instantiate admin list-table / admin page here — WP_List_Table
+		// requires convert_to_screen() which only exists in wp-admin.
+		unset( $services['admin_list_table'], $services['admin_page'] );
+
+		$this->repository   = $this->resolve_service( $services['repository'] ?? InquiryRepository::class, InquiryRepositoryInterface::class );
+		$this->validator    = $this->resolve_service( $services['validator'] ?? InquiryValidator::class, InquiryValidator::class );
+		$this->notifier     = $this->resolve_service( $services['notifier'] ?? InquiryNotifier::class, InquiryNotifierInterface::class );
+		$this->rate_limiter = $this->resolve_service( $services['rate_limiter'] ?? RateLimiter::class, RateLimiter::class );
+		$this->spam_guard   = $this->resolve_service( $services['spam_guard'] ?? SpamGuard::class, SpamGuard::class );
 
 		$this->ajax_handler = new AjaxHandler( $this );
 	}
@@ -196,11 +187,8 @@ final class ContactAgentModule {
 		if ( SpamGuard::class === $required_type ) {
 			return new SpamGuard();
 		}
-		if ( InquiryListTable::class === $required_type ) {
-			return new InquiryListTable();
-		}
 
-		return new InquiryAdminPage();
+		return new InquiryRepository();
 	}
 
 	/**
@@ -243,20 +231,6 @@ final class ContactAgentModule {
 	 */
 	public function get_ajax_handler(): AjaxHandler {
 		return $this->ajax_handler;
-	}
-
-	/**
-	 * @return InquiryListTable
-	 */
-	public function get_admin_list_table(): InquiryListTable {
-		return $this->admin_list_table;
-	}
-
-	/**
-	 * @return InquiryAdminPage
-	 */
-	public function get_admin_page(): InquiryAdminPage {
-		return $this->admin_page;
 	}
 
 	/**

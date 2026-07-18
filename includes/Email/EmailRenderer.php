@@ -30,6 +30,12 @@ class EmailRenderer {
 			return '';
 		}
 
+		// Sprint 24C: shared chrome (logo, support/docs links, version) is merged in
+		// centrally so every template rendered here gets it without each notifier
+		// having to remember. Caller-supplied keys win. (Contact Agent emails use
+		// their own self-contained templates via InquiryEmailRenderer, not this path.)
+		$context = array_merge( EmailBranding::context(), $context );
+
 		/**
 		 * Filter email template context before render.
 		 *

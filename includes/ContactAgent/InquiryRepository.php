@@ -9,6 +9,7 @@
 namespace HvnlyNab\ContactAgent;
 
 use HvnlyNab\ContactAgent\Contracts\InquiryRepositoryInterface;
+use HvnlyNab\ContactAgent\Database\InquiryReplySchema;
 use HvnlyNab\ContactAgent\Database\InquirySchema;
 use HvnlyNab\Agent\AgentConstants;
 
@@ -301,6 +302,99 @@ class InquiryRepository implements InquiryRepositoryInterface {
 	}
 
 	/**
+	 * Reassign all inquiries from one Agent CPT to another.
+	 *
+	 * @param int    $from_agent_id Source agent CPT ID.
+	 * @param int    $to_agent_id   Target agent CPT ID (0 allowed for administrator-held).
+	 * @param string $to_agent_name Display name for agent_name column.
+	 * @return int|\WP_Error Rows updated.
+	 */
+	public function reassign_agent( int $from_agent_id, int $to_agent_id, string $to_agent_name = '' ) {
+		$from_agent_id = absint( $from_agent_id );
+		$to_agent_id   = absint( $to_agent_id );
+		if ( $from_agent_id <= 0 ) {
+			return new \WP_Error(
+				'hvnly_inquiry_reassign_invalid',
+				__( 'Invalid source agent for inquiry transfer.', 'havenlytics' ),
+				array( 'status' => 400 )
+			);
+		}
+		if ( ! InquirySchema::table_exists() ) {
+			return 0;
+		}
+
+		global $wpdb;
+		$table = InquirySchema::table_name();
+		$name  = sanitize_text_field( $to_agent_name );
+		if ( '' === $name && $to_agent_id > 0 ) {
+			$name = (string) get_the_title( $to_agent_id );
+		}
+		if ( '' === $name ) {
+			$name = __( 'Administrator', 'havenlytics' );
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$updated = $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE `{$table}` SET agent_id = %d, agent_name = %s WHERE agent_id = %d",
+				$to_agent_id,
+				$name,
+				$from_agent_id
+			)
+		);
+
+		if ( false === $updated ) {
+			return new \WP_Error(
+				'hvnly_inquiry_reassign_failed',
+				__( 'Could not transfer inquiries.', 'havenlytics' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		return (int) $updated;
+	}
+
+	/**
+	 * Reassign inquiry-reply authorship when an Agent user is transferred/deleted.
+	 *
+	 * @param int $from_user Source WP user.
+	 * @param int $to_user   Target WP user.
+	 * @return int|\WP_Error Rows updated.
+	 */
+	public function reassign_reply_authors( int $from_user, int $to_user ) {
+		$from_user = absint( $from_user );
+		$to_user   = absint( $to_user );
+		if ( $from_user <= 0 || $to_user <= 0 ) {
+			return 0;
+		}
+		if ( ! InquiryReplySchema::table_exists() ) {
+			return 0;
+		}
+
+		global $wpdb;
+		$table = InquiryReplySchema::table_name();
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$updated = $wpdb->query(
+			$wpdb->prepare(
+				"UPDATE `{$table}` SET author_user_id = %d WHERE author_user_id = %d",
+				$to_user,
+				$from_user
+			)
+		);
+
+		if ( false === $updated ) {
+			return new \WP_Error(
+				'hvnly_inquiry_reply_reassign_failed',
+				__( 'Could not transfer inquiry reply authorship.', 'havenlytics' ),
+				array( 'status' => 500 )
+			);
+		}
+
+		return (int) $updated;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function update_status( int $inquiry_id, string $status ) {
@@ -420,7 +514,11 @@ class InquiryRepository implements InquiryRepositoryInterface {
 		$defaults = array(
 			'property_id' => 0,
 			'agent_id'    => 0,
+			'agent_ids'   => array(),
 			'status'      => '',
+			'search'      => '',
+			'date_from'   => '',
+			'date_to'     => '',
 			'limit'       => 20,
 			'offset'      => 0,
 			'orderby'     => 'created_at',
@@ -432,8 +530,26 @@ class InquiryRepository implements InquiryRepositoryInterface {
 		$parsed['property_id'] = absint( $parsed['property_id'] );
 		$parsed['agent_id']    = absint( $parsed['agent_id'] );
 		$parsed['status']      = sanitize_key( (string) $parsed['status'] );
+		$parsed['search']      = sanitize_text_field( (string) $parsed['search'] );
+		$parsed['date_from']   = $this->sanitize_mysql_datetime( (string) $parsed['date_from'] );
+		$parsed['date_to']     = $this->sanitize_mysql_datetime( (string) $parsed['date_to'] );
 		$parsed['limit']       = min( 100, max( 1, absint( $parsed['limit'] ) ) );
 		$parsed['offset']      = max( 0, absint( $parsed['offset'] ) );
+
+		$ids = array();
+		if ( ! empty( $parsed['agent_ids'] ) && is_array( $parsed['agent_ids'] ) ) {
+			foreach ( $parsed['agent_ids'] as $id ) {
+				$id = absint( $id );
+				if ( $id > 0 ) {
+					$ids[] = $id;
+				}
+			}
+		}
+		if ( $parsed['agent_id'] > 0 ) {
+			$ids[] = $parsed['agent_id'];
+		}
+		$parsed['agent_ids'] = array_values( array_unique( $ids ) );
+		$parsed['agent_id']  = ! empty( $parsed['agent_ids'] ) ? (int) $parsed['agent_ids'][0] : 0;
 
 		return $parsed;
 	}
@@ -451,14 +567,40 @@ class InquiryRepository implements InquiryRepositoryInterface {
 			$values[]     = (int) $args['property_id'];
 		}
 
-		if ( ! empty( $args['agent_id'] ) ) {
+		$agent_ids = isset( $args['agent_ids'] ) && is_array( $args['agent_ids'] ) ? $args['agent_ids'] : array();
+		if ( count( $agent_ids ) > 1 ) {
+			$placeholders = implode( ',', array_fill( 0, count( $agent_ids ), '%d' ) );
+			$conditions[] = "agent_id IN ({$placeholders})";
+			foreach ( $agent_ids as $aid ) {
+				$values[] = (int) $aid;
+			}
+		} elseif ( count( $agent_ids ) === 1 || ! empty( $args['agent_id'] ) ) {
 			$conditions[] = 'agent_id = %d';
-			$values[]     = (int) $args['agent_id'];
+			$values[]     = count( $agent_ids ) === 1 ? (int) $agent_ids[0] : (int) $args['agent_id'];
 		}
 
 		if ( ! empty( $args['status'] ) && $this->is_valid_status( (string) $args['status'] ) ) {
 			$conditions[] = 'status = %s';
 			$values[]     = (string) $args['status'];
+		}
+
+		$search = isset( $args['search'] ) ? trim( (string) $args['search'] ) : '';
+		if ( '' !== $search ) {
+			$like         = '%' . $GLOBALS['wpdb']->esc_like( $search ) . '%';
+			$conditions[] = '(sender_name LIKE %s OR sender_email LIKE %s OR message LIKE %s)';
+			$values[]     = $like;
+			$values[]     = $like;
+			$values[]     = $like;
+		}
+
+		if ( ! empty( $args['date_from'] ) ) {
+			$conditions[] = 'created_at >= %s';
+			$values[]     = (string) $args['date_from'];
+		}
+
+		if ( ! empty( $args['date_to'] ) ) {
+			$conditions[] = 'created_at <= %s';
+			$values[]     = (string) $args['date_to'];
 		}
 
 		if ( empty( $conditions ) ) {
@@ -472,6 +614,30 @@ class InquiryRepository implements InquiryRepositoryInterface {
 			'sql'    => 'WHERE ' . implode( ' AND ', $conditions ),
 			'values' => $values,
 		);
+	}
+
+	/**
+	 * Accepts Y-m-d or MySQL datetime; returns UTC MySQL datetime or empty.
+	 *
+	 * @param string $value Raw value.
+	 * @return string
+	 */
+	private function sanitize_mysql_datetime( string $value ): string {
+		$value = trim( $value );
+		if ( '' === $value ) {
+			return '';
+		}
+		if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $value ) ) {
+			return $value . ' 00:00:00';
+		}
+		if ( preg_match( '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value ) ) {
+			return $value;
+		}
+		$ts = strtotime( $value );
+		if ( ! $ts ) {
+			return '';
+		}
+		return gmdate( 'Y-m-d H:i:s', $ts );
 	}
 
 	/**

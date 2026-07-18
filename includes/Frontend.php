@@ -120,6 +120,8 @@ class Frontend
             Frontend\Shortcodes\LegacyCompatibility::class,
             Frontend\Shortcodes\CacheInvalidation::class,
             Frontend\Shortcodes\Assets::class,
+            // ========== WORKSPACE (before Contact Agent — CA must not block page registration) ==========
+            Workspace\WorkspaceBootstrap::class,
             // ========== CONTACT AGENT (scaffold) ==========
             ContactAgent\ContactAgentBootstrap::class,
             // ========== QUERY MANAGER ==========
@@ -148,7 +150,24 @@ class Frontend
                     continue;
                 }
             }
-            $instance->instantiate($class);
+
+            // Isolate service failures so one module cannot abort the rest
+            // (e.g. Contact Agent loading admin-only WP_List_Table on the frontend).
+            try {
+                $instance->instantiate($class);
+            } catch (\Throwable $e) {
+                if (defined('WP_DEBUG') && WP_DEBUG && function_exists('error_log')) {
+                    error_log(
+                        sprintf(
+                            'Havenlytics Frontend service failed (%s): %s in %s:%d',
+                            $class,
+                            $e->getMessage(),
+                            $e->getFile(),
+                            $e->getLine()
+                        )
+                    );
+                }
+            }
         }
         
         do_action('hvnly_frontend_services_registered');
@@ -202,6 +221,13 @@ class Frontend
 
         // Special handling for ElementorIntegration to use get_instance()
         if ($class === Integrations\Elementor\ElementorIntegration::class) {
+            $service = $class::get_instance();
+            $this->services[$class] = $service;
+            return $service;
+        }
+
+        // Workspace must stay a singleton (admin Bootstrap may already have booted it).
+        if ($class === Workspace\WorkspaceBootstrap::class) {
             $service = $class::get_instance();
             $this->services[$class] = $service;
             return $service;

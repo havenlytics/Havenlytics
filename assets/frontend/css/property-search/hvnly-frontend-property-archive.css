@@ -239,9 +239,9 @@
 }
 
 .hvnly-content-none__btn--primary:hover {
+    /* Sprint 31E: glow response instead of a lift. */
     background: var(--hvnly-button-bg-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(var(--hvnly-primary-rgb), 0.4);
+    box-shadow: 0 4px 14px -4px rgba(var(--hvnly-primary-rgb), 0.5);
 }
 
 .hvnly-content-none__btn--primary:hover::before {

@@ -57,12 +57,14 @@ class PluginInfoAPI
         register_rest_route($this->namespace, '/' . $this->route_base, [
             'methods' => 'GET',
             'callback' => [$this, 'get_plugin_info'],
-            'permission_callback' => '__return_true',
+            'permission_callback' => static function () {
+                return current_user_can('manage_options');
+            },
         ]);
     }
 
     /**
-     * Get plugin information
+     * Get plugin information (admin settings fallback only).
      *
      * @since 2.1.1
      * @param WP_REST_Request $request
@@ -70,6 +72,8 @@ class PluginInfoAPI
      */
     public function get_plugin_info($request)
     {
+        unset($request);
+
         return rest_ensure_response([
             'success' => true,
             'version' => HVNLYNAB_VERSION,

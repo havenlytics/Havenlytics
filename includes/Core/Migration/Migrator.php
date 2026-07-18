@@ -146,6 +146,10 @@ class Migrator {
 
         self::register('3.1.9-section-alias-dedupe', Handlers\Version319SectionAliasDedupeHandler::class);
 
+        self::register('3.2.0-portal-notifications', Handlers\Version320PortalNotificationsHandler::class);
+
+        self::register('3.3.0-taxonomy-requests', Handlers\Version330TaxonomyRequestsHandler::class);
+
     }
 
 

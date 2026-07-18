@@ -195,11 +195,18 @@ class PropertyLocationTermImageSeeder {
 			return 0;
 		}
 
+		// Skip the remote fetch entirely when there is no outbound HTTP, so an
+		// unreachable/stalled host cannot hang the batch. Term image is optional.
+		if ( function_exists( 'hvnly_import_remote_media_available' ) && ! hvnly_import_remote_media_available() ) {
+			return 0;
+		}
+
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		$temp_file = download_url( $url, 300, true );
+		// 15s (was 300s): a single stalled host must never exceed the request budget.
+		$temp_file = download_url( $url, 15, true );
 		if ( is_wp_error( $temp_file ) ) {
 			$this->log( 'Location image download error: ' . $temp_file->get_error_message() );
 			return 0;

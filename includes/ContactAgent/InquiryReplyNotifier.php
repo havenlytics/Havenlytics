@@ -117,18 +117,16 @@ class InquiryReplyNotifier {
 	 * @return string[]
 	 */
 	private function build_headers( array $context, \WP_User $admin_user ): array {
-		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+		// Sprint 24C: shared, DMARC-safe headers + quoted Reply-To phrase.
+		$headers = \HvnlyNab\Email\EmailHeaders::base();
 
-		$admin_name  = sanitize_text_field( $admin_user->display_name );
-		$admin_email = sanitize_email( $admin_user->user_email );
-		$admin_name  = preg_replace( '/[\r\n\t]+/', ' ', $admin_name );
+		$reply_to = \HvnlyNab\Email\EmailHeaders::reply_to(
+			(string) $admin_user->user_email,
+			(string) $admin_user->display_name
+		);
 
-		if ( is_email( $admin_email ) ) {
-			if ( $admin_name ) {
-				$headers[] = sprintf( 'Reply-To: %s <%s>', $admin_name, $admin_email );
-			} else {
-				$headers[] = 'Reply-To: ' . $admin_email;
-			}
+		if ( '' !== $reply_to ) {
+			$headers[] = $reply_to;
 		}
 
 		/**

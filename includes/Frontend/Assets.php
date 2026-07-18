@@ -50,8 +50,6 @@ class Assets
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
 
-        add_filter('hvnly_should_load_share_modal_assets', [$this, 'filter_share_modal_assets'], 10, 1);
-        
         add_action('template_redirect', [$this, 'start_output_buffering'], 1);
 
         // After setup_page_conditions so Elementor/widget flags are available.
@@ -402,10 +400,6 @@ class Assets
             wp_enqueue_style('hvnly-frontend-property-map');
         }
 
-        if ($this->should_load_share_modal_assets()) {
-            wp_enqueue_style('hvnly-frontend-property-share');
-        }
-        
         // Enqueue filter styles on pages with potential search forms
         if (is_page() || is_home() || is_front_page() || $this->is_property_archive || $this->is_property_taxonomy || $this->is_property_search_page || $this->has_property_shortcode || $this->has_agencies_shortcode || $this->has_elementor_widget) {
             wp_enqueue_style('hvnly-frontend-property-ajax-filter');
@@ -478,12 +472,6 @@ class Assets
             ],
             'hvnly-frontend-widgets' => [
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-widgets.css',
-                'deps' => [],
-                'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-property-share' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-property-share.css',
                 'deps' => [],
                 'ver' => HVNLYNAB_VERSION,
                 'media' => 'all'
@@ -770,16 +758,8 @@ class Assets
             wp_enqueue_script( 'hvnly-frontend-property-ajax-root' );
             wp_enqueue_script( 'hvnly-frontend-property-ajax-filter-search' );
             $this->localize_ajax_scripts_once();
-
-            if ( $this->should_load_share_modal_assets() ) {
-                $this->enqueue_share_modal_assets();
-            }
-        } elseif ( $this->should_load_share_modal_assets() ) {
-            wp_enqueue_script( 'jquery' );
-            wp_enqueue_script( 'hvnly-elementor-preview-guard' );
-            $this->enqueue_share_modal_assets();
         }
-        
+
         // Enqueue single property scripts (without filter search)
         if ($this->is_single_property) {
             $this->enqueue_single_property_scripts();
@@ -839,65 +819,6 @@ class Assets
         }
 
         wp_scripts()->registered['hvnly-frontend-property-map-search']->deps = $deps;
-    }
-
-    /**
-     * Extend share modal asset loading for Elementor property listings.
-     *
-     * @param bool $should_load Current decision.
-     * @return bool
-     */
-    public function filter_share_modal_assets( $should_load ) {
-        if ( $should_load ) {
-            return true;
-        }
-
-        return $this->has_elementor_widget
-            || $this->is_elementor_editor_mode()
-            || $this->is_agency_single
-            || $this->is_single_agent
-            || $this->is_property_search_page;
-    }
-
-    /**
-     * Whether the global share popup assets should load on this request.
-     *
-     * @return bool
-     */
-    private function should_load_share_modal_assets() {
-        if ( function_exists( 'hvnly_should_load_share_modal_assets' ) ) {
-            return hvnly_should_load_share_modal_assets();
-        }
-
-        return false;
-    }
-
-    /**
-     * Enqueue and bootstrap the property share modal.
-     *
-     * @return void
-     */
-    private function enqueue_share_modal_assets() {
-        wp_enqueue_script( 'hvnly-frontend-property-share' );
-
-        if ( function_exists( 'hvnly_get_share_platform_configs' ) ) {
-            wp_localize_script(
-                'hvnly-frontend-property-share',
-                'hvnlyShareModal',
-                array(
-                    'platformConfigs' => hvnly_get_share_platform_configs(),
-                    'i18n'            => array(
-                        'autoCloseIn'   => __( 'Auto-close in', 'havenlytics' ),
-                        'instagramHint' => __( 'Please open Instagram app to share this property.', 'havenlytics' ),
-                        'shareOn'       => __( 'Share on', 'havenlytics' ),
-                    ),
-                )
-            );
-        }
-
-        if ( function_exists( 'hvnly_boot_share_popup' ) ) {
-            hvnly_boot_share_popup();
-        }
     }
 
     /**
@@ -1010,12 +931,6 @@ class Assets
             'hvnly-frontend-contact-agent' => [
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-contact-agent.js',
                 'deps' => ['jquery'],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-share' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-share.js',
-                'deps' => ['jquery', 'hvnly-elementor-preview-guard'],
                 'ver' => HVNLYNAB_VERSION,
                 'in_footer' => true
             ],

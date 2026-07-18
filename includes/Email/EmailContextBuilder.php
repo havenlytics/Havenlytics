@@ -42,8 +42,8 @@ final class EmailContextBuilder {
 		$intro = EmailSettings::get_import_success_intro();
 		if ( '' === trim( $intro ) ) {
 			$intro = sprintf(
-				/* translators: 1: site name, 2: import count */
-				__( 'Your property import on %1$s completed successfully. %2$s properties are now available in your site.', 'havenlytics' ),
+				/* translators: 1: site name, 2: property count */
+				__( 'Your property setup on %1$s is complete. %2$s listings are ready to review.', 'havenlytics' ),
 				(string) $context['site_name'],
 				(string) $context['import_count']
 			);

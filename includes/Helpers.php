@@ -918,15 +918,13 @@ class Helpers
     }
 
     /**
-     * Get currency symbol by currency code
-     * Matches all currency codes from the currencyData array
+     * Full ISO currency code → symbol map (same source as Settings currencyData).
      *
-     * @param string $currency_code
-     * @return string
+     * @return array<string, string>
      */
-    public function get_currency_symbol($currency_code = 'USD')
+    public function get_currency_symbols_map()
     {
-        $currency_symbols = array(
+        return array(
             'AED' => 'د.إ',
             'AFN' => '؋',
             'ALL' => 'L',
@@ -1090,7 +1088,18 @@ class Helpers
             'ZAR' => 'R',
             'ZMW' => 'ZK',
         );
-        
+    }
+
+    /**
+     * Get currency symbol by currency code
+     * Matches all currency codes from the currencyData array
+     *
+     * @param string $currency_code
+     * @return string
+     */
+    public function get_currency_symbol($currency_code = 'USD')
+    {
+        $currency_symbols = $this->get_currency_symbols_map();
         return isset($currency_symbols[$currency_code]) ? $currency_symbols[$currency_code] : $currency_code;
     }
 

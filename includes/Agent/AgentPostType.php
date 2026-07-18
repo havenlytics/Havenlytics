@@ -31,9 +31,10 @@ class AgentPostType extends Custom_Posts {
 	public function __construct() {
 		parent::__construct();
 
-		add_filter( 'manage_' . $this->slug . '_posts_columns', array( $this, 'admin_columns' ) );
+		add_filter( 'manage_' . $this->slug . '_posts_columns', array( $this, 'admin_columns' ), 10 );
 		add_action( 'manage_' . $this->slug . '_posts_custom_column', array( $this, 'admin_column_content' ), 10, 2 );
 		add_filter( 'post_row_actions', array( $this, 'row_actions' ), 10, 2 );
+		// Sprint 20A owns the professional column set at priority 30.
 	}
 
 	/**
@@ -132,8 +133,17 @@ class AgentPostType extends Custom_Posts {
 	public function admin_column_content( string $column, int $post_id ): void {
 		switch ( $column ) {
 			case 'hvnly_agent_photo':
-				$thumb = get_the_post_thumbnail( $post_id, array( 40, 40 ), array( 'style' => 'border-radius:50%;object-fit:cover;' ) );
-				echo $thumb ? wp_kses_post( $thumb ) : '&mdash;'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				$uid        = absint( get_post_meta( $post_id, AgentConstants::META_LINKED_USER_ID, true ) );
+				$avatar_url = \HvnlyNab\Common\AvatarService::resolve_url( $post_id, $uid, 40, 'thumbnail' );
+				echo \HvnlyNab\Common\AvatarService::img_html( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper escapes.
+					$avatar_url,
+					array(
+						'class'  => 'hvnly-agent-admin-photo',
+						'width'  => 40,
+						'height' => 40,
+						'alt'    => '',
+					)
+				);
 				break;
 
 			case 'hvnly_agent_position':

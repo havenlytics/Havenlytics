@@ -13,6 +13,7 @@ use HvnlyNab\ContactAgent\InquiryRepository;
 
 defined( 'ABSPATH' ) || exit;
 
+// Admin-only: InquiryAdminPage constructs this in wp-admin. Do not instantiate on frontend.
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 }
@@ -89,6 +90,10 @@ class InquiryListTable extends \WP_List_Table {
 			? sanitize_key( wp_unslash( $_REQUEST['inquiry_status'] ) )
 			: '';
 
+		$agent_id = isset( $_REQUEST['agent_id'] )
+			? absint( wp_unslash( $_REQUEST['agent_id'] ) )
+			: 0;
+
 		$statuses = array(
 			''                                     => esc_html__( 'All statuses', 'havenlytics' ),
 			ContactAgentConstants::STATUS_NEW      => esc_html__( 'New', 'havenlytics' ),
@@ -98,6 +103,9 @@ class InquiryListTable extends \WP_List_Table {
 		);
 		?>
 		<div class="alignleft actions">
+			<?php if ( $agent_id > 0 ) : ?>
+				<input type="hidden" name="agent_id" value="<?php echo esc_attr( (string) $agent_id ); ?>" />
+			<?php endif; ?>
 			<label class="screen-reader-text" for="filter-by-inquiry-status"><?php esc_html_e( 'Filter by status', 'havenlytics' ); ?></label>
 			<select name="inquiry_status" id="filter-by-inquiry-status">
 				<?php foreach ( $statuses as $value => $label ) : ?>
@@ -123,6 +131,10 @@ class InquiryListTable extends \WP_List_Table {
 			? sanitize_key( wp_unslash( $_REQUEST['inquiry_status'] ) )
 			: '';
 
+		$agent_id = isset( $_REQUEST['agent_id'] )
+			? absint( wp_unslash( $_REQUEST['agent_id'] ) )
+			: 0;
+
 		$args = array(
 			'limit'   => $per_page,
 			'offset'  => ( $current_page - 1 ) * $per_page,
@@ -134,10 +146,20 @@ class InquiryListTable extends \WP_List_Table {
 			$args['status'] = $status;
 		}
 
+		if ( $agent_id > 0 ) {
+			$args['agent_id'] = $agent_id;
+		}
+
 		$this->items = $this->repository->list( $args );
 
-		$count_args = $status ? array( 'status' => $status ) : array();
-		$total      = $this->repository->count( $count_args );
+		$count_args = array();
+		if ( $status ) {
+			$count_args['status'] = $status;
+		}
+		if ( $agent_id > 0 ) {
+			$count_args['agent_id'] = $agent_id;
+		}
+		$total = $this->repository->count( $count_args );
 
 		$this->_column_headers = array( $this->get_columns(), array(), $this->get_sortable_columns() );
 

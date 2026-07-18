@@ -1,0 +1,75 @@
+/**
+ * Workspace registration approval badges & admin UI.
+ *
+ * @package Havenlytics
+ * @since   3.2.0
+ */
+
+.hvnly-ws-reg-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 3px 10px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.4;
+	white-space: nowrap;
+	border: 1px solid transparent;
+}
+
+.hvnly-ws-reg-badge__icon {
+	font-size: 11px;
+	line-height: 1;
+}
+
+.hvnly-ws-reg-badge--pending {
+	background: #fff8e6;
+	color: #b45309;
+	border-color: #fde68a;
+}
+
+.hvnly-ws-reg-badge--approved {
+	background: #ecfdf5;
+	color: #15803d;
+	border-color: #bbf7d0;
+}
+
+.hvnly-ws-reg-badge--active {
+	background: #d1fae5;
+	color: #047857;
+	border-color: #6ee7b7;
+}
+
+.hvnly-ws-reg-badge--rejected,
+.hvnly-ws-reg-badge--blocked {
+	background: #fef2f2;
+	color: #b91c1c;
+	border-color: #fecaca;
+}
+
+.hvnly-ws-reg-badge--suspended {
+	background: #fff7ed;
+	color: #c2410c;
+	border-color: #fed7aa;
+}
+
+.hvnly-ws-reg-badge--archived {
+	background: #f8fafc;
+	color: #64748b;
+	border-color: #e2e8f0;
+}
+
+.column-hvnly_ws_reg_status,
+.column-hvnly_ws_workspace {
+	width: 12%;
+}
+
+.hvnly-ws-reg-action.is-busy {
+	opacity: 0.55;
+	pointer-events: none;
+}
+
+#hvnly_ws_registration_status .hvnly-ws-reg-badge {
+	margin-top: 4px;
+}

@@ -176,18 +176,23 @@
         }
 
         /**
-         * Always-on console warning for map failures (visible without debug flag).
+         * Console warning for map failures (opt-in via map debug flag).
          *
          * @param {string} message
          * @param {*} details
          */
         mapWarn(message, details = null) {
+            if (!this.debugMode) {
+                return;
+            }
             if (details !== null && details !== undefined) {
+                // eslint-disable-next-line no-console
                 console.warn('[Havenlytics Map]', message, details);
             } else {
+                // eslint-disable-next-line no-console
                 console.warn('[Havenlytics Map]', message);
             }
-        }
+       }
         
         /**
          * Initialize all map components and event bindings

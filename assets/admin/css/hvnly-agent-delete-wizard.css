@@ -1,0 +1,80 @@
+/**
+ * Agent Delete Wizard (Sprint 20B).
+ *
+ * @package Havenlytics
+ * @since   3.2.0
+ */
+
+.hvnly-agent-delete-wizard .hvnly-dw-steps {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	list-style: none;
+	margin: 16px 0 20px;
+	padding: 0;
+}
+
+.hvnly-agent-delete-wizard .hvnly-dw-steps li {
+	padding: 6px 12px;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	background: #f6f7f7;
+	color: #646970;
+	font-size: 13px;
+}
+
+.hvnly-agent-delete-wizard .hvnly-dw-steps li.is-current {
+	background: #2271b1;
+	border-color: #2271b1;
+	color: #fff;
+	font-weight: 600;
+}
+
+.hvnly-agent-delete-wizard .hvnly-dw-steps li.is-done {
+	background: #edfaef;
+	border-color: #00a32a;
+	color: #007017;
+}
+
+.hvnly-agent-delete-wizard .hvnly-dw-panel {
+	max-width: 720px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 16px 20px 20px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.hvnly-agent-delete-wizard .hvnly-dw-table th {
+	width: 220px;
+	vertical-align: top;
+}
+
+.hvnly-agent-delete-wizard .hvnly-dw-fieldset {
+	border: 0;
+	margin: 0 0 16px;
+	padding: 0;
+}
+
+.hvnly-agent-delete-wizard .hvnly-dw-fieldset label {
+	display: block;
+	margin: 10px 0 6px;
+	font-weight: 600;
+}
+
+.hvnly-agent-delete-wizard .hvnly-dw-danger {
+	background: #b32d2e;
+	border-color: #8a2424;
+	color: #fff;
+}
+
+.hvnly-agent-delete-wizard .hvnly-dw-danger:hover,
+.hvnly-agent-delete-wizard .hvnly-dw-danger:focus {
+	background: #8a2424;
+	border-color: #6b1c1c;
+	color: #fff;
+}
+
+.hvnly-agent-delete-wizard .hvnly-dw-agent {
+	margin-bottom: 12px;
+}

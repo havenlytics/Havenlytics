@@ -227,7 +227,7 @@ final class PropertyAgentResolver {
 			'whatsapp'     => (string) get_user_meta( $user_id, '_hvnly_agent_whatsapp', true ),
 			'position'     => (string) get_user_meta( $user_id, '_hvnly_agent_position', true ),
 			'website'      => (string) get_user_meta( $user_id, 'user_url', true ),
-			'avatar'       => get_avatar_url( $user_id, array( 'size' => 200 ) ),
+			'avatar'       => \HvnlyNab\Common\AvatarService::resolve_for_user( (int) $user_id, 200 ),
 			'profile_url'  => '',
 			'biography'    => '',
 			'rating'       => function_exists( 'hvnly_get_author_property_ratings' )

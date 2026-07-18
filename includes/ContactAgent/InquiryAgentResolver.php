@@ -266,7 +266,7 @@ final class InquiryAgentResolver {
 			'name'    => get_the_author_meta( 'display_name', $user_id ),
 			'email'   => get_the_author_meta( 'user_email', $user_id ),
 			'phone'   => (string) get_user_meta( $user_id, '_hvnly_agent_phone', true ),
-			'avatar'  => get_avatar_url( $user_id, array( 'size' => 200 ) ),
+			'avatar'  => \HvnlyNab\Common\AvatarService::resolve_for_user( (int) $user_id, 200 ),
 		);
 	}
 

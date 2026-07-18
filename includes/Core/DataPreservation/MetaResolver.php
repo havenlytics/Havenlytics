@@ -96,18 +96,26 @@ class MetaResolver {
 			}
 		}
 
-		// Isolated group instances must not read another section's data.
-		if ( $strict ) {
-			return '';
+		// 3. Static legacy aliases (import compatibility).
+		// Strictly scoped instances only inherit the type-level singleton when they
+		// own the legacy import base (sole instance / first migrated group).
+		if ( isset( self::LEGACY_ALIASES[ $group_type ][ $meta_key ] ) ) {
+			$allow_legacy = ! $strict;
+			if ( $strict && class_exists( GroupFieldIdentity::class ) ) {
+				$allow_legacy = GroupFieldIdentity::owns_legacy_type_import( $post_id, $field, $group_type );
+			}
+			if ( $allow_legacy ) {
+				$legacy_static = self::LEGACY_ALIASES[ $group_type ][ $meta_key ];
+				$value         = get_post_meta( $post_id, $legacy_static, true );
+				if ( self::has_value( $value ) ) {
+					return $value;
+				}
+			}
 		}
 
-		// 3. Static legacy aliases (import compatibility).
-		if ( isset( self::LEGACY_ALIASES[ $group_type ][ $meta_key ] ) ) {
-			$legacy_static = self::LEGACY_ALIASES[ $group_type ][ $meta_key ];
-			$value         = get_post_meta( $post_id, $legacy_static, true );
-			if ( self::has_value( $value ) ) {
-				return $value;
-			}
+		// Isolated group instances must not scan / borrow another section's data.
+		if ( $strict ) {
+			return '';
 		}
 
 		// 4. Full meta scan — first key matching type suffix for this group instance.

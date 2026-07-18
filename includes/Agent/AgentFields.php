@@ -246,10 +246,124 @@ final class AgentFields {
 			}
 		}
 
-		$linked_user = isset( $_POST[ AgentConstants::META_LINKED_USER_ID ] )
-			? absint( wp_unslash( $_POST[ AgentConstants::META_LINKED_USER_ID ] ) )
-			: 0;
-		update_post_meta( $post_id, AgentConstants::META_LINKED_USER_ID, $linked_user );
+		// Only touch identity when the Account metabox field is present.
+		if ( ! isset( $_POST[ AgentConstants::META_LINKED_USER_ID ] ) ) {
+			return;
+		}
+
+		$linked_user = absint( wp_unslash( $_POST[ AgentConstants::META_LINKED_USER_ID ] ) );
+		$confirm     = ! empty( $_POST['hvnly_confirm_identity_relink'] );
+
+		if ( class_exists( '\HvnlyNab\Workspace\Auth\AgentIdentityService' ) ) {
+			$result = \HvnlyNab\Workspace\Auth\AgentIdentityService::get_instance()->set_linked_user(
+				$post_id,
+				$linked_user,
+				array( 'confirm_relink' => $confirm )
+			);
+		} elseif ( class_exists( '\HvnlyNab\Workspace\Auth\AgentProvisioner' ) ) {
+			$result = ( new \HvnlyNab\Workspace\Auth\AgentProvisioner() )->set_linked_user(
+				$post_id,
+				$linked_user,
+				array( 'confirm_relink' => $confirm )
+			);
+		} else {
+			return;
+		}
+
+		if ( is_wp_error( $result ) ) {
+			set_transient(
+				'hvnly_agent_identity_save_error_' . get_current_user_id(),
+				$result->get_error_message(),
+				45
+			);
+		}
+	}
+
+	/**
+	 * Sanitize a single field value using the same rules as admin metabox save.
+	 *
+	 * @param string $type Field type (email|url|textarea|text|tel).
+	 * @param mixed  $raw  Raw value.
+	 * @return string
+	 */
+	public static function sanitize_value( string $type, $raw ): string {
+		switch ( $type ) {
+			case 'email':
+				return sanitize_email( (string) $raw );
+			case 'url':
+				return esc_url_raw( (string) $raw );
+			case 'textarea':
+				return sanitize_textarea_field( (string) $raw );
+			default:
+				return sanitize_text_field( (string) $raw );
+		}
+	}
+
+	/**
+	 * Update agent meta from a map of meta_key => raw value (Workspace / REST).
+	 * Does not touch linked_user_id.
+	 *
+	 * @param int                  $post_id Agent post ID.
+	 * @param array<string, mixed> $values  Meta key => value (only known keys applied).
+	 * @return void
+	 */
+	public static function save_meta_map( int $post_id, array $values ): void {
+		if ( $post_id <= 0 || AgentConstants::POST_TYPE !== get_post_type( $post_id ) ) {
+			return;
+		}
+
+		$types = array();
+		foreach ( self::field_groups() as $fields ) {
+			foreach ( $fields as $field ) {
+				$types[ (string) $field['key'] ] = (string) $field['type'];
+			}
+		}
+
+		foreach ( $values as $key => $raw ) {
+			$key = (string) $key;
+			if ( ! isset( $types[ $key ] ) ) {
+				continue;
+			}
+			if ( AgentConstants::META_LINKED_USER_ID === $key ) {
+				continue;
+			}
+			$value = self::sanitize_value( $types[ $key ], $raw );
+			update_post_meta( $post_id, $key, $value );
+		}
+	}
+
+	/**
+	 * Raw meta profile for editing (no phone fallback merge).
+	 *
+	 * @param int $post_id Agent post ID.
+	 * @return array<string, string>
+	 */
+	public static function get_profile_raw( int $post_id ): array {
+		if ( $post_id <= 0 || AgentConstants::POST_TYPE !== get_post_type( $post_id ) ) {
+			return array();
+		}
+
+		return array(
+			'email'     => sanitize_email( (string) get_post_meta( $post_id, AgentConstants::META_EMAIL, true ) ),
+			'phone'     => (string) get_post_meta( $post_id, AgentConstants::META_PHONE, true ),
+			'mobile'    => (string) get_post_meta( $post_id, AgentConstants::META_MOBILE, true ),
+			'fax'       => (string) get_post_meta( $post_id, AgentConstants::META_FAX, true ),
+			'office'    => (string) get_post_meta( $post_id, AgentConstants::META_OFFICE, true ),
+			'whatsapp'  => (string) get_post_meta( $post_id, AgentConstants::META_WHATSAPP, true ),
+			'position'  => (string) get_post_meta( $post_id, AgentConstants::META_POSITION, true ),
+			'company'   => (string) get_post_meta( $post_id, AgentConstants::META_COMPANY, true ),
+			'license'   => (string) get_post_meta( $post_id, AgentConstants::META_LICENSE, true ),
+			'address'   => (string) get_post_meta( $post_id, AgentConstants::META_ADDRESS, true ),
+			'website'   => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_WEBSITE, true ) ),
+			'vimeo'     => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_VIMEO, true ) ),
+			'facebook'  => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_FACEBOOK, true ) ),
+			'twitter'   => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_TWITTER, true ) ),
+			'pinterest' => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_PINTEREST, true ) ),
+			'instagram' => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_INSTAGRAM, true ) ),
+			'youtube'   => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_YOUTUBE, true ) ),
+			'linkedin'  => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_LINKEDIN, true ) ),
+			'tiktok'    => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_TIKTOK, true ) ),
+		);
 	}
 
 	/**

@@ -14,6 +14,9 @@
   ========================================= */
   --hvnly-color-white: #ffffff;
   --hvnly-color-black: #000000;
+  /* Sprint 31D: consumed by the sticky agent sidebar; previously undefined
+     so the fallback always kicked in. Defined here so themes can tune it. */
+  --hvnly-sticky-offset: 24px;
   --hvnly-color-gray-100: #f8f9fa;
   --hvnly-color-gray-200: #e4e4ed;
   --hvnly-color-gray-500: #6c757d;
@@ -274,9 +277,9 @@ body {
 .hvnly-property-display-shortcode input[type=text], 
 .hvnly-content-wrapper input[type=url], 
 .hvnly-property-display-shortcode input[type=url], 
-.hvnly-content-wrapper select, 
-.hvnly-property-display-shortcode select, 
-.hvnly-content-wrapper textarea
+.hvnly-content-wrapper select,
+.hvnly-property-display-shortcode select,
+.hvnly-content-wrapper textarea,
 .hvnly-property-display-shortcode textarea
 {
   width: 100%;
@@ -286,7 +289,9 @@ body {
   background-color: var(--hvnly-color-bg-white);
   border: 1px solid var(--hvnly-input-border) !important;
   border-radius: var(--hvnly-input-radius);
-  padding: 0.59rem 1rem!important;;
+  /* Sprint 31H: was `1rem!important;;` — the double semicolon + glued
+     !important is now clean. */
+  padding: 0.59rem 1rem !important;
   transition: all var(--hvnly-transition-time);
   outline: none;
   line-height: 1.5;
@@ -296,7 +301,7 @@ body {
 .hvnly-property-display-shortcode input:focus,
 .hvnly-content-wrapper select:focus,
 .hvnly-property-display-shortcode select:focus,
-.hvnly-content-wrapper textarea:focus 
+.hvnly-content-wrapper textarea:focus,
 .hvnly-property-display-shortcode textarea:focus {
   border-color: var(--hvnly-input-focus) !important;
   box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.15);
@@ -305,8 +310,8 @@ body {
 /* Placeholder */
 .hvnly-content-wrapper input::placeholder,
 .hvnly-property-display-shortcode input::placeholder,
-.hvnly-content-wrapper textarea::placeholder 
-.hvnly-property-display-shortcode textarea::placeholder 
+.hvnly-content-wrapper textarea::placeholder,
+.hvnly-property-display-shortcode textarea::placeholder
 {
   color: var(--hvnly-color-gray-500);
   opacity: 0.7;
@@ -387,9 +392,19 @@ body {
   /* transform: translateY(-1px); */
 }
 
-/* Button Focus */
+/* Button Focus.
+   Sprint 31H QA: the base button reset above sets `outline: 0`, but this
+   restore previously covered only <button> — leaving <input type="submit|
+   button|reset"> with no visible keyboard focus (WCAG 2.4.7). All button
+   types now get the focus-visible ring. */
 .hvnly-content-wrapper button:focus-visible,
-.hvnly-property-display-shortcode button:focus-visible
+.hvnly-content-wrapper input[type="submit"]:focus-visible,
+.hvnly-content-wrapper input[type="button"]:focus-visible,
+.hvnly-content-wrapper input[type="reset"]:focus-visible,
+.hvnly-property-display-shortcode button:focus-visible,
+.hvnly-property-display-shortcode input[type="submit"]:focus-visible,
+.hvnly-property-display-shortcode input[type="button"]:focus-visible,
+.hvnly-property-display-shortcode input[type="reset"]:focus-visible
  {
   outline: 2px solid var(--hvnly-brand-primary);
   outline-offset: 2px;

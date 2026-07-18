@@ -50,12 +50,56 @@ final class DemoAgentAgencyImporter {
 	}
 
 	/**
-	 * Import demo agencies and agents once per ecosystem version.
+	 * Import demo agencies and agents, and give every demo agent a matching
+	 * Workspace user account — silently.
+	 *
+	 * Runs inside two suppression layers so the demo stays functional AND quiet:
+	 *  1. {@see \HvnlyNab\Workspace\Auth\AgentProvisioner::without_auto_user_provision}
+	 *     — the Agent-publish auto-provision (AgentIdentityAdminBridge FLOW A) must
+	 *     not fire while agent CPTs are inserted, because their email meta is not
+	 *     written until after wp_insert_post; that path would otherwise warn
+	 *     "Agent published without a Workspace account". We provision explicitly
+	 *     afterwards instead.
+	 *  2. $GLOBALS['hvnly_suppress_workflow_notifications'] = true — so no
+	 *     registration / activation / invitation email or in-app inbox row fires
+	 *     (see hvnly_is_system_notification_context()).
 	 *
 	 * @param bool $include_images Whether to sideload profile/logo images.
 	 * @return array<string, int> Agent slug => post ID map.
 	 */
 	public function import_ecosystem( bool $include_images = true ): array {
+		$prev_suppress = isset( $GLOBALS['hvnly_suppress_workflow_notifications'] )
+			? $GLOBALS['hvnly_suppress_workflow_notifications']
+			: null;
+		$GLOBALS['hvnly_suppress_workflow_notifications'] = true;
+
+		$run = function () use ( $include_images ) {
+			$map = $this->run_import_ecosystem( $include_images );
+			$this->provision_demo_agent_accounts();
+			return $map;
+		};
+
+		try {
+			if ( class_exists( '\HvnlyNab\Workspace\Auth\AgentProvisioner' ) ) {
+				return \HvnlyNab\Workspace\Auth\AgentProvisioner::without_auto_user_provision( $run );
+			}
+			return $run();
+		} finally {
+			if ( null === $prev_suppress ) {
+				unset( $GLOBALS['hvnly_suppress_workflow_notifications'] );
+			} else {
+				$GLOBALS['hvnly_suppress_workflow_notifications'] = $prev_suppress;
+			}
+		}
+	}
+
+	/**
+	 * Create/backfill demo agencies and agents once per ecosystem version.
+	 *
+	 * @param bool $include_images Whether to sideload profile/logo images.
+	 * @return array<string, int> Agent slug => post ID map.
+	 */
+	private function run_import_ecosystem( bool $include_images ): array {
 		if ( null !== self::$runtime_agent_map ) {
 			$this->backfill_demo_profiles( $include_images );
 			return self::$runtime_agent_map;
@@ -85,6 +129,86 @@ final class DemoAgentAgencyImporter {
 		$this->backfill_demo_profiles( $include_images );
 
 		return $agent_map;
+	}
+
+	/**
+	 * Ensure every imported demo Agent CPT has a linked Workspace WP user so the
+	 * demo is fully functional (login + dashboard) with no "missing account"
+	 * warnings. Reuses {@see \HvnlyNab\Workspace\Auth\AgentProvisioner::ensure_user_for_agent}
+	 * — it never duplicates user-creation logic and generates a unique username +
+	 * secure temporary password itself.
+	 *
+	 * Idempotent: already-linked agents are skipped, so repeated import passes and
+	 * cached re-runs never create duplicate users. Silent: send_reset=false and the
+	 * enclosing suppression context (see import_ecosystem) keep it email-free.
+	 *
+	 * @return void
+	 */
+	private function provision_demo_agent_accounts(): void {
+		if (
+			! class_exists( '\HvnlyNab\Workspace\Auth\AgentProvisioner' )
+			|| ! class_exists( '\HvnlyNab\Workspace\Auth\WorkspaceRegistrationStatus' )
+		) {
+			return;
+		}
+
+		$provisioner = new \HvnlyNab\Workspace\Auth\AgentProvisioner();
+		// ACTIVE grants Workspace dashboard access immediately (PENDING would leave
+		// demo agents stuck on the awaiting-approval gate).
+		$status = \HvnlyNab\Workspace\Auth\WorkspaceRegistrationStatus::ACTIVE;
+
+		foreach ( DemoAgentAgencyData::get_demo_agents() as $agent ) {
+			$slug = sanitize_title( (string) ( $agent['slug'] ?? '' ) );
+			if ( '' === $slug ) {
+				continue;
+			}
+
+			$post = get_page_by_path( $slug, OBJECT, AgentConstants::POST_TYPE );
+			if ( ! $post instanceof \WP_Post ) {
+				continue;
+			}
+			$agent_id = (int) $post->ID;
+
+			$linked = absint( get_post_meta( $agent_id, AgentConstants::META_LINKED_USER_ID, true ) );
+			if ( $linked > 0 && get_userdata( $linked ) ) {
+				continue; // Idempotent — already provisioned.
+			}
+
+			// Every demo agent ships a valid email (written to META_EMAIL on import);
+			// fall back to a deterministic placeholder so provisioning never fails
+			// for lack of one.
+			$email = sanitize_email( (string) get_post_meta( $agent_id, AgentConstants::META_EMAIL, true ) );
+			if ( '' === $email || ! is_email( $email ) ) {
+				$email = $this->placeholder_agent_email( $slug );
+				update_post_meta( $agent_id, AgentConstants::META_EMAIL, $email );
+			}
+
+			$result = $provisioner->ensure_user_for_agent(
+				$agent_id,
+				array(
+					'send_reset'          => false,
+					'registration_status' => $status,
+				)
+			);
+
+			if ( is_wp_error( $result ) ) {
+				$this->log( 'Demo agent Workspace account failed for ' . $slug . ': ' . $result->get_error_message() );
+			}
+		}
+	}
+
+	/**
+	 * Deterministic placeholder email for a demo agent missing one.
+	 *
+	 * @param string $slug Agent slug.
+	 * @return string
+	 */
+	private function placeholder_agent_email( string $slug ): string {
+		$local = sanitize_key( str_replace( '-', '.', $slug ) );
+		if ( '' === $local ) {
+			$local = 'agent';
+		}
+		return $local . '@havenlytics.demo';
 	}
 
 	/**
@@ -528,11 +652,18 @@ final class DemoAgentAgencyImporter {
 			return 0;
 		}
 
+		// Skip the remote fetch when there is no outbound HTTP so an unreachable
+		// host cannot stall the batch; agents/agencies import without a photo.
+		if ( function_exists( 'hvnly_import_remote_media_available' ) && ! hvnly_import_remote_media_available() ) {
+			return 0;
+		}
+
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
 
-		$temp_file = download_url( $url, 20, true );
+		// 15s for consistency with the rest of the importer (was 20s).
+		$temp_file = download_url( $url, 15, true );
 		if ( is_wp_error( $temp_file ) || ! is_string( $temp_file ) || ! file_exists( $temp_file ) ) {
 			if ( is_string( $temp_file ) && file_exists( $temp_file ) ) {
 				wp_delete_file( $temp_file );

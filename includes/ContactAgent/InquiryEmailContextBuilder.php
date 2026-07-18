@@ -35,7 +35,18 @@ final class InquiryEmailContextBuilder {
 			'agent'          => $agent,
 			'property_id'    => $property_id,
 			'property_id_display' => $property_id > 0 ? (string) $property_id : '',
-			'property_title' => $property_id > 0 ? get_the_title( $property_id ) : '',
+			/*
+			 * Sprint 24C: get_the_title() returns the title HTML-encoded, so a listing
+			 * called "New Construction – Ready Now!" arrived here as
+			 * "New Construction &#8211; Ready Now!". That string was then dropped raw
+			 * into the SUBJECT (which is plain text — recipients literally saw the
+			 * entity) and esc_html()'d again in the body (double-encoding it, so the
+			 * entity showed there too). Decode once here; templates still escape on
+			 * output, which is the correct place to do it.
+			 */
+			'property_title' => $property_id > 0
+				? html_entity_decode( (string) get_the_title( $property_id ), ENT_QUOTES, 'UTF-8' )
+				: '',
 			'property_url'   => $property_id > 0 ? get_permalink( $property_id ) : '',
 			'site_name'      => wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ),
 			'site_url'       => home_url( '/' ),

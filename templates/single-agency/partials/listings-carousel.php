@@ -94,6 +94,8 @@ if ( ! $hvnly_properties_query instanceof WP_Query || ! $hvnly_properties_query-
 								<?php if ( $hvnly_image_url ) : ?>
 									<img src="<?php echo esc_url( $hvnly_image_url ); ?>"
 										alt="<?php the_title_attribute(); ?>"
+										loading="lazy"
+										decoding="async"
 										data-src="<?php echo esc_url( get_the_post_thumbnail_url( $hvnly_property_id, 'full' ) ); ?>"
 										data-alt="<?php the_title_attribute(); ?>">
 								<?php else : ?>

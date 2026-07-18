@@ -1,0 +1,16 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Avatar">
+  <defs>
+    <linearGradient id="hvnlyAvatarBg" x1="0" y1="0" x2="0" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8A7BFF"/>
+      <stop offset="1" stop-color="#6C60FE"/>
+    </linearGradient>
+    <clipPath id="hvnlyAvatarClip">
+      <circle cx="48" cy="48" r="48"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#hvnlyAvatarClip)">
+    <rect width="96" height="96" fill="url(#hvnlyAvatarBg)"/>
+    <circle cx="48" cy="39" r="15" fill="#FFFFFF" fill-opacity="0.95"/>
+    <path d="M20 86c0-15.464 12.536-28 28-28s28 12.536 28 28v10H20V86z" fill="#FFFFFF" fill-opacity="0.95"/>
+  </g>
+</svg>

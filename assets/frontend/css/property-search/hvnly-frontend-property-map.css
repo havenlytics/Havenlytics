@@ -54,27 +54,32 @@
 @media (max-width: 1024px) {
     .hvnly-map-view,
     .hvnly-map-view .hvnly-properties-map,
-    #hvnly-properties-map {
+    #hvnly-properties-map,
+    .hvnly-map-view .hvnly-map-container {
         height: 500px !important;
         min-height: 500px !important;
     }
 }
 
+/* Sprint 31D: real step-downs — these tiers used to restate 550px, so a
+   phone got a map taller than its screen. */
 @media (max-width: 768px) {
     .hvnly-map-view,
     .hvnly-map-view .hvnly-properties-map,
-    #hvnly-properties-map {
-        height: 550px !important;
-        min-height: 550px !important;
+    #hvnly-properties-map,
+    .hvnly-map-view .hvnly-map-container {
+        height: 420px !important;
+        min-height: 420px !important;
     }
 }
 
 @media (max-width: 480px) {
     .hvnly-map-view,
     .hvnly-map-view .hvnly-properties-map,
-    #hvnly-properties-map {
-        height: 550px !important;
-        min-height: 550px !important;
+    #hvnly-properties-map,
+    .hvnly-map-view .hvnly-map-container {
+        height: 360px !important;
+        min-height: 360px !important;
     }
 }
 
@@ -93,7 +98,7 @@
 }
 
 .leaflet-container {
-    height: 100%;
+    max-height: 100%;
     width: 100%;
  
 }
@@ -921,7 +926,8 @@
     background: var(--hvnly-color-white, #ffffff);
     border-radius: var(--hvnly-border-radius-lg, 16px);
     box-shadow: var(--hvnly-shadow-card, 0 20px 40px rgba(0, 0, 0, 0.1));
-    min-width: 320px;
+    /* Sprint 31D: never exceed the viewport (320px screens overflowed). */
+    min-width: min(320px, calc(100vw - 2rem));
     position: relative;
     overflow: hidden;
 }
@@ -1214,6 +1220,7 @@
     color: var(--hvnly-text-primary, #333);
     box-shadow: var(--hvnly-shadow-card, 0 2px 8px rgba(0, 0, 0, 0.1));
     pointer-events: none;
+    animation: slideDown 0.3s ease-out;
 }
 
 .hvnly-map-notice-info {
@@ -1248,89 +1255,17 @@
     order: 2;
 }
 
-/* Ensure Google Map container has proper height */
-.hvnly-map-view .hvnly-properties-map,
-#hvnly-properties-map {
-    height: 550px !important;
-    min-height: 550px !important;
-    width: 100% !important;
-    display: block !important;
-}
-
-.hvnly-map-view .hvnly-map-container {
-    position: relative;
-    height: 550px !important;
-    min-height: 550px !important;
-    width: 100%;
-}
-
-/* For responsive mobile */
-@media (max-width: 768px) {
-
-    .hvnly-map-view .hvnly-properties-map,
-    #hvnly-properties-map {
-        height: 550px !important;
-        min-height: 550px !important;
-    }
-}
-
-
-/* ======================
-   LAPTOP (992px - 1199px)
-   Professional Desktop Layout
-   ====================== */
-@media (min-width: 992px) and (max-width: 1199px) {
-   
-}
-
-/* ======================
-   DESKTOP (1200px - 1439px)
-   Enterprise Desktop Experience
-   ====================== */
-@media (min-width: 1140px) and (max-width: 1299px) {
-   
-.hvnly-map-view {
-
-    height: 500px !important;
-
-}
-.hvnly-map-view .hvnly-map-container {
-    
-    height: 500px !important;
-    min-height: 500px !important;
-    
-}
-.hvnly-map-view .hvnly-properties-map, #hvnly-properties-map {
-    height: 500px !important;
-    min-height: 500px !important;
-   
-}
-}
+/* Sprint 31D: a verbatim un-media'd duplicate of the base 550px block used
+   to live here — because it loaded after the responsive tiers at equal
+   specificity + !important, it silently defeated every tablet/mobile map
+   height. Removed, along with the rogue 1140–1299px band that fought the
+   1024px tier. Section 2 near the top of this file now owns all heights. */
 
 
 
 
 
-/* Map Notice Styles */
-.hvnly-map-notice {
-    animation: slideDown 0.3s ease-out;
-}
-
-.hvnly-map-notice-info {
-    background: #e3f2fd;
-    border-left-color: #2196f3;
-}
-
-.hvnly-map-notice-warning {
-    background: #fff3e0;
-    border-left-color: #ff9800;
-}
-
-.hvnly-map-notice-error {
-    background: #ffebee;
-    border-left-color: #f44336;
-}
-
+/* Map Notice Styles — merged into Section 10 above (Sprint 31D dedupe). */
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -1345,7 +1280,7 @@
 
 /* Leaflet Map Container Height - Ensure visibility */
 .leaflet-container {
-    height: 100%;
+       max-height: 100%;
     width: 100%;
  
 }

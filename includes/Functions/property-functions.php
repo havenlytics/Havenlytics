@@ -27,7 +27,6 @@ function hvnly_get_default_field_template_mapping() {
 		'location'       => 'location',
 		'badge'          => 'badge',
 		'favorite'       => 'favorite',
-		'share'          => 'share',
 		'views'          => 'views',
 		'status'         => 'status',
 		'time'           => 'time',
@@ -931,7 +930,7 @@ if (!function_exists('hvnly_get_property_agent')) {
             'name' => get_the_author_meta('display_name', $agent_id),
             'email' => get_the_author_meta('email', $agent_id),
             'phone' => get_user_meta($agent_id, '_hvnly_agent_phone', true),
-            'avatar' => get_avatar_url($agent_id, array('size' => 200)),
+            'avatar' => \HvnlyNab\Common\AvatarService::resolve_for_user((int) $agent_id, 200),
             'position' => get_user_meta($agent_id, '_hvnly_agent_position', true) ?: __('Real Estate Agent', 'havenlytics'),
             'rating' => hvnly_get_author_property_ratings($agent_id),
             'review_count' => hvnly_get_author_review_count($agent_id)
@@ -1058,39 +1057,3 @@ function hvnly_format_numeric_price( $price ) {
     return HVNLY_NAB()->Helper->format_numeric_price_for_filter( $price );
 }
 
-// ========================================================
-// SOCIAL SHARE HELPER FUNCTIONS
-// ========================================================
-
-/**
- * Get enabled social share platforms from settings
- *
- * @return array Array of enabled platform keys
- * @since 2.0.0
- */
-function hvnly_get_enabled_share_platforms() {
-    $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    return $settings_manager->get_enabled_share_platforms();
-}
-
-/**
- * Get all share platform configurations
- *
- * @return array Array of platform configurations
- * @since 2.0.0
- */
-function hvnly_get_share_platform_configs() {
-    $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    return $settings_manager->get_share_platform_configs();
-}
-
-/**
- * Check if social sharing is enabled globally
- *
- * @return bool
- * @since 2.0.0
- */
-function hvnly_is_social_sharing_enabled() {
-    $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    return $settings_manager->is_social_sharing_enabled();
-}

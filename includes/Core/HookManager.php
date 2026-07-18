@@ -217,11 +217,11 @@ class HookManager {
 	 * Resolve the one-time post-activation redirect URL from property state.
 	 *
 	 * Fresh installs (no listings in any meaningful status) are guided into the
-	 * Demo Import Wizard on its first (department) step; any site that already has
-	 * at least one property — published, draft, pending or private — is sent to
-	 * Settings instead.
+	 * React onboarding ("Get Started"); any site that already has at least one
+	 * property — published, draft, pending or private — is sent to Settings
+	 * instead.
 	 *
-	 * @return string Admin URL for Import Wizard (no properties) or Settings dashboard.
+	 * @return string Admin URL for onboarding (no properties) or Settings dashboard.
 	 */
 	private function get_activation_redirect_url() {
 		$counts = wp_count_posts( 'hvnly_property' );
@@ -235,7 +235,7 @@ class HookManager {
 			return admin_url( 'edit.php?post_type=hvnly_property&page=hvnly_property_settings' );
 		}
 
-		return admin_url( 'edit.php?post_type=hvnly_property&page=hvnly-property-import&step=department' );
+		return admin_url( 'edit.php?post_type=hvnly_property&page=hvnly-property-onboarding' );
 	}
 
 	/**
@@ -309,7 +309,7 @@ class HookManager {
 
 		$page = sanitize_key( filter_input( INPUT_GET, 'page', FILTER_UNSAFE_RAW ) );
 		if ( ! empty( $page ) ) {
-			if ( strpos( $page, 'hvnly_property_' ) === 0 || 'hvnly-property-import' === $page ) {
+			if ( strpos( $page, 'hvnly_property_' ) === 0 || 'hvnly-property-onboarding' === $page ) {
 				$this->clear_activation_redirect_flag();
 				return;
 			}
@@ -666,8 +666,8 @@ class HookManager {
 		if ( 0 === $published_count ) {
 			$import_link = sprintf(
 				'<a href="%s" style="color:#46b450;font-weight:500;">%s</a>',
-				esc_url( admin_url( 'edit.php?post_type=hvnly_property&page=hvnly-property-import' ) ),
-				esc_html__( 'Import Demo Properties', 'havenlytics' )
+				esc_url( admin_url( 'edit.php?post_type=hvnly_property&page=hvnly-property-onboarding' ) ),
+				esc_html__( 'Get Started', 'havenlytics' )
 			);
 			$links[] = $import_link;
 		}

@@ -57,6 +57,16 @@ final class AgentBootstrap {
 
 		$this->load_functions();
 
+		// Ensure WordPress core avatar APIs use AvatarService (Users list, etc.).
+		if ( class_exists( '\HvnlyNab\Common\AvatarService' ) ) {
+			\HvnlyNab\Common\AvatarService::register_hooks();
+		}
+
+		// Identity write guard lives in Workspace; register early if available.
+		if ( class_exists( '\HvnlyNab\Workspace\Auth\AgentProvisioner' ) ) {
+			\HvnlyNab\Workspace\Auth\AgentProvisioner::register_write_guard();
+		}
+
 		PluginGutenbergSupport::register();
 
 		new AgentPostType();
@@ -64,6 +74,14 @@ final class AgentBootstrap {
 		new AgentMetabox();
 		new AgentAgencyTaxonomy();
 		new PropertyAgentAssignment();
+
+		if ( is_admin() && class_exists( '\HvnlyNab\Agent\Admin\AgentManagementAdminList' ) ) {
+			( new \HvnlyNab\Agent\Admin\AgentManagementAdminList() )->register();
+		}
+
+		if ( is_admin() && class_exists( '\HvnlyNab\Agent\Admin\AgentDeleteWizardPage' ) ) {
+			( new \HvnlyNab\Agent\Admin\AgentDeleteWizardPage() )->register();
+		}
 
 		AgentArchiveQuery::register();
 		AssignedListingQueryScope::register();
@@ -151,11 +169,13 @@ final class AgentBootstrap {
 			return;
 		}
 
-		wp_enqueue_style(
+		$ver = defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '3.0.2';
+		wp_register_style(
 			'hvnly-agent-admin',
 			HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-agent-admin.css',
 			array(),
-			defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '3.0.2'
+			$ver
 		);
+		wp_enqueue_style( 'hvnly-agent-admin' );
 	}
 }

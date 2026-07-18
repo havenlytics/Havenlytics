@@ -79,8 +79,9 @@ final class EmailSettings {
 			'hvnly_email_from_address'                 => '',
 			'hvnly_email_import_success_enabled'       => true,
 			'hvnly_email_import_wizard_notify_default' => true,
-			'hvnly_email_import_success_subject'       => '',
-			'hvnly_email_import_success_intro'         => '',
+			// Legacy option keys stay unchanged for existing installations.
+			'hvnly_email_import_success_subject'       => __( 'Property setup complete — {{site_name}}', 'havenlytics' ),
+			'hvnly_email_import_success_intro'         => __( 'Your property setup on {{site_name}} is complete. {{import_count}} listings are ready to review.', 'havenlytics' ),
 		);
 	}
 
@@ -109,32 +110,6 @@ final class EmailSettings {
 	 */
 	public static function import_wizard_notify_default(): bool {
 		return self::to_bool( self::get( 'hvnly_email_import_wizard_notify_default', true ) );
-	}
-
-	/**
-	 * @return string
-	 */
-	public static function get_from_name(): string {
-		$name = sanitize_text_field( (string) self::get( 'hvnly_email_from_name', '' ) );
-
-		if ( '' !== trim( $name ) ) {
-			return $name;
-		}
-
-		return wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
-	}
-
-	/**
-	 * @return string
-	 */
-	public static function get_from_address(): string {
-		$email = sanitize_email( (string) self::get( 'hvnly_email_from_address', '' ) );
-
-		if ( is_email( $email ) ) {
-			return $email;
-		}
-
-		return sanitize_email( (string) get_option( 'admin_email' ) );
 	}
 
 	/**

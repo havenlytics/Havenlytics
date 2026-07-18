@@ -13,6 +13,12 @@ $hvnly_property_id = $args['property_id'] ?? get_the_ID();
 $hvnly_title       = $args['values']['title'] ?? '';
 $hvnly_items       = array();
 
+if ( is_string( $hvnly_title ) && in_array( trim( $hvnly_title ), array( '[]', '{}', 'null' ), true ) ) {
+	$hvnly_title = '';
+} elseif ( is_array( $hvnly_title ) ) {
+	$hvnly_title = '';
+}
+
 if ( ! empty( $args['faqs'] ) && is_array( $args['faqs'] ) ) {
 	$hvnly_items = $args['faqs'];
 } elseif ( ! empty( $args['values']['faqs'] ) ) {

@@ -102,7 +102,12 @@ do_action('hvnly_before_property_taxonomy');
                         <span><?php echo esc_html__('Go to Homepage', 'havenlytics'); ?></span>
                     </a>
                     
-                    <a href="/property" class="hvnly-content-none__btn hvnly-content-none__btn--primary" style="color:#fff">
+                    <?php
+                    // Sprint 31D: was a hardcoded "/property" (broken on
+                    // subdirectory installs and custom slugs) with an inline style.
+                    $hvnly_archive_link = get_post_type_archive_link( 'hvnly_property' );
+                    ?>
+                    <a href="<?php echo esc_url( $hvnly_archive_link ? $hvnly_archive_link : home_url( '/' ) ); ?>" class="hvnly-content-none__btn hvnly-content-none__btn--primary">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path d="M3 10H21M21 10L15 4M21 10L15 16M7 14L3 10L7 6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>

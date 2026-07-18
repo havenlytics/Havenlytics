@@ -20,15 +20,21 @@ final class AgentPropertiesQuery {
 	/**
 	 * Property post IDs assigned to an agent (unique, newest first).
 	 *
-	 * @param int $agent_id Agent post ID.
+	 * @param int      $agent_id      Agent post ID.
+	 * @param string[] $post_statuses Post statuses to include. Defaults to published only.
 	 * @return int[]
 	 */
-	public static function get_assigned_property_ids( int $agent_id ): array {
+	public static function get_assigned_property_ids( int $agent_id, array $post_statuses = array( 'publish' ) ): array {
 		global $wpdb;
 
 		$agent_id = absint( $agent_id );
 		if ( $agent_id <= 0 ) {
 			return array();
+		}
+
+		$post_statuses = array_values( array_filter( array_map( 'sanitize_key', $post_statuses ) ) );
+		if ( empty( $post_statuses ) ) {
+			$post_statuses = array( 'publish' );
 		}
 
 		$serialized_needle = '%i:' . $agent_id . ';%';
@@ -55,12 +61,20 @@ final class AgentPropertiesQuery {
 			);
 		}
 
+		if ( 1 === count( $post_statuses ) ) {
+			$status_sql = $wpdb->prepare( 'p.post_status = %s', $post_statuses[0] );
+		} else {
+			$status_placeholders = implode( ',', array_fill( 0, count( $post_statuses ), '%s' ) );
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Placeholders built from count of sanitized statuses.
+			$status_sql = $wpdb->prepare( "p.post_status IN ({$status_placeholders})", ...$post_statuses );
+		}
+
 		$prepared_query = $wpdb->prepare(
 			"SELECT DISTINCT p.ID
 			FROM {$wpdb->posts} p
 			INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
 			WHERE p.post_type = %s
-				AND p.post_status = 'publish'
+				AND {$status_sql}
 				AND (" . implode( ' OR ', $meta_clauses ) . ')
 			ORDER BY p.post_date DESC',
 			AgentConstants::PROPERTY_POST_TYPE

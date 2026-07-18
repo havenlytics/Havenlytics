@@ -193,7 +193,7 @@ function hvnly_contact_agent_inquiries_table_name(): string {
 /**
  * Whether agent email notifications are enabled.
  *
- * Phase 6 will read from plugin settings; defaults to true via filter.
+ * Reads from plugin settings (ContactAgentSettings); defaults to true via filter.
  *
  * @since 3.0.2
  *

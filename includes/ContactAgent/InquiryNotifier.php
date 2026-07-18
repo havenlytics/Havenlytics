@@ -409,29 +409,24 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 
 
-		$sender_name  = isset( $inquiry['sender_name'] ) ? sanitize_text_field( (string) $inquiry['sender_name'] ) : '';
+		$sender_name  = isset( $inquiry['sender_name'] ) ? (string) $inquiry['sender_name'] : '';
 
-		$sender_email = isset( $inquiry['sender_email'] ) ? sanitize_email( (string) $inquiry['sender_email'] ) : '';
+		$sender_email = isset( $inquiry['sender_email'] ) ? (string) $inquiry['sender_email'] : '';
 
-		$sender_name  = preg_replace( '/[\r\n\t]+/', ' ', $sender_name );
+		/*
+		 * Sprint 24C: headers now come from the shared, DMARC-safe builder.
+		 * EmailHeaders::reply_to() quotes the display phrase and strips commas —
+		 * previously a visitor could submit the name `Bob, attacker@evil.com` and
+		 * inject a second Reply-To into the agent's notification, because wp_mail()
+		 * splits Reply-To on commas and sanitize_text_field() does not remove them.
+		 */
+		$headers = \HvnlyNab\Email\EmailHeaders::base();
 
+		$reply_to = \HvnlyNab\Email\EmailHeaders::reply_to( $sender_email, $sender_name );
 
+		if ( '' !== $reply_to ) {
 
-		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
-
-
-
-		if ( is_email( $sender_email ) ) {
-
-			if ( $sender_name ) {
-
-				$headers[] = sprintf( 'Reply-To: %s <%s>', $sender_name, $sender_email );
-
-			} else {
-
-				$headers[] = 'Reply-To: ' . $sender_email;
-
-			}
+			$headers[] = $reply_to;
 
 		}
 
@@ -469,29 +464,18 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 	private function build_sender_headers( array $context ): array {
 
-		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+		// Sprint 24C: shared, DMARC-safe headers + quoted Reply-To phrase.
+		$headers = \HvnlyNab\Email\EmailHeaders::base();
 
+		$agent_email = isset( $context['agent_email'] ) ? (string) $context['agent_email'] : '';
 
+		$agent_name  = isset( $context['agent_name'] ) ? (string) $context['agent_name'] : '';
 
-		$agent_email = isset( $context['agent_email'] ) ? sanitize_email( (string) $context['agent_email'] ) : '';
+		$reply_to = \HvnlyNab\Email\EmailHeaders::reply_to( $agent_email, $agent_name );
 
-		$agent_name  = isset( $context['agent_name'] ) ? sanitize_text_field( (string) $context['agent_name'] ) : '';
+		if ( '' !== $reply_to ) {
 
-		$agent_name  = preg_replace( '/[\r\n\t]+/', ' ', $agent_name );
-
-
-
-		if ( is_email( $agent_email ) ) {
-
-			if ( $agent_name ) {
-
-				$headers[] = sprintf( 'Reply-To: %s <%s>', $agent_name, $agent_email );
-
-			} else {
-
-				$headers[] = 'Reply-To: ' . $agent_email;
-
-			}
+			$headers[] = $reply_to;
 
 		}
 

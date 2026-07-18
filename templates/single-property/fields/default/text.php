@@ -24,6 +24,21 @@ $hvnly_value       = $args['value'] ?? '';
 $hvnly_label       = $args['field_label'] ?? $hvnly_field['label'] ?? '';
 $hvnly_name        = $args['field_name'] ?? $hvnly_field['name'] ?? '';
 
+if ( is_array( $hvnly_value ) || is_object( $hvnly_value ) ) {
+    return;
+}
+
+if ( is_string( $hvnly_value ) ) {
+    $hvnly_trim = trim( $hvnly_value );
+    if ( '' === $hvnly_trim || in_array( $hvnly_trim, array( '[]', '{}', 'null', '""' ), true ) ) {
+        return;
+    }
+    // Never echo raw JSON blobs.
+    if ( ( '{' === $hvnly_trim[0] || '[' === $hvnly_trim[0] ) && null !== json_decode( $hvnly_trim, true ) ) {
+        return;
+    }
+}
+
 if ( empty( $hvnly_value ) && $hvnly_value !== '0' ) {
     return;
 }

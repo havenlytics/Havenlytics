@@ -180,6 +180,11 @@ class PropertyTypeTermImageSeeder {
 			return 0;
 		}
 
+		// Skip the remote fetch when there is no outbound HTTP (Playground/offline).
+		if ( function_exists( 'hvnly_import_remote_media_available' ) && ! hvnly_import_remote_media_available() ) {
+			return 0;
+		}
+
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';

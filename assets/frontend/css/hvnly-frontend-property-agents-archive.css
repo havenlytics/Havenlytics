@@ -327,11 +327,21 @@
   box-sizing: border-box;
 }
 
+/* Sprint 31E: matches the AJAX pagination — quiet primary tint on hover,
+   solid fill reserved for the active page (was a full secondary-purple
+   fill on every hover). */
 .hvnly-property--archive a.hvnly-property--archive__pagination-item:hover,
 .hvnly-property--archive a.hvnly-property-pagination-item:hover {
-  background: var(--hvnly-brand-secondary, var(--hvnly-secondary-color));
-  border-color: var(--hvnly-brand-secondary, var(--hvnly-secondary-color));
-  color: var(--hvnly-color-white, #fff);
+  background: rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.08);
+  border-color: rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.45);
+  color: var(--hvnly-brand-primary, #6c60fe);
+}
+
+.hvnly-property--archive a.hvnly-property--archive__pagination-item:focus-visible,
+.hvnly-property--archive a.hvnly-property-pagination-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.28);
+  border-color: var(--hvnly-brand-primary, #6c60fe);
 }
 
 .hvnly-property--archive .hvnly-property--archive__pagination-item.active,
@@ -652,12 +662,17 @@
 
 @media (max-width: 767px) {
 
+  /* Sprint 31D: this used to force `flex-direction: unset`, contradicting
+     the column layout the ≤768px block sets 1px above it — the toolbar
+     flip-flopped between row and column at the 767/768 boundary. The
+     actions row now intentionally wraps as a row on small phones. */
   .hvnly-property--agents--archive .hvnly-property--archive__toolbar
   .hvnly-property--archive__actions,
   .hvnly-property--agencies--archive .hvnly-property--archive__toolbar
   .hvnly-property--archive__actions
    {
-   flex-direction: unset;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: flex-start;
   }
 

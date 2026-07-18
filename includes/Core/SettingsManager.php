@@ -48,13 +48,6 @@ class SettingsManager
     private $storage_key = 'hvnly_plugin_settings';
     
     /**
-     * Share platform configurations
-     *
-     * @var array|null
-     */
-    private $share_platforms = null;
-    
-    /**
      * Get singleton instance
      *
      * @return self
@@ -188,10 +181,6 @@ class SettingsManager
             'hvnly_currencyPositionType' => 'LEFT',
             'hvnly_priceOnCallText' => 'priceOnCallNone',
             'hvnly_priceFormat' => 'comma',
-            
-            // Social share settings
-            'hvnly_EnabledSocialShare' => true,
-            'hvnly_enableSocialShare' => [],
             
             // Misc settings
             'hvnly_EnabledGutenbergEditor' => false,
@@ -733,7 +722,6 @@ class SettingsManager
             'hvnly_EnableBackToTop' => false,
             'hvnly_EnablePrintButton' => false,
             'hvnly_EnableSaveProperty' => false,
-            'hvnly_EnableShareButton' => true,
         ];
         
         $property_details = isset($settings['property-details']) ? $settings['property-details'] : [];
@@ -798,258 +786,11 @@ class SettingsManager
     }
 
     /**
-     * Check if share button is enabled
-     *
-     * @return bool
-     * @since 2.0.3
-     */
-    public function is_share_button_enabled()
-    {
-        $property_details = $this->get_property_details_settings();
-        return isset($property_details['hvnly_EnableShareButton']) 
-            ? (bool) $property_details['hvnly_EnableShareButton'] 
-            : true;
-    }
-    
-    /**
      * Clear settings cache
      */
     public function clear_cache()
     {
         $this->cached_settings = null;
-        $this->share_platforms = null;
     }
     
-    // ========================================================
-    // SOCIAL SHARE FUNCTIONS
-    // ========================================================
-    
-    /**
-     * Get enabled social share platforms from settings
-     *
-     * @return array Array of enabled platform keys
-     * @since 2.0.3
-     */
-    public function get_enabled_share_platforms()
-    {
-        $general_settings = $this->get_general_settings();
-        
-        // Check if social share is enabled globally
-        $is_enabled = isset($general_settings['hvnly_EnabledSocialShare']) 
-            ? ! empty($general_settings['hvnly_EnabledSocialShare']) 
-            : false;
-        
-        if ( ! $is_enabled ) {
-            return array();
-        }
-        
-        // Get enabled platforms from settings
-        $platforms = isset($general_settings['hvnly_enableSocialShare']) 
-            ? (array) $general_settings['hvnly_enableSocialShare'] 
-            : array();
-        
-        // Default platforms if none set
-        if ( empty( $platforms ) ) {
-            $platforms = array( 'facebook', 'twitter', 'linkedin', 'pinterest', 'email', 'whatsapp' );
-        }
-        
-        return apply_filters( 'hvnly_enabled_share_platforms', $platforms );
-    }
-    
-    /**
-     * Get share button configurations for all platforms
-     *
-     * @return array Array of platform configurations with URLs, icons, colors
-     * @since 2.0.3
-     */
-    public function get_share_platform_configs()
-    {
-        if ( null !== $this->share_platforms ) {
-            return $this->share_platforms;
-        }
-        
-        $configs = array(
-            'facebook'  => array(
-                'name'      => 'Facebook',
-                'icon'      => 'fab fa-facebook-f',
-                'url'       => 'https://www.facebook.com/sharer/sharer.php?u={url}',
-                'color'     => '#1877f2',
-                'order'     => 1,
-            ),
-            'twitter'   => array(
-                'name'      => 'Twitter',
-                'icon'      => 'fab fa-twitter',
-                'url'       => 'https://twitter.com/intent/tweet?url={url}&text={title}',
-                'color'     => '#1da1f2',
-                'order'     => 2,
-            ),
-            'linkedin'  => array(
-                'name'      => 'LinkedIn',
-                'icon'      => 'fab fa-linkedin-in',
-                'url'       => 'https://www.linkedin.com/sharing/share-offsite/?url={url}',
-                'color'     => '#0a66c2',
-                'order'     => 3,
-            ),
-            'pinterest' => array(
-                'name'      => 'Pinterest',
-                'icon'      => 'fab fa-pinterest-p',
-                'url'       => 'https://pinterest.com/pin/create/button/?url={url}&media={image}&description={title}',
-                'color'     => '#bd081c',
-                'order'     => 4,
-            ),
-            'reddit'    => array(
-                'name'      => 'Reddit',
-                'icon'      => 'fab fa-reddit-alien',
-                'url'       => 'https://reddit.com/submit?url={url}&title={title}',
-                'color'     => '#ff4500',
-                'order'     => 5,
-            ),
-            'tumblr'    => array(
-                'name'      => 'Tumblr',
-                'icon'      => 'fab fa-tumblr',
-                'url'       => 'https://www.tumblr.com/widgets/share/tool?canonicalUrl={url}&title={title}',
-                'color'     => '#35465c',
-                'order'     => 6,
-            ),
-            'viber'     => array(
-                'name'      => 'Viber',
-                'icon'      => 'fab fa-viber',
-                'url'       => 'viber://forward?text={title} {url}',
-                'color'     => '#7360f2',
-                'order'     => 7,
-            ),
-            'telegram'  => array(
-                'name'      => 'Telegram',
-                'icon'      => 'fab fa-telegram-plane',
-                'url'       => 'https://t.me/share/url?url={url}&text={title}',
-                'color'     => '#26a5e4',
-                'order'     => 8,
-            ),
-            'whatsapp'  => array(
-                'name'      => 'WhatsApp',
-                'icon'      => 'fab fa-whatsapp',
-                'url'       => 'https://api.whatsapp.com/send?text={title}%20{url}',
-                'color'     => '#25d366',
-                'order'     => 9,
-            ),
-            'line'      => array(
-                'name'      => 'Line',
-                'icon'      => 'fab fa-line',
-                'url'       => 'https://line.me/R/msg/text/?{title}%20{url}',
-                'color'     => '#00b900',
-                'order'     => 10,
-            ),
-            'email'     => array(
-                'name'      => 'Email',
-                'icon'      => 'fas fa-envelope',
-                'url'       => 'mailto:?subject={title}&body=Check%20out%20this%20property%3A%20{url}',
-                'color'     => '#666666',
-                'order'     => 11,
-            ),
-            'copy_link' => array(
-                'name'      => 'Copy Link',
-                'icon'      => 'fas fa-link',
-                'url'       => '#',
-                'color'     => '#6C60FE',
-                'order'     => 12,
-                'is_copy'   => true,
-            ),
-        );
-        
-        $this->share_platforms = apply_filters( 'hvnly_share_platform_configs', $configs );
-        
-        return $this->share_platforms;
-    }
-    
-    /**
-     * Get share URL for a specific platform
-     *
-     * @param string $platform Platform key (facebook, twitter, etc.)
-     * @param string $url      URL to share
-     * @param string $title    Title to share
-     * @param string $image    Image URL to share (for pinterest)
-     * @return string Share URL
-     * @since 2.0.3
-     */
-    public function get_share_url( $platform, $url, $title = '', $image = '' )
-    {
-        $configs = $this->get_share_platform_configs();
-        
-        if ( ! isset( $configs[ $platform ] ) ) {
-            return '#';
-        }
-        
-        $share_url = $configs[ $platform ]['url'];
-        
-        // Replace placeholders
-        $share_url = str_replace( '{url}', rawurlencode( $url ), $share_url );
-        $share_url = str_replace( '{title}', rawurlencode( $title ), $share_url );
-        $share_url = str_replace( '{image}', rawurlencode( $image ), $share_url );
-        
-        return apply_filters( 'hvnly_share_url', $share_url, $platform, $url, $title, $image );
-    }
-    
-    /**
-     * Check if social sharing is enabled
-     *
-     * @return bool
-     * @since 2.0.3
-     */
-    public function is_social_sharing_enabled()
-    {
-        $general_settings = $this->get_general_settings();
-        return ! empty( $general_settings['hvnly_EnabledSocialShare'] );
-    }
-    
-    /**
-     * Get share data for a property
-     *
-     * @param int    $property_id Property ID
-     * @param string $title       Custom title (optional)
-     * @param string $image       Custom image URL (optional)
-     * @return array Share data with URL, title, image, and platforms
-     * @since 2.0.3
-     */
-    public function get_share_data( $property_id = 0, $title = '', $image = '' )
-    {
-        if ( empty( $property_id ) ) {
-            $property_id = get_the_ID();
-        }
-        
-        $share_url   = get_permalink( $property_id );
-        $share_title = ! empty( $title ) ? $title : get_the_title( $property_id );
-        $share_image = ! empty( $image ) ? $image : get_the_post_thumbnail_url( $property_id, 'large' );
-        
-        $enabled_platforms = $this->get_enabled_share_platforms();
-        $all_configs       = $this->get_share_platform_configs();
-        
-        $platforms = array();
-        foreach ( $enabled_platforms as $platform_key ) {
-            if ( isset( $all_configs[ $platform_key ] ) ) {
-                $platforms[ $platform_key ] = $all_configs[ $platform_key ];
-                $platforms[ $platform_key ]['share_url'] = $this->get_share_url( 
-                    $platform_key, 
-                    $share_url, 
-                    $share_title, 
-                    $share_image 
-                );
-            }
-        }
-        
-        // Sort platforms by order
-        uasort( $platforms, function( $a, $b ) {
-            $order_a = isset( $a['order'] ) ? $a['order'] : 999;
-            $order_b = isset( $b['order'] ) ? $b['order'] : 999;
-            return $order_a - $order_b;
-        } );
-        
-        return array(
-            'url'         => $share_url,
-            'title'       => $share_title,
-            'image'       => $share_image,
-            'property_id' => $property_id,
-            'platforms'   => $platforms,
-            'is_enabled'  => $this->is_social_sharing_enabled(),
-        );
-    }
 }

@@ -57,7 +57,20 @@ class InquiryReplyService {
 	 */
 	public function send_reply( int $inquiry_id, string $message, int $user_id ) {
 		$capability = apply_filters( 'hvnly_inquiry_reply_capability', apply_filters( 'hvnly_admin_capability', 'manage_options' ) );
-		if ( ! user_can( $user_id, $capability ) ) {
+		$can_reply  = user_can( $user_id, $capability );
+
+		/**
+		 * Allow Workspace portal agents to reply to owned inquiries.
+		 *
+		 * @since 3.2.0
+		 *
+		 * @param bool $can_reply   Whether the user may reply.
+		 * @param int  $user_id     Acting user ID.
+		 * @param int  $inquiry_id  Inquiry ID.
+		 */
+		$can_reply = (bool) apply_filters( 'hvnly_inquiry_user_can_reply', $can_reply, $user_id, $inquiry_id );
+
+		if ( ! $can_reply ) {
 			return new \WP_Error(
 				'hvnly_inquiry_reply_forbidden',
 				__( 'You do not have permission to reply to inquiries.', 'havenlytics' ),

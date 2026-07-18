@@ -69,10 +69,8 @@ class PluginSettingsAPI {
 		'hvnly_EnableBackToTop',
 		'hvnly_EnablePrintButton',
 		'hvnly_EnableSaveProperty',
-		'hvnly_EnableShareButton',
 		'hvnly_EnabledCurrencyFormat',
 		'hvnly_EnabledGutenbergEditor',
-		'hvnly_EnabledSocialShare',
 		// Performance / feature toggles
 		'hvnly_cache_enabled',
 		'hvnly_contact_agent_notify_agent',

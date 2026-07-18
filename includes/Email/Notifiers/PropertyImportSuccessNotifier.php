@@ -44,7 +44,7 @@ class PropertyImportSuccessNotifier {
 		if ( ! $from_import_wizard && ! EmailSettings::import_success_enabled() ) {
 			return new \WP_Error(
 				'hvnly_email_import_success_disabled',
-				__( 'Import success emails are disabled in Email settings.', 'havenlytics' )
+				__( 'Property setup success emails are disabled in Email settings.', 'havenlytics' )
 			);
 		}
 
@@ -52,7 +52,7 @@ class PropertyImportSuccessNotifier {
 		if ( empty( $recipients ) ) {
 			return new \WP_Error(
 				'hvnly_email_import_success_invalid_recipient',
-				__( 'Unable to send import email — invalid user email address.', 'havenlytics' )
+				__( 'Unable to send the property setup email — invalid user email address.', 'havenlytics' )
 			);
 		}
 
@@ -131,7 +131,7 @@ class PropertyImportSuccessNotifier {
 		} else {
 			$subject = sprintf(
 				/* translators: 1: site name */
-				__( 'Property import complete — %s', 'havenlytics' ),
+				__( 'Property setup complete — %s', 'havenlytics' ),
 				(string) ( $context['site_name'] ?? get_bloginfo( 'name' ) )
 			);
 		}
@@ -151,19 +151,14 @@ class PropertyImportSuccessNotifier {
 	 * @return string[]
 	 */
 	private function build_headers(): array {
-		$headers = array( 'Content-Type: text/html; charset=UTF-8' );
-
-		$from_name  = EmailSettings::get_from_name();
-		$from_email = EmailSettings::get_from_address();
-		$from_name  = sanitize_text_field( preg_replace( '/[\r\n\t]+/', ' ', $from_name ) );
-
-		if ( is_email( $from_email ) ) {
-			if ( $from_name ) {
-				$headers[] = sprintf( 'From: %s <%s>', $from_name, $from_email );
-			} else {
-				$headers[] = 'From: ' . $from_email;
-			}
-		}
+		/*
+		 * Sprint 24C: shared header builder. The previous version fell back to
+		 * get_option('admin_email') for the From: address, which on most sites is a
+		 * @gmail.com / @outlook.com address — forging it from the site's own server
+		 * fails DMARC and gets the mail spam-foldered. EmailHeaders only sets From:
+		 * when an address has been explicitly configured.
+		 */
+		$headers = \HvnlyNab\Email\EmailHeaders::base();
 
 		/**
 		 * Filter property import success email headers.

@@ -18,20 +18,21 @@ if (!defined('ABSPATH')) {
 }
 ?>
 <!-- New Fancybox Gallery Popup -->
+<?php // Sprint 31D: controls were <span>s — no keyboard access, no accessible name. ?>
 <div class="hvnly-property-single__fancybox-popup" id="hvnlyPropertySingleFancyboxGallery">
-    <span class="hvnly-property-single__fancybox-close">
-        <svg class="hvnly-icon hvnly-icon-thin"><use xlink:href="#hvnly-times"></use></svg>
-    </span>
-    <span class="hvnly-property-single__fancybox-fullscreen">
-        <svg class="hvnly-icon hvnly-expand"><use xlink:href="#hvnly-expand"></use></svg>
-        <svg class="hvnly-icon hvnly-compress"><use xlink:href="#hvnly-compress"></use></svg>
-    </span>
-    <span class="hvnly-property-single__fancybox-nav hvnly-property-single__fancybox-nav--prev">
-        <svg class="hvnly-icon hvnly-icon-thin"><use xlink:href="#hvnly-chevron-left"></use></svg>
-    </span>
-    <span class="hvnly-property-single__fancybox-nav hvnly-property-single__fancybox-nav--next">
-        <svg class="hvnly-icon hvnly-icon-thin"><use xlink:href="#hvnly-chevron-right"></use></svg>
-    </span>
+    <button type="button" class="hvnly-property-single__fancybox-close" aria-label="<?php esc_attr_e('Close gallery', 'havenlytics'); ?>">
+        <svg class="hvnly-icon hvnly-icon-thin" aria-hidden="true"><use xlink:href="#hvnly-times"></use></svg>
+    </button>
+    <button type="button" class="hvnly-property-single__fancybox-fullscreen" aria-label="<?php esc_attr_e('Toggle fullscreen', 'havenlytics'); ?>">
+        <svg class="hvnly-icon hvnly-expand" aria-hidden="true"><use xlink:href="#hvnly-expand"></use></svg>
+        <svg class="hvnly-icon hvnly-compress" aria-hidden="true"><use xlink:href="#hvnly-compress"></use></svg>
+    </button>
+    <button type="button" class="hvnly-property-single__fancybox-nav hvnly-property-single__fancybox-nav--prev" aria-label="<?php esc_attr_e('Previous image', 'havenlytics'); ?>">
+        <svg class="hvnly-icon hvnly-icon-thin" aria-hidden="true"><use xlink:href="#hvnly-chevron-left"></use></svg>
+    </button>
+    <button type="button" class="hvnly-property-single__fancybox-nav hvnly-property-single__fancybox-nav--next" aria-label="<?php esc_attr_e('Next image', 'havenlytics'); ?>">
+        <svg class="hvnly-icon hvnly-icon-thin" aria-hidden="true"><use xlink:href="#hvnly-chevron-right"></use></svg>
+    </button>
     <div class="hvnly-property-single__fancybox-counter">1 / 5</div>
 
     <div class="hvnly-property-single__fancybox-content">
@@ -41,9 +42,9 @@ if (!defined('ABSPATH')) {
             </div>
             <div class="hvnly-property-single__fancybox-caption"><?php the_title(); ?></div>
             <div class="hvnly-property-single__fancybox-property">
-                <a href="<?php the_permalink(); ?>" class="hvnly-property-single__fancybox-property-button" target="_blank">
-                    View Property Details 
-                    <svg class="hvnly-icon hvnly-icon-thin"><use xlink:href="#hvnly-arrow-right"></use></svg>
+                <a href="<?php the_permalink(); ?>" class="hvnly-property-single__fancybox-property-button" target="_blank" rel="noopener noreferrer">
+                    <?php esc_html_e( 'View Property Details', 'havenlytics' ); ?>
+                    <svg class="hvnly-icon hvnly-icon-thin" aria-hidden="true"><use xlink:href="#hvnly-arrow-right"></use></svg>
                 </a>
             </div>
         </div>
@@ -53,5 +54,5 @@ if (!defined('ABSPATH')) {
             </div>
         </div>
     </div>
-    <div class="hvnly-property-single__fullscreen-indicator">Press ESC to exit fullscreen</div>
+    <div class="hvnly-property-single__fullscreen-indicator"><?php esc_html_e( 'Press ESC to exit fullscreen', 'havenlytics' ); ?></div>
 </div>

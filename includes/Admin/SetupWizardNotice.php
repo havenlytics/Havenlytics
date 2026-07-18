@@ -104,11 +104,11 @@ class SetupWizardNotice
     {
         global $current_screen;
 
-        if ($current_screen && 'hvnly_property_page_hvnly-property-import' === $current_screen->id) {
+        if ($current_screen && 'hvnly_property_page_hvnly-property-onboarding' === $current_screen->id) {
             return true;
         }
 
-        if (isset($_GET['page']) && 'hvnly-property-import' === $_GET['page'] && isset($_GET['post_type']) && 'hvnly_property' === $_GET['post_type']) {
+        if (isset($_GET['page']) && 'hvnly-property-onboarding' === $_GET['page'] && isset($_GET['post_type']) && 'hvnly_property' === $_GET['post_type']) {
             return true;
         }
 
@@ -165,8 +165,8 @@ class SetupWizardNotice
             ]
         );
 
-        // Setup wizard URL
-        $setup_wizard_url = admin_url('edit.php?post_type=hvnly_property&page=hvnly-property-import');
+        // Onboarding ("Get Started") URL
+        $setup_wizard_url = admin_url('edit.php?post_type=hvnly_property&page=hvnly-property-onboarding');
 
         // Properties list URL
         $properties_url = admin_url('edit.php?post_type=hvnly_property');
@@ -179,7 +179,7 @@ class SetupWizardNotice
     </p>
     <p class="submit">
         <a href="<?php echo esc_url($setup_wizard_url); ?>" class="button-primary">
-            <?php esc_html_e('Run the Setup Wizard', 'havenlytics'); ?>
+            <?php esc_html_e('Get Started', 'havenlytics'); ?>
         </a>
         <a href="<?php echo esc_url($dismiss_url); ?>" class="button-secondary skip">
             <?php esc_html_e('Skip setup', 'havenlytics'); ?>

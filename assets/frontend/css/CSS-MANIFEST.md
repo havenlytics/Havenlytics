@@ -9,7 +9,7 @@ Internal ownership reference for frontend styles.
 
 ```
 1. Foundation     → hvnly-frontend-default, hvnly-frontend-components, hvnly-frontend-global-grid
-2. Components     → cards, property-card-embed, share, widgets, …
+2. Components     → cards, property-card-embed, widgets, …
 3. Views          → property-single, agents-archive, ajax-filter (search UI), archive, map
 4. Integrations   → elementor/css/*
 5. Responsive     → hvnly-frontend-property-responsive (always last static bundle)
@@ -27,7 +27,6 @@ Internal ownership reference for frontend styles.
 | `hvnly-frontend-global-grid` | `hvnly-frontend-global-grid.css` | Layout | Always |
 | `hvnly-frontend-cards` | `hvnly-frontend-cards.css` | Component | Agent/agency archives, widgets |
 | **`hvnly-frontend-property-card-embed`** | **`property-cards/hvnly-frontend-property-card-embed.css`** | **Component** | **Auto via `hvnly-frontend-property-ajax-filter` dependency** |
-| `hvnly-frontend-property-share` | `hvnly-frontend-property-share.css` | Component | Property listings, single property, embed contexts |
 | `hvnly-frontend-widgets` | `hvnly-frontend-widgets.css` | Component | Property single, widgets |
 | `hvnly-frontend-property-ajax-filter` | `property-search/hvnly-frontend-property-ajax-filter-search.css` | Search UI | Archive, shortcodes, agent/agency singles, Elementor property widgets, pages with search form |
 | `hvnly-frontend-property-archive` | `property-search/hvnly-frontend-property-archive.css` | View | Property archive / taxonomy / search |
@@ -73,7 +72,6 @@ After Phase 1, this file owns **search & archive chrome only**:
 
 | File | Owns |
 |------|------|
-| `hvnly-frontend-property-share.css` | Share modal + embed share button styling (4-context selectors) |
 | `hvnly-frontend-property-responsive.css` | Global responsive overrides for grid-list (cross-context) |
 | `hvnly-frontend-cards.css` | `.hvnly-agent-card`, `.hvnly-agency-card` only |
 

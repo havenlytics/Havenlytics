@@ -20,6 +20,9 @@
 }
 .hvnly-list-view .hvnly-property-grid-list-thumb {
     width: 450px;
+    /* Sprint 31D: with the 320px filter sidebar active (769–1024px) a fixed
+       450px thumb crushed the text column — cap it relative to the card. */
+    max-width: 50%;
     height: auto;
     flex-shrink: 0;
 }
@@ -54,8 +57,10 @@
 .hvnly-agent-single__listings .hvnly-agent-single__properties .hvnly-property-grid-list-item:hover,
 .hvnly-property-display-shortcode .hvnly-property-archive-container .hvnly-property-grid-list-item:hover,
 .hvnly-property--grid--listings .hvnly-property-grid-list-item:hover {
+    /* Sprint 31E: ink-tinted elevation — the flat black 25px shadow read as
+       heavy and gray against light themes. */
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 28px -8px rgba(30, 30, 47, 0.16);
 }
 
 .hvnly-property-grid-list-thumb {
@@ -1488,4 +1493,20 @@ i{
 {
     text-decoration: none;
     font-size: 14px;    color: var(--hvnly-text-secondary);
+}
+
+/* ============================================
+   Sprint 31D — Reduced motion (this file previously had no guard;
+   4 other frontend CSS files already carry one).
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    .hvnly-property-grid-list-item,
+    .hvnly-property-grid-list-item:hover,
+    .hvnly-property-card-image,
+    .hvnly-property-grid-list-item:hover .hvnly-property-card-image,
+    .hvnly-property-carousel-slide {
+        transition: none !important;
+        animation: none !important;
+        transform: none !important;
+    }
 }

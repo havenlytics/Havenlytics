@@ -90,37 +90,47 @@ if ( $hvnly_current_page >= $hvnly_actual_max_pages - 1 ) {
         ?>
     </div>
 
-    <div class="hvnly-property-pagination-list">
+    <?php
+    // Sprint 31D: pagination items were <div>s — unreachable by keyboard,
+    // invisible to assistive tech. Real <button>s keep the same classes and
+    // data attributes, so the existing delegated click handlers still fire.
+    ?>
+    <div class="hvnly-property-pagination-list" role="navigation" aria-label="<?php esc_attr_e( 'Properties pagination', 'havenlytics' ); ?>">
         <?php if ( $hvnly_current_page > 1 ) : ?>
-        <div class="hvnly-property-pagination-item hvnly-property-pagination-prev"
+        <button type="button" class="hvnly-property-pagination-item hvnly-property-pagination-prev"
             data-page="<?php echo esc_attr( $hvnly_current_page - 1 ); ?>"
+            aria-label="<?php esc_attr_e( 'Previous page', 'havenlytics' ); ?>"
             <?php if ( $hvnly_instance_id ) : ?>
             data-instance-id="<?php echo esc_attr( $hvnly_instance_id ); ?>"
             <?php endif; ?>>
-            <i class="fas fa-chevron-left"></i>
-        </div>
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </button>
         <?php endif; ?>
 
         <?php for ( $hvnly_i = $hvnly_start_page; $hvnly_i <= $hvnly_end_page; $hvnly_i++ ) :
             $hvnly_active = ( $hvnly_i === $hvnly_current_page ) ? 'active' : '';
             ?>
-        <div class="hvnly-property-pagination-item <?php echo esc_attr( $hvnly_active ); ?>"
+        <button type="button" class="hvnly-property-pagination-item <?php echo esc_attr( $hvnly_active ); ?>"
             data-page="<?php echo esc_attr( $hvnly_i ); ?>"
+            <?php if ( $hvnly_active ) : ?>
+            aria-current="page"
+            <?php endif; ?>
             <?php if ( $hvnly_instance_id ) : ?>
             data-instance-id="<?php echo esc_attr( $hvnly_instance_id ); ?>"
             <?php endif; ?>>
             <?php echo esc_html( $hvnly_i ); ?>
-        </div>
+        </button>
         <?php endfor; ?>
 
         <?php if ( $hvnly_current_page < $hvnly_actual_max_pages ) : ?>
-        <div class="hvnly-property-pagination-item hvnly-property-pagination-next"
+        <button type="button" class="hvnly-property-pagination-item hvnly-property-pagination-next"
             data-page="<?php echo esc_attr( $hvnly_current_page + 1 ); ?>"
+            aria-label="<?php esc_attr_e( 'Next page', 'havenlytics' ); ?>"
             <?php if ( $hvnly_instance_id ) : ?>
             data-instance-id="<?php echo esc_attr( $hvnly_instance_id ); ?>"
             <?php endif; ?>>
-            <i class="fas fa-chevron-right"></i>
-        </div>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </button>
         <?php endif; ?>
     </div>
 </div>

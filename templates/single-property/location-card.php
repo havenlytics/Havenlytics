@@ -264,9 +264,9 @@ $hvnly_map_id       = 'hvnly-map-' . $hvnly_property_id . '-' . $hvnly_map_suffi
 
         <div class="hvnly-property-single__location-actions" style="margin-top: 15px; display: flex; gap: 10px;">
 
-            <a href="https://www.google.com/maps/search/?api=1&query=<?php echo urlencode( $hvnly_latitude . ',' . $hvnly_longitude ); ?>"
+            <a href="<?php echo esc_url( 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $hvnly_latitude . ',' . $hvnly_longitude ) ); ?>"
 
-                target="_blank" class="hvnly-button hvnly-button--small"
+                target="_blank" rel="noopener noreferrer" class="hvnly-button hvnly-button--small"
 
                 style="display: inline-block; padding: 8px 16px;  border-radius: 4px; text-decoration: none;  font-size: 14px;">
 
@@ -274,9 +274,9 @@ $hvnly_map_id       = 'hvnly-map-' . $hvnly_property_id . '-' . $hvnly_map_suffi
 
             </a>
 
-            <a href="https://maps.apple.com/?q=<?php echo urlencode( $hvnly_latitude . ',' . $hvnly_longitude ); ?>"
+            <a href="<?php echo esc_url( 'https://maps.apple.com/?q=' . rawurlencode( $hvnly_latitude . ',' . $hvnly_longitude ) ); ?>"
 
-                target="_blank" class="hvnly-button hvnly-button--small"
+                target="_blank" rel="noopener noreferrer" class="hvnly-button hvnly-button--small"
 
                 style="display: inline-block; padding: 8px 16px; border-radius: 4px; text-decoration: none;  font-size: 14px;">
 

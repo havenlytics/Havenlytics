@@ -11,14 +11,11 @@ namespace HvnlyNab\ContactAgent;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Central constants for the Contact Agent feature (scaffold — no runtime behavior in Phase 1).
+ * Central constants for the Contact Agent feature.
  *
  * @since 3.0.2
  */
 final class ContactAgentConstants {
-
-	/** @var string Settings option key (Phase 6). */
-	public const SETTINGS_OPTION = 'hvnly_contact_agent_settings';
 
 	/** @var string Custom table suffix without prefix (Phase 4). */
 	public const INQUIRIES_TABLE = 'hvnly_inquiries';

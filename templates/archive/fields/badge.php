@@ -57,7 +57,7 @@ if ($hvnly_display_all) {
 }
 ?>
 
-<div class="hvnly-property-thumbnail-badges--labels<?php echo $hvnly_display_all ? 'hvnly-badges-display-all' : ''; ?>">
+<div class="hvnly-property-thumbnail-badges--labels<?php echo $hvnly_display_all ? ' hvnly-badges-display-all' : ''; ?>">
     <?php foreach ($hvnly_display_badges as $hvnly_badge): 
         $hvnly_background_color = function_exists( 'hvnly_get_term_badge_background_color' )
             ? hvnly_get_term_badge_background_color( $hvnly_badge->term_id )

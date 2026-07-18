@@ -1,0 +1,520 @@
+/**
+ * Professional Agent management list (Sprint 20C UX polish).
+ *
+ * @package Havenlytics
+ * @since   3.2.0
+ */
+
+/* -------------------------------------------------------------------------
+ * Table shell
+ * ---------------------------------------------------------------------- */
+
+.post-type-hvnly_agent .wp-list-table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+.post-type-hvnly_agent .wp-list-table thead th,
+.post-type-hvnly_agent .wp-list-table tfoot th {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: #64748b;
+}
+
+.post-type-hvnly_agent .wp-list-table tbody td {
+	vertical-align: top;
+	padding-top: 14px;
+	padding-bottom: 14px;
+}
+
+.post-type-hvnly_agent .wp-list-table tbody tr:hover {
+	background: #f8fafc;
+}
+
+.column-hvnly_mgmt_agent {
+	width: 28%;
+	min-width: 240px;
+}
+
+.column-hvnly_mgmt_listings {
+	width: 100px;
+}
+
+.column-hvnly_mgmt_inquiries {
+	width: 110px;
+}
+
+.column-hvnly_mgmt_summary {
+	width: 22%;
+	min-width: 200px;
+}
+
+.column-hvnly_mgmt_activity {
+	width: 140px;
+}
+
+/* -------------------------------------------------------------------------
+ * Agent identity cell
+ * ---------------------------------------------------------------------- */
+
+.hvnly-mgmt-agent {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	max-width: 360px;
+}
+
+.hvnly-mgmt-agent__avatar {
+	flex: 0 0 48px;
+}
+
+.hvnly-mgmt-agent__photo {
+	display: block;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	object-fit: cover;
+	box-shadow: 0 0 0 2px #fff, 0 0 0 3px #e2e8f0;
+}
+
+.hvnly-mgmt-agent__fallback {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background: linear-gradient(145deg, #e2e8f0, #f1f5f9);
+	color: #475569;
+	font-size: 16px;
+	font-weight: 700;
+	box-shadow: 0 0 0 2px #fff, 0 0 0 3px #e2e8f0;
+}
+
+.hvnly-mgmt-agent__body {
+	min-width: 0;
+	flex: 1;
+}
+
+.hvnly-mgmt-agent__name {
+	display: inline-block;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.3;
+	color: #0f172a;
+	text-decoration: none;
+}
+
+.hvnly-mgmt-agent__name:hover,
+.hvnly-mgmt-agent__name:focus {
+	color: #1d4ed8;
+}
+
+.hvnly-mgmt-agent__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 10px;
+	margin-top: 4px;
+	font-size: 12px;
+	line-height: 1.4;
+	color: #64748b;
+}
+
+.hvnly-mgmt-agent__email,
+.hvnly-mgmt-agent__user {
+	color: #475569;
+	text-decoration: none;
+}
+
+.hvnly-mgmt-agent__email:hover,
+.hvnly-mgmt-agent__user:hover {
+	color: #1d4ed8;
+	text-decoration: underline;
+}
+
+.hvnly-mgmt-agent__agency {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin-top: 4px;
+	font-size: 12px;
+	color: #64748b;
+}
+
+.hvnly-mgmt-agent__agency .dashicons {
+	font-size: 14px;
+	width: 14px;
+	height: 14px;
+	color: #94a3b8;
+}
+
+.hvnly-mgmt-empty {
+	color: #94a3b8;
+	font-style: italic;
+	font-weight: 400;
+}
+
+/* Row actions under primary column */
+.post-type-hvnly_agent .row-actions {
+	margin-top: 8px;
+	padding-top: 2px;
+	font-size: 12px;
+}
+
+.post-type-hvnly_agent .row-actions .hvnly-mgmt-delete-wizard {
+	color: #b91c1c;
+	font-weight: 600;
+}
+
+.post-type-hvnly_agent .row-actions .hvnly-mgmt-delete-wizard:hover {
+	color: #7f1d1d;
+}
+
+/* -------------------------------------------------------------------------
+ * Actions dropdown
+ * ---------------------------------------------------------------------- */
+
+.hvnly-mgmt-actions {
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+}
+
+.hvnly-mgmt-actions__summary {
+	cursor: pointer;
+	list-style: none;
+	color: #2271b1;
+	font-weight: 500;
+}
+
+.hvnly-mgmt-actions__summary::-webkit-details-marker {
+	display: none;
+}
+
+.hvnly-mgmt-actions__summary::after {
+	content: " ▾";
+	font-size: 10px;
+	opacity: 0.7;
+}
+
+.hvnly-mgmt-actions[open] .hvnly-mgmt-actions__summary {
+	color: #0f172a;
+}
+
+.hvnly-mgmt-actions__list {
+	position: absolute;
+	z-index: 20;
+	left: 0;
+	top: calc(100% + 4px);
+	min-width: 180px;
+	margin: 0;
+	padding: 6px 0;
+	list-style: none;
+	background: #fff;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+.hvnly-mgmt-actions__item {
+	margin: 0;
+}
+
+.hvnly-mgmt-actions__item > a,
+.hvnly-mgmt-actions__item > span,
+.hvnly-mgmt-actions__item > button {
+	display: block;
+	padding: 7px 14px;
+	color: #334155;
+	text-decoration: none;
+	white-space: nowrap;
+	border: 0;
+	background: transparent;
+	width: 100%;
+	text-align: left;
+	font-size: 12px;
+	line-height: 1.4;
+	box-sizing: border-box;
+}
+
+.hvnly-mgmt-actions__item > a:hover,
+.hvnly-mgmt-actions__item > button:hover {
+	background: #f1f5f9;
+	color: #0f172a;
+}
+
+.hvnly-mgmt-soon {
+	opacity: 0.55;
+	cursor: help;
+}
+
+/* -------------------------------------------------------------------------
+ * Listings
+ * ---------------------------------------------------------------------- */
+
+.hvnly-mgmt-listings {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
+}
+
+.hvnly-mgmt-listings__total {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2rem;
+	padding: 2px 10px;
+	border-radius: 8px;
+	background: #0f172a;
+	color: #fff !important;
+	font-size: 14px;
+	font-weight: 700;
+	text-decoration: none !important;
+	line-height: 1.4;
+}
+
+.hvnly-mgmt-listings__total:hover {
+	background: #1e293b;
+}
+
+.hvnly-mgmt-listings__breakdown {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	font-size: 11px;
+	color: #64748b;
+}
+
+.hvnly-mgmt-listings__stat {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-weight: 600;
+}
+
+.hvnly-mgmt-dot {
+	display: inline-block;
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: #94a3b8;
+}
+
+.hvnly-mgmt-listings__stat--pub .hvnly-mgmt-dot {
+	background: #10b981;
+}
+
+.hvnly-mgmt-listings__stat--pend .hvnly-mgmt-dot {
+	background: #f59e0b;
+}
+
+/* -------------------------------------------------------------------------
+ * Inquiries
+ * ---------------------------------------------------------------------- */
+
+.hvnly-mgmt-inquiries {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 4px;
+}
+
+.hvnly-mgmt-inquiries__total {
+	font-size: 14px;
+	font-weight: 700;
+	color: #0f172a;
+}
+
+/* -------------------------------------------------------------------------
+ * Status summary
+ * ---------------------------------------------------------------------- */
+
+.hvnly-mgmt-summary {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	max-width: 280px;
+}
+
+.hvnly-mgmt-summary__badges {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+}
+
+.hvnly-mgmt-chip {
+	display: inline-flex;
+	align-items: center;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1.4;
+	background: #f1f5f9;
+	color: #475569;
+	border: 1px solid #e2e8f0;
+}
+
+.hvnly-mgmt-chip--ok {
+	background: #ecfdf5;
+	color: #047857;
+	border-color: #a7f3d0;
+}
+
+.hvnly-mgmt-chip--warn {
+	background: #fffbeb;
+	color: #b45309;
+	border-color: #fde68a;
+}
+
+.hvnly-mgmt-chip--bad {
+	background: #fef2f2;
+	color: #b91c1c;
+	border-color: #fecaca;
+}
+
+.hvnly-mgmt-pill {
+	display: inline-flex;
+	align-items: center;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1.4;
+	text-decoration: none;
+	border: 1px solid transparent;
+}
+
+.hvnly-mgmt-pill--ok {
+	background: #ecfdf5;
+	color: #047857;
+	border-color: #a7f3d0;
+}
+
+.hvnly-mgmt-pill--warn {
+	background: #fff7ed;
+	color: #c2410c;
+	border-color: #fed7aa;
+}
+
+.hvnly-mgmt-pill--error {
+	background: #fef2f2;
+	color: #b91c1c;
+	border-color: #fecaca;
+}
+
+.hvnly-mgmt-pill--error:hover {
+	background: #fee2e2;
+	color: #7f1d1d;
+}
+
+/* Profile progress */
+.hvnly-mgmt-progress {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.hvnly-mgmt-progress__track {
+	flex: 1;
+	height: 6px;
+	min-width: 72px;
+	max-width: 120px;
+	border-radius: 999px;
+	background: #e2e8f0;
+	overflow: hidden;
+}
+
+.hvnly-mgmt-progress__fill {
+	display: block;
+	height: 100%;
+	border-radius: 999px;
+	background: #64748b;
+	transition: width 0.2s ease;
+}
+
+.hvnly-mgmt-progress--ok .hvnly-mgmt-progress__fill {
+	background: linear-gradient(90deg, #34d399, #059669);
+}
+
+.hvnly-mgmt-progress--mid .hvnly-mgmt-progress__fill {
+	background: linear-gradient(90deg, #fbbf24, #d97706);
+}
+
+.hvnly-mgmt-progress--low .hvnly-mgmt-progress__fill {
+	background: linear-gradient(90deg, #f87171, #dc2626);
+}
+
+.hvnly-mgmt-progress__label {
+	font-size: 11px;
+	font-weight: 700;
+	color: #475569;
+	min-width: 2.4em;
+}
+
+/* -------------------------------------------------------------------------
+ * Activity
+ * ---------------------------------------------------------------------- */
+
+.hvnly-mgmt-activity {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	font-size: 12px;
+}
+
+.hvnly-mgmt-activity__row {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+}
+
+.hvnly-mgmt-activity__label {
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: #94a3b8;
+}
+
+.hvnly-mgmt-activity__time {
+	color: #334155;
+	font-weight: 500;
+}
+
+/* -------------------------------------------------------------------------
+ * Responsive
+ * ---------------------------------------------------------------------- */
+
+@media screen and (max-width: 1280px) {
+	.column-hvnly_mgmt_activity {
+		width: 120px;
+	}
+
+	.hvnly-mgmt-agent {
+		max-width: 280px;
+	}
+}
+
+@media screen and (max-width: 1100px) {
+	.post-type-hvnly_agent .wp-list-table .column-hvnly_mgmt_activity {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.hvnly-mgmt-agent__meta {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 2px;
+	}
+
+	.hvnly-mgmt-summary__badges .hvnly-ws-reg-badge {
+		font-size: 11px;
+	}
+}

@@ -425,6 +425,11 @@ class Bootstrap
     private function init_shared_services()
     {
         try {
+            // Avatar SSOT → WordPress get_avatar() (Users list, admin bar, comments, …).
+            if ( class_exists( \HvnlyNab\Common\AvatarService::class ) ) {
+                \HvnlyNab\Common\AvatarService::register_hooks();
+            }
+
             // Initialize Helpers service for utility functions.
             if (class_exists(Helpers::class)) {
                 $this->services['Helper'] = Helpers::get_instance();
@@ -515,6 +520,12 @@ class Bootstrap
             // Initialize cache administration interface.
             if (class_exists(CacheAdmin::class)) {
                 $this->services['cache_admin'] = new CacheAdmin();
+            }
+
+            // Workspace boots via Frontend, which is skipped on non-AJAX admin requests.
+            // Agent Publish (post.php) must still register AgentIdentityAdminBridge.
+            if (class_exists(\HvnlyNab\Workspace\WorkspaceBootstrap::class)) {
+                $this->services['workspace'] = \HvnlyNab\Workspace\WorkspaceBootstrap::get_instance();
             }
         } catch (Exception $e) {
             // Silent fail in production.

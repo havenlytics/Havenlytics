@@ -351,6 +351,161 @@ class SettingsSchema
                     'default' => HOUR_IN_SECONDS,
                     'sanitize' => 'absint',
                 ],
+                'hvnly_workspace_registration_mode' => [
+                    'type' => 'string',
+                    'default' => 'open',
+                    'sanitize' => 'sanitize_key',
+                ],
+                'hvnly_workspace_default_role' => [
+                    'type' => 'string',
+                    'default' => 'hvnly_agent',
+                    'sanitize' => 'sanitize_key',
+                ],
+                'hvnly_workspace_enabled' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_page_slug' => [
+                    'type' => 'string',
+                    'default' => 'agent-dashboard',
+                    'sanitize' => 'sanitize_title',
+                ],
+                'hvnly_workspace_login_redirect' => [
+                    'type' => 'string',
+                    'default' => '',
+                    'sanitize' => 'sanitize_text_field',
+                ],
+                'hvnly_workspace_logout_redirect' => [
+                    'type' => 'string',
+                    'default' => '',
+                    'sanitize' => 'sanitize_text_field',
+                ],
+                'hvnly_workspace_perm_create_property' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_perm_edit_own_property' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_perm_delete_own_property' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_perm_submit_property' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_perm_publish_property' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_perm_upload_media' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_perm_edit_profile' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_perm_view_dashboard' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_perm_receive_inquiries' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_perm_reply_inquiries' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_registration' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_approval' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_rejection' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_suspended' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_activated' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_property_submitted' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_property_approved' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_property_rejected' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_new_inquiry' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_password_reset' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_email_profile_updated' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_developer_mode' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_rest_debug' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_debug' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
+                'hvnly_workspace_laravel_sync_enabled' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
             ],
 
             // ==============================================
@@ -456,11 +611,6 @@ class SettingsSchema
                     'default' => false,
                     'sanitize' => 'rest_sanitize_boolean',
                 ],
-                'hvnly_EnabledSocialShare' => [
-                    'type' => 'boolean',
-                    'default' => true,
-                    'sanitize' => 'rest_sanitize_boolean',
-                ],
                 'hvnly_defaultCity' => [
                     'type' => 'string',
                     'default' => 'Birmingham',
@@ -475,11 +625,6 @@ class SettingsSchema
                     'type' => 'string',
                     'default' => 'GB',
                     'sanitize' => 'sanitize_text_field',
-                ],
-                'hvnly_enableSocialShare' => [
-                    'type' => 'array',
-                    'default' => ['facebook', 'twitter'],
-                    'sanitize' => null,
                 ],
             ],
             
@@ -660,7 +805,7 @@ class SettingsSchema
                 ],
                 'hvnly_container_width_xl' => [
                     'type' => 'string',
-                    'default' => '1140px',
+                    'default' => '1220px',
                     'sanitize' => 'sanitize_text_field',
                 ],
                 'hvnly_container_width_xxl' => [
@@ -670,7 +815,7 @@ class SettingsSchema
                 ],
                 'hvnly_container_width_xxxl' => [
                     'type' => 'string',
-                    'default' => '1399px',
+                    'default' => '1320px',
                     'sanitize' => 'sanitize_text_field',
                 ],
                 'hvnly_container_width_4k' => [
@@ -736,11 +881,6 @@ class SettingsSchema
                 'hvnly_EnableSaveProperty' => [
                     'type' => 'boolean',
                     'default' => false,
-                    'sanitize' => 'rest_sanitize_boolean',
-                ],
-                'hvnly_EnableShareButton' => [
-                    'type' => 'boolean',
-                    'default' => true,
                     'sanitize' => 'rest_sanitize_boolean',
                 ],
             ],

@@ -134,24 +134,25 @@ class PropertySingleRenderer {
             $this->log_debug( 'Rendering property ID: ' . $property_id );
         }
         
-        // Default sections configuration
+        // Default sections configuration (Sprint 31D: titles are visible
+        // <h2> headings — they must be translatable).
         $default_sections = array(
             'gallery' => array(
-                'title'    => 'Property Gallery',
+                'title'    => __( 'Property Gallery', 'havenlytics' ),
                 'template' => 'gallery-carousel',
                 'order'    => 0,
                 'enabled'  => true,
                 'priority' => 10,
             ),
             'summary' => array(
-                'title'    => 'Property Summary',
+                'title'    => __( 'Property Summary', 'havenlytics' ),
                 'template' => 'summary-card',
                 'order'    => 0,
                 'enabled'  => true,
                 'priority' => 20,
             ),
             'description' => array(
-                'title'    => 'Property Description',
+                'title'    => __( 'Property Description', 'havenlytics' ),
                 'template' => 'description-card',
                 'order'    => 0,
                 'enabled'  => true,
@@ -262,25 +263,36 @@ class PropertySingleRenderer {
         }
         
         $section_class = 'hvnly-property-single__section-' . sanitize_title( $section_id );
-        
-        // Start section container
-        echo '<div class="hvnly-property-single__details-card ' . esc_attr( $section_class ) . '">';
-        
-        // Section title
-        if ( ! empty( $title ) ) {
-            echo '<h2 class="hvnly-property-single__section-title">' . esc_html( $title ) . '</h2>';
-        }
-        
+
         // Prepare template arguments
         $template_args = array(
             'property_id' => $property_id,
             'section'     => $section,
             'section_id'  => $section_id,
         );
-        
-        // Load the template
+
+        // Sprint 31D: buffer the template first — if it produces nothing
+        // (e.g. Property Summary with no excerpt), skip the card entirely
+        // instead of emitting a wrapper containing only an <h2>. Mirrors
+        // the empty-output suppression dynamic sections already had.
+        ob_start();
         hvnly_get_template( 'single-property/' . $template . '.php', $template_args );
-        
+        $section_output = ob_get_clean();
+
+        if ( '' === trim( (string) $section_output ) ) {
+            return;
+        }
+
+        // Start section container
+        echo '<div class="hvnly-property-single__details-card ' . esc_attr( $section_class ) . '">';
+
+        // Section title
+        if ( ! empty( $title ) ) {
+            echo '<h2 class="hvnly-property-single__section-title">' . esc_html( $title ) . '</h2>';
+        }
+
+        echo $section_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Template output, escaped at source.
+
         echo '</div>'; // Close section container
     }
 
@@ -1044,8 +1056,12 @@ class PropertySingleRenderer {
                 $agents    = $this->resolve_agents_for_section( $agent_ids );
 
                 if ( ! empty( $agents ) ) {
-                    $section_title = ! empty( $values['title'] )
-                        ? (string) $values['title']
+                    $raw_title = isset( $values['title'] ) ? $values['title'] : '';
+                    if ( is_array( $raw_title ) || ( is_string( $raw_title ) && in_array( trim( $raw_title ), array( '[]', '{}', 'null' ), true ) ) ) {
+                        $raw_title = '';
+                    }
+                    $section_title = $this->has_value( $raw_title )
+                        ? (string) $raw_title
                         : ( $group_name ?: __( 'Agents', 'havenlytics' ) );
 
                     $group_data['section_title']     = $section_title;
@@ -1581,22 +1597,34 @@ class PropertySingleRenderer {
      * @return bool
      */
     private function has_value( $value ) {
-        if ( is_null( $value ) ) {
+        if ( is_null( $value ) || false === $value ) {
             return false;
         }
-        
+
         if ( is_string( $value ) ) {
-            return '' !== trim( $value );
+            $trim = trim( $value );
+            if ( '' === $trim ) {
+                return false;
+            }
+            // Empty JSON payloads must never count as content (or print as "[]").
+            if ( in_array( $trim, array( '[]', '{}', 'null', '""' ), true ) ) {
+                return false;
+            }
+            $decoded = json_decode( $trim, true );
+            if ( is_array( $decoded ) && array() === $decoded ) {
+                return false;
+            }
+            return true;
         }
-        
+
         if ( is_array( $value ) ) {
             return ! empty( $value );
         }
-        
+
         if ( is_numeric( $value ) ) {
             return true;
         }
-        
+
         return ! empty( $value );
     }
 

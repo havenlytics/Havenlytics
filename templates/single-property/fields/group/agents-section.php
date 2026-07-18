@@ -21,6 +21,10 @@ $hvnly_property_title = isset( $args['property_title'] ) ? (string) $args['prope
 $hvnly_agent_count   = count( $hvnly_agents );
 $hvnly_is_single     = 1 === $hvnly_agent_count;
 
+if ( in_array( trim( $hvnly_title ), array( '[]', '{}', 'null' ), true ) ) {
+	$hvnly_title = '';
+}
+
 if ( ! $hvnly_property_id || empty( $hvnly_agents ) ) {
 	return;
 }

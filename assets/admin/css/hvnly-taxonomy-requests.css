@@ -1,0 +1,587 @@
+/**
+ * Taxonomy Requests admin UI.
+ *
+ * Scoped polish for the Havenlytics → Taxonomy Requests screens only.
+ * Uses WordPress admin conventions; never restyles global chrome.
+ *
+ * @since 3.3.0
+ */
+
+.hvnly-txr-wrap {
+	max-width: 1200px;
+}
+
+.hvnly-txr-wrap .wp-heading-inline {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.hvnly-txr-heading-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	border-radius: 8px;
+	background: #eef2f7;
+	color: #2271b1;
+}
+
+.hvnly-txr-heading-icon .dashicons {
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+}
+
+.hvnly-txr-subtitle {
+	margin: 6px 0 0;
+	color: #646970;
+	font-size: 13px;
+}
+
+/* ------------------------------------------------------------------
+ * Cards
+ * ---------------------------------------------------------------- */
+
+.hvnly-txr-card {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+	margin-top: 16px;
+	overflow: hidden;
+}
+
+.hvnly-txr-card__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 14px 20px;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.hvnly-txr-card__title {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #1d2327;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.hvnly-txr-card__title .dashicons {
+	color: #787c82;
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.hvnly-txr-card__body {
+	padding: 20px;
+}
+
+.hvnly-txr-card__body--flush {
+	padding: 0;
+}
+
+/* ------------------------------------------------------------------
+ * Status badges
+ * ---------------------------------------------------------------- */
+
+.hvnly-txr-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 1px 10px;
+	border-radius: 999px;
+	border: 1px solid transparent;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 2;
+	white-space: nowrap;
+	text-transform: capitalize;
+}
+
+.hvnly-txr-badge::before {
+	content: "";
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: currentColor;
+	flex: none;
+}
+
+.hvnly-txr-badge--pending {
+	color: #8a6116;
+	background: #fcf5e8;
+	border-color: #f2d8a7;
+}
+
+.hvnly-txr-badge--processing {
+	color: #5a2ca0;
+	background: #f3eefb;
+	border-color: #d5c4f0;
+}
+
+.hvnly-txr-badge--approved {
+	color: #116329;
+	background: #e9f6ec;
+	border-color: #b1dcbc;
+}
+
+.hvnly-txr-badge--rejected {
+	color: #9f2318;
+	background: #fcebea;
+	border-color: #f2bcb8;
+}
+
+.hvnly-txr-badge--merged {
+	color: #0a4b78;
+	background: #e8f1f8;
+	border-color: #b0cee5;
+}
+
+.hvnly-txr-badge--deleted {
+	color: #50575e;
+	background: #f0f0f1;
+	border-color: #dcdcde;
+}
+
+/* ------------------------------------------------------------------
+ * List screen
+ * ---------------------------------------------------------------- */
+
+.hvnly-txr-list-card .tablenav.top {
+	padding: 12px 16px;
+	margin: 0;
+	height: auto;
+	background: #f9fafb;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.hvnly-txr-list-card .tablenav.bottom {
+	padding: 10px 16px;
+	margin: 0;
+	height: auto;
+	border-top: 1px solid #f0f0f1;
+}
+
+.hvnly-txr-list-card .search-box {
+	padding: 12px 16px 0;
+	margin: 0;
+	display: flex;
+	gap: 8px;
+	float: none;
+}
+
+.hvnly-txr-list-card .search-box input[type="search"] {
+	min-width: 260px;
+	border-radius: 4px;
+}
+
+.hvnly-txr-filters {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	float: none !important;
+}
+
+.hvnly-txr-filters select,
+.hvnly-txr-filters input[type="number"],
+.hvnly-txr-filters input[type="date"] {
+	margin: 0;
+	border-radius: 4px;
+	max-width: 170px;
+}
+
+.hvnly-txr-filters input[type="number"] {
+	width: 110px;
+}
+
+.hvnly-txr-list-card table.wp-list-table {
+	border: 0;
+	box-shadow: none;
+	margin: 0;
+}
+
+.hvnly-txr-list-card table.wp-list-table th,
+.hvnly-txr-list-card table.wp-list-table td {
+	padding: 12px 12px;
+	vertical-align: middle;
+}
+
+.hvnly-txr-list-card table.wp-list-table thead th {
+	background: #fff;
+	font-weight: 600;
+}
+
+.hvnly-txr-list-card table.wp-list-table tbody tr:hover {
+	background: #f6f7f7;
+}
+
+.hvnly-txr-name {
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.hvnly-txr-muted {
+	color: #646970;
+}
+
+.hvnly-txr-review-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	text-decoration: none;
+}
+
+.hvnly-txr-review-link .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+/* Empty state */
+
+.hvnly-txr-empty {
+	text-align: center;
+	padding: 48px 24px;
+}
+
+.hvnly-txr-empty .dashicons {
+	font-size: 44px;
+	width: 44px;
+	height: 44px;
+	color: #c3c4c7;
+}
+
+.hvnly-txr-empty__title {
+	margin: 12px 0 4px;
+	font-size: 15px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.hvnly-txr-empty__text {
+	margin: 0 auto;
+	max-width: 420px;
+	color: #646970;
+}
+
+/* ------------------------------------------------------------------
+ * Detail screen
+ * ---------------------------------------------------------------- */
+
+.hvnly-txr-back {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin-top: 10px;
+	text-decoration: none;
+}
+
+.hvnly-txr-header-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+	gap: 16px 24px;
+}
+
+.hvnly-txr-field__label {
+	display: block;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	color: #646970;
+	margin-bottom: 4px;
+}
+
+.hvnly-txr-field__value {
+	font-size: 14px;
+	color: #1d2327;
+	overflow-wrap: anywhere;
+}
+
+.hvnly-txr-field__value--lead {
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.hvnly-txr-requester {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.hvnly-txr-requester img {
+	border-radius: 50%;
+}
+
+.hvnly-txr-longtext {
+	margin: 0;
+	line-height: 1.6;
+	color: #2c3338;
+}
+
+.hvnly-txr-longtext + .hvnly-txr-field__label {
+	margin-top: 18px;
+}
+
+.hvnly-txr-suggestions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.hvnly-txr-suggestions li {
+	margin: 0;
+}
+
+.hvnly-txr-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 3px 12px;
+	border: 1px solid #dcdcde;
+	border-radius: 999px;
+	background: #f6f7f7;
+	font-size: 12px;
+	color: #2c3338;
+}
+
+.hvnly-txr-chip code {
+	background: transparent;
+	padding: 0;
+	font-size: 11px;
+	color: #646970;
+}
+
+/* Moderation actions */
+
+.hvnly-txr-actions {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 20px;
+}
+
+.hvnly-txr-action {
+	border: 1px solid #f0f0f1;
+	border-radius: 6px;
+	padding: 16px;
+	background: #fbfbfc;
+}
+
+.hvnly-txr-action__title {
+	margin: 0 0 4px;
+	font-size: 13px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.hvnly-txr-action__hint {
+	margin: 0 0 12px;
+	font-size: 12px;
+	color: #646970;
+}
+
+.hvnly-txr-action textarea,
+.hvnly-txr-action select,
+.hvnly-txr-action input[type="search"] {
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 12px;
+	border-radius: 4px;
+}
+
+.hvnly-txr-action .button {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.hvnly-txr-action .button .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	line-height: 1.8;
+}
+
+.hvnly-txr-term-search {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.hvnly-txr-term-search input[type="search"] {
+	flex: 1;
+	min-width: 180px;
+	margin: 0;
+}
+
+.hvnly-txr-danger-zone {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.hvnly-txr-danger-zone .button-link-delete {
+	border: 1px solid #d63638;
+	border-radius: 4px;
+	padding: 4px 14px;
+	text-decoration: none;
+}
+
+.hvnly-txr-danger-zone .button-link-delete:hover,
+.hvnly-txr-danger-zone .button-link-delete:focus {
+	background: #d63638;
+	color: #fff;
+}
+
+/* Audit timeline */
+
+.hvnly-txr-timeline {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	position: relative;
+}
+
+.hvnly-txr-timeline::before {
+	content: "";
+	position: absolute;
+	top: 6px;
+	bottom: 6px;
+	left: 15px;
+	width: 2px;
+	background: #e2e4e7;
+}
+
+.hvnly-txr-timeline li {
+	position: relative;
+	padding: 0 0 22px 46px;
+	margin: 0;
+}
+
+.hvnly-txr-timeline li:last-child {
+	padding-bottom: 2px;
+}
+
+.hvnly-txr-timeline__icon {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: #f0f0f1;
+	color: #50575e;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 1px #e2e4e7;
+}
+
+.hvnly-txr-timeline__icon .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+.hvnly-txr-timeline__icon--submitted {
+	background: #e8f1f8;
+	color: #0a4b78;
+}
+
+.hvnly-txr-timeline__icon--approved {
+	background: #e9f6ec;
+	color: #116329;
+}
+
+.hvnly-txr-timeline__icon--rejected {
+	background: #fcebea;
+	color: #9f2318;
+}
+
+.hvnly-txr-timeline__icon--merged {
+	background: #e8f1f8;
+	color: #0a4b78;
+}
+
+.hvnly-txr-timeline__icon--deleted {
+	background: #f0f0f1;
+	color: #50575e;
+}
+
+.hvnly-txr-timeline__head {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.hvnly-txr-timeline__action {
+	font-weight: 600;
+	color: #1d2327;
+	text-transform: capitalize;
+}
+
+.hvnly-txr-timeline__meta {
+	font-size: 12px;
+	color: #646970;
+}
+
+.hvnly-txr-timeline__reason {
+	margin: 4px 0 0;
+	font-size: 13px;
+	color: #2c3338;
+	background: #f6f7f7;
+	border-left: 3px solid #dcdcde;
+	padding: 6px 10px;
+	border-radius: 0 4px 4px 0;
+}
+
+/* ------------------------------------------------------------------
+ * Responsive
+ * ---------------------------------------------------------------- */
+
+@media screen and (max-width: 782px) {
+	.hvnly-txr-card__body {
+		padding: 16px;
+	}
+
+	.hvnly-txr-filters select,
+	.hvnly-txr-filters input[type="number"],
+	.hvnly-txr-filters input[type="date"] {
+		max-width: 100%;
+		flex: 1 1 45%;
+	}
+
+	.hvnly-txr-list-card .search-box input[type="search"] {
+		min-width: 0;
+		flex: 1;
+	}
+
+	.hvnly-txr-actions {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Focus visibility for keyboard users. */
+
+.hvnly-txr-wrap a:focus-visible,
+.hvnly-txr-wrap .button:focus-visible {
+	outline: 2px solid #2271b1;
+	outline-offset: 1px;
+}

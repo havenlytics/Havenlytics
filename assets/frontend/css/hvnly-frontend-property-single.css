@@ -115,13 +115,12 @@
         padding: 0 var(--hvnly-space-md);
     }
 }
+/* Sprint 31D: this block used to parse as `padding: 0` (an unfinished
+   declaration), removing every gutter on phones — content ran edge-to-edge. */
 @media (max-width: 767px) {
-
-.hvnly-property-single__container {
-
-    padding: 0 
-}
-
+    .hvnly-property-single__container {
+        padding: 0 var(--hvnly-space-md, 1rem);
+    }
 }
 .hvnly-property-single__content-wrapper {
     position: relative;
@@ -561,7 +560,9 @@
     
     .hvnly-property-breadcrumb__container {
         gap: 4px;
-        font-size: 16px;
+        /* Sprint 31D: was 16px — breadcrumbs rendered LARGER on phones than
+           on desktop (0.875rem). */
+        font-size: 0.8125rem;
     }
     
     .hvnly-property-breadcrumb__item {
@@ -1003,11 +1004,8 @@
         font-size: var(--hvnly-font-size-xs);
     }
 
-    .hvnly-property-single__meta {
-        grid-template-columns: repeat(3, 1fr);
-        gap: var(--hvnly-space-sm);    padding: var(--hvnly-space-md) 0;
-    }
-
+    /* (Sprint 31D: removed a dead 3-column .hvnly-property-single__meta rule
+       here — a later 2-column rule in the same breakpoint always won.) */
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -1424,10 +1422,17 @@ button.hvnly-property-single__action-btn {
 }
 
 .hvnly-property-single__thumbnail:hover {
+    /* Sprint 31E: color + soft ring — the old lift-and-zoom made the whole
+       strip jitter while scrubbing across thumbnails. */
     border-color: var(--hvnly-brand-primary);
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(var(--hvnly-primary-rgb), 0.25);
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.2), 0 6px 16px -6px rgba(30, 30, 47, 0.2);
     z-index: 5;
+}
+
+.hvnly-property-single__thumbnail:focus-visible {
+    outline: none;
+    border-color: var(--hvnly-brand-primary);
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.28);
 }
 
 .hvnly-property-single__thumbnail--active {
@@ -2086,8 +2091,10 @@ button.hvnly-property-single__action-btn {
 .hvnly-property-single__fancybox-img {
     max-height: 70vh;
     max-width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    border-radius: 14px;
+    /* Sprint 31F: a softer, more diffuse shadow reads as premium; the old
+       0.6-opacity 60px cast looked like a heavy drop shadow. */
+    box-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.7);
     transition: transform 0.4s ease, opacity 0.4s ease;
     transform: translateX(0);
     opacity: 1;
@@ -2114,12 +2121,13 @@ button.hvnly-property-single__action-btn {
 }
 
 .hvnly-property-single__fancybox-caption {
-    color: var(--hvnly-color-white);
-    font-size: 1.1rem;
-    margin-top: 25px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 1rem;
+    margin-top: 22px;
     text-align: center;
-    padding: 15px 30px;
+    padding: 10px 24px;
     font-weight: 600;
+    letter-spacing: 0.01em;
     text-shadow: 0 2px 10px rgba(0,0,0,0.4);
     align-self: center;
 }
@@ -2351,77 +2359,127 @@ a.hvnly-property-single__fancybox-property-button {
 
 
 /* Controls */
+/* ==========================================================================
+   Sprint 31F — Modal control base (regression fix + premium treatment).
+
+   ROOT CAUSE of the 31D regression: converting these controls from <span>
+   to <button> introduced the native button appearance. The 31D reset used
+   `appearance: none` WITHOUT the `-webkit-` prefix, so WebKit engines
+   (Safari, iOS, older Chrome) kept `appearance: auto` and rendered native
+   button chrome (grey ButtonFace + bevel), over which the semi-transparent
+   base background composited — i.e. "default browser button styling". The
+   reset was also split from the visual rules across two specificity levels,
+   which was fragile.
+
+   FIX: one authoritative, tightly-scoped base that fully neutralizes UA
+   chrome (all appearance prefixes + background/box-shadow) and carries the
+   shared premium look. Scoped to `button.hvnly-property-single__fancybox-*`
+   only — never a global <button> override.
+   ========================================================================== */
+button.hvnly-property-single__fancybox-close,
+button.hvnly-property-single__fancybox-fullscreen,
+button.hvnly-property-single__fancybox-nav {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+    color: var(--hvnly-color-white, #fff);
+    /* font-family only — the per-control font-size (which sizes the 1em SVG
+       icons) must keep winning, so do NOT use the `font` shorthand here. */
+    font-family: inherit;
+    line-height: 1;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    cursor: pointer;
+    /* Premium: animate only paint properties, never layout. */
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+button.hvnly-property-single__fancybox-close:focus-visible,
+button.hvnly-property-single__fancybox-fullscreen:focus-visible,
+button.hvnly-property-single__fancybox-nav:focus-visible {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
+}
+
 .hvnly-property-single__fancybox-close {
     position: absolute;
     top: 20px;
     right: 20px;
-    color: var(--hvnly-color-white);
-    font-size: 2.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 50px;
-    height: 50px;
+    font-size: 1.5rem;
+    width: 46px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(5px);
     z-index: 10;
 }
 
+/* Sprint 31F: calm, deliberate hover (Apple/Airbnb feel) — the old
+   rotate(90deg) scale(1.1) spin read as a gimmick. Close tints red to
+   signal its destructive intent. */
 .hvnly-property-single__fancybox-close:hover {
-    transform: rotate(90deg) scale(1.1);
-    background: rgba(255, 90, 90, 0.3);
+    background: rgba(255, 90, 90, 0.85);
+    border-color: rgba(255, 90, 90, 0.9);
 }
 
 .hvnly-property-single__fancybox-nav {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--hvnly-color-white);
-    font-size: 3rem;
-    cursor: pointer;
-    opacity: 0.85;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.15);
-    width: 70px;
-    height: 70px;
+    font-size: 1.6rem;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
     z-index: 10;
 }
 
 .hvnly-property-single__fancybox-nav--prev {
-    left: 20px;
+    left: 24px;
 }
 
 .hvnly-property-single__fancybox-nav--next {
-    right: 20px;
+    right: 24px;
 }
 
+/* Sprint 31F: brighten the glass on hover; keep the vertical-centering
+   transform stable (the old scale(1.1) fought the translateY centering and
+   nudged the arrow off-axis). */
 .hvnly-property-single__fancybox-nav:hover {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.1);
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.hvnly-property-single__fancybox-nav:focus-visible {
+    /* keep the centering transform while focused */
+    transform: translateY(-50%);
 }
 
 .hvnly-property-single__fancybox-counter {
     position: absolute;
-    top: 25px;
+    top: 24px;
     left: 50%;
     transform: translateX(-50%);
     color: var(--hvnly-color-white);
-    font-size: 1.3rem;
-    background: rgba(255, 255, 255, 0.15);
-    padding: 10px 30px;
-    border-radius: 30px;
-    backdrop-filter: blur(5px);
-    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 8px 22px;
+    border-radius: 999px;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    font-weight: 600;
     z-index: 10;
 }
 
@@ -2429,25 +2487,20 @@ a.hvnly-property-single__fancybox-property-button {
 .hvnly-property-single__fancybox-fullscreen {
     position: absolute;
     top: 20px;
-    right: 80px;
-    color: var(--hvnly-color-white);
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 50px;
-    height: 50px;
+    right: 78px;
+    font-size: 1.15rem;
+    width: 46px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(5px);
     z-index: 10;
 }
 
 .hvnly-property-single__fancybox-fullscreen:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.35);
 }
 
 .hvnly-property-single__fancybox-fullscreen .hvnly-expand {
@@ -2569,6 +2622,13 @@ a.hvnly-property-single__fancybox-property-button {
     font-weight: var(--hvnly-font-weight-bold);
     color: var(--hvnly-text-primary);
     position: relative;
+    /* Sprint 31D: this late re-declaration used to zero the margin for EVERY
+       section title (defeating the spacing set at the top of the file). Only
+       the similar-properties flex header wants a flush title. */
+    margin: 0 0 var(--hvnly-space-lg);
+}
+
+.hvnly-property-single__similar-header .hvnly-property-single__section-title {
     margin: 0;
 }
 
@@ -2605,10 +2665,17 @@ button.hvnly-property-single__carousel-btn {
 }
 button.hvnly-property-single__carousel-btn:focus i{ color: var(--hvnly-color-white)}
 button.hvnly-property-single__carousel-btn:hover:not(:disabled) {
+    /* Sprint 31E: color + glow only — arrows no longer hop upward. */
     background: var(--hvnly-brand-primary);
     color: var(--hvnly-color-white);
     border-color: var(--hvnly-brand-primary);
-    transform: translateY(-2px);
+    box-shadow: 0 4px 14px -4px rgba(var(--hvnly-primary-rgb), 0.5);
+}
+
+button.hvnly-property-single__carousel-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.28);
+    border-color: var(--hvnly-brand-primary);
 }
 
 button.hvnly-property-single__carousel-btn:disabled {
@@ -2666,9 +2733,11 @@ button.hvnly-property-single__carousel-btn:disabled {
 }
 
 .hvnly-property-single__similar-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(var(--hvnly-primary-rgb), 0.15);
-    border-color: var(--hvnly-brand-primary);
+    /* Sprint 31E: a calm 3px rise with an ink-tinted shadow — the old 8px
+       jump with a saturated violet glow read as bouncy, not premium. */
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -8px rgba(30, 30, 47, 0.18);
+    border-color: rgba(var(--hvnly-primary-rgb), 0.45);
 }
 
 /* Image Container */
@@ -2984,18 +3053,23 @@ button.hvnly-property-single__carousel-btn:disabled {
     border: none;
     padding: 0;
     cursor: pointer;
-    transition: all var(--hvnly-transition-time);
+    transition: background-color var(--hvnly-transition-time), width var(--hvnly-transition-time);
 }
 
 .hvnly-property-single__carousel-dot:hover {
-    background: var(--hvnly-brand-primary);
-    opacity: 0.7;
+    background: rgba(var(--hvnly-primary-rgb), 0.55);
 }
 
+.hvnly-property-single__carousel-dot:focus-visible {
+    outline: 2px solid var(--hvnly-brand-primary);
+    outline-offset: 2px;
+}
+
+/* Sprint 31E: the active dot stretches into a pill via width only — the old
+   scale(1.3) blurred the dot and shifted its neighbors. */
 .hvnly-property-single__carousel-dot--active {
     background: var(--hvnly-brand-primary);
-    transform: scale(1.3);
-    width: 30px;
+    width: 28px;
     border-radius: 10px;
 }
 
@@ -3156,14 +3230,14 @@ button.hvnly-property-single__carousel-btn:disabled {
     word-wrap: normal !important;
 }
 
-/* Loading State */
-.hvnly-property-single__similar-image img[loading="lazy"] {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.hvnly-property-single__similar-image img[loading="lazy"].loaded {
-    opacity: 1;
+/* Loading State — Sprint 31E: the old rule hid every lazy image at
+   opacity:0 waiting for a `.loaded` class that NO script ever adds (the
+   data-src swap system is dead code). Visitors saw only the gradient
+   placeholder where the property photo should be. Native lazy-loading
+   needs no opacity gate; the gradient behind the image remains the
+   loading backdrop. */
+.hvnly-property-single__similar-image img {
+    display: block;
 }
 
 /* Tooltip for additional info (optional) */
@@ -3421,7 +3495,9 @@ html {
     }
     
     .hvnly-property-single__gallery-main {
-        height: 450px;
+        /* Sprint 31D: was 450px — the gallery GREW on smaller viewports
+           (desktop is 400px). */
+        height: 400px;
     }
     
     .hvnly-property-single__fancybox-content {
@@ -3459,7 +3535,8 @@ html {
     }
     
     .hvnly-property-single__fancybox-caption {
-        font-size: 1.4rem;
+        /* Sprint 31D: was 1.4rem — larger than the 1.1rem desktop caption. */
+        font-size: 1rem;
         padding: 10px 20px;
     }
 }
@@ -3517,22 +3594,14 @@ html {
     }
 }
 @media (max-width: 767px) {
-    .hvnly-property-single__similar-header {
-        align-items: center;
-        gap: var(--hvnly-space-md);flex-direction: unset;
-        
-    }
-    
-    .hvnly-property-single__carousel-controls {
-        align-self: center;
-    }
-    
+    /* (Sprint 31D: removed verbatim-duplicate similar-header /
+       carousel-controls rules — the earlier 767px block owns them.) */
     .hvnly-property-single__similar-image {
         height: 200px;
     }
     .hvnly-property-single__similar-content {
         padding: var(--hvnly-space-md);
-       
+
     }
 
 
@@ -3619,22 +3688,23 @@ html {
 
 /* Single agent: full-width profile + contact form */
 .hvnly-agents-section--single .hvnly-agents-section__layout {
-    
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--hvnly-space-md, 1rem);
+    align-items: stretch;
 }
 
 .hvnly-agents-section__profile-col, .hvnly-agents-section__form-col {
-    /* min-width: 0; */
-    padding:     20px 0px;;
+    min-width: 0;
+    padding: 20px 0;
 }
-.hvnly-agents-section__card {
-    height: 100%;
-}
+
 
 .hvnly-agents-section__card-inner {
     display: flex;
     flex-direction: column;
     gap: var(--hvnly-space-md, 1rem);
-    height: 100%;
+
     padding: var(--hvnly-card-padding, 1.5rem);
     background: var(--hvnly-card-bg, #fff);
     border: var(--hvnly-card-border, 1px solid var(--hvnly-agents-border));
@@ -3900,7 +3970,7 @@ a.hvnly-agents-section__detail-value:hover {
 .hvnly-agents-section__contact-panel {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    max-height: 100%;
     padding: var(--hvnly-card-padding, 1.5rem);
     background: linear-gradient(180deg, #fff 0%, rgba(var(--hvnly-primary-rgb), 0.03) 100%);
     border: var(--hvnly-card-border, 1px solid var(--hvnly-agents-border));
@@ -4468,13 +4538,13 @@ a.hvnly-agency-profile__detail-value:hover {
     min-width: 0;
 }
 
-.hvnly-property-single__carousel-slide
+/* .hvnly-property-single__carousel-slide
 .hvnly-property-single__similar-content
 .hvnly-property-single__btn {
 
     color: var(--hvnly-brand-primary) !important;
    
-}
+} */
 .hvnly-property-single__carousel-slide
 .hvnly-property-single__similar-content
 .hvnly-property-single__btn:hover {

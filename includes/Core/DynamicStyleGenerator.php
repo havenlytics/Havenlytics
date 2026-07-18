@@ -58,9 +58,9 @@ class DynamicStyleGenerator
             'hvnly_container_width_sm' => '540px',
             'hvnly_container_width_md' => '720px',
             'hvnly_container_width_lg' => '960px',
-            'hvnly_container_width_xl' => '1140px',
+            'hvnly_container_width_xl' => '1220px',
             'hvnly_container_width_xxl' => '1320px',
-            'hvnly_container_width_xxxl' => '1399px',
+            'hvnly_container_width_xxxl' => '1320px',
             'hvnly_container_width_4k' => '1400px',
             'hvnly_archive_container_width' => 'default',
             'hvnly_archive_container_width_custom' => 0,
@@ -97,9 +97,9 @@ class DynamicStyleGenerator
         $container_sm = $properties['hvnly_container_width_sm'] ?? '540px';
         $container_md = $properties['hvnly_container_width_md'] ?? '720px';
         $container_lg = $properties['hvnly_container_width_lg'] ?? '960px';
-        $container_xl = $properties['hvnly_container_width_xl'] ?? '1140px';
+        $container_xl = $properties['hvnly_container_width_xl'] ?? '1220px';
         $container_xxl = $properties['hvnly_container_width_xxl'] ?? '1320px';
-        $container_xxxl = $properties['hvnly_container_width_xxxl'] ?? '1399px';
+        $container_xxxl = $properties['hvnly_container_width_xxxl'] ?? '1320px';
         $container_4k = $properties['hvnly_container_width_4k'] ?? '1400px';
         
         // Build CSS
@@ -421,8 +421,8 @@ class DynamicStyleGenerator
         $title_color, $primary_text_color, $secondary_text_color,
         $body_color, $body_font_size,
         $container_xs = '100%', $container_sm = '540px', $container_md = '720px',
-        $container_lg = '960px', $container_xl = '1140px', $container_xxl = '1320px',
-        $container_xxxl = '1399px', $container_4k = '1400px'
+        $container_lg = '960px', $container_xl = '1220px', $container_xxl = '1320px',
+        $container_xxxl = '1320px', $container_4k = '1400px'
     ) {
         $primary_rgb   = $this->hex_to_rgb_components($brand_color);
         $secondary_rgb = $this->hex_to_rgb_components($secondary_color);

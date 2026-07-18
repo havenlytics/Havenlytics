@@ -34,17 +34,41 @@ $hvnly_mode = $mode ?? 'default';
 $hvnly_author_id = $hvnly_property_data['author_id'] ?? get_the_author_meta('ID');
 
 $hvnly_avatar_size = 40;
-$hvnly_avatar_url = get_avatar_url($hvnly_author_id, ['size' => $hvnly_avatar_size]);
+// Single avatar chain (uploaded → Gravatar → Havenlytics placeholder). Never blank.
+$hvnly_avatar_url = function_exists( 'hvnly_get_user_avatar_url' )
+	? hvnly_get_user_avatar_url( (int) $hvnly_author_id, $hvnly_avatar_size )
+	: ( class_exists( '\HvnlyNab\Common\AvatarService' )
+		? \HvnlyNab\Common\AvatarService::resolve_for_user( (int) $hvnly_author_id, $hvnly_avatar_size )
+		: '' );
+$hvnly_placeholder = class_exists( '\HvnlyNab\Common\AvatarService' )
+	? \HvnlyNab\Common\AvatarService::placeholder_url()
+	: '';
 ?>
-<div class="hvnly-field-avatar hvnly-property-field-mode-<?php echo esc_attr($hvnly_mode); ?>">
+<div class="hvnly-field-avatar hvnly-property-field-mode-<?php echo esc_attr( $hvnly_mode ); ?>">
     <div class="hvnly-property--grid-list--avatar">
-        <?php if ($hvnly_avatar_url): ?>
-            <img src="<?php echo esc_url($hvnly_avatar_url); ?>" 
-                 alt="<?php echo esc_attr__('Property Author', 'havenlytics'); ?>" 
-                 width="<?php echo esc_attr($hvnly_avatar_size); ?>" 
-                 height="<?php echo esc_attr($hvnly_avatar_size); ?>"
-                 class="hvnly-property-avatar-image">
-        <?php else: ?>
+        <?php if ( class_exists( '\HvnlyNab\Common\AvatarService' ) && $hvnly_avatar_url ) : ?>
+			<?php
+			echo \HvnlyNab\Common\AvatarService::img_html( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper escapes.
+				$hvnly_avatar_url,
+				array(
+					'class'  => 'hvnly-property-avatar-image',
+					'width'  => absint( $hvnly_avatar_size ),
+					'height' => absint( $hvnly_avatar_size ),
+					'alt'    => esc_attr__( 'Property Author', 'havenlytics' ),
+				)
+			);
+			?>
+        <?php elseif ( $hvnly_avatar_url ) : ?>
+            <img src="<?php echo esc_url( $hvnly_avatar_url ); ?>"
+                 alt="<?php echo esc_attr__( 'Property Author', 'havenlytics' ); ?>"
+                 width="<?php echo esc_attr( (string) $hvnly_avatar_size ); ?>"
+                 height="<?php echo esc_attr( (string) $hvnly_avatar_size ); ?>"
+                 class="hvnly-property-avatar-image"
+                 <?php if ( $hvnly_placeholder && $hvnly_avatar_url !== $hvnly_placeholder ) : ?>
+                 onerror="this.onerror=null;this.src=<?php echo esc_attr( wp_json_encode( $hvnly_placeholder ) ); ?>;"
+                 <?php endif; ?>
+                 >
+        <?php else : ?>
             <div class="hvnly-property-avatar-placeholder">
                 <i class="fas fa-user"></i>
             </div>

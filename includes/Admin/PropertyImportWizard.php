@@ -1,9 +1,16 @@
 <?php
 /**
- * Property Setup Wizard 
+ * Property Import Engine
+ *
+ * Headless demo-import engine: AJAX handlers (`hvnly_import_properties`,
+ * `hvnly_cancel_import`, map/API-key saves), the batch import pipeline, term
+ * image seeding, and run-state management. The legacy Setup Wizard admin UI
+ * that used to live here was retired in Sprint 26D — the React onboarding
+ * (OnboardingWizard.php) is now the sole setup experience and drives this
+ * engine through the same AJAX contract.
  *
  * Complete import with dynamic field matching - ALL 7 SECTIONS
- * NOW with UNIQUE group_base_id per property and per group
+ * with UNIQUE group_base_id per property and per group.
  *
  * @package     Havenlytics
  * @subpackage  Admin
@@ -12,13 +19,11 @@
 
 namespace HvnlyNab\Admin;
 
-use HvnlyNab\Admin\Data\TabData;
 use HvnlyNab\Admin\Data\DemoData;
 use HvnlyNab\Admin\Data\UkImportLocations;
 use HvnlyNab\Admin\Importer\PropertyLocationTermImageSeeder;
 use HvnlyNab\Admin\Importer\PropertyTypeTermImageSeeder;
 use HvnlyNab\Agent\PropertyAgentResolver;
-use HvnlyNab\Core\PermalinkSettings;
 use HvnlyNab\Core\SectionIdentity;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -111,6 +116,15 @@ class PropertyImportWizard {
         'localhost',
         '127.0.0.1',
     ];
+
+    /**
+     * Consistent timeout (seconds) for every remote image download during import.
+     *
+     * Kept well under the request execution budget so a single stalled host cannot
+     * exceed max_execution_time and 5xx the whole batch. Previously downloads ranged
+     * from 15s to a dangerous 300s.
+     */
+    const IMAGE_DOWNLOAD_TIMEOUT = 15;
 
     /**
      * Debug mode flag
@@ -216,31 +230,14 @@ class PropertyImportWizard {
         $this->debug_mode = function_exists( 'hvnly_is_debug_logging_enabled' ) && hvnly_is_debug_logging_enabled();
         $this->active_theme = wp_get_theme()->get( 'Name' );
 
-        add_action( 'admin_menu', [ $this, 'add_import_submenu' ], 20 );
+        // Legacy Setup Wizard UI retired (Sprint 26D). The React onboarding
+        // (OnboardingWizard.php) is now the sole setup experience. Only the
+        // shared import ENGINE and its AJAX/term-seeding hooks remain here.
         add_action( 'wp_ajax_hvnly_import_properties', [ $this, 'ajax_import_properties' ] );
         add_action( 'wp_ajax_hvnly_cancel_import', [ $this, 'ajax_cancel_import' ] );
         add_action( 'wp_ajax_hvnly_save_google_api_key', [ $this, 'ajax_save_google_api_key' ] );
         add_action( 'wp_ajax_hvnly_save_map_provider', [ $this, 'ajax_save_map_provider' ] );
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
-        add_action( 'admin_init', [ $this, 'maybe_redirect_locked_import_wizard' ], 1 );
-        add_action( 'admin_init', [ $this, 'suppress_admin_notices' ] );
-        add_action( 'admin_head', [ $this, 'add_notice_suppression_css' ] );
         add_action( 'load-edit-tags.php', [ $this, 'maybe_backfill_location_term_images_admin' ] );
-        add_filter( 'wp_load_speculation_rules', [ $this, 'maybe_disable_speculation_rules' ] );
-    }
-
-    /**
-     * Disable WP speculative loading on the import wizard to avoid View Transition AbortErrors.
-     *
-     * @param bool $enabled Whether speculation rules are enabled.
-     * @return bool
-     */
-    public function maybe_disable_speculation_rules( $enabled ) {
-        if ( $this->is_import_wizard_page() ) {
-            return false;
-        }
-
-        return (bool) $enabled;
     }
 
     /**
@@ -292,27 +289,6 @@ class PropertyImportWizard {
     public function register(): void {}
 
     /**
-     * Add import submenu
-     */
-    public function add_import_submenu() {
-        add_submenu_page(
-            'edit.php?post_type=' . $this->post_type,
-            esc_html__( 'Property Setup Wizard', 'havenlytics' ),
-            esc_html__( 'Setup Wizard', 'havenlytics' ),
-            'manage_options',
-            'hvnly-property-import',
-            [ $this, 'render_wizard_page' ]
-        );
-
-        if ( $this->is_import_wizard_locked() ) {
-            remove_submenu_page(
-                'edit.php?post_type=' . $this->post_type,
-                'hvnly-property-import'
-            );
-        }
-    }
-
-    /**
      * Whether the import wizard should be inaccessible after a successful import.
      *
      * @return bool
@@ -326,345 +302,6 @@ class PropertyImportWizard {
         $published_count = isset( $property_count->publish ) ? absint( $property_count->publish ) : 0;
 
         return $published_count > 0;
-    }
-
-    /**
-     * Properties admin list URL.
-     *
-     * @return string
-     */
-    private function get_properties_admin_url(): string {
-        return admin_url( 'edit.php?post_type=' . $this->post_type );
-    }
-
-    /**
-     * Whether the Havenlytics Realty companion theme is active.
-     *
-     * @return bool
-     */
-    private function is_realty_companion_theme_active(): bool {
-        return 'havenlytics-realty' === get_template();
-    }
-
-    /**
-     * Front-end URL shown after import completes.
-     *
-     * Realty theme: homepage. Other themes: property archive (/properties/).
-     *
-     * @return string
-     */
-    private function get_import_success_view_url(): string {
-        if ( $this->is_realty_companion_theme_active() ) {
-            $page_id = 0;
-
-            if ( 'page' === get_option( 'show_on_front', 'posts' ) ) {
-                $page_id = (int) get_option( 'page_on_front', 0 );
-            }
-
-            if ( $page_id <= 0 ) {
-                $page_id = (int) get_option( 'hvn_realty_home_page_id', 0 );
-            }
-
-            if ( $page_id > 0 ) {
-                $url = get_permalink( $page_id );
-                if ( is_string( $url ) && '' !== $url ) {
-                    return $url;
-                }
-            }
-
-            return home_url( '/' );
-        }
-
-        if ( post_type_exists( $this->post_type ) ) {
-            $archive_url = get_post_type_archive_link( $this->post_type );
-            if ( is_string( $archive_url ) && '' !== $archive_url ) {
-                return $archive_url;
-            }
-        }
-
-        if ( class_exists( PermalinkSettings::class ) ) {
-            $archive_slug = PermalinkSettings::get_property_archive_slug();
-            if ( is_string( $archive_slug ) && '' !== $archive_slug ) {
-                return home_url( '/' . trim( $archive_slug, '/' ) . '/' );
-            }
-        }
-
-        return home_url( '/properties/' );
-    }
-
-    /**
-     * Redirect completed imports away from the wizard screen.
-     *
-     * @return void
-     */
-    public function maybe_redirect_locked_import_wizard(): void {
-        if ( ! $this->is_import_wizard_page() || ! current_user_can( 'manage_options' ) ) {
-            return;
-        }
-
-        if ( ! $this->is_import_wizard_locked() ) {
-            return;
-        }
-
-        wp_safe_redirect( $this->get_properties_admin_url() );
-        exit;
-    }
-
-    /**
-     * Render wizard page
-     */
-    public function render_wizard_page() {
-        if ( ! current_user_can( 'manage_options' ) ) {
-            wp_die( esc_html__( 'You do not have sufficient permissions.', 'havenlytics' ) );
-        }
-
-        if ( $this->is_import_wizard_locked() ) {
-            wp_safe_redirect( $this->get_properties_admin_url() );
-            exit;
-        }
-
-        include __DIR__ . '/Importer/property-import-wizard.php';
-    }
-
-    /**
-     * Suppress admin notices
-     */
-    public function suppress_admin_notices() {
-        if ( ! $this->is_import_wizard_page() ) {
-            return;
-        }
-        remove_all_actions( 'admin_notices' );
-        remove_all_actions( 'all_admin_notices' );
-        remove_all_actions( 'network_admin_notices' );
-        remove_all_actions( 'user_admin_notices' );
-        remove_all_actions( 'woocommerce_admin_notices' );
-        remove_all_actions( 'woocommerce_before_settings_errors' );
-        remove_all_actions( 'elementor/admin/after_create_settings/' );
-        remove_all_actions( 'admin_print_scripts' );
-        add_action( 'admin_notices', [ $this, 'empty_notice_handler' ], PHP_INT_MAX );
-        add_action( 'all_admin_notices', [ $this, 'empty_notice_handler' ], PHP_INT_MAX );
-    }
-
-    public function empty_notice_handler() {}
-
-    public function add_notice_suppression_css() {
-        if ( ! $this->is_import_wizard_page() ) {
-            return;
-        }
-        ?>
-<style type="text/css">
-.notice,
-.notice-warning,
-.notice-error,
-.notice-success,
-.notice-info,
-.updated,
-.update-nag,
-.error,
-.is-dismissible,
-.wp-header-end,
-#wpbody-content>.notice,
-#wpbody-content>.updated,
-#wpbody-content>.error,
-#wpbody-content>.update-nag,
-div.notice,
-div.updated,
-div.error,
-div.update-nag,
-.settings-error,
-.woocommerce-message,
-.woocommerce-error,
-.woocommerce-info,
-.elementor-message,
-.yoast-notice,
-.notice-wrapper,
-.wp-notice-wrapper {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    opacity: 0 !important;
-}
-
-#wpbody-content {
-    padding-top: 0 !important;
-}
-
-.wrap .notice,
-.wrap .updated,
-.wrap .error {
-    display: none !important;
-}
-
-.update-nag {
-    display: none !important;
-}
-</style>
-<?php
-    }
-
-    private function is_import_wizard_page(): bool {
-        global $current_screen;
-        if ( $current_screen && 'hvnly_property_page_hvnly-property-import' === $current_screen->id ) {
-            return true;
-        }
-        if (
-            isset( $_GET['page'], $_GET['post_type'] )
-            && 'hvnly-property-import' === sanitize_text_field( wp_unslash( $_GET['page'] ) )
-            && 'hvnly_property' === sanitize_key( wp_unslash( $_GET['post_type'] ) )
-        ) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Enqueue assets
-     */
-    public function enqueue_assets( $hook ) {
-        if ( 'hvnly_property_page_hvnly-property-import' !== $hook ) {
-            return;
-        }
-
-        $version = defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '2.2.1';
-
-        $fonts_css_path = HVNLYNAB_ASSETS_PATH . '/admin/css/fonts.css';
-        if ( file_exists( $fonts_css_path ) ) {
-            wp_enqueue_style(
-                'hvnly-admin-fonts',
-                HVNLYNAB_ASSETS_URL . '/admin/css/fonts.css',
-                [],
-                $version
-            );
-        }
-
-        $fa_css_path = HVNLYNAB_ASSETS_PATH . '/admin/css/fontawesome-all.min.css';
-        if ( file_exists( $fa_css_path ) ) {
-            wp_enqueue_style(
-                'hvnly-admin-fontawesome-all',
-                HVNLYNAB_ASSETS_URL . '/admin/css/fontawesome-all.min.css',
-                [],
-                $version
-            );
-        }
-
-        wp_enqueue_style(
-            'leaflet',
-            esc_url( HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/css/leaflet.css' ),
-            [],
-            '1.9.4'
-        );
-        wp_enqueue_script(
-            'leaflet',
-            esc_url( HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/js/leaflet.js' ),
-            [],
-            '1.9.4',
-            true
-        );
-        
-        wp_enqueue_style( 'hvnly-import-wizard', HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-import-wizard.css', [ 'hvnly-admin-fonts', 'hvnly-admin-fontawesome-all' ], $version );
-        wp_enqueue_script(
-            'hvnly-import-map-manager',
-            HVNLYNAB_ASSETS_URL . '/admin/js/hvnly-import-map-manager.js',
-            [],
-            $version,
-            true
-        );
-        wp_enqueue_script(
-            'hvnly-import-wizard',
-            HVNLYNAB_ASSETS_URL . '/admin/js/hvnly-import-wizard.js',
-            [ 'jquery', 'leaflet', 'hvnly-import-map-manager' ],
-            $version,
-            true
-        );
-
-        $rest_url = rest_url( 'hvnlynab/v1' );
-        
-        $google_api_key   = function_exists( 'hvnly_get_google_maps_api_key' ) ? hvnly_get_google_maps_api_key() : '';
-        $map_provider     = function_exists( 'hvnly_get_map_provider' ) ? hvnly_get_map_provider() : 'leaflet';
-        $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $map_settings     = $settings_manager->get_map_settings();
-
-        $localized_data = [
-            'ajaxurl'          => admin_url( 'admin-ajax.php' ),
-            'resturl'          => $rest_url,
-            'nonce'            => wp_create_nonce( 'hvnly_import_nonce' ),
-            'rest_nonce'       => wp_create_nonce( 'wp_rest' ),
-            'csrf_token'       => wp_create_nonce( 'hvnly_import_csrf' ),
-            'googleApiKey'     => $google_api_key,
-            'googleMapId'      => function_exists( 'hvnly_get_google_map_id' ) ? hvnly_get_google_map_id() : '',
-            'mapProvider'      => $map_provider,
-            'osmTileUrl'       => $settings_manager->get_osm_tile_url(),
-            'osmAttribution'   => $settings_manager->get_osm_attribution(),
-            'defaultLat'       => isset( $map_settings['hvnly_default_lat'] ) ? (float) $map_settings['hvnly_default_lat'] : 30.2672,
-            'defaultLng'       => isset( $map_settings['hvnly_default_lng'] ) ? (float) $map_settings['hvnly_default_lng'] : -97.7431,
-            'locationDefaults' => array(
-                'address'   => (string) ( UkImportLocations::get_london_fallback()['map_address'] ?? 'London, United Kingdom' ),
-                'latitude'  => (string) ( UkImportLocations::get_london_fallback()['map_latitude'] ?? '51.5074' ),
-                'longitude' => (string) ( UkImportLocations::get_london_fallback()['map_longitude'] ?? '-0.1278' ),
-            ),
-            'imported'         => get_option( $this->import_option, false ),
-            'importCount'      => absint( get_option( $this->count_option, 0 ) ),
-            'totalProperties'  => absint( wp_count_posts( $this->post_type )->publish ?? 0 ),
-            'maxImportLimit'        => $this->get_demo_import_limit(),
-            'defaultImportQuantity' => min( 10, $this->get_demo_import_limit() ),
-            'batchSize'        => 1,
-            'importAjaxTimeout'=> 240000,
-            'importMaxRetries' => 5,
-            'importResume'     => $this->get_client_resume_payload(),
-            'debug'            => $this->debug_mode,
-            'activeTheme'      => $this->active_theme,
-            'isHeavyTheme'     => $this->is_heavy_theme(),
-            'cacheEnabled'     => function_exists( 'hvnly_is_cache_enabled' ) ? hvnly_is_cache_enabled() : (bool) get_option( 'hvnly_cache_enabled', 0 ),
-            'successUrls'      => [
-                'viewUrl'        => esc_url( $this->get_import_success_view_url() ),
-                'dashboardUrl'   => esc_url( $this->get_properties_admin_url() ),
-                'viewLabel'      => $this->is_realty_companion_theme_active()
-                    ? esc_html__( 'View Website', 'havenlytics' )
-                    : esc_html__( 'View Properties', 'havenlytics' ),
-                'dashboardLabel' => esc_html__( 'Return to Dashboard', 'havenlytics' ),
-            ],
-            'strings'          => [
-                'confirmImport'      => esc_html__( 'Are you sure you want to import demo properties?', 'havenlytics' ),
-                'importing'          => esc_html__( 'Importing properties...', 'havenlytics' ),
-                'complete'           => esc_html__( 'Import complete!', 'havenlytics' ),
-                'error'              => esc_html__( 'An error occurred during import.', 'havenlytics' ),
-                'viewProperties'     => esc_html__( 'View Properties', 'havenlytics' ),
-                'cancelConfirm'      => esc_html__( 'Are you sure you want to cancel the import?', 'havenlytics' ),
-                'cancel'             => esc_html__( 'Cancel Import', 'havenlytics' ),
-                'pause'              => esc_html__( 'Pause', 'havenlytics' ),
-                'mapProviderSaved'   => esc_html__( 'Map provider saved.', 'havenlytics' ),
-                'apiKeySaved'        => esc_html__( 'Google API key saved.', 'havenlytics' ),
-                'apiKeySaveFailed'   => esc_html__( 'Could not save Google API key.', 'havenlytics' ),
-                'placesUnavailable'  => esc_html__(
-                    'Address autocomplete is unavailable. Enable the Maps JavaScript API and Places API (legacy) for this key in Google Cloud Console, or enter the address manually.',
-                    'havenlytics'
-                ),
-                'placesNewApiBlocked' => esc_html__(
-                    'Places API (New) is disabled for this project. Havenlytics uses classic Places Autocomplete instead—enable Places API (legacy) under APIs & Services. You can still type the address manually.',
-                    'havenlytics'
-                ),
-                'googleGeocodeFallback' => esc_html__(
-                    'Google geocoding is unavailable. Using OpenStreetMap search instead.',
-                    'havenlytics'
-                ),
-                'geocodeFailed' => esc_html__(
-                    'Could not find that address. Try selecting a suggestion or adjust the marker on the map.',
-                    'havenlytics'
-                ),
-                'mapLoadFailed' => esc_html__(
-                    'Unable to load Google Maps. Showing OpenStreetMap instead.',
-                    'havenlytics'
-                ),
-                'loadingMap' => esc_html__( 'Loading map…', 'havenlytics' ),
-                'cacheStatusOn'  => esc_html__( 'Status: ON — listings (grid, list, map, sidebar) use cached AJAX responses.', 'havenlytics' ),
-                'cacheStatusOff' => esc_html__( 'Status: OFF — listings use live queries without cache.', 'havenlytics' ),
-            ],
-        ];
-        wp_localize_script( 'hvnly-import-wizard', 'hvnlyImportWizard', $localized_data );
     }
 
     private function is_heavy_theme(): bool {
@@ -1707,7 +1344,10 @@ div.update-nag,
 
             wp_send_json_success( $result );
 
-        } catch ( \Exception $e ) {
+        } catch ( \Throwable $e ) {
+            // Catch \Throwable (not just \Exception) so a TypeError / missing class /
+            // OOM inside property creation or a seeder returns a clean JSON error the
+            // client can handle, instead of an HTML fatal that hangs the wizard.
             $this->restore_wordpress_state();
             $this->import_running = false;
             $this->log_error( 'Import AJAX error: ' . $e->getMessage() );
@@ -2515,7 +2155,9 @@ div.update-nag,
                 'errors'     => ! empty( $errors ) ? $errors : null,
             ];
 
-        } catch ( \Exception $e ) {
+        } catch ( \Throwable $e ) {
+            // Re-thrown as \Throwable so the AJAX handler's catch converts any fatal
+            // (not only \Exception) into a JSON error response.
             $this->log_error( 'Batch processing error: ' . $e->getMessage() );
             throw $e;
         }
@@ -4230,11 +3872,24 @@ private function create_demo_property( $data, $options = [] ) {
             return $cached_attachment;
         }
 
-        $temp_file = download_url( $image_url, 20, true );
+        // Graceful media strategy: local bundled → remote → placeholder → continue.
+        // When there is no outbound HTTP (Playground / offline / dead host) skip the
+        // remote download entirely rather than stalling on its timeout, and fall back
+        // to a placeholder if one is registered. Import never fails on a missing image.
+        $local_attachment = $this->resolve_local_bundled_attachment( $image_url, $post_id );
+        if ( $local_attachment > 0 ) {
+            return $local_attachment;
+        }
+
+        if ( ! function_exists( 'hvnly_import_remote_media_available' ) || ! hvnly_import_remote_media_available() ) {
+            return $this->resolve_placeholder_attachment( $post_id );
+        }
+
+        $temp_file = download_url( $image_url, self::IMAGE_DOWNLOAD_TIMEOUT, true );
 
         if ( is_wp_error( $temp_file ) ) {
             $this->log_error( 'Failed to download image: ' . $temp_file->get_error_message() );
-            return false;
+            return $this->resolve_placeholder_attachment( $post_id );
         }
 
         if ( ! file_exists( $temp_file ) ) {
@@ -4288,6 +3943,35 @@ private function create_demo_property( $data, $options = [] ) {
         $this->cache_sideload_attachment( $image_url, (int) $attachment_id );
 
         return $attachment_id;
+    }
+
+    /**
+     * Tier 1 of the media waterfall: a locally-bundled attachment for a demo image.
+     *
+     * No demo image binaries ship today, so this returns 0 by default — it is the
+     * wiring point for a future bundled set. A filter may return a ready attachment
+     * ID so offline/Playground imports can show real imagery without any network.
+     *
+     * @param string $image_url Remote image URL being resolved.
+     * @param int    $post_id   Property post ID.
+     * @return int Attachment ID, or 0 when none is available.
+     */
+    private function resolve_local_bundled_attachment( $image_url, $post_id ) {
+        return (int) apply_filters( 'hvnly_import_local_bundled_attachment_id', 0, $image_url, $post_id );
+    }
+
+    /**
+     * Tier 3 of the media waterfall: a placeholder attachment when local + remote fail.
+     *
+     * Returns false by default (property is created image-less — the import still
+     * succeeds). A filter may supply a bundled placeholder attachment ID.
+     *
+     * @param int $post_id Property post ID.
+     * @return int|false Attachment ID, or false to continue without an image.
+     */
+    private function resolve_placeholder_attachment( $post_id ) {
+        $placeholder_id = (int) apply_filters( 'hvnly_import_placeholder_attachment_id', 0, $post_id );
+        return $placeholder_id > 0 ? $placeholder_id : false;
     }
 
     private function assign_property_taxonomies( $post_id, $data ) {

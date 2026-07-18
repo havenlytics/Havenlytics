@@ -86,6 +86,9 @@ final class AgentConstants {
 	/** @var string Optional linked WordPress user ID (legacy bridge). */
 	public const META_LINKED_USER_ID = '_hvnly_agent_linked_user_id';
 
+	/** @var string GMT datetime when Workspace registration provisioned this agent. */
+	public const META_REGISTERED_AT = '_hvnly_agent_registered_at';
+
 	/** @var string Extension meta bucket for future CRM / webhook fields. */
 	public const META_EXTENSIONS = '_hvnly_agent_extensions';
 

@@ -46,9 +46,16 @@
     box-shadow: 0 2px 8px rgba(var(--hvnly-primary-rgb), 0.3);
 }
 
+/* Sprint 31E: hover deepens the tint — a full primary fill on hover made
+   every tab look active while scrubbing across the bar. */
 .hvnly-property-search-tab:hover:not(.active) {
-    background: var(--hvnly-brand-primary);
-    color: var(--hvnly-color-white);
+    background: rgba(var(--hvnly-primary-rgb), 0.12);
+    color: var(--hvnly-brand-primary);
+}
+
+.hvnly-property-search-tab:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.28);
 }
 
 .hvnly-property-form-group-fields-wrapper {
@@ -88,6 +95,24 @@
 
 .hvnly-property-form-group-fields-wrapper .hvnly-property-search-submit:hover {
     background: var(--hvnly-button-bg-hover);
+    box-shadow: 0 4px 14px -4px rgba(var(--hvnly-primary-rgb), 0.5);
+}
+
+.hvnly-property-form-group-fields-wrapper .hvnly-property-search-submit:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.28);
+}
+
+/* Sprint 31E: one consistent focus treatment for every search control —
+   text inputs, selects, and the additional-filter dropdowns previously had
+   no visible focus state at all. */
+.hvnly-property-search-form input[type="text"]:focus,
+.hvnly-property-search-form input[type="search"]:focus,
+.hvnly-property-search-form input[type="number"]:focus,
+.hvnly-property-search-form select:focus {
+    outline: none;
+    border-color: var(--hvnly-brand-primary);
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.15);
 }
 
 /* Havenlytics Filter Toggle Styles */
@@ -172,6 +197,13 @@
 @media (max-width: 768px) {
     .hvnly-property-search-form .hvnly-property-additional-filters-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Sprint 31D: the 2-column grid is ~2× taller — without this the open
+       panel stayed capped at 200px with overflow:hidden between 640–768px,
+       making lower filters unreachable. */
+    .hvnly-property-search-form .hvnly-property-additional-filters.active {
+        max-height: 480px;
     }
 }
 
@@ -1042,16 +1074,33 @@
     transition: all var(--hvnly-transition-time);
     cursor: pointer;
     font-size: 14px;
+    /* Sprint 31D: items are now real <button>s — neutralize UA styles the
+       class did not already define. */
+    font-family: inherit;
+    padding: 0;
+    appearance: none;
 }
 
+/* Sprint 31E: quiet tint on hover; only the active page carries the solid
+   primary fill — page numbers no longer flash fully-filled on every pass
+   of the cursor. */
 #hvnly-property-pagination .hvnly-property-pagination-item:hover {
-    background: var(--hvnly-brand-secondary);color: var(--hvnly-color-white);border-color: var(--hvnly-brand-secondary);
+    background: rgba(var(--hvnly-primary-rgb), 0.08);
+    color: var(--hvnly-brand-primary);
+    border-color: rgba(var(--hvnly-primary-rgb), 0.45);
+}
+
+#hvnly-property-pagination .hvnly-property-pagination-item:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.28);
+    border-color: var(--hvnly-brand-primary);
 }
 
 #hvnly-property-pagination .hvnly-property-pagination-item.active {
     background: var(--hvnly-brand-primary);
     border-color: var(--hvnly-brand-primary);
     color: var(--hvnly-color-white);
+    box-shadow: 0 2px 8px -2px rgba(var(--hvnly-primary-rgb), 0.5);
 }
 
 #hvnly-property-pagination .hvnly-property-pagination-item.dots {
@@ -1079,27 +1128,37 @@
 }
 
 .hvnly-property-load-more-btn {
-    padding: 0.75rem 2rem;
+    padding: 0.8rem 2.25rem;
     background: var(--hvnly-brand-primary);
     color: var(--hvnly-color-white);
     border-radius: var(--hvnly-button-radius);
     font-weight: var(--hvnly-font-weight-semibold);
-    transition: all var(--hvnly-transition-time);
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    transition: background-color var(--hvnly-transition-time), box-shadow var(--hvnly-transition-time);
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     border: none;
+    box-shadow: 0 1px 3px rgba(30, 30, 47, 0.16);
 }
 
+/* Sprint 31E: response-to-user glow instead of the button jumping upward. */
 .hvnly-property-load-more-btn:hover {
     background: var(--hvnly-button-bg-hover);
-    transform: translateY(-2px);
+    box-shadow: 0 4px 14px -4px rgba(var(--hvnly-primary-rgb), 0.5);
+}
+
+.hvnly-property-load-more-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.28);
 }
 
 .hvnly-property-load-more-btn.loading {
     pointer-events: none;
-    opacity: 0.7;
+    opacity: 0.85;
+    box-shadow: none;
 }
 
 .hvnly-load-more-spinner {
@@ -1289,10 +1348,13 @@
 }
 
 /* Havenlytics AJAX Styles */
+/* Sprint 31E: results dim smoothly instead of snapping, and the spinner
+   ring is tokenized (was hardcoded #f3f3f3). */
 .hvnly-loading {
-    opacity: 0.6;
+    opacity: 0.55;
     pointer-events: none;
     position: relative;
+    transition: opacity 0.2s ease;
 }
 
 .hvnly-loading::after {
@@ -1303,10 +1365,10 @@
     width: 40px;
     height: 40px;
     margin: -20px 0 0 -20px;
-    border: 3px solid #f3f3f3;
+    border: 3px solid rgba(var(--hvnly-primary-rgb), 0.15);
     border-top: 3px solid var(--hvnly-brand-primary);
     border-radius: 50%;
-    animation: hvnly-spin 1s linear infinite;
+    animation: hvnly-spin 0.8s linear infinite;
 }
 
 @keyframes hvnly-spin {

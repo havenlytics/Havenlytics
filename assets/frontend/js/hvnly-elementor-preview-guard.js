@@ -56,11 +56,6 @@
             return this.isPreviewContext();
         },
 
-        removeSharePopup() {
-            $('#hvnly-property-global-share-popup, .hvnly-property-share-popup-overlay').remove();
-            $('body').removeClass('hvnly-property-share-popup-open');
-        },
-
         initCarousels(root) {
             if (
                 !window.havenlyticsFrontend ||
@@ -77,8 +72,6 @@
         },
 
         forceCleanUiState() {
-            this.removeSharePopup();
-
             $('.hvnly-property-grid-view').each(function () {
                 const $grid = $(this);
                 $grid.removeClass('hvnly-loading hvnly-original-content');
@@ -112,21 +105,6 @@
             this.initCarousels(document);
         },
 
-        watchForSharePopup() {
-            if (!this.shouldDisableInteractiveUi() || typeof MutationObserver === 'undefined') {
-                return;
-            }
-
-            const self = this;
-            const observer = new MutationObserver(function () {
-                if ($('#hvnly-property-global-share-popup').length) {
-                    self.removeSharePopup();
-                }
-            });
-
-            observer.observe(document.documentElement, { childList: true, subtree: true });
-        },
-
         boot() {
             if (!this.shouldDisableInteractiveUi()) {
                 return;
@@ -135,7 +113,6 @@
             const self = this;
 
             this.forceCleanUiState();
-            this.watchForSharePopup();
 
             $(window).on('elementor/frontend/init', () => {
                 self.forceCleanUiState();
@@ -151,10 +128,6 @@
     };
 
     window.HvnlyElementorPreview = HvnlyElementorPreview;
-
-    if (HvnlyElementorPreview.shouldDisableInteractiveUi()) {
-        HvnlyElementorPreview.removeSharePopup();
-    }
 
     $(document).ready(function () {
         HvnlyElementorPreview.boot();

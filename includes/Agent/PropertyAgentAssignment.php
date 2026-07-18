@@ -33,6 +33,80 @@ class PropertyAgentAssignment {
 		add_action( 'add_meta_boxes', array( $this, 'register_meta_box' ) );
 		add_action( 'save_post_' . AgentConstants::PROPERTY_POST_TYPE, array( $this, 'save' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_action( 'pre_get_posts', array( $this, 'filter_admin_list_by_assigned_agent' ) );
+		add_action( 'admin_notices', array( $this, 'assigned_agent_filter_notice' ) );
+	}
+
+	/**
+	 * Honor ?hvnly_assigned_agent= on the Properties admin list.
+	 *
+	 * @param \WP_Query $query Query.
+	 * @return void
+	 */
+	public function filter_admin_list_by_assigned_agent( $query ): void {
+		if ( ! is_admin() || ! $query instanceof \WP_Query || ! $query->is_main_query() ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only list filter.
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_key( wp_unslash( (string) $_GET['post_type'] ) ) : '';
+		if ( AgentConstants::PROPERTY_POST_TYPE !== $post_type ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only list filter.
+		$agent_id = isset( $_GET['hvnly_assigned_agent'] ) ? absint( wp_unslash( (string) $_GET['hvnly_assigned_agent'] ) ) : 0;
+		if ( $agent_id <= 0 ) {
+			return;
+		}
+
+		if ( AgentConstants::POST_TYPE !== get_post_type( $agent_id ) ) {
+			$query->set( 'post__in', array( 0 ) );
+			return;
+		}
+
+		$ids = AgentPropertiesQuery::get_assigned_property_ids(
+			$agent_id,
+			array( 'publish', 'pending', 'draft', 'private' )
+		);
+
+		$query->set( 'post__in', ! empty( $ids ) ? $ids : array( 0 ) );
+		$query->set( 'orderby', 'post__in' );
+	}
+
+	/**
+	 * Surface the active assigned-agent filter on the Properties list.
+	 *
+	 * @return void
+	 */
+	public function assigned_agent_filter_notice(): void {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( ! $screen || 'edit' !== $screen->base || AgentConstants::PROPERTY_POST_TYPE !== $screen->post_type ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only list filter.
+		$agent_id = isset( $_GET['hvnly_assigned_agent'] ) ? absint( wp_unslash( (string) $_GET['hvnly_assigned_agent'] ) ) : 0;
+		if ( $agent_id <= 0 || AgentConstants::POST_TYPE !== get_post_type( $agent_id ) ) {
+			return;
+		}
+
+		$clear_url = remove_query_arg( 'hvnly_assigned_agent' );
+		$title     = get_the_title( $agent_id );
+		$name      = is_string( $title ) && '' !== $title ? $title : sprintf( '#%d', $agent_id );
+
+		printf(
+			'<div class="notice notice-info"><p>%1$s <a href="%2$s">%3$s</a></p></div>',
+			esc_html(
+				sprintf(
+					/* translators: %s: agent display name */
+					__( 'Showing properties assigned to %s.', 'havenlytics' ),
+					$name
+				)
+			),
+			esc_url( $clear_url ),
+			esc_html__( 'Clear filter', 'havenlytics' )
+		);
 	}
 
 	/**

@@ -65,10 +65,10 @@ $hvnly_search_term = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( (str
 		<?php endif; ?>
 
 		<div class="hvnly-property--archive__view-buttons" role="group" aria-label="<?php esc_attr_e( 'View layout options', 'havenlytics' ); ?>">
-			<button type="button" class="hvnly-property--archive__view-btn <?php echo esc_attr( 'list' === $hvnly_view_type ? 'active' : '' ); ?>" data-view="list" aria-pressed="<?php echo esc_attr( 'list' === $hvnly_view_type ? 'true' : 'false' ); ?>">
+			<button type="button" class="hvnly-property--archive__view-btn <?php echo esc_attr( 'list' === $hvnly_view_type ? 'active' : '' ); ?>" data-view="list" aria-pressed="<?php echo esc_attr( 'list' === $hvnly_view_type ? 'true' : 'false' ); ?>" aria-label="<?php esc_attr_e( 'List view', 'havenlytics' ); ?>">
 				<i class="fas fa-list" aria-hidden="true"></i>
 			</button>
-			<button type="button" class="hvnly-property--archive__view-btn <?php echo esc_attr( 'grid' === $hvnly_view_type ? 'active' : '' ); ?>" data-view="grid" aria-pressed="<?php echo esc_attr( 'grid' === $hvnly_view_type ? 'true' : 'false' ); ?>">
+			<button type="button" class="hvnly-property--archive__view-btn <?php echo esc_attr( 'grid' === $hvnly_view_type ? 'active' : '' ); ?>" data-view="grid" aria-pressed="<?php echo esc_attr( 'grid' === $hvnly_view_type ? 'true' : 'false' ); ?>" aria-label="<?php esc_attr_e( 'Grid view', 'havenlytics' ); ?>">
 				<i class="fas fa-th" aria-hidden="true"></i>
 			</button>
 		</div>

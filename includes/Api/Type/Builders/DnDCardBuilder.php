@@ -55,98 +55,6 @@ class DnDCardBuilder
         add_action('rest_api_init', [$this, 'routes']);
         add_action('wp_enqueue_scripts', [$this, 'localize_script']);
         add_filter('hvnly_persist_card_builder_defaults', [$this, 'seed_default_sections']);
-        add_filter('rest_pre_dispatch', [$this, 'maybe_log_rest_request'], 5, 3);
-    }
-
-    /**
-     * Temporary debug: log every pb-card-builder REST hit when HVNLYNAB_DEBUG + WP_DEBUG_LOG are on.
-     *
-     * @param mixed            $result  Response to replace.
-     * @param \WP_REST_Server  $server  REST server instance.
-     * @param \WP_REST_Request $request Request object.
-     * @return mixed
-     */
-    public function maybe_log_rest_request($result, $server, $request)
-    {
-        if (!$request instanceof WP_REST_Request) {
-            return $result;
-        }
-
-        $route = (string) $request->get_route();
-        $needle = '/' . $this->namespace . '/' . $this->route_base;
-
-        if (strpos($route, $needle) === false) {
-            return $result;
-        }
-
-        if (!function_exists('hvnly_is_debug_logging_enabled') || !hvnly_is_debug_logging_enabled()) {
-            return $result;
-        }
-
-        $this->log_rest_request($request);
-        return $result;
-    }
-
-    /**
-     * Write pb-card-builder request forensics to debug.log.
-     *
-     * @param WP_REST_Request $request Incoming REST request.
-     * @return void
-     */
-    private function log_rest_request(WP_REST_Request $request): void
-    {
-        if (!function_exists('hvnly_debug_log')) {
-            return;
-        }
-
-        $screen_id = 'n/a';
-        if (function_exists('get_current_screen')) {
-            $screen = get_current_screen();
-            if ($screen && isset($screen->id)) {
-                $screen_id = $screen->id;
-            }
-        }
-
-        $referrer = isset($_SERVER['HTTP_REFERER'])
-            ? sanitize_text_field(wp_unslash($_SERVER['HTTP_REFERER']))
-            : 'n/a';
-
-        $body = (string) $request->get_body();
-        if (strlen($body) > 2048) {
-            $body = substr($body, 0, 2048) . '…';
-        }
-
-        $trace_frames = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 15);
-        $trace_lines = [];
-        foreach ($trace_frames as $frame) {
-            $file = isset($frame['file']) ? basename((string) $frame['file']) : '[internal]';
-            $line = isset($frame['line']) ? (int) $frame['line'] : 0;
-            $callable = '';
-            if (!empty($frame['class'])) {
-                $callable .= $frame['class'];
-            }
-            if (!empty($frame['type'])) {
-                $callable .= $frame['type'];
-            }
-            if (!empty($frame['function'])) {
-                $callable .= $frame['function'];
-            }
-            $trace_lines[] = sprintf('%s:%d %s', $file, $line, $callable);
-        }
-
-        $message = sprintf(
-            "[HAVENLYTICS PB-CARD DEBUG]\nMethod: %s\nRoute: %s\nPage: %s\nReferrer: %s\nUser: %d\nArgs: %s\nBody: %s\nTrace:\n  %s",
-            $request->get_method(),
-            $request->get_route(),
-            $screen_id,
-            $referrer,
-            get_current_user_id(),
-            wp_json_encode($request->get_query_params()),
-            $body,
-            implode("\n  ", $trace_lines)
-        );
-
-        hvnly_debug_log($message, 'HAVENLYTICS PB-CARD DEBUG');
     }
 
     /**
@@ -312,7 +220,6 @@ class DnDCardBuilder
         'status',
         'time',
         'favorite',
-        'share',
         'views',
         'title',
         'rating',
@@ -480,19 +387,10 @@ class DnDCardBuilder
             [
                 'id' => 'image-overlay-bottom-right',
                 'title' => __('Image Overlay Bottom Right', 'havenlytics'),
-                'icon' => 'fas fa-share-alt',
+                'icon' => 'fas fa-image',
                 'mode' => 'preset',
                 'order' => 4,
-                'fields' => [
-                    [
-                        'id' => 'share-button',
-                        'type' => 'share',
-                        'label' => __('Share', 'havenlytics'),
-                        'mode' => 'preset',
-                        'value' => [],
-                        'order' => 0
-                    ]
-                ]
+                'fields' => []
             ],
             [
                 'id' => 'avatar',

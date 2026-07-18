@@ -32,12 +32,9 @@ class AgentRepository implements AgentRepositoryInterface {
 			return null;
 		}
 
+		// Single avatar resolution chain: uploaded photo → Gravatar → placeholder.
 		$avatar_id = (int) get_post_thumbnail_id( $agent_id );
-		$avatar    = $avatar_id ? wp_get_attachment_image_url( $avatar_id, 'medium' ) : '';
-
-		if ( ! $avatar ) {
-			$avatar = includes_url( 'images/media/default.png' );
-		}
+		$avatar    = \HvnlyNab\Common\AvatarService::resolve_url( $agent_id, 0, 200, 'medium' );
 
 		$fields = AgentFields::get_profile( $agent_id );
 

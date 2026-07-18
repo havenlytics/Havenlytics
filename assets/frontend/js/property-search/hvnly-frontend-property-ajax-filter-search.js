@@ -303,12 +303,17 @@
                     if (icon.classList.contains('far')) {
                         icon.classList.remove('far');
                         icon.classList.add('fas');
-                        icon.style.color = 'var(--hvnlytics-alert)';
+                        // Sprint 31D: was var(--hvnlytics-alert) — a token that
+                        // exists nowhere (plugin prefix is --hvnly-*), so the
+                        // "favorited" state never changed color.
+                        icon.style.color = 'var(--hvnly-brand-error, #ff4d4f)';
+                        button.setAttribute('aria-pressed', 'true');
                         this.addToFavorites(propertyId);
                     } else {
                         icon.classList.remove('fas');
                         icon.classList.add('far');
                         icon.style.color = '';
+                        button.setAttribute('aria-pressed', 'false');
                         this.removeFromFavorites(propertyId);
                     }
                 });

@@ -17,8 +17,10 @@
 }
 .hvnly-sidebar--single
 .hvnly-property-single__widget:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+    /* Sprint 31D: was translateY(-4px) + a 50px mega-shadow — replaced with
+       a calm ink-tinted elevation per the design language (color/shadow-only
+       hovers). */
+    box-shadow: 0 8px 24px -6px rgba(30, 30, 47, 0.14);
 }
 .hvnly-sidebar--single
 .hvnly-property-single__widget-title {
@@ -427,45 +429,9 @@
     color: var(--hvnly-brand-primary);
 }
 
-/* Mortgage Calculator Widget */
-.hvnly-property-single__widget--mortgage {
-    background: rgba(var(--hvnly-primary-rgb), 0.03);
-    border: 1px solid rgba(var(--hvnly-primary-rgb), 0.1);
-}
-
-.hvnly-property-single__widget--mortgage .hvnly-property-single__form-input {
-    background: var(--hvnly-color-white);
-    border: 1px solid var(--hvnly-border-color);
-    color: var(--hvnly-text-primary);
-}
-
-.hvnly-property-single__widget--mortgage .hvnly-property-single__form-input::placeholder {
-    color: var(--hvnly-text-secondary);
-}
-
-.hvnly-property-single__widget--mortgage .hvnly-property-single__form-input:focus {
-    border-color: var(--hvnly-brand-primary);
-    background: var(--hvnly-color-white);
-}
-
-.hvnly-property-single__mortgage-result {
-    background: linear-gradient(135deg, var(--hvnly-brand-primary) 0%, var(--hvnly-button-bg-hover) 100%);
-    color: var(--hvnly-color-white);
-    padding: var(--hvnly-space-xl);
-    border-radius: var(--hvnly-border-radius-md);
-    margin-top: var(--hvnly-space-lg);
-    text-align: center;
-}
-
-.hvnly-property-single__mortgage-amount {
-    font-size: var(--hvnly-font-size-2xl);
-    font-weight: var(--hvnly-font-weight-bold);
-    margin-bottom: var(--hvnly-space-xs);
-}
-
-
-
-/* Mortgage Calculator Widget - Enhanced Styles */
+/* Mortgage Calculator Widget
+   (Sprint 31D: the first of two near-identical blocks was removed — the
+   "Enhanced" block below silently overrode every rule here anyway.) */
 .hvnly-property-single__widget--mortgage {
     background: linear-gradient(135deg, rgba(var(--hvnly-primary-rgb), 0.03) 0%, rgba(var(--hvnly-secondary-rgb), 0.03) 100%);
     border: 1px solid rgba(var(--hvnly-primary-rgb), 0.15);

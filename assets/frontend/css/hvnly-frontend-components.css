@@ -24,9 +24,14 @@
   overflow: hidden;
 }
 
-.hvnly-btn:focus {
+/* Keyboard focus ring = primary; mouse clicks stay clean (Sprint 31H). */
+.hvnly-btn:focus-visible {
   outline: 2px solid var(--hvnly-brand-primary);
   outline-offset: 2px;
+}
+
+.hvnly-btn:focus:not(:focus-visible) {
+  outline: none;
 }
 
 .hvnly-btn:disabled {
@@ -51,67 +56,81 @@
   font-size: var(--hvnly-font-size-xl, 1.5rem);
 }
 
-/* Button Variants */
-.hvnly-btn-primary {
+/* Button Variants.
+   Sprint 31H: the `--modifier` names (brief-requested, BEM-style) are added
+   as ALIASES sharing each existing rule — legacy `.hvnly-btn-*` names keep
+   working, so no template needs to change. Primary bg = primary token,
+   hover = secondary token, focus ring = primary (see .hvnly-btn:focus). */
+.hvnly-btn-primary,
+.hvnly-btn--primary {
   background-color: var(--hvnly-button-bg);
   color: var(--hvnly-button-color);
   border-color: var(--hvnly-button-bg);
 }
 
-.hvnly-btn-primary:hover:not(:disabled) {
+.hvnly-btn-primary:hover:not(:disabled),
+.hvnly-btn--primary:hover:not(:disabled) {
   background-color: var(--hvnly-button-bg-hover);
   border-color: var(--hvnly-button-bg-hover);
-
 }
 
-.hvnly-btn-secondary {
+.hvnly-btn-secondary,
+.hvnly-btn--secondary {
   background-color: var(--hvnly-brand-secondary);
   color: var(--hvnly-color-white, var(--hvnly-color-white));
   border-color: var(--hvnly-brand-secondary);
 }
 
-.hvnly-btn-secondary:hover:not(:disabled) {
+.hvnly-btn-secondary:hover:not(:disabled),
+.hvnly-btn--secondary:hover:not(:disabled) {
   background-color: #5a3d8a;
   border-color: #5a3d8a;
- 
 }
 
-.hvnly-btn-outline {
+.hvnly-btn-outline,
+.hvnly-btn--outline {
   background-color: transparent;
   color: var(--hvnly-brand-primary);
   border-color: var(--hvnly-brand-primary);
 }
 
-.hvnly-btn-outline:hover:not(:disabled) {
+.hvnly-btn-outline:hover:not(:disabled),
+.hvnly-btn--outline:hover:not(:disabled) {
   background-color: var(--hvnly-brand-primary);
   color: var(--hvnly-color-white, var(--hvnly-color-white));
-
 }
 
-.hvnly-btn-ghost {
+.hvnly-btn-ghost,
+.hvnly-btn--ghost {
   background-color: transparent;
   color: var(--hvnly-brand-primary);
   border-color: transparent;
 }
 
-.hvnly-btn-ghost:hover:not(:disabled) {
+.hvnly-btn-ghost:hover:not(:disabled),
+.hvnly-btn--ghost:hover:not(:disabled) {
   background-color: var(--hvnly-brand-primary);
   color: var(--hvnly-color-white, var(--hvnly-color-white));
 }
 
-.hvnly-btn-success {
+.hvnly-btn-success,
+.hvnly-btn--success {
   background-color: var(--hvnly-brand-success);
   color: var(--hvnly-color-white, var(--hvnly-color-white));
   border-color: var(--hvnly-brand-success);
 }
 
-.hvnly-btn-alert {
+/* `--danger` is the brief's name for the error/alert variant. */
+.hvnly-btn-alert,
+.hvnly-btn--danger,
+.hvnly-btn--alert {
   background-color: var(--hvnly-brand-error);
   color: var(--hvnly-color-white, var(--hvnly-color-white));
   border-color: var(--hvnly-brand-error);
 }
 
-.hvnly-btn-warning {
+.hvnly-btn-warning,
+.hvnly-btn--warning {
   background-color: var(--hvnly-brand-warning);
   color: var(--hvnly-color-white, var(--hvnly-color-white));
   border-color: var(--hvnly-brand-warning);
@@ -220,29 +239,116 @@
   color: var(--hvnly-text-primary);
 }
 
+/* Form controls.
+   Sprint 31H: `.hvnly-input / .hvnly-select / .hvnly-textarea` (brief-requested
+   short names) are added as aliases of the legacy `.hvnly-form-*` classes —
+   one token-driven rule, both names work. `font-family: inherit` keeps the
+   theme's typography (per the "respect theme typography" requirement) while
+   spacing/border/background/focus stay Havenlytics-consistent across themes. */
 .hvnly-form-input,
 .hvnly-form-select,
-.hvnly-form-textarea {
+.hvnly-form-textarea,
+.hvnly-input,
+.hvnly-select,
+.hvnly-textarea {
   width: 100%;
   padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: var(--hvnly-font-size-sm, 0.9rem);
+  line-height: 1.5;
   border: 1px solid var(--hvnly-input-border);
   border-radius: var(--hvnly-input-radius, 4px);
   background: var(--hvnly-color-bg-white);
   color: var(--hvnly-text-primary);
-  transition: all var(--hvnly-transition-time, 0.3s ease);
+  transition: border-color var(--hvnly-transition-time, 0.2s ease), box-shadow var(--hvnly-transition-time, 0.2s ease);
+}
+
+.hvnly-form-input:hover:not(:disabled),
+.hvnly-form-select:hover:not(:disabled),
+.hvnly-form-textarea:hover:not(:disabled),
+.hvnly-input:hover:not(:disabled),
+.hvnly-select:hover:not(:disabled),
+.hvnly-textarea:hover:not(:disabled) {
+  border-color: var(--hvnly-color-gray-500, #6c757d);
 }
 
 .hvnly-form-input:focus,
 .hvnly-form-select:focus,
-.hvnly-form-textarea:focus {
+.hvnly-form-textarea:focus,
+.hvnly-input:focus,
+.hvnly-select:focus,
+.hvnly-textarea:focus {
   outline: none;
   border-color: var(--hvnly-input-focus);
-  box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.1);
+  box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.15);
 }
 
-.hvnly-form-textarea {
+/* Error state (add the class, or the control gets it via aria-invalid). */
+.hvnly-input--error,
+.hvnly-select--error,
+.hvnly-textarea--error,
+.hvnly-input[aria-invalid="true"],
+.hvnly-select[aria-invalid="true"],
+.hvnly-textarea[aria-invalid="true"] {
+  border-color: var(--hvnly-brand-error);
+}
+
+.hvnly-input--error:focus,
+.hvnly-select--error:focus,
+.hvnly-textarea--error:focus,
+.hvnly-input[aria-invalid="true"]:focus,
+.hvnly-select[aria-invalid="true"]:focus,
+.hvnly-textarea[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(var(--hvnly-brand-error-rgb, 255, 77, 79), 0.15);
+}
+
+.hvnly-form-input:disabled,
+.hvnly-form-select:disabled,
+.hvnly-form-textarea:disabled,
+.hvnly-input:disabled,
+.hvnly-select:disabled,
+.hvnly-textarea:disabled {
+  background: var(--hvnly-color-bg-light);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.hvnly-form-textarea,
+.hvnly-textarea {
   resize: vertical;
   min-height: 100px;
+}
+
+/* Field-level error message. */
+.hvnly-field-error {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: var(--hvnly-font-size-xs, 0.75rem);
+  color: var(--hvnly-brand-error);
+}
+
+/* Checkbox / radio — accent-color keeps them on-brand across every theme
+   without a bespoke SVG control, respecting native accessibility. */
+.hvnly-checkbox,
+.hvnly-radio {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--hvnly-brand-primary);
+  cursor: pointer;
+}
+
+.hvnly-checkbox:focus-visible,
+.hvnly-radio:focus-visible {
+  outline: 2px solid var(--hvnly-brand-primary);
+  outline-offset: 2px;
+}
+
+.hvnly-checkbox:disabled,
+.hvnly-radio:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .hvnly-form-check {
@@ -255,6 +361,7 @@
 .hvnly-form-check-input {
   width: 1rem;
   height: 1rem;
+  accent-color: var(--hvnly-brand-primary);
 }
 
 /* ======================

@@ -183,13 +183,18 @@ class InquiryAdminPage {
 			return;
 		}
 
-		// Preserve inquiry_id when present.
+		// Preserve inquiry_id / agent_id when present.
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- passthrough for legacy bookmarks only.
 		$inquiry_id = isset( $_GET['inquiry_id'] ) ? absint( wp_unslash( (string) $_GET['inquiry_id'] ) ) : 0;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- passthrough for legacy bookmarks only.
+		$agent_id = isset( $_GET['agent_id'] ) ? absint( wp_unslash( (string) $_GET['agent_id'] ) ) : 0;
 
 		$target_args = array( 'page' => self::SUBMENU_SLUG );
 		if ( $inquiry_id > 0 ) {
 			$target_args['inquiry_id'] = $inquiry_id;
+		}
+		if ( $agent_id > 0 ) {
+			$target_args['agent_id'] = $agent_id;
 		}
 
 		wp_safe_redirect( add_query_arg( $target_args, admin_url( 'admin.php' ) ), 301 );
@@ -236,10 +241,15 @@ class InquiryAdminPage {
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- passthrough for legacy bookmarks only.
 		$inquiry_id = isset( $_GET['inquiry_id'] ) ? absint( wp_unslash( (string) $_GET['inquiry_id'] ) ) : 0;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- passthrough for legacy bookmarks only.
+		$agent_id = isset( $_GET['agent_id'] ) ? absint( wp_unslash( (string) $_GET['agent_id'] ) ) : 0;
 
 		$target_args = array( 'page' => self::SUBMENU_SLUG );
 		if ( $inquiry_id > 0 ) {
 			$target_args['inquiry_id'] = $inquiry_id;
+		}
+		if ( $agent_id > 0 ) {
+			$target_args['agent_id'] = $agent_id;
 		}
 
 		wp_safe_redirect( add_query_arg( $target_args, admin_url( 'admin.php' ) ), 301 );
@@ -409,14 +419,19 @@ class InquiryAdminPage {
 			? sprintf( $messages[ $action ], $updated )
 			: __( 'Action completed.', 'havenlytics' );
 
-		$redirect = add_query_arg(
-			array(
-				'post_type'    => 'hvnly_property',
-				'page'         => self::MENU_SLUG,
-				'hvnly_notice' => rawurlencode( $message ),
-			),
-			admin_url( 'edit.php' )
+		$redirect_args = array(
+			'post_type'    => 'hvnly_property',
+			'page'         => self::MENU_SLUG,
+			'hvnly_notice' => rawurlencode( $message ),
 		);
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- passthrough filter only.
+		$agent_id = isset( $_REQUEST['agent_id'] ) ? absint( wp_unslash( (string) $_REQUEST['agent_id'] ) ) : 0;
+		if ( $agent_id > 0 ) {
+			$redirect_args['agent_id'] = $agent_id;
+		}
+
+		$redirect = add_query_arg( $redirect_args, admin_url( 'edit.php' ) );
 
 		wp_safe_redirect( $redirect );
 		exit;
@@ -522,12 +537,42 @@ class InquiryAdminPage {
 		$list_table = new InquiryListTable( $this->repository );
 		$list_table->prepare_items();
 
-		$total = $this->repository->count();
-		$new   = $this->repository->count( array( 'status' => ContactAgentConstants::STATUS_NEW ) );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only list filter.
+		$agent_id = isset( $_REQUEST['agent_id'] ) ? absint( wp_unslash( (string) $_REQUEST['agent_id'] ) ) : 0;
+
+		$count_args = array();
+		$new_args   = array( 'status' => ContactAgentConstants::STATUS_NEW );
+		if ( $agent_id > 0 ) {
+			$count_args['agent_id'] = $agent_id;
+			$new_args['agent_id']   = $agent_id;
+		}
+
+		$total = $this->repository->count( $count_args );
+		$new   = $this->repository->count( $new_args );
 		?>
 <div class="wrap hvnly-inquiries-admin">
     <h1 class="wp-heading-inline"><?php esc_html_e( 'Property Inquiries', 'havenlytics' ); ?></h1>
     <hr class="wp-header-end" />
+
+	<?php if ( $agent_id > 0 ) : ?>
+		<?php
+		$agent_title = get_the_title( $agent_id );
+		$agent_name  = is_string( $agent_title ) && '' !== $agent_title ? $agent_title : sprintf( '#%d', $agent_id );
+		$clear_url   = remove_query_arg( 'agent_id' );
+		?>
+    <div class="notice notice-info">
+        <p>
+			<?php
+			printf(
+				/* translators: %s: agent display name */
+				esc_html__( 'Showing inquiries for agent %s.', 'havenlytics' ),
+				esc_html( $agent_name )
+			);
+			?>
+            <a href="<?php echo esc_url( $clear_url ); ?>"><?php esc_html_e( 'Clear filter', 'havenlytics' ); ?></a>
+        </p>
+    </div>
+	<?php endif; ?>
 
     <div class="hvnly-inquiries-admin__stats">
         <span class="hvnly-inquiries-admin__stat">
@@ -552,6 +597,9 @@ class InquiryAdminPage {
 
     <form method="post">
         <input type="hidden" name="page" value="<?php echo esc_attr( self::SUBMENU_SLUG ); ?>" />
+		<?php if ( $agent_id > 0 ) : ?>
+        <input type="hidden" name="agent_id" value="<?php echo esc_attr( (string) $agent_id ); ?>" />
+		<?php endif; ?>
         <?php
 				wp_nonce_field( 'bulk-' . self::MENU_SLUG );
 				$list_table->display();

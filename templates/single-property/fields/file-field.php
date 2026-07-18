@@ -88,8 +88,9 @@ if ( isset( $hvnly_icon_map[ $hvnly_file_extension ] ) ) {
     <?php endif; ?>
     
     <div class="hvnly-field__file-wrapper">
-        <a href="<?php echo esc_url( $hvnly_file_url ); ?>" 
-           target="_blank" 
+        <a href="<?php echo esc_url( $hvnly_file_url ); ?>"
+           target="_blank"
+           rel="noopener noreferrer"
            class="hvnly-field__file-link"
            download>
             <span class="hvnly-field__file-icon <?php echo esc_attr( $hvnly_icon_class ); ?>"></span>

@@ -212,7 +212,6 @@
             super(parent);
             this.elements = {
                 saveBtn: '#hvnlyPropertySingleSaveBtn',
-                shareBtn: '#hvnlyPropertySingleShareBtn',
                 printBtn: '#hvnlyPropertySinglePrintBtn',
                 contactForm: '.hvnly-property-single__contact-form'
             };
@@ -223,7 +222,6 @@
         init() {
             try {
                 this.elements.saveBtn = this.getElement(this.elements.saveBtn);
-                this.elements.shareBtn = this.getElement(this.elements.shareBtn);
                 this.elements.printBtn = this.getElement(this.elements.printBtn);
                 this.elements.contactForm = this.getElement(this.elements.contactForm);
                 
@@ -240,12 +238,6 @@
             if (this.elements.saveBtn) {
                 this.removeEventListeners.push(
                     this.safeAddEventListener(this.elements.saveBtn, 'click', () => this.toggleSave())
-                );
-            }
-            
-            if (this.elements.shareBtn) {
-                this.removeEventListeners.push(
-                    this.safeAddEventListener(this.elements.shareBtn, 'click', () => this.shareProperty())
                 );
             }
             
@@ -273,31 +265,6 @@
             } else {
                 if (icon) icon.setAttribute('xlink:href', '#hvnly-heart-outline');
                 this.elements.saveBtn.innerHTML = '<svg class="hvnly-icon hvnly-icon-thin"><use xlink:href="#hvnly-heart-outline"></use></svg> Save Property';
-            }
-        }
-
-        async shareProperty() {
-            try {
-                if (navigator.share) {
-                    await navigator.share({
-                        title: document.title,
-                        text: 'Check out this property on Havenlytics!',
-                        url: window.location.href
-                    });
-                } else if (navigator.clipboard) {
-                    await navigator.clipboard.writeText(window.location.href);
-                    alert('Link copied to clipboard!');
-                } else {
-                    const tempInput = document.createElement('input');
-                    tempInput.value = window.location.href;
-                    document.body.appendChild(tempInput);
-                    tempInput.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempInput);
-                    alert('Link copied to clipboard!');
-                }
-            } catch (error) {
-                this.log(`Share error: ${error.message}`, 'error');
             }
         }
 

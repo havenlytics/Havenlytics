@@ -15,6 +15,110 @@ function hvnly_is_debug_logging_enabled() {
 }
 
 /**
+ * Fast pre-flight check for outbound HTTP to the demo media hosts.
+ *
+ * The demo importer sideloads images from remote hosts. On WordPress Playground,
+ * offline dev, and fresh installs those hosts are unreachable — and, worse, hosts
+ * that accept-but-stall can burn each download's full timeout and blow past the
+ * request's execution budget. This runs ONE short-timeout probe (cached per request
+ * and, via a transient, per import run) so the importer can skip remote media
+ * entirely when there is no egress, completing instantly with image-less demo
+ * content instead of hanging. Image failure must never break the import.
+ *
+ * @return bool True when remote demo media appears reachable.
+ */
+function hvnly_import_remote_media_available() {
+    static $checked = null;
+    if ( null !== $checked ) {
+        return $checked;
+    }
+
+    // Allow forcing the result (tests / known-offline environments).
+    $override = apply_filters( 'hvnly_import_remote_media_available', null );
+    if ( null !== $override ) {
+        $checked = (bool) $override;
+        return $checked;
+    }
+
+    $cached = get_transient( 'hvnly_import_remote_media_ok' );
+    if ( false !== $cached ) {
+        $checked = ( 'yes' === $cached );
+        return $checked;
+    }
+
+    $probe = wp_remote_head(
+        'https://demo.havenlytics.com/wp-content/uploads/2026/03/1.jpg',
+        array(
+            'timeout'     => 5,
+            'redirection' => 1,
+            'sslverify'   => true,
+        )
+    );
+
+    $checked = ! is_wp_error( $probe )
+        && (int) wp_remote_retrieve_response_code( $probe ) > 0
+        && (int) wp_remote_retrieve_response_code( $probe ) < 400;
+
+    set_transient( 'hvnly_import_remote_media_ok', $checked ? 'yes' : 'no', 10 * MINUTE_IN_SECONDS );
+
+    return $checked;
+}
+
+/**
+ * Whether the current request is a system / maintenance context in which property
+ * workflow notifications must be suppressed.
+ *
+ * Sprint 28E. The email + in-app notification system must fire ONLY for real
+ * human workflow events (an agent submitting, an administrator publishing /
+ * rejecting a listing). System events must never notify:
+ *
+ *   - WP core import (`WP_IMPORTING`) or a WP-CLI / cron bulk pass (`WP_CLI`).
+ *   - The Havenlytics demo / bulk property importer, which flags each
+ *     programmatic insert with `$GLOBALS['hvnly_bulk_importing']` (the same
+ *     signal {@see \HvnlyNab\Database\Custom_Metabox\Havenlytics_Type} already
+ *     uses to skip its metabox save).
+ *   - Any other maintenance routine (migration, repair, setup wizard,
+ *     sample-content seeding) that opts in by raising
+ *     `$GLOBALS['hvnly_suppress_workflow_notifications']` or returning true from
+ *     the `hvnly_is_system_notification_context` filter.
+ *
+ * This is the single source of truth shared by the three listeners that can turn
+ * a listing-status change into a message:
+ * {@see \HvnlyNab\Workspace\Api\PropertyListingStatusBridge},
+ * {@see \HvnlyNab\Email\Notifiers\PropertyWorkflowNotifier} and
+ * {@see \HvnlyNab\Workspace\Notifications\NotificationEventListener}.
+ *
+ * @since 3.2.3
+ *
+ * @return bool True when property workflow notifications must be suppressed.
+ */
+function hvnly_is_system_notification_context() {
+    if ( ( defined( 'WP_IMPORTING' ) && WP_IMPORTING ) || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
+        return true;
+    }
+
+    if ( ! empty( $GLOBALS['hvnly_bulk_importing'] ) ) {
+        return true;
+    }
+
+    if ( ! empty( $GLOBALS['hvnly_suppress_workflow_notifications'] ) ) {
+        return true;
+    }
+
+    /**
+     * Filter the system-context decision for property workflow notifications.
+     *
+     * Return true from a bulk / migration / repair routine to suppress lifecycle
+     * emails and in-app rows for the remainder of the request.
+     *
+     * @since 3.2.3
+     *
+     * @param bool $is_system Whether this is a non-human system context.
+     */
+    return (bool) apply_filters( 'hvnly_is_system_notification_context', false );
+}
+
+/**
  * Return a validated plugin-owned custom table name for direct SQL queries.
  *
  * Only allows {$wpdb->prefix}hvnly_* identifiers used by Havenlytics custom tables.
@@ -186,21 +290,6 @@ function hvnly_is_save_property_enabled()
     }
     return false;
 }
-/**
- * Check if share button is enabled from settings
- *
- * @return bool
- * @since 2.0.3
- */
-function hvnly_is_share_button_enabled()
-{
-    if (class_exists('HvnlyNab\Core\SettingsManager')) {
-        $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        return $settings_manager->is_share_button_enabled();
-    }
-    return true;
-}
-
 
 /**
  * Get design setting with backward compatibility

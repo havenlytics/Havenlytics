@@ -1,23 +1,31 @@
-=== Havenlytics – Real Estate Plugin with Advanced Search, Maps & Property Builder ===
+=== Havenlytics – Real Estate Listings, Property Search & Agent Workspace ===
 Contributors: havenlytics
 Donate link: https://havenlytics.com
 Tags: real estate, listings, agency, property, agents
 Requires at least: 6.0
 Tested up to: 7.0
-Requires PHP: 7.4 
-Stable tag: 3.1.9
-License: GPLv2 or later 
+Requires PHP: 7.4
+Stable tag: 3.3.0
+License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Build modern real estate websites with property listings, AJAX search, interactive maps, analytics, Elementor widgets, and visual builders.
+Build real estate websites with property listings, AJAX search, interactive maps, visual builders, Elementor widgets, and a secure Agent Workspace.
 
 == Description ==
 
-**Havenlytics** is a WordPress real estate plugin for agencies, agents, developers, and property directories. Create and manage listings with visual builders, smart filters, maps, galleries, import tools, and an admin **Analytics** dashboard — on any theme.
+**Havenlytics** is a WordPress real estate plugin for agencies, agents, developers, and property directories. Create and manage listings with visual builders, advanced filters, interactive maps, galleries, import tools, and built-in analytics.
 
-Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpress.org/themes/havenlytics-realty/) companion theme is optional.
+Agents can manage listings from a secure frontend Workspace without entering wp-admin. Administrators retain control over registration, identity verification, listing review, taxonomy requests, and publishing workflows.
+
+Havenlytics works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpress.org/themes/havenlytics-realty/) companion theme is optional.
 
 📘 Documentation: [https://havenlytics.com/documentation/](https://havenlytics.com/documentation/)
 🚀 Live Demo: [https://demo.havenlytics.com/](https://demo.havenlytics.com/)
+
+👤 Agent Workspace Demo: 
+🔐 Agent Login: [https://demo.havenlytics.com/agent-dashboard/login](https://demo.havenlytics.com/agent-dashboard/login) 
+📝 Agent Registration: [https://demo.havenlytics.com/agent-dashboard/register](https://demo.havenlytics.com/agent-dashboard/register) 
+🔑 Forgot Password: [https://demo.havenlytics.com/agent-dashboard/forgot-password](https://demo.havenlytics.com/agent-dashboard/forgot-password)
+
 🌐 Official Website: [https://havenlytics.com/](https://havenlytics.com/)
 🎨 Official Theme: [https://wordpress.org/themes/havenlytics-realty/](https://wordpress.org/themes/havenlytics-realty/) (optional)
 💬 Community: [https://facebook.com/groups/havenlytics/](https://facebook.com/groups/havenlytics/)
@@ -27,43 +35,35 @@ Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpr
 = Quick Start =
 
 1. Install and activate Havenlytics.
-2. (Optional) Install the free Havenlytics Realty companion theme from WordPress.org.
-3. Run the Property Setup Wizard.
-4. Import demo property listings using Quick Property Setup.
-5. Review **Properties → Analytics** for listing and inquiry performance.
-6. After import, click **View Website** to preview the demo site or **Return to Dashboard** to continue customizing.
+2. Run the Property Setup Wizard.
+3. Import demo listings with Quick Property Setup, or add your own properties.
+4. Customize property fields and search filters with the visual builders.
+5. Open **Analytics** in the WordPress admin to review listing and inquiry performance.
+6. Optionally install the free Havenlytics Realty companion theme for coordinated layouts and widget areas.
 
-🎥 Watch: Build a Complete Real Estate Website in **30 Seconds**
-
-[youtube https://www.youtube.com/watch?v=AiYDMJPgsTY]
 
 = Who It's For =
 
-- Real estate agencies and brokerages
-- Property listing websites and directories
-- WordPress developers building client sites
-- Freelancers seeking a complete real estate solution
-- Property management companies
-- Individual real estate agents
-
+- Real estate agencies, brokerages, and independent agents
+- Property listing websites and searchable directories
+- Property management and real estate development companies
+- WordPress professionals building real estate websites for clients
 
 = Why Havenlytics =
 
-🏠 **Purpose-built for real estate** — Listings, agents, agencies, and inquiries in one plugin — not a generic directory tool.
+🏠 **Purpose-built for real estate** — Manage listings, agents, agencies, and inquiries in one connected system.
 
-📊 **Analytics dashboard** — Property stats, view tracking, and inquiry reports in the WordPress admin.
+📊 **Actionable analytics** — Review listing activity, property views, and inquiry performance in WordPress.
 
-🎨 **Visual builders** — Drag-and-drop property forms, search filters, and listing cards without code.
+🎨 **Visual configuration** — Build property forms, search filters, and listing cards without editing code.
 
-🔍 **AJAX search & maps** — Real-time filters with Leaflet or Google Maps, markers, and clustering.
+🔍 **AJAX search and maps** — Help visitors narrow listings with responsive filters, Leaflet or Google Maps, markers, and clustering.
 
-⚡ **Fast performance** — Built-in caching, optimized queries, and a cache dashboard for larger catalogs.
+⚡ **Performance controls** — Built-in caching, optimized queries, and cache management for growing property catalogs.
 
-👨‍💻 **Developer-ready** — REST API, 50+ hooks and filters, template overrides, and extensible architecture.
+👨‍💻 **Developer-friendly** — Extend Havenlytics with REST APIs, 50+ hooks and filters, and template overrides.
 
-🌍 **Translation-ready** — `.pot` file included; compatible with WPML and Polylang.
-
-🔒 **Security-focused** — Capability checks, nonces, and WordPress coding standards throughout.
+🔒 **Security-conscious workflows** — Capability checks, nonces, identity verification, rate limiting, and audited administrative actions.
 
 
 = Core Features =
@@ -82,13 +82,19 @@ Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpr
 
 ✅ **Agent & Agency Management** — Profiles, taxonomies, availability badges, and archive pages.
 
+✅ **Agent Workspace** — Frontend portal where agents can create, edit, preview, and submit listings without wp-admin.
+
+✅ **Identity Verification** — Email verification gate, secure tokens, rate-limited verify/resend, and admin tooling.
+
+✅ **Taxonomy Request & Approval** — Agents can request missing property terms while administrators approve, reject, merge, or delete requests.
+
 ✅ **Documentation System** — In-plugin guides and links to full documentation at havenlytics.com.
 
 ✅ **Elementor Widgets** — Property Archive, Property Agents, and Property Agency.
 
 ✅ **Performance & Cache** — Cache dashboard and optimization tools.
 
-✅ **REST API** — Extend settings, builders, and integrations for client projects.
+✅ **REST API** — Extend settings, builders, Workspace, and integrations for client projects.
 
 ✅ **Template Overrides** — Override templates in `your-theme/havenlytics/`.
 
@@ -98,28 +104,118 @@ Works with **any WordPress theme**. The free [Havenlytics Realty](https://wordpr
 
 **Also includes:** 50+ shortcodes; grid, list, and map layouts; property view counter; 160+ currencies; mortgage calculator widget; media galleries, videos, and documents; and responsive single-property templates.
 
-🎥 Search Builder — Complete Tutorial
+= Agent Workspace (3.2.0+) =
+
+A frontend portal where approved agents can manage listings without accessing wp-admin.
+
+✅ **Account access** — Login, registration, password recovery, and secure logout flows.
+
+✅ **Agent registration controls** — Choose open or administrator-approved registration with pending, approved, rejected, and suspended states.
+
+✅ **Agent dashboard** — A focused starting point for listing activity and account tasks.
+
+✅ **Property Builder Workspace** — Clear section navigation follows the active Property Builder configuration.
+
+✅ **Listing management** — Create, edit, save drafts, and submit properties for review.
+
+✅ **Property media** — Manage featured images, galleries, documents, and video fields.
+
+✅ **Property preview** — Review a listing before submitting or publishing it.
+
+✅ **Review workflow** — Submit listings for review with ownership and capability checks at every status change.
+
+✅ **Builder synchronization** — Workspace forms follow the live Property Builder fields and sections.
+
+✅ **Responsive interface** — Designed for desktop, tablet, and mobile screens.
+
+✅ **Workspace REST API** — Cookie-authenticated `hvnly/v1` property and identity endpoints for integrations.
+
+= Identity Verification (3.3.0) =
+
+Secure email verification helps ensure that only eligible, verified agents can access the Workspace.
+
+✅ **Email verification gate** — Agents must verify their email before accessing the Workspace.
+
+✅ **Two-condition authorization** — Workspace access requires both an allowed registration status and completed identity verification, enforced server-side.
+
+✅ **Extensible verification framework** — Developers can register additional factors through `hvnly_identity_factors` without changing the authorization layer.
+
+✅ **Secure single-use tokens** — Selector + verifier, HMAC-at-rest, expiry, and timing-safe compare.
+
+✅ **Branded verification emails** — Verification, confirmation, and resend messages include expiry and security guidance.
+
+✅ **Rate-limited public endpoints** — CSRF-protected verify and resend with non-enumerating responses.
+
+✅ **Email-change re-verification** — Changing a verified email revokes access and invalidates prior links.
+
+✅ **Verify Your Email screen** — Includes resend cooldowns, accessible status messages, and logout.
+
+✅ **Administrator tools** — View verification status, manually verify, resend an email, apply an emergency override, and review audit events.
+
+= Taxonomy Request & Approval (3.3.0) =
+
+Agents can request missing property taxonomy terms directly from the Property Builder Workspace without interrupting their listing workflow.
+
+✅ **Consistent request action** — Available for property departments, types, statuses, features, locations, tags, and badges.
+
+✅ **Guided request modal** — Agents can provide a requested term, description, and reason, with suggestions for matching existing terms.
+
+✅ **Administrator review** — Review requests under **Havenlytics → Taxonomy Requests**, then approve, reject, merge, or delete them.
+
+✅ **Notifications and email** — Agents receive lifecycle updates in the Workspace and by email when enabled.
+
+✅ **Complete audit history** — Submission and moderation events record the actor, status transition, date, and reason.
+
+✅ **Duplicate prevention** — Normalized matching and a unique active-request key help prevent duplicate requests.
+
+✅ **Rate limiting** — Per-user submission limits reduce abuse while preserving normal agent workflows.
+
+= Analytics =
+
+Use the Analytics dashboard to understand listing activity and inquiry performance from your own WordPress data.
+
+✅ Review property, agent, agency, inquiry, and view statistics.
+
+✅ Explore charts and tables with practical date filters.
+
+✅ Export report data as CSV for spreadsheet analysis.
+
+✅ Track property views without requiring Google Analytics.
+
+= Search Builder =
+
+Create advanced property search forms and sidebar filters with drag-and-drop controls. Choose the fields visitors can use, configure layouts, and keep search experiences aligned with your property data.
+
+🎥 Video tutorial: Build Property Search Forms with Search Builder
 
 [youtube https://www.youtube.com/watch?v=d2mJra8RYM8]
 
-Learn how to build advanced property search forms using the Havenlytics Search Builder. Customize search fields, filters, layouts, and create powerful search experiences without writing code.
+= Property Builder =
+
+Configure the property editing experience without changing templates or plugin code.
+
+✅ Organize standard and custom fields into manageable sections.
+
+✅ Add supported field types, repeaters, documents, galleries, maps, and property media.
+
+✅ Configure property card layouts and keep Agent Workspace forms synchronized with the active schema.
 
 = Email Notifications =
 
-1. Go to **Havenlytics → Settings → Email**
-2. Set sender name and email (optional)
-3. Customize import success subject and message with merge tags
-4. On the Import wizard, keep **Email Notifications** checked for a completion email
+1. Go to **Havenlytics → Settings → Email**.
+2. Set an optional sender name and email address.
+3. Customize supported subjects and messages with the available merge tags.
+4. Enable the notifications appropriate for your site and verify that WordPress can deliver email.
 
-Contact Agent emails are configured under **Settings → Contact Agent**.
+Contact Agent messages are configured under **Settings → Contact Agent**. Workspace identity, listing workflow, and taxonomy request emails use their corresponding Workspace settings and lifecycle events.
 
 = Elementor Widgets =
 
-Requires Elementor (Free or Pro). Find widgets under the **Havenlytics** category or search **HVN**.
+Requires Elementor Free or Pro. Find the widgets in the **Havenlytics** category or search for **HVN** in the Elementor panel.
 
-**Quick steps:** Edit a page with Elementor → drag a Havenlytics widget → customize → publish.
+**Quick start:** Edit a page with Elementor → add a Havenlytics widget → configure its content and styles → publish.
 
-**Tip:** Use shortcodes for simple pages, or Elementor widgets when building mixed layouts.
+Use shortcodes for straightforward listing pages or Elementor widgets when combining property content with other page elements.
 
 = HVN: Property Archive =
 
@@ -190,9 +286,11 @@ Each page includes the matching shortcode. Replace with Elementor widgets from t
 
 = Shortcodes =
 
-Display listings, agents, and agencies anywhere. Copy-ready examples and 50+ variations: **Havenlytics → Settings → Shortcodes**.
+Display listings, agents, and agencies in posts, pages, templates, and compatible page builders. Find copy-ready examples and 50+ variations under **Havenlytics → Settings → Shortcodes**.
 
-**Shortcode tutorial:** [youtube https://www.youtube.com/watch?v=DJ2IYECJ_YA]
+🎥 Video tutorial: Display Property Content with Shortcodes
+
+[youtube https://www.youtube.com/watch?v=DJ2IYECJ_YA]
 
 = [hvnly_property_grid] =
 Responsive property grid. See the [live demo](https://demo.havenlytics.com/property-grid/).
@@ -208,7 +306,8 @@ Supports department, price, beds, baths, location, status, columns, pagination, 
 = Agent & Agency Shortcodes =
 
 = [hvnly_property_agents] =
-Display the agents archive (same layout as `/property-agents/`) with search, grid/list toggle, pagination, and availability badges.  
+Display the agents archive (same layout as `/property-agents/`) with search, grid/list toggle, pagination, and availability badges.
+
 Auto-created page slug: `property-agents`
 
 **Common attributes:** `posts_per_page`, `columns` (1–4), `orderby` (title|date), `order` (ASC|DESC), `show_header`, `title`, `subtitle`, `show_search`, `show_view_controls`, `default_view` (grid|list), `class`
@@ -221,7 +320,8 @@ Auto-created page slug: `property-agents`
 **Legacy alias:** `[hvnly_agents]`
 
 = [hvnly_property_agencies] =
-Display the agencies archive (same layout as **HVN: Property Agency** Elementor widget) with search, grid/list toggle, and pagination.  
+Display the agencies archive (same layout as **HVN: Property Agency** Elementor widget) with search, grid/list toggle, and pagination.
+
 Auto-created page slug: `property-agencies`
 
 **Common attributes:** same as `[hvnly_property_agents]` above.
@@ -237,8 +337,8 @@ Auto-created page slug: `property-agencies`
 
 1. Install via **Plugins → Add New** or upload to `/wp-content/plugins/havenlytics/`.
 2. Activate through the **Plugins** screen.
-3. Follow the **Quick Start** steps above (setup wizard and demo import).
-4. Open **Properties → Analytics** to review property and inquiry performance.
+3. Complete the Property Setup Wizard and optionally import demo listings.
+4. Open **Analytics** in the WordPress admin to review property and inquiry performance.
 5. Display listings with shortcodes, Elementor widgets, or the auto-created pages.
 
 📘 Full documentation: [https://havenlytics.com/documentation/](https://havenlytics.com/documentation/)
@@ -283,13 +383,25 @@ Enable under **Settings → Contact Agent**. Visitors submit inquiries from prop
 
 = Does Havenlytics send email notifications? =
 
-Yes. Configure import success emails under **Settings → Email**. Contact Agent emails are under **Settings → Contact Agent**.
+Yes. Havenlytics supports import completion, inquiry, Agent Workspace, identity verification, listing workflow, and taxonomy request emails. Configure general email options under **Havenlytics → Settings → Email** and inquiry messages under **Settings → Contact Agent**. Delivery depends on your WordPress mail configuration.
+
+= How does Agent Workspace email verification work? =
+
+After registration or admin provisioning, agents receive a branded verification email. They must verify before accessing the Workspace. Changing a verified email requires re-verification. Administrators can manually verify, resend, or emergency-disable verification from the Users/Agents screens.
+
+= Is Agent Workspace included in the free plugin? =
+
+Yes. Agent Workspace (auth, property CRUD, media, workflow) shipped in 3.2.0. Identity verification and the email verification gate shipped in 3.3.0.
+
+= How do agents request a missing property term? =
+
+In the Agent Workspace property form, select **Request New** below a supported taxonomy field. The agent can add a term name, description, and reason. Administrators review requests under **Havenlytics → Taxonomy Requests** and can approve, reject, merge, or delete them.
 
 = Can developers extend Havenlytics? =
 
 Yes. Havenlytics is built for agencies and developers who need reliable extension points:
 
-* **REST API** — Settings, builders, analytics, and plugin integrations via `hvnlynab/v1`
+* **REST API** — Settings, builders, analytics, Workspace (`hvnly/v1`), and plugin integrations via `hvnlynab/v1`
 * **Hooks & filters** — 50+ actions and filters across listings, search, import, and inquiries
 * **Template overrides** — Copy templates to `your-theme/havenlytics/` without editing plugin files
 * **Extensible architecture** — Modular services, migration-safe data, and filterable REST class maps
@@ -299,7 +411,7 @@ See the [developer documentation](https://havenlytics.com/docs/category/develope
 
 = What is the Analytics Dashboard? =
 
-Havenlytics includes a built-in **Analytics Dashboard** under **Properties → Analytics**. It provides insights into properties, agents, agencies, inquiries, property views, and listing activity — without requiring third-party analytics services.
+Havenlytics includes a built-in **Analytics** dashboard in the WordPress admin. It provides insights into properties, agents, agencies, inquiries, property views, and listing activity without requiring a third-party analytics service.
 
 = Does Havenlytics track property views? =
 
@@ -334,9 +446,62 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 13. Elementor Widget — Property Agency
 14. Settings Panel
 15. Cache Management Dashboard
+16. Agent Workspace Dashboard — listing activity and account overview
 
 
 == Changelog ==
+
+= 3.3.0 - 2026-07-19 =
+
+**Agent Identity Verification and Taxonomy Requests**
+
+* New: Agent identity verification — agents must verify their email before accessing the Agent Workspace.
+* New: Two-condition authorization — Workspace access requires an allowed registration status and a satisfied identity verification, enforced server-side.
+* New: Extensible verification framework — add phone, 2FA, or KYC factors via the `hvnly_identity_factors` filter without changing authorization.
+* New: Secure single-use verification tokens (selector + verifier, HMAC-at-rest, expiry, timing-safe compare).
+* New: Branded verification, confirmation, and resend emails with expiry and security notices.
+* New: Public rate-limited, CSRF-protected verify and resend endpoints with generic (non-enumerating) responses.
+* New: Email-change re-verification — changing a verified email revokes access and invalidates prior links.
+* New: "Verify Your Email" SPA page with resend cooldown, accessible states, and logout.
+* New: Administrator tooling — email-verified badge, manual verify, resend, and emergency disable, all audit-logged.
+* New: Taxonomy Request & Approval workflow for property departments, types, statuses, features, locations, tags, and badges.
+* New: Workspace request modal with term name, description, reason, and matching-term suggestions.
+* New: Taxonomy Requests admin queue with search, filters, pagination, and approve, reject, merge, and delete actions.
+* New: Request detail screen with moderation controls and a complete audit timeline.
+* New: In-app notifications and optional email updates for taxonomy request lifecycle events.
+* Improved: Taxonomy request admin screens use responsive cards, status badges, accessible controls, and a visual audit timeline.
+* Security: Normalized duplicate prevention, atomic active-request keys, per-user rate limiting, capability checks, and nonces protect request submission and moderation.
+* Developer: Dedicated request and append-only audit tables, migration support, REST endpoints, and filterable taxonomy policies.
+* Improved: Workspace `/me` exposes email verification state for the SPA.
+* Security: Verification tokens are never stored or logged in plaintext; a structured audit trail records every event.
+* Developer: New public actions and filters documented in `developer-docs/`.
+* Security: Plugin info REST endpoint now requires `manage_options`.
+* Maintenance: Removed temporary identity and Property Card Builder debug tracers from production code.
+* Maintenance: Release build now includes Workspace and Setup bundles; source maps and developer docs stay out of the ZIP.
+
+**Agent Workspace (major)**
+
+* New: Agent Workspace SPA — authenticated frontend portal for agents to manage listings without wp-admin.
+* New: Workspace authentication — login, register, forgot password, reset password, logout, and remember me.
+* New: Agent registration modes — disabled, open, and approval (pending / approved / rejected / suspended).
+* New: Agent dashboard shell with responsive Workspace layout.
+* New: Property form driven by live Property Builder schema (dynamic sections and fields).
+* New: Property CRUD via Workspace REST (`hvnly/v1`) — create, edit, save draft, trash/restore flows.
+* New: Featured image support using WordPress post thumbnails (`set_post_thumbnail` / `delete_post_thumbnail`).
+* New: Gallery, documents, video, FAQ, highlights, agents, map, and taxonomy editing in Workspace.
+* New: Property preview for Workspace drafts and listings.
+* New: Submit for review and publish / status workflow with capability and ownership checks.
+* New: Workspace REST identity endpoint (`/me`) and property schema endpoint.
+* Improved: Property Builder parity — Workspace renders Builder sections as a tabbed workspace (one active section).
+* Improved: Media picking via WordPress Media Library with reliable select handling.
+* Improved: Property save integrity — non-destructive PATCH updates; absent fields are not wiped.
+* Improved: Agents hydration uses the same assignment meta as frontend ownership checks.
+* Improved: Gallery save compatibility with Builder gallery keys and legacy gallery meta.
+* Fixed: Featured image, gallery, and video thumbnail persistence across save / reload / edit.
+* Fixed: Empty JSON `[]` pollution on scalar Builder titles (FAQ / highlights / agents titles).
+* Fixed: Frontend Contact Agent bootstrap no longer loads `WP_List_Table` / `convert_to_screen()` outside wp-admin.
+* Security: Workspace property routes require login, portal access, and per-property ownership or admin override.
+* Developer: Workspace module constants, asset enqueue, and `hvnly/v1` REST namespace for portal integrations.
 
 = 3.1.9 - 2026-07-11 =
 
@@ -565,10 +730,10 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 
 **Note:** The mortgage calculator is a WordPress sidebar widget (Appearance → Widgets), not an Elementor widget. Agent and agency Elementor widgets were added in 3.0.2 and 3.0.3.
 
-**Improvement:** Elementor widgets inherit global Havenlytics settings  
-**Improvement:** Responsive design for all Elementor widgets  
-**Improvement:** Archive widget supports grid/list/map views with configurable columns  
-**Improvement:** Mortgage calculator (sidebar widget) supports advanced options (tax, insurance, HOA, PMI) 
+* **Improvement:** Elementor widgets inherit global Havenlytics settings
+* **Improvement:** Responsive design for all Elementor widgets
+* **Improvement:** Archive widget supports grid/list/map views with configurable columns
+* **Improvement:** Mortgage calculator (sidebar widget) supports advanced options (tax, insurance, HOA, PMI)
 
 **Major release – production-ready architecture update**
 
@@ -761,18 +926,25 @@ Havenlytics 3.0.0 delivers a stable Property Builder and Import foundation, reli
 
 == Upgrade Notice ==
 
+= 3.3.0 =
+Recommended update. Adds agent email verification, secure Workspace authorization, and the Taxonomy Request & Approval workflow with notifications and audit history. Existing agents and data are preserved; required tables are created automatically. Hard-refresh the Workspace after updating.
+
+= 3.2.0 =
+Major release: Agent Workspace with authentication, Property Builder–driven CRUD, media, preview, and listing workflow. Recommended for all sites. After updating, hard-refresh the Workspace page so new assets load. No manual database steps required.
+
 = 3.1.9 =
 Recommended update. Fixes an Import Wizard timeout on the final step and several import-session edge cases (Skip Now, Cancel, Pause/Resume). Also improves Analytics accuracy following the 3.1.6–3.1.8 releases. No manual action required.
 
 
 == Support ==
 
-Need help? Please use the official support forum:
-https://wordpress.org/support/plugin/havenlytics/
+For installation help, troubleshooting, and usage questions, use the [official WordPress.org support forum](https://wordpress.org/support/plugin/havenlytics/).
+
+Before posting, review the [Havenlytics documentation](https://havenlytics.com/documentation/) and include your WordPress, PHP, and Havenlytics versions when relevant. Do not post passwords, API keys, verification links, or personal customer information.
 
 == Contributing ==
 
-We welcome contributions! You can:
+Contributions and feedback are welcome:
 
 - Report bugs and request features via the [official support forum](https://wordpress.org/support/plugin/havenlytics/)
 - Translate the plugin into your language via [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/havenlytics)
@@ -781,12 +953,16 @@ We welcome contributions! You can:
 
 == Privacy Policy ==
 
-Havenlytics – WP Real Estate & Property Listings Directory uses the [Appsero](https://appsero.com/) SDK to collect limited telemetry data only after user consent.
+Havenlytics includes the [Appsero](https://appsero.com/) SDK for optional diagnostic and usage telemetry.
 
-Appsero does not collect any data by default. Data collection starts only when a user opts in via the admin notice.
+Usage telemetry is disabled by default. If an administrator opts in through the WordPress admin notice, the SDK sends data to `api.appsero.com` to help maintain and improve the plugin. This may include the site URL and name; administrator name and email; IP address; WordPress, PHP, MySQL, theme, plugin, and server versions or configuration; plugin usage metadata; and aggregate user counts. Administrators can opt out at any time.
 
-No sensitive data (such as passwords, personal data, or content) is collected.
+Review the [Appsero Privacy Policy](https://appsero.com/privacy-policy/) for details.
 
-We do not sell or share data with third parties. Users can opt out at any time.
+Havenlytics stores enabled feature data in your WordPress database. This may include property and agent information, user account details, inquiries, taxonomy requests, notification records, and audit events. Some security and audit records may include an IP address and user agent. Site owners are responsible for publishing an appropriate privacy notice, establishing retention practices, and responding to data requests under applicable law.
 
-Read [Appsero Privacy Policy](https://appsero.com/privacy-policy/)
+When Leaflet maps are displayed, map tiles are loaded from the configured tile provider. The default provider is OpenStreetMap (`tile.openstreetmap.org`), which receives normal web request data such as the visitor's IP address and user agent. Review the [OpenStreetMap tile usage policy](https://operations.osmfoundation.org/policies/tiles/) and [OpenStreetMap Foundation privacy policy](https://osmfoundation.org/wiki/Privacy_Policy).
+
+If Google Maps is selected and configured, Havenlytics loads the Google Maps JavaScript API from `maps.googleapis.com`. Google may receive visitor request and device data under the [Google Maps terms](https://maps.google.com/help/terms_maps/) and [Google Privacy Policy](https://policies.google.com/privacy).
+
+If you configure SMTP delivery or other third-party integrations, review those providers' privacy terms and disclose their use to site visitors where required.

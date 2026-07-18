@@ -57,6 +57,7 @@ class AgentMetabox {
 	public function __construct() {
 
 		add_action( 'add_meta_boxes', array( $this, 'register_meta_boxes' ) );
+		add_action( 'admin_notices', array( $this, 'identity_admin_notices' ) );
 
 		add_action( 'save_post_' . AgentConstants::POST_TYPE, array( $this, 'save' ), 10, 2 );
 
@@ -297,14 +298,168 @@ class AgentMetabox {
 	}
 
 	/**
+	 * Show identity link validation errors after save.
+	 *
+	 * @return void
+	 */
+	public function identity_admin_notices(): void {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( ! $screen || AgentConstants::POST_TYPE !== $screen->post_type ) {
+			return;
+		}
+		$key = 'hvnly_agent_identity_save_error_' . get_current_user_id();
+		$msg = get_transient( $key );
+		if ( ! is_string( $msg ) || '' === $msg ) {
+			return;
+		}
+		delete_transient( $key );
+		echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $msg ) . '</p></div>';
+	}
+
+	/**
 	 * @param \WP_Post $post Post object.
 	 * @return void
 	 */
 	public function render_account_box( $post ): void {
 
 		$linked_user = absint( get_post_meta( $post->ID, AgentConstants::META_LINKED_USER_ID, true ) );
+		$occupied    = array();
+		if ( class_exists( '\HvnlyNab\Workspace\Auth\AgentProvisioner' ) ) {
+			$occupied = ( new \HvnlyNab\Workspace\Auth\AgentProvisioner() )->get_occupied_user_links( (int) $post->ID );
+		}
+
+		$user = $linked_user > 0 ? get_userdata( $linked_user ) : false;
 
 		?>
+		<div class="hvnly-agent-workspace-account">
+			<h4 class="hvnly-agent-workspace-account__title"><?php esc_html_e( 'Workspace Account', 'havenlytics' ); ?></h4>
+
+			<?php if ( $user ) : ?>
+				<table class="widefat striped hvnly-agent-workspace-account__table">
+					<tbody>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Status', 'havenlytics' ); ?></th>
+							<td><span class="hvnly-agent-workspace-account__ok"><?php esc_html_e( 'Linked', 'havenlytics' ); ?></span></td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Username', 'havenlytics' ); ?></th>
+							<td><?php echo esc_html( $user->user_login ); ?></td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Email', 'havenlytics' ); ?></th>
+							<td><?php echo esc_html( $user->user_email ); ?></td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Role', 'havenlytics' ); ?></th>
+							<td>
+								<?php
+								$names = array();
+								foreach ( (array) $user->roles as $role_slug ) {
+									$wp_roles = wp_roles();
+									$names[]  = isset( $wp_roles->role_names[ $role_slug ] )
+										? translate_user_role( $wp_roles->role_names[ $role_slug ] )
+										: $role_slug;
+								}
+								echo esc_html( implode( ', ', $names ) );
+								?>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Registration Status', 'havenlytics' ); ?></th>
+							<td>
+								<?php
+								if ( class_exists( '\HvnlyNab\Workspace\Auth\WorkspaceRegistrationStatus' ) ) {
+									$status = \HvnlyNab\Workspace\Auth\WorkspaceRegistrationStatus::get_for_user( $linked_user );
+									echo wp_kses_post( \HvnlyNab\Workspace\Auth\WorkspaceRegistrationStatus::badge_html( (string) $status ) );
+								} else {
+									echo '&mdash;';
+								}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Last Login', 'havenlytics' ); ?></th>
+							<td>
+								<?php
+								if ( class_exists( '\HvnlyNab\Workspace\Auth\AgentActivityTracker' ) ) {
+									$gmt = (string) get_user_meta( $linked_user, \HvnlyNab\Workspace\Auth\AgentActivityTracker::META_LAST_LOGIN, true );
+									$rel = \HvnlyNab\Workspace\Auth\AgentActivityTracker::format_admin( $gmt );
+									echo ( '' === $gmt || '—' === $rel )
+										? '<span class="description">' . esc_html__( 'Never', 'havenlytics' ) . '</span>'
+										: esc_html( $rel );
+								} else {
+									echo '&mdash;';
+								}
+								?>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="hvnly-agent-workspace-account__actions">
+					<?php
+					$edit_user = get_edit_user_link( $linked_user );
+					if ( $edit_user ) {
+						printf(
+							'<a class="button" href="%s">%s</a> ',
+							esc_url( $edit_user ),
+							esc_html__( 'Open User', 'havenlytics' )
+						);
+					}
+					if ( class_exists( '\HvnlyNab\Workspace\Auth\AgentIdentityAdminBridge' ) && current_user_can( 'edit_users' ) ) {
+						printf(
+							'<a class="button" href="%s">%s</a> ',
+							esc_url( \HvnlyNab\Workspace\Auth\AgentIdentityAdminBridge::send_password_setup_url( (int) $post->ID ) ),
+							esc_html__( 'Send Password Setup Email', 'havenlytics' )
+						);
+					}
+					$reset_url = wp_lostpassword_url();
+					printf(
+						'<a class="button" href="%s">%s</a>',
+						esc_url( $reset_url ),
+						esc_html__( 'Reset Password', 'havenlytics' )
+					);
+					?>
+				</p>
+			<?php else : ?>
+				<p class="hvnly-agent-workspace-account__missing">
+					<strong><?php esc_html_e( 'Status:', 'havenlytics' ); ?></strong>
+					<?php esc_html_e( 'No Login Account', 'havenlytics' ); ?>
+				</p>
+				<p class="description">
+					<?php esc_html_e( 'Publish this Agent with a valid email to create a linked Workspace account automatically, or create one below.', 'havenlytics' ); ?>
+				</p>
+				<?php if ( current_user_can( 'create_users' ) && class_exists( '\HvnlyNab\Workspace\Auth\AgentIdentityAdminBridge' ) ) : ?>
+					<?php
+					$agent_email = (string) get_post_meta( $post->ID, AgentConstants::META_EMAIL, true );
+					if ( '' === $agent_email || ! is_email( $agent_email ) ) :
+						?>
+						<p class="notice notice-warning inline">
+							<?php esc_html_e( 'Set a valid Agent email (Contact fields) before creating a Workspace account.', 'havenlytics' ); ?>
+						</p>
+					<?php else : ?>
+						<p class="hvnly-agent-workspace-account__actions">
+							<?php
+							/*
+							 * IMPORTANT: Never nest a <form> inside the WP #post form.
+							 * A nested </form> closes #post early; side metaboxes render before
+							 * normal field metaboxes, so Agent fields + nonce never submit.
+							 */
+							printf(
+								'<a class="button button-primary" href="%s">%s</a>',
+								esc_url( \HvnlyNab\Workspace\Auth\AgentIdentityAdminBridge::create_workspace_account_url( (int) $post->ID, true ) ),
+								esc_html__( 'Create Workspace Account', 'havenlytics' )
+							);
+							?>
+							<span class="description">
+								<?php esc_html_e( 'Sends a WordPress password-setup email (no plain-text password).', 'havenlytics' ); ?>
+							</span>
+						</p>
+					<?php endif; ?>
+				<?php endif; ?>
+			<?php endif; ?>
+		</div>
+
+		<hr class="hvnly-agent-workspace-account__divider" />
 
 		<p class="hvnly-agent-metabox__field">
 
@@ -313,30 +468,51 @@ class AgentMetabox {
 			<?php
 
 			wp_dropdown_users(
-
 				array(
-
 					'name'              => AgentConstants::META_LINKED_USER_ID,
-
 					'id'                => 'hvnlyagentlinkeduser',
-
 					'selected'          => $linked_user,
-
 					'show_option_none'  => __( '— None —', 'havenlytics' ),
-
 					'option_none_value' => '0',
-
 					'class'             => 'widefat',
-
+					'exclude'           => array_map( 'intval', array_keys( $occupied ) ),
 				)
-
 			);
 
 			?>
 
-			<span class="description"><?php esc_html_e( 'Optional. Links this profile to a WordPress user for legacy compatibility and future agent dashboard access.', 'havenlytics' ); ?></span>
+			<span class="description"><?php esc_html_e( '1:1 identity link for Workspace. Each WordPress user may link to only one Agent CPT.', 'havenlytics' ); ?></span>
 
 		</p>
+
+		<?php if ( ! empty( $occupied ) ) : ?>
+			<p class="description" style="color:#996800;">
+				<?php
+				esc_html_e( 'Already linked (cannot select):', 'havenlytics' );
+				echo ' ';
+				$bits = array();
+				foreach ( $occupied as $uid => $aid ) {
+					$u = get_userdata( (int) $uid );
+					$bits[] = sprintf(
+						/* translators: 1: user login, 2: agent ID */
+						esc_html__( '%1$s → Agent #%2$d', 'havenlytics' ),
+						$u ? $u->user_login : (string) $uid,
+						(int) $aid
+					);
+				}
+				echo esc_html( implode( '; ', $bits ) );
+				?>
+			</p>
+		<?php endif; ?>
+
+		<?php if ( $linked_user > 0 ) : ?>
+			<p class="hvnly-agent-metabox__field">
+				<label>
+					<input type="checkbox" name="hvnly_confirm_identity_relink" value="1" />
+					<?php esc_html_e( 'I confirm changing or clearing this linked WordPress user (identity lock).', 'havenlytics' ); ?>
+				</label>
+			</p>
+		<?php endif; ?>
 
 		<?php
 

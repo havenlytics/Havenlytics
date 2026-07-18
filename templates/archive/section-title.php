@@ -40,10 +40,15 @@ if (!defined('ABSPATH')) {
 
 ?>
 
+<?php
+// Sprint 31D: hvnly_page_title() can legitimately return nothing (shortcode
+// context / "hide title" setting) — don't emit an empty <h1> in that case.
+$hvnly_page_title_text = function_exists( 'hvnly_page_title' ) ? hvnly_page_title( false ) : '';
+?>
 <div class="hvnly-property-section-title">
-    <?php if (apply_filters('hvnly_show_page_title', true)) : ?>
+    <?php if ( apply_filters( 'hvnly_show_page_title', true ) && '' !== trim( (string) $hvnly_page_title_text ) ) : ?>
 
-        <h1 class="property-archive-title page-title"><?php hvnly_page_title(); ?> </h1>
+        <h1 class="property-archive-title page-title"><?php echo esc_html( $hvnly_page_title_text ); ?></h1>
 
     <?php endif; ?>
 

@@ -187,7 +187,8 @@ $hvnly_contact_url = function_exists( 'hvnly_get_agent_contact_url' )
 		<?php if ( $hvnly_show_rating && $hvnly_rating > 0 ) : ?>
 			<p class="hvnly-agent-card__rating hvnly-agent-widget__rating hvnly-property-single__agent-rating">
 				<?php for ( $hvnly_star_index = 1; $hvnly_star_index <= 5; $hvnly_star_index++ ) : ?>
-					<i class="fas fa-star<?php echo $hvnly_star_index <= floor( $hvnly_rating ) ? '' : '-o'; ?>" aria-hidden="true"></i>
+					<?php // Sprint 31D: `fa-star-o` is FA4 syntax — under FA5 the empty star rendered nothing. ?>
+				<i class="<?php echo $hvnly_star_index <= floor( $hvnly_rating ) ? 'fas' : 'far'; ?> fa-star" aria-hidden="true"></i>
 				<?php endfor; ?>
 				<span>
 					<?php

@@ -372,7 +372,9 @@
 }
 
 .hvnly-agent-widget__card--primary {
-	border-color: rgba(37, 99, 235, 0.25);
+	/* Sprint 31D: was rgba(37,99,235,…) — a foreign blue inside the
+	   #6c60fe brand family. */
+	border-color: rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.25);
 }
 
 .hvnly-agent-widget__header {
@@ -411,8 +413,9 @@
 	font-weight: var(--hvnly-font-weight-semibold, 600);
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
-	color: #1d4ed8;
-	background: #dbeafe;
+	/* Sprint 31D: brand-family badge (was the foreign blue #1d4ed8/#dbeafe). */
+	color: var(--hvnly-brand-primary, #6c60fe);
+	background: rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.1);
 	border-radius: 999px;
 }
 
@@ -438,7 +441,7 @@
 }
 
 .hvnly-agent-widget__rating .fas,
-.hvnly-agent-widget__rating .far { color: #fbbf24; }
+.hvnly-agent-widget__rating .far { color: var(--hvnly-brand-warning, #ffb507); }
 
 .hvnly-agent-widget__actions {
 	display: grid;

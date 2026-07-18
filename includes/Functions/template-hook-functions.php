@@ -201,17 +201,15 @@ if (!function_exists('hvnly_single_property_actions')) {
     {
         // Check all button settings dynamically
         $save_enabled = hvnly_is_save_property_enabled();
-        $share_enabled = hvnly_is_share_button_enabled();
         $print_enabled = hvnly_is_print_button_enabled();
-        
+
         // Only render if at least one action is enabled
-        if (!$save_enabled && !$share_enabled && !$print_enabled) {
+        if (!$save_enabled && !$print_enabled) {
             return;
         }
-        
+
         hvnly_get_template_part('single-property/actions', '', array(
             'save_enabled' => $save_enabled,
-            'share_enabled' => $share_enabled,
             'print_enabled' => $print_enabled
         ));
     }

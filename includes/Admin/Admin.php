@@ -35,6 +35,7 @@ final class Admin
             Assets::class,
             DocumentationPage::class,
             PropertyImportWizard::class,
+            OnboardingWizard::class,
             SetupWizardNotice::class,
             ThemeRecommendationNotice::class,
             \HvnlyNab\ContactAgent\Admin\InquiryAdminPage::class,

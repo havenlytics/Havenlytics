@@ -171,6 +171,37 @@ class DefaultSettingsData
             'hvnly_contact_agent_honeypot_enabled'  => true,
             'hvnly_contact_agent_rate_limit_max'      => 5,
             'hvnly_contact_agent_rate_limit_window' => HOUR_IN_SECONDS,
+            'hvnly_workspace_enabled'               => false,
+            'hvnly_workspace_page_slug'             => 'agent-dashboard',
+            'hvnly_workspace_login_redirect'        => '',
+            'hvnly_workspace_logout_redirect'       => '',
+            'hvnly_workspace_registration_mode'     => 'open',
+            'hvnly_workspace_default_role'          => 'hvnly_agent',
+            'hvnly_workspace_perm_create_property'  => true,
+            'hvnly_workspace_perm_edit_own_property'=> true,
+            'hvnly_workspace_perm_delete_own_property' => true,
+            'hvnly_workspace_perm_submit_property'  => true,
+            'hvnly_workspace_perm_publish_property' => false,
+            'hvnly_workspace_perm_upload_media'     => true,
+            'hvnly_workspace_perm_edit_profile'     => true,
+            'hvnly_workspace_perm_view_dashboard'   => true,
+            'hvnly_workspace_perm_receive_inquiries'=> true,
+            'hvnly_workspace_perm_reply_inquiries'  => true,
+            'hvnly_workspace_email_registration'    => true,
+            'hvnly_workspace_email_approval'        => true,
+            'hvnly_workspace_email_rejection'       => true,
+            'hvnly_workspace_email_suspended'       => true,
+            'hvnly_workspace_email_activated'       => true,
+            'hvnly_workspace_email_property_submitted' => true,
+            'hvnly_workspace_email_property_approved'  => true,
+            'hvnly_workspace_email_property_rejected'  => true,
+            'hvnly_workspace_email_new_inquiry'     => true,
+            'hvnly_workspace_email_password_reset'  => true,
+            'hvnly_workspace_email_profile_updated' => true,
+            'hvnly_workspace_developer_mode'        => false,
+            'hvnly_workspace_rest_debug'            => false,
+            'hvnly_workspace_debug'                 => false,
+            'hvnly_workspace_laravel_sync_enabled'  => false,
         ];
     }
 
@@ -187,8 +218,9 @@ class DefaultSettingsData
             'hvnly_email_from_address'                 => '',
             'hvnly_email_import_success_enabled'       => true,
             'hvnly_email_import_wizard_notify_default' => true,
-            'hvnly_email_import_success_subject'       => '',
-            'hvnly_email_import_success_intro'         => '',
+            // Legacy option keys stay unchanged for existing installations.
+            'hvnly_email_import_success_subject'       => __('Property setup complete — {{site_name}}', 'havenlytics'),
+            'hvnly_email_import_success_intro'         => __('Your property setup on {{site_name}} is complete. {{import_count}} listings are ready to review.', 'havenlytics'),
         ];
     }
 
@@ -213,11 +245,9 @@ class DefaultSettingsData
             'hvnly_priceFormat' => 'comma',
             
             'hvnly_EnabledGutenbergEditor' => false,
-            'hvnly_EnabledSocialShare' => true,
             'hvnly_defaultCity' => 'Birmingham',
             'hvnly_defaultState' => 'Scotland',
             'hvnly_countryType' => 'GB',
-            'hvnly_enableSocialShare' => ['facebook', 'twitter'],
             'hvnly_hideLeftSearchBar' => false,  
             'hvnly_hideTopSearchBar' => false,    
             'hvnly_hideTopSearchTitle' => false,  
@@ -572,9 +602,9 @@ class DefaultSettingsData
             'hvnly_container_width_sm' => '540px',
             'hvnly_container_width_md' => '720px',
             'hvnly_container_width_lg' => '960px',
-            'hvnly_container_width_xl' => '1140px',
+            'hvnly_container_width_xl' => '1220px',
             'hvnly_container_width_xxl' => '1320px',
-            'hvnly_container_width_xxxl' => '1399px',
+            'hvnly_container_width_xxxl' => '1320px',
             'hvnly_container_width_4k' => '1400px',
             'hvnly_propertyColumnsGapGrid' => '10',
             'hvnly_propertyTabletView' => '2',
@@ -595,7 +625,6 @@ class DefaultSettingsData
             'hvnly_EnableBackToTop' => false,
             'hvnly_EnablePrintButton' => false,
             'hvnly_EnableSaveProperty' => false,
-            'hvnly_EnableShareButton' => true,
         ];
     }
 

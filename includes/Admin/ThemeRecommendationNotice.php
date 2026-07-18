@@ -49,38 +49,47 @@ class ThemeRecommendationNotice {
 	private const NONCE_ACTION = 'hvnly_dismiss_theme_notice';
 
 	/**
-	 * Admin pages where the notice must not appear.
-	 *
-	 * @var string[]
-	 */
-	private const BLOCKED_PAGENOW = array(
-		'customize.php',
-		'site-editor.php',
-		'plugin-editor.php',
-		'theme-editor.php',
-	);
-
-	/**
 	 * Constructor.
+	 *
+	 * Sprint 31G: the recommendation used to render on every admin screen
+	 * (and even re-register itself on screens that strip other notices),
+	 * which read as repetitive advertising. It is now a single, one-time
+	 * nudge shown ONLY on the main WordPress Dashboard, and only while the
+	 * official theme is not installed. The persistent, non-intrusive
+	 * discovery surface is the integrated card in the Settings sidebar.
 	 */
 	public function __construct() {
 		add_action( 'admin_notices', array( $this, 'display_notice' ) );
-		add_action( 'current_screen', array( $this, 'register_on_suppressed_screen' ), 20 );
 		add_action( 'wp_ajax_' . self::AJAX_ACTION, array( $this, 'ajax_dismiss' ) );
 	}
 
 	/**
-	 * Re-register after other Havenlytics admin screens remove third-party notices.
+	 * Official theme stylesheet slug (public accessor for the Settings card).
 	 *
-	 * @param \WP_Screen $screen Current admin screen.
-	 * @return void
+	 * @return string
 	 */
-	public function register_on_suppressed_screen( \WP_Screen $screen ): void {
-		if ( ! $this->is_notice_suppressed_screen( $screen->id ) ) {
-			return;
+	public static function get_theme_slug(): string {
+		return self::THEME_SLUG;
+	}
+
+	/**
+	 * Resolve the current state of the official theme.
+	 *
+	 * @return string One of 'active', 'installed', 'not_installed'.
+	 */
+	public static function get_theme_state(): string {
+		$theme = wp_get_theme();
+
+		if ( self::THEME_SLUG === $theme->get_template() || self::THEME_SLUG === $theme->get_stylesheet() ) {
+			return 'active';
 		}
 
-		add_action( 'admin_notices', array( $this, 'display_notice' ) );
+		$installed = wp_get_theme( self::THEME_SLUG );
+		if ( $installed instanceof \WP_Theme && $installed->exists() ) {
+			return 'installed';
+		}
+
+		return 'not_installed';
 	}
 
 	/**
@@ -167,7 +176,14 @@ class ThemeRecommendationNotice {
 	}
 
 	/**
-	 * Whether the notice should render.
+	 * Whether the one-time dashboard notice should render.
+	 *
+	 * Display rules (Sprint 31G):
+	 *  - Only on the main WordPress Dashboard (index.php).
+	 *  - Only when the official theme is NOT installed. If it is installed
+	 *    (active or inactive) the Settings-sidebar card handles discovery,
+	 *    so the notice never nags.
+	 *  - Only until dismissed; dismissal is permanent (per-user meta).
 	 *
 	 * @return bool
 	 */
@@ -176,11 +192,11 @@ class ThemeRecommendationNotice {
 			return false;
 		}
 
-		if ( $this->is_blocked_admin_page() ) {
+		if ( ! $this->is_dashboard_screen() ) {
 			return false;
 		}
 
-		if ( $this->is_official_theme_active() ) {
+		if ( 'not_installed' !== self::get_theme_state() ) {
 			return false;
 		}
 
@@ -188,61 +204,20 @@ class ThemeRecommendationNotice {
 	}
 
 	/**
+	 * True only on the main WordPress Dashboard (index.php).
+	 *
+	 * @return bool
+	 */
+	private function is_dashboard_screen(): bool {
+		global $pagenow;
+
+		return is_string( $pagenow ) && 'index.php' === $pagenow;
+	}
+
+	/**
 	 * @return bool
 	 */
 	private function is_notice_dismissed(): bool {
 		return (bool) get_user_meta( get_current_user_id(), self::DISMISS_USER_META, true );
-	}
-
-	/**
-	 * @return bool
-	 */
-	private function is_official_theme_active(): bool {
-		$theme = wp_get_theme();
-
-		return self::THEME_SLUG === $theme->get_template() || self::THEME_SLUG === $theme->get_stylesheet();
-	}
-
-	/**
-	 * @return bool
-	 */
-	private function is_blocked_admin_page(): bool {
-		global $pagenow;
-
-		return is_string( $pagenow ) && in_array( $pagenow, self::BLOCKED_PAGENOW, true );
-	}
-
-	/**
-	 * Screens where Havenlytics admin UI strips other admin_notices.
-	 *
-	 * @param string $screen_id Screen ID.
-	 * @return bool
-	 */
-	private function is_notice_suppressed_screen( string $screen_id ): bool {
-		$suppressed = array(
-			'edit-hvnly_property',
-			'hvnly_property',
-			'edit-hvnly_agent',
-			'hvnly_agent',
-			'edit-hvnly_agent_agency',
-			'hvnly_agent_agency',
-			'hvnly_property_page_hvnly_property_settings',
-			'hvnly_property_page_hvnly_property_documentation',
-			'hvnly_property_page_hvnly_property_builder',
-			'hvnly_property_page_hvnly_property_reports_analytics',
-			'hvnly_property_page_hvnly_inquiries',
-			'toplevel_page_hvnly_property_builder',
-			'toplevel_page_hvnly_property_reports_analytics',
-			'toplevel_page_hvnly_inquiries',
-			'hvnly_property_page_hvnly_property_cache',
-			'hvnly_property_page_hvnly-property-import',
-		);
-
-		foreach ( get_object_taxonomies( 'hvnly_property', 'names' ) as $taxonomy ) {
-			$suppressed[] = 'edit-' . $taxonomy;
-			$suppressed[] = $taxonomy;
-		}
-
-		return in_array( $screen_id, $suppressed, true );
 	}
 }

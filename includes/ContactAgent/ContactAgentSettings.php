@@ -86,6 +86,8 @@ final class ContactAgentSettings {
 			'hvnly_contact_agent_honeypot_enabled'   => true,
 			'hvnly_contact_agent_rate_limit_max'     => ContactAgentConstants::RATE_LIMIT_MAX,
 			'hvnly_contact_agent_rate_limit_window'  => ContactAgentConstants::RATE_LIMIT_WINDOW,
+			'hvnly_workspace_registration_mode'     => 'open',
+			'hvnly_workspace_default_role'          => 'hvnly_agent',
 		);
 	}
 
