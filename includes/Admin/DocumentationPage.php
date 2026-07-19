@@ -341,8 +341,8 @@ final class DocumentationPage {
 				'coming_soon' => true,
 			),
 			array(
-				'title'       => __( 'Agents', 'havenlytics' ),
-				'description' => __( 'Set up agents and agent profiles.', 'havenlytics' ),
+				'title'       => __( 'Agent Workspace', 'havenlytics' ),
+				'description' => __( 'Manage your frontend Agent Workspace, registration, listings, and account.', 'havenlytics' ),
 				'icon'        => 'fas fa-user-tie',
 				'coming_soon' => true,
 			),
@@ -383,22 +383,22 @@ final class DocumentationPage {
 			array(
 				'title'       => __( 'Getting Started', 'havenlytics' ),
 				'description' => __( 'Overview of the Havenlytics admin.', 'havenlytics' ),
-				'url'         => 'https://www.youtube.com/watch?v=AiYDMJPgsTY&t=2s',
+				'url'         => 'https://www.youtube.com/watch?v=JU6UX3jCrhg&t=2s',
 			),
 			array(
 				'title'       => __( 'Install Havenlytics', 'havenlytics' ),
 				'description' => __( 'Install and activate the plugin.', 'havenlytics' ),
-				'url'         => 'https://www.youtube.com/watch?v=AiYDMJPgsTY&t=2s',
+				'coming_soon' => true,
 			),
 			array(
 				'title'       => __( 'Import Demo', 'havenlytics' ),
 				'description' => __( 'Load demo content with the Import Wizard.', 'havenlytics' ),
-				'url'         => 'https://www.youtube.com/watch?v=AiYDMJPgsTY&t=2s',
+				'coming_soon' => true,
 			),
 			array(
 				'title'       => __( 'Property Builder', 'havenlytics' ),
 				'description' => __( 'Customize property forms and cards.', 'havenlytics' ),
-				'url'         => 'https://www.youtube.com/watch?v=d2mJra8RYM8&t=735s',
+				'coming_soon' => true,
 			),
 			array(
 				'title'       => __( 'Search Builder', 'havenlytics' ),
@@ -543,6 +543,7 @@ final class DocumentationPage {
 		$modules[] = __( 'Settings', 'havenlytics' );
 		$modules[] = __( 'Property Builder', 'havenlytics' );
 		$modules[] = __( 'Analytics', 'havenlytics' );
+		$modules[] = __( 'Agent Workspace System', 'havenlytics' );
 
 		return array(
 			array(
@@ -584,6 +585,11 @@ final class DocumentationPage {
 				'label'  => __( 'Settings Status', 'havenlytics' ),
 				'value'  => $settings_ok ? '🟢 ' . __( 'Active', 'havenlytics' ) : '🔴 ' . __( 'Missing', 'havenlytics' ),
 				'status' => $settings_ok ? 'ok' : 'missing',
+			),
+			array(
+				'label'  => __( 'Agent Workspace System', 'havenlytics' ),
+				'value'  => '🟢 ' . __( 'Active', 'havenlytics' ),
+				'status' => 'ok',
 			),
 		);
 	}

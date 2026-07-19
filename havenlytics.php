@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Havenlytics – Real Estate Plugin with Advanced Search, Maps & Property Builder
+ * Havenlytics – Real Estate Listings, Property Search & Agent Workspace
  *
  * @package     havenlytics
  * @author      Havenlytics <support@havenlytics.com>
@@ -9,10 +9,10 @@
  * @copyright   © Havenlytics
  * 
  * @wordpress-plugin
- * Plugin Name:       Havenlytics – Real Estate Plugin with Advanced Search, Maps & Property Builder
+ * Plugin Name:       Havenlytics – Real Estate Listings, Property Search & Agent Workspace
  * Plugin URI:        https://wordpress.org/plugins/havenlytics/
  * Description:       Powerful WordPress real estate plugin with property listings, AJAX search, maps, galleries, drag-and-drop layouts, and an Agent Workspace.
- * Version:           3.3.0
+ * Version:           3.3.1
  * Author:            Havenlytics
  * Author URI:        https://havenlytics.com
  * Requires at least: 6.0
@@ -31,7 +31,7 @@ defined('ABSPATH') || exit;
  * Define plugin constants for paths, URLs, and configuration
  * These constants are used throughout the plugin for easy reference
  */
-define('HVNLYNAB_VERSION', '3.3.0');
+define('HVNLYNAB_VERSION', '3.3.1');
 define('HVNLYNAB_FILE', __FILE__);
 define('HVNLYNAB_BASENAME', plugin_basename(HVNLYNAB_FILE));
 define('HVNLYNAB_SLUG', 'havenlytics');
@@ -634,7 +634,7 @@ final class HvnlyNab
         try {
             $client = new \Appsero\Client(
                 '0b72982c-0412-43f0-9798-d1f459320a07',
-                'Havenlytics – WP Real Estate & Property Listings Directory',
+                'Havenlytics – Real Estate Listings, Property Search & Agent Workspace',
                 __FILE__
             );
 

@@ -5,7 +5,7 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Build real estate websites with property listings, AJAX search, interactive maps, visual builders, Elementor widgets, and a secure Agent Workspace.
@@ -41,6 +41,9 @@ Havenlytics works with **any WordPress theme**. The free [Havenlytics Realty](ht
 5. Open **Analytics** in the WordPress admin to review listing and inquiry performance.
 6. Optionally install the free Havenlytics Realty companion theme for coordinated layouts and widget areas.
 
+🎥 Watch: How to Install Havenlytics (Step-by-Step Guide)
+
+[youtube https://www.youtube.com/watch?v=JU6UX3jCrhg]
 
 = Who It's For =
 
@@ -451,57 +454,77 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 
 == Changelog ==
 
+= 3.3.1 - 2026-07-19 =
+
+* Improved: Updated plugin branding and standardized the official plugin name.
+* New: Added a plugin installation video tutorial to the documentation and README for easier onboarding.
+* Improved: Documentation and README enhancements.
+* Maintenance: Version update for the WordPress.org release.
+
 = 3.3.0 - 2026-07-19 =
 
-**Agent Identity Verification and Taxonomy Requests**
+Havenlytics 3.3.0 is a major milestone introducing the new Agent Workspace, Agent Identity Verification, and Taxonomy Request & Approval system. This release also includes significant security improvements, enhanced property management, Workspace usability upgrades, developer APIs, and numerous stability, performance, and maintenance improvements.
+
+**Highlights**
+
+* New: Agent Workspace — a modern frontend portal for agents to manage properties without wp-admin.
+* New: Agent Identity Verification with secure email verification and protected Workspace access.
+* New: Taxonomy Request & Approval workflow with moderation, audit logs, and notifications.
+* New: Property Builder-powered Workspace with dynamic property forms.
+* Improved: Property editing, media handling, Builder compatibility, and property save reliability.
+* Improved: Security, REST API protection, verification system, and developer extensibility.
+* Fixed: Multiple Workspace, media, Builder, and frontend compatibility issues.
+* Performance: Faster, more reliable Workspace experience with production-ready release optimizations.
+
+**Agent Identity Verification & Taxonomy Requests**
 
 * New: Agent identity verification — agents must verify their email before accessing the Agent Workspace.
 * New: Two-condition authorization — Workspace access requires an allowed registration status and a satisfied identity verification, enforced server-side.
-* New: Extensible verification framework — add phone, 2FA, or KYC factors via the `hvnly_identity_factors` filter without changing authorization.
-* New: Secure single-use verification tokens (selector + verifier, HMAC-at-rest, expiry, timing-safe compare).
-* New: Branded verification, confirmation, and resend emails with expiry and security notices.
-* New: Public rate-limited, CSRF-protected verify and resend endpoints with generic (non-enumerating) responses.
-* New: Email-change re-verification — changing a verified email revokes access and invalidates prior links.
-* New: "Verify Your Email" SPA page with resend cooldown, accessible states, and logout.
-* New: Administrator tooling — email-verified badge, manual verify, resend, and emergency disable, all audit-logged.
-* New: Taxonomy Request & Approval workflow for property departments, types, statuses, features, locations, tags, and badges.
-* New: Workspace request modal with term name, description, reason, and matching-term suggestions.
-* New: Taxonomy Requests admin queue with search, filters, pagination, and approve, reject, merge, and delete actions.
-* New: Request detail screen with moderation controls and a complete audit timeline.
-* New: In-app notifications and optional email updates for taxonomy request lifecycle events.
-* Improved: Taxonomy request admin screens use responsive cards, status badges, accessible controls, and a visual audit timeline.
-* Security: Normalized duplicate prevention, atomic active-request keys, per-user rate limiting, capability checks, and nonces protect request submission and moderation.
-* Developer: Dedicated request and append-only audit tables, migration support, REST endpoints, and filterable taxonomy policies.
-* Improved: Workspace `/me` exposes email verification state for the SPA.
-* Security: Verification tokens are never stored or logged in plaintext; a structured audit trail records every event.
-* Developer: New public actions and filters documented in `developer-docs/`.
-* Security: Plugin info REST endpoint now requires `manage_options`.
-* Maintenance: Removed temporary identity and Property Card Builder debug tracers from production code.
-* Maintenance: Release build now includes Workspace and Setup bundles; source maps and developer docs stay out of the ZIP.
+* New: Extensible verification framework via the `hvnly_identity_factors` filter.
+* New: Secure single-use verification tokens with HMAC storage, expiry, and timing-safe validation.
+* New: Branded verification, confirmation, and resend emails.
+* New: Public rate-limited, CSRF-protected verification and resend endpoints.
+* New: Automatic re-verification when a verified email address changes.
+* New: "Verify Your Email" Workspace page with resend cooldown.
+* New: Administrator verification tools with audit logging.
+* New: Taxonomy Request & Approval workflow for departments, property types, statuses, features, locations, tags, and badges.
+* New: Request modal with duplicate suggestions and request reason.
+* New: Admin moderation queue with approve, reject, merge, delete, search, filters, and pagination.
+* New: Request detail page with moderation history and audit timeline.
+* New: In-app notifications and optional email updates for taxonomy request events.
+* Improved: Responsive moderation UI with status badges and accessibility improvements.
+* Security: Duplicate prevention, rate limiting, capability checks, nonces, and atomic request protection.
+* Developer: Dedicated request tables, audit tables, REST APIs, migrations, and extensible taxonomy policies.
+* Improved: Workspace `/me` endpoint now exposes email verification status.
+* Security: Verification tokens are never stored or logged in plaintext.
+* Developer: New actions and filters documented.
+* Security: Plugin information REST endpoint now requires `manage_options`.
+* Maintenance: Removed temporary debug code.
+* Maintenance: Production release packaging improvements.
 
-**Agent Workspace (major)**
+**Agent Workspace**
 
-* New: Agent Workspace SPA — authenticated frontend portal for agents to manage listings without wp-admin.
-* New: Workspace authentication — login, register, forgot password, reset password, logout, and remember me.
-* New: Agent registration modes — disabled, open, and approval (pending / approved / rejected / suspended).
-* New: Agent dashboard shell with responsive Workspace layout.
-* New: Property form driven by live Property Builder schema (dynamic sections and fields).
-* New: Property CRUD via Workspace REST (`hvnly/v1`) — create, edit, save draft, trash/restore flows.
-* New: Featured image support using WordPress post thumbnails (`set_post_thumbnail` / `delete_post_thumbnail`).
-* New: Gallery, documents, video, FAQ, highlights, agents, map, and taxonomy editing in Workspace.
-* New: Property preview for Workspace drafts and listings.
-* New: Submit for review and publish / status workflow with capability and ownership checks.
-* New: Workspace REST identity endpoint (`/me`) and property schema endpoint.
-* Improved: Property Builder parity — Workspace renders Builder sections as a tabbed workspace (one active section).
-* Improved: Media picking via WordPress Media Library with reliable select handling.
-* Improved: Property save integrity — non-destructive PATCH updates; absent fields are not wiped.
-* Improved: Agents hydration uses the same assignment meta as frontend ownership checks.
-* Improved: Gallery save compatibility with Builder gallery keys and legacy gallery meta.
-* Fixed: Featured image, gallery, and video thumbnail persistence across save / reload / edit.
-* Fixed: Empty JSON `[]` pollution on scalar Builder titles (FAQ / highlights / agents titles).
-* Fixed: Frontend Contact Agent bootstrap no longer loads `WP_List_Table` / `convert_to_screen()` outside wp-admin.
-* Security: Workspace property routes require login, portal access, and per-property ownership or admin override.
-* Developer: Workspace module constants, asset enqueue, and `hvnly/v1` REST namespace for portal integrations.
+* New: Modern frontend Agent Workspace for property management.
+* New: Login, registration, forgot password, reset password, logout, and remember me.
+* New: Flexible registration modes (Disabled, Open, Approval).
+* New: Responsive dashboard layout.
+* New: Dynamic property form powered by Property Builder.
+* New: Complete property CRUD via Workspace REST API.
+* New: Featured image support.
+* New: Gallery, documents, videos, FAQs, highlights, agents, maps, and taxonomy management.
+* New: Property preview support.
+* New: Submit for Review and publishing workflow.
+* New: Workspace identity (`/me`) and property schema endpoints.
+* Improved: Full Property Builder compatibility.
+* Improved: WordPress Media Library integration.
+* Improved: Non-destructive property saving.
+* Improved: Agent assignment synchronization.
+* Improved: Gallery compatibility with legacy metadata.
+* Fixed: Featured image, gallery, and video persistence.
+* Fixed: Builder JSON title handling.
+* Fixed: Contact Agent frontend bootstrap loading.
+* Security: Property ownership validation and portal access protection.
+* Developer: Workspace constants, asset loading improvements, and `hvnly/v1` REST namespace.
 
 = 3.1.9 - 2026-07-11 =
 
