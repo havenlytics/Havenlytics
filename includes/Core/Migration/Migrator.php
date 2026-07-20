@@ -150,6 +150,8 @@ class Migrator {
 
         self::register('3.3.0-taxonomy-requests', Handlers\Version330TaxonomyRequestsHandler::class);
 
+        self::register('3.4.0-favorites', Handlers\Version340FavoritesHandler::class);
+
     }
 
 

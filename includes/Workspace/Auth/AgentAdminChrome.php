@@ -125,10 +125,82 @@ final class AgentAdminChrome {
 	}
 
 	/**
+	 * Whether the WordPress toolbar must be suppressed for this request.
+	 *
+	 * Two independent reasons, both capability-based:
+	 *
+	 * 1. The user is a Workspace Agent — no wp-admin chrome anywhere.
+	 * 2. The request is a Workspace page and the user is not an administrator —
+	 *    the Workspace shell stays clean for every non-admin persona.
+	 *
+	 * Administrators are never suppressed. Since 3.4.0 they use the Workspace
+	 * like agents and keep the standard toolbar on top of it, which is their
+	 * route back to wp-admin.
+	 *
+	 * Previously the toolbar was hidden for *everyone* on the Workspace page by
+	 * a blanket `#wpadminbar { display: none }` CSS rule. Deciding it here means
+	 * the element is never rendered for agents at all, rather than being sent to
+	 * the browser and hidden after the fact.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @return bool
+	 */
+	private function should_hide_admin_bar(): bool {
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
+
+		if ( current_user_can( 'manage_options' ) ) {
+			return false;
+		}
+
+		if ( $this->is_workspace_agent() ) {
+			return true;
+		}
+
+		return $this->is_workspace_request();
+	}
+
+	/**
+	 * Whether this front-end request renders a Workspace surface.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @return bool
+	 */
+	private function is_workspace_request(): bool {
+		if ( is_admin() || wp_doing_ajax() ) {
+			return false;
+		}
+
+		/*
+		 * is_workspace_page() uses conditional query tags, which are invalid
+		 * before the main query is parsed. This method is reached from two
+		 * hooks: `after_setup_theme` (far too early) and the `show_admin_bar`
+		 * filter, which WordPress evaluates from _wp_admin_bar_init() on
+		 * template_redirect:0 — after the query. Bailing early keeps the first
+		 * call silent instead of emitting a _doing_it_wrong() notice, and the
+		 * later filter is what actually decides toolbar visibility.
+		 */
+		if ( ! did_action( 'wp' ) ) {
+			return false;
+		}
+
+		if ( ! WorkspaceSettings::is_enabled() ) {
+			return false;
+		}
+
+		$page = \HvnlyNab\Workspace\WorkspaceBootstrap::get_instance()->get_page();
+
+		return $page instanceof \HvnlyNab\Workspace\WorkspacePage && $page->is_workspace_page();
+	}
+
+	/**
 	 * @return void
 	 */
 	public function maybe_hide_admin_bar(): void {
-		if ( $this->is_workspace_agent() ) {
+		if ( $this->should_hide_admin_bar() ) {
 			show_admin_bar( false );
 		}
 	}
@@ -138,7 +210,7 @@ final class AgentAdminChrome {
 	 * @return bool
 	 */
 	public function filter_show_admin_bar( $show ) {
-		if ( $this->is_workspace_agent() ) {
+		if ( $this->should_hide_admin_bar() ) {
 			return false;
 		}
 		return $show;

@@ -22,7 +22,7 @@ final class WorkspaceConstants {
 	 *
 	 * @var string
 	 */
-	public const MODULE_VERSION = '3.3.1';
+	public const MODULE_VERSION = '3.4.0';
 
 	/**
 	 * Future Workspace REST namespace (no routes in Sprint 1).

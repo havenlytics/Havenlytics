@@ -2,6 +2,8 @@
 
 namespace HvnlyNab\Setup;
 
+defined( 'ABSPATH' ) || exit;
+
 use HvnlyNab\Common\Keys;
 
 /**

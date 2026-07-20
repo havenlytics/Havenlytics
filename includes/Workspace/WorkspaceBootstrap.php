@@ -39,6 +39,7 @@ use HvnlyNab\Workspace\Health\AgentIdentityIntegrityCli;
 use HvnlyNab\Workspace\TaxonomyRequests\Admin\TaxonomyRequestsAdminPage;
 use HvnlyNab\Workspace\TaxonomyRequests\Api\TaxonomyRequestsController;
 use HvnlyNab\Workspace\TaxonomyRequests\TaxonomyRequestNotifier;
+use HvnlyNab\Workspace\TaxonomyRequests\TaxonomyRequestPendingCounter;
 use HvnlyNab\Workspace\TaxonomyRequests\TaxonomyRequestSchema;
 
 defined( 'ABSPATH' ) || exit;
@@ -197,6 +198,9 @@ final class WorkspaceBootstrap {
 		$this->settings_controller      = new SettingsController( $this->identity, $this->authorization );
 		$this->notifications_controller = new NotificationsController( $this->identity, $this->authorization );
 		$taxonomy_requests_controller   = new TaxonomyRequestsController( $this->identity, $this->authorization );
+		// Guest mode takes no identity/authorization: a guest is never a
+		// WordPress user, so there is no identity to resolve.
+		$guest_controller               = new Api\GuestController();
 
 		$this->page->register_hooks();
 		$this->assets->register_hooks();
@@ -211,6 +215,7 @@ final class WorkspaceBootstrap {
 		$this->settings_controller->register();
 		$this->notifications_controller->register();
 		$taxonomy_requests_controller->register();
+		$guest_controller->register();
 
 		if ( ! TaxonomyRequestSchema::tables_exist() ) {
 			TaxonomyRequestSchema::create_tables();
@@ -221,6 +226,11 @@ final class WorkspaceBootstrap {
 
 		$taxonomy_request_notifier = new TaxonomyRequestNotifier();
 		$taxonomy_request_notifier->register();
+
+		// Admin menu badge cache invalidation (3.4.0). Registered outside
+		// is_admin() on purpose: submissions arrive over REST, so the bust
+		// hook must be live on every request type.
+		TaxonomyRequestPendingCounter::register();
 
 		$caps = new CapabilityRegistrar();
 		$caps->register_hooks();

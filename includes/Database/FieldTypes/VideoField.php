@@ -8,6 +8,8 @@
 
 namespace HvnlyNab\Database\FieldTypes;
 
+defined( 'ABSPATH' ) || exit;
+
 class VideoField extends BaseFieldType {
     public function __construct() {
         parent::__construct('video');

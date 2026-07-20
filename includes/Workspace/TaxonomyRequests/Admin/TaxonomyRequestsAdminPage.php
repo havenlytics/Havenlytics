@@ -10,6 +10,7 @@ namespace HvnlyNab\Workspace\TaxonomyRequests\Admin;
 
 use HvnlyNab\Workspace\TaxonomyRequests\TaxonomyRequestConstants;
 use HvnlyNab\Workspace\TaxonomyRequests\TaxonomyRequestLogRepository;
+use HvnlyNab\Workspace\TaxonomyRequests\TaxonomyRequestPendingCounter;
 use HvnlyNab\Workspace\TaxonomyRequests\TaxonomyRequestRegistry;
 use HvnlyNab\Workspace\TaxonomyRequests\TaxonomyRequestRepository;
 use HvnlyNab\Workspace\TaxonomyRequests\TaxonomyRequestSchema;
@@ -52,10 +53,15 @@ final class TaxonomyRequestsAdminPage {
 	}
 
 	public function menu(): void {
+		// Pending-count bubble (3.4.0) — replaces the per-submission admin
+		// email. Cached one minute; busted on every status transition.
+		$menu_title = esc_html__( 'Taxonomy Requests', 'havenlytics' )
+			. TaxonomyRequestPendingCounter::menu_badge_html( TaxonomyRequestPendingCounter::get_count() );
+
 		add_submenu_page(
 			self::PARENT_MENU_SLUG,
 			esc_html__( 'Taxonomy Requests', 'havenlytics' ),
-			esc_html__( 'Taxonomy Requests', 'havenlytics' ),
+			$menu_title,
 			'manage_categories',
 			self::MENU_SLUG,
 			array( $this, 'render' )

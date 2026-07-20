@@ -445,6 +445,19 @@ class Bootstrap
                 $this->services['rest_api'] = new Controller();
             }
 
+            /*
+             * Favorites (saved properties).
+             *
+             * Deliberately a shared service rather than a Workspace one: the
+             * heart button lives on the public archive and single-property
+             * templates, so it must stay alive when an administrator disables
+             * the Agent Workspace. Only the Saved Properties page is gated.
+             */
+            if (class_exists(\HvnlyNab\Favorites\FavoritesBootstrap::class)) {
+                $this->services['favorites'] = \HvnlyNab\Favorites\FavoritesBootstrap::get_instance();
+                $this->services['favorites']->init();
+            }
+
         } catch (Exception $e) {
             // Silent fail in production to prevent fatal errors.
         } catch (Error $e) {

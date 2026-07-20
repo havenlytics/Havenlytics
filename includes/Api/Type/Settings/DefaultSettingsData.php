@@ -172,6 +172,7 @@ class DefaultSettingsData
             'hvnly_contact_agent_rate_limit_max'      => 5,
             'hvnly_contact_agent_rate_limit_window' => HOUR_IN_SECONDS,
             'hvnly_workspace_enabled'               => false,
+            'hvnly_workspace_guest_login'           => false,
             'hvnly_workspace_page_slug'             => 'agent-dashboard',
             'hvnly_workspace_login_redirect'        => '',
             'hvnly_workspace_logout_redirect'       => '',

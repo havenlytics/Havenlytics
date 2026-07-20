@@ -83,6 +83,10 @@ final class WorkspaceSettings {
 			);
 		}
 
+		if ( array_key_exists( 'hvnly_workspace_guest_login', $data ) ) {
+			$stored['guest_login_enabled'] = ! empty( $data['hvnly_workspace_guest_login'] );
+		}
+
 		if ( array_key_exists( 'hvnly_workspace_perm_publish_property', $data ) ) {
 			$stored['agents_can_direct_publish'] = ! empty( $data['hvnly_workspace_perm_publish_property'] );
 		}
@@ -123,6 +127,9 @@ final class WorkspaceSettings {
 			'registration_mode'          => 'open',
 			'default_registration_role'  => PortalCapabilities::WP_ROLE_AGENT,
 			'agents_can_direct_publish'  => false,
+			// Read-only guest tour. Off by default — exposing a Workspace
+			// preview is an administrator's decision, not a default.
+			'guest_login_enabled'        => false,
 		);
 	}
 
@@ -209,6 +216,41 @@ final class WorkspaceSettings {
 		 * @param bool $enabled Whether enabled.
 		 */
 		return (bool) apply_filters( 'hvnly_workspace_enabled', $enabled );
+	}
+
+	/**
+	 * Whether administrators are bounced from the Workspace to wp-admin.
+	 *
+	 * **Default changed to false in 3.4.0.** During the initial Workspace
+	 * rollout administrators were redirected to wp-admin to reduce maintenance
+	 * surface while the SPA was unfinished. The Workspace is now a core
+	 * surface, so administrators use it exactly like agents while keeping every
+	 * WordPress capability.
+	 *
+	 * This is the single choke-point for that policy — both the page guard
+	 * ({@see WorkspacePage::maybe_redirect_admins_to_admin()}) and the
+	 * Workspace login handler
+	 * ({@see \HvnlyNab\Workspace\Auth\SessionAuthController::login()}) read it,
+	 * so the two can never disagree.
+	 *
+	 * The long-standing `hvnly_workspace_redirect_admins_to_wpadmin` filter is
+	 * retained rather than removed: a site that deliberately wants the old
+	 * behaviour can restore it with `__return_true`.
+	 *
+	 * @since 3.4.0
+	 *
+	 * @return bool
+	 */
+	public static function should_redirect_admins_to_wpadmin(): bool {
+		/**
+		 * Filter whether administrators are redirected from the Workspace to wp-admin.
+		 *
+		 * @since 3.2.4
+		 * @since 3.4.0 Default changed from true to false — administrators now use the Workspace.
+		 *
+		 * @param bool $redirect Whether to redirect administrators. Default false.
+		 */
+		return (bool) apply_filters( 'hvnly_workspace_redirect_admins_to_wpadmin', false );
 	}
 
 	/**

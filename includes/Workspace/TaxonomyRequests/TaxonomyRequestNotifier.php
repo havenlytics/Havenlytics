@@ -12,7 +12,6 @@ use HvnlyNab\Email\EmailConstants;
 use HvnlyNab\Email\EmailHeaders;
 use HvnlyNab\Email\EmailRenderer;
 use HvnlyNab\Workspace\Notifications\NotificationRepository;
-use HvnlyNab\Workspace\TaxonomyRequests\Admin\TaxonomyRequestsAdminPage;
 use HvnlyNab\Workspace\WorkspaceSettings;
 
 defined( 'ABSPATH' ) || exit;
@@ -86,9 +85,12 @@ final class TaxonomyRequestNotifier {
 			$this->send( $user->user_email, $user->display_name, $message, $name, $to, $request, $url );
 		}
 
-		if ( TaxonomyRequestConstants::STATUS_PENDING === $to ) {
-			$this->notify_admin( $user, $request );
-		}
+		/*
+		 * 3.4.0: No admin email on submission. At scale every pending request
+		 * emailed the administrator; the pending-count bubble on the Taxonomy
+		 * Requests admin menu ({@see TaxonomyRequestPendingCounter}) replaced
+		 * it. Agent-facing status emails above are unaffected.
+		 */
 	}
 
 	/**
@@ -161,21 +163,4 @@ final class TaxonomyRequestNotifier {
 		}
 	}
 
-	/**
-	 * @param array<string, mixed> $request Request.
-	 */
-	private function notify_admin( \WP_User $requester, array $request ): void {
-		$email = sanitize_email( (string) apply_filters( 'hvnly_taxonomy_request_admin_email', get_option( 'admin_email' ), $request ) );
-		if ( ! is_email( $email ) || strtolower( $email ) === strtolower( (string) $requester->user_email ) ) {
-			return;
-		}
-		$url     = TaxonomyRequestsAdminPage::url( absint( $request['id'] ?? 0 ) );
-		$message = array(
-			'type'  => EmailConstants::TYPE_TAXONOMY_REQUEST_SUBMITTED,
-			'title' => __( 'New taxonomy request awaiting review', 'havenlytics' ),
-			/* translators: %s: requested taxonomy term name. */
-			'body'  => __( 'A Workspace agent requested the term “%s”.', 'havenlytics' ),
-		);
-		$this->send( $email, '', $message, (string) $request['requested_name'], TaxonomyRequestConstants::STATUS_PENDING, $request, $url );
-	}
 }

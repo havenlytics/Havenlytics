@@ -161,6 +161,16 @@ final class WorkspaceAssets {
 
 		$build_url = trailingslashit( HVNLYNAB_BUILD_URL . '/' . WorkspaceConstants::BUILD_FOLDER );
 
+		/*
+		 * Shared toast manager. The SPA has no toast implementation of its
+		 * own any more — WorkspaceNotificationService forwards to this single
+		 * engine — so it is a hard dependency, not an enhancement.
+		 */
+		if ( class_exists( '\HvnlyNab\Favorites\FavoritesAssets' ) ) {
+			\HvnlyNab\Favorites\FavoritesAssets::register_toast_assets();
+			$deps[] = \HvnlyNab\Favorites\FavoritesAssets::TOAST_SCRIPT_HANDLE;
+		}
+
 		if ( $style_rel !== '' ) {
 			wp_register_style(
 				WorkspaceConstants::STYLE_HANDLE,
@@ -223,6 +233,13 @@ final class WorkspaceAssets {
 
 		if ( wp_style_is( WorkspaceConstants::STYLE_HANDLE, 'registered' ) ) {
 			wp_enqueue_style( WorkspaceConstants::STYLE_HANDLE );
+		}
+
+		// Toast styles load even on the unavailable page: the SPA is not
+		// mounted there, but the auth surfaces below still raise toasts.
+		if ( class_exists( '\HvnlyNab\Favorites\FavoritesAssets' ) ) {
+			\HvnlyNab\Favorites\FavoritesAssets::register_toast_assets();
+			wp_enqueue_style( \HvnlyNab\Favorites\FavoritesAssets::TOAST_STYLE_HANDLE );
 		}
 
 		// Hard kill switch: no SPA / media / password meter while offline.
@@ -308,6 +325,7 @@ final class WorkspaceAssets {
 				'accountLabel'     => __( 'Account', 'havenlytics' ),
 				'dashboardLabel'   => __( 'Dashboard', 'havenlytics' ),
 				'propertiesLabel'  => __( 'Properties', 'havenlytics' ),
+				'savedPropertiesLabel' => __( 'Saved Properties', 'havenlytics' ),
 				'profileLabel'     => __( 'Profile', 'havenlytics' ),
 				'analyticsLabel'   => __( 'Analytics', 'havenlytics' ),
 				'notificationsLabel' => __( 'Notifications', 'havenlytics' ),

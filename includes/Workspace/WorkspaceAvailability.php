@@ -136,6 +136,23 @@ final class WorkspaceAvailability {
 		$route = (string) $request->get_route();
 		$ns    = '/' . trim( WorkspaceConstants::REST_NAMESPACE, '/' );
 
+		/**
+		 * Filter whether a route inside the Workspace namespace is exempt from
+		 * the availability gate.
+		 *
+		 * Some features share `hvnly/v1` but are not Workspace surfaces — for
+		 * example saved properties, which must keep working on the public
+		 * archive after an administrator disables the Agent Workspace.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param bool   $exempt Whether the route bypasses the kill switch.
+		 * @param string $route  REST route being dispatched.
+		 */
+		if ( (bool) apply_filters( 'hvnly_workspace_rest_exempt_route', false, $route ) ) {
+			return false;
+		}
+
 		if ( $route === $ns || 0 === strpos( $route, $ns . '/' ) ) {
 			return true;
 		}

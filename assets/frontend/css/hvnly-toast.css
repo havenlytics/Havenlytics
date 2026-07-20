@@ -1,0 +1,351 @@
+/**
+ * Havenlytics — Toast Notification Manager styles.
+ *
+ * One stylesheet for every surface (property pages + Agent Workspace) so the
+ * two never drift apart visually.
+ *
+ * Theming: tokens resolve against the plugin's --hvnly-* variables where they
+ * exist, with literal fallbacks so the toast is still correct on the front end
+ * of a theme that never loads the Workspace token sheet.
+ *
+ * @package Havenlytics
+ * @since   3.4.0
+ */
+
+.hvnly-toast-region {
+	--hvnly-toast-surface: var( --hvnly-color-bg-white, #ffffff );
+	--hvnly-toast-border: var( --hvnly-border-color, #e2e8f0 );
+	--hvnly-toast-title: var( --hvnly-text-primary, #0f172a );
+	--hvnly-toast-body: var( --hvnly-text-secondary, #64748b );
+	--hvnly-toast-shadow: 0 12px 32px -8px rgba( 15, 23, 42, 0.28 );
+	--hvnly-toast-accent: var( --hvnly-brand-primary, #2563eb );
+
+	position: fixed;
+	z-index: 999999;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	/* Bottom-centre: the property toast is a confirmation of something the
+	   user just did, so it reads better under the cursor's path than pinned
+	   to a corner. Centring is done with translate rather than
+	   left/right:0 so the column shrink-wraps its cards. */
+	inset-block-end: 24px;
+	inset-inline-start: 50%;
+	transform: translateX( -50% );
+	width: min( 460px, calc( 100vw - 32px ) );
+	/* The region spans a column of empty space; only the cards themselves
+	   should intercept pointer events. */
+	pointer-events: none;
+}
+
+.hvnly-toast {
+	pointer-events: auto;
+	width: 100%;
+	box-sizing: border-box;
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	padding: 14px 14px 14px 16px;
+	border: 1px solid var( --hvnly-toast-border );
+	border-radius: 14px;
+	background: var( --hvnly-toast-surface );
+	box-shadow: var( --hvnly-toast-shadow );
+	font-family: var( --hvnly-font-family-base, inherit );
+
+	/* Enter state. The visible/leaving attributes are toggled by the manager
+	   so a single transition definition drives both directions. */
+	opacity: 0;
+	transform: translateY( 12px ) scale( 0.98 );
+	transition: opacity 240ms cubic-bezier( 0.16, 1, 0.3, 1 ),
+		transform 240ms cubic-bezier( 0.16, 1, 0.3, 1 );
+}
+
+.hvnly-toast[data-hvnly-visible='true'] {
+	opacity: 1;
+	transform: translateY( 0 ) scale( 1 );
+}
+
+.hvnly-toast[data-hvnly-leaving='true'] {
+	opacity: 0;
+	transform: translateY( 6px ) scale( 0.98 );
+}
+
+/* Icon ------------------------------------------------------------ */
+
+.hvnly-toast__icon {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 999px;
+	font-size: 13px;
+	font-weight: 700;
+	line-height: 1;
+}
+
+.hvnly-toast--success .hvnly-toast__icon {
+	background: rgba( 22, 163, 74, 0.14 );
+	color: #15803d;
+}
+
+.hvnly-toast--error .hvnly-toast__icon {
+	background: rgba( 220, 38, 38, 0.14 );
+	color: #b91c1c;
+}
+
+.hvnly-toast--warning .hvnly-toast__icon {
+	background: rgba( 217, 119, 6, 0.16 );
+	color: #b45309;
+}
+
+.hvnly-toast--info .hvnly-toast__icon,
+.hvnly-toast--loading .hvnly-toast__icon {
+	background: rgba( 37, 99, 235, 0.14 );
+	color: #1d4ed8;
+}
+
+/* Favorite states use the emoji itself, so the chip stays neutral. */
+.hvnly-toast--favorite .hvnly-toast__icon,
+.hvnly-toast--unfavorite .hvnly-toast__icon {
+	background: rgba( 244, 63, 94, 0.12 );
+	font-size: 15px;
+}
+
+/* Property toast — thumbnail variant ------------------------------- */
+
+.hvnly-toast__media {
+	flex: 0 0 auto;
+	display: block;
+	width: 52px;
+	height: 52px;
+	border-radius: 10px;
+	overflow: hidden;
+	background: rgba( 148, 163, 184, 0.18 );
+}
+
+.hvnly-toast__media img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.hvnly-toast--media {
+	align-items: center;
+}
+
+/* The property title sits on one line and truncates — a long listing name
+   must never grow the toast into a card. min-width:0 is what allows the
+   flex child to shrink below its content width. */
+.hvnly-toast--media .hvnly-toast__message {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: 500;
+	color: var( --hvnly-toast-title );
+}
+
+/* Body ------------------------------------------------------------ */
+
+.hvnly-toast__body {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.hvnly-toast__title {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.35;
+	color: var( --hvnly-toast-title );
+}
+
+.hvnly-toast__message {
+	margin: 3px 0 0;
+	font-size: 13px;
+	line-height: 1.45;
+	color: var( --hvnly-toast-body );
+}
+
+.hvnly-toast__progress {
+	margin-top: 8px;
+	height: 3px;
+	border-radius: 999px;
+	background: rgba( 148, 163, 184, 0.3 );
+	overflow: hidden;
+}
+
+.hvnly-toast__progress > span {
+	display: block;
+	height: 100%;
+	background: var( --hvnly-toast-accent );
+	transition: width 200ms ease;
+}
+
+/* Actions --------------------------------------------------------- */
+
+.hvnly-toast__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 10px;
+}
+
+.hvnly-toast__action {
+	appearance: none;
+	border: 1px solid transparent;
+	border-radius: 8px;
+	padding: 6px 12px;
+	font-family: inherit;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.2;
+	cursor: pointer;
+	transition: background-color 150ms ease, border-color 150ms ease,
+		color 150ms ease;
+}
+
+.hvnly-toast__action--primary {
+	background: var( --hvnly-toast-accent );
+	color: #ffffff;
+}
+
+.hvnly-toast__action--primary:hover {
+	filter: brightness( 1.08 );
+}
+
+.hvnly-toast__action--secondary {
+	background: transparent;
+	border-color: var( --hvnly-toast-border );
+	color: var( --hvnly-toast-title );
+}
+
+.hvnly-toast__action--secondary:hover {
+	background: rgba( 148, 163, 184, 0.14 );
+}
+
+.hvnly-toast__action:focus-visible,
+.hvnly-toast__dismiss:focus-visible {
+	outline: 2px solid var( --hvnly-toast-accent );
+	outline-offset: 2px;
+}
+
+/* Dismiss --------------------------------------------------------- */
+
+.hvnly-toast__dismiss {
+	flex: 0 0 auto;
+	appearance: none;
+	border: 0;
+	background: transparent;
+	color: var( --hvnly-toast-body );
+	font-size: 20px;
+	line-height: 1;
+	padding: 0 2px;
+	cursor: pointer;
+	border-radius: 6px;
+	transition: color 150ms ease;
+}
+
+.hvnly-toast__dismiss:hover {
+	color: var( --hvnly-toast-title );
+}
+
+/* Dark mode ------------------------------------------------------- */
+
+@media ( prefers-color-scheme: dark ) {
+	.hvnly-toast-region {
+		--hvnly-toast-surface: #1e293b;
+		--hvnly-toast-border: #334155;
+		--hvnly-toast-title: #f1f5f9;
+		--hvnly-toast-body: #94a3b8;
+		--hvnly-toast-shadow: 0 12px 32px -8px rgba( 0, 0, 0, 0.55 );
+	}
+}
+
+/* Explicit theme attributes win over the media query in both directions, so a
+   site with its own toggle stays correct regardless of OS preference. */
+:root[data-theme='dark'] .hvnly-toast-region,
+body[data-theme='dark'] .hvnly-toast-region,
+body.hvnly-theme-dark .hvnly-toast-region {
+	--hvnly-toast-surface: #1e293b;
+	--hvnly-toast-border: #334155;
+	--hvnly-toast-title: #f1f5f9;
+	--hvnly-toast-body: #94a3b8;
+	--hvnly-toast-shadow: 0 12px 32px -8px rgba( 0, 0, 0, 0.55 );
+}
+
+:root[data-theme='light'] .hvnly-toast-region,
+body[data-theme='light'] .hvnly-toast-region,
+body.hvnly-theme-light .hvnly-toast-region {
+	--hvnly-toast-surface: #ffffff;
+	--hvnly-toast-border: #e2e8f0;
+	--hvnly-toast-title: #0f172a;
+	--hvnly-toast-body: #64748b;
+	--hvnly-toast-shadow: 0 12px 32px -8px rgba( 15, 23, 42, 0.28 );
+}
+
+/* Mobile: full-width sheet rising from the bottom ------------------ */
+
+@media ( max-width: 600px ) {
+	.hvnly-toast-region {
+		/* Reset the desktop centring: on mobile the sheet spans the full
+		   width, so translate-centring would double-offset it. */
+		inset-inline: 12px;
+		inset-block-end: 12px;
+		transform: none;
+		width: auto;
+		max-width: none;
+	}
+
+	.hvnly-toast {
+		border-radius: 14px;
+		transform: translateY( 20px ) scale( 1 );
+	}
+
+	.hvnly-toast__media {
+		width: 48px;
+		height: 48px;
+	}
+
+	.hvnly-toast[data-hvnly-visible='true'] {
+		transform: translateY( 0 );
+	}
+
+	.hvnly-toast[data-hvnly-leaving='true'] {
+		transform: translateY( 12px );
+	}
+
+	.hvnly-toast__action {
+		flex: 1 1 auto;
+		text-align: center;
+	}
+}
+
+/* The WordPress admin toolbar is bottom-anchored on small screens in some
+   themes; keep clear of it when present. */
+@media ( max-width: 782px ) {
+	body.admin-bar .hvnly-toast-region {
+		inset-block-end: 58px;
+	}
+}
+
+/* Reduced motion: keep the fade, drop the movement ----------------- */
+
+@media ( prefers-reduced-motion: reduce ) {
+	.hvnly-toast {
+		transition: opacity 120ms linear;
+		transform: none;
+	}
+
+	.hvnly-toast[data-hvnly-visible='true'],
+	.hvnly-toast[data-hvnly-leaving='true'] {
+		transform: none;
+	}
+
+	.hvnly-toast__progress > span {
+		transition: none;
+	}
+}

@@ -1347,3 +1347,100 @@ if (!function_exists('hvnly_page_has_property_shortcode')) {
         return false;
     }
 }
+
+/**
+ * Whether the current user has saved a property.
+ *
+ * Backed by one cached query per request, so calling this once per card on a
+ * full archive page costs a single database round trip — not one per card.
+ *
+ * @since 3.4.0
+ *
+ * @param int|null $property_id Property id. Defaults to the current post.
+ * @return bool
+ */
+if (!function_exists('hvnly_is_property_favorited')) {
+    function hvnly_is_property_favorited($property_id = null) {
+        if (!is_user_logged_in()) {
+            return false;
+        }
+
+        $property_id = $property_id ? absint($property_id) : (int) get_the_ID();
+        if ($property_id <= 0) {
+            return false;
+        }
+
+        if (!class_exists('\HvnlyNab\Favorites\FavoritesSchema')
+            || !\HvnlyNab\Favorites\FavoritesSchema::table_exists()) {
+            return false;
+        }
+
+        static $repository = null;
+        if (null === $repository) {
+            $repository = new \HvnlyNab\Favorites\FavoritesRepository();
+        }
+
+        return $repository->exists(get_current_user_id(), $property_id);
+    }
+}
+
+/**
+ * Whether saved properties (favorites) are available on this site.
+ *
+ * @since 3.4.0
+ *
+ * @return bool
+ */
+if (!function_exists('hvnly_is_favorites_enabled')) {
+    function hvnly_is_favorites_enabled() {
+        $enabled = class_exists('\HvnlyNab\Favorites\FavoritesSchema');
+
+        /**
+         * Filter whether the favorites feature is active.
+         *
+         * @since 3.4.0
+         *
+         * @param bool $enabled Whether favorites are enabled.
+         */
+        return (bool) apply_filters('hvnly_favorites_enabled', $enabled);
+    }
+}
+
+/**
+ * Presentation data the Favorite toast needs for a property.
+ *
+ * Rendered into the favorite button as data attributes so the toast can show
+ * the thumbnail and title with no extra request — and so it works for guests,
+ * who never call the REST API at all.
+ *
+ * @since 3.4.0
+ *
+ * @param int|null $property_id Property id. Defaults to the current post.
+ * @return array{title:string,thumb:string}
+ */
+if (!function_exists('hvnly_get_favorite_toast_data')) {
+    function hvnly_get_favorite_toast_data($property_id = null) {
+        $property_id = $property_id ? absint($property_id) : (int) get_the_ID();
+
+        if ($property_id <= 0) {
+            return array('title' => '', 'thumb' => '');
+        }
+
+        $thumb = get_the_post_thumbnail_url($property_id, 'thumbnail');
+
+        $data = array(
+            'title' => (string) get_the_title($property_id),
+            'thumb' => is_string($thumb) ? $thumb : '',
+        );
+
+        /**
+         * Filter the Favorite toast presentation data.
+         *
+         * @since 3.4.0
+         *
+         * @param array $data        Title + thumbnail URL.
+         * @param int   $property_id Property id.
+         */
+        return (array) apply_filters('hvnly_favorite_toast_data', $data, $property_id);
+    }
+}

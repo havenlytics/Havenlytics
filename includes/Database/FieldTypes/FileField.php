@@ -8,6 +8,8 @@
 
 namespace HvnlyNab\Database\FieldTypes;
 
+defined( 'ABSPATH' ) || exit;
+
 class FileField extends BaseFieldType {
     
     public function __construct() {

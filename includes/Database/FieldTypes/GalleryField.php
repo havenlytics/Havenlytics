@@ -8,6 +8,8 @@
 
 namespace HvnlyNab\Database\FieldTypes;
 
+defined( 'ABSPATH' ) || exit;
+
 class GalleryField extends BaseFieldType {
     
     public function __construct() {

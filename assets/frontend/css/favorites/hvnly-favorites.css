@@ -1,0 +1,51 @@
+/* =========================================================
+   FAVORITES — heart button state (3.4.0)
+
+   Moved out of hvnly-frontend-property-card-embed.css so the
+   saved (red) state loads on EVERY surface that renders a
+   heart — archive cards, single property actions, shortcode
+   and Elementor embeds — not only pages that happen to pull
+   the card stylesheet. Enqueued by FavoritesAssets alongside
+   the favorites script; where a heart renders, this loads.
+
+   State lives on the button as .is-favorited / aria-pressed
+   and is owned entirely by CSS (since 3.4.0).
+   ========================================================= */
+
+.hvnly-property--grid-list--favorite {
+    cursor: pointer;
+}
+
+.hvnly-property--grid-list--favorite.is-favorited,
+.hvnly-property--grid-list--favorite[aria-pressed="true"] {
+    color: var(--hvnly-brand-error, #ff4d4f);
+}
+
+.hvnly-property--grid-list--favorite.is-favorited i,
+.hvnly-property--grid-list--favorite[aria-pressed="true"] i {
+    color: var(--hvnly-brand-error, #ff4d4f);
+}
+
+.hvnly-property--grid-list--favorite:focus-visible {
+    outline: 2px solid var(--hvnly-brand-primary, #0073aa);
+    outline-offset: 2px;
+}
+
+/* In-flight REST call — keep the optimistic state visible but
+   signal that the control is temporarily inert. */
+.hvnly-property--grid-list--favorite[data-hvnly-busy="1"] {
+    opacity: 0.65;
+    pointer-events: none;
+}
+
+.hvnly-favorites__live {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}

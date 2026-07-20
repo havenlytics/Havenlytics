@@ -1510,3 +1510,15 @@ i{
         transform: none !important;
     }
 }
+
+
+/* =========================================================
+   FAVORITES — heart state moved (3.4.0)
+
+   The persistent saved-state rules (.is-favorited, busy,
+   focus, live region) moved to
+   assets/frontend/css/favorites/hvnly-favorites.css so they
+   load on every heart surface, including single property
+   pages that never enqueue this card stylesheet. Enqueued by
+   FavoritesAssets with the favorites script.
+   ========================================================= */

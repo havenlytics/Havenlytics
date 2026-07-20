@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit762940525116cfd654b65dcc7787aa41
+class ComposerStaticInit80cdca7702b847118d383462f20c5b49
 {
     public static $prefixLengthsPsr4 = array (
         'H' =>
@@ -145,6 +145,7 @@ class ComposerStaticInit762940525116cfd654b65dcc7787aa41
         'HvnlyNab\\Core\\Migration\\Handlers\\Version319SectionAliasDedupeHandler' => __DIR__ . '/../..' . '/includes/Core/Migration/Handlers/Version319SectionAliasDedupeHandler.php',
         'HvnlyNab\\Core\\Migration\\Handlers\\Version320PortalNotificationsHandler' => __DIR__ . '/../..' . '/includes/Core/Migration/Handlers/Version320PortalNotificationsHandler.php',
         'HvnlyNab\\Core\\Migration\\Handlers\\Version330TaxonomyRequestsHandler' => __DIR__ . '/../..' . '/includes/Core/Migration/Handlers/Version330TaxonomyRequestsHandler.php',
+        'HvnlyNab\\Core\\Migration\\Handlers\\Version340FavoritesHandler' => __DIR__ . '/../..' . '/includes/Core/Migration/Handlers/Version340FavoritesHandler.php',
         'HvnlyNab\\Core\\Migration\\Interfaces\\MigrationInterface' => __DIR__ . '/../..' . '/includes/Core/Migration/MigrationInterface.php',
         'HvnlyNab\\Core\\Migration\\MigrationAutoload' => __DIR__ . '/../..' . '/includes/Core/Migration/MigrationAutoload.php',
         'HvnlyNab\\Core\\Migration\\Migrator' => __DIR__ . '/../..' . '/includes/Core/Migration/Migrator.php',
@@ -211,6 +212,12 @@ class ComposerStaticInit762940525116cfd654b65dcc7787aa41
         'HvnlyNab\\Email\\EmailSettings' => __DIR__ . '/../..' . '/includes/Email/EmailSettings.php',
         'HvnlyNab\\Email\\Notifiers\\PropertyImportSuccessNotifier' => __DIR__ . '/../..' . '/includes/Email/Notifiers/PropertyImportSuccessNotifier.php',
         'HvnlyNab\\Email\\Notifiers\\PropertyWorkflowNotifier' => __DIR__ . '/../..' . '/includes/Email/Notifiers/PropertyWorkflowNotifier.php',
+        'HvnlyNab\\Favorites\\FavoritesAssets' => __DIR__ . '/../..' . '/includes/Favorites/FavoritesAssets.php',
+        'HvnlyNab\\Favorites\\FavoritesBootstrap' => __DIR__ . '/../..' . '/includes/Favorites/FavoritesBootstrap.php',
+        'HvnlyNab\\Favorites\\FavoritesController' => __DIR__ . '/../..' . '/includes/Favorites/FavoritesController.php',
+        'HvnlyNab\\Favorites\\FavoritesRepository' => __DIR__ . '/../..' . '/includes/Favorites/FavoritesRepository.php',
+        'HvnlyNab\\Favorites\\FavoritesSchema' => __DIR__ . '/../..' . '/includes/Favorites/FavoritesSchema.php',
+        'HvnlyNab\\Favorites\\FavoritesService' => __DIR__ . '/../..' . '/includes/Favorites/FavoritesService.php',
         'HvnlyNab\\Frontend' => __DIR__ . '/../..' . '/includes/Frontend.php',
         'HvnlyNab\\Frontend\\AjaxHandler' => __DIR__ . '/../..' . '/includes/Frontend/AjaxHandler.php',
         'HvnlyNab\\Frontend\\Assets' => __DIR__ . '/../..' . '/includes/Frontend/Assets.php',
@@ -255,6 +262,7 @@ class ComposerStaticInit762940525116cfd654b65dcc7787aa41
         'HvnlyNab\\Workspace\\Api\\AnalyticsService' => __DIR__ . '/../..' . '/includes/Workspace/Api/AnalyticsService.php',
         'HvnlyNab\\Workspace\\Api\\DashboardController' => __DIR__ . '/../..' . '/includes/Workspace/Api/DashboardController.php',
         'HvnlyNab\\Workspace\\Api\\DashboardService' => __DIR__ . '/../..' . '/includes/Workspace/Api/DashboardService.php',
+        'HvnlyNab\\Workspace\\Api\\GuestController' => __DIR__ . '/../..' . '/includes/Workspace/Api/GuestController.php',
         'HvnlyNab\\Workspace\\Api\\InquiriesController' => __DIR__ . '/../..' . '/includes/Workspace/Api/InquiriesController.php',
         'HvnlyNab\\Workspace\\Api\\InquiryService' => __DIR__ . '/../..' . '/includes/Workspace/Api/InquiryService.php',
         'HvnlyNab\\Workspace\\Api\\MeController' => __DIR__ . '/../..' . '/includes/Workspace/Api/MeController.php',
@@ -283,6 +291,7 @@ class ComposerStaticInit762940525116cfd654b65dcc7787aa41
         'HvnlyNab\\Workspace\\Auth\\AgentIdentityService' => __DIR__ . '/../..' . '/includes/Workspace/Auth/AgentIdentityService.php',
         'HvnlyNab\\Workspace\\Auth\\AgentProvisioner' => __DIR__ . '/../..' . '/includes/Workspace/Auth/AgentProvisioner.php',
         'HvnlyNab\\Workspace\\Auth\\CapabilityRegistrar' => __DIR__ . '/../..' . '/includes/Workspace/Auth/CapabilityRegistrar.php',
+        'HvnlyNab\\Workspace\\Auth\\GuestSessionService' => __DIR__ . '/../..' . '/includes/Workspace/Auth/GuestSessionService.php',
         'HvnlyNab\\Workspace\\Auth\\IdentityAdminColumns' => __DIR__ . '/../..' . '/includes/Workspace/Auth/IdentityAdminColumns.php',
         'HvnlyNab\\Workspace\\Auth\\PortalAuthorization' => __DIR__ . '/../..' . '/includes/Workspace/Auth/PortalAuthorization.php',
         'HvnlyNab\\Workspace\\Auth\\PortalCapabilities' => __DIR__ . '/../..' . '/includes/Workspace/Auth/PortalCapabilities.php',
@@ -318,6 +327,7 @@ class ComposerStaticInit762940525116cfd654b65dcc7787aa41
         'HvnlyNab\\Workspace\\TaxonomyRequests\\TaxonomyRequestConstants' => __DIR__ . '/../..' . '/includes/Workspace/TaxonomyRequests/TaxonomyRequestConstants.php',
         'HvnlyNab\\Workspace\\TaxonomyRequests\\TaxonomyRequestLogRepository' => __DIR__ . '/../..' . '/includes/Workspace/TaxonomyRequests/TaxonomyRequestLogRepository.php',
         'HvnlyNab\\Workspace\\TaxonomyRequests\\TaxonomyRequestNotifier' => __DIR__ . '/../..' . '/includes/Workspace/TaxonomyRequests/TaxonomyRequestNotifier.php',
+        'HvnlyNab\\Workspace\\TaxonomyRequests\\TaxonomyRequestPendingCounter' => __DIR__ . '/../..' . '/includes/Workspace/TaxonomyRequests/TaxonomyRequestPendingCounter.php',
         'HvnlyNab\\Workspace\\TaxonomyRequests\\TaxonomyRequestRegistry' => __DIR__ . '/../..' . '/includes/Workspace/TaxonomyRequests/TaxonomyRequestRegistry.php',
         'HvnlyNab\\Workspace\\TaxonomyRequests\\TaxonomyRequestRepository' => __DIR__ . '/../..' . '/includes/Workspace/TaxonomyRequests/TaxonomyRequestRepository.php',
         'HvnlyNab\\Workspace\\TaxonomyRequests\\TaxonomyRequestSchema' => __DIR__ . '/../..' . '/includes/Workspace/TaxonomyRequests/TaxonomyRequestSchema.php',
@@ -338,9 +348,9 @@ class ComposerStaticInit762940525116cfd654b65dcc7787aa41
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit762940525116cfd654b65dcc7787aa41::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit762940525116cfd654b65dcc7787aa41::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit762940525116cfd654b65dcc7787aa41::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit80cdca7702b847118d383462f20c5b49::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit80cdca7702b847118d383462f20c5b49::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit80cdca7702b847118d383462f20c5b49::$classMap;
 
         }, null, ClassLoader::class);
     }

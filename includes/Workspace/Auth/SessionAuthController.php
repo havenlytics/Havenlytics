@@ -317,15 +317,22 @@ final class SessionAuthController {
 		$user_id = (int) $user->ID;
 		$status  = WorkspaceRegistrationStatus::get_for_user( $user_id );
 
+		$is_administrator = user_can( $user_id, 'manage_options' );
+
 		/*
-		 * Administrators belong in wp-admin, not the Agent Workspace SPA.
+		 * 3.4.0: administrators now enter the Workspace like agents and keep
+		 * every WordPress capability, so this redirect is off by default. The
+		 * branch is retained behind the shared policy switch so a site can
+		 * restore the pre-3.4.0 behaviour with
+		 * `hvnly_workspace_redirect_admins_to_wpadmin` returning true.
+		 *
 		 * Capability-based (manage_options) on purpose — never a bare role-name
 		 * check — so admin-equivalent custom roles are covered too. The wp_signon()
 		 * session above is already established, so hand them straight to the native
 		 * dashboard. `canAccessWorkspace => false` stops the SPA login handler from
 		 * consuming a stored "intended" Workspace route and overriding this redirect.
 		 */
-		if ( user_can( $user_id, 'manage_options' ) ) {
+		if ( $is_administrator && WorkspaceSettings::should_redirect_admins_to_wpadmin() ) {
 			do_action( 'hvnly_workspace_agent_activity', $user_id, 'login' );
 			AgentIdentityService::get_instance()->clear_cache( $user_id );
 
@@ -353,8 +360,17 @@ final class SessionAuthController {
 			);
 		}
 
+		/*
+		 * Registration status gates the agent lifecycle, not site owners.
+		 * PortalAuthorization::compute_can_access_workspace() already short-
+		 * circuits administrators ahead of its own status check, so mirroring
+		 * that here keeps login and authorization consistent. Without it an
+		 * administrator who had previously been a suspended agent would be
+		 * locked out of their own site's Workspace by a stale meta value.
+		 */
+
 		// Blocked / Pending / Archived — no session for Workspace auth.
-		if ( ! WorkspaceRegistrationStatus::allows_login( $status ) ) {
+		if ( ! $is_administrator && ! WorkspaceRegistrationStatus::allows_login( $status ) ) {
 			wp_logout();
 			AgentIdentityService::get_instance()->clear_cache( $user_id );
 			$view = $this->auth_view_for_status( $status );
@@ -371,7 +387,7 @@ final class SessionAuthController {
 		}
 
 		// Suspended — session kept; Workspace SPA shows reason (no REST access).
-		if ( ! WorkspaceRegistrationStatus::allows_workspace_access( $status ) ) {
+		if ( ! $is_administrator && ! WorkspaceRegistrationStatus::allows_workspace_access( $status ) ) {
 			do_action( 'hvnly_workspace_agent_activity', $user_id, 'login' );
 			AgentIdentityService::get_instance()->clear_cache( $user_id );
 			$view = $this->auth_view_for_status( $status );

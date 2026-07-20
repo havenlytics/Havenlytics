@@ -199,8 +199,34 @@ if (!function_exists('hvnly_single_property_meta')) {
 if (!function_exists('hvnly_single_property_actions')) {
     function hvnly_single_property_actions()
     {
-        // Check all button settings dynamically
-        $save_enabled = hvnly_is_save_property_enabled();
+        /*
+         * 3.4.0: the Favorite button follows the Favorites feature, not the
+         * legacy `hvnly_EnableSaveProperty` toggle.
+         *
+         * That toggle pre-dates Favorites, defaults to false, and is stored
+         * false on every existing install — gating on it would hide the
+         * Favorite button on every single-property page in the wild, while
+         * archive cards show it. Behaviour now matches archive cards exactly.
+         *
+         * `hvnly_is_save_property_enabled()` is still honoured as an explicit
+         * opt-IN for sites that turned it on, and the filter below is the
+         * supported way to hide the button again.
+         */
+        $favorites_enabled = function_exists('hvnly_is_favorites_enabled')
+            && hvnly_is_favorites_enabled();
+
+        /**
+         * Filter whether the Favorite button renders on single property pages.
+         *
+         * @since 3.4.0
+         *
+         * @param bool $show Whether to show the Favorite button.
+         */
+        $save_enabled = (bool) apply_filters(
+            'hvnly_show_single_property_favorite',
+            $favorites_enabled || hvnly_is_save_property_enabled()
+        );
+
         $print_enabled = hvnly_is_print_button_enabled();
 
         // Only render if at least one action is enabled

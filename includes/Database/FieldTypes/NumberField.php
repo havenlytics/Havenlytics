@@ -8,6 +8,8 @@
 
 namespace HvnlyNab\Database\FieldTypes;
 
+defined( 'ABSPATH' ) || exit;
+
 class NumberField extends BaseFieldType {
     public function __construct() {
         parent::__construct('number');

@@ -217,12 +217,13 @@ final class WorkspacePage {
 	}
 
 	/**
-	 * Keep administrators out of the Agent Workspace SPA.
+	 * Optionally send administrators from the Workspace page to wp-admin.
 	 *
-	 * The Workspace is for frontend agent / agency accounts. An administrator who
-	 * is already signed in and lands on the Workspace page (bookmark, direct URL,
-	 * deep link) is sent to the native WordPress dashboard instead of the mostly
-	 * empty agent shell — the same destination the Workspace login flow now uses.
+	 * As of 3.4.0 this is **off by default**: administrators use the Agent
+	 * Workspace exactly like agents while keeping every WordPress capability,
+	 * and they get the standard admin toolbar on top of it. The guard is kept
+	 * (rather than deleted) so a site that wants the pre-3.4.0 behaviour can
+	 * opt back in via `hvnly_workspace_redirect_admins_to_wpadmin`.
 	 *
 	 * Capability-based (manage_options), never a role-name check. Logged-out
 	 * visitors still get the login screen; non-admin agents are untouched. Runs
@@ -232,25 +233,17 @@ final class WorkspacePage {
 	 * @return void
 	 */
 	public function maybe_redirect_admins_to_admin(): void {
+		// Policy lives in WorkspaceSettings so this guard and the Workspace
+		// login handler can never drift apart.
+		if ( ! WorkspaceSettings::should_redirect_admins_to_wpadmin() ) {
+			return;
+		}
+
 		if ( ! WorkspaceSettings::is_enabled() || ! $this->is_workspace_page() ) {
 			return;
 		}
 
 		if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-
-		/**
-		 * Filter whether administrators are redirected away from the Workspace page.
-		 *
-		 * Return false to let admins view the Workspace directly (e.g. for support
-		 * or previewing the agent experience).
-		 *
-		 * @since 3.2.4
-		 *
-		 * @param bool $redirect Default true.
-		 */
-		if ( ! (bool) apply_filters( 'hvnly_workspace_redirect_admins_to_wpadmin', true ) ) {
 			return;
 		}
 

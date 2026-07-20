@@ -366,6 +366,13 @@ class SettingsSchema
                     'default' => false,
                     'sanitize' => 'rest_sanitize_boolean',
                 ],
+                // Read-only guest tour of the Workspace. Off by default —
+                // exposing a preview is an administrator's decision.
+                'hvnly_workspace_guest_login' => [
+                    'type' => 'boolean',
+                    'default' => false,
+                    'sanitize' => 'rest_sanitize_boolean',
+                ],
                 'hvnly_workspace_page_slug' => [
                     'type' => 'string',
                     'default' => 'agent-dashboard',

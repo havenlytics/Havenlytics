@@ -2,6 +2,8 @@
 
 namespace HvnlyNab\Common;
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Manage Havenlytics all key strings.
  *

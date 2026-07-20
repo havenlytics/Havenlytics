@@ -277,55 +277,31 @@
         // ======================
         // FAVORITE BUTTONS
         // ======================
+        // 3.4.0: favorites moved to the dedicated hvnly-favorites.js module,
+        // which persists state (REST for signed-in users, localStorage for
+        // guests) and binds via delegation on document.
+        //
+        // The methods below are retained as no-ops purely for backward
+        // compatibility — hvnly-frontend-property-ajax-root.js,
+        // -ajax-search.js and -ajax-controller.js all call
+        // initFavoriteButtons() after re-rendering results, and the
+        // controller call site is unguarded, so removing it would throw.
+        //
+        // The previous implementation re-queried every button and did
+        // `button.replaceWith(button.cloneNode(true))` to unbind. Delegated
+        // listeners need no rebinding, and that clone would actively destroy
+        // the server-rendered `aria-pressed` / `is-favorited` state. It must
+        // stay gone.
         initFavoriteButtons() {
-            this.setupFavoriteButtonListeners();
-            
-            $(document).on('hvnly-properties-updated', () => {
-                this.setupFavoriteButtonListeners();
-            });
+            // Delegated in hvnly-favorites.js — nothing to bind here.
+            // Re-hydrate freshly injected cards from the canonical state.
+            if (window.hvnlyFavorites && typeof window.hvnlyFavorites.hydrate === 'function') {
+                window.hvnlyFavorites.hydrate();
+            }
         }
 
         setupFavoriteButtonListeners() {
-            const favoriteButtons = document.querySelectorAll('.hvnly-property--grid-list--favorite, .hvnly-property--grid-list--action-btn:first-child');
-            
-            favoriteButtons.forEach(button => {
-                button.replaceWith(button.cloneNode(true));
-            });
-
-            const newFavoriteButtons = document.querySelectorAll('.hvnly-property--grid-list--favorite, .hvnly-property--grid-list--action-btn:first-child');
-            
-            newFavoriteButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const icon = button.querySelector('i');
-                    const propertyId = button.getAttribute('data-property-id');
-                    
-                    if (icon.classList.contains('far')) {
-                        icon.classList.remove('far');
-                        icon.classList.add('fas');
-                        // Sprint 31D: was var(--hvnlytics-alert) — a token that
-                        // exists nowhere (plugin prefix is --hvnly-*), so the
-                        // "favorited" state never changed color.
-                        icon.style.color = 'var(--hvnly-brand-error, #ff4d4f)';
-                        button.setAttribute('aria-pressed', 'true');
-                        this.addToFavorites(propertyId);
-                    } else {
-                        icon.classList.remove('fas');
-                        icon.classList.add('far');
-                        icon.style.color = '';
-                        button.setAttribute('aria-pressed', 'false');
-                        this.removeFromFavorites(propertyId);
-                    }
-                });
-            });
-        }
-
-        addToFavorites(propertyId) {
-            // Favorite functionality implementation
-        }
-
-        removeFromFavorites(propertyId) {
-            // Favorite functionality implementation
+            this.initFavoriteButtons();
         }
 
         // ======================
