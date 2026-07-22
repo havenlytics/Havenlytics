@@ -1,0 +1,111 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "havenlytics/saved-properties",
+  "version": "3.5.0",
+  "title": "HVN: Saved Properties",
+  "category": "havenlytics",
+  "icon": "heart",
+  "description": "Displays the current user's saved (favorited) properties. A presentation layer over the existing Favorites system — reuses the Property Card, query, favorites storage and Authentication block. No new favorites logic.",
+  "keywords": [
+    "saved",
+    "favorites",
+    "favourites",
+    "wishlist",
+    "properties",
+    "havenlytics"
+  ],
+  "textdomain": "havenlytics",
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    },
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true
+    }
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "grid"
+    },
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "postsPerPage": {
+      "type": "number",
+      "default": 12
+    },
+    "orderby": {
+      "type": "string",
+      "default": "newest"
+    },
+    "paginationMode": {
+      "type": "string",
+      "default": "numbered"
+    },
+    "showTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "sectionTitle": {
+      "type": "string",
+      "default": "Saved Properties"
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": false
+    },
+    "sectionDescription": {
+      "type": "string",
+      "default": ""
+    },
+    "loggedOutMode": {
+      "type": "string",
+      "default": "auth"
+    },
+    "emptyButtonText": {
+      "type": "string",
+      "default": "Browse Properties"
+    },
+    "visibleSlides": {
+      "type": "number",
+      "default": 3
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "showNav": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDots": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "editorScript": "hvnly-blocks-editor",
+  "editorStyle": "hvnly-blocks-editor",
+  "style": "hvnly-block-saved-properties"
+}

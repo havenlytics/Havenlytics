@@ -136,6 +136,60 @@ if (!function_exists('hvnly_single_property_contact_agent_modal')) {
     }
 }
 
+if (!function_exists('hvnly_single_property_mobile_contact_dock')) {
+    /**
+     * Output the premium mobile floating contact dock on single property pages.
+     *
+     * Desktop never shows this chrome — CSS + JS gate by viewport.
+     *
+     * @since 3.5.0
+     * @return void
+     */
+    function hvnly_single_property_mobile_contact_dock()
+    {
+        if (!class_exists('\HvnlyNab\Frontend\MobileContactDock')) {
+            return;
+        }
+
+        \HvnlyNab\Frontend\MobileContactDock::render();
+    }
+}
+
+if (!function_exists('hvnly_single_property_mobile_contact_dock_body_class')) {
+    /**
+     * Reserve bottom space for the mobile contact dock (no layout jump).
+     *
+     * @since 3.5.0
+     *
+     * @param string[] $classes Body classes.
+     * @return string[]
+     */
+    function hvnly_single_property_mobile_contact_dock_body_class($classes)
+    {
+        if (!is_array($classes)) {
+            $classes = array();
+        }
+
+        if (!class_exists('\HvnlyNab\Frontend\MobileContactDock')) {
+            return $classes;
+        }
+
+        if (!\HvnlyNab\Frontend\MobileContactDock::should_display()) {
+            return $classes;
+        }
+
+        $classes[] = 'hvnly-has-mobile-contact-dock';
+
+        $args = \HvnlyNab\Frontend\MobileContactDock::get_template_args();
+        if (is_array($args) && !empty($args['max_width'])) {
+            // data-hvnly-mcd-max is set on <body> via JS; class carries the gate for no-JS CSS.
+            $classes[] = 'hvnly-has-mobile-contact-dock--max-' . absint($args['max_width']);
+        }
+
+        return $classes;
+    }
+}
+
 if (!function_exists('hvnly_single_property_scroll_top')) {
     function hvnly_single_property_scroll_top()
     {

@@ -13,7 +13,6 @@
 namespace HvnlyNab\Database\Custom_Posts;
 
 use HvnlyNab\Database\Base\Custom_Posts;
-use HvnlyNab\Core\PluginGutenbergSupport;
 use HvnlyNab\Frontend\ViewCountFormatter;
 
 if (! defined('ABSPATH')) {
@@ -67,21 +66,18 @@ class HavenlyticsNab extends Custom_Posts
         add_action('restrict_manage_posts', [$this, 'top_filters_dropdown']);
         add_action('pre_get_posts', [$this, 'filter_by_taxonomies']);
 
-        // Gutenberg is controlled globally via PluginGutenbergSupport (Misc Settings).
+        // Block editor for this CPT remains gated by PluginGutenbergSupport
+        // (use_block_editor_for_post_type). REST must stay enabled so block
+        // Inspector pickers can use /wp/v2/hvnly_property.
 
         // Labels for UI
         $this->name = esc_html__('Property', 'havenlytics');
         $this->menu = esc_html__('Add New Property', 'havenlytics');
 
-        // Check if Gutenberg should be enabled
-        $is_gutenberg_enabled = class_exists( PluginGutenbergSupport::class )
-            ? PluginGutenbergSupport::is_enabled()
-            : $this->is_gutenberg_enabled();
-
         // Post type settings
         $settings = [
-            // Enable REST API for Gutenberg if enabled
-            'show_in_rest'       => $is_gutenberg_enabled,
+            // Always expose in REST (picker / blocks). Not the same as Gutenberg editing.
+            'show_in_rest'       => true,
             'menu_icon'          => HVNLYNAB_ASSETS_URL . '/admin/img/havenlytics-icon18x18.svg',
             'supports'           => ['title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments'],
             'publicly_queryable' => $this->public_query,

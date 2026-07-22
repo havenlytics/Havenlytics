@@ -1,0 +1,136 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "havenlytics/dashboard",
+  "version": "3.5.0",
+  "title": "HVN: Dashboard",
+  "category": "havenlytics",
+  "icon": "dashboard",
+  "description": "Renders the existing Havenlytics Agent Workspace dashboard. Presentation layer only — it reuses the current Workspace app, data, permissions and routing.",
+  "keywords": [
+    "dashboard",
+    "workspace",
+    "agent",
+    "account",
+    "havenlytics"
+  ],
+  "textdomain": "havenlytics",
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "text": false,
+      "link": false
+    }
+  },
+  "attributes": {
+    "fullScreen": {
+      "type": "boolean",
+      "default": true
+    },
+    "dashboardLayout": {
+      "type": "string",
+      "default": "default"
+    },
+    "defaultSection": {
+      "type": "string",
+      "default": "dashboard"
+    },
+    "containerWidth": {
+      "type": "number",
+      "default": 0
+    },
+    "minHeight": {
+      "type": "number",
+      "default": 600
+    },
+    "showHeader": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSidebar": {
+      "type": "boolean",
+      "default": true
+    },
+    "showWelcome": {
+      "type": "boolean",
+      "default": true
+    },
+    "showStatistics": {
+      "type": "boolean",
+      "default": true
+    },
+    "showQuickActions": {
+      "type": "boolean",
+      "default": true
+    },
+    "showRecentProperties": {
+      "type": "boolean",
+      "default": true
+    },
+    "showFavorites": {
+      "type": "boolean",
+      "default": true
+    },
+    "showActivity": {
+      "type": "boolean",
+      "default": true
+    },
+    "showProfileSummary": {
+      "type": "boolean",
+      "default": true
+    },
+    "sidebarCollapse": {
+      "type": "string",
+      "default": "auto"
+    },
+    "cardRadius": {
+      "type": "number",
+      "default": 0
+    },
+    "spacing": {
+      "type": "number",
+      "default": 0
+    },
+    "shadow": {
+      "type": "string",
+      "default": "default"
+    },
+    "containerStyle": {
+      "type": "string",
+      "default": "default"
+    },
+    "loggedOutMode": {
+      "type": "string",
+      "default": "form"
+    },
+    "loggedOutHeading": {
+      "type": "string",
+      "default": ""
+    },
+    "loggedOutMessage": {
+      "type": "string",
+      "default": ""
+    },
+    "authButtonLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "authUrl": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "editorScript": "hvnly-blocks-editor",
+  "editorStyle": "hvnly-blocks-editor",
+  "style": "hvnly-block-dashboard"
+}

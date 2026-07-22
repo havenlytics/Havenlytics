@@ -1,0 +1,326 @@
+/**
+ * HVN: Dashboard block styles.
+ *
+ * Chrome only — the live dashboard is the existing Workspace SPA and keeps its
+ * own styles. This covers the block wrapper, the signed-out gate and the editor
+ * preview panel. Uses Havenlytics `--hvnly-*` tokens with safe fallbacks.
+ *
+ * @package Havenlytics
+ * @since   3.5.0
+ */
+
+.hvnly-dashboard-block {
+	--_db-radius: var( --hvnly-card-radius, var( --hvnly-border-radius-lg, 16px ) );
+	--_db-border: var( --hvnly-border-color, rgba( 15, 23, 42, 0.12 ) );
+	--_db-bg: var( --hvnly-card-bg, var( --hvnly-color-bg-white, #fff ) );
+	--_db-fg: var( --hvnly-text-primary, var( --hvnly-text-color, #0f172a ) );
+	--_db-muted: var( --hvnly-text-secondary, #64748b );
+	--_db-primary: var( --hvnly-brand-primary, var( --hvnly-primary-color, #6c60fe ) );
+	--_db-primary-fg: var( --hvnly-button-text, #fff );
+	--_db-field-bg: var( --hvnly-color-bg-light, #f8fafc );
+	--_db-font: var( --hvnly-font-family-base, inherit );
+
+	font-family: var( --_db-font );
+	color: var( --_db-fg );
+}
+
+.hvnly-dashboard-block__inner { width: 100%; }
+
+/* Layout variants. */
+.hvnly-dashboard-block--layout-full,
+.hvnly-dashboard-block--layout-full .hvnly-dashboard-block__inner { width: 100%; }
+.hvnly-dashboard-block--layout-contained .hvnly-dashboard-block__inner {
+	max-width: 1280px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* The SPA mount gets a min-height (set inline per instance) so the layout does
+ * not jump while the app boots. */
+.hvnly-dashboard-block .hvnly-ws-mount { width: 100%; }
+
+/* Full-screen parity: when the existing Workspace canvas template is applied
+ * (body.hvnly-ws-page--block), strip any theme/block spacing around the wrapper
+ * so the SPA is edge-to-edge exactly like the standalone Workspace. */
+.hvnly-ws-page--block .hvnly-dashboard-block,
+.hvnly-ws-page--block .hvnly-dashboard-block__inner {
+	margin: 0;
+	padding: 0;
+	max-width: none;
+	width: 100%;
+}
+
+/* ---- Signed-out gate ---- */
+.hvnly-dashboard-block__gate {
+	max-width: 520px;
+	margin: 0 auto;
+	text-align: center;
+}
+.hvnly-dashboard-block__gate-head { margin-bottom: 22px; }
+.hvnly-dashboard-block__gate-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 56px;
+	height: 56px;
+	border-radius: 16px;
+	color: var( --_db-primary );
+	background: color-mix( in srgb, var( --_db-primary ) 12%, transparent );
+	margin-bottom: 14px;
+}
+.hvnly-dashboard-block__gate-title {
+	font-size: var( --hvnly-font-size-title, 1.5rem );
+	font-weight: var( --hvnly-font-weight-bold, 700 );
+	line-height: 1.2;
+	margin: 0 0 6px;
+	color: var( --_db-fg );
+}
+.hvnly-dashboard-block__gate-text {
+	font-size: var( --hvnly-font-size-sm, 0.92rem );
+	color: var( --_db-muted );
+	margin: 0;
+}
+.hvnly-dashboard-block__gate-auth { margin-top: 6px; text-align: left; }
+.hvnly-dashboard-block__gate-actions { margin: 18px 0 0; }
+.hvnly-dashboard-block__gate-btn {
+	display: inline-block;
+	text-decoration: none;
+	font-weight: 600;
+	font-size: 0.95rem;
+	color: var( --_db-primary-fg );
+	background: var( --_db-primary );
+	border-radius: calc( var( --_db-radius ) * 0.5 );
+	padding: 12px 26px;
+	transition: filter 0.15s ease;
+}
+.hvnly-dashboard-block__gate-btn:hover { filter: brightness( 1.05 ); }
+.hvnly-dashboard-block__gate-btn:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px color-mix( in srgb, var( --_db-primary ) 30%, transparent );
+}
+
+.hvnly-dashboard-block__notice {
+	text-align: center;
+	color: var( --_db-muted );
+	padding: 40px 20px;
+}
+
+/* ---- Editor preview panel ---- */
+.hvnly-dashboard-block__editor {
+	text-align: center;
+	max-width: 560px;
+	margin: 0 auto;
+	padding: 40px 28px;
+	border: 1px dashed var( --_db-border );
+	border-radius: var( --_db-radius );
+	background: var( --_db-field-bg );
+}
+.hvnly-dashboard-block__editor-icon {
+	display: inline-flex;
+	color: var( --_db-primary );
+	margin-bottom: 12px;
+}
+.hvnly-dashboard-block__editor-title {
+	font-size: 1.1rem;
+	font-weight: 700;
+	margin: 0 0 6px;
+	color: var( --_db-fg );
+}
+.hvnly-dashboard-block__editor-text {
+	font-size: 0.9rem;
+	color: var( --_db-muted );
+	margin: 0;
+	line-height: 1.5;
+}
+
+/* ============================================================
+ * Editor dashboard SKELETON (native, no iframe, no SPA).
+ * Mirrors the real Workspace layout; honors the block toggles.
+ * ============================================================ */
+.hvnly-dbsk {
+	--_sk-bg: var( --hvnly-card-bg, #fff );
+	--_sk-panel: var( --hvnly-color-bg-light, #f4f5f9 );
+	--_sk-line: color-mix( in srgb, var( --_db-fg ) 12%, transparent );
+	--_sk-line-strong: color-mix( in srgb, var( --_db-fg ) 20%, transparent );
+	--_sk-border: var( --_db-border );
+	--_sk-brand: var( --_db-primary );
+
+	position: relative;
+	display: flex;
+	min-height: 480px;
+	border: 1px solid var( --_sk-border );
+	border-radius: var( --_db-radius );
+	overflow: hidden;
+	background: var( --_sk-panel );
+	font-family: var( --_db-font );
+	user-select: none;
+}
+
+.hvnly-dbsk__chip {
+	position: absolute;
+	top: 10px;
+	right: 12px;
+	z-index: 2;
+	font-size: 0.66rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var( --_db-muted );
+	background: var( --_sk-bg );
+	border: 1px solid var( --_sk-border );
+	border-radius: 999px;
+	padding: 3px 10px;
+}
+
+/* Shared placeholder bars/text. */
+.hvnly-dbsk__b {
+	display: block;
+	border-radius: 5px;
+	background: linear-gradient( 90deg, var( --_sk-line ) 25%, color-mix( in srgb, var( --_sk-line ) 45%, transparent ) 37%, var( --_sk-line ) 63% );
+	background-size: 400% 100%;
+	animation: hvnly-dbsk-shimmer 1.6s ease-in-out infinite;
+	height: 10px;
+}
+.hvnly-dbsk__t { color: var( --_db-fg ); font-weight: 700; }
+
+/* Sidebar. */
+.hvnly-dbsk__sidebar {
+	width: 210px;
+	flex: 0 0 210px;
+	background: var( --_sk-bg );
+	border-right: 1px solid var( --_sk-border );
+	padding: 18px 14px;
+}
+.hvnly-dbsk__brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding: 0 6px; }
+.hvnly-dbsk__brand-dot { width: 26px; height: 26px; border-radius: 8px; background: var( --_sk-brand ); flex: 0 0 auto; }
+.hvnly-dbsk__t--brand { font-size: 0.95rem; }
+.hvnly-dbsk__nav { display: flex; flex-direction: column; gap: 3px; }
+.hvnly-dbsk__nav-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 9px 10px;
+	border-radius: 9px;
+	color: var( --_db-muted );
+}
+.hvnly-dbsk__nav-item.is-active {
+	background: color-mix( in srgb, var( --_sk-brand ) 12%, transparent );
+	color: var( --_sk-brand );
+}
+.hvnly-dbsk__nav-ico { width: 16px; height: 16px; border-radius: 5px; background: currentColor; opacity: 0.5; flex: 0 0 auto; }
+.hvnly-dbsk__nav-item.is-active .hvnly-dbsk__nav-ico { opacity: 1; }
+.hvnly-dbsk__nav-label { font-size: 0.82rem; font-weight: 600; }
+
+/* Main column. */
+.hvnly-dbsk__main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.hvnly-dbsk__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 14px 22px;
+	background: var( --_sk-bg );
+	border-bottom: 1px solid var( --_sk-border );
+}
+.hvnly-dbsk__t--pagetitle { font-size: 1.05rem; }
+.hvnly-dbsk__header-right { display: flex; align-items: center; gap: 12px; }
+.hvnly-dbsk__search { width: 200px; max-width: 34vw; height: 34px; border-radius: 8px; background: var( --_sk-panel ); border: 1px solid var( --_sk-border ); }
+.hvnly-dbsk__avatar { width: 34px; height: 34px; border-radius: 50%; background: var( --_sk-line-strong ); flex: 0 0 auto; }
+
+.hvnly-dbsk__content { padding: 22px; display: flex; flex-direction: column; gap: 18px; }
+
+/* Welcome. */
+.hvnly-dbsk__welcome {
+	background: linear-gradient( 100deg, var( --_sk-brand ), color-mix( in srgb, var( --_sk-brand ) 55%, #7b6cff ) );
+	border-radius: 14px;
+	padding: 22px 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.hvnly-dbsk__welcome .hvnly-dbsk__t--lg { width: 42%; height: 16px; border-radius: 6px; background: rgba( 255, 255, 255, 0.85 ); animation: none; }
+.hvnly-dbsk__welcome .hvnly-dbsk__b--sub { width: 62%; height: 10px; background: rgba( 255, 255, 255, 0.5 ); animation: none; }
+
+/* Stat cards. */
+.hvnly-dbsk__stats { display: grid; grid-template-columns: repeat( 4, 1fr ); gap: 14px; }
+.hvnly-dbsk__card {
+	background: var( --_sk-bg );
+	border: 1px solid var( --_sk-border );
+	border-radius: 12px;
+	box-shadow: var( --hvnly-card-shadow, 0 4px 24px rgba( 189, 189, 189, 0.16 ) );
+}
+.hvnly-dbsk__stat { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+.hvnly-dbsk__stat-ico { width: 30px; height: 30px; border-radius: 9px; background: color-mix( in srgb, var( --_sk-brand ) 14%, transparent ); margin-bottom: 2px; }
+.hvnly-dbsk__t--label { font-size: 0.72rem; color: var( --_db-muted ); font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+.hvnly-dbsk__b--num { width: 56%; height: 20px; }
+.hvnly-dbsk__b--tiny { width: 38%; height: 8px; }
+
+/* Two-column layout. */
+.hvnly-dbsk__cols { display: grid; grid-template-columns: minmax( 0, 2fr ) minmax( 0, 1fr ); gap: 16px; align-items: start; }
+.hvnly-dbsk__col-main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.hvnly-dbsk__col-side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+.hvnly-dbsk__card-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var( --_sk-border ); }
+.hvnly-dbsk__t--title { font-size: 0.9rem; }
+.hvnly-dbsk__b--pill { width: 60px; height: 22px; border-radius: 999px; }
+.hvnly-dbsk__card-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+
+/* Activity rows. */
+.hvnly-dbsk__activity-row { display: flex; align-items: center; gap: 12px; }
+.hvnly-dbsk__dot { width: 12px; height: 12px; border-radius: 50%; background: color-mix( in srgb, var( --_sk-brand ) 40%, transparent ); flex: 0 0 auto; }
+.hvnly-dbsk__b--line { flex: 1 1 auto; height: 10px; }
+.hvnly-dbsk__b--time { width: 48px; height: 8px; flex: 0 0 auto; }
+
+/* Property rows. */
+.hvnly-dbsk__prop-row { display: flex; align-items: center; gap: 12px; }
+.hvnly-dbsk__thumb { width: 54px; height: 40px; border-radius: 8px; background: var( --_sk-line ); flex: 0 0 auto; }
+.hvnly-dbsk__prop-lines { flex: 1 1 auto; display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.hvnly-dbsk__b--half { width: 55%; }
+.hvnly-dbsk__b--price { width: 60px; height: 14px; border-radius: 6px; flex: 0 0 auto; }
+
+/* Quick actions. */
+.hvnly-dbsk__quick .hvnly-dbsk__card-body { gap: 9px; }
+.hvnly-dbsk__action {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 11px 12px;
+	border-radius: 9px;
+	border: 1px solid var( --_sk-border );
+	background: var( --_sk-panel );
+	font-size: 0.8rem;
+	font-weight: 600;
+	color: var( --_db-fg );
+}
+.hvnly-dbsk__action-ico { width: 16px; height: 16px; border-radius: 5px; background: var( --_sk-brand ); opacity: 0.85; flex: 0 0 auto; }
+
+@keyframes hvnly-dbsk-shimmer {
+	0% { background-position: 100% 0; }
+	100% { background-position: 0 0; }
+}
+
+@media ( max-width: 1100px ) {
+	.hvnly-dbsk__stats { grid-template-columns: repeat( 2, 1fr ); }
+	.hvnly-dbsk__cols { grid-template-columns: 1fr; }
+}
+@media ( max-width: 782px ) {
+	.hvnly-dbsk__sidebar { display: none; }
+}
+@media ( prefers-reduced-motion: reduce ) {
+	.hvnly-dbsk__b { animation: none; }
+}
+
+/* Dark mode (token-driven with fallback). */
+@media ( prefers-color-scheme: dark ) {
+	.hvnly-dashboard-block {
+		--_db-bg: var( --hvnly-card-bg, #1e293b );
+		--_db-fg: var( --hvnly-text-primary, #f1f5f9 );
+		--_db-muted: var( --hvnly-text-secondary, #94a3b8 );
+		--_db-border: var( --hvnly-border-color, rgba( 255, 255, 255, 0.14 ) );
+		--_db-field-bg: var( --hvnly-color-bg-light, #0f172a );
+	}
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.hvnly-dashboard-block__gate-btn { transition: none; }
+}

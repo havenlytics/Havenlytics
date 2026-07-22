@@ -1,0 +1,480 @@
+/**
+ * HVN: Property Inquiry Form block — presentation chrome only.
+ *
+ * Form fields, validation, notices and submit UI come from
+ * hvnly-frontend-contact-agent. This file styles the block wrapper,
+ * property header, compact agent card, layout variants, and editor chips.
+ * Tokens map to the global Havenlytics design system (--hvnly-*).
+ *
+ * @since 3.5.0
+ */
+
+.hvnly-block-inquiry {
+	--hvnly-inquiry-accent: var(--hvnly-primary-color, var(--hvnly-brand-primary, #6c60fe));
+	--hvnly-inquiry-accent-rgb: var(--hvnly-primary-rgb, 108, 96, 254);
+	--hvnly-inquiry-border: var(--hvnly-border-color, #e4e4ed);
+	--hvnly-inquiry-muted: var(--hvnly-text-secondary, #6b7280);
+	--hvnly-inquiry-ink: var(--hvnly-text-primary, #1a1a2e);
+	--hvnly-inquiry-surface: var(--hvnly-card-bg, #ffffff);
+	--hvnly-inquiry-radius: var(--hvnly-card-radius, var(--hvnly-border-radius-md, 8px));
+	--hvnly-inquiry-radius-lg: var(--hvnly-border-radius-lg, 12px);
+	--hvnly-inquiry-shadow: var(--hvnly-shadow-card, 0 4px 24px rgba(189, 189, 189, 0.24));
+	--hvnly-inquiry-gap: 16px;
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	color: var(--hvnly-inquiry-ink);
+}
+
+.hvnly-block-inquiry *,
+.hvnly-block-inquiry *::before,
+.hvnly-block-inquiry *::after {
+	box-sizing: border-box;
+}
+
+/* ---- Typography ----------------------------------------------------- */
+.hvnly-block-inquiry__title {
+	margin: 0 0 6px;
+	font-size: clamp(1.2rem, 1.5vw, 1.375rem);
+	line-height: 1.3;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	color: var(--hvnly-inquiry-ink);
+}
+
+.hvnly-block-inquiry__description {
+	margin: 0 0 var(--hvnly-inquiry-gap);
+	color: var(--hvnly-inquiry-muted);
+	font-size: 0.9375rem;
+	line-height: 1.55;
+	max-width: 52ch;
+}
+
+/* ---- Reused form Cancel is modal-only ------------------------------- */
+.hvnly-block-inquiry .js-hvnly-contact-agent-close {
+	display: none !important;
+}
+
+.hvnly-block-inquiry .hvnly-contact-agent__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 4px;
+}
+
+.hvnly-block-inquiry--btn-align-left .hvnly-contact-agent__actions {
+	justify-content: flex-start;
+}
+
+.hvnly-block-inquiry--btn-align-center .hvnly-contact-agent__actions {
+	justify-content: center;
+}
+
+.hvnly-block-inquiry--btn-align-right .hvnly-contact-agent__actions {
+	justify-content: flex-end;
+}
+
+.hvnly-block-inquiry--btn-full .js-hvnly-contact-agent-submit {
+	width: 100%;
+}
+
+.hvnly-block-inquiry__btn-icon {
+	margin-right: 8px;
+	font-size: 0.9em;
+	opacity: 0.95;
+}
+
+/* Tighten form field rhythm inside the block */
+.hvnly-block-inquiry .hvnly-contact-agent__field {
+	margin-bottom: 14px;
+}
+
+.hvnly-block-inquiry .hvnly-contact-agent__field label {
+	font-weight: 600;
+	font-size: 0.875rem;
+	color: var(--hvnly-inquiry-ink);
+}
+
+.hvnly-block-inquiry .hvnly-contact-agent__input,
+.hvnly-block-inquiry .hvnly-contact-agent__textarea,
+.hvnly-block-inquiry .hvnly-contact-agent__select {
+	border-radius: var(--hvnly-inquiry-radius);
+	border-color: var(--hvnly-inquiry-border);
+}
+
+.hvnly-block-inquiry .hvnly-contact-agent__input:focus,
+.hvnly-block-inquiry .hvnly-contact-agent__textarea:focus,
+.hvnly-block-inquiry .hvnly-contact-agent__select:focus {
+	border-color: var(--hvnly-inquiry-accent);
+	box-shadow: 0 0 0 3px rgba(var(--hvnly-inquiry-accent-rgb), 0.15);
+}
+
+.hvnly-block-inquiry .hvnly-contact-agent__btn--primary {
+	background: var(--hvnly-inquiry-accent);
+	border-color: var(--hvnly-inquiry-accent);
+	border-radius: var(--hvnly-inquiry-radius);
+	min-height: 44px;
+	padding: 0 22px;
+	font-weight: 600;
+}
+
+.hvnly-block-inquiry .hvnly-contact-agent__btn--primary:hover {
+	filter: brightness(1.05);
+}
+
+.hvnly-block-inquiry .hvnly-contact-agent__feedback--success {
+	border-radius: var(--hvnly-inquiry-radius);
+}
+
+.hvnly-block-inquiry__consent {
+	margin-top: 2px;
+	margin-bottom: 14px;
+}
+
+.hvnly-block-inquiry__consent-label {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	font-size: 0.875rem;
+	line-height: 1.45;
+	color: var(--hvnly-inquiry-muted);
+	cursor: pointer;
+	/* Shared Frontend Checkbox Design System (hvnly-frontend-components.css) */
+	--hvnly-cb-checked-bg: var(--hvnly-inquiry-accent);
+	--hvnly-cb-checked-border: var(--hvnly-inquiry-accent);
+	--hvnly-cb-hover-border: var(--hvnly-inquiry-accent);
+}
+
+.hvnly-block-inquiry__consent-label input[type="checkbox"] {
+	margin-top: 2px;
+	flex-shrink: 0;
+}
+
+/* ---- Property header card ------------------------------------------- */
+.hvnly-block-inquiry__property {
+	display: flex;
+	gap: 14px;
+	align-items: center;
+	margin: 0 0 var(--hvnly-inquiry-gap);
+	padding: 12px;
+	border: 1px solid var(--hvnly-inquiry-border);
+	border-radius: var(--hvnly-inquiry-radius-lg);
+	background: var(--hvnly-inquiry-surface);
+	box-shadow: none;
+}
+
+.hvnly-block-inquiry__property-media {
+	flex: 0 0 88px;
+	width: 88px;
+	height: 66px;
+	overflow: hidden;
+	border-radius: var(--hvnly-inquiry-radius);
+	background: #f3f4f6;
+}
+
+.hvnly-block-inquiry__property-media img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.hvnly-block-inquiry__property-meta {
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.hvnly-block-inquiry__property-title {
+	margin: 0 0 2px;
+	font-weight: 600;
+	font-size: 0.9375rem;
+	line-height: 1.35;
+	color: var(--hvnly-inquiry-ink);
+}
+
+.hvnly-block-inquiry__property-title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.hvnly-block-inquiry__property-title a:hover {
+	color: var(--hvnly-inquiry-accent);
+	text-decoration: none;
+}
+
+.hvnly-block-inquiry__property-price {
+	margin: 0 0 2px;
+	font-weight: 700;
+	color: var(--hvnly-inquiry-accent);
+	font-size: 0.9rem;
+}
+
+.hvnly-block-inquiry__property-address {
+	margin: 0;
+	color: var(--hvnly-inquiry-muted);
+	font-size: 0.8125rem;
+	line-height: 1.4;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* ---- Compact agent card (inquiry context only) ---------------------- */
+.hvnly-block-inquiry__agent {
+	margin: 0 0 var(--hvnly-inquiry-gap);
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card {
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	height: auto;
+	max-width: 100%;
+	min-height: 0;
+	border-radius: var(--hvnly-inquiry-radius-lg);
+	box-shadow: none;
+	transform: none;
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card:hover {
+	transform: none;
+	box-shadow: none;
+	border-color: rgba(var(--hvnly-inquiry-accent-rgb), 0.28);
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__media {
+	flex: 0 0 auto;
+	width: auto;
+	padding: 14px 0 14px 14px;
+	background: transparent;
+	border-radius: 0;
+	overflow: visible;
+	display: flex;
+	align-items: center;
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__photo-link {
+	width: 72px;
+	height: 72px;
+	aspect-ratio: 1;
+	min-height: 0;
+	border-radius: 50%;
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__photo,
+.hvnly-block-inquiry__agent .hvnly-agent-card__photo--placeholder {
+	width: 100%;
+	height: 100%;
+	min-height: 0;
+	object-fit: cover;
+	border-radius: 50%;
+	font-size: 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__photo-overlay,
+.hvnly-block-inquiry__agent .hvnly-agent-card__ribbon-group,
+.hvnly-block-inquiry__agent .hvnly-agent-card__overlay-badge {
+	display: none;
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__body {
+	flex: 1 1 auto;
+	min-width: 0;
+	padding: 14px 16px;
+	justify-content: center;
+	gap: 6px;
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__name {
+	font-size: 1rem;
+	margin: 0;
+	line-height: 1.3;
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__position,
+.hvnly-block-inquiry__agent .hvnly-agent-card__agency {
+	font-size: 0.8125rem;
+	margin: 0;
+	color: var(--hvnly-inquiry-muted);
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__agency-logo {
+	width: 16px;
+	height: 16px;
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__meta-row,
+.hvnly-block-inquiry__agent .hvnly-agent-card__stats {
+	display: none;
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__actions,
+.hvnly-block-inquiry__agent .hvnly-agent-card__actions--property,
+.hvnly-block-inquiry__agent .hvnly-agent-card__body .hvnly-agent-card__actions--property {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 8px;
+	grid-template-columns: none;
+}
+
+.hvnly-block-inquiry__agent .hvnly-agent-card__actions a,
+.hvnly-block-inquiry__agent .hvnly-agent-card__actions .hvnly-agent-card__btn,
+.hvnly-block-inquiry__agent .hvnly-agent-card__body .hvnly-agent-card__btn {
+	font-size: 0.75rem;
+	padding: 6px 10px;
+	min-height: 32px;
+	width: auto;
+	border-radius: var(--hvnly-inquiry-radius);
+}
+
+/* ---- Empty / notice ------------------------------------------------- */
+.hvnly-block-inquiry--notice .hvnly-block-inquiry__notice {
+	margin: 0;
+	padding: 16px 18px;
+	border: 1px solid var(--hvnly-inquiry-border);
+	border-radius: var(--hvnly-inquiry-radius-lg);
+	background: color-mix(in srgb, var(--hvnly-inquiry-accent) 6%, #fff);
+	color: var(--hvnly-inquiry-ink);
+	font-size: 0.9375rem;
+	line-height: 1.5;
+}
+
+/* Field visibility (presentation only). */
+.hvnly-block-inquiry--hide-name .hvnly-contact-agent__field:has([name="sender_name"]),
+.hvnly-block-inquiry--hide-email .hvnly-contact-agent__field:has([name="sender_email"]),
+.hvnly-block-inquiry--hide-phone .hvnly-contact-agent__field:has([name="sender_phone"]),
+.hvnly-block-inquiry--hide-message .hvnly-contact-agent__field:has([name="message"]) {
+	display: none !important;
+}
+
+.hvnly-block-inquiry--no-loading .js-hvnly-contact-agent-form.is-submitting .js-hvnly-contact-agent-submit {
+	opacity: 1;
+}
+
+.hvnly-block-inquiry--no-success .hvnly-inquiry-form__notice--success {
+	display: none !important;
+}
+
+/* ---- Layout variants ------------------------------------------------ */
+.hvnly-block-inquiry--card,
+.hvnly-block-inquiry--floating {
+	padding: clamp(18px, 3vw, 28px);
+	border: 1px solid var(--hvnly-inquiry-border);
+	border-radius: var(--hvnly-inquiry-radius-lg);
+	background: var(--hvnly-inquiry-surface);
+}
+
+.hvnly-block-inquiry--floating {
+	box-shadow: var(--hvnly-inquiry-shadow);
+}
+
+.hvnly-block-inquiry--minimal .hvnly-contact-agent__field label {
+	font-weight: 500;
+}
+
+.hvnly-block-inquiry--minimal .hvnly-contact-agent__input,
+.hvnly-block-inquiry--minimal .hvnly-contact-agent__textarea,
+.hvnly-block-inquiry--minimal .hvnly-contact-agent__select {
+	border-radius: 0;
+	border-width: 0 0 1px;
+	background: transparent;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.hvnly-block-inquiry--compact {
+	--hvnly-inquiry-gap: 12px;
+}
+
+.hvnly-block-inquiry--compact .hvnly-contact-agent__field {
+	margin-bottom: 10px;
+}
+
+.hvnly-block-inquiry--compact .hvnly-contact-agent__textarea {
+	min-height: 88px;
+}
+
+.hvnly-block-inquiry--compact .hvnly-block-inquiry__agent .hvnly-agent-card__photo-link {
+	width: 56px;
+	height: 56px;
+}
+
+.hvnly-block-inquiry--horizontal .hvnly-block-inquiry__form > .hvnly-contact-agent__form,
+.hvnly-block-inquiry--two-column .hvnly-block-inquiry__form > .hvnly-contact-agent__form {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0 16px;
+	align-items: start;
+}
+
+.hvnly-block-inquiry--horizontal .hvnly-contact-agent__field--honeypot,
+.hvnly-block-inquiry--horizontal .hvnly-contact-agent__field:has(textarea),
+.hvnly-block-inquiry--horizontal .hvnly-block-inquiry__consent,
+.hvnly-block-inquiry--horizontal .hvnly-block-inquiry__property-select,
+.hvnly-block-inquiry--horizontal .hvnly-contact-agent__feedback,
+.hvnly-block-inquiry--horizontal .hvnly-contact-agent__actions,
+.hvnly-block-inquiry--horizontal .hvnly-contact-agent__availability-notice,
+.hvnly-block-inquiry--two-column .hvnly-contact-agent__field--honeypot,
+.hvnly-block-inquiry--two-column .hvnly-contact-agent__field:has(textarea),
+.hvnly-block-inquiry--two-column .hvnly-block-inquiry__consent,
+.hvnly-block-inquiry--two-column .hvnly-block-inquiry__property-select,
+.hvnly-block-inquiry--two-column .hvnly-contact-agent__feedback,
+.hvnly-block-inquiry--two-column .hvnly-contact-agent__actions,
+.hvnly-block-inquiry--two-column .hvnly-contact-agent__availability-notice {
+	grid-column: 1 / -1;
+}
+
+/* ---- Responsive ----------------------------------------------------- */
+@media (max-width: 640px) {
+	.hvnly-block-inquiry--card,
+	.hvnly-block-inquiry--floating {
+		padding: 16px;
+	}
+
+	.hvnly-block-inquiry--horizontal .hvnly-block-inquiry__form > .hvnly-contact-agent__form,
+	.hvnly-block-inquiry--two-column .hvnly-block-inquiry__form > .hvnly-contact-agent__form {
+		grid-template-columns: 1fr;
+	}
+
+	.hvnly-block-inquiry__property {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.hvnly-block-inquiry__property-media {
+		flex: 0 0 72px;
+		width: 72px;
+		height: 54px;
+	}
+
+	.hvnly-block-inquiry__agent .hvnly-agent-card {
+		flex-direction: row;
+	}
+
+	.hvnly-block-inquiry__agent .hvnly-agent-card__media {
+		padding: 12px 0 12px 12px;
+	}
+
+	.hvnly-block-inquiry__agent .hvnly-agent-card__photo-link {
+		width: 56px;
+		height: 56px;
+	}
+
+	.hvnly-block-inquiry__agent .hvnly-agent-card__body {
+		padding: 12px;
+	}
+
+	.hvnly-block-inquiry--btn-full .js-hvnly-contact-agent-submit,
+	.hvnly-block-inquiry .hvnly-contact-agent__btn--primary {
+		width: 100%;
+	}
+}

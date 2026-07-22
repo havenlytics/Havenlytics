@@ -1,0 +1,236 @@
+/**
+ * HVN: Saved Properties block — presentation chrome only.
+ *
+ * The property cards themselves are styled by the shared Property Card Builder
+ * stack (hvnly-frontend-cards / card-embed / responsive). This file only styles
+ * the block's own header, empty state, signed-out gate and reload pagination.
+ *
+ * @since 3.5.0
+ */
+
+.hvnly-block-saved {
+	--hvnly-saved-accent: var(--hvnly-primary-color, var(--hvnly-brand-primary, #6c60fe));
+	--hvnly-saved-border: var(--hvnly-border-color, #e4e4ed);
+	--hvnly-saved-muted: var(--hvnly-text-secondary, #6b7280);
+	--hvnly-saved-surface: var(--hvnly-card-bg, #ffffff);
+	--hvnly-saved-radius: var(--hvnly-border-radius-lg, 12px);
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.hvnly-block-saved *,
+.hvnly-block-saved *::before,
+.hvnly-block-saved *::after {
+	box-sizing: border-box;
+}
+
+/* ---- Header --------------------------------------------------------- */
+.hvnly-block-saved__header {
+	margin: 0 0 20px;
+}
+
+.hvnly-block-saved__title {
+	margin: 0;
+	font-size: 1.5rem;
+	line-height: 1.25;
+	font-weight: 700;
+}
+
+.hvnly-block-saved__description {
+	margin: 6px 0 0;
+	color: var(--hvnly-saved-muted);
+	font-size: 0.95rem;
+}
+
+/* ---- Listings grid density ----------------------------------------- */
+.hvnly-block-saved__listings {
+	width: 100%;
+}
+
+/*
+ * Honour the selected column count. The shared archive stylesheet
+ * (hvnly-frontend-property-responsive.css) forces
+ * `.hvnly-property-grid-view.hvnly-grid-view { grid-template-columns: repeat(2,1fr) !important }`
+ * at every desktop breakpoint, which overrides the inline column style. Scoping
+ * under the block (higher specificity + !important) lets the chosen value —
+ * carried by the existing --hvnly-grid-columns variable — win, while still
+ * collapsing responsively on tablet / mobile.
+ */
+.hvnly-block-saved .hvnly-block-saved__listings .hvnly-property-grid-view.hvnly-grid-view {
+	grid-template-columns: repeat(var(--hvnly-grid-columns, 3), minmax(0, 1fr)) !important;
+}
+
+@media (max-width: 991px) {
+	.hvnly-block-saved .hvnly-block-saved__listings .hvnly-property-grid-view.hvnly-grid-view {
+		grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+	}
+}
+
+@media (max-width: 600px) {
+	.hvnly-block-saved .hvnly-block-saved__listings .hvnly-property-grid-view.hvnly-grid-view {
+		grid-template-columns: 1fr !important;
+	}
+}
+
+/* Compact tightens the shared grid without touching the card markup. */
+.hvnly-block-saved--compact .hvnly-property-grid-view {
+	gap: 14px !important;
+}
+
+.hvnly-block-saved--compact .hvnly-block-saved__listings {
+	font-size: 0.95em;
+}
+
+/* ---- Empty state ---------------------------------------------------- */
+.hvnly-block-saved__empty,
+.hvnly-block-saved__gate-panel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	gap: 10px;
+	padding: 48px 24px;
+	border: 1px dashed var(--hvnly-saved-border);
+	border-radius: var(--hvnly-saved-radius);
+	background: var(--hvnly-saved-surface);
+}
+
+.hvnly-block-saved__empty-icon,
+.hvnly-block-saved__gate-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	background: color-mix(in srgb, var(--hvnly-saved-accent) 10%, transparent);
+	color: var(--hvnly-saved-accent);
+	font-size: 1.4rem;
+}
+
+.hvnly-block-saved__empty-title,
+.hvnly-block-saved__gate-title {
+	margin: 4px 0 0;
+	font-size: 1.15rem;
+	font-weight: 700;
+}
+
+.hvnly-block-saved__empty-text,
+.hvnly-block-saved__gate-text {
+	margin: 0;
+	max-width: 420px;
+	color: var(--hvnly-saved-muted);
+}
+
+/* ---- Signed-out gate ------------------------------------------------ */
+.hvnly-block-saved__gate-lead {
+	margin: 0 0 16px;
+	text-align: center;
+	color: var(--hvnly-saved-muted);
+}
+
+.hvnly-block-saved__gate-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+	margin-top: 8px;
+}
+
+/* ---- Buttons -------------------------------------------------------- */
+.hvnly-block-saved__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px 20px;
+	border-radius: var(--hvnly-card-radius, 8px);
+	font-weight: 600;
+	text-decoration: none;
+	line-height: 1.2;
+	min-height: 42px;
+	transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.hvnly-block-saved__btn--primary {
+	background: var(--hvnly-saved-accent);
+	color: #fff;
+}
+
+.hvnly-block-saved__btn--primary:hover {
+	opacity: 0.9;
+	color: #fff;
+}
+
+.hvnly-block-saved__btn--ghost {
+	background: transparent;
+	border: 1px solid var(--hvnly-saved-border);
+	color: inherit;
+}
+
+.hvnly-block-saved__btn--ghost:hover {
+	border-color: var(--hvnly-saved-accent);
+	color: var(--hvnly-saved-accent);
+}
+
+.hvnly-block-saved__btn:focus-visible,
+.hvnly-block-saved__page:focus-visible {
+	outline: 2px solid var(--hvnly-saved-accent);
+	outline-offset: 2px;
+}
+
+/* ---- Reload pagination --------------------------------------------- */
+.hvnly-block-saved__pagination {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-top: 28px;
+}
+
+.hvnly-block-saved__pagination-info {
+	margin: 0;
+	color: var(--hvnly-saved-muted);
+	font-size: 0.9rem;
+}
+
+.hvnly-block-saved__pages {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.hvnly-block-saved__page {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 40px;
+	height: 40px;
+	padding: 0 12px;
+	border: 1px solid var(--hvnly-saved-border);
+	border-radius: var(--hvnly-card-radius, 8px);
+	background: var(--hvnly-saved-surface);
+	color: inherit;
+	text-decoration: none;
+	font-weight: 600;
+	transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.hvnly-block-saved__page:hover {
+	border-color: var(--hvnly-saved-accent);
+	color: var(--hvnly-saved-accent);
+}
+
+.hvnly-block-saved__page.is-active {
+	background: var(--hvnly-saved-accent);
+	border-color: var(--hvnly-saved-accent);
+	color: #fff;
+	cursor: default;
+}
+
+@media (max-width: 640px) {
+	.hvnly-block-saved__pagination {
+		justify-content: center;
+	}
+}

@@ -13,6 +13,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Respects Misc Settings → Enable Gutenberg for all plugin CPTs (default: off).
  *
+ * Note: CPT REST exposure (`show_in_rest`) is independent of this setting so
+ * block Inspector pickers can use /wp/v2/hvnly_property and /wp/v2/hvnly_agent.
+ * This class only gates the block *editor* for those post types.
+ *
  * @since 3.0.2
  */
 final class PluginGutenbergSupport {

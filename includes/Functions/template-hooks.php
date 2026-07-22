@@ -31,7 +31,9 @@ add_action('wp_footer', 'hvnly_single_property_svg_icons', 5);
 add_action('wp_footer', 'hvnly_single_property_gallery_popup', 10);
 add_action('wp_footer', 'hvnly_single_property_contact_agent_modal', 12);
 add_action('wp_footer', 'hvnly_single_property_video_popup', 15);
+add_action('wp_footer', 'hvnly_single_property_mobile_contact_dock', 18);
 add_action('wp_footer', 'hvnly_single_property_scroll_top', 20);
+add_filter('body_class', 'hvnly_single_property_mobile_contact_dock_body_class');
 
 // Main Single Property Structure
 add_action('hvnly_single_property_elements', 'hvnly_single_property_header', 10);

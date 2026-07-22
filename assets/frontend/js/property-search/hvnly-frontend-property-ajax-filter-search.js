@@ -38,52 +38,23 @@
         // VIEW TOGGLE FUNCTIONALITY
         // ======================
         initViewToggle() {
-            const viewButtons = document.querySelectorAll('.hvnly-property-view-btn');
-
-            if (!viewButtons.length) return;
-
+            // Always available for AJAX reset / external callers.
             this.setView = (viewType, contextBtn = null) => {
                 const elements = window.HvnlyDom.resolveViewElements(contextBtn);
-
                 const propertyGrid = elements.propertyGrid;
                 const mapPlaceholder = elements.mapPlaceholder;
 
                 if (!propertyGrid) return;
 
-                // Reset classes
-                propertyGrid.classList.remove('hvnly-grid-view', 'grid-view', 'hvnly-list-view', 'list-view', 'map-view');
-
-                if (viewType === 'grid') {
-                    propertyGrid.classList.add('hvnly-grid-view', 'grid-view');
-                    propertyGrid.style.display = 'grid';
-                    propertyGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(350px, 1fr))';
-                    propertyGrid.style.gap = '20px';
-                    
-                    // Hide map placeholder
-                    if (mapPlaceholder) {
-                        mapPlaceholder.style.display = 'none';
-                    }
-                } else if (viewType === 'list') {
-                    propertyGrid.classList.add('hvnly-list-view', 'list-view');
-                    propertyGrid.style.display = 'flex';
-                    propertyGrid.style.flexDirection = 'column';
-                    propertyGrid.style.gap = '20px';
-                    
-                    // Hide map placeholder
-                    if (mapPlaceholder) {
-                        mapPlaceholder.style.display = 'none';
-                    }
-                } else if (viewType === 'map') {
-                    propertyGrid.classList.add('map-view');
-                    propertyGrid.style.display = 'none';
-                    
-                    // Show map placeholder and load map
-                    if (mapPlaceholder) {
-                        mapPlaceholder.style.display = 'block';
-                        this.triggerMapLoad();
-                    }
-                }
+                this.applyViewLayout(propertyGrid, viewType, mapPlaceholder);
             };
+
+            // Style every grid-mode listing grid (Archive / Search / Featured can coexist).
+            this.applyDefaultGridLayoutToAll();
+
+            const viewButtons = document.querySelectorAll('.hvnly-property-view-btn');
+
+            if (!viewButtons.length) return;
 
             const activeButton = document.querySelector('.hvnly-property-view-btn.active');
             if (activeButton) {
@@ -93,13 +64,113 @@
             viewButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const viewType = button.getAttribute('data-view');
+                    const listings = button.closest('.hvnly-property--grid--listings')
+                        || button.closest('.hvnly-all-properties-widget')
+                        || document;
 
-                    viewButtons.forEach(btn => btn.classList.remove('active'));
+                    listings.querySelectorAll('.hvnly-property-view-btn').forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
 
                     this.setView(viewType, button);
                 });
             });
+        }
+
+        /**
+         * Apply Search/Archive grid chrome to every listing grid currently in grid mode.
+         */
+        applyDefaultGridLayoutToAll() {
+            const grids = (window.HvnlyDom && typeof window.HvnlyDom.resolveAllPropertyGrids === 'function')
+                ? window.HvnlyDom.resolveAllPropertyGrids().get()
+                : Array.from(document.querySelectorAll('.hvnly-property-grid-view'));
+
+            grids.forEach((grid) => {
+                if (!grid) {
+                    return;
+                }
+                if (grid.classList.contains('hvnly-list-view') || grid.classList.contains('list-view') || grid.classList.contains('map-view')) {
+                    return;
+                }
+                if (!grid.classList.contains('hvnly-grid-view') && !grid.classList.contains('grid-view')) {
+                    return;
+                }
+                this.applyViewLayout(grid, 'grid', null);
+            });
+        }
+
+        /**
+         * Column count from the grid or nearest Archive/Search/Featured host
+         * (same data-columns token Elementor / block wrappers already set).
+         *
+         * @param {HTMLElement} propertyGrid
+         * @returns {number} 0 when unset (fallback to auto-fill).
+         */
+        resolveGridColumnCount(propertyGrid) {
+            if (!propertyGrid || !propertyGrid.getAttribute) {
+                return 0;
+            }
+
+            const fromGrid = parseInt(propertyGrid.getAttribute('data-columns'), 10);
+            if (!isNaN(fromGrid) && fromGrid >= 1 && fromGrid <= 6) {
+                return fromGrid;
+            }
+
+            const host = propertyGrid.closest
+                ? propertyGrid.closest('[data-columns]')
+                : null;
+            if (host) {
+                const fromHost = parseInt(host.getAttribute('data-columns'), 10);
+                if (!isNaN(fromHost) && fromHost >= 1 && fromHost <= 6) {
+                    return fromHost;
+                }
+            }
+
+            return 0;
+        }
+
+        /**
+         * @param {HTMLElement} propertyGrid
+         * @param {string} viewType
+         * @param {HTMLElement|null} mapPlaceholder
+         */
+        applyViewLayout(propertyGrid, viewType, mapPlaceholder) {
+            propertyGrid.classList.remove('hvnly-grid-view', 'grid-view', 'hvnly-list-view', 'list-view', 'map-view');
+
+            if (viewType === 'grid') {
+                propertyGrid.classList.add('hvnly-grid-view', 'grid-view');
+                propertyGrid.style.display = 'grid';
+                propertyGrid.style.gap = '20px';
+
+                // Honor Featured / Archive / Search / Elementor columns when present.
+                const cols = this.resolveGridColumnCount(propertyGrid);
+                if (cols) {
+                    propertyGrid.setAttribute('data-columns', String(cols));
+                    propertyGrid.style.gridTemplateColumns = 'repeat(' + cols + ', minmax(0, 1fr))';
+                } else {
+                    propertyGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(350px, 1fr))';
+                }
+
+                if (mapPlaceholder) {
+                    mapPlaceholder.style.display = 'none';
+                }
+            } else if (viewType === 'list') {
+                propertyGrid.classList.add('hvnly-list-view', 'list-view');
+                propertyGrid.style.display = 'flex';
+                propertyGrid.style.flexDirection = 'column';
+                propertyGrid.style.gap = '20px';
+
+                if (mapPlaceholder) {
+                    mapPlaceholder.style.display = 'none';
+                }
+            } else if (viewType === 'map') {
+                propertyGrid.classList.add('map-view');
+                propertyGrid.style.display = 'none';
+
+                if (mapPlaceholder) {
+                    mapPlaceholder.style.display = 'block';
+                    this.triggerMapLoad();
+                }
+            }
         }
 
         /**

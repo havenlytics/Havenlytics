@@ -1,0 +1,1247 @@
+/**
+ * Havenlytics premium block layouts (Featured, Carousel, Map).
+ *
+ * Cards always come from the Property Card Builder (hvnly_render_property_card).
+ * This file owns section chrome, grid/carousel shells, and map UI only.
+ *
+ * Namespace: .hvnly-block-*
+ *
+ * @package Havenlytics
+ * @since   3.5.0
+ */
+
+/* ------------------------------------------------------------------ */
+/* Design tokens                                                        */
+/* ------------------------------------------------------------------ */
+.hvnly-block-featured,
+.hvnly-block-carousel,
+.hvnly-block-map,
+.hvnly-block-section-header {
+	--hvnly-block-brand: var(--hvnly-primary-color, var(--hvnly-brand-primary, #6c60fe));
+	--hvnly-block-brand-2: color-mix(in srgb, var(--hvnly-block-brand) 72%, #fff);
+	--hvnly-block-ink: var(--hvnly-text-primary, #1a1a2e);
+	--hvnly-block-muted: var(--hvnly-text-secondary, #6b7280);
+	--hvnly-block-line: var(--hvnly-border-color, #ebe8f4);
+	--hvnly-block-surface: var(--hvnly-card-bg, #ffffff);
+	--hvnly-block-radius: var(--hvnly-border-radius-lg, 12px);
+	--hvnly-block-gap: 24px;
+	--hvnly-block-shadow: var(--hvnly-shadow-card, 0 8px 28px rgba(26, 26, 46, 0.08));
+	--hvnly-block-shadow-hover: var(--hvnly-shadow-card-hover, 0 20px 44px rgba(108, 96, 254, 0.18));
+	--hvnly-block-ease: cubic-bezier(0.16, 1, 0.3, 1);
+	box-sizing: border-box;
+}
+
+.hvnly-block-featured *,
+.hvnly-block-carousel *,
+.hvnly-block-map *,
+.hvnly-block-section-header * {
+	box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------ */
+/* Section header                                                       */
+/* ------------------------------------------------------------------ */
+.hvnly-block-section-header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 16px 24px;
+	margin-bottom: 28px;
+}
+
+.hvnly-block-section-header--center {
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.hvnly-block-section-header--center .hvnly-block-section-header__copy {
+	max-width: 640px;
+}
+
+.hvnly-block-section-header--right {
+	flex-direction: row-reverse;
+	text-align: right;
+}
+
+.hvnly-block-section-header--left .hvnly-block-section-header__copy {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.hvnly-block-section-header__subtitle {
+	display: inline-block;
+	margin: 0 0 10px;
+	padding: 0;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--hvnly-block-brand);
+	line-height: 1.3;
+}
+
+.hvnly-block-section-header__title {
+	margin: 0;
+	font-size: clamp(1.5rem, 2.4vw, 2rem);
+	line-height: 1.2;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	color: var(--hvnly-block-ink);
+}
+
+.hvnly-block-section-header__desc {
+	margin: 12px 0 0;
+	font-size: 15px;
+	line-height: 1.65;
+	color: var(--hvnly-block-muted);
+	max-width: 52ch;
+}
+
+.hvnly-block-section-header--center .hvnly-block-section-header__desc {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.hvnly-block-section-header__actions {
+	flex: 0 0 auto;
+}
+
+.hvnly-block-section-header__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	min-height: 44px;
+	padding: 0 20px;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1;
+	text-decoration: none;
+	color: #fff;
+	background: linear-gradient(
+		135deg,
+		var(--hvnly-block-brand),
+		var(--hvnly-block-brand-2)
+	);
+	border-radius: var(--hvnly-block-radius);
+	box-shadow: 0 8px 20px rgba(108, 96, 254, 0.24);
+	transition: transform 0.25s var(--hvnly-block-ease), box-shadow 0.25s ease;
+}
+
+.hvnly-block-section-header__button:hover,
+.hvnly-block-section-header__button:focus {
+	color: #fff;
+	transform: translateY(-2px);
+	box-shadow: 0 14px 30px rgba(108, 96, 254, 0.36);
+}
+
+/*
+ * Card Builder internals are owned exclusively by:
+ *   hvnly-frontend-property-card-embed.css (+ default / components / responsive / favorites)
+ * This file must not restyle .hvnly-property-grid-list-* or gallery/favorite markup.
+ * Featured grid places Card Builder cards as direct children of the grid view
+ * (same as Archive). Carousel cells are width-only slide shells.
+ */
+.hvnly-block-carousel__item {
+	/* Slide shell only — never restyle Card Builder descendants. */
+	box-sizing: border-box;
+	min-width: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Featured — grid                                                      */
+/* ------------------------------------------------------------------ */
+.hvnly-block-featured {
+	width: 100%;
+	max-width: 100%;
+}
+
+/*
+ * Shared hvnly-frontend-property-responsive.css hardcodes
+ *   .hvnly-property-grid-view.hvnly-grid-view { grid-template-columns: repeat(2, 1fr) !important; }
+ * for Archive / Search breakpoints. That is intentional for those surfaces.
+ * Featured reuses the same grid class but must honor Inspector --hvnly-grid-columns.
+ * Higher specificity + !important only under .hvnly-block-featured — Archive untouched.
+ */
+.hvnly-block-featured .hvnly-property-grid-view.hvnly-grid-view {
+	grid-template-columns: repeat(var(--hvnly-grid-columns, 3), minmax(0, 1fr)) !important;
+}
+
+@media (max-width: 767px) {
+	.hvnly-block-featured .hvnly-property-grid-view.hvnly-grid-view {
+		grid-template-columns: 1fr !important;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.hvnly-block-featured .hvnly-property-grid-view.hvnly-grid-view[data-columns="1"] {
+		grid-template-columns: 1fr !important;
+	}
+
+	.hvnly-block-featured .hvnly-property-grid-view.hvnly-grid-view:not([data-columns="1"]) {
+		grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+	}
+}
+
+@media (min-width: 992px) {
+	.hvnly-block-featured .hvnly-property-grid-view.hvnly-grid-view[data-columns="1"] {
+		grid-template-columns: 1fr !important;
+	}
+
+	.hvnly-block-featured .hvnly-property-grid-view.hvnly-grid-view[data-columns="2"] {
+		grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+	}
+
+	.hvnly-block-featured .hvnly-property-grid-view.hvnly-grid-view[data-columns="3"] {
+		grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+	}
+
+	.hvnly-block-featured .hvnly-property-grid-view.hvnly-grid-view[data-columns="4"] {
+		grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+	}
+}
+
+/* ------------------------------------------------------------------ */
+/* Carousel                                                             */
+/* ------------------------------------------------------------------ */
+.hvnly-block-carousel {
+	position: relative;
+	width: 100%;
+	max-width: 100%;
+	overflow: visible;
+}
+
+/*
+ * Root may carry .hvnly-property--grid--listings so Card Builder embed
+ * selectors match. Archive sets that class to flex-column for listing
+ * chrome — keep carousel chrome as a normal block flow, not an archive
+ * listings column.
+ */
+.hvnly-block-carousel.hvnly-property--grid--listings {
+	display: block;
+	flex-direction: unset;
+}
+
+.hvnly-block-carousel__stage {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.hvnly-block-carousel__viewport {
+	width: 100%;
+	max-width: 100%;
+	overflow: hidden;
+	touch-action: pan-y;
+	cursor: grab;
+}
+
+.hvnly-block-carousel__viewport:active {
+	cursor: grabbing;
+}
+
+/* Pure slider track — no Archive listing class on this node. */
+.hvnly-block-carousel__track {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	gap: var(--hvnly-block-gap);
+	will-change: transform;
+	transition: transform 0.55s var(--hvnly-block-ease);
+}
+
+.hvnly-block-carousel__item {
+	/* Width is set in px by hvnly-block-carousel.js from the viewport —
+	   never use % of the growing flex track (that caused the “all in one line” bug). */
+	flex: 0 0 auto;
+	width: var(--hvnly-block-slide-w, calc((100% - (var(--hvnly-block-visible, 3) - 1) * var(--hvnly-block-gap)) / var(--hvnly-block-visible, 3)));
+	max-width: 100%;
+}
+
+.hvnly-block-carousel.is-center .hvnly-block-carousel__item {
+	transition: transform 0.4s ease, opacity 0.4s ease;
+	transform: scale(0.92);
+	opacity: 0.55;
+}
+
+.hvnly-block-carousel.is-center .hvnly-block-carousel__item.is-active {
+	transform: scale(1);
+	opacity: 1;
+}
+
+/* Arrows — vertically centered on the stage (not the dots).
+ * Theme/button resets often force position:relative on <button>;
+ * scope under stage with higher specificity. */
+.hvnly-block-carousel__stage .hvnly-block-carousel__arrow {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 6;
+	width: 48px;
+	height: 48px;
+	padding: 0;
+	margin: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	border-radius: 50%;
+	background: var(--hvnly-block-surface);
+	color: var(--hvnly-block-ink);
+	box-shadow: var(--hvnly-block-shadow);
+	cursor: pointer;
+	transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease,
+		opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hvnly-block-carousel__arrow-icon {
+	display: block;
+	width: 10px;
+	height: 10px;
+	border-top: 2px solid currentColor;
+	border-right: 2px solid currentColor;
+}
+
+.hvnly-block-carousel__arrow--prev .hvnly-block-carousel__arrow-icon {
+	transform: rotate(-135deg);
+	margin-left: 3px;
+}
+
+.hvnly-block-carousel__arrow--next .hvnly-block-carousel__arrow-icon {
+	transform: rotate(45deg);
+	margin-right: 3px;
+}
+
+.hvnly-block-carousel__stage .hvnly-block-carousel__arrow:hover {
+	background: linear-gradient(
+		135deg,
+		var(--hvnly-block-brand),
+		var(--hvnly-block-brand-2)
+	);
+	color: #fff;
+	transform: translateY(-50%) scale(1.06);
+	box-shadow: 0 12px 28px rgba(108, 96, 254, 0.3);
+}
+
+.hvnly-block-carousel__stage .hvnly-block-carousel__arrow:disabled,
+.hvnly-block-carousel__stage .hvnly-block-carousel__arrow[aria-disabled='true'] {
+	opacity: 0.35;
+	cursor: default;
+	pointer-events: none;
+}
+
+.hvnly-block-carousel__stage .hvnly-block-carousel__arrow--prev {
+	left: 12px;
+	right: auto;
+}
+
+.hvnly-block-carousel__stage .hvnly-block-carousel__arrow--next {
+	right: 12px;
+	left: auto;
+}
+
+.hvnly-block-carousel__dots {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 28px;
+}
+
+.hvnly-block-carousel__dot {
+	width: 9px;
+	height: 9px;
+	padding: 0;
+	border: none;
+	border-radius: 999px;
+	background: var(--hvnly-block-line);
+	cursor: pointer;
+	transition: width 0.3s ease, background 0.3s ease;
+}
+
+.hvnly-block-carousel__dot.is-active {
+	width: 28px;
+	background: linear-gradient(
+		135deg,
+		var(--hvnly-block-brand),
+		var(--hvnly-block-brand-2)
+	);
+}
+
+/* ------------------------------------------------------------------ */
+/* Property Map                                                         */
+/* ------------------------------------------------------------------ */
+.hvnly-block-map {
+	position: relative;
+	width: 100%;
+	border-radius: var(--hvnly-block-radius);
+	overflow: hidden;
+	box-shadow: var(--hvnly-block-shadow);
+	isolation: isolate;
+}
+
+.hvnly-block-map__canvas {
+	width: 100%;
+	height: var(--hvnly-block-map-height, 480px);
+	background: linear-gradient(145deg, #e8eaf2, #f4f5fa);
+}
+
+.hvnly-block-map__toolbar {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	z-index: 600;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.hvnly-block-map.is-editor-preview .hvnly-block-map__toolbar {
+	pointer-events: none;
+	opacity: 0.55;
+}
+
+.hvnly-block-map__btn {
+	width: 42px;
+	height: 42px;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	border-radius: 12px;
+	background: var(--hvnly-block-surface);
+	color: var(--hvnly-block-ink);
+	box-shadow: var(--hvnly-block-shadow);
+	cursor: pointer;
+	transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.hvnly-block-map__btn:hover {
+	background: var(--hvnly-block-brand);
+	color: #fff;
+	transform: translateY(-1px);
+}
+
+.hvnly-block-map__loading {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(255, 255, 255, 0.72);
+	color: var(--hvnly-block-muted);
+	font-size: 14px;
+	z-index: 500;
+}
+
+.hvnly-block-map__loading[hidden] {
+	display: none;
+}
+
+/* Custom markers — pure-CSS pin/dot (vector = crisp on any DPI).
+   Geometry is percentage-based, so the same rules serve every marker size
+   (sm/md/lg): Leaflet sets the icon box via iconSize and everything scales. */
+.hvnly-block-map__marker {
+	background: transparent;
+	border: none;
+}
+
+.hvnly-block-map__marker:focus-visible {
+	outline: none;
+}
+
+.hvnly-block-map__marker-inner {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+	transform: translateY(0);
+	transition: transform 0.28s var(--hvnly-block-ease);
+	will-change: transform;
+}
+
+/* Soft ground shadow anchors the pin to the map */
+.hvnly-block-map__marker-shadow {
+	position: absolute;
+	left: 50%;
+	bottom: 4%;
+	width: 48%;
+	aspect-ratio: 11 / 4;
+	transform: translateX(-50%);
+	border-radius: 50%;
+	background: radial-gradient(
+		ellipse at center,
+		rgba(26, 26, 46, 0.34),
+		rgba(26, 26, 46, 0) 70%
+	);
+	opacity: 0.85;
+	transition: transform 0.28s var(--hvnly-block-ease),
+		opacity 0.28s ease;
+	pointer-events: none;
+}
+
+.hvnly-block-map__marker-pulse {
+	position: absolute;
+	left: 50%;
+	top: 20%;
+	width: 56%;
+	aspect-ratio: 1;
+	transform: translateX(-50%);
+	border-radius: 50%;
+	background: var(--hvnly-block-map-pin, var(--hvnly-block-brand));
+	opacity: 0.3;
+	animation: hvnly-block-map-pulse 2.4s ease-out infinite;
+	pointer-events: none;
+}
+
+.hvnly-block-map__marker-pin {
+	position: absolute;
+	left: 50%;
+	top: 6%;
+	width: 65%;
+	aspect-ratio: 1;
+	margin-left: -32.5%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50% 50% 50% 0;
+	transform: rotate(-45deg) scale(1);
+	background: radial-gradient(
+		circle at 32% 30%,
+		color-mix(in srgb, var(--hvnly-block-map-pin, var(--hvnly-block-brand)) 78%, #fff) 0%,
+		var(--hvnly-block-map-pin, var(--hvnly-block-brand)) 62%
+	);
+	background-color: var(--hvnly-block-map-pin, var(--hvnly-block-brand));
+	border: 3px solid #fff;
+	box-shadow: 0 6px 14px rgba(26, 26, 46, 0.3),
+		0 2px 4px rgba(26, 26, 46, 0.18);
+	transition: transform 0.28s var(--hvnly-block-ease),
+		box-shadow 0.28s ease;
+	z-index: 2;
+}
+
+/* Inner core dot (counter-rotated so it reads upright) */
+.hvnly-block-map__marker-dot {
+	width: 30%;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	background: #fff;
+	transform: rotate(45deg);
+	box-shadow: inset 0 0 0 1px rgba(26, 26, 46, 0.06);
+}
+
+/* Dot marker style — minimal circular marker */
+.hvnly-block-map__marker--dot .hvnly-block-map__marker-pulse {
+	top: 50%;
+	width: 100%;
+	transform: translate(-50%, -50%);
+}
+
+.hvnly-block-map__marker-dotpin {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: calc(100% - 10px);
+	aspect-ratio: 1;
+	transform: translate(-50%, -50%) scale(1);
+	border-radius: 50%;
+	background: radial-gradient(
+		circle at 32% 30%,
+		color-mix(in srgb, var(--hvnly-block-map-pin, var(--hvnly-block-brand)) 78%, #fff) 0%,
+		var(--hvnly-block-map-pin, var(--hvnly-block-brand)) 62%
+	);
+	background-color: var(--hvnly-block-map-pin, var(--hvnly-block-brand));
+	border: 3px solid #fff;
+	box-shadow: 0 4px 12px rgba(26, 26, 46, 0.3);
+	transition: transform 0.28s var(--hvnly-block-ease),
+		box-shadow 0.28s ease;
+	z-index: 2;
+}
+
+.hvnly-block-map__marker--dot.is-hover .hvnly-block-map__marker-dotpin,
+.hvnly-block-map__marker--dot:hover .hvnly-block-map__marker-dotpin {
+	transform: translate(-50%, -50%) scale(1.15);
+	box-shadow: 0 8px 18px rgba(108, 96, 254, 0.42);
+}
+
+.hvnly-block-map__marker--dot.is-active .hvnly-block-map__marker-dotpin {
+	transform: translate(-50%, -50%) scale(1.22);
+	box-shadow: 0 10px 20px rgba(108, 96, 254, 0.5),
+		0 0 0 4px rgba(108, 96, 254, 0.18);
+}
+
+.hvnly-block-map__marker.is-hover .hvnly-block-map__marker-inner,
+.hvnly-block-map__marker:hover .hvnly-block-map__marker-inner {
+	transform: translateY(-3px);
+}
+
+.hvnly-block-map__marker.is-hover .hvnly-block-map__marker-pin,
+.hvnly-block-map__marker:hover .hvnly-block-map__marker-pin {
+	transform: rotate(-45deg) scale(1.1);
+	box-shadow: 0 12px 22px rgba(108, 96, 254, 0.42),
+		0 3px 6px rgba(26, 26, 46, 0.2);
+}
+
+.hvnly-block-map__marker.is-hover .hvnly-block-map__marker-shadow,
+.hvnly-block-map__marker:hover .hvnly-block-map__marker-shadow {
+	transform: scale(0.82);
+	opacity: 0.55;
+}
+
+.hvnly-block-map__marker.is-active .hvnly-block-map__marker-inner {
+	transform: translateY(-4px);
+}
+
+.hvnly-block-map__marker.is-active .hvnly-block-map__marker-pin {
+	transform: rotate(-45deg) scale(1.18);
+	border-color: #fff;
+	box-shadow: 0 14px 26px rgba(108, 96, 254, 0.5),
+		0 0 0 4px rgba(108, 96, 254, 0.18),
+		0 3px 6px rgba(26, 26, 46, 0.22);
+}
+
+.hvnly-block-map__marker.is-active .hvnly-block-map__marker-pulse {
+	animation-duration: 1.5s;
+	opacity: 0.5;
+}
+
+/* Keyboard focus (Leaflet makes markers focusable) */
+.hvnly-block-map__marker:focus-visible .hvnly-block-map__marker-pin {
+	box-shadow: 0 12px 22px rgba(108, 96, 254, 0.42),
+		0 0 0 4px rgba(108, 96, 254, 0.35);
+}
+
+@keyframes hvnly-block-map-pulse {
+	0% {
+		transform: scale(0.5);
+		opacity: 0.4;
+	}
+	70% {
+		transform: scale(2.4);
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+/* Luxury popup card — a miniature premium property card.
+   Every content rule is scoped under .hvnly-block-map__leaflet-popup: two
+   classes of specificity structurally outrank Leaflet's own element rules
+   (e.g. `.leaflet-container a`) without a single !important. */
+.hvnly-block-map__popup-host .hvnly-block-map__popup {
+	width: var(--hvnly-block-map-popup-w, 300px);
+	background: var(--hvnly-block-surface);
+	border-radius: 18px;
+	overflow: hidden;
+	/* Self-sufficient typography: Leaflet containers impose a Helvetica
+	   stack, Google containers impose Roboto — the card overrides both so
+	   it renders identically on every provider. */
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.4;
+	color: var(--hvnly-block-ink);
+	text-align: left;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-media {
+	position: relative;
+	aspect-ratio: 3 / 2;
+	overflow: hidden;
+	background: #dfe3ef;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup--compact .hvnly-block-map__popup-media {
+	aspect-ratio: 16 / 9;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	transition: transform 0.7s var(--hvnly-block-ease);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-img--empty {
+	background: linear-gradient(135deg, #e8eaf2, #f4f5fa);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup:hover .hvnly-block-map__popup-img {
+	transform: scale(1.06);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-media::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		180deg,
+		rgba(15, 12, 41, 0) 40%,
+		rgba(15, 12, 41, 0.14) 62%,
+		rgba(15, 12, 41, 0.62) 100%
+	);
+	pointer-events: none;
+}
+
+/* Status pill — frosted glass, brand dot */
+.hvnly-block-map__popup-host .hvnly-block-map__popup-status {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	z-index: 3;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	max-width: calc(100% - 100px);
+	padding: 5px 11px;
+	font-size: 10.5px;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	line-height: 1;
+	color: var(--hvnly-block-ink);
+	background: rgba(255, 255, 255, 0.92);
+	-webkit-backdrop-filter: blur(6px);
+	backdrop-filter: blur(6px);
+	border-radius: 999px;
+	box-shadow: 0 4px 12px rgba(26, 26, 46, 0.16);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-status::before {
+	content: '';
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--hvnly-block-brand);
+	flex-shrink: 0;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-fav {
+	position: absolute;
+	top: 12px;
+	/* Clear provider close control (Leaflet / Google), which owns top-right. */
+	right: 48px;
+	z-index: 5;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	border-radius: 50%;
+	font-size: 15px;
+	background: rgba(255, 255, 255, 0.94);
+	-webkit-backdrop-filter: blur(6px);
+	backdrop-filter: blur(6px);
+	color: var(--hvnly-block-brand);
+	cursor: pointer;
+	box-shadow: 0 4px 14px rgba(26, 26, 46, 0.2);
+	transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+	pointer-events: auto;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-fav:hover {
+	transform: scale(1.1);
+	background: #fff;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-fav:focus-visible {
+	outline: none;
+	box-shadow: 0 4px 14px rgba(26, 26, 46, 0.2),
+		0 0 0 3px rgba(108, 96, 254, 0.4);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-fav.is-favorited,
+.hvnly-block-map__popup-host .hvnly-block-map__popup-fav[aria-pressed='true'] {
+	color: #ef4444;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-fav.is-favorited i,
+.hvnly-block-map__popup-host .hvnly-block-map__popup-fav[aria-pressed='true'] i {
+	font-weight: 900;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-price {
+	position: absolute;
+	left: 14px;
+	bottom: 13px;
+	z-index: 3;
+	padding: 8px 13px;
+	font-size: 15px;
+	letter-spacing: -0.01em;
+	line-height: 1;
+	color: #fff;
+	background: linear-gradient(
+		135deg,
+		var(--hvnly-block-brand),
+		var(--hvnly-block-brand-2)
+	);
+	border-radius: 11px;
+	box-shadow: 0 8px 18px rgba(108, 96, 254, 0.42);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-body {
+	padding: 15px 17px 17px;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-title {
+	margin: 0 0 7px;
+	font-size: 16px;
+	line-height: 1.32;
+	letter-spacing: -0.01em;
+	color: var(--hvnly-block-ink);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-title-link {
+	color: inherit;
+	text-decoration: none;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	transition: color 0.2s ease;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-title-link:hover,
+.hvnly-block-map__popup-host .hvnly-block-map__popup-title-link:focus-visible {
+	color: var(--hvnly-block-brand);
+	outline: none;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-addr {
+	display: flex;
+	align-items: flex-start;
+	gap: 6px;
+	font-size: 13px;
+	line-height: 1.4;
+	color: var(--hvnly-block-muted);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-addr i {
+	margin-top: 2px;
+	font-size: 12px;
+	color: var(--hvnly-block-brand);
+	flex-shrink: 0;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-stats {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 10px;
+	margin: 13px 0 15px;
+	padding-top: 13px;
+	border-top: 1px solid var(--hvnly-block-line);
+	font-size: 13px;
+	color: var(--hvnly-block-ink);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-stat {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-stat:not(:last-child)::after {
+	content: '';
+	width: 3px;
+	height: 3px;
+	margin-left: 4px;
+	border-radius: 50%;
+	background: var(--hvnly-block-line);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-stat i {
+	font-size: 13px;
+	color: var(--hvnly-block-brand);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-cta {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: 100%;
+	min-height: 44px;
+	padding: 11px 14px;
+	font-size: 13.5px;
+	letter-spacing: 0.01em;
+	text-decoration: none;
+	color: #fff;
+	background: linear-gradient(
+		135deg,
+		var(--hvnly-block-brand),
+		var(--hvnly-block-brand-2)
+	);
+	border-radius: 12px;
+	box-shadow: 0 6px 16px rgba(108, 96, 254, 0.24);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-cta i {
+	transition: transform 0.25s var(--hvnly-block-ease);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-cta:hover,
+.hvnly-block-map__popup-host .hvnly-block-map__popup-cta:focus-visible {
+	color: #fff;
+	transform: translateY(-1px);
+	box-shadow: 0 12px 24px rgba(108, 96, 254, 0.34);
+	outline: none;
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-cta:hover i,
+.hvnly-block-map__popup-host .hvnly-block-map__popup-cta:focus-visible i {
+	transform: translateX(4px);
+}
+
+.hvnly-block-map__popup-host .hvnly-block-map__popup-cta:focus-visible {
+	box-shadow: 0 12px 24px rgba(108, 96, 254, 0.34),
+		0 0 0 3px rgba(108, 96, 254, 0.4);
+}
+
+/* Leaflet popup chrome — scoped to our class */
+.leaflet-popup.hvnly-block-map__leaflet-popup .leaflet-popup-content-wrapper {
+	padding: 0;
+	border-radius: 18px;
+	overflow: hidden;
+	box-shadow: 0 24px 56px rgba(26, 26, 46, 0.26),
+		0 4px 12px rgba(26, 26, 46, 0.1);
+	border: 1px solid rgba(26, 26, 46, 0.06);
+}
+
+/* Leaflet sets an inline width on .leaflet-popup-content from the popup's
+   min/maxWidth options; the controller passes min === max === popupWidth, so
+   the inline value already equals the design width — no override needed. */
+.leaflet-popup.hvnly-block-map__leaflet-popup .leaflet-popup-content {
+	margin: 0;
+	line-height: 1.4;
+}
+
+.leaflet-popup.hvnly-block-map__leaflet-popup .leaflet-popup-tip {
+	background: var(--hvnly-block-surface);
+	box-shadow: 0 4px 12px rgba(26, 26, 46, 0.12);
+}
+
+.leaflet-popup.hvnly-block-map__leaflet-popup a.leaflet-popup-close-button {
+	top: 10px;
+	right: 12px;
+	width: 26px;
+	height: 26px;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	line-height: 1;
+	color: #fff;
+	background: rgba(15, 12, 41, 0.32);
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	border-radius: 50%;
+	text-shadow: none;
+	transition: background 0.2s ease;
+	z-index: 4;
+}
+
+.leaflet-popup.hvnly-block-map__leaflet-popup a.leaflet-popup-close-button:hover {
+	background: rgba(15, 12, 41, 0.55);
+	color: #fff;
+}
+
+.leaflet-popup.hvnly-block-map__leaflet-popup a.leaflet-popup-close-button:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(108, 96, 254, 0.5);
+}
+
+/* Popup entrance — subtle rise + fade.
+   CRITICAL: animate the CHILDREN, never .leaflet-popup itself — Leaflet
+   positions the popup root via an inline transform, and a CSS animation on
+   the same property overrides it for the animation's duration (the popup
+   would render at the pane origin, then jump to the marker). */
+.leaflet-popup.hvnly-block-map__leaflet-popup .leaflet-popup-content-wrapper,
+.leaflet-popup.hvnly-block-map__leaflet-popup .leaflet-popup-tip-container {
+	animation: hvnly-block-map-popup-in 0.28s var(--hvnly-block-ease);
+}
+
+@keyframes hvnly-block-map-popup-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Marker entrance — staggered soft pop, first appearance only.
+   Runs on the inner wrapper (never the Leaflet-positioned root) and only
+   while the block root carries .is-arriving; cluster/zoom re-adds after the
+   arrival window do not replay it. GPU-only properties (transform/opacity). */
+.hvnly-block-map.is-arriving .hvnly-block-map__marker-inner {
+	animation: hvnly-block-map-marker-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+	animation-delay: calc(min(var(--hvnly-mkr-i, 0), 20) * 35ms);
+}
+
+@keyframes hvnly-block-map-marker-in {
+	from {
+		opacity: 0;
+		transform: translateY(-10px) scale(0.45);
+	}
+	65% {
+		opacity: 1;
+		transform: translateY(1px) scale(1.05);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+/* ------------------------------------------------------------------ */
+/* Google Maps InfoWindow normalization — the SAME shared card, framed  */
+/* exactly like the Leaflet popup. Scoped under the block root at       */
+/* (0,3,0)+ so Google's runtime-injected stylesheet (same rules at      */
+/* (0,2,0)) loses on specificity, not on !important. The few !important */
+/* flags below exist ONLY where Google sets INLINE styles (max-height   */
+/* on the bubble/content), which no selector can beat.                  */
+/* ------------------------------------------------------------------ */
+.hvnly-block-map .gm-style .gm-style-iw-c {
+	padding: 0;
+	border-radius: 18px;
+	background: var(--hvnly-block-surface, #fff);
+	box-shadow: 0 24px 56px rgba(26, 26, 46, 0.26),
+		0 4px 12px rgba(26, 26, 46, 0.1);
+	max-height: none !important; /* inline max-height would clip the card */
+}
+
+.hvnly-block-map .gm-style .gm-style-iw-d {
+	overflow: hidden !important; /* Google sets overflow:auto INLINE */
+	padding: 0;
+	max-height: none !important; /* inline max-height forces a scrollbar */
+}
+
+/* Newer API renders a header strip (-chr) above the content, pushing the
+   card down and adding blank space. Collapse it; the close button floats
+   over the card media instead — same placement as the Leaflet close. */
+.hvnly-block-map .gm-style .gm-style-iw-chr {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 0;
+	z-index: 5;
+}
+
+.hvnly-block-map .gm-style .gm-style-iw-ch {
+	display: none;
+}
+
+.hvnly-block-map .gm-style .gm-style-iw-c button.gm-ui-hover-effect {
+	width: 26px !important;   /* Google sizes the button inline */
+	height: 26px !important;
+	margin: 10px 12px 0 0 !important;
+	background: rgba(15, 12, 41, 0.32) !important;
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	border-radius: 50%;
+	opacity: 1;
+	transition: background 0.2s ease;
+}
+
+.hvnly-block-map .gm-style .gm-style-iw-c button.gm-ui-hover-effect:hover {
+	background: rgba(15, 12, 41, 0.55) !important;
+}
+
+.hvnly-block-map .gm-style .gm-style-iw-c button.gm-ui-hover-effect > span {
+	background-color: #fff !important; /* icon is a masked span, inline-colored */
+	width: 14px !important;
+	height: 14px !important;
+	margin: 0 auto !important;
+}
+
+/* Tail/arrow — surface-colored like the Leaflet tip */
+.hvnly-block-map .gm-style .gm-style-iw-t::after,
+.hvnly-block-map .gm-style .gm-style-iw-tc::after {
+	background: var(--hvnly-block-surface, #fff);
+}
+
+/* Entrance parity with the Leaflet popup. Animate the BUBBLE (-c), never
+   the positioned anchor (-a) — same transform-ownership rule as Leaflet. */
+.hvnly-block-map:not(.hvnly-block-map--no-anim) .gm-style .gm-style-iw-c {
+	animation: hvnly-block-map-popup-in 0.28s var(--hvnly-block-ease, ease);
+}
+
+/* Animation toggle (block control) — root modifier reaches markers, the
+   popup carries its own modifier class because Leaflet renders it in a pane */
+.hvnly-block-map--no-anim .hvnly-block-map__marker-pulse {
+	animation: none;
+	opacity: 0;
+}
+
+.hvnly-block-map--no-anim .hvnly-block-map__marker-inner,
+.hvnly-block-map--no-anim .hvnly-block-map__marker-pin,
+.hvnly-block-map--no-anim .hvnly-block-map__marker-dotpin,
+.hvnly-block-map--no-anim .hvnly-block-map__marker-shadow {
+	transition: none;
+}
+
+.leaflet-popup.hvnly-block-map__leaflet-popup--no-anim .leaflet-popup-content-wrapper,
+.leaflet-popup.hvnly-block-map__leaflet-popup--no-anim .leaflet-popup-tip-container {
+	animation: none;
+}
+
+.hvnly-block-map--no-anim .hvnly-block-map__popup-host .hvnly-block-map__popup-img {
+	transition: none;
+}
+
+/* Visible AJAX error state — never silently blank */
+.hvnly-block-map__loading.is-error {
+	flex-direction: column;
+	gap: 12px;
+	background: rgba(255, 255, 255, 0.92);
+	color: var(--hvnly-block-ink);
+	font-weight: 600;
+}
+
+.hvnly-block-map__loading.is-error .hvnly-block-map__error-retry {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 38px;
+	padding: 8px 20px;
+	border: none;
+	border-radius: 999px;
+	font-size: 13px;
+	font-weight: 700;
+	color: #fff;
+	background: linear-gradient(
+		135deg,
+		var(--hvnly-block-brand),
+		var(--hvnly-block-brand-2)
+	);
+	cursor: pointer;
+	box-shadow: 0 6px 16px rgba(108, 96, 254, 0.28);
+}
+
+/* Reduced motion — honor user preference across marker + popup */
+@media (prefers-reduced-motion: reduce) {
+	.hvnly-block-map__marker-inner,
+	.hvnly-block-map__marker-pin,
+	.hvnly-block-map__marker-shadow,
+	.hvnly-block-map__popup-img,
+	.hvnly-block-map__popup-cta,
+	.hvnly-block-map__popup-cta i {
+		transition: none !important;
+	}
+
+	.hvnly-block-map__marker-pulse,
+	.hvnly-block-map.is-arriving .hvnly-block-map__marker-inner,
+	.hvnly-block-map .gm-style .gm-style-iw-c,
+	.leaflet-popup.hvnly-block-map__leaflet-popup .leaflet-popup-content-wrapper,
+	.leaflet-popup.hvnly-block-map__leaflet-popup .leaflet-popup-tip-container {
+		animation: none !important;
+	}
+
+	.hvnly-block-map__popup-host .hvnly-block-map__popup:hover .hvnly-block-map__popup-img {
+		transform: none;
+	}
+}
+
+/* ------------------------------------------------------------------ */
+/* Empty state                                                          */
+/* ------------------------------------------------------------------ */
+.hvnly-block-empty {
+	padding: 48px 24px;
+	text-align: center;
+	color: var(--hvnly-block-muted);
+	border: 1px dashed var(--hvnly-block-line);
+	border-radius: var(--hvnly-block-radius);
+	font-size: 15px;
+	background: rgba(108, 96, 254, 0.03);
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                           */
+/* ------------------------------------------------------------------ */
+@media (max-width: 1024px) {
+	.hvnly-block-carousel__stage .hvnly-block-carousel__arrow--prev {
+		left: 6px;
+	}
+
+	.hvnly-block-carousel__stage .hvnly-block-carousel__arrow--next {
+		right: 6px;
+	}
+}
+
+@media (max-width: 768px) {
+	.hvnly-block-section-header {
+		margin-bottom: 28px;
+		gap: 16px;
+	}
+
+	.hvnly-block-section-header--left,
+	.hvnly-block-section-header--right {
+		flex-direction: column;
+		align-items: stretch;
+		text-align: left;
+	}
+
+	.hvnly-block-section-header--right {
+		text-align: left;
+	}
+
+	.hvnly-block-section-header__button {
+		width: 100%;
+	}
+
+	.hvnly-block-carousel__stage .hvnly-block-carousel__arrow {
+		width: 40px;
+		height: 40px;
+	}
+
+	.hvnly-block-map__canvas {
+		height: min(var(--hvnly-block-map-height, 480px), 420px);
+	}
+}
+
+@media (max-width: 560px) {
+	.hvnly-block-carousel__stage .hvnly-block-carousel__arrow--prev {
+		left: 4px;
+	}
+
+	.hvnly-block-carousel__stage .hvnly-block-carousel__arrow--next {
+		right: 4px;
+	}
+
+	/* Popup width on small screens is clamped by the controller
+	   (min(popupWidth, viewport − padding)) so Leaflet's inline content
+	   width and the card always agree — no CSS/JS width fight. */
+	.hvnly-block-map__popup-host .hvnly-block-map__popup-body {
+		padding: 13px 15px 15px;
+	}
+}
+
+@media (max-width: 375px) {
+	.hvnly-block-featured,
+	.hvnly-block-carousel,
+	.hvnly-block-map {
+		--hvnly-block-gap: 14px;
+		--hvnly-block-radius: 14px;
+	}
+
+	.hvnly-block-section-header__title {
+		font-size: 1.35rem;
+	}
+}

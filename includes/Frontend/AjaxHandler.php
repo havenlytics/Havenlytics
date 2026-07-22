@@ -1311,6 +1311,22 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
                         }
                     }
 
+                    $sqft = get_post_meta($post_id, '_hvnly_property_sqft', true);
+                    $area = '';
+                    if (!empty($sqft)) {
+                        $area = is_numeric($sqft)
+                            ? number_format((float) $sqft) . ' ' . __('sqft', 'havenlytics')
+                            : (string) $sqft;
+                    }
+
+                    // Primary listing status (e.g. For Sale / For Rent / Sold) for the popup badge.
+                    // Additive field: existing consumers ignore it; reads the real hvnly_prop_status taxonomy.
+                    $status_label = '';
+                    $status_terms = get_the_terms($post_id, 'hvnly_prop_status');
+                    if (is_array($status_terms) && !empty($status_terms) && !is_wp_error($status_terms)) {
+                        $status_label = $status_terms[0]->name;
+                    }
+
                     $property_data = array(
                         'id' => $post_id,
                         'title' => get_the_title(),
@@ -1318,8 +1334,10 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
                         'lng' => $map_data['lng'],
                         'address' => $map_data['address'],
                         'price' => $formatted_price,
+                        'status' => $status_label,
                         'bedrooms' => $bedrooms,
                         'bathrooms' => $bathrooms,
+                        'area' => $area,
                         'thumbnail' => get_the_post_thumbnail_url($post_id, 'medium'),
                         'link' => get_permalink(),
                         'has_coordinates' => $map_data['has_coordinates'],

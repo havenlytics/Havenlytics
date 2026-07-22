@@ -1384,8 +1384,7 @@
 .hvnly-property--grid-list--content 
 .hvnly-property-contact-info-mode-preset ,
 
-.hvnly-property--grid--listings 
-.hvnly-property-grid-view 
+.hvnly-property-grid-list-item
 .hvnly-property--grid-list--single__content
 .hvnly-property-field-content 
 .hvnly-property--grid-list--content 
@@ -1418,8 +1417,7 @@ display: flex;
 .hvnly-property-contact-info-mode-preset 
 .hvnly-property-content-feature-icon ,
 
-.hvnly-property--grid--listings 
-.hvnly-property-grid-view 
+.hvnly-property-grid-list-item
 .hvnly-property--grid-list--single__content
 .hvnly-property-field-content 
 .hvnly-property--grid-list--content 
@@ -1455,8 +1453,7 @@ display: flex;
 .hvnly-property--grid-list--content 
 .hvnly-property-contact-info-mode-preset i ,
 
-.hvnly-property--grid--listings 
-.hvnly-property-grid-view 
+.hvnly-property-grid-list-item
 .hvnly-property--grid-list--single__content
 .hvnly-property-field-content 
 .hvnly-property--grid-list--content 
@@ -1484,8 +1481,7 @@ i{
 .hvnly-property--grid-list--content 
 .hvnly-property-contact-info-mode-preset a ,
 
-.hvnly-property--grid--listings 
-.hvnly-property-grid-view 
+.hvnly-property-grid-list-item
 .hvnly-property--grid-list--single__content
 .hvnly-property-field-content 
 .hvnly-property--grid-list--content 

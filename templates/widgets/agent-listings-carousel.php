@@ -31,12 +31,13 @@ $hvnly_show_location   = ! empty( $hvnly_args['show_location'] );
 $hvnly_show_status     = ! empty( $hvnly_args['show_status'] );
 $hvnly_autoplay        = ! empty( $hvnly_args['autoplay'] );
 $hvnly_show_nav        = ! isset( $hvnly_args['show_nav'] ) || ! empty( $hvnly_args['show_nav'] );
+$hvnly_visible_slides  = isset( $hvnly_args['visible_slides'] ) ? max( 1, absint( $hvnly_args['visible_slides'] ) ) : 1;
 ?>
 <div class="hvnly-agent-listings-widget" id="<?php echo esc_attr( $hvnly_carousel_uid ); ?>">
 	<div
 		class="hvnly-agent-listings-carousel"
 		data-hvnly-property-carousel
-		data-visible-slides="1"
+		data-visible-slides="<?php echo esc_attr( (string) $hvnly_visible_slides ); ?>"
 		data-autoplay="<?php echo esc_attr( $hvnly_autoplay ? '1' : '0' ); ?>"
 		data-show-nav="<?php echo esc_attr( $hvnly_show_nav ? '1' : '0' ); ?>"
 	>

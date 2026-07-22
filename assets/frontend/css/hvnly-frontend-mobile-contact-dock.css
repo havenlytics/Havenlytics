@@ -1,0 +1,432 @@
+/**
+ * Havenlytics — Mobile Contact Dock
+ *
+ * Premium floating agent contact bar for single property pages on
+ * phones / small tablets. Glass card, safe-area aware, spring entrance.
+ *
+ * Desktop: never shown (max-width gate + body class).
+ *
+ * @package Havenlytics
+ * @since   3.5.0
+ */
+
+/* Design tokens — scoped to the dock, reuse brand palette */
+.hvnly-mobile-contact-dock {
+	--hvnly-mcd-accent: var(--hvnly-brand-primary, var(--hvnly-primary-color, #6c60fe));
+	--hvnly-mcd-accent-rgb: var(--hvnly-primary-rgb, 108, 96, 254);
+	--hvnly-mcd-surface: rgba(255, 255, 255, 0.86);
+	--hvnly-mcd-border: rgba(255, 255, 255, 0.55);
+	--hvnly-mcd-ink: var(--hvnly-text-primary, #0f172a);
+	--hvnly-mcd-muted: var(--hvnly-text-secondary, #64748b);
+	--hvnly-mcd-radius: 18px;
+	--hvnly-mcd-shadow:
+		0 10px 28px rgba(15, 23, 42, 0.12),
+		0 2px 8px rgba(15, 23, 42, 0.06);
+	--hvnly-mcd-btn-size: 44px;
+	--hvnly-mcd-gap: 10px;
+	--hvnly-mcd-pad-x: 12px;
+	--hvnly-mcd-pad-y: 10px;
+	--hvnly-mcd-offset: 12px;
+	--hvnly-mcd-max: 991px;
+	--hvnly-mcd-z: 1100;
+	--hvnly-mcd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	/*
+	 * Entrance / exit motion — identical language to Havenlytics Realty
+	 * Mobile Search Dock (.hvn-theme-home-msd-dock-wrap):
+	 *   start: translate3d(0, 36px, 0) scale(0.94) + opacity 0
+	 *   end:   translate3d(0, 0, 0) scale(1) + opacity 1
+	 *   opacity ease: cubic-bezier(0.22, 1, 0.36, 1) @ 460ms
+	 *   transform soft spring: cubic-bezier(0.22, 1.12, 0.32, 1) @ 460ms * 1.13
+	 */
+	--hvnly-mcd-anim-duration: 460ms;
+	--hvnly-mcd-ease-dock: cubic-bezier(0.22, 1, 0.36, 1);
+	--hvnly-mcd-ease-spring: cubic-bezier(0.22, 1.12, 0.32, 1);
+
+	/* Hidden by default — JS + media query reveal on mobile viewports */
+	display: none;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: var(--hvnly-mcd-z);
+	padding:
+		0
+		max(var(--hvnly-mcd-offset), env(safe-area-inset-right, 0px))
+		calc(var(--hvnly-mcd-offset) + env(safe-area-inset-bottom, 0px))
+		max(var(--hvnly-mcd-offset), env(safe-area-inset-left, 0px));
+	pointer-events: none;
+	opacity: 0;
+	transform: translate3d(0, 36px, 0) scale(0.94);
+	transition:
+		opacity var(--hvnly-mcd-anim-duration) var(--hvnly-mcd-ease-dock),
+		transform calc(var(--hvnly-mcd-anim-duration) * 1.13) var(--hvnly-mcd-ease-spring);
+	will-change: transform, opacity;
+}
+
+/* Only paint inside the max-width gate (phones + small tablets) */
+@media (max-width: 991.98px) {
+	.hvnly-mobile-contact-dock {
+		display: block;
+	}
+
+	/* Compact tablet gate when hide_on_tablets setting is active via data-max-width */
+	.hvnly-mobile-contact-dock[data-max-width="767"] {
+		display: none;
+	}
+}
+
+@media (max-width: 767.98px) {
+	.hvnly-mobile-contact-dock[data-max-width="767"] {
+		display: block;
+	}
+}
+
+/* Desktop hard kill — never show above the dock max */
+@media (min-width: 992px) {
+	.hvnly-mobile-contact-dock,
+	.hvnly-mobile-contact-dock.is-visible,
+	.hvnly-mobile-contact-dock.is-compact {
+		display: none !important;
+	}
+}
+
+/* Visible = same settled state as Realty search dock */
+.hvnly-mobile-contact-dock.is-visible {
+	opacity: 1;
+	transform: translate3d(0, 0, 0) scale(1);
+	pointer-events: auto;
+}
+
+/* Reduced motion — match Realty search dock (no transform spring) */
+@media (prefers-reduced-motion: reduce) {
+	.hvnly-mobile-contact-dock {
+		transition: none !important;
+		transform: none;
+	}
+
+	.hvnly-mobile-contact-dock.is-visible {
+		transform: none;
+	}
+}
+
+/* Floating glass card */
+.hvnly-mobile-contact-dock__card {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--hvnly-mcd-gap);
+	width: 100%;
+	max-width: 640px;
+	margin: 0 auto;
+	padding: var(--hvnly-mcd-pad-y) var(--hvnly-mcd-pad-x);
+	border-radius: var(--hvnly-mcd-radius);
+	border: 1px solid var(--hvnly-mcd-border);
+	background: var(--hvnly-mcd-surface);
+	-webkit-backdrop-filter: blur(18px) saturate(1.35);
+	backdrop-filter: blur(18px) saturate(1.35);
+	box-shadow: var(--hvnly-mcd-shadow);
+	color: var(--hvnly-mcd-ink);
+	transition:
+		padding 280ms var(--hvnly-mcd-ease),
+		border-radius 280ms var(--hvnly-mcd-ease),
+		box-shadow 280ms var(--hvnly-mcd-ease),
+		opacity 280ms var(--hvnly-mcd-ease);
+}
+
+/* Agent block (left) */
+.hvnly-mobile-contact-dock__agent {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.hvnly-mobile-contact-avatar {
+	display: block;
+	flex-shrink: 0;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	overflow: hidden;
+	border: 2px solid rgba(var(--hvnly-mcd-accent-rgb), 0.18);
+	background: rgba(var(--hvnly-mcd-accent-rgb), 0.08);
+	text-decoration: none;
+	color: var(--hvnly-mcd-accent);
+	transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.hvnly-mobile-contact-avatar:hover,
+.hvnly-mobile-contact-avatar:focus-visible {
+	border-color: var(--hvnly-mcd-accent);
+	outline: none;
+}
+
+.hvnly-mobile-contact-avatar:focus-visible {
+	box-shadow: 0 0 0 3px rgba(var(--hvnly-mcd-accent-rgb), 0.28);
+}
+
+.hvnly-mobile-contact-avatar__img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.hvnly-mobile-contact-avatar__placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	font-size: 1rem;
+}
+
+.hvnly-mobile-contact-dock__meta {
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.hvnly-mobile-contact-name {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	min-width: 0;
+	font-size: 0.9375rem;
+	font-weight: 600;
+	line-height: 1.25;
+	letter-spacing: -0.01em;
+	color: var(--hvnly-mcd-ink);
+}
+
+.hvnly-mobile-contact-name__text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.hvnly-mobile-contact-name__verified {
+	display: inline-flex;
+	flex-shrink: 0;
+	color: var(--hvnly-mcd-accent);
+	font-size: 0.85rem;
+	line-height: 1;
+}
+
+.hvnly-mobile-contact-role {
+	margin: 2px 0 0;
+	padding: 0;
+	font-size: 0.75rem;
+	line-height: 1.3;
+	color: var(--hvnly-mcd-muted);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Actions (right) */
+.hvnly-mobile-contact-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex: 0 0 auto;
+	gap: 6px;
+}
+
+.hvnly-mobile-contact-btn {
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--hvnly-mcd-btn-size);
+	height: var(--hvnly-mcd-btn-size);
+	min-width: var(--hvnly-mcd-btn-size);
+	min-height: var(--hvnly-mcd-btn-size);
+	padding: 0;
+	border-radius: 14px;
+	border: 1px solid rgba(var(--hvnly-mcd-accent-rgb), 0.14);
+	background: rgba(255, 255, 255, 0.72);
+	color: var(--hvnly-mcd-accent);
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+	transition:
+		background-color 180ms ease,
+		border-color 180ms ease,
+		color 180ms ease,
+		transform 180ms var(--hvnly-mcd-ease),
+		box-shadow 180ms ease;
+}
+
+.hvnly-mobile-contact-btn__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1rem;
+	line-height: 1;
+}
+
+.hvnly-mobile-contact-btn__label {
+	/* Visually hidden — icons carry the UI; labels remain for a11y / compact expand */
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.hvnly-mobile-contact-btn:hover,
+.hvnly-mobile-contact-btn:focus-visible {
+	background: var(--hvnly-mcd-accent);
+	border-color: var(--hvnly-mcd-accent);
+	color: #fff;
+	outline: none;
+	box-shadow: 0 6px 16px rgba(var(--hvnly-mcd-accent-rgb), 0.28);
+}
+
+.hvnly-mobile-contact-btn:active {
+	transform: scale(0.94);
+}
+
+/* Channel accents */
+.hvnly-mobile-contact-btn--whatsapp {
+	color: #128c7e;
+	border-color: rgba(18, 140, 126, 0.22);
+}
+
+.hvnly-mobile-contact-btn--whatsapp:hover,
+.hvnly-mobile-contact-btn--whatsapp:focus-visible {
+	background: #128c7e;
+	border-color: #128c7e;
+	color: #fff;
+	box-shadow: 0 6px 16px rgba(18, 140, 126, 0.28);
+}
+
+.hvnly-mobile-contact-btn--call:hover,
+.hvnly-mobile-contact-btn--call:focus-visible {
+	background: var(--hvnly-mcd-accent);
+}
+
+/* Compact pill when inquiry section is in view (Option B) */
+.hvnly-mobile-contact-dock.is-compact .hvnly-mobile-contact-dock__card {
+	max-width: min(100%, 220px);
+	margin-left: auto;
+	margin-right: 0;
+	padding: 8px 10px;
+	border-radius: 999px;
+	opacity: 0.96;
+	box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
+}
+
+.hvnly-mobile-contact-dock.is-compact .hvnly-mobile-contact-dock__meta,
+.hvnly-mobile-contact-dock.is-compact .hvnly-mobile-contact-role {
+	display: none;
+}
+
+.hvnly-mobile-contact-dock.is-compact .hvnly-mobile-contact-actions {
+	gap: 4px;
+}
+
+.hvnly-mobile-contact-dock.is-compact .hvnly-mobile-contact-btn {
+	width: 40px;
+	height: 40px;
+	min-width: 40px;
+	min-height: 40px;
+	border-radius: 50%;
+}
+
+/* Keep only the first two actions in compact mode to avoid overflow */
+.hvnly-mobile-contact-dock.is-compact .hvnly-mobile-contact-btn:nth-child(n + 3) {
+	display: none;
+}
+
+/* Very small phones — tighten spacing, allow action scroll if needed */
+@media (max-width: 380px) {
+	.hvnly-mobile-contact-dock__card {
+		--hvnly-mcd-pad-x: 8px;
+		--hvnly-mcd-gap: 8px;
+		gap: 8px;
+	}
+
+	.hvnly-mobile-contact-avatar {
+		width: 40px;
+		height: 40px;
+	}
+
+	.hvnly-mobile-contact-name {
+		font-size: 0.875rem;
+	}
+
+	.hvnly-mobile-contact-actions {
+		gap: 4px;
+		max-width: 52%;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+	}
+
+	.hvnly-mobile-contact-actions::-webkit-scrollbar {
+		display: none;
+	}
+
+	.hvnly-mobile-contact-btn {
+		width: 40px;
+		height: 40px;
+		min-width: 40px;
+		min-height: 40px;
+		border-radius: 12px;
+	}
+}
+
+/* Landscape phones — slightly flatter card */
+@media (max-width: 991.98px) and (orientation: landscape) and (max-height: 480px) {
+	.hvnly-mobile-contact-dock {
+		--hvnly-mcd-offset: 8px;
+	}
+
+	.hvnly-mobile-contact-dock__card {
+		padding: 6px 10px;
+		border-radius: 14px;
+	}
+
+	.hvnly-mobile-contact-role {
+		display: none;
+	}
+
+	.hvnly-mobile-contact-avatar {
+		width: 36px;
+		height: 36px;
+	}
+
+	.hvnly-mobile-contact-btn {
+		width: 40px;
+		height: 40px;
+		min-width: 40px;
+		min-height: 40px;
+	}
+}
+
+/* Reserve space so content is not covered; no layout jump on dock entrance */
+@media (max-width: 991.98px) {
+	body.hvnly-has-mobile-contact-dock {
+		padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+	}
+
+	body.hvnly-has-mobile-contact-dock .hvnly-property-single__gallery-scroll-top {
+		bottom: calc(100px + env(safe-area-inset-bottom, 0px));
+	}
+}
+
+/* Tablet-hidden mode (max 767): only pad below that breakpoint */
+@media (min-width: 768px) and (max-width: 991.98px) {
+	body.hvnly-has-mobile-contact-dock--max-767 {
+		padding-bottom: 0;
+	}
+
+	body.hvnly-has-mobile-contact-dock--max-767 .hvnly-property-single__gallery-scroll-top {
+		bottom: 30px;
+	}
+}

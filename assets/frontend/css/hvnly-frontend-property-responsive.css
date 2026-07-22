@@ -1226,22 +1226,6 @@
         transform: scale(0.9) rotate(-15deg);
     }
 
-    .hvnly-content-wrapper 
-    .hvnly-property-filter-sidebar 
-    .hvnly-property-filter-group 
-    .hvnly-property-filter-checkbox::before {
-        width: 22px;
-        height: 22px;
-    }
-    
-    .hvnly-content-wrapper 
-    .hvnly-property-filter-sidebar 
-    .hvnly-property-filter-group 
-    .hvnly-property-filter-checkbox.checked::after {
-        left: 6px;
-        top: 4px;
-    }
-    
     .hvnly-property--grid-list--single__content 
     .hvnly-property--grid-list--header 
     .hvnly-property--grid-list--title-header 

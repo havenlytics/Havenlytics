@@ -327,9 +327,193 @@
   color: var(--hvnly-brand-error);
 }
 
-/* Checkbox / radio — accent-color keeps them on-brand across every theme
-   without a bespoke SVG control, respecting native accessibility. */
-.hvnly-checkbox,
+/* ============================================================
+   Frontend Checkbox Design System (public frontend only)
+   One visual component for Archive/Search filters, taxonomy
+   dropdowns, Auth consent, Inquiry consent, and .hvnly-checkbox.
+   Both .checked (JS) and :checked drive the same surface.
+   Admin / SPA / toggle switches remain separate.
+============================================================ */
+:root {
+  --hvnly-cb-size: 20px;
+  --hvnly-cb-radius: 4px;
+  --hvnly-cb-border-width: 2px;
+  --hvnly-cb-border-color: var(--hvnly-border-color, #e4e4ed);
+  --hvnly-cb-bg: var(--hvnly-color-bg-white, #ffffff);
+  --hvnly-cb-checked-bg: var(--hvnly-brand-primary, var(--hvnly-primary-color));
+  --hvnly-cb-checked-border: var(--hvnly-cb-checked-bg);
+  --hvnly-cb-hover-bg: rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.06);
+  --hvnly-cb-hover-border: var(--hvnly-brand-primary, var(--hvnly-primary-color));
+  --hvnly-cb-disabled-opacity: 0.5;
+  --hvnly-cb-transition: 180ms ease;
+  --hvnly-cb-focus-ring: 0 0 0 3px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.22);
+  --hvnly-cb-mark-size: 12px;
+  --hvnly-cb-mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3.2 8.2L6.5 11.5L12.8 4.5' stroke='%23ffffff' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* Shared unchecked box surface (pseudo + sibling span + native input) */
+.hvnly-cb-box,
+.hvnly-property-filter-checkbox::before,
+.hvnly-property-custom-mlt-checkbox,
+input.hvnly-checkbox,
+input.hvnly-form-check-input,
+.hvnly-auth__checkbox input[type="checkbox"],
+.hvnly-block-inquiry__consent-label input[type="checkbox"] {
+  box-sizing: border-box;
+  width: var(--hvnly-cb-size);
+  height: var(--hvnly-cb-size);
+  min-width: var(--hvnly-cb-size);
+  min-height: var(--hvnly-cb-size);
+  flex-shrink: 0;
+  margin: 0;
+  border: var(--hvnly-cb-border-width) solid var(--hvnly-cb-border-color);
+  border-radius: var(--hvnly-cb-radius);
+  background-color: var(--hvnly-cb-bg);
+  background-image: none;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: var(--hvnly-cb-mark-size) var(--hvnly-cb-mark-size);
+  transition:
+    background-color var(--hvnly-cb-transition),
+    border-color var(--hvnly-cb-transition),
+    box-shadow var(--hvnly-cb-transition),
+    background-image var(--hvnly-cb-transition);
+}
+
+.hvnly-property-filter-checkbox::before {
+  content: "";
+  display: block;
+}
+
+/* Native inputs — strip browser chrome */
+input.hvnly-checkbox,
+input.hvnly-form-check-input,
+.hvnly-auth__checkbox input[type="checkbox"],
+.hvnly-block-inquiry__consent-label input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+  color: transparent;
+}
+
+/* Checked — .checked (JS) and :checked share one look */
+.hvnly-property-filter-checkbox.checked::before,
+.hvnly-property-filter-checkbox:has(> input:checked)::before,
+.hvnly-property-dropdown-checkbox input[type="checkbox"]:checked + .hvnly-property-custom-mlt-checkbox,
+.hvnly-property-dropdown-checkbox.checked .hvnly-property-custom-mlt-checkbox,
+input.hvnly-checkbox:checked,
+input.hvnly-form-check-input:checked,
+.hvnly-auth__checkbox input[type="checkbox"]:checked,
+.hvnly-block-inquiry__consent-label input[type="checkbox"]:checked {
+  background-color: var(--hvnly-cb-checked-bg);
+  border-color: var(--hvnly-cb-checked-border);
+  background-image: var(--hvnly-cb-mark);
+}
+
+/* Hover (unchecked only) */
+.hvnly-property-filter-checkbox:hover:not(.checked):not(:has(> input:checked)):not(:has(> input:disabled))::before,
+.hvnly-property-dropdown-checkbox:hover:not(:has(input:checked)):not(:has(input:disabled)) .hvnly-property-custom-mlt-checkbox,
+input.hvnly-checkbox:hover:not(:checked):not(:disabled),
+input.hvnly-form-check-input:hover:not(:checked):not(:disabled),
+.hvnly-auth__checkbox:hover input[type="checkbox"]:not(:checked):not(:disabled),
+.hvnly-block-inquiry__consent-label:hover input[type="checkbox"]:not(:checked):not(:disabled) {
+  border-color: var(--hvnly-cb-hover-border);
+  background-color: var(--hvnly-cb-hover-bg);
+}
+
+/* Focus-visible ring on the visible box */
+.hvnly-property-filter-checkbox:has(> input:focus-visible)::before,
+.hvnly-property-dropdown-checkbox input[type="checkbox"]:focus-visible + .hvnly-property-custom-mlt-checkbox,
+input.hvnly-checkbox:focus-visible,
+input.hvnly-form-check-input:focus-visible,
+.hvnly-auth__checkbox input[type="checkbox"]:focus-visible,
+.hvnly-block-inquiry__consent-label input[type="checkbox"]:focus-visible {
+  outline: none;
+  box-shadow: var(--hvnly-cb-focus-ring);
+}
+
+input.hvnly-checkbox:focus:not(:focus-visible),
+input.hvnly-form-check-input:focus:not(:focus-visible),
+.hvnly-auth__checkbox input[type="checkbox"]:focus:not(:focus-visible),
+.hvnly-block-inquiry__consent-label input[type="checkbox"]:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Disabled */
+.hvnly-property-filter-checkbox:has(> input:disabled),
+.hvnly-property-dropdown-checkbox:has(input:disabled),
+input.hvnly-checkbox:disabled,
+input.hvnly-form-check-input:disabled,
+.hvnly-auth__checkbox input[type="checkbox"]:disabled,
+.hvnly-block-inquiry__consent-label input[type="checkbox"]:disabled {
+  opacity: var(--hvnly-cb-disabled-opacity);
+  cursor: not-allowed;
+}
+
+/* Sidebar filter shell — hit target over the shared ::before box */
+.hvnly-property-filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  width: auto;
+  cursor: pointer;
+}
+
+.hvnly-property-filter-checkbox > input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: var(--hvnly-cb-size);
+  height: var(--hvnly-cb-size);
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  z-index: 1;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.hvnly-property-filter-checkbox > span {
+  display: block;
+  flex: 1;
+  line-height: 1.4;
+}
+
+/* Dropdown — visually hide native input over the shared box (keyboard + click) */
+.hvnly-property-dropdown-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: var(--hvnly-cb-size);
+  height: var(--hvnly-cb-size);
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  z-index: 2;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.hvnly-property-custom-mlt-checkbox {
+  display: block;
+  position: relative;
+}
+
+/* Utility wrappers */
+.hvnly-form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Radio remains native accent (not part of checkbox system) */
 .hvnly-radio {
   width: 1.05rem;
   height: 1.05rem;
@@ -339,29 +523,14 @@
   cursor: pointer;
 }
 
-.hvnly-checkbox:focus-visible,
 .hvnly-radio:focus-visible {
   outline: 2px solid var(--hvnly-brand-primary);
   outline-offset: 2px;
 }
 
-.hvnly-checkbox:disabled,
 .hvnly-radio:disabled {
   cursor: not-allowed;
   opacity: 0.6;
-}
-
-.hvnly-form-check {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.hvnly-form-check-input {
-  width: 1rem;
-  height: 1rem;
-  accent-color: var(--hvnly-brand-primary);
 }
 
 /* ======================

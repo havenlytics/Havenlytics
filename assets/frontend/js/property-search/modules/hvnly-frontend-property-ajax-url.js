@@ -338,7 +338,8 @@
             }
 
             if ($('#hvnly-agent-properties, #hvnly-agency-properties').length
-                && !$('#hvnly-property-grid').length
+                && !$('[id^="hvnly-property-grid"]').length
+                && !$('.hvnly-property-grid-view').length
                 && !$('#hvnly-property-search-form__box').length) {
                 return false;
             }

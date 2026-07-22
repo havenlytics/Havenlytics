@@ -56,7 +56,7 @@ class EnvironmentChecker
          */
         $checks = [
             'php' => version_compare(PHP_VERSION, '7.4', '>='),
-            'wp'  => version_compare($wp_version, '6.0', '>='),
+            'wp'  => version_compare($wp_version, '6.3', '>='),
         ];
 
         /**
@@ -102,7 +102,7 @@ class EnvironmentChecker
          */
         if (!$checks['wp']) {
             global $wp_version;
-            $messages[] = sprintf('Requires WordPress 6.0 or higher. Current: %s.', $wp_version);
+            $messages[] = sprintf('Requires WordPress 6.3 or higher. Current: %s.', $wp_version);
         }
 
         /**

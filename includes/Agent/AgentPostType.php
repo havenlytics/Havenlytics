@@ -8,7 +8,6 @@
 
 namespace HvnlyNab\Agent;
 
-use HvnlyNab\Core\PluginGutenbergSupport;
 use HvnlyNab\Database\Base\Custom_Posts;
 
 defined( 'ABSPATH' ) || exit;
@@ -47,7 +46,9 @@ class AgentPostType extends Custom_Posts {
 		$archive_slug = class_exists( '\HvnlyNab\Core\PermalinkSettings' )
 			? \HvnlyNab\Core\PermalinkSettings::get_agent_archive_slug()
 			: $single_slug;
-		$is_gutenberg_enabled = PluginGutenbergSupport::is_enabled();
+		// Block editor for this CPT remains gated by PluginGutenbergSupport
+		// (use_block_editor_for_post_type). REST must stay enabled so block
+		// Inspector pickers can use /wp/v2/hvnly_agent.
 
 		$settings = array(
 			'description'         => __( 'Real estate agent profiles for Havenlytics.', 'havenlytics' ),
@@ -57,7 +58,8 @@ class AgentPostType extends Custom_Posts {
 			'show_in_menu'        => false,
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
-			'show_in_rest'        => $is_gutenberg_enabled,
+			// Always expose in REST (picker / blocks). Not the same as Gutenberg editing.
+			'show_in_rest'        => true,
 			'has_archive'         => $archive_slug,
 			'menu_icon'           => 'dashicons-businessman',
 			'hierarchical'        => false,

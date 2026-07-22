@@ -97,7 +97,7 @@
                 return false;
             }
 
-            if ($('#hvnly-property-grid').length || $('#hvnly-property-search-form__box').length) {
+            if ($('[id^="hvnly-property-grid"]').length || $('.hvnly-property-grid-view').length || $('#hvnly-property-search-form__box').length) {
                 return false;
             }
 

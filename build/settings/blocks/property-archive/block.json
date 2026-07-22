@@ -1,0 +1,108 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "havenlytics/property-archive",
+  "version": "3.5.0",
+  "title": "HVN: Property Archive",
+  "category": "havenlytics",
+  "icon": "admin-home",
+  "description": "Display a filterable grid, list, or map of Havenlytics property listings. Reuses the same query, cards, and templates as the archive page and Elementor widget.",
+  "keywords": [
+    "property",
+    "listings",
+    "real estate",
+    "archive",
+    "havenlytics"
+  ],
+  "textdomain": "havenlytics",
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    },
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true
+    }
+  },
+  "attributes": {
+    "defaultView": {
+      "type": "string",
+      "default": "grid"
+    },
+    "columns": {
+      "type": "number",
+      "default": 2
+    },
+    "postsPerPage": {
+      "type": "number",
+      "default": 12
+    },
+    "orderby": {
+      "type": "string",
+      "default": "date"
+    },
+    "featuredOnly": {
+      "type": "boolean",
+      "default": false
+    },
+    "showTopSearch": {
+      "type": "boolean",
+      "default": false
+    },
+    "showFilterSidebar": {
+      "type": "boolean",
+      "default": true
+    },
+    "sidebarPosition": {
+      "type": "string",
+      "default": "left"
+    },
+    "department": {
+      "type": "string",
+      "default": ""
+    },
+    "propertyType": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "location": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "editorScript": "hvnly-blocks-editor",
+  "editorStyle": "hvnly-blocks-editor",
+  "style": "hvnly-frontend-property-archive"
+}

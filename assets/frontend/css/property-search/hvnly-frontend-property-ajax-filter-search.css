@@ -284,62 +284,12 @@
     padding: 0.75rem 1rem;
     margin: 0;
     width: 100%;
-    transition: all 0.2s ease;
-}
-
-/* Hide default checkbox */
-.hvnly-property-dropdown-checkbox input[type="checkbox"] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-/* Custom checkbox - Global */
-.hvnly-property-custom-mlt-checkbox {
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--hvnly-brand-primary);
-    border-radius: 3px;
-    background: var(--hvnly-color-white);
     position: relative;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
+    transition: color 0.2s ease;
 }
 
-/* Checked state - Global */
-.hvnly-property-dropdown-checkbox input[type="checkbox"]:checked + .hvnly-property-custom-mlt-checkbox {
-    background: var(--hvnly-brand-primary);
-    border-color: var(--hvnly-brand-primary);
-}
-
-.hvnly-property-dropdown-checkbox input[type="checkbox"]:checked + .hvnly-property-custom-mlt-checkbox::after {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 2px;
-    width: 5px;
-    height: 9px;
-    border: solid var(--hvnly-color-white);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-
-/* Focus state */
-.hvnly-property-dropdown-checkbox input[type="checkbox"]:focus + .hvnly-property-custom-mlt-checkbox {
-    border-color: var(--hvnly-brand-primary);
-    box-shadow: 0 0 0 2px rgba(var(--hvnly-primary-rgb), 0.2);
-}
-
-/* Hover state */
-.hvnly-property-dropdown-checkbox:hover .hvnly-property-custom-mlt-checkbox {
-    border-color: #bbb;
-}
-
-.hvnly-property-dropdown-checkbox input[type="checkbox"]:checked:hover + .hvnly-property-custom-mlt-checkbox {
-    background: var(--hvnly-brand-primary);
-    border-color: var(--hvnly-brand-primary);
-}
+/* Checkbox visuals: shared Frontend Checkbox Design System
+   (hvnly-frontend-components.css). Layout/label only here. */
 
 .hvnly-property-checkbox-mlt-label {
     color: #333;
@@ -785,7 +735,8 @@
 
 
 /* ======================
-    CHECKBOX STYLES - MODERN DESIGN
+    CHECKBOX LAYOUT — visuals live in hvnly-frontend-components.css
+    (.checked + :checked share one design system surface)
 ======================= */
 .hvnly-content-wrapper 
 .hvnly-property-filter-sidebar
@@ -805,199 +756,7 @@
     font-size: 0.95rem;
     margin: 0;
     padding: 0;
-}
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    position: relative;
-    width: auto;
-}
-
-/* Custom checkbox box */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox::before {
-    content: "";
-    width: 21px;
-    height: 21px;
-    border: 2px solid var(--hvnly-brand-primary);
-    border-radius: 3px;
-    display: block;
-    flex-shrink: 0;
-    transition: all var(--hvnly-transition-time);
-    background: var(--hvnly-color-white);
-}
-
-/* Input styling - make it cover the custom checkbox */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox input {
-    position: absolute;
-    opacity: 0;
     cursor: pointer;
-    width: 21px;
-    height: 21px;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    margin: 0;
-}
-
-/* Checkmark on the INPUT when checked (NOT on div) */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox input:checked {
-    /* This makes the input transparent but keeps it clickable */
-    opacity: 1;
-}
-
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox input:checked::after {
-    content: "✓";
-    color: var(--hvnly-color-white);
-    font-size: 13px;
-    font-weight: bold;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background: var(--hvnly-brand-primary);
-    border-radius: 3px;
-}
-
-/* Checked state background - keep for compatibility with JS class */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox.checked::before {
-    /* background: var(--hvnly-brand-primary);
-    border-color: var(--hvnly-brand-primary); */
-}
-
-/* Alternative: if you want to keep using div.checked::after, fix z-index */
-/* .hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox.checked::after {
-    content: "✓";
-    color: var(--hvnly-color-white);
-    font-size: 13px;
-    font-weight: bold;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 3;
-    pointer-events: none;
-} */
-
-/* Fix z-index so checkmark appears ABOVE the input */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox.checked input {
-    z-index: 1;
-}
-
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox.checked::after {
-    z-index: 2;
-}
-
-/* Text span */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox span {
-    display: block;
-    flex: 1;
-    margin-left: 0;
-    line-height: 1.4;
-}
-
-/* Hover states */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-checkbox-label:hover 
-.hvnly-property-filter-checkbox:not(.checked)::before {
-    border-color: var(--hvnly-brand-primary);
-    background-color: rgba(var(--hvnly-primary-rgb), 0.05);
-}
-
-/* Focus accessibility */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox input:focus + span {
-    outline: 2px solid var(--hvnly-brand-primary);
-    outline-offset: 2px;
-    border-radius: 2px;
-}
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox input:focus ~ span {
-    outline: 0px solid var(--hvnly-brand-primary);
-    outline-offset: 0px;
-    border-radius: 0px;
-}
-
-/* Text span */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox span {
-    display: block;
-    flex: 1;
-    margin-left: 0;
-    line-height: 1.4;
-}
-
-/* Hover states */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-checkbox-label:hover 
-.hvnly-property-filter-checkbox:not(.checked)::before {
-    border-color: var(--hvnly-brand-primary);
-    background-color: rgba(var(--hvnly-primary-rgb), 0.05);
-}
-
-/* Focus accessibility */
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox input:focus + span {
-    outline: 2px solid var(--hvnly-brand-primary);
-    outline-offset: 2px;
-    border-radius: 2px;
-}
-.hvnly-content-wrapper 
-.hvnly-property-filter-sidebar
-.hvnly-property-filter-group
-.hvnly-property-filter-checkbox input:focus ~ span {
-    outline: 0px solid var(--hvnly-brand-primary);
-    outline-offset: 0px;
-    border-radius: 0px;
 }
 
 /* ======================

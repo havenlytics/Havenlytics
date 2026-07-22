@@ -35,6 +35,7 @@ class Assets
     private $has_property_shortcode = false; 
     private $has_agents_shortcode = false;
     private $has_agencies_shortcode = false;
+    private $has_property_block = false;
     private $ajax_params = null;
     private $map_params = null;
     private $map_localize_params = null;
@@ -128,6 +129,28 @@ class Assets
         
         // Check if page contains Elementor widget
         $this->has_elementor_widget = $this->has_elementor_widgets();
+
+        // Check if page contains Gutenberg property archive/search blocks
+        $this->has_property_block = $this->has_property_blocks();
+    }
+
+    /**
+     * Check if current page has Gutenberg Property Archive or Property Search blocks.
+     *
+     * Mirrors Elementor/shortcode detection so the existing map asset pipeline
+     * (Leaflet/Google + apply_map_search_script_dependencies) runs for blocks.
+     *
+     * @return bool
+     */
+    private function has_property_blocks() {
+        global $post;
+
+        if ( ! $post instanceof \WP_Post || ! function_exists( 'has_block' ) ) {
+            return false;
+        }
+
+        return has_block( 'havenlytics/property-archive', $post )
+            || has_block( 'havenlytics/property-search', $post );
     }
     
     /**
@@ -349,6 +372,10 @@ class Assets
             if (function_exists('hvnly_is_contact_agent_enabled') && hvnly_is_contact_agent_enabled()) {
                 wp_enqueue_style('hvnly-frontend-contact-agent');
             }
+
+            if (class_exists('\HvnlyNab\Frontend\MobileContactDock') && \HvnlyNab\Frontend\MobileContactDock::should_enqueue_assets()) {
+                wp_enqueue_style('hvnly-frontend-mobile-contact-dock');
+            }
         }
 
         if ($this->is_single_agent) {
@@ -442,7 +469,7 @@ class Assets
             ],
             'hvnly-frontend-components' => [
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-components.css',
-                'deps' => [],
+                'deps' => ['hvnly-frontend-default'],
                 'ver' => HVNLYNAB_VERSION,
                 'media' => 'all'
             ],
@@ -467,6 +494,12 @@ class Assets
             'hvnly-frontend-property-single' => [
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-property-single.css',
                 'deps' => ['hvnly-frontend-default'],
+                'ver' => HVNLYNAB_VERSION,
+                'media' => 'all'
+            ],
+            'hvnly-frontend-mobile-contact-dock' => [
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-mobile-contact-dock.css',
+                'deps' => ['hvnly-frontend-default', 'hvnly-fontawesome-all-frontend'],
                 'ver' => HVNLYNAB_VERSION,
                 'media' => 'all'
             ],
@@ -831,6 +864,7 @@ class Assets
             || $this->is_property_taxonomy
             || $this->is_property_search_page
             || $this->has_property_shortcode
+            || $this->has_property_block
             || $this->has_elementor_widget
             || $this->is_elementor_editor_mode();
     }
@@ -925,6 +959,12 @@ class Assets
             'hvnly-frontend-property-single' => [
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-single.js',
                 'deps' => ['jquery'],
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true
+            ],
+            'hvnly-frontend-mobile-contact-dock' => [
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-mobile-contact-dock.js',
+                'deps' => [],
                 'ver' => HVNLYNAB_VERSION,
                 'in_footer' => true
             ],
@@ -1208,6 +1248,11 @@ class Assets
         wp_enqueue_script('hvnly-frontend-property-single-map');
         wp_enqueue_script('hvnly-frontend-property-single');
 
+        if (class_exists('\HvnlyNab\Frontend\MobileContactDock') && \HvnlyNab\Frontend\MobileContactDock::should_enqueue_assets()) {
+            wp_enqueue_style('hvnly-frontend-mobile-contact-dock');
+            wp_enqueue_script('hvnly-frontend-mobile-contact-dock');
+        }
+
         if (function_exists('hvnly_is_contact_agent_enabled') && hvnly_is_contact_agent_enabled()) {
             wp_enqueue_script('hvnly-frontend-contact-agent');
 
@@ -1283,6 +1328,7 @@ class Assets
             || $this->is_property_taxonomy
             || $this->is_property_search_page
             || $this->has_property_shortcode
+            || $this->has_property_block
             || $this->has_elementor_widget
             || $this->is_elementor_editor_mode()
         ) {

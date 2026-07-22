@@ -1,0 +1,136 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "havenlytics/authentication",
+  "version": "3.5.0",
+  "title": "HVN: Authentication",
+  "category": "havenlytics",
+  "icon": "lock",
+  "description": "Login, registration and account panel that reuses the Havenlytics Workspace authentication system. Frontend UI only — no new auth logic.",
+  "keywords": [
+    "login",
+    "register",
+    "sign in",
+    "account",
+    "auth",
+    "havenlytics"
+  ],
+  "textdomain": "havenlytics",
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    },
+    "shadow": true,
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true
+    }
+  },
+  "attributes": {
+    "authMode": {
+      "type": "string",
+      "default": "auto"
+    },
+    "defaultTab": {
+      "type": "string",
+      "default": "login"
+    },
+    "layout": {
+      "type": "string",
+      "default": "card"
+    },
+    "cardWidth": {
+      "type": "number",
+      "default": 460
+    },
+    "cardAlign": {
+      "type": "string",
+      "default": "center"
+    },
+    "showLogo": {
+      "type": "boolean",
+      "default": true
+    },
+    "showHeading": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": true
+    },
+    "showRemember": {
+      "type": "boolean",
+      "default": true
+    },
+    "showForgot": {
+      "type": "boolean",
+      "default": true
+    },
+    "showRegisterLink": {
+      "type": "boolean",
+      "default": true
+    },
+    "showNames": {
+      "type": "boolean",
+      "default": true
+    },
+    "showTerms": {
+      "type": "boolean",
+      "default": false
+    },
+    "termsUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "showWelcomePanel": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAvatar": {
+      "type": "boolean",
+      "default": true
+    },
+    "showQuickLinks": {
+      "type": "boolean",
+      "default": true
+    },
+    "afterLogin": {
+      "type": "string",
+      "default": "current"
+    },
+    "afterLoginUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "afterRegister": {
+      "type": "string",
+      "default": "current"
+    },
+    "afterRegisterUrl": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "editorScript": "hvnly-blocks-editor",
+  "editorStyle": "hvnly-blocks-editor",
+  "style": "hvnly-block-auth"
+}

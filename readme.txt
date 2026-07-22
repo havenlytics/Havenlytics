@@ -2,10 +2,10 @@
 Contributors: havenlytics
 Donate link: https://havenlytics.com
 Tags: real estate, listings, agency, property, agents
-Requires at least: 6.0
+Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.4.0
+Stable tag: 3.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Build real estate websites with property listings, AJAX search, interactive maps, visual builders, Elementor widgets, and a secure Agent Workspace.
@@ -69,6 +69,7 @@ Havenlytics works with **any WordPress theme**. The free [Havenlytics Realty](ht
 ⚡ **Performance & security** — Caching, capability checks, nonces, rate limiting, and audited admin actions.
 
 = Core Features =
+✅ **Gutenberg Blocks** — Native WordPress block editor support for Property Archive, Property Search, Property Inquiry, Authentication, Dashboard, Saved Properties, Agents, Agency, and more. Dynamic server-rendered blocks with live editor previews and inspector controls.
 
 ✅ **Analytics Dashboard** — Property statistics, view tracking, inquiry analytics, charts, and CSV export.
 
@@ -250,6 +251,24 @@ No. Havenlytics Analytics works independently using your own WordPress data. You
 
 Visit [havenlytics.com](https://havenlytics.com/) for custom development services.
 
+= Does Havenlytics support the WordPress Block Editor (Gutenberg)? =
+
+Yes. Havenlytics includes native Gutenberg blocks for building real estate pages with the WordPress Block Editor. Blocks include property archives, property search, property inquiry forms, authentication, agent and agency listings, dashboards, saved properties, and other real estate components depending on your installed version.
+
+All blocks are server-rendered, include live editor previews, and reuse the same rendering engine, templates, queries, and caching used by the plugin's Elementor widgets and shortcodes.
+
+= Do I need Elementor to use Havenlytics? =
+
+No. Elementor is completely optional.
+
+You can build your real estate website using native Gutenberg blocks, Havenlytics shortcodes, or Elementor widgets. All three use the same backend rendering system, ensuring consistent frontend output regardless of which builder you choose.
+
+= Are the Gutenberg blocks compatible with any WordPress theme? =
+
+Yes. Havenlytics Gutenberg blocks work with any properly coded WordPress theme. They are dynamic (server-rendered), responsive, and automatically reuse the plugin's existing templates, query engine, caching, and REST APIs.
+
+No additional configuration or migration is required.
+
 == Screenshots ==
 
 1. Analytics Dashboard — property statistics, views, and inquiry reports
@@ -271,6 +290,35 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 
 
 == Changelog ==
+
+= 3.5.0 - 2026-07-22 =
+
+**New**
+
+* **Gutenberg Blocks** — a complete Havenlytics block suite under the "Havenlytics" category in the block inserter. Includes:
+  * HVN: Property Archive
+  * HVN: Property Search
+  * HVN: Property Inquiry Form
+  * HVN: Featured Properties
+  * HVN: Property Carousel
+  * HVN: Property Map
+  * HVN: Agents
+  * HVN: Agency
+  * HVN: Authentication
+  * HVN: Dashboard
+  * HVN: Saved Properties
+* Every block is dynamic (server-rendered), provides a live editor preview and inspector controls, and reuses the existing Havenlytics rendering, query, template, and caching systems so frontend output stays aligned with the equivalent widgets and shortcodes.
+
+**Improved**
+
+* Block assets load only when a block is present on the page.
+* Shared property and agent archive query helpers keep listings consistent across templates, widgets, and blocks.
+* Editor previews, REST-backed property/agent pickers, and block registration stability improvements for the Gutenberg workflow.
+* Compatibility metadata aligned with Block API version 3 (requires WordPress 6.3+).
+
+**Compatibility**
+
+* Elementor widgets, shortcodes, templates, REST APIs, and existing frontend functionality remain fully compatible. No migration is required.
 
 = 3.4.0 - 2026-07-21 =
 
@@ -329,6 +377,9 @@ Visit [havenlytics.com](https://havenlytics.com/) for custom development service
 For earlier versions, see the full history in CHANGELOG.md in the plugin package.
 == Upgrade Notice ==
 
+= 3.5.0 =
+Adds native Gutenberg blocks (archive, search, inquiry, auth, dashboard, and more) that reuse existing rendering. Elementor, shortcodes, templates, and REST stay compatible. No migration required. Install the packaged release so the block bundle is present.
+
 = 3.4.0 =
 Recommended update. Adds Agent Favorites, Saved Properties, guest favorites that merge on login, and optional Guest Login. Admins can use the Agent Workspace (no wp-admin redirect). Favorites table created automatically. Hard-refresh the Workspace after updating.
 
@@ -357,36 +408,12 @@ Contributions and feedback are welcome:
 - Write documentation or share feedback via [havenlytics.com/support](https://havenlytics.com/support/)
 - Join our community discussions on [Facebook](https://facebook.com/groups/havenlytics/)
 
-== External services ==
-
-Havenlytics does not contact any external service by default. The services below are used only when you explicitly enable the corresponding feature.
-
-**Appsero (optional usage telemetry)**
-Used to help maintain and improve the plugin. Disabled until an administrator opts in through the admin notice. When enabled, data is sent to `api.appsero.com` and may include the site URL and name; administrator name and email; IP address; WordPress, PHP, MySQL, theme, plugin, and server versions; plugin usage metadata; and aggregate user counts. You can opt out at any time.
-Terms: https://appsero.com/terms-conditions/ — Privacy: https://appsero.com/privacy-policy/
-
-**OpenStreetMap tiles (default map provider)**
-Used to display map tiles when a map is shown on your site. Tiles are requested from `tile.openstreetmap.org`, which receives normal web request data such as the visitor's IP address and user agent.
-Tile usage policy: https://operations.osmfoundation.org/policies/tiles/ — Privacy: https://osmfoundation.org/wiki/Privacy_Policy
-
-**Google Maps (optional map provider)**
-Used only if you select Google Maps and supply an API key. The Maps JavaScript API is loaded from `maps.googleapis.com`, and Google may receive visitor request and device data.
-Terms: https://maps.google.com/help/terms_maps/ — Privacy: https://policies.google.com/privacy
-
-No other external service is contacted. Favorites, Saved Properties, Guest Favorites, Guest Login, the Agent Workspace, and all listing data are stored in your own WordPress database.
-
 == Privacy Policy ==
 
-Havenlytics includes the [Appsero](https://appsero.com/) SDK for optional diagnostic and usage telemetry.
+Havenlytics includes the Appsero SDK for optional usage telemetry.
 
-Usage telemetry is disabled by default. If an administrator opts in through the WordPress admin notice, the SDK sends data to `api.appsero.com` to help maintain and improve the plugin. This may include the site URL and name; administrator name and email; IP address; WordPress, PHP, MySQL, theme, plugin, and server versions or configuration; plugin usage metadata; and aggregate user counts. Administrators can opt out at any time.
+Telemetry is **disabled by default** and is only enabled if an administrator explicitly opts in. When enabled, limited diagnostic and environment information is sent to `api.appsero.com` to help improve the plugin.
 
-Review the [Appsero Privacy Policy](https://appsero.com/privacy-policy/) for details.
+Privacy Policy: https://appsero.com/privacy-policy/
 
-Havenlytics stores enabled feature data in your WordPress database. This may include property and agent information, user account details, inquiries, taxonomy requests, notification records, and audit events. Some security and audit records may include an IP address and user agent. Site owners are responsible for publishing an appropriate privacy notice, establishing retention practices, and responding to data requests under applicable law.
-
-When Leaflet maps are displayed, map tiles are loaded from the configured tile provider. The default provider is OpenStreetMap (`tile.openstreetmap.org`), which receives normal web request data such as the visitor's IP address and user agent. Review the [OpenStreetMap tile usage policy](https://operations.osmfoundation.org/policies/tiles/) and [OpenStreetMap Foundation privacy policy](https://osmfoundation.org/wiki/Privacy_Policy).
-
-If Google Maps is selected and configured, Havenlytics loads the Google Maps JavaScript API from `maps.googleapis.com`. Google may receive visitor request and device data under the [Google Maps terms](https://maps.google.com/help/terms_maps/) and [Google Privacy Policy](https://policies.google.com/privacy).
-
-If you configure SMTP delivery or other third-party integrations, review those providers' privacy terms and disclose their use to site visitors where required.
+All Havenlytics data—including properties, agents, inquiries, favorites, saved properties, and Agent Workspace data—is stored in your own WordPress database.

@@ -66,6 +66,78 @@ final class AgentArchiveQuery {
 	}
 
 	/**
+	 * Build a standalone, parameterized WP_Query for the agent archive.
+	 *
+	 * Shared builder for nested contexts (blocks, widgets, shortcodes) that
+	 * cannot rely on the main-query adjustments in pre_get_posts(). Existing
+	 * archive behaviour is unchanged — this only adds an explicit builder.
+	 *
+	 * @since 3.5.0
+	 *
+	 * @param array<string, mixed> $args {
+	 *     Optional query overrides.
+	 *
+	 *     @type int    $per_page Posts per page.
+	 *     @type int    $paged    Page number.
+	 *     @type string $orderby  title|date.
+	 *     @type string $order    ASC|DESC.
+	 *     @type string $search   Free-text search (falls back to ?s).
+	 * }
+	 * @return \WP_Query
+	 */
+	public static function build_query( array $args = array() ): \WP_Query {
+		$per_page = isset( $args['per_page'] ) ? max( 1, absint( $args['per_page'] ) ) : self::get_per_page();
+		$paged    = isset( $args['paged'] )
+			? max( 1, absint( $args['paged'] ) )
+			: max( 1, (int) get_query_var( 'paged' ), (int) get_query_var( 'page' ) );
+
+		$orderby = isset( $args['orderby'] ) ? sanitize_key( (string) $args['orderby'] ) : 'title';
+		$order   = isset( $args['order'] ) ? strtoupper( sanitize_key( (string) $args['order'] ) ) : 'ASC';
+
+		if ( ! in_array( $orderby, array( 'title', 'date' ), true ) ) {
+			$orderby = 'title';
+		}
+
+		if ( ! in_array( $order, array( 'ASC', 'DESC' ), true ) ) {
+			$order = 'ASC';
+		}
+
+		$search = isset( $args['search'] ) ? sanitize_text_field( (string) $args['search'] ) : '';
+
+		if ( '' === $search && isset( $_GET['s'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$search = sanitize_text_field( wp_unslash( (string) $_GET['s'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+
+		$query_args = array(
+			'post_type'              => AgentConstants::POST_TYPE,
+			'post_status'            => 'publish',
+			'posts_per_page'         => $per_page,
+			'paged'                  => $paged,
+			'orderby'                => $orderby,
+			'order'                  => $order,
+			'no_found_rows'          => false,
+			'update_post_meta_cache' => true,
+			'update_post_term_cache' => true,
+		);
+
+		if ( '' !== $search ) {
+			$query_args['s'] = $search;
+		}
+
+		/**
+		 * Filter the standalone agent archive query args.
+		 *
+		 * @since 3.5.0
+		 *
+		 * @param array<string, mixed> $query_args Query arguments.
+		 * @param array<string, mixed> $args       Caller overrides.
+		 */
+		$query_args = apply_filters( 'hvnly_agent_archive_query_args', $query_args, $args );
+
+		return new \WP_Query( $query_args );
+	}
+
+	/**
 	 * Prevent instantiation.
 	 */
 	private function __construct() {}

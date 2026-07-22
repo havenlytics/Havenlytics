@@ -45,12 +45,62 @@
                 }
             }
 
-            const $legacy = $('#hvnly-property-grid');
-            if ($legacy.length) {
-                return $legacy;
+            // Legacy / Gutenberg: never assume a single hard-coded id.
+            const $byPrefix = $('[id^="hvnly-property-grid"]');
+            if ($byPrefix.length === 1) {
+                return $byPrefix.first();
             }
 
             return $('.hvnly-property-grid-view').first();
+        },
+
+        /**
+         * Every property listing grid on the page (Archive / Search / Featured / Elementor).
+         * Scoped so agent/agency archive grids are not restyled as property columns.
+         *
+         * @returns {jQuery}
+         */
+        resolveAllPropertyGrids() {
+            return $(
+                '.hvnly-property--grid--listings > .hvnly-property-grid-view, ' +
+                '.hvnly-all-properties-widget .hvnly-property-grid-view, ' +
+                '[id^="hvnly-property-grid"].hvnly-property-grid-view'
+            );
+        },
+
+        /**
+         * Grid inside a listings section (or nearest ancestor of a context node).
+         *
+         * @param {HTMLElement|jQuery|null|undefined} context
+         * @returns {HTMLElement|null}
+         */
+        resolvePropertyGridNear(context) {
+            if (!context) {
+                return null;
+            }
+
+            const node = context.jquery ? context[0] : context;
+            if (!node || !node.closest) {
+                return null;
+            }
+
+            const listings = node.closest('.hvnly-property--grid--listings');
+            if (listings) {
+                const grid = listings.querySelector('.hvnly-property-grid-view');
+                if (grid) {
+                    return grid;
+                }
+            }
+
+            const widget = node.closest('.hvnly-all-properties-widget');
+            if (widget) {
+                const grid = widget.querySelector('.hvnly-property-grid-view');
+                if (grid) {
+                    return grid;
+                }
+            }
+
+            return null;
         },
 
         /**
@@ -245,10 +295,32 @@
          * @returns {{propertyGrid: HTMLElement|null, mapPlaceholder: HTMLElement|null, widget: jQuery}}
          */
         resolveViewElements(contextBtn) {
-            const $widget = contextBtn
-                ? $(contextBtn).closest('.hvnly-all-properties-widget')
-                : $('.hvnly-all-properties-widget').first();
+            if (contextBtn) {
+                const $widget = $(contextBtn).closest('.hvnly-all-properties-widget');
+                if ($widget.length) {
+                    const instanceId = $widget.attr('data-widget-id') || null;
+                    return {
+                        widget: $widget,
+                        propertyGrid: this.resolvePropertyGridElement(instanceId),
+                        mapPlaceholder: this.resolveMapPlaceholder(instanceId),
+                    };
+                }
 
+                const nearGrid = this.resolvePropertyGridNear(contextBtn);
+                if (nearGrid) {
+                    const listings = contextBtn.closest('.hvnly-property--grid--listings');
+                    const mapPlaceholder = (listings && listings.querySelector('.hvnly-map-placeholder'))
+                        || document.querySelector('.hvnly-map-placeholder')
+                        || document.getElementById('hvnly-map-placeholder');
+                    return {
+                        widget: $(),
+                        propertyGrid: nearGrid,
+                        mapPlaceholder: mapPlaceholder || null,
+                    };
+                }
+            }
+
+            const $widget = $('.hvnly-all-properties-widget').first();
             if ($widget.length) {
                 const instanceId = $widget.attr('data-widget-id') || null;
                 return {
@@ -260,8 +332,8 @@
 
             return {
                 widget: $(),
-                propertyGrid: document.getElementById('hvnly-property-grid') || document.querySelector('.hvnly-property-grid-view'),
-                mapPlaceholder: document.getElementById('hvnly-map-placeholder'),
+                propertyGrid: document.querySelector('.hvnly-property-grid-view'),
+                mapPlaceholder: document.querySelector('.hvnly-map-placeholder') || document.getElementById('hvnly-map-placeholder'),
             };
         },
     };

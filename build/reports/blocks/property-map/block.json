@@ -1,0 +1,151 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "havenlytics/property-map",
+  "version": "3.5.0",
+  "title": "HVN: Property Map",
+  "category": "havenlytics",
+  "icon": "location-alt",
+  "description": "A premium interactive property map with marker clustering, popup cards, and map controls.",
+  "keywords": [
+    "property",
+    "map",
+    "location",
+    "markers",
+    "real estate",
+    "havenlytics"
+  ],
+  "textdomain": "havenlytics",
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "shadow": true,
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true
+    }
+  },
+  "attributes": {
+    "height": {
+      "type": "number",
+      "default": 520
+    },
+    "zoom": {
+      "type": "number",
+      "default": 12
+    },
+    "clustering": {
+      "type": "boolean",
+      "default": true
+    },
+    "clusterRadius": {
+      "type": "number",
+      "default": 48
+    },
+    "clusterMaxZoom": {
+      "type": "number",
+      "default": 0
+    },
+    "mapStyle": {
+      "type": "string",
+      "default": "standard"
+    },
+    "currentLocation": {
+      "type": "boolean",
+      "default": true
+    },
+    "autoFit": {
+      "type": "boolean",
+      "default": true
+    },
+    "scrollWheel": {
+      "type": "boolean",
+      "default": false
+    },
+    "postsPerPage": {
+      "type": "number",
+      "default": 48
+    },
+    "showAll": {
+      "type": "boolean",
+      "default": false
+    },
+    "featuredOnly": {
+      "type": "boolean",
+      "default": false
+    },
+    "department": {
+      "type": "string",
+      "default": ""
+    },
+    "status": {
+      "type": "string",
+      "default": ""
+    },
+    "propertyType": {
+      "type": "string",
+      "default": ""
+    },
+    "markerSize": {
+      "type": "string",
+      "default": "md"
+    },
+    "markerStyle": {
+      "type": "string",
+      "default": "pin"
+    },
+    "popupStyle": {
+      "type": "string",
+      "default": "default"
+    },
+    "popupWidth": {
+      "type": "number",
+      "default": 300
+    },
+    "popupTrigger": {
+      "type": "string",
+      "default": "click"
+    },
+    "animations": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPrice": {
+      "type": "boolean",
+      "default": true
+    },
+    "showFavorite": {
+      "type": "boolean",
+      "default": true
+    },
+    "showStatus": {
+      "type": "boolean",
+      "default": true
+    },
+    "showMeta": {
+      "type": "boolean",
+      "default": true
+    },
+    "showCta": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "editorScript": "hvnly-blocks-editor",
+  "editorStyle": "hvnly-blocks-editor",
+  "style": "hvnly-block-premium"
+}

@@ -12,10 +12,10 @@
  * Plugin Name:       Havenlytics – Real Estate Listings, Property Search & Agent Workspace
  * Plugin URI:        https://wordpress.org/plugins/havenlytics/
  * Description:       Powerful WordPress real estate plugin with property listings, AJAX search, maps, galleries, drag-and-drop layouts, and an Agent Workspace.
- * Version:           3.4.0
+ * Version:           3.5.0
  * Author:            Havenlytics
  * Author URI:        https://havenlytics.com
- * Requires at least: 6.0
+ * Requires at least: 6.3
  * Requires PHP:      7.4
  * Tested up to:      7.0
  * Text Domain:       havenlytics
@@ -31,7 +31,7 @@ defined('ABSPATH') || exit;
  * Define plugin constants for paths, URLs, and configuration
  * These constants are used throughout the plugin for easy reference
  */
-define('HVNLYNAB_VERSION', '3.4.0');
+define('HVNLYNAB_VERSION', '3.5.0');
 define('HVNLYNAB_FILE', __FILE__);
 define('HVNLYNAB_BASENAME', plugin_basename(HVNLYNAB_FILE));
 define('HVNLYNAB_SLUG', 'havenlytics');
@@ -210,7 +210,7 @@ final class HvnlyNab
      * Minimum WordPress version required for plugin operation
      * Prevents activation on incompatible WordPress versions
      */
-    private const MIN_WP = '6.0';
+    private const MIN_WP = '6.3';
 
     /**
      * Minimum PHP version required for plugin operation
@@ -593,6 +593,16 @@ final class HvnlyNab
                 }
             }
         }, 20); // Priority 20 ensures Elementor is loaded
+
+        // ==============================================
+        // GUTENBERG BLOCK INTEGRATION
+        // ==============================================
+        // Registers native block-editor blocks that reuse the existing query,
+        // template, card and caching layers. Additive and independent of
+        // Elementor — the registrar self-hooks `init` for block registration.
+        if (class_exists('\HvnlyNab\Integrations\Blocks\BlockRegistrar')) {
+            \HvnlyNab\Integrations\Blocks\BlockRegistrar::get_instance();
+        }
 
             /**
              * Fire loaded action for other plugins/themes to hook into

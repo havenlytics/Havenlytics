@@ -1,0 +1,104 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "havenlytics/property-search",
+  "version": "3.5.0",
+  "title": "HVN: Property Search",
+  "category": "havenlytics",
+  "icon": "search",
+  "description": "A search-first property listing: prominent search bar and filter sidebar over a live results grid. Reuses the Havenlytics archive query and templates.",
+  "keywords": [
+    "property",
+    "search",
+    "filter",
+    "real estate",
+    "havenlytics"
+  ],
+  "textdomain": "havenlytics",
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    },
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true
+    }
+  },
+  "attributes": {
+    "defaultView": {
+      "type": "string",
+      "default": "grid"
+    },
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "postsPerPage": {
+      "type": "number",
+      "default": 12
+    },
+    "orderby": {
+      "type": "string",
+      "default": "date"
+    },
+    "featuredOnly": {
+      "type": "boolean",
+      "default": false
+    },
+    "showFilterSidebar": {
+      "type": "boolean",
+      "default": true
+    },
+    "sidebarPosition": {
+      "type": "string",
+      "default": "left"
+    },
+    "department": {
+      "type": "string",
+      "default": ""
+    },
+    "propertyType": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "location": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "editorScript": "hvnly-blocks-editor",
+  "editorStyle": "hvnly-blocks-editor",
+  "style": "hvnly-frontend-property-archive"
+}

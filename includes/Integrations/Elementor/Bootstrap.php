@@ -301,6 +301,71 @@ private function load_template_functions(): void {
     }
 
     /**
+     * Force-enqueue the FULL property archive/search asset stack, ungated.
+     *
+     * Mirrors the property branch of enqueue_widget_assets() + enqueue_widget_scripts()
+     * but WITHOUT the should_load_assets() gate (which inspects _elementor_data and
+     * therefore never matches a Gutenberg block page). Used by the Property Archive
+     * and Property Search blocks so their rendered markup gets exactly the same CSS,
+     * JS and localized data as the Elementor widget. Elementor need not be active —
+     * every worker below is a plain wp_enqueue_* call.
+     *
+     * @since 3.5.0
+     * @return void
+     */
+    public function enqueue_property_widget_assets_for_render(): void {
+        // Styles (mirrors enqueue_widget_assets() property branch).
+        $this->enqueue_main_styles();
+        $this->enqueue_elementor_widget_stylesheet();
+        $this->enqueue_elementor_specific_styles();
+        $this->enqueue_editor_compatibility_styles();
+        $this->inject_dynamic_styles();
+
+        // Scripts + localization (mirrors enqueue_widget_scripts() property branch).
+        $this->register_main_scripts();
+        $this->register_elementor_widget_script();
+        $this->output_frontend_script_globals();
+        $this->enqueue_main_scripts();
+
+        if (!$this->is_archive_stack_localized()) {
+            $this->localize_scripts();
+        }
+
+        $this->localize_elementor_widget_script(false);
+    }
+
+    /**
+     * Enqueue STYLES ONLY for all Havenlytics blocks, ungated.
+     *
+     * For the block-editor iframe (WYSIWYG ServerSideRender preview): loads the same
+     * frontend stylesheets the archive/agents/agency output depends on, so the editor
+     * preview is visually identical to the frontend. Scripts are intentionally omitted
+     * here to keep the editor free of AJAX/map JS side effects; images are revealed via
+     * an editor stylesheet instead.
+     *
+     * @since 3.5.0
+     * @return void
+     */
+    public function enqueue_blocks_editor_styles(): void {
+        // Property archive / search styles.
+        $this->enqueue_main_styles();
+        $this->enqueue_elementor_widget_stylesheet();
+        $this->enqueue_elementor_specific_styles();
+        $this->enqueue_editor_compatibility_styles();
+
+        // Agents styles.
+        $this->register_agent_widget_style_handles();
+        $this->enqueue_agent_widget_assets();
+
+        // Agencies styles.
+        $this->register_agency_widget_style_handles();
+        $this->enqueue_agency_widget_assets();
+
+        // Brand/dynamic CSS (once).
+        $this->inject_dynamic_styles();
+    }
+
+    /**
      * Check if assets should be loaded
      */
     private function should_load_assets(): bool {
@@ -405,7 +470,9 @@ private function load_template_functions(): void {
         foreach ($css_files as $handle => $url) {
             if (!wp_style_is($handle, 'registered')) {
                 $deps = [];
-                if ('hvnly-frontend-property-card-embed' === $handle) {
+                if ('hvnly-frontend-components' === $handle) {
+                    $deps = ['hvnly-frontend-default'];
+                } elseif ('hvnly-frontend-property-card-embed' === $handle) {
                     $deps = ['hvnly-frontend-default', 'hvnly-frontend-components'];
                 } elseif ('hvnly-frontend-property-ajax-filter' === $handle) {
                     $deps = ['hvnly-frontend-property-card-embed', 'hvnly-frontend-property-map'];

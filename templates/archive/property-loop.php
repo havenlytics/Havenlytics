@@ -41,8 +41,15 @@ if ( $hvnly_view_type === 'grid' ) {
 ?>
 
 <!-- Property Grid -->
+<?php
+// Unique per instance so Archive / Search / Featured can coexist on one page.
+// JS targets .hvnly-property-grid-view; the id is for legacy / Elementor hooks only.
+static $hvnly_property_grid_seq = 0;
+$hvnly_property_grid_seq++;
+$hvnly_property_grid_dom_id = 'hvnly-property-grid-' . $hvnly_property_grid_seq;
+?>
 <div class="hvnly-property-grid-view <?php echo esc_attr( $hvnly_view_class ); ?>"
-    id="hvnly-property-grid" data-view-type="<?php echo esc_attr( $hvnly_view_type ); ?>"
+    id="<?php echo esc_attr( $hvnly_property_grid_dom_id ); ?>" data-view-type="<?php echo esc_attr( $hvnly_view_type ); ?>"
     style="<?php echo esc_attr( $hvnly_display_style ); ?>">
     <?php if ( have_posts() ) : ?>
     <?php while ( have_posts() ) : the_post(); ?>

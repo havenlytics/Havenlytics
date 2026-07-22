@@ -112,14 +112,14 @@
 
 @media (min-width: 768px) {
     .hvnly-property-single__container {
-        padding: 0 var(--hvnly-space-md);
+        padding: 0;
     }
 }
 /* Sprint 31D: this block used to parse as `padding: 0` (an unfinished
    declaration), removing every gutter on phones — content ran edge-to-edge. */
 @media (max-width: 767px) {
     .hvnly-property-single__container {
-        padding: 0 var(--hvnly-space-md, 1rem);
+        padding: 0 ;
     }
 }
 .hvnly-property-single__content-wrapper {

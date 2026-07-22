@@ -1,0 +1,175 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "havenlytics/property-inquiry",
+  "version": "3.5.0",
+  "title": "HVN: Property Inquiry Form",
+  "category": "havenlytics",
+  "icon": "email-alt",
+  "description": "Drop the existing Havenlytics inquiry form on any page. A frontend entry point over the Contact Agent system — reuses its storage, validation, spam protection, emails, agent assignment and success/error UI. No new inquiry logic.",
+  "keywords": [
+    "inquiry",
+    "enquiry",
+    "contact",
+    "contact agent",
+    "lead",
+    "message",
+    "havenlytics"
+  ],
+  "textdomain": "havenlytics",
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true
+    }
+  },
+  "attributes": {
+    "propertySource": {
+      "type": "string",
+      "default": "current"
+    },
+    "propertyId": {
+      "type": "number",
+      "default": 0
+    },
+    "propertyIds": {
+      "type": "array",
+      "default": []
+    },
+    "fallbackPropertyId": {
+      "type": "number",
+      "default": 0
+    },
+    "agentSource": {
+      "type": "string",
+      "default": "auto"
+    },
+    "agentId": {
+      "type": "number",
+      "default": 0
+    },
+    "agentIds": {
+      "type": "array",
+      "default": []
+    },
+    "showTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "formTitle": {
+      "type": "string",
+      "default": "Send an Inquiry"
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": false
+    },
+    "formDescription": {
+      "type": "string",
+      "default": ""
+    },
+    "showPropertyImage": {
+      "type": "boolean",
+      "default": false
+    },
+    "showPropertyPrice": {
+      "type": "boolean",
+      "default": false
+    },
+    "showPropertyAddress": {
+      "type": "boolean",
+      "default": false
+    },
+    "showAgentCard": {
+      "type": "boolean",
+      "default": false
+    },
+    "layout": {
+      "type": "string",
+      "default": "vertical"
+    },
+    "formWidth": {
+      "type": "number",
+      "default": 0
+    },
+    "showName": {
+      "type": "boolean",
+      "default": true
+    },
+    "showEmail": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPhone": {
+      "type": "boolean",
+      "default": true
+    },
+    "showMessage": {
+      "type": "boolean",
+      "default": true
+    },
+    "showConsent": {
+      "type": "boolean",
+      "default": false
+    },
+    "consentText": {
+      "type": "string",
+      "default": "I agree to be contacted about my inquiry."
+    },
+    "buttonText": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonWidth": {
+      "type": "string",
+      "default": "auto"
+    },
+    "buttonAlign": {
+      "type": "string",
+      "default": "left"
+    },
+    "buttonIcon": {
+      "type": "string",
+      "default": "none"
+    },
+    "showLoadingState": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSuccessState": {
+      "type": "boolean",
+      "default": true
+    },
+    "successMessage": {
+      "type": "string",
+      "default": ""
+    },
+    "successRedirectUrl": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "editorScript": "hvnly-blocks-editor",
+  "editorStyle": "hvnly-blocks-editor",
+  "style": "hvnly-block-inquiry"
+}

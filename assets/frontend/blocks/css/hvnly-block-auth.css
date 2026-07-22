@@ -1,0 +1,438 @@
+/**
+ * HVN: Authentication block styles.
+ *
+ * Reuses Havenlytics design tokens (--hvnly-*) with safe fallbacks so the block
+ * looks correct even on pages where the dynamic token stylesheet is absent.
+ *
+ * @package Havenlytics
+ * @since   3.5.0
+ */
+
+.hvnly-auth {
+	--_auth-radius: var( --hvnly-card-radius, var( --hvnly-border-radius-lg, 16px ) );
+	--_auth-border: var( --hvnly-border-color, rgba( 15, 23, 42, 0.12 ) );
+	--_auth-bg: var( --hvnly-card-bg, var( --hvnly-color-bg-white, #fff ) );
+	--_auth-fg: var( --hvnly-text-primary, var( --hvnly-text-color, #0f172a ) );
+	--_auth-muted: var( --hvnly-text-secondary, #64748b );
+	--_auth-primary: var( --hvnly-brand-primary, var( --hvnly-primary-color, #6c60fe ) );
+	--_auth-primary-fg: var( --hvnly-button-text, #fff );
+	--_auth-error: var( --hvnly-brand-error, #dc2626 );
+	--_auth-success: var( --hvnly-brand-success, #16a34a );
+	--_auth-field-bg: var( --hvnly-color-bg-light, #f8fafc );
+	--_auth-shadow: var( --hvnly-shadow-card, 0 10px 30px rgba( 15, 23, 42, 0.08 ) );
+	--_auth-font: var( --hvnly-font-family-base, inherit );
+
+	font-family: var( --_auth-font );
+	color: var( --_auth-fg );
+	display: flex;
+}
+
+.hvnly-auth--align-center { justify-content: center; }
+.hvnly-auth--align-left { justify-content: flex-start; }
+.hvnly-auth--align-right { justify-content: flex-end; }
+
+.hvnly-auth__inner {
+	width: 100%;
+	max-width: var( --hvnly-auth-card-width, 460px );
+}
+
+.hvnly-auth__card {
+	background: var( --_auth-bg );
+	border: 1px solid var( --_auth-border );
+	border-radius: var( --_auth-radius );
+	box-shadow: var( --_auth-shadow );
+	padding: clamp( 22px, 4vw, 40px );
+	box-sizing: border-box;
+}
+
+/* Layout variants. */
+.hvnly-auth--layout-minimal .hvnly-auth__card {
+	border: none;
+	box-shadow: none;
+	background: transparent;
+	padding: 0;
+}
+.hvnly-auth--layout-classic .hvnly-auth__card {
+	box-shadow: none;
+}
+.hvnly-auth--layout-modern .hvnly-auth__card {
+	border: none;
+	box-shadow: 0 24px 60px rgba( 15, 23, 42, 0.14 );
+}
+
+/* Header. */
+.hvnly-auth__header {
+	text-align: center;
+	margin-bottom: 22px;
+}
+.hvnly-auth__logo {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 14px;
+	color: var( --_auth-primary );
+}
+.hvnly-auth__logo-img { max-height: 48px; width: auto; }
+.hvnly-auth__logo-glyph {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 52px;
+	height: 52px;
+	border-radius: 14px;
+	background: color-mix( in srgb, var( --_auth-primary ) 12%, transparent );
+	color: var( --_auth-primary );
+}
+.hvnly-auth__title {
+	font-size: var( --hvnly-font-size-title, 1.5rem );
+	font-weight: var( --hvnly-font-weight-bold, 700 );
+	line-height: 1.2;
+	margin: 0 0 6px;
+	color: var( --_auth-fg );
+}
+.hvnly-auth__subtitle {
+	font-size: var( --hvnly-font-size-sm, 0.9rem );
+	color: var( --_auth-muted );
+	margin: 0;
+}
+
+/* Tabs. */
+.hvnly-auth__tabs {
+	display: flex;
+	gap: 4px;
+	padding: 4px;
+	margin-bottom: 20px;
+	background: var( --_auth-field-bg );
+	border-radius: calc( var( --_auth-radius ) * 0.6 );
+}
+.hvnly-auth__tab {
+	flex: 1;
+	appearance: none;
+	border: none;
+	background: transparent;
+	color: var( --_auth-muted );
+	font: inherit;
+	font-weight: 600;
+	padding: 10px 12px;
+	border-radius: calc( var( --_auth-radius ) * 0.45 );
+	cursor: pointer;
+	transition: background 0.18s ease, color 0.18s ease;
+}
+.hvnly-auth__tab.is-active {
+	background: var( --_auth-bg );
+	color: var( --_auth-fg );
+	box-shadow: 0 1px 3px rgba( 15, 23, 42, 0.1 );
+}
+
+/* Respect the native `hidden` attribute. Author rules (even a bare
+ * `.hvnly-auth__form { display: block }`) override the UA `[hidden]` rule, so a
+ * form kept in the DOM but marked hidden would otherwise still render. This
+ * scoped rule (no !important) restores the intended one-form-at-a-time behavior
+ * and also guards against themes that set `form { display: … }`. */
+.hvnly-auth [hidden] { display: none; }
+
+/* Fields. */
+.hvnly-auth__field { margin-bottom: 16px; }
+.hvnly-auth__grid-2 {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+}
+.hvnly-auth__label {
+	display: block;
+	font-size: var( --hvnly-font-size-sm, 0.85rem );
+	font-weight: 600;
+	margin-bottom: 6px;
+	color: var( --_auth-fg );
+}
+.hvnly-auth__req { color: var( --_auth-error ); margin-left: 2px; }
+.hvnly-auth__control { position: relative; display: flex; }
+.hvnly-auth__input {
+	width: 100%;
+	box-sizing: border-box;
+	font: inherit;
+	font-size: 0.95rem;
+	color: var( --_auth-fg );
+	background: var( --_auth-field-bg );
+	border: 1px solid var( --_auth-border );
+	border-radius: calc( var( --_auth-radius ) * 0.5 );
+	padding: 12px 14px;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.hvnly-auth__input:focus {
+	outline: none;
+	border-color: var( --_auth-primary );
+	box-shadow: 0 0 0 3px color-mix( in srgb, var( --_auth-primary ) 22%, transparent );
+}
+.hvnly-auth__input.is-invalid {
+	border-color: var( --_auth-error );
+}
+.hvnly-auth__control:has( .hvnly-auth__toggle ) .hvnly-auth__input { padding-right: 44px; }
+
+.hvnly-auth__toggle {
+	position: absolute;
+	right: 6px;
+	top: 50%;
+	transform: translateY( -50% );
+	width: 32px;
+	height: 32px;
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	color: var( --_auth-muted );
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+}
+.hvnly-auth__toggle:hover { color: var( --_auth-fg ); }
+.hvnly-auth__toggle-icon {
+	width: 18px; height: 18px;
+	background: currentColor;
+	-webkit-mask: center / contain no-repeat;
+	mask: center / contain no-repeat;
+	-webkit-mask-image: url( "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2'%3E%3Cpath d='M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E" );
+	mask-image: url( "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2'%3E%3Cpath d='M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E" );
+}
+.hvnly-auth__toggle.is-visible .hvnly-auth__toggle-icon { opacity: 0.6; }
+
+.hvnly-auth__field-error {
+	color: var( --_auth-error );
+	font-size: 0.8rem;
+	margin: 6px 0 0;
+}
+
+/* Password strength. */
+.hvnly-auth__strength { margin-top: 8px; }
+.hvnly-auth__strength-bar {
+	height: 5px;
+	border-radius: 4px;
+	background: var( --_auth-border );
+	overflow: hidden;
+}
+.hvnly-auth__strength-bar span {
+	display: block;
+	height: 100%;
+	width: 0;
+	background: var( --_auth-error );
+	transition: width 0.2s ease, background 0.2s ease;
+}
+.hvnly-auth__strength[ data-score="2" ] .hvnly-auth__strength-bar span { background: #f59e0b; }
+.hvnly-auth__strength[ data-score="3" ] .hvnly-auth__strength-bar span { background: #eab308; }
+.hvnly-auth__strength[ data-score="4" ] .hvnly-auth__strength-bar span { background: var( --_auth-success ); }
+.hvnly-auth__strength-label {
+	display: block;
+	font-size: 0.75rem;
+	color: var( --_auth-muted );
+	margin-top: 4px;
+}
+
+/* Row (remember / forgot). */
+.hvnly-auth__row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	margin: 4px 0 18px;
+	flex-wrap: wrap;
+}
+.hvnly-auth__checkbox {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 0.85rem;
+	color: var( --_auth-muted );
+	cursor: pointer;
+	/* Shared Frontend Checkbox Design System (hvnly-frontend-components.css) */
+	--hvnly-cb-checked-bg: var( --_auth-primary );
+	--hvnly-cb-checked-border: var( --_auth-primary );
+	--hvnly-cb-hover-border: var( --_auth-primary );
+}
+.hvnly-auth__checkbox--terms { margin-bottom: 16px; align-items: flex-start; }
+.hvnly-auth__checkbox--terms input[type="checkbox"] { margin-top: 2px; }
+
+.hvnly-auth__linkbtn {
+	appearance: none;
+	border: none;
+	background: none;
+	padding: 0;
+	font: inherit;
+	font-size: 0.85rem;
+	font-weight: 600;
+	color: var( --_auth-primary );
+	cursor: pointer;
+	text-decoration: none;
+}
+.hvnly-auth__linkbtn:hover { text-decoration: underline; }
+
+/* Buttons. */
+.hvnly-auth__btn {
+	position: relative;
+	width: 100%;
+	appearance: none;
+	border: 1px solid transparent;
+	border-radius: calc( var( --_auth-radius ) * 0.5 );
+	font: inherit;
+	font-weight: 600;
+	font-size: 0.95rem;
+	padding: 13px 18px;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	transition: transform 0.05s ease, filter 0.15s ease, background 0.15s ease;
+}
+.hvnly-auth__btn--primary {
+	background: var( --_auth-primary );
+	color: var( --_auth-primary-fg );
+}
+.hvnly-auth__btn--primary:hover { filter: brightness( 1.05 ); }
+.hvnly-auth__btn--primary:active { transform: translateY( 1px ); }
+.hvnly-auth__btn--ghost {
+	background: transparent;
+	border-color: var( --_auth-border );
+	color: var( --_auth-fg );
+}
+.hvnly-auth__btn--ghost:hover { background: var( --_auth-field-bg ); }
+.hvnly-auth__btn:disabled { opacity: 0.7; cursor: default; }
+.hvnly-auth__btn:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px color-mix( in srgb, var( --_auth-primary ) 30%, transparent );
+}
+
+.hvnly-auth__spinner {
+	display: none;
+	width: 16px;
+	height: 16px;
+	border: 2px solid currentColor;
+	border-right-color: transparent;
+	border-radius: 50%;
+	animation: hvnly-auth-spin 0.6s linear infinite;
+}
+.hvnly-auth__btn.is-loading .hvnly-auth__spinner { display: inline-block; }
+.hvnly-auth__btn.is-loading .hvnly-auth__btn-label { opacity: 0.85; }
+
+@keyframes hvnly-auth-spin { to { transform: rotate( 360deg ); } }
+
+/* Alt / hint text. */
+.hvnly-auth__alt {
+	text-align: center;
+	font-size: 0.85rem;
+	color: var( --_auth-muted );
+	margin: 16px 0 0;
+}
+.hvnly-auth__hint {
+	font-size: 0.8rem;
+	color: var( --_auth-muted );
+	background: var( --_auth-field-bg );
+	border-radius: 10px;
+	padding: 10px 12px;
+	margin: 0 0 16px;
+}
+
+/* Message banner. */
+.hvnly-auth__message {
+	font-size: 0.87rem;
+	border-radius: 10px;
+	padding: 11px 14px;
+	margin: 0 0 16px;
+	border: 1px solid transparent;
+}
+.hvnly-auth__message.is-error {
+	color: var( --_auth-error );
+	background: color-mix( in srgb, var( --_auth-error ) 10%, transparent );
+	border-color: color-mix( in srgb, var( --_auth-error ) 30%, transparent );
+}
+.hvnly-auth__message.is-success {
+	color: var( --_auth-success );
+	background: color-mix( in srgb, var( --_auth-success ) 10%, transparent );
+	border-color: color-mix( in srgb, var( --_auth-success ) 30%, transparent );
+}
+
+/* Account panel. */
+.hvnly-auth__account-head {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin-bottom: 20px;
+}
+.hvnly-auth__avatar {
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 2px solid var( --_auth-border );
+	flex: 0 0 auto;
+}
+.hvnly-auth__welcome { margin: 0; font-size: 0.8rem; color: var( --_auth-muted ); }
+.hvnly-auth__account-name {
+	margin: 2px 0 6px;
+	font-size: 1.2rem;
+	font-weight: 700;
+	color: var( --_auth-fg );
+}
+.hvnly-auth__role-badge {
+	display: inline-block;
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: var( --_auth-primary );
+	background: color-mix( in srgb, var( --_auth-primary ) 12%, transparent );
+	padding: 3px 10px;
+	border-radius: 999px;
+}
+.hvnly-auth__links {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px;
+	margin-bottom: 18px;
+}
+.hvnly-auth__link {
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	font-size: 0.88rem;
+	font-weight: 600;
+	color: var( --_auth-fg );
+	background: var( --_auth-field-bg );
+	border: 1px solid var( --_auth-border );
+	border-radius: 10px;
+	padding: 12px 10px;
+	transition: border-color 0.15s ease, color 0.15s ease;
+}
+.hvnly-auth__link:hover {
+	border-color: var( --_auth-primary );
+	color: var( --_auth-primary );
+}
+.hvnly-auth__account-actions { margin-top: 4px; }
+
+/* Responsive. */
+@media ( max-width: 480px ) {
+	.hvnly-auth__grid-2,
+	.hvnly-auth__links { grid-template-columns: 1fr; }
+	.hvnly-auth__card { padding: 20px; }
+}
+
+/* Dark mode (token-driven; fallback when tokens absent). */
+@media ( prefers-color-scheme: dark ) {
+	.hvnly-auth {
+		--_auth-bg: var( --hvnly-card-bg, #1e293b );
+		--_auth-fg: var( --hvnly-text-primary, #f1f5f9 );
+		--_auth-muted: var( --hvnly-text-secondary, #94a3b8 );
+		--_auth-border: var( --hvnly-border-color, rgba( 255, 255, 255, 0.14 ) );
+		--_auth-field-bg: var( --hvnly-color-bg-light, #0f172a );
+		--_auth-shadow: var( --hvnly-shadow-card, 0 10px 30px rgba( 0, 0, 0, 0.4 ) );
+	}
+}
+
+/* Reduced motion. */
+@media ( prefers-reduced-motion: reduce ) {
+	.hvnly-auth__spinner { animation-duration: 1.4s; }
+	.hvnly-auth__btn,
+	.hvnly-auth__input,
+	.hvnly-auth__strength-bar span { transition: none; }
+}
+
+/* Editor: neutralized inputs still look live. */
+.hvnly-block-editor-preview .hvnly-auth__btn { cursor: default; }

@@ -1,0 +1,90 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "havenlytics/agents",
+  "version": "3.5.0",
+  "title": "HVN: Agents",
+  "category": "havenlytics",
+  "icon": "groups",
+  "description": "Display a grid or list of real estate agents. Reuses the Havenlytics agents archive template and query.",
+  "keywords": [
+    "agents",
+    "team",
+    "real estate",
+    "havenlytics"
+  ],
+  "textdomain": "havenlytics",
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    },
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true
+    }
+  },
+  "attributes": {
+    "defaultView": {
+      "type": "string",
+      "default": "grid"
+    },
+    "columns": {
+      "type": "number",
+      "default": 4
+    },
+    "postsPerPage": {
+      "type": "number",
+      "default": 12
+    },
+    "orderby": {
+      "type": "string",
+      "default": "title"
+    },
+    "order": {
+      "type": "string",
+      "default": "ASC"
+    },
+    "showHeader": {
+      "type": "boolean",
+      "default": true
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "subtitle": {
+      "type": "string",
+      "default": ""
+    },
+    "showSearch": {
+      "type": "boolean",
+      "default": true
+    },
+    "showViewControls": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "editorScript": "hvnly-blocks-editor",
+  "editorStyle": "hvnly-blocks-editor",
+  "style": "hvnly-frontend-property-agents-archive"
+}

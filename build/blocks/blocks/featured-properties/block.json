@@ -1,0 +1,112 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "havenlytics/featured-properties",
+  "version": "3.5.0",
+  "title": "HVN: Featured Properties",
+  "category": "havenlytics",
+  "icon": "star-filled",
+  "description": "A premium featured-properties section — grid or carousel layout using your Property Card Builder cards.",
+  "keywords": [
+    "property",
+    "featured",
+    "highlighted",
+    "real estate",
+    "havenlytics"
+  ],
+  "textdomain": "havenlytics",
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "blockGap": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    },
+    "shadow": true,
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true
+    }
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "grid"
+    },
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "postsPerPage": {
+      "type": "number",
+      "default": 6
+    },
+    "orderby": {
+      "type": "string",
+      "default": "date"
+    },
+    "visibleSlides": {
+      "type": "number",
+      "default": 3
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "showHeader": {
+      "type": "boolean",
+      "default": true
+    },
+    "sectionTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "sectionSubtitle": {
+      "type": "string",
+      "default": ""
+    },
+    "sectionDescription": {
+      "type": "string",
+      "default": ""
+    },
+    "sectionAlign": {
+      "type": "string",
+      "default": "left"
+    },
+    "sectionButtonShow": {
+      "type": "boolean",
+      "default": false
+    },
+    "sectionButtonText": {
+      "type": "string",
+      "default": ""
+    },
+    "sectionButtonUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "sectionButtonTarget": {
+      "type": "string",
+      "default": "_self"
+    }
+  },
+  "editorScript": "hvnly-blocks-editor",
+  "editorStyle": "hvnly-blocks-editor",
+  "style": "hvnly-block-premium"
+}
