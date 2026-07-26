@@ -717,16 +717,90 @@ if ( ! function_exists( 'hvnly_get_property_age_days' ) ) {
 	}
 }
 
-if ( ! function_exists( 'hvnly_get_property_image' ) ) {
-	function hvnly_get_property_image( $property_id = null, $size = 'full', $attr = array() ) {
-		$property_id = $property_id ?: get_the_ID();
-		$image_id    = get_post_thumbnail_id( $property_id );
-
-		if ( $image_id ) {
-			return wp_get_attachment_image( $image_id, $size, false, $attr );
+if ( ! function_exists( 'hvnly_get_property_placeholder_url' ) ) {
+	/**
+	 * Bundled property thumbnail placeholder (visual only — never attaches media).
+	 *
+	 * @param string $context Optional context for the filter (grid, email, etc.).
+	 * @return string Absolute URL to the local SVG, or empty string.
+	 */
+	function hvnly_get_property_placeholder_url( $context = 'property' ) {
+		if ( ! defined( 'HVNLYNAB_ASSETS_URL' ) || ! HVNLYNAB_ASSETS_URL ) {
+			return '';
 		}
 
-		return '<img src="' . HVNLYNAB_ASSETS_URL . 'images/placeholder.jpg" alt="' . get_the_title( $property_id ) . '" />';
+		$url = trailingslashit( HVNLYNAB_ASSETS_URL ) . 'images/placeholders/property-placeholder.svg';
+
+		/**
+		 * Filter the property thumbnail placeholder URL.
+		 *
+		 * @param string $url     Placeholder URL.
+		 * @param string $context Usage context.
+		 */
+		$filtered = apply_filters( 'hvnly_property_placeholder_url', $url, $context );
+
+		return is_string( $filtered ) ? esc_url_raw( $filtered ) : esc_url_raw( $url );
+	}
+}
+
+if ( ! function_exists( 'hvnly_get_property_thumbnail_url' ) ) {
+	/**
+	 * Featured image URL for a property, or the bundled SVG placeholder.
+	 *
+	 * Visual fallback only: does not call set_post_thumbnail() or write post meta.
+	 * Handles missing featured images and orphaned / deleted attachments.
+	 *
+	 * @param int|null     $property_id Property post ID (defaults to current post).
+	 * @param string|int[] $size        Image size (WP size name or [w,h]).
+	 * @param string       $context     Placeholder filter context (property, email, etc.).
+	 * @return string Image URL (never empty when assets URL is defined).
+	 */
+	function hvnly_get_property_thumbnail_url( $property_id = null, $size = 'large', $context = 'property' ) {
+		$property_id = absint( null !== $property_id ? $property_id : get_the_ID() );
+
+		if ( $property_id > 0 ) {
+			$image_id = (int) get_post_thumbnail_id( $property_id );
+			if ( $image_id > 0 ) {
+				$url = wp_get_attachment_image_url( $image_id, $size );
+				if ( is_string( $url ) && '' !== $url ) {
+					return $url;
+				}
+			}
+		}
+
+		return hvnly_get_property_placeholder_url( $context );
+	}
+}
+
+if ( ! function_exists( 'hvnly_get_property_image' ) ) {
+	function hvnly_get_property_image( $property_id = null, $size = 'full', $attr = array() ) {
+		$property_id = absint( null !== $property_id ? $property_id : get_the_ID() );
+		$image_id    = $property_id > 0 ? (int) get_post_thumbnail_id( $property_id ) : 0;
+
+		if ( $image_id > 0 ) {
+			$html = wp_get_attachment_image( $image_id, $size, false, $attr );
+			if ( is_string( $html ) && '' !== $html ) {
+				return $html;
+			}
+		}
+
+		$url = hvnly_get_property_thumbnail_url( $property_id, $size );
+		$alt = $property_id > 0 ? get_the_title( $property_id ) : '';
+
+		$default_attr = array(
+			'src'   => $url,
+			'alt'   => $alt,
+			'class' => 'hvnly-property-placeholder-image',
+		);
+		$attr = wp_parse_args( $attr, $default_attr );
+
+		$html = '<img';
+		foreach ( $attr as $name => $value ) {
+			$html .= ' ' . esc_attr( $name ) . '="' . esc_attr( $value ) . '"';
+		}
+		$html .= ' />';
+
+		return $html;
 	}
 }
 

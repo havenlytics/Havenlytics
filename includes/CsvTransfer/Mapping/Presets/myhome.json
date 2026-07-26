@@ -1,0 +1,25 @@
+{
+  "id": "myhome",
+  "name": "MyHome",
+  "description": "Import MyHome theme property exports.",
+  "source": "myhome",
+  "version": "1",
+  "order": 150,
+  "delimiter": ",",
+  "mapping": {
+    "name": "title",
+    "description": "content",
+    "price": "price",
+    "address": "address",
+    "lat": "latitude",
+    "lng": "longitude",
+    "gallery": "gallery",
+    "estate_category": "department",
+    "estate_type": "property_type",
+    "estate_status": "property_status",
+    "city": "location",
+    "features": "features",
+    "agent_email": "agent_email",
+    "video": "video_url"
+  }
+}

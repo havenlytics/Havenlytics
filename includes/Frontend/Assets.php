@@ -1245,6 +1245,8 @@ class Assets
         
         // Ensure Leaflet is loaded before map script
         $this->enqueue_leaflet_assets();
+        // Local Font Awesome (already registered/enqueued site-wide; reinforce for single map icons).
+        wp_enqueue_style('hvnly-fontawesome-all-frontend');
         wp_enqueue_script('hvnly-frontend-property-single-map');
         wp_enqueue_script('hvnly-frontend-property-single');
 

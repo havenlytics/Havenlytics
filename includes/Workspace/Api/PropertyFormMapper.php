@@ -440,6 +440,9 @@ final class PropertyFormMapper {
 
 			// Mirror Admin MapField / MetaResolver legacy aliases for map scalars.
 			self::maybe_dual_write_map_legacy( $post_id, $row, $encoded );
+			// Video + gallery title legacy mirrors (same keys Onboarding dual-writes).
+			self::maybe_dual_write_video_legacy( $post_id, $row, $encoded );
+			self::maybe_dual_write_gallery_title_legacy( $post_id, $row, $encoded );
 
 			// Gallery: always write the Builder/legacy key above. Dual-write the singleton
 			// legacy mirror ONLY from the canonical primary gallery key so multi-gallery
@@ -508,6 +511,61 @@ final class PropertyFormMapper {
 		}
 
 		$key = $legacy[ $meta ];
+		if ( '' === $encoded || null === $encoded ) {
+			delete_post_meta( $post_id, $key );
+			return;
+		}
+		update_post_meta( $post_id, $key, $encoded );
+	}
+
+	/**
+	 * Dual-write Onboarding/Admin video legacy keys when saving video title/url/thumbnail.
+	 *
+	 * @param int                  $post_id Post ID.
+	 * @param array<string, mixed> $row     Storage row.
+	 * @param mixed                $encoded Encoded value.
+	 * @return void
+	 */
+	private static function maybe_dual_write_video_legacy( int $post_id, array $row, $encoded ): void {
+		if ( 'video' !== (string) ( $row['groupType'] ?? '' ) ) {
+			return;
+		}
+
+		$legacy = array(
+			'title'     => '_hvnly_property_youtube_video_title',
+			'url'       => '_hvnly_property_youtube_video_url',
+			'thumbnail' => '_hvnly_property_youtube_video_thumbnail',
+		);
+		$meta = (string) ( $row['metaKey'] ?? '' );
+		if ( ! isset( $legacy[ $meta ] ) ) {
+			return;
+		}
+
+		$key = $legacy[ $meta ];
+		if ( '' === $encoded || null === $encoded ) {
+			delete_post_meta( $post_id, $key );
+			return;
+		}
+		update_post_meta( $post_id, $key, $encoded );
+	}
+
+	/**
+	 * Dual-write gallery title legacy key (images use sync_legacy_gallery_mirror).
+	 *
+	 * @param int                  $post_id Post ID.
+	 * @param array<string, mixed> $row     Storage row.
+	 * @param mixed                $encoded Encoded value.
+	 * @return void
+	 */
+	private static function maybe_dual_write_gallery_title_legacy( int $post_id, array $row, $encoded ): void {
+		if ( 'gallery' !== (string) ( $row['groupType'] ?? '' ) ) {
+			return;
+		}
+		if ( 'title' !== (string) ( $row['metaKey'] ?? '' ) ) {
+			return;
+		}
+
+		$key = '_hvnly_property_gallery_title';
 		if ( '' === $encoded || null === $encoded ) {
 			delete_post_meta( $post_id, $key );
 			return;
@@ -775,13 +833,18 @@ final class PropertyFormMapper {
 					$maybe = maybe_unserialize( $raw );
 					if ( is_array( $maybe ) ) {
 						$rows = $maybe;
-					} elseif ( 'agents' === $comp || 'agents' === $group_type || 'agents' === (string) ( $row['metaKey'] ?? '' ) ) {
+					} elseif ( self::is_agents_storage_row( $row ) ) {
 						$parts = array_filter( array_map( 'absint', explode( ',', $raw ) ) );
 						return array_values( $parts );
 					}
 				}
 			}
-			if ( 'documents' === $comp || 'property_docs' === $group_type || 'documents' === (string) ( $row['metaKey'] ?? '' ) ) {
+			$meta = (string) ( $row['metaKey'] ?? '' );
+			$name = (string) ( $row['name'] ?? '' );
+			$is_docs = ( 'documents' === $comp )
+				|| ( 'documents' === $meta )
+				|| ( $name !== '' && substr( $name, -10 ) === '_documents' );
+			if ( $is_docs ) {
 				return self::normalize_document_rows( $rows );
 			}
 			return array_values( $rows );
@@ -828,7 +891,8 @@ final class PropertyFormMapper {
 		$meta_key   = (string) ( $row['metaKey'] ?? '' );
 
 		if ( self::is_json_list_storage_row( $row ) ) {
-			if ( 'agents' === $comp || 'agents' === $group_type || 'agents' === $meta_key ) {
+			// Match is_agents_storage_row — never treat agents group title as an ID list.
+			if ( self::is_agents_storage_row( $row ) ) {
 				$ids = array();
 				if ( is_array( $value ) ) {
 					foreach ( $value as $id ) {
@@ -864,7 +928,14 @@ final class PropertyFormMapper {
 					$value = array();
 				}
 			}
-			if ( 'documents' === $comp || 'property_docs' === $group_type || 'documents' === $meta_key ) {
+			// Documents JSON list only (metaKey/name/comp), not every property_docs member.
+			$meta_key = (string) ( $row['metaKey'] ?? '' );
+			$name     = (string) ( $row['name'] ?? '' );
+			$comp     = (string) ( $row['component'] ?? '' );
+			$is_docs  = ( 'documents' === $meta_key )
+				|| ( 'documents' === $comp )
+				|| ( $name !== '' && substr( $name, -10 ) === '_documents' );
+			if ( $is_docs ) {
 				$value = self::normalize_document_rows( $value );
 			}
 			return wp_json_encode( array_values( $value ) );

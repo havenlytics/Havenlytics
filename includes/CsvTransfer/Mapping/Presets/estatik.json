@@ -1,0 +1,28 @@
+{
+  "id": "estatik",
+  "name": "Estatik",
+  "description": "Import Estatik property exports.",
+  "source": "estatik",
+  "version": "1",
+  "order": 50,
+  "delimiter": ",",
+  "mapping": {
+    "post_title": "title",
+    "post_content": "content",
+    "post_excerpt": "excerpt",
+    "es_property_price": "price",
+    "es_property_id": "reference",
+    "es_property_address": "address",
+    "es_property_latitude": "latitude",
+    "es_property_longitude": "longitude",
+    "es_property_gallery": "gallery",
+    "es_property_agent_email": "agent_email",
+    "es_category": "department",
+    "es_type": "property_type",
+    "es_status": "property_status",
+    "es_location": "location",
+    "es_features": "features",
+    "es_amenities": "amenities",
+    "es_video": "video_url"
+  }
+}

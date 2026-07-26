@@ -1,0 +1,12 @@
+Font Awesome Free 6.0.0
+https://fontawesome.com
+
+License summary (see https://fontawesome.com/license/free):
+- Icons: CC BY 4.0
+- Fonts: SIL OFL 1.1
+- Code: MIT License
+
+Copyright 2022 Fonticons, Inc.
+
+This plugin ships Font Awesome Free CSS/fonts under assets/admin/css/fontawesome-all.min.css
+and related webfont files referenced by that stylesheet.

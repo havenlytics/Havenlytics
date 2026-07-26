@@ -542,14 +542,17 @@
                 });
             });
             
-            selectedContainer.innerHTML = '';
+            selectedContainer.textContent = '';
             selectedItems.forEach(item => {
                 const itemElement = document.createElement('div');
                 itemElement.className = 'hvnly-property-selected-single-item';
-                itemElement.innerHTML = `
-                    ${item.text}
-                    <span class="hvnly-property-selected-single-item-remove" data-value="${item.value}">×</span>
-                `;
+                // Use textContent — never inject label text via innerHTML (DOM XSS).
+                itemElement.appendChild(document.createTextNode(item.text));
+                const removeBtn = document.createElement('span');
+                removeBtn.className = 'hvnly-property-selected-single-item-remove';
+                removeBtn.setAttribute('data-value', item.value);
+                removeBtn.textContent = '×';
+                itemElement.appendChild(removeBtn);
                 selectedContainer.appendChild(itemElement);
             });
             

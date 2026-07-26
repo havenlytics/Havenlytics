@@ -150,7 +150,6 @@ final class Assets
 
         if ($hook_suffix === 'hvnly_property_page_hvnly_property_cache') {
             $this->enqueue_cache_assets($default_version);
-            $this->enqueue_sticky_sidebar();
             return;
         }
 
@@ -236,9 +235,6 @@ final class Assets
             $page = $pages[$hook_suffix];
             $this->enqueue_page_assets($page, $default_version);
         }
-
-        $this->enqueue_sticky_sidebar();
-
     }
 
     private function enqueue_setup_assets($version): void
@@ -412,6 +408,11 @@ final class Assets
         $this->enqueue_admin_boot_fallback_script($page['handle']);
 
         if (!empty($page['localize'])) {
+            if ( 'settings' === ( $page['folder'] ?? '' ) && class_exists( '\HvnlyNab\Core\Installer' ) ) {
+                // Recreate any missing auto-pages when an admin opens Settings.
+                \HvnlyNab\Core\Installer::ensure_required_pages();
+            }
+
             $current_user = wp_get_current_user();
 
             wp_localize_script(
@@ -425,6 +426,21 @@ final class Assets
                     'ajax' => [
                         'url' => admin_url('admin-ajax.php'),
                         'nonce' => wp_create_nonce('hvnlyNab_ajax')
+                    ],
+                    'importExport' => [
+                        'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+                        'nonce'   => class_exists( '\HvnlyNab\ImportExport\ImportExportModule' )
+                            ? \HvnlyNab\ImportExport\ImportExportModule::create_nonce()
+                            : wp_create_nonce( 'hvnly_ie' ),
+                        'limits'  => class_exists( '\HvnlyNab\ImportExport\Capability\MigrationLimits' )
+                            ? \HvnlyNab\ImportExport\Capability\MigrationLimits::public_status()
+                            : null,
+                    ],
+                    'csvTransfer' => [
+                        'ajaxUrl' => esc_url_raw( set_url_scheme( admin_url( 'admin-ajax.php' ) ) ),
+                        'nonce'   => class_exists( '\HvnlyNab\CsvTransfer\CsvTransferModule' )
+                            ? \HvnlyNab\CsvTransfer\CsvTransferModule::create_nonce()
+                            : wp_create_nonce( 'hvnly_csv' ),
                     ],
                     'user' => [
                         'id' => $current_user->ID,
@@ -444,6 +460,9 @@ final class Assets
                     ],
                     'themeRecommendation' => $this->get_theme_recommendation_data(),
                     'debug' => function_exists( 'hvnly_is_debug_logging_enabled' ) && hvnly_is_debug_logging_enabled(),
+                    // Settings footer + cache-safe boot payload (never hardcode).
+                    'version' => defined( 'HVNLYNAB_VERSION' ) ? (string) HVNLYNAB_VERSION : '',
+                    'pluginVersion' => defined( 'HVNLYNAB_VERSION' ) ? (string) HVNLYNAB_VERSION : '',
                 ]
             );
         }
@@ -740,40 +759,5 @@ final class Assets
         }
 
         return $normalized;
-    }
-
-    private function enqueue_sticky_sidebar(): void
-    {
-        wp_add_inline_style('admin-bar', '
-            #adminmenuwrap.hvnly-menu-fixed {
-                position: fixed !important;
-                top: 0;
-                left: 0;
-                z-index: 9990;
-                transition: all 0.3s ease;
-            }
-                
-        ');
-
-        wp_add_inline_script('jquery-core', "
-            jQuery(document).ready(function($) {
-                const adminMenuWrap = $('#adminmenuwrap');
-                const isHavenlyticsPage = window.location.search.includes('post_type=hvnly_property') || 
-                                          window.location.href.includes('page=hvnly');
-
-                if (isHavenlyticsPage && adminMenuWrap.length) {
-                    $(window).on('scroll', function() {
-                        const scrollTop = $(window).scrollTop();
-                        if (scrollTop > 32) {
-                            if (!adminMenuWrap.hasClass('hvnly-menu-fixed')) {
-                                adminMenuWrap.addClass('hvnly-menu-fixed');
-                            }
-                        } else {
-                            adminMenuWrap.removeClass('hvnly-menu-fixed');
-                        }
-                    });
-                }
-            });
-        ");
     }
 }

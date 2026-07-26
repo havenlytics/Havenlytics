@@ -1,0 +1,31 @@
+{
+  "id": "realhomes",
+  "name": "RealHomes",
+  "description": "Import RealHomes listing exports.",
+  "source": "realhomes",
+  "version": "1",
+  "order": 70,
+  "delimiter": ",",
+  "mapping": {
+    "title": "title",
+    "content": "content",
+    "excerpt": "excerpt",
+    "price": "price",
+    "property_id": "reference",
+    "address": "address",
+    "latitude": "latitude",
+    "longitude": "longitude",
+    "featured_image": "featured_image",
+    "gallery_images": "gallery",
+    "agent_email": "agent_email",
+    "property_type": "property_type",
+    "property_status": "property_status",
+    "property_city": "location",
+    "property_feature": "features",
+    "REAL_HOMES_property_id": "reference",
+    "REAL_HOMES_property_price": "price",
+    "REAL_HOMES_property_address": "address",
+    "REAL_HOMES_property_location": "location",
+    "video_url": "video_url"
+  }
+}

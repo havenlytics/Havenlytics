@@ -125,17 +125,15 @@ class Helpers
 
         $image_id = get_post_thumbnail_id($property_id);
         
-        if (!$image_id) {
-            return $this->get_property_placeholder_image($property_id, $context, $attr);
+        if ($image_id) {
+            $size  = $this->get_image_size_for_context($context);
+            $image = wp_get_attachment_image($image_id, $size, false, $attr);
+            if (is_string($image) && '' !== $image) {
+                return apply_filters('hvnly_property_image', $image, $property_id, $context, $size);
+            }
         }
 
-        // Determine image size based on context
-        $size = $this->get_image_size_for_context($context);
-        
-        // Get the image with proper attributes
-        $image = wp_get_attachment_image($image_id, $size, false, $attr);
-        
-        return apply_filters('hvnly_property_image', $image, $property_id, $context, $size);
+        return $this->get_property_placeholder_image($property_id, $context, $attr);
     }
 
     /**
@@ -156,19 +154,23 @@ class Helpers
             return '';
         }
 
-        $image_id = get_post_thumbnail_id($property_id);
-        
-        if (!$image_id) {
-            return $this->get_property_placeholder_url($context);
+        if (function_exists('hvnly_get_property_thumbnail_url')) {
+            $size = $this->get_image_size_for_context($context);
+            $url  = hvnly_get_property_thumbnail_url($property_id, $size, $context);
+            return apply_filters('hvnly_property_image_url', $url, $property_id, $context, $size);
         }
 
-        // Determine image size based on context
-        $size = $this->get_image_size_for_context($context);
+        $image_id = get_post_thumbnail_id($property_id);
         
-        // Get the image URL
-        $image_url = wp_get_attachment_image_url($image_id, $size);
-        
-        return apply_filters('hvnly_property_image_url', $image_url, $property_id, $context, $size);
+        if ($image_id) {
+            $size      = $this->get_image_size_for_context($context);
+            $image_url = wp_get_attachment_image_url($image_id, $size);
+            if (is_string($image_url) && '' !== $image_url) {
+                return apply_filters('hvnly_property_image_url', $image_url, $property_id, $context, $size);
+            }
+        }
+
+        return $this->get_property_placeholder_url($context);
     }
 
     /**
@@ -331,9 +333,12 @@ class Helpers
      */
     private function get_property_placeholder_url($context)
     {
-        // You can customize placeholder images based on context if needed
-        $placeholder_url = HVNLYNAB_ASSETS_URL . 'images/property-placeholder.jpg';
-        
+        if (function_exists('hvnly_get_property_placeholder_url')) {
+            return hvnly_get_property_placeholder_url($context);
+        }
+
+        $placeholder_url = (defined('HVNLYNAB_ASSETS_URL') ? HVNLYNAB_ASSETS_URL : '') . 'images/placeholders/property-placeholder.svg';
+
         return apply_filters('hvnly_property_placeholder_url', $placeholder_url, $context);
     }
 

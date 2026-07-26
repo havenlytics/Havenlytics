@@ -1,0 +1,15 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Property Type">
+  <defs>
+    <linearGradient id="hvnlyTypeBg" x1="0" y1="0" x2="0" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8B7CF8"/>
+      <stop offset="1" stop-color="#6C60FE"/>
+    </linearGradient>
+    <clipPath id="hvnlyTypeClip">
+      <rect width="96" height="96" rx="12"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#hvnlyTypeClip)">
+    <rect width="96" height="96" fill="url(#hvnlyTypeBg)"/>
+    <path d="M48 22L22 44h8v28h14V54h12v18h14V44h8L48 22z" fill="#FFFFFF" fill-opacity="0.95"/>
+  </g>
+</svg>

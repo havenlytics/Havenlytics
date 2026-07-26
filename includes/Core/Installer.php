@@ -175,11 +175,20 @@ class Installer
      * Create required pages on plugin activation.
      *
      * Creates or updates the necessary WordPress pages for plugin functionality:
-     * - Property Search page
-     * - Property Grid page
-     * - Property Lists page
-     * - Property Agents page
-     * - Property Agencies page
+     * - Property Search / Grid / Lists / Agents / Agencies
+     * - Sign In (Authentication block)
+     * - Dashboard (Agent Workspace shortcode)
+     * - Favorites (Saved Properties block)
+     *
+     * @since 2.0.0
+     * @return void
+     */
+    public static function ensure_required_pages(): void {
+        self::create_required_pages();
+    }
+
+    /**
+     * Create required pages on plugin activation.
      *
      * @since 2.0.0
      * @return void
@@ -222,21 +231,62 @@ class Installer
                 'option_key' => 'hvnly_property_agencies_page_id',
                 'slug'       => 'property-agencies',
             ],
+            [
+                'title'      => __('Sign In', 'havenlytics'),
+                'full_title' => 'Sign In -- Havenlytics',
+                'shortcode'  => '<!-- wp:havenlytics/authentication /-->',
+                'option_key' => 'hvnly_sign_in_page_id',
+                'slug'       => 'sign-in',
+                'content_type' => 'block',
+            ],
+            [
+                'title'      => __('Dashboard', 'havenlytics'),
+                'full_title' => 'Agent Dashboard -- Havenlytics',
+                'shortcode'  => '[hvnly_agent_dashboard]',
+                'option_key' => 'hvnly_workspace_page_id',
+                'slug'       => 'agent-dashboard',
+            ],
+            [
+                'title'      => __('Favorites', 'havenlytics'),
+                'full_title' => 'Favorites -- Havenlytics',
+                'shortcode'  => '<!-- wp:havenlytics/saved-properties /-->',
+                'option_key' => 'hvnly_favorites_page_id',
+                'slug'       => 'favorites',
+                'content_type' => 'block',
+            ],
         ];
 
         foreach ($pages as $page) {
-            $existing_id = get_option($page['option_key']);
+            $existing_id = absint( get_option( $page['option_key'], 0 ) );
 
             // Update existing page if found.
             if ($existing_id && get_post($existing_id)) {
                 $post = get_post($existing_id);
                 if ($post && $post->post_name !== $page['slug']) {
-                    wp_update_post([
-                        'ID'         => $existing_id,
-                        'post_name'  => $page['slug'],
-                    ]);
+                    // Only rename when the target slug is free.
+                    $slug_owner = get_page_by_path( $page['slug'], OBJECT, 'page' );
+                    if ( ! ( $slug_owner instanceof \WP_Post ) || (int) $slug_owner->ID === (int) $existing_id ) {
+                        wp_update_post([
+                            'ID'         => $existing_id,
+                            'post_name'  => $page['slug'],
+                        ]);
+                    }
                 }
-                self::sync_plugin_page_shortcode( (int) $existing_id, $page['shortcode'] );
+                if ( empty( $page['content_type'] ) || 'block' !== $page['content_type'] ) {
+                    self::sync_plugin_page_shortcode( (int) $existing_id, $page['shortcode'] );
+                }
+                continue;
+            }
+
+            // Prefer slug match (avoids duplicates after option wipe / deleted meta).
+            $by_slug = get_page_by_path( $page['slug'], OBJECT, 'page' );
+            if ( $by_slug instanceof \WP_Post ) {
+                update_option( $page['option_key'], (int) $by_slug->ID );
+                update_post_meta( (int) $by_slug->ID, '_hvnly_property_auto_created', true );
+                update_post_meta( (int) $by_slug->ID, '_hvnly_plugin_page', '1' );
+                if ( empty( $page['content_type'] ) || 'block' !== $page['content_type'] ) {
+                    self::sync_plugin_page_shortcode( (int) $by_slug->ID, $page['shortcode'] );
+                }
                 continue;
             }
             
@@ -255,12 +305,17 @@ class Installer
                 update_post_meta($found_id, '_hvnly_property_auto_created', true);
                 update_post_meta($found_id, '_hvnly_plugin_page', '1');
                 
-                // Update slug for existing page.
-                wp_update_post([
-                    'ID'         => $found_id,
-                    'post_name'  => $page['slug'],
-                ]);
-                self::sync_plugin_page_shortcode( (int) $found_id, $page['shortcode'] );
+                // Update slug for existing page when free.
+                $slug_owner = get_page_by_path( $page['slug'], OBJECT, 'page' );
+                if ( ! ( $slug_owner instanceof \WP_Post ) || (int) $slug_owner->ID === (int) $found_id ) {
+                    wp_update_post([
+                        'ID'         => $found_id,
+                        'post_name'  => $page['slug'],
+                    ]);
+                }
+                if ( empty( $page['content_type'] ) || 'block' !== $page['content_type'] ) {
+                    self::sync_plugin_page_shortcode( (int) $found_id, $page['shortcode'] );
+                }
                 continue;
             }
             

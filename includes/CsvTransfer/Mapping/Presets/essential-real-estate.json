@@ -1,0 +1,28 @@
+{
+  "id": "essential-real-estate",
+  "name": "Essential Real Estate",
+  "description": "Import Essential Real Estate exports.",
+  "source": "essential-real-estate",
+  "version": "1",
+  "order": 80,
+  "delimiter": ",",
+  "mapping": {
+    "property_title": "title",
+    "property_description": "content",
+    "property_excerpt": "excerpt",
+    "property_price": "price",
+    "property_identity": "reference",
+    "property_address": "address",
+    "property_location_latitude": "latitude",
+    "property_location_longitude": "longitude",
+    "property_images": "gallery",
+    "property_agent_email": "agent_email",
+    "property_type": "property_type",
+    "property_status": "property_status",
+    "property_city": "location",
+    "property_feature": "features",
+    "property_label": "badges",
+    "property_video_url": "video_url",
+    "property_neighborhood": "location"
+  }
+}

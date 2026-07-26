@@ -1,0 +1,33 @@
+{
+  "id": "houzez",
+  "name": "Houzez",
+  "description": "Import Houzez property CSV exports.",
+  "source": "houzez",
+  "version": "1",
+  "order": 60,
+  "delimiter": ",",
+  "mapping": {
+    "title": "title",
+    "content": "content",
+    "property_excerpt": "excerpt",
+    "property_status": "property_status",
+    "price": "price",
+    "mls_id": "mls",
+    "property_id": "reference",
+    "address": "address",
+    "latitude": "latitude",
+    "longitude": "longitude",
+    "image": "featured_image",
+    "gallery": "gallery",
+    "agent_email": "agent_email",
+    "property_feature": "features",
+    "property_label": "badges",
+    "property_type": "property_type",
+    "property_city": "location",
+    "property_area": "location",
+    "fave_property_category": "department",
+    "video_url": "video_url",
+    "floor_plans": "documents",
+    "property_tag": "tags"
+  }
+}

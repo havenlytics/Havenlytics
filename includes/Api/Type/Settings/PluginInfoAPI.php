@@ -74,11 +74,44 @@ class PluginInfoAPI
     {
         unset($request);
 
+        $version = self::resolve_plugin_version();
+
         return rest_ensure_response([
             'success' => true,
-            'version' => HVNLYNAB_VERSION,
+            'version' => $version,
             'name' => 'Havenlytics',
             'api_namespace' => $this->namespace,
         ]);
+    }
+
+    /**
+     * Resolve installed plugin version from the plugin header / constant.
+     *
+     * @since 3.6.1
+     * @return string
+     */
+    private static function resolve_plugin_version(): string
+    {
+        if ( defined( 'HVNLYNAB_FILE' ) && function_exists( 'get_plugin_data' ) ) {
+            $data = get_plugin_data( HVNLYNAB_FILE, false, false );
+            if ( is_array( $data ) && ! empty( $data['Version'] ) ) {
+                return (string) $data['Version'];
+            }
+        }
+
+        if ( ! function_exists( 'get_plugin_data' ) && defined( 'HVNLYNAB_FILE' ) && defined( 'ABSPATH' ) ) {
+            $plugin_file = ABSPATH . 'wp-admin/includes/plugin.php';
+            if ( is_readable( $plugin_file ) ) {
+                require_once $plugin_file;
+                if ( function_exists( 'get_plugin_data' ) ) {
+                    $data = get_plugin_data( HVNLYNAB_FILE, false, false );
+                    if ( is_array( $data ) && ! empty( $data['Version'] ) ) {
+                        return (string) $data['Version'];
+                    }
+                }
+            }
+        }
+
+        return defined( 'HVNLYNAB_VERSION' ) ? (string) HVNLYNAB_VERSION : '';
     }
 }

@@ -392,4 +392,52 @@ class GroupFieldIdentity {
 
         update_post_meta( $post_id, self::FIELD_MAP_META, wp_json_encode( $map ) );
     }
+
+    /**
+     * Record Builder group identities on a post from the live portal schema.
+     *
+     * Shared by CSV import, package import, and portal saves that need the same
+     * `_hvnly_field_map` contract as the Property Editor / Onboarding Wizard.
+     *
+     * @param int                $post_id     Property post ID.
+     * @param array<int, string> $group_types Optional filter (video|gallery|map|…). Empty = all groups with identity.
+     * @return void
+     */
+    public static function record_schema_groups( int $post_id, array $group_types = array() ): void {
+        if ( $post_id <= 0 || ! class_exists( '\HvnlyNab\Workspace\Api\PropertyBuilderSchemaService' ) ) {
+            return;
+        }
+
+        $filter = array();
+        foreach ( $group_types as $type ) {
+            $type = sanitize_key( (string) $type );
+            if ( '' !== $type ) {
+                $filter[ $type ] = true;
+            }
+        }
+
+        $recorded = array();
+        foreach ( \HvnlyNab\Workspace\Api\PropertyBuilderSchemaService::collect_storage_fields() as $row ) {
+            if ( ! is_array( $row ) ) {
+                continue;
+            }
+
+            $group_id      = (string) ( $row['groupId'] ?? '' );
+            $group_base_id = (string) ( $row['groupBaseId'] ?? '' );
+            $group_type    = sanitize_key( (string) ( $row['groupType'] ?? '' ) );
+
+            if ( '' === $group_id || '' === $group_base_id ) {
+                continue;
+            }
+            if ( ! empty( $filter ) && ! isset( $filter[ $group_type ] ) ) {
+                continue;
+            }
+            if ( isset( $recorded[ $group_id ] ) ) {
+                continue;
+            }
+
+            $recorded[ $group_id ] = true;
+            self::record_group_in_field_map( $post_id, $group_id, $group_base_id, $group_type );
+        }
+    }
 }

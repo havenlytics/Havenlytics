@@ -110,7 +110,6 @@ class PropertyImportWizard {
      * @var array
      */
     private $allowed_image_domains = [
-        'images.pexels.com',
         'img.youtube.com',
         'demo.havenlytics.com',
         'localhost',
@@ -648,6 +647,7 @@ class PropertyImportWizard {
         if ( 0 === $prep_step ) {
             $this->ensure_import_property_builder_sections();
             $this->ensure_import_property_features_section();
+            $this->ensure_import_contact_preset_fields();
             $this->ensure_import_tail_section_order();
             $this->maybe_initialize_card_builder_for_first_import( 0 );
             $this->update_import_run_state( array( 'prep_step' => 1 ) );
@@ -1035,6 +1035,161 @@ class PropertyImportWizard {
         }
 
         return $best_base;
+    }
+
+    /**
+     * Ensure Phone / Email / Website Property Builder presets exist for Demo Import.
+     *
+     * Onboarding already writes preset_hvnly_property_field_{email,phone,website}
+     * meta. The Property Editor only renders fields present in
+     * hvnly_property_builder.sections — UnifiedFieldGenerator defaults never
+     * included these presets, so imported values looked empty after import
+     * refreshed the builder to the unified schema.
+     *
+     * @return void
+     */
+    private function ensure_import_contact_preset_fields(): void {
+        $storage_key = 'hvnly_property_builder.sections';
+        $sections    = get_option( $storage_key, array() );
+
+        if ( ! is_array( $sections ) ) {
+            $sections = array();
+        }
+
+        $required = array(
+            'preset_hvnly_property_field_email'   => array(
+                'label'       => __( 'Email Address', 'havenlytics' ),
+                'placeholder' => __( 'your.email@example.com', 'havenlytics' ),
+                'icon'        => 'envelope',
+                'required'    => true,
+            ),
+            'preset_hvnly_property_field_phone'   => array(
+                'label'       => __( 'Phone Number', 'havenlytics' ),
+                'placeholder' => __( '(123) 456-7890', 'havenlytics' ),
+                'icon'        => 'phone',
+                'required'    => false,
+            ),
+            'preset_hvnly_property_field_website' => array(
+                'label'       => __( 'Website', 'havenlytics' ),
+                'placeholder' => __( 'Enter website URL', 'havenlytics' ),
+                'icon'        => 'globe',
+                'required'    => false,
+            ),
+        );
+
+        $present = array();
+        foreach ( $sections as $section ) {
+            foreach ( $section['fields'] ?? array() as $field ) {
+                if ( ! is_array( $field ) ) {
+                    continue;
+                }
+                $name = (string) ( $field['name'] ?? $field['id'] ?? '' );
+                if ( isset( $required[ $name ] ) ) {
+                    $present[ $name ] = true;
+                }
+            }
+        }
+
+        $missing = array_diff_key( $required, $present );
+        if ( ! empty( $missing ) ) {
+            $target_id = class_exists( SectionIdentity::class )
+                ? SectionIdentity::SEC_PROPERTY_OVERVIEW
+                : 'sec_property_overview';
+
+            $match = class_exists( SectionIdentity::class )
+                ? SectionIdentity::find_equivalent_section( $sections, $target_id )
+                : null;
+
+            if ( null !== $match && isset( $match['key'] ) ) {
+                $section_key = (string) $match['key'];
+            } elseif ( isset( $sections[ $target_id ] ) && is_array( $sections[ $target_id ] ) ) {
+                $section_key = $target_id;
+            } else {
+                // Fall back to the lowest-order non-group section, or create overview.
+                $section_key = $target_id;
+                if ( empty( $sections[ $section_key ] ) || ! is_array( $sections[ $section_key ] ) ) {
+                    $sections[ $section_key ] = array(
+                        'id'        => $target_id,
+                        'title'     => __( 'Basic Info', 'havenlytics' ),
+                        'icon'      => 'fas fa-home',
+                        'required'  => true,
+                        'order'     => 0,
+                        'collapsed' => false,
+                        'fields'    => array(),
+                    );
+                }
+            }
+
+            if ( ! isset( $sections[ $section_key ]['fields'] ) || ! is_array( $sections[ $section_key ]['fields'] ) ) {
+                $sections[ $section_key ]['fields'] = array();
+            }
+
+            $next_order = 0;
+            foreach ( $sections[ $section_key ]['fields'] as $field ) {
+                $next_order = max( $next_order, (int) ( $field['order'] ?? 0 ) );
+            }
+
+            foreach ( $missing as $field_id => $spec ) {
+                ++$next_order;
+                $sections[ $section_key ]['fields'][] = array(
+                    'id'          => $field_id,
+                    'name'        => $field_id,
+                    'type'        => 'text',
+                    'label'       => $spec['label'],
+                    'placeholder' => $spec['placeholder'],
+                    'icon'        => $spec['icon'],
+                    'required'    => ! empty( $spec['required'] ),
+                    'adminOnly'   => false,
+                    'enabled'     => true,
+                    'locked'      => false,
+                    'order'       => $next_order,
+                    'hidden'      => false,
+                );
+            }
+
+            update_option( $storage_key, $sections );
+            wp_cache_delete( 'hvnly_standardized_field_names' );
+            wp_cache_delete( $storage_key, 'options' );
+        }
+
+        $this->backfill_missing_demo_contact_preset_meta();
+    }
+
+    /**
+     * Backfill contact preset meta on properties that are missing it.
+     *
+     * Uses the same defaults as add_demo_contact_preset_meta(). Idempotent.
+     *
+     * @return void
+     */
+    private function backfill_missing_demo_contact_preset_meta(): void {
+        $query = new \WP_Query(
+            array(
+                'post_type'              => $this->post_type,
+                'post_status'            => 'any',
+                'posts_per_page'         => 200,
+                'fields'                 => 'ids',
+                'no_found_rows'          => true,
+                'update_post_meta_cache' => false,
+                'update_post_term_cache' => false,
+            )
+        );
+
+        if ( empty( $query->posts ) ) {
+            return;
+        }
+
+        $defaults = array();
+        $this->add_demo_contact_preset_meta( $defaults, array() );
+
+        foreach ( $query->posts as $post_id ) {
+            $post_id = (int) $post_id;
+            foreach ( $defaults as $meta_key => $meta_value ) {
+                if ( ! metadata_exists( 'post', $post_id, $meta_key ) ) {
+                    update_post_meta( $post_id, $meta_key, $meta_value );
+                }
+            }
+        }
     }
 
     /**
@@ -2712,7 +2867,7 @@ class PropertyImportWizard {
     }
 
     /**
-     * Progressively assign stock images to default demo property type terms (empty meta only).
+     * Progressively seed property type term images (local SVG strategy — no downloads).
      *
      * @param array<string, mixed> $options  Sanitized import options.
      * @param int                  $imported Properties already imported in this run.
@@ -2723,19 +2878,14 @@ class PropertyImportWizard {
             return;
         }
 
-        $include_images = ! isset( $options['include_images'] ) || ! empty( $options['include_images'] );
-        $limit          = $include_images ? 1 : 2;
-
-        if ( 0 === $imported ) {
-            $limit = 1;
-        }
+        unset( $options, $imported );
 
         $seeder = new PropertyTypeTermImageSeeder();
-        $seeder->run( $limit, array( $this, 'log_error' ) );
+        $seeder->run( 0, array( $this, 'log_error' ) );
     }
 
     /**
-     * Assign any remaining demo property type term images after the final import batch.
+     * Finish property type term image seeding (no-op under local SVG strategy).
      *
      * @return void
      */
@@ -3449,6 +3599,7 @@ private function create_demo_property( $data, $options = [] ) {
 
     $this->ensure_import_property_builder_sections();
     $this->ensure_import_property_features_section();
+    $this->ensure_import_contact_preset_fields();
     $this->ensure_import_tail_section_order();
     wp_cache_delete( 'hvnly_standardized_field_names' );
 
@@ -3692,6 +3843,15 @@ private function create_demo_property( $data, $options = [] ) {
 
     if ( is_wp_error( $post_id ) ) {
         throw new \Exception( esc_html( $post_id->get_error_message() ) );
+    }
+
+    // Persist contact presets after insert (editor + card footer). meta_input
+    // already includes them; this guarantees the keys exist if anything in the
+    // insert path skipped unregistered meta.
+    $contact_meta = array();
+    $this->add_demo_contact_preset_meta( $contact_meta, is_array( $data ) ? $data : array() );
+    foreach ( $contact_meta as $contact_key => $contact_value ) {
+        update_post_meta( (int) $post_id, $contact_key, $contact_value );
     }
 
     hvnly_safe_delete_post_meta( (int) $post_id, '_hvnly_importing', 'import_transient' );

@@ -314,7 +314,11 @@ final class PropertyBuilderSchemaService {
 			'map'           => array( 'address', 'preview', 'latitude', 'longitude' ),
 			'video'         => array( 'title', 'url', 'thumbnail' ),
 			'gallery'       => array( 'title', 'images' ),
-			'property_docs' => array( 'documents', 'label', 'url', 'icon' ),
+			// Prefer documents JSON, then icon — Admin DocumentField / master base
+			// historically live on the icon member's group_base_id. Preferring label
+			// first (legacy) picks a fragmented DnD base and import writes docs to a
+			// meta key the UI never reads.
+			'property_docs' => array( 'documents', 'icon', 'label', 'url' ),
 			'faq'           => array( 'title', 'faqs' ),
 			'repeater'      => array( 'title', 'items' ),
 			'agents'        => array( 'title', 'agents' ),
@@ -614,6 +618,7 @@ final class PropertyBuilderSchemaService {
 					$field         = $item['field'];
 					$out[]         = array(
 						'name'        => $name,
+						'label'       => (string) ( $field['label'] ?? $name ),
 						'type'        => (string) ( $field['type'] ?? 'text' ),
 						'component'   => (string) ( $field['component'] ?? 'text' ),
 						'groupType'   => (string) ( $field['groupType'] ?? '' ),
@@ -640,6 +645,7 @@ final class PropertyBuilderSchemaService {
 					$seen[ $name ] = true;
 					$out[]         = array(
 						'name'        => $name,
+						'label'       => (string) ( $member['label'] ?? $name ),
 						'type'        => (string) ( $member['type'] ?? 'text' ),
 						'component'   => (string) ( $member['component'] ?? 'text' ),
 						'groupType'   => $group_type,
@@ -660,6 +666,7 @@ final class PropertyBuilderSchemaService {
 					}
 					$out[] = array(
 						'name'        => $storage,
+						'label'       => (string) ( $item['label'] ?? $item['groupName'] ?? $storage ),
 						'type'        => $group_type,
 						'component'   => (string) ( $item['component'] ?? $group_type ),
 						'groupType'   => $group_type,

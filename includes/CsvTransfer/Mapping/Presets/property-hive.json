@@ -1,0 +1,30 @@
+{
+  "id": "property-hive",
+  "name": "Property Hive",
+  "description": "Import properties exported from Property Hive.",
+  "source": "property-hive",
+  "version": "1",
+  "order": 30,
+  "delimiter": ",",
+  "mapping": {
+    "property_name": "title",
+    "property_description": "content",
+    "property_summary": "excerpt",
+    "property_status": "status",
+    "price": "price",
+    "reference_number": "reference",
+    "address_line_1": "address",
+    "latitude": "latitude",
+    "longitude": "longitude",
+    "primary_image": "featured_image",
+    "images": "gallery",
+    "negotiator_email": "agent_email",
+    "features": "features",
+    "amenities": "amenities",
+    "property_type": "property_type",
+    "department": "department",
+    "area": "location",
+    "documents": "documents",
+    "video_url": "video_url"
+  }
+}

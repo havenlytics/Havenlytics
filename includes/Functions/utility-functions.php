@@ -399,17 +399,31 @@ function hvnly_get_term_advanced_image_url( $term_id, $size = 'thumbnail' ) {
     }
 
     $raw = get_term_meta( $term_id, '_hvnly_term_advanced_image_data', true );
-    if ( ! is_array( $raw ) ) {
-        return '';
+    if ( is_array( $raw ) ) {
+        $attachment_id = absint( $raw['id'] ?? 0 );
+        if ( $attachment_id > 0 ) {
+            $url = wp_get_attachment_image_url( $attachment_id, $size );
+            if ( is_string( $url ) && '' !== $url ) {
+                return $url;
+            }
+        }
     }
 
-    $attachment_id = absint( $raw['id'] ?? 0 );
-    if ( $attachment_id <= 0 ) {
-        return '';
+    // Shared local SVG until a custom image is uploaded (same pattern as locations).
+    $term = get_term( $term_id );
+    if ( $term instanceof WP_Term ) {
+        if ( 'hvnly_prop_locations' === $term->taxonomy
+            && class_exists( '\HvnlyNab\Admin\Data\UkLocationTermImages' ) ) {
+            return \HvnlyNab\Admin\Data\UkLocationTermImages::placeholder_url();
+        }
+
+        if ( 'hvnly_prop_types' === $term->taxonomy
+            && class_exists( '\HvnlyNab\Admin\Data\PropertyTypeTermImages' ) ) {
+            return \HvnlyNab\Admin\Data\PropertyTypeTermImages::placeholder_url();
+        }
     }
 
-    $url = wp_get_attachment_image_url( $attachment_id, $size );
-    return is_string( $url ) ? $url : '';
+    return '';
 }
 
 /**

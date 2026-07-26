@@ -1,0 +1,26 @@
+{
+  "id": "directorist",
+  "name": "Directorist",
+  "description": "Convert directory listings into Havenlytics properties.",
+  "source": "directorist",
+  "version": "1",
+  "order": 90,
+  "delimiter": ",",
+  "mapping": {
+    "listing_title": "title",
+    "listing_content": "content",
+    "listing_excerpt": "excerpt",
+    "listing_status": "status",
+    "price": "price",
+    "email": "agent_email",
+    "address": "address",
+    "latitude": "latitude",
+    "longitude": "longitude",
+    "featured_image": "featured_image",
+    "gallery_images": "gallery",
+    "category": "department",
+    "location": "location",
+    "tags": "tags",
+    "video": "video_url"
+  }
+}

@@ -19,10 +19,17 @@ class DataKeyInventory {
 	 */
 	public static function static_property_meta_keys(): array {
 		return array(
+			'_thumbnail_id',
 			'_hvnly_unique_property_id',
 			'_hvnly_field_map',
 			'_hvnly_orphan_candidates',
 			'_hvnly_importing',
+			'_hvnly_import_session_id',
+			'_hvnly_import_index',
+			'_hvnly_property_agents',
+			'_hvnly_property_agent',
+			'_hvnly_ws_listing_status',
+			'_hvnly_last_emailed_listing_status',
 			'_hvnly_property_price',
 			'_hvnly_property_reception_rooms',
 			'_hvnly_property_bedrooms',
@@ -78,6 +85,10 @@ class DataKeyInventory {
 			'video'         => 'video_{timestamp}_{suffix}_*',
 			'map'           => 'map_{timestamp}_{suffix}_*',
 			'property_docs' => 'property_docs_{timestamp}_{suffix}_*',
+			'faq'           => 'faq_{timestamp}_{suffix}_*',
+			'repeater'      => 'repeater_{timestamp}_{suffix}_*',
+			'agents'        => 'agents_{timestamp}_{suffix}_*',
+			'features'      => 'features_{timestamp}_{suffix}_*',
 		);
 	}
 
@@ -144,6 +155,8 @@ class DataKeyInventory {
 				AND (
 					pm.meta_key LIKE %s OR pm.meta_key LIKE %s OR pm.meta_key LIKE %s
 					OR pm.meta_key LIKE %s OR pm.meta_key LIKE %s OR pm.meta_key LIKE %s
+					OR pm.meta_key LIKE %s OR pm.meta_key LIKE %s OR pm.meta_key LIKE %s
+					OR pm.meta_key LIKE %s OR pm.meta_key = %s
 				)
 				ORDER BY pm.meta_key ASC
 				LIMIT 5000",
@@ -153,7 +166,12 @@ class DataKeyInventory {
 				$wpdb->esc_like( 'video_' ) . '%',
 				$wpdb->esc_like( 'map_' ) . '%',
 				$wpdb->esc_like( 'property_docs_' ) . '%',
-				$wpdb->esc_like( 'preset_hvnly_' ) . '%'
+				$wpdb->esc_like( 'faq_' ) . '%',
+				$wpdb->esc_like( 'repeater_' ) . '%',
+				$wpdb->esc_like( 'agents_' ) . '%',
+				$wpdb->esc_like( 'features_' ) . '%',
+				$wpdb->esc_like( 'preset_hvnly_' ) . '%',
+				'_thumbnail_id'
 			)
 		);
 

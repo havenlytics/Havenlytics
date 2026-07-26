@@ -64,12 +64,15 @@ if (!$hvnly_has_images && $hvnly_featured_image) {
     );
 }
 
-// If still no images, use placeholder
+// If still no images, use bundled visual placeholder (never attaches media).
 if (!$hvnly_has_images) {
+    $hvnly_placeholder = function_exists('hvnly_get_property_thumbnail_url')
+        ? hvnly_get_property_thumbnail_url($hvnly_property_id, 'full')
+        : '';
     $hvnly_display_images[] = array(
         'type' => 'placeholder',
-        'url' => HVNLYNAB_ASSETS_URL . 'images/placeholder.jpg',
-        'thumb' => HVNLYNAB_ASSETS_URL . 'images/placeholder-thumb.jpg',
+        'url' => $hvnly_placeholder,
+        'thumb' => $hvnly_placeholder,
         'id' => 'placeholder',
         'title' => get_the_title($hvnly_property_id),
         'alt' => get_the_title($hvnly_property_id)

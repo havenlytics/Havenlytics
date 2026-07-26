@@ -25,6 +25,9 @@ final class PageInstaller {
 		'property_lists'  => 'hvnly_property_list_page_id',
 		'property_agents'   => 'hvnly_property_agents_page_id',
 		'property_agencies' => 'hvnly_property_agencies_page_id',
+		'sign_in'           => 'hvnly_sign_in_page_id',
+		'dashboard'         => 'hvnly_workspace_page_id',
+		'favorites'         => 'hvnly_favorites_page_id',
 	);
 
 	/**

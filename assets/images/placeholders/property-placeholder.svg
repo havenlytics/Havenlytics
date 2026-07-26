@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400" role="img" aria-label="Property">
+  <defs>
+    <linearGradient id="hvnlyPropPhBg" x1="0" y1="0" x2="0" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#EEEDF8"/>
+      <stop offset="1" stop-color="#E2E0F2"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="400" fill="url(#hvnlyPropPhBg)"/>
+  <g fill="none" stroke="#6C60FE" stroke-opacity="0.35" stroke-width="1.5">
+    <rect x="48" y="48" width="544" height="304" rx="16"/>
+  </g>
+  <g transform="translate(248 118)">
+    <rect width="144" height="144" rx="20" fill="#6C60FE" fill-opacity="0.12"/>
+    <path d="M72 36L28 72h12v52h28V94h24v30h28V72h12L72 36z" fill="#6C60FE" fill-opacity="0.85"/>
+  </g>
+</svg>

@@ -33,7 +33,7 @@ final class DemoAgentAgencyData {
 				'description' => __( 'Full-service residential brokerage specializing in family homes, new construction, and investment properties across Texas.', 'havenlytics' ),
 				'email'       => 'contact@havenrealty.demo',
 				'phone'       => '+1 (512) 555-0101',
-				'website'     => 'https://havenrealty.demo',
+				'website'     => 'https://demo.havenlytics.com/',
 				'address'     => "1200 Congress Avenue, Suite 400\nAustin, TX 78701",
 				'license'     => 'TX-BRK-10234',
 				'map_lat'     => '30.2672',
@@ -323,74 +323,53 @@ final class DemoAgentAgencyData {
 	}
 
 	/**
-	 * Free stock portrait URLs (Pexels CDN) for demo agent photos.
+	 * Demo agent photo URLs.
+	 *
+	 * Intentionally empty: demo agents use the local AvatarService placeholder
+	 * (no remote CDN sideloads, no media library attachments).
 	 *
 	 * @return string[]
 	 */
 	public static function get_agent_photo_urls(): array {
-		return array(
-			'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
-			'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
-			'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
-			'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
-			'https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
-			'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
-			'https://images.pexels.com/photos/3785079/pexels-photo-3785079.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
-			'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
-			'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
-			'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&fit=crop',
-		);
+		return array();
 	}
 
 	/**
-	 * Free stock business/architecture URLs (Pexels CDN) for demo agency logos.
+	 * Demo agency logo URLs.
+	 *
+	 * Intentionally empty: demo agencies use the local agency placeholder SVG
+	 * (no remote CDN sideloads, no media library attachments).
 	 *
 	 * @return string[]
 	 */
 	public static function get_agency_logo_urls(): array {
-		return array(
-			'https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop',
-			'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop',
-			'https://images.pexels.com/photos/323775/pexels-photo-323775.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop',
-			'https://images.pexels.com/photos/323772/pexels-photo-323772.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop',
-			'https://images.pexels.com/photos/323769/pexels-photo-323769.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop',
-		);
+		return array();
 	}
 
 	/**
 	 * Demo agent portrait URL by 1-based index.
 	 *
+	 * Always empty — callers skip sideload; AvatarService supplies the local placeholder.
+	 *
 	 * @param int $image_index 1-based image number.
 	 * @return string
 	 */
 	public static function get_agent_photo_url( int $image_index ): string {
-		$images = self::get_agent_photo_urls();
-		$total  = count( $images );
-		if ( $total <= 0 ) {
-			return '';
-		}
-
-		$index = ( absint( $image_index ) - 1 ) % $total;
-
-		return (string) $images[ $index ];
+		unset( $image_index );
+		return '';
 	}
 
 	/**
 	 * Demo agency logo URL by 1-based index.
 	 *
+	 * Always empty — callers skip sideload; AgencyFields supplies the local placeholder.
+	 *
 	 * @param int $image_index 1-based image number.
 	 * @return string
 	 */
 	public static function get_agency_logo_url( int $image_index ): string {
-		$images = self::get_agency_logo_urls();
-		$total  = count( $images );
-		if ( $total <= 0 ) {
-			return '';
-		}
-
-		$index = ( absint( $image_index ) - 1 ) % $total;
-
-		return (string) $images[ $index ];
+		unset( $image_index );
+		return '';
 	}
 
 	/**

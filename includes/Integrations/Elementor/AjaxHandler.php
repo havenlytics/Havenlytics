@@ -116,7 +116,9 @@ class AjaxHandler {
         $formatted_price = function_exists('hvnly_format_price') ? hvnly_format_price($price) : '$' . number_format(floatval($price));
         $bedrooms = get_post_meta($property_id, '_hvnly_property_bedrooms', true);
         $bathrooms = get_post_meta($property_id, '_hvnly_property_bathrooms', true);
-        $thumbnail = get_the_post_thumbnail_url($property_id, 'medium');
+        $thumbnail = function_exists('hvnly_get_property_thumbnail_url')
+            ? hvnly_get_property_thumbnail_url($property_id, 'medium')
+            : (string) get_the_post_thumbnail_url($property_id, 'medium');
         $permalink = get_permalink($property_id);
         $title = get_the_title($property_id);
         $card_variant = ($index % 2 == 0) ? 'even' : 'odd';
@@ -127,12 +129,7 @@ class AjaxHandler {
     data-property-id="<?php echo esc_attr($property_id); ?>"
     data-gallery-order="<?php echo esc_attr($gallery_order); ?>">
     <div class="hvnly-property--grid-list--single__thumb">
-        <?php if ($thumbnail) : ?>
         <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php echo esc_attr($title); ?>" loading="lazy">
-        <?php else : ?>
-        <img src="<?php echo esc_url(HVNLYNAB_ASSETS_URL . '/images/property-placeholder.jpg'); ?>"
-            alt="<?php echo esc_attr($title); ?>">
-        <?php endif; ?>
     </div>
     <div class="hvnly-property--grid-list--single__content">
         <div class="hvnly-property--grid-list--single__title">

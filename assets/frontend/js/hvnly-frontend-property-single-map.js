@@ -64,7 +64,7 @@
         }
 
         addMapStyles();
-        ensureFontAwesome();
+        // Font Awesome is enqueued as hvnly-fontawesome-all-frontend (local assets/admin/css/fontawesome-all.min.css).
 
         // Initialize based on provider setting from admin
         if (mapProvider === 'google' && apiKey && apiKey !== '') {
@@ -336,15 +336,6 @@
             }
         `;
         document.head.appendChild(style);
-    }
-
-    function ensureFontAwesome() {
-        if (!document.querySelector('link[href*="font-awesome"]') && !document.querySelector('link[href*="fontawesome"]')) {
-            const faLink = document.createElement('link');
-            faLink.rel = 'stylesheet';
-            faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css';
-            document.head.appendChild(faLink);
-        }
     }
 
     function showMapError(container, message) {

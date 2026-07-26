@@ -129,6 +129,48 @@ final class AgencyFields {
 	}
 
 	/**
+	 * Local SVG placeholder used when an agency has no uploaded logo.
+	 *
+	 * @return string Absolute URL or empty string.
+	 */
+	public static function placeholder_logo_url(): string {
+		$url = '';
+		if ( defined( 'HVNLYNAB_ASSETS_URL' ) ) {
+			$url = trailingslashit( HVNLYNAB_ASSETS_URL ) . 'images/placeholders/agency-placeholder.svg';
+		}
+
+		/**
+		 * Filter the default agency logo placeholder URL.
+		 *
+		 * @since 3.7.3
+		 *
+		 * @param string $url Placeholder logo URL.
+		 */
+		$filtered = (string) apply_filters( 'hvnly_agency_logo_placeholder_url', $url );
+
+		return '' !== $filtered ? $filtered : $url;
+	}
+
+	/**
+	 * Resolve the display logo URL for an agency (uploaded logo or local placeholder).
+	 *
+	 * @param int    $term_id Agency term ID.
+	 * @param string $size    Attachment image size when a logo exists.
+	 * @return string
+	 */
+	public static function get_logo_url( int $term_id, string $size = 'medium' ): string {
+		$logo_id = self::get_logo_id( $term_id );
+		if ( $logo_id > 0 ) {
+			$url = wp_get_attachment_image_url( $logo_id, $size );
+			if ( is_string( $url ) && '' !== $url ) {
+				return $url;
+			}
+		}
+
+		return self::placeholder_logo_url();
+	}
+
+	/**
 	 * Resolve agency profile for an agent (taxonomy assignment, then company-name match).
 	 *
 	 * @param int $agent_id Agent post ID.
@@ -172,13 +214,7 @@ final class AgencyFields {
 	 * @return string
 	 */
 	public static function get_admin_list_logo_html( int $term_id ): string {
-		$logo_id  = self::get_logo_id( $term_id );
-		$logo_url = $logo_id ? (string) wp_get_attachment_image_url( $logo_id, 'thumbnail' ) : '';
-
-		if ( ! $logo_url ) {
-			$profile = self::get_profile( $term_id );
-			$logo_url = ! empty( $profile['logo_url'] ) ? (string) $profile['logo_url'] : '';
-		}
+		$logo_url = self::get_logo_url( $term_id, 'thumbnail' );
 
 		if ( '' === $logo_url ) {
 			return '&mdash;';
@@ -210,7 +246,7 @@ final class AgencyFields {
 			'name'          => (string) $term->name,
 			'slug'          => (string) $term->slug,
 			'logo_id'       => $logo_id,
-			'logo_url'      => $logo_id ? (string) wp_get_attachment_image_url( $logo_id, 'medium' ) : '',
+			'logo_url'      => self::get_logo_url( $term_id, 'medium' ),
 			'address'       => (string) get_term_meta( $term_id, self::META_ADDRESS, true ),
 			'license'       => (string) get_term_meta( $term_id, self::META_LICENSE, true ),
 			'map_provider'  => (string) get_term_meta( $term_id, self::META_MAP_PROVIDER, true ),

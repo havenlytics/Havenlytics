@@ -1,0 +1,27 @@
+{
+  "id": "wp-residence",
+  "name": "WP Residence",
+  "description": "Import WP Residence property CSV exports.",
+  "source": "wp-residence",
+  "version": "1",
+  "order": 140,
+  "delimiter": ",",
+  "mapping": {
+    "Title": "title",
+    "Content": "content",
+    "Excerpt": "excerpt",
+    "Property Price": "price",
+    "Property Address": "address",
+    "Property Latitude": "latitude",
+    "Property Longitude": "longitude",
+    "Property Images": "gallery",
+    "Property Type": "property_type",
+    "Property Status": "property_status",
+    "Property City": "location",
+    "Property Features": "features",
+    "Property Category": "department",
+    "Agent Email": "agent_email",
+    "Property Video": "video_url",
+    "MLS": "mls"
+  }
+}

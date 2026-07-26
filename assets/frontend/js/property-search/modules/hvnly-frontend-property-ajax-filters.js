@@ -269,8 +269,13 @@
             
             selectedContainer.empty();
             selectedItems.forEach(item => {
-                const itemElement = $('<div class="hvnly-property-selected-single-item">')
-                    .html(`${item.text}<span class="hvnly-property-selected-single-item-remove" data-value="${item.value}">×</span>`);
+                const itemElement = $('<div class="hvnly-property-selected-single-item"></div>');
+                // Use text nodes — never inject label text via .html() (DOM XSS).
+                itemElement.append(document.createTextNode(item.text));
+                const removeBtn = $('<span class="hvnly-property-selected-single-item-remove"></span>')
+                    .attr('data-value', item.value)
+                    .text('×');
+                itemElement.append(removeBtn);
                 selectedContainer.append(itemElement);
             });
             

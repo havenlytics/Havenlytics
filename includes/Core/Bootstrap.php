@@ -458,7 +458,26 @@ class Bootstrap
                 $this->services['favorites']->init();
             }
 
-        } catch (Exception $e) {
+            /*
+             * Import / Export (HPTP) — package I/O, batched jobs, Settings UI,
+             * and production cleanup (Phases 1–9).
+             */
+			if (class_exists(\HvnlyNab\ImportExport\ImportExportModule::class)) {
+				$this->services['import_export'] = \HvnlyNab\ImportExport\ImportExportModule::get_instance();
+				$this->services['import_export']->init();
+			}
+
+			/*
+			 * CSV Transfer — spreadsheet-based property import/export with
+			 * header mapping, validation, and batched Settings UI jobs.
+			 * Independent of the ZIP-based Import / Export (HPTP) module.
+			 */
+			if (class_exists(\HvnlyNab\CsvTransfer\CsvTransferModule::class)) {
+				$this->services['csv_transfer'] = \HvnlyNab\CsvTransfer\CsvTransferModule::get_instance();
+				$this->services['csv_transfer']->init();
+			}
+
+		} catch (Exception $e) {
             // Silent fail in production to prevent fatal errors.
         } catch (Error $e) {
             // Silent fail in production to prevent fatal errors.

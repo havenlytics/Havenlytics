@@ -83,11 +83,14 @@ if (!empty($hvnly_gallery_image_ids) && $hvnly_gallery_order === 'DESC') {
                         );
                     }
 
-                    // If still no images, use placeholder
+                    // If still no images, use bundled visual placeholder (never attaches media).
                     if (!$hvnly_has_images) {
+                        $hvnly_placeholder = function_exists('hvnly_get_property_thumbnail_url')
+                            ? hvnly_get_property_thumbnail_url($hvnly_property_id, 'large')
+                            : '';
                         $hvnly_display_images[] = array(
                             'type' => 'placeholder',
-                            'url' => HVNLYNAB_ASSETS_URL . 'images/placeholder.jpg',
+                            'url' => $hvnly_placeholder,
                             'id' => 'placeholder'
                         );
                     }

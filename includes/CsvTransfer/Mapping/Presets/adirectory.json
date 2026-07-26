@@ -1,0 +1,24 @@
+{
+  "id": "adirectory",
+  "name": "aDirectory – Directory Listing WordPress Plugin",
+  "description": "Import directory listings exported from aDirectory.",
+  "source": "adirectory",
+  "version": "1",
+  "order": 130,
+  "delimiter": ",",
+  "mapping": {
+    "listing_title": "title",
+    "listing_content": "content",
+    "listing_excerpt": "excerpt",
+    "price": "price",
+    "address": "address",
+    "map_latitude": "latitude",
+    "map_longitude": "longitude",
+    "gallery": "gallery",
+    "categories": "department",
+    "locations": "location",
+    "tags": "tags",
+    "email": "agent_email",
+    "video": "video_url"
+  }
+}

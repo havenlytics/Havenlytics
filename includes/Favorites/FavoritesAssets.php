@@ -288,6 +288,16 @@ final class FavoritesAssets {
 			);
 		}
 
+		if ( class_exists( '\HvnlyNab\Setup\PageInstaller' ) ) {
+			$sign_in_id = \HvnlyNab\Setup\PageInstaller::get_page_id( 'sign_in' );
+			if ( $sign_in_id > 0 ) {
+				$url = get_permalink( $sign_in_id );
+				if ( is_string( $url ) && '' !== $url ) {
+					return $url;
+				}
+			}
+		}
+
 		if ( class_exists( '\HvnlyNab\Workspace\WorkspaceAvailability' )
 			&& \HvnlyNab\Workspace\WorkspaceAvailability::is_available()
 			&& class_exists( '\HvnlyNab\Workspace\WorkspaceSettings' )
@@ -304,11 +314,21 @@ final class FavoritesAssets {
 	}
 
 	/**
-	 * Deep link to Agent Workspace → Saved Properties.
+	 * Deep link to Favorites page, or Agent Workspace → Saved Properties.
 	 *
 	 * @return string
 	 */
 	private function saved_properties_url(): string {
+		if ( class_exists( '\HvnlyNab\Setup\PageInstaller' ) ) {
+			$favorites_id = \HvnlyNab\Setup\PageInstaller::get_page_id( 'favorites' );
+			if ( $favorites_id > 0 ) {
+				$url = get_permalink( $favorites_id );
+				if ( is_string( $url ) && '' !== $url ) {
+					return $url;
+				}
+			}
+		}
+
 		if ( ! $this->workspace_available() ) {
 			return '';
 		}

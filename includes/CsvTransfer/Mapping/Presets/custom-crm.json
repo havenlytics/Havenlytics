@@ -1,0 +1,10 @@
+{
+  "id": "custom-crm",
+  "name": "Custom CRM / Spreadsheet",
+  "description": "Start from a blank mapping for custom CRM or spreadsheet exports.",
+  "source": "custom-crm",
+  "version": "1",
+  "order": 160,
+  "delimiter": ",",
+  "mapping": {}
+}

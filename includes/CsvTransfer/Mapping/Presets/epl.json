@@ -1,0 +1,28 @@
+{
+  "id": "epl",
+  "name": "Easy Property Listings",
+  "description": "Import EPL listing exports.",
+  "source": "epl",
+  "version": "1",
+  "order": 40,
+  "delimiter": ",",
+  "mapping": {
+    "property_heading": "title",
+    "property_content": "content",
+    "property_excerpt": "excerpt",
+    "property_status": "property_status",
+    "property_price": "price",
+    "property_unique_id": "reference",
+    "property_address_display": "address",
+    "property_latitude": "latitude",
+    "property_longitude": "longitude",
+    "property_image": "featured_image",
+    "property_images": "gallery",
+    "property_agent": "agent_email",
+    "property_category": "department",
+    "property_type": "property_type",
+    "property_suburb": "location",
+    "property_features": "features",
+    "property_video_url": "video_url"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "classified-listing",
+  "name": "Classified Listing",
+  "description": "Import classified ads and property listings.",
+  "source": "classified-listing",
+  "version": "1",
+  "order": 120,
+  "delimiter": ",",
+  "mapping": {
+    "title": "title",
+    "description": "content",
+    "price": "price",
+    "address": "address",
+    "latitude": "latitude",
+    "longitude": "longitude",
+    "images": "gallery",
+    "category": "department",
+    "location": "location",
+    "tags": "tags",
+    "email": "agent_email",
+    "video_urls": "video_url"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "hivepress",
+  "name": "HivePress",
+  "description": "Import marketplace and listing exports from HivePress.",
+  "source": "hivepress",
+  "version": "1",
+  "order": 110,
+  "delimiter": ",",
+  "mapping": {
+    "title": "title",
+    "description": "content",
+    "price": "price",
+    "location": "address",
+    "latitude": "latitude",
+    "longitude": "longitude",
+    "images": "gallery",
+    "category": "department",
+    "tags": "tags",
+    "vendor_email": "agent_email",
+    "video": "video_url"
+  }
+}

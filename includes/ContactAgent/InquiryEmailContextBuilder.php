@@ -205,13 +205,12 @@ final class InquiryEmailContextBuilder {
 			);
 		}
 
-		$image_url = get_the_post_thumbnail_url( $property_id, 'medium_large' );
-		if ( ! $image_url ) {
-			$image_url = (string) apply_filters(
-				'hvnly_property_placeholder_url',
-				( defined( 'HVNLYNAB_ASSETS_URL' ) ? HVNLYNAB_ASSETS_URL : '' ) . 'images/property-placeholder.jpg',
-				'email'
-			);
+		$image_url = function_exists( 'hvnly_get_property_thumbnail_url' )
+			? hvnly_get_property_thumbnail_url( $property_id, 'medium_large', 'email' )
+			: (string) get_the_post_thumbnail_url( $property_id, 'medium_large' );
+
+		if ( '' === $image_url && function_exists( 'hvnly_get_property_placeholder_url' ) ) {
+			$image_url = hvnly_get_property_placeholder_url( 'email' );
 		}
 
 		$price = '';

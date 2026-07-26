@@ -189,9 +189,19 @@ final class AvatarService {
 	 * @return string
 	 */
 	public static function placeholder_url(): string {
-		$url = defined( 'HVNLYNAB_ASSETS_URL' )
-			? trailingslashit( HVNLYNAB_ASSETS_URL ) . 'frontend/img/agent-avatar-placeholder.svg'
-			: '';
+		$url = '';
+		if ( defined( 'HVNLYNAB_ASSETS_URL' ) ) {
+			$base = trailingslashit( HVNLYNAB_ASSETS_URL );
+			$primary = $base . 'images/placeholders/agent-avatar.svg';
+			$legacy  = $base . 'frontend/img/agent-avatar-placeholder.svg';
+			$url     = $primary;
+			if ( defined( 'HVNLYNAB_ASSETS_PATH' ) ) {
+				$primary_path = trailingslashit( HVNLYNAB_ASSETS_PATH ) . 'images/placeholders/agent-avatar.svg';
+				if ( ! is_readable( $primary_path ) ) {
+					$url = $legacy;
+				}
+			}
+		}
 
 		/**
 		 * Filter the shared default avatar placeholder URL.

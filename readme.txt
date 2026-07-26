@@ -5,14 +5,14 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.5.0
+Stable tag: 3.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Build real estate websites with property listings, AJAX search, interactive maps, visual builders, Elementor widgets, and a secure Agent Workspace.
+Real estate plugin with Migration Engine, CSV Import & Export, AJAX search, maps, Gutenberg blocks, Elementor, and Agent Workspace.
 
 == Description ==
 
-**Havenlytics** is a WordPress real estate plugin for agencies, agents, developers, and property directories. Create and manage property listings with visual builders, AJAX search, interactive maps, galleries, import tools, and built-in analytics.
+**Havenlytics** is a WordPress real estate plugin for agencies, agents, developers, and property directories. Create and manage property listings with the Havenlytics Migration Engine, CSV Import & Export, visual builders, AJAX search, interactive maps, galleries, and built-in analytics.
 
 Agents manage listings from a secure frontend **Agent Workspace** without entering wp-admin. Administrators retain control over registration, identity verification, listing review, taxonomy requests, and publishing workflows.
 
@@ -36,7 +36,7 @@ Havenlytics works with **any WordPress theme**. The free [Havenlytics Realty](ht
 
 1. Install and activate Havenlytics.
 2. Run the Property Setup Wizard.
-3. Import demo listings or add your own properties.
+3. Choose one: Import demo content, import property listings from CSV, migrate another Havenlytics website, or add your own properties.
 4. Customize property fields and search filters with the visual builders.
 5. Open **Analytics** to review listing and inquiry performance.
 6. Optionally install the Havenlytics Realty companion theme.
@@ -54,56 +54,63 @@ Havenlytics works with **any WordPress theme**. The free [Havenlytics Realty](ht
 
 = Why Havenlytics =
 
-🏠 **Purpose-built for real estate** — Listings, agents, agencies, and inquiries in one system.
+🏠 **Purpose-built for real estate** — Listings, agents, agencies, inquiries, and workflows in one complete system.
 
-🔍 **AJAX search and maps** — Responsive filters with Leaflet or Google Maps, markers, and clustering.
+📦 **Migration Engine (HPTP)** — Securely migrate complete Havenlytics websites with properties, agents, agencies, media, taxonomies, builders, and settings preserved.
 
-🎨 **Visual builders** — Property forms, search filters, and listing cards without code.
+📄 **CSV Import & Export** — Import or export property listings using CSV with intelligent column mapping, validation, reusable mapping profiles, and support for popular real estate platforms.
 
-📊 **Analytics** — Listing activity, property views, and inquiry performance in WordPress.
+🔍 **AJAX Search & Interactive Maps** — Responsive search filters with Leaflet or Google Maps, clustering, and location search.
 
-👤 **Agent Workspace** — Frontend portal for agents with favorites, identity verification, and review workflows.
+🎨 **Visual Builders** — Build property forms, search filters, and listing cards without writing code.
 
-👨‍💻 **Developer-friendly** — REST APIs, 50+ hooks and filters, and theme template overrides.
+📊 **Analytics Dashboard** — Track listings, inquiries, property views, and performance directly inside WordPress.
 
-⚡ **Performance & security** — Caching, capability checks, nonces, rate limiting, and audited admin actions.
+👤 **Agent Workspace** — Secure frontend dashboard for agents with listings, favorites, identity verification, and workflow management.
+
+👨‍💻 **Developer Friendly** — REST APIs, 50+ hooks & filters, template overrides, and modular architecture.
+
+⚡ **Performance & Security** — Optimized caching, capability checks, nonces, rate limiting, and production-ready architecture.
 
 = Core Features =
-✅ **Gutenberg Blocks** — Native WordPress block editor support for Property Archive, Property Search, Property Inquiry, Authentication, Dashboard, Saved Properties, Agents, Agency, and more. Dynamic server-rendered blocks with live editor previews and inspector controls.
 
-✅ **Analytics Dashboard** — Property statistics, view tracking, inquiry analytics, charts, and CSV export.
+✅ **Migration Engine (HPTP)** — Secure Havenlytics-to-Havenlytics website migration with migration packages, progress tracking, resume support, duplicate handling, and builder preservation.
 
-✅ **Property Import Wizard** — Guided demo import with media, maps, documents, agents, and custom fields.
+✅ **CSV Import & Export** — Import and export property listings using CSV with intelligent field mapping, reusable mapping profiles, validation, progress tracking, and platform presets.
+
+✅ **Property Import Wizard (Demo Content)** — Quickly install demo properties, media, maps, documents, agents, and sample content for new websites.
+
+✅ **Gutenberg Blocks** — Native WordPress blocks for Property Archive, Search, Inquiry, Dashboard, Authentication, Saved Properties, Agents, Agency, and more.
+
+✅ **Analytics Dashboard** — Property statistics, inquiry analytics, charts, property views, and CSV reporting.
 
 ✅ **Search Builder** — Drag-and-drop advanced search forms and sidebar filters.
 
-✅ **Property Builder** — Visual property form and card layout editor.
+✅ **Property Builder** — Visual property form and listing card builder.
 
 ✅ **Interactive Maps** — Leaflet or Google Maps with markers, clustering, and location search.
 
 ✅ **Contact Agent & Inquiries** — Inquiry forms, email notifications, and admin inbox.
 
-✅ **Agent & Agency Management** — Profiles, taxonomies, availability badges, and archive pages.
+✅ **Agent & Agency Management** — Profiles, taxonomies, badges, archive pages, and frontend management.
 
-✅ **Agent Workspace** — Create, edit, preview, and submit listings without wp-admin.
+✅ **Agent Workspace** — Frontend property management without wp-admin.
 
-✅ **Favorites & Saved Properties** — Save listings from cards, search, and single property pages; guest favorites merge on login.
+✅ **Favorites & Saved Properties** — Persistent saved listings with guest-to-account merging.
 
-✅ **Guest Login** — Optional read-only Workspace preview for visitors (disabled by default).
+✅ **Identity Verification** — Secure email verification and protected Workspace access.
 
-✅ **Identity Verification** — Email verification gate with secure tokens and admin tools.
+✅ **Taxonomy Requests** — Agent-submitted taxonomy requests with administrator approval workflow.
 
-✅ **Taxonomy Request & Approval** — Agents request missing terms; administrators approve, reject, merge, or delete.
-
-✅ **Elementor Widgets** — Property Archive, Property Agents, and Property Agency.
+✅ **Elementor Widgets** — Property Archive, Agents, Agency, and dynamic frontend layouts.
 
 ✅ **Performance & Cache** — Cache dashboard and optimization tools.
 
-✅ **REST API, hooks, template overrides** — Extend settings, builders, Workspace, and frontend templates.
+✅ **REST API & Template Overrides** — Developer APIs, hooks, filters, and template customization.
 
-✅ **Translation Ready** — Full i18n support with included `.pot` file.
+✅ **Translation Ready** — Complete internationalization support.
 
-Also includes: 50+ shortcodes; grid, list, and map layouts; property view counter; 160+ currencies; mortgage calculator; media galleries, videos, and documents; responsive single-property templates.
+Also includes 50+ shortcodes, grid/list/map layouts, mortgage calculator, property documents, media galleries, videos, responsive templates, 160+ currencies, and extensive developer hooks.
 
 = Agent Workspace =
 
@@ -291,6 +298,31 @@ No additional configuration or migration is required.
 
 == Changelog ==
 
+= 3.6.0 - 2026-07-26 =
+
+**New**
+
+* **Migration Engine (HPTP)** — Securely migrate complete Havenlytics websites using Havenlytics Property Transfer Packages (.zip), preserving properties, agents, agencies, taxonomies, builder layouts, media, documents, videos, maps, settings, and supported relationships.
+* Replaced the previous Import / Export tab with the new Migration Engine for Havenlytics-to-Havenlytics website transfers.
+* **CSV Import & Export** — Universal CSV import and export system for property listings with spreadsheet support.
+* Interactive CSV Import Wizard with upload, intelligent column mapping, validation, progress tracking, completion summaries, and reusable mapping profiles.
+* CSV source presets for Generic CSV, Havenlytics, Property Hive, Easy Property Listings (EPL), Estatik, Houzez, RealHomes, Essential Real Estate, Directorist, GeoDirectory, HivePress, Classified Listing, aDirectory, WP Residence, MyHome, and custom CRM or spreadsheet exports.
+
+**Improved**
+
+* Improved migration reliability for agents, agencies, media, galleries, documents, videos, maps, builder data, taxonomies, and related content.
+* Added batched migration with progress tracking, pause/resume, cancellation, duplicate handling, package validation, and builder keep/replace options.
+* Added automatic CSV field detection with configurable property field mapping.
+* Improved migration and CSV import workflows with clearer validation, loading indicators, progress feedback, and completion reporting.
+* Strengthened upload validation, temporary workspace cleanup, structured AJAX error handling, and migration security.
+* Automatically creates and reuses taxonomy terms during CSV import where supported.
+
+**Compatibility**
+
+* Existing Havenlytics Migration packages remain fully compatible.
+* No breaking changes to existing listings, Gutenberg blocks, Elementor widgets, shortcodes, templates, REST APIs, or Agent Workspace.
+* Migration Engine and CSV Import / Export require the `manage_options` capability.
+
 = 3.5.0 - 2026-07-22 =
 
 **New**
@@ -417,3 +449,15 @@ Telemetry is **disabled by default** and is only enabled if an administrator exp
 Privacy Policy: https://appsero.com/privacy-policy/
 
 All Havenlytics data—including properties, agents, inquiries, favorites, saved properties, and Agent Workspace data—is stored in your own WordPress database.
+
+When maps are enabled, tile/basemap requests may be made to OpenStreetMap, Carto, and/or Google Maps (when an API key is configured). Contact Agent forms store inquiry PII in your database. CSV Transfer may fetch remote media URLs you provide during import.
+
+Uninstall removes plugin options, custom tables, cron events, and Appsero telemetry leftovers. Property/agent posts and Media Library attachments are retained as site content unless you delete them manually.
+
+== Credits ==
+
+This plugin bundles:
+- Font Awesome Free (Icons CC BY 4.0, Fonts SIL OFL 1.1, Code MIT) — see assets/admin/css/LICENSE-Font-Awesome.txt
+- Leaflet (BSD-2-Clause), Leaflet.markercluster (MIT), and leaflet.fullscreen (MIT) — see assets/frontend/lib/leaflet/LICENSE.txt
+- Inter font (SIL OFL 1.1) — see assets/admin/fonts/inter/LICENSE-Inter.txt
+- Appsero Client SDK (MIT) for optional telemetry

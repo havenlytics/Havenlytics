@@ -14,13 +14,23 @@ defined( 'ABSPATH' ) || exit;
 
 class BuilderMetaMigrator {
 
-	/** @var array<string, array<string>> */
+	/**
+	 * Meta key suffixes per group_type (stored as {group_base_id}_{suffix}).
+	 *
+	 * Must stay aligned with DefaultTabSectionsData group field metaKeys and
+	 * FieldType handlers (FAQField, RepeaterField, CheckboxField features, etc.).
+	 *
+	 * @var array<string, array<string>>
+	 */
 	private const TYPE_SUFFIXES = array(
 		'video'         => array( 'title', 'url', 'thumbnail' ),
 		'gallery'       => array( 'title', 'images' ),
 		'map'           => array( 'address', 'latitude', 'longitude', 'preview' ),
 		'property_docs' => array( 'documents', 'show_in_sidebar', 'icon', 'label', 'url' ),
 		'agents'        => array( 'title', 'agents' ),
+		'faq'           => array( 'title', 'faqs' ),
+		'repeater'      => array( 'title', 'items' ),
+		'features'      => array( 'features' ),
 	);
 
 	/**

@@ -1,0 +1,10 @@
+{
+  "id": "generic",
+  "name": "Generic CSV",
+  "description": "Import any CSV exported from Excel, Google Sheets or another CRM.",
+  "source": "generic",
+  "version": "1",
+  "order": 10,
+  "delimiter": ",",
+  "mapping": {}
+}

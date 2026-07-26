@@ -1,0 +1,26 @@
+{
+  "id": "geodirectory",
+  "name": "GeoDirectory",
+  "description": "Import GeoDirectory listings.",
+  "source": "geodirectory",
+  "version": "1",
+  "order": 100,
+  "delimiter": ",",
+  "mapping": {
+    "post_title": "title",
+    "post_content": "content",
+    "post_excerpt": "excerpt",
+    "street": "address",
+    "latitude": "latitude",
+    "longitude": "longitude",
+    "featured": "featured_image",
+    "post_images": "gallery",
+    "email": "agent_email",
+    "category": "department",
+    "tags": "tags",
+    "city": "location",
+    "region": "location",
+    "video": "video_url",
+    "phone": "agent_email"
+  }
+}

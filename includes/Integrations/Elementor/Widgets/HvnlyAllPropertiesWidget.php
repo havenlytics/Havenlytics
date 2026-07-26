@@ -680,16 +680,13 @@ private function render_property_loop(\WP_Query $property_query, array $settings
         $formatted_price = function_exists('hvnly_format_price') ? hvnly_format_price($price) : '$' . number_format(floatval($price));
         $bedrooms = get_post_meta(get_the_ID(), '_hvnly_property_bedrooms', true);
         $bathrooms = get_post_meta(get_the_ID(), '_hvnly_property_bathrooms', true);
-        $thumbnail = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+        $thumbnail = function_exists('hvnly_get_property_thumbnail_url')
+            ? hvnly_get_property_thumbnail_url(get_the_ID(), 'medium')
+            : (string) get_the_post_thumbnail_url(get_the_ID(), 'medium');
         ?>
 <div class="hvnly-property-grid-list-item">
     <div class="hvnly-property-grid-list-thumb">
-        <?php if ($thumbnail) : ?>
         <img src="<?php echo esc_url($thumbnail); ?>" alt="<?php the_title_attribute(); ?>">
-        <?php else : ?>
-        <img src="<?php echo esc_url(HVNLYNAB_ASSETS_URL . '/images/property-placeholder.jpg'); ?>"
-            alt="<?php the_title_attribute(); ?>">
-        <?php endif; ?>
     </div>
     <div class="hvnly-property--grid-list--single__content">
         <h3 class="hvnly-property--grid-list--title">
