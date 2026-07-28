@@ -65,7 +65,7 @@ class AgentsField extends BaseFieldType {
 		>
 			<div class="hvnly-agents-section-field__title" style="margin-bottom: 15px;">
 				<label for="<?php echo esc_attr( $title_field_name ); ?>" style="display: block; margin-bottom: 5px; font-weight: 600;">
-					<?php echo esc_html( $field['label'] ?? __( 'Section Title', 'havenlytics' ) ); ?>
+					<?php echo esc_html( hvnly_translate_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Section Title' ) ) ); ?>
 				</label>
 				<input
 					type="text"
@@ -262,7 +262,7 @@ class AgentsField extends BaseFieldType {
 				sprintf(
 					/* translators: %s: field label */
 					__( 'At least one agent is required for "%s".', 'havenlytics' ),
-					esc_html( $field['label'] ?? __( 'Agents', 'havenlytics' ) )
+					hvnly_esc_html_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Agents' ) )
 				)
 			);
 		}

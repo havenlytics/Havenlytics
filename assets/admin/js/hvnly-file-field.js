@@ -7,6 +7,9 @@
 (function($) {
     'use strict';
 
+    const i18n = (window.HvnlyFileField && window.HvnlyFileField.i18n) || {};
+    const t = (key, fallback) => (i18n[key] && String(i18n[key])) || fallback;
+
     class HavenlyticsFileField {
         constructor(fieldId, $container) {
             this.fieldId = fieldId;
@@ -85,9 +88,9 @@
 
             // Create new media frame
             this.mediaFrame = wp.media({
-                title: this.fileType === 'image' ? 'Select or Upload Image' : 'Select or Upload File',
+                title: this.fileType === 'image' ? t('selectImage', 'Select or Upload Image') : t('selectFile', 'Select or Upload File'),
                 button: {
-                    text: 'Select File'
+                    text: t('selectButton', 'Select File')
                 },
                 multiple: false,
                 library: allowedTypes ? { type: allowedTypes } : null
@@ -121,14 +124,14 @@
                 if (self.fileType === 'pdf') {
                     isValid = fileUrl.toLowerCase().endsWith('.pdf') || attachment.mime === 'application/pdf';
                     if (!isValid) {
-                        alert('Please select a valid PDF file.');
+                        alert(t('invalidPdf', 'Please select a valid PDF file.'));
                         self.isSelecting = false;
                         return;
                     }
                 } else if (self.fileType === 'image') {
                     isValid = /\.(jpe?g|png|gif|webp|bmp)$/i.test(fileUrl) || (attachment.mime && attachment.mime.startsWith('image/'));
                     if (!isValid) {
-                        alert('Please select a valid image file (JPG, PNG, GIF, WEBP, BMP).');
+                        alert(t('invalidImage', 'Please select a valid image file (JPG, PNG, GIF, WEBP, BMP).'));
                         self.isSelecting = false;
                         return;
                     }

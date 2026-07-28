@@ -252,6 +252,16 @@ class Frontend
     private function init_hooks()
     {
         add_action('init', array($this, 'load_template_functions'));
+
+        if ( ! class_exists( '\HvnlyNab\Admin\Data\DemoContentLocalizer' ) ) {
+            $localizer = HVNLYNAB_INCLUDES . '/Admin/Data/DemoContentLocalizer.php';
+            if ( is_file( $localizer ) ) {
+                require_once $localizer;
+            }
+        }
+        if ( class_exists( '\HvnlyNab\Admin\Data\DemoContentLocalizer' ) ) {
+            \HvnlyNab\Admin\Data\DemoContentLocalizer::register_hooks();
+        }
     }
 
     /**

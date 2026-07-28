@@ -18,8 +18,15 @@ final class Menu
     private const PAGE_SLUG_ANALYTICS        = 'hvnly_property_reports_analytics';
     private const SUBMENU_SLUG_ANALYTICS     = 'hvnly_analytics_overview';
 
-    /** Admin hook suffix for the Overview submenu screen. */
-    private const HOOK_ANALYTICS_OVERVIEW = 'analytics_page_hvnly_analytics_overview';
+    /**
+     * Hook suffix returned by add_submenu_page() for Analytics Overview.
+     *
+     * Locale-dependent when derived from the translated parent menu title; always
+     * prefer {@see self::is_analytics_overview_request()} for enqueue routing.
+     *
+     * @var string
+     */
+    private static $analytics_overview_hook = '';
 
     /** Menu positions — grouped before WordPress Posts (5). */
     private const MENU_POSITION_BUILDER  = 4.1;
@@ -72,7 +79,7 @@ final class Menu
             self::MENU_POSITION_ANALYTICS
         );
 
-        add_submenu_page(
+        $overview_hook = add_submenu_page(
             self::PAGE_SLUG_ANALYTICS,
             esc_html__( 'Overview', 'havenlytics' ),
             esc_html__( 'Overview', 'havenlytics' ),
@@ -80,6 +87,50 @@ final class Menu
             self::SUBMENU_SLUG_ANALYTICS,
             [ $this, 'render_reports' ]
         );
+
+        if ( is_string( $overview_hook ) && '' !== $overview_hook ) {
+            self::$analytics_overview_hook = $overview_hook;
+        }
+    }
+
+    /**
+     * Locale-independent Analytics Overview page slug.
+     *
+     * @return string
+     */
+    public static function get_analytics_overview_slug(): string {
+        return self::SUBMENU_SLUG_ANALYTICS;
+    }
+
+    /**
+     * Hook suffix captured from add_submenu_page() (may vary by locale).
+     *
+     * @return string
+     */
+    public static function get_analytics_overview_hook(): string {
+        return self::$analytics_overview_hook;
+    }
+
+    /**
+     * Whether the current admin request is the Analytics Overview screen.
+     *
+     * Uses the stable page slug — never the translated menu-title hook prefix.
+     *
+     * @param string $hook_suffix Optional admin_enqueue_scripts hook suffix.
+     * @return bool
+     */
+    public static function is_analytics_overview_request( string $hook_suffix = '' ): bool {
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only routing.
+        $page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( (string) $_GET['page'] ) ) : '';
+        if ( self::SUBMENU_SLUG_ANALYTICS === $page ) {
+            return true;
+        }
+
+        if ( '' !== $hook_suffix && '' !== self::$analytics_overview_hook && $hook_suffix === self::$analytics_overview_hook ) {
+            return true;
+        }
+
+        return false;
     }
 
     public function register_submenus(): void
@@ -275,19 +326,32 @@ final class Menu
     {
         $screen = function_exists('get_current_screen') ? get_current_screen() : null;
 
-        if (
-            $screen
-            && in_array(
-                $screen->id,
+        $analytics_overview_ids = array_values(
+            array_filter(
                 [
-                    'hvnly_property_page_hvnly_property_builder',
-                    'hvnly_property_page_hvnly_property_settings',
-                    'hvnly_property_page_hvnly_property_reports_analytics',
-                    'toplevel_page_' . self::PAGE_SLUG_PROPERTY_BUILDER,
-                    'toplevel_page_' . self::PAGE_SLUG_ANALYTICS,
-                    self::HOOK_ANALYTICS_OVERVIEW,
-                ],
-                true
+                    self::$analytics_overview_hook,
+                ]
+            )
+        );
+
+        if (
+            self::is_analytics_overview_request()
+            || (
+                $screen
+                && in_array(
+                    $screen->id,
+                    array_merge(
+                        [
+                            'hvnly_property_page_hvnly_property_builder',
+                            'hvnly_property_page_hvnly_property_settings',
+                            'hvnly_property_page_hvnly_property_reports_analytics',
+                            'toplevel_page_' . self::PAGE_SLUG_PROPERTY_BUILDER,
+                            'toplevel_page_' . self::PAGE_SLUG_ANALYTICS,
+                        ],
+                        $analytics_overview_ids
+                    ),
+                    true
+                )
             )
         ) {
             $classes .= ' hvnly-admin-page-loading';
@@ -322,7 +386,9 @@ final class Menu
         $screens[] = 'hvnly_property_page_hvnly_inquiries';
         $screens[] = 'toplevel_page_' . self::PAGE_SLUG_PROPERTY_BUILDER;
         $screens[] = 'toplevel_page_' . self::PAGE_SLUG_ANALYTICS;
-        $screens[] = self::HOOK_ANALYTICS_OVERVIEW;
+        if ( '' !== self::$analytics_overview_hook ) {
+            $screens[] = self::$analytics_overview_hook;
+        }
         $screens[] = 'toplevel_page_hvnly_inquiries';
         $screens[] = 'edit-hvnly_agent';
         $screens[] = 'hvnly_agent';

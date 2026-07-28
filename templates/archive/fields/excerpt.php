@@ -26,10 +26,9 @@ if (!defined('ABSPATH')) {
 }
 
 // Prefix all variables with hvnly_ to avoid global namespace conflicts
-$hvnly_field_data = $field ?? [];
-$hvnly_field_value = $hvnly_field_data['value'] ?? [];
 $hvnly_property_id = $property_id ?? get_the_ID();
-$hvnly_excerpt_text = $hvnly_field_value['text'] ?? get_the_excerpt($hvnly_property_id);
+// Builder field value.text is demo/preview copy only — never use it on the frontend.
+$hvnly_excerpt_text = get_the_excerpt( $hvnly_property_id );
 
 // Get settings
 $hvnly_word_limit = absint(get_option('hvnly_property_excerpt_word_limit', 20));

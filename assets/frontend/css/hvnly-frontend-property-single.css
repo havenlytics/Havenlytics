@@ -1696,7 +1696,7 @@ button.hvnly-property-single__action-btn {
 /* Property Single default field css */
 .hvnly-property-single__details-card .hvnly-property-single__section-fields .hvnly-field{
       margin-top: var(--hvnly-space-sm);
-    margin-bottom: var(--hvnly-space-sm);
+    /* margin-bottom: var(--hvnly-space-sm); */
 
 }
 .hvnly-property-single__details-card .hvnly-property-single__section-fields .hvnly-field .hvnly-property-single__default-title {
@@ -1704,9 +1704,9 @@ button.hvnly-property-single__action-btn {
     font-weight: 600;
     color: var(--hvnly-text-primary, #2d3748);
     position: relative;
-        margin: 30px 0 20px 0;
+        margin:  0;
     margin-bottom: 5px;
-    margin-top: 20px;    padding-bottom: 10px;
+    
 }
 .hvnly-property-single__details-card .hvnly-property-single__section-fields .hvnly-field .hvnly-property-single__default-title::after {
     content: '';
@@ -2458,6 +2458,7 @@ button.hvnly-property-single__fancybox-nav:focus-visible {
 .hvnly-property-single__fancybox-nav:hover {
     background: rgba(255, 255, 255, 0.22);
     border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-50%);
 }
 
 .hvnly-property-single__fancybox-nav:focus-visible {
@@ -2648,7 +2649,7 @@ button.hvnly-property-single__fancybox-nav:focus-visible {
     display: flex;
     gap: var(--hvnly-space-sm);
 }
-
+.hvnly-property-single__carousel-controls
 button.hvnly-property-single__carousel-btn {
     width: 44px;
     height: 44px;
@@ -2661,9 +2662,11 @@ button.hvnly-property-single__carousel-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--hvnly-shadow-card);
+    box-shadow: var(--hvnly-shadow-card);    padding: 20px;
 }
+.hvnly-property-single__carousel-controls
 button.hvnly-property-single__carousel-btn:focus i{ color: var(--hvnly-color-white)}
+.hvnly-property-single__carousel-controls
 button.hvnly-property-single__carousel-btn:hover:not(:disabled) {
     /* Sprint 31E: color + glow only — arrows no longer hop upward. */
     background: var(--hvnly-brand-primary);
@@ -2671,13 +2674,13 @@ button.hvnly-property-single__carousel-btn:hover:not(:disabled) {
     border-color: var(--hvnly-brand-primary);
     box-shadow: 0 4px 14px -4px rgba(var(--hvnly-primary-rgb), 0.5);
 }
-
+.hvnly-property-single__carousel-controls
 button.hvnly-property-single__carousel-btn:focus-visible {
     outline: none;
     box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.28);
     border-color: var(--hvnly-brand-primary);
 }
-
+.hvnly-property-single__carousel-controls
 button.hvnly-property-single__carousel-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;

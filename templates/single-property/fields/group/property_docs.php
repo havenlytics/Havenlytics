@@ -195,12 +195,11 @@ if ( $hvnly_is_sidebar && ! $hvnly_show_in_sidebar ) {
                 if ( empty( $hvnly_label ) || empty( $hvnly_url ) ) continue;
             ?>
     <a href="<?php echo esc_url( $hvnly_url ); ?>" target="_blank" rel="noopener noreferrer"
-        class="hvnly-property-single__stat-item hvnly-property-single__stat-item--link"
-        style="text-decoration: none; color: inherit;">
+        class="hvnly-property-single__stat-item hvnly-property-single__stat-item--link">
         <span class="hvnly-property-single__stat-value">
             <i class="fas fa-<?php echo esc_attr( $hvnly_icon ); ?>"></i>
         </span>
-        <span class="hvnly-property-single__stat-label"><?php echo esc_html( $hvnly_label ); ?></span>
+        <span class="hvnly-property-single__stat-label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?></span>
     </a>
     <?php endforeach; ?>
 </div>
@@ -208,7 +207,7 @@ if ( $hvnly_is_sidebar && ! $hvnly_show_in_sidebar ) {
 <?php else : ?>
 <!-- Property Documents Widget (Sidebar) -->
 <div class="hvnly-widget">
-    <h3 class="hvnly-widget__title"><?php echo esc_html( $hvnly_group_name ); ?></h3>
+    <h3 class="hvnly-widget__title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_group_name ) ) : esc_html( $hvnly_group_name ); ?></h3>
 
     <div class="hvnly-property-single__stats hvnly-property-single__stats--vertical">
         <?php foreach ( $hvnly_documents as $hvnly_document ) : 
@@ -226,7 +225,7 @@ if ( $hvnly_is_sidebar && ! $hvnly_show_in_sidebar ) {
                 <i class="fas fa-<?php echo esc_attr( $hvnly_icon ); ?>"></i>
             </span>
             <span class="hvnly-property-single__stat-label"
-                style="flex: 1;"><?php echo esc_html( $hvnly_label ); ?></span>
+                style="flex: 1;"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?></span>
             <i class="fas fa-external-link-alt" style="font-size: 0.8rem; opacity: 0.5;"></i>
         </a>
         <?php endforeach; ?>

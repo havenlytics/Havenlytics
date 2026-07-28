@@ -127,6 +127,9 @@ class DnDCardBuilder
             }
 
             $sections = $this->build_sections_storage($sections_data);
+            if ( function_exists( 'hvnly_canonicalize_ui_tree' ) ) {
+                $sections = hvnly_canonicalize_ui_tree( $sections );
+            }
             update_option($this->storage_key, $sections);
 
             return rest_ensure_response([
@@ -315,6 +318,18 @@ class DnDCardBuilder
      */
     private function get_default_sections()
     {
+        static $building = false;
+        if ( ! $building && function_exists( 'hvnly_with_english_ui' ) ) {
+            $building = true;
+            try {
+                return hvnly_with_english_ui( function () {
+                    return $this->get_default_sections();
+                } );
+            } finally {
+                $building = false;
+            }
+        }
+
         return [
             [
                 'id' => 'image-overlay-top-left',

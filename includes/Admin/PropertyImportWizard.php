@@ -1434,22 +1434,22 @@ class PropertyImportWizard {
             }
 
             if ( $this->import_running ) {
-                wp_send_json_error( 'Import already in progress.' );
+                wp_send_json_error( __( 'Import already in progress.', 'havenlytics' ) );
                 return;
             }
 
             if ( ! check_ajax_referer( 'hvnly_import_nonce', 'nonce', false ) ) {
-                wp_send_json_error( 'Security check failed.' );
+                wp_send_json_error( __( 'Security check failed.', 'havenlytics' ) );
                 return;
             }
 
             if ( ! isset( $_POST['csrf_token'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['csrf_token'] ) ), 'hvnly_import_csrf' ) ) {
-                wp_send_json_error( 'CSRF validation failed.' );
+                wp_send_json_error( __( 'CSRF validation failed.', 'havenlytics' ) );
                 return;
             }
 
             if ( ! current_user_can( 'manage_options' ) ) {
-                wp_send_json_error( 'Insufficient permissions.' );
+                wp_send_json_error( __( 'Insufficient permissions.', 'havenlytics' ) );
                 return;
             }
 
@@ -1566,15 +1566,15 @@ class PropertyImportWizard {
                 $this->import_running = false;
             }
             if ( ! check_ajax_referer( 'hvnly_import_nonce', 'nonce', false ) ) {
-                wp_send_json_error( 'Security check failed.' );
+                wp_send_json_error( __( 'Security check failed.', 'havenlytics' ) );
                 return;
             }
             if ( ! isset( $_POST['csrf_token'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['csrf_token'] ) ), 'hvnly_import_csrf' ) ) {
-                wp_send_json_error( 'CSRF validation failed.' );
+                wp_send_json_error( __( 'CSRF validation failed.', 'havenlytics' ) );
                 return;
             }
             if ( ! current_user_can( 'manage_options' ) ) {
-                wp_send_json_error( 'Insufficient permissions.' );
+                wp_send_json_error( __( 'Insufficient permissions.', 'havenlytics' ) );
                 return;
             }
 
@@ -1592,7 +1592,7 @@ class PropertyImportWizard {
             }
 
             $this->log_error( 'Import cancelled by user at ' . current_time( 'mysql' ) );
-            wp_send_json_success( [ 'message' => 'Import cancelled successfully.' ] );
+            wp_send_json_success( [ 'message' => __( 'Import cancelled successfully.', 'havenlytics' ) ] );
         } catch ( \Exception $e ) {
             $this->log_error( 'Cancel import error: ' . $e->getMessage() );
             wp_send_json_error( $e->getMessage() );
@@ -2165,7 +2165,11 @@ class PropertyImportWizard {
                     'total'      => $total_to_import,
                     'complete'   => true,
                     'percent'    => 100,
-                    'message'    => sprintf( 'Import complete! Imported %d properties.', $total_to_import ),
+                    'message'    => sprintf(
+						/* translators: %d: number of imported properties */
+						__( 'Import complete! Imported %d properties.', 'havenlytics' ),
+						$total_to_import
+					),
                     'errors'     => null,
                 ];
             }
@@ -2197,7 +2201,12 @@ class PropertyImportWizard {
                         'complete'   => false,
                         'cancelled'  => true,
                         'percent'    => $total_to_import > 0 ? round( ( ( $imported + $imported_count ) / $total_to_import ) * 100 ) : 0,
-                        'message'    => sprintf( 'Import cancelled after %d of %d properties.', $imported + $imported_count, $total_to_import ),
+                        'message'    => sprintf(
+							/* translators: 1: Number of properties imported before cancel, 2: Total properties planned. */
+							__( 'Import cancelled after %1$d of %2$d properties.', 'havenlytics' ),
+							$imported + $imported_count,
+							$total_to_import
+						),
                         'errors'     => ! empty( $errors ) ? $errors : null,
                     ];
                 }
@@ -2285,7 +2294,11 @@ class PropertyImportWizard {
                     'total'      => $total_to_import,
                     'complete'   => true,
                     'percent'    => 100,
-                    'message'    => sprintf( 'Import complete! Imported %d properties.', $new_total_imported ),
+                    'message'    => sprintf(
+						/* translators: %d: number of imported properties */
+						__( 'Import complete! Imported %d properties.', 'havenlytics' ),
+						$new_total_imported
+					),
                     'errors'     => ! empty( $errors ) ? $errors : null,
                 ];
             }
@@ -2306,7 +2319,12 @@ class PropertyImportWizard {
                 'total'      => $total_to_import,
                 'complete'   => false,
                 'percent'    => round( ( $new_total_imported / $total_to_import ) * 100 ),
-                'message'    => sprintf( 'Imported %d of %d properties...', $new_total_imported, $total_to_import ),
+                'message'    => sprintf(
+					/* translators: 1: Number of properties imported so far, 2: Total properties planned. */
+					__( 'Imported %1$d of %2$d properties...', 'havenlytics' ),
+					$new_total_imported,
+					$total_to_import
+				),
                 'errors'     => ! empty( $errors ) ? $errors : null,
             ];
 
@@ -2963,19 +2981,115 @@ class PropertyImportWizard {
             }
         }
 
+        // Term names are wrapped so a fresh install under a translated locale
+        // seeds localized demo taxonomy labels (never rewrites user-created terms).
         $taxonomies = [
-            'hvnly_prop_depts' => [ 'sale' => 'Sale', 'rent' => 'Rent', 'commercial' => 'Commercial', 'let' => 'Let' ],
-            'hvnly_prop_types' => [ 'cottage' => 'Cottage', 'duplex' => 'Duplex', 'flat' => 'Flat', 'land' => 'Land', 'garage' => 'Garage', 'mews' => 'Mews', 'triplex' => 'Triplex' ],
-            'hvnly_prop_features' => [ 'studio' => 'Studio', 'premium' => 'Premium', 'privacy' => 'Privacy', 'rooftop-terrace' => 'Rooftop Terrace', 'hardwood-floors' => 'Hardwood Floors', 'central-air' => 'Central Air', 'fireplace' => 'Fireplace', 'pool' => 'Pool', 'gym' => 'Gym', 'parking' => 'Parking', 'elevator' => 'Elevator', 'balcony' => 'Balcony', 'garden' => 'Garden', 'security' => 'Security' ],
+            'hvnly_prop_depts' => [
+                'sale' => __( 'Sale', 'havenlytics' ),
+                'rent' => __( 'Rent', 'havenlytics' ),
+                'commercial' => __( 'Commercial', 'havenlytics' ),
+                'let' => __( 'Let', 'havenlytics' ),
+            ],
+            'hvnly_prop_types' => [
+                'apartment' => __( 'Apartment', 'havenlytics' ),
+                'bungalow' => __( 'Bungalow', 'havenlytics' ),
+                'cabin' => __( 'Cabin', 'havenlytics' ),
+                'condo' => __( 'Condo', 'havenlytics' ),
+                'cottage' => __( 'Cottage', 'havenlytics' ),
+                'duplex' => __( 'Duplex', 'havenlytics' ),
+                'flat' => __( 'Flat', 'havenlytics' ),
+                'garage' => __( 'Garage', 'havenlytics' ),
+                'house' => __( 'House', 'havenlytics' ),
+                'land' => __( 'Land', 'havenlytics' ),
+                'mews' => __( 'Mews', 'havenlytics' ),
+                'mixed-use' => __( 'Mixed Use', 'havenlytics' ),
+                'office' => __( 'Office', 'havenlytics' ),
+                'penthouse' => __( 'Penthouse', 'havenlytics' ),
+                'retail' => __( 'Retail', 'havenlytics' ),
+                'single-family' => __( 'Single Family', 'havenlytics' ),
+                'studio' => __( 'Studio', 'havenlytics' ),
+                'townhouse' => __( 'Townhouse', 'havenlytics' ),
+                'triplex' => __( 'Triplex', 'havenlytics' ),
+                'villa' => __( 'Villa', 'havenlytics' ),
+                'warehouse' => __( 'Warehouse', 'havenlytics' ),
+            ],
+            'hvnly_prop_features' => [
+                'studio' => __( 'Studio', 'havenlytics' ),
+                'premium' => __( 'Premium', 'havenlytics' ),
+                'privacy' => __( 'Privacy', 'havenlytics' ),
+                'rooftop-terrace' => __( 'Rooftop Terrace', 'havenlytics' ),
+                'hardwood-floors' => __( 'Hardwood Floors', 'havenlytics' ),
+                'central-air' => __( 'Central Air', 'havenlytics' ),
+                'fireplace' => __( 'Fireplace', 'havenlytics' ),
+                'pool' => __( 'Pool', 'havenlytics' ),
+                'gym' => __( 'Gym', 'havenlytics' ),
+                'parking' => __( 'Parking', 'havenlytics' ),
+                'elevator' => __( 'Elevator', 'havenlytics' ),
+                'balcony' => __( 'Balcony', 'havenlytics' ),
+                'garden' => __( 'Garden', 'havenlytics' ),
+                'security' => __( 'Security', 'havenlytics' ),
+            ],
             'hvnly_prop_locations' => array_merge(
                 [
-                    'abu-dhabi' => 'Abu Dhabi', 'berlin' => 'Berlin', 'boston' => 'Boston', 'chicago' => 'Chicago', 'coastal' => 'Coastal', 'dallas' => 'Dallas', 'dubai' => 'Dubai', 'hong-kong' => 'Hong Kong', 'london' => 'London', 'los-angeles' => 'Los Angeles', 'miami' => 'Miami', 'new-york' => 'New York', 'paris' => 'Paris', 'san-francisco' => 'San Francisco', 'seattle' => 'Seattle', 'singapore' => 'Singapore', 'sydney' => 'Sydney', 'tokyo' => 'Tokyo', 'toronto' => 'Toronto', 'vancouver' => 'Vancouver',
+                    'abu-dhabi' => __( 'Abu Dhabi', 'havenlytics' ),
+                    'berlin' => __( 'Berlin', 'havenlytics' ),
+                    'boston' => __( 'Boston', 'havenlytics' ),
+                    'chicago' => __( 'Chicago', 'havenlytics' ),
+                    'coastal' => __( 'Coastal', 'havenlytics' ),
+                    'dallas' => __( 'Dallas', 'havenlytics' ),
+                    'dubai' => __( 'Dubai', 'havenlytics' ),
+                    'hong-kong' => __( 'Hong Kong', 'havenlytics' ),
+                    'london' => __( 'London', 'havenlytics' ),
+                    'los-angeles' => __( 'Los Angeles', 'havenlytics' ),
+                    'miami' => __( 'Miami', 'havenlytics' ),
+                    'new-york' => __( 'New York', 'havenlytics' ),
+                    'paris' => __( 'Paris', 'havenlytics' ),
+                    'san-francisco' => __( 'San Francisco', 'havenlytics' ),
+                    'seattle' => __( 'Seattle', 'havenlytics' ),
+                    'singapore' => __( 'Singapore', 'havenlytics' ),
+                    'sydney' => __( 'Sydney', 'havenlytics' ),
+                    'tokyo' => __( 'Tokyo', 'havenlytics' ),
+                    'toronto' => __( 'Toronto', 'havenlytics' ),
+                    'vancouver' => __( 'Vancouver', 'havenlytics' ),
                 ],
                 $uk_location_terms
             ),
-            'hvnly_prop_status' => [ 'for-sale' => 'For Sale', 'for-rent' => 'For Rent', 'pending' => 'Pending', 'sold' => 'Sold', 'under-offer' => 'Under Offer', 'exchanged' => 'Exchanged' ],
-            'hvnly_prop_badges' => [ 'featured' => 'Featured', 'new' => 'New', 'popular' => 'Popular' ],
-            'hvnly_prop_tags' => [ 'apartment' => 'Apartment', 'bungalow' => 'Bungalow', 'commercial' => 'Commercial', 'cottage' => 'Cottage', 'duplex' => 'Duplex', 'flat' => 'Flat', 'house' => 'House', 'land' => 'Land', 'office' => 'Office', 'retail' => 'Retail', 'studio' => 'Studio', 'townhouse' => 'Townhouse', 'warehouse' => 'Warehouse' ],
+            'hvnly_prop_status' => [
+                'for-sale' => __( 'For Sale', 'havenlytics' ),
+                'for-rent' => __( 'For Rent', 'havenlytics' ),
+                'for-lease' => __( 'For Lease', 'havenlytics' ),
+                'pending' => __( 'Pending', 'havenlytics' ),
+                'sold' => __( 'Sold', 'havenlytics' ),
+                'under-offer' => __( 'Under Offer', 'havenlytics' ),
+                'exchanged' => __( 'Exchanged', 'havenlytics' ),
+                'seasonal' => __( 'Seasonal', 'havenlytics' ),
+            ],
+            'hvnly_prop_badges' => [
+                'featured' => __( 'Featured', 'havenlytics' ),
+                'new' => __( 'New', 'havenlytics' ),
+                'popular' => __( 'Popular', 'havenlytics' ),
+            ],
+            'hvnly_prop_tags' => [
+                'apartment' => __( 'Apartment', 'havenlytics' ),
+                'bungalow' => __( 'Bungalow', 'havenlytics' ),
+                'cabin' => __( 'Cabin', 'havenlytics' ),
+                'commercial' => __( 'Commercial', 'havenlytics' ),
+                'condo' => __( 'Condo', 'havenlytics' ),
+                'cottage' => __( 'Cottage', 'havenlytics' ),
+                'duplex' => __( 'Duplex', 'havenlytics' ),
+                'flat' => __( 'Flat', 'havenlytics' ),
+                'house' => __( 'House', 'havenlytics' ),
+                'land' => __( 'Land', 'havenlytics' ),
+                'mixed-use' => __( 'Mixed Use', 'havenlytics' ),
+                'office' => __( 'Office', 'havenlytics' ),
+                'penthouse' => __( 'Penthouse', 'havenlytics' ),
+                'retail' => __( 'Retail', 'havenlytics' ),
+                'single-family' => __( 'Single Family', 'havenlytics' ),
+                'studio' => __( 'Studio', 'havenlytics' ),
+                'townhouse' => __( 'Townhouse', 'havenlytics' ),
+                'villa' => __( 'Villa', 'havenlytics' ),
+                'warehouse' => __( 'Warehouse', 'havenlytics' ),
+            ],
         ];
 
         foreach ( $taxonomies as $taxonomy => $terms ) {
@@ -3091,7 +3205,7 @@ class PropertyImportWizard {
         
         $meta_input['_hvnly_property_lot_size'] = isset( $data['lot_size'] ) && !empty( $data['lot_size'] ) 
             ? sanitize_text_field( $data['lot_size'] ) 
-            : wp_rand( 4000, 15000 ) . ' sq ft';
+            : wp_rand( 4000, 15000 ) . ' ' . __( 'sq ft', 'havenlytics' );
 
         return $meta_input;
     }
@@ -3104,7 +3218,7 @@ class PropertyImportWizard {
         if ( isset( $data['lot_size'] ) && ! empty( $data['lot_size'] ) ) {
             $meta_input['_hvnly_property_lot_size'] = sanitize_text_field( $data['lot_size'] );
         } elseif ( ! isset( $meta_input['_hvnly_property_lot_size'] ) ) {
-            $meta_input['_hvnly_property_lot_size'] = wp_rand( 4000, 15000 ) . ' sq ft';
+            $meta_input['_hvnly_property_lot_size'] = wp_rand( 4000, 15000 ) . ' ' . __( 'sq ft', 'havenlytics' );
         }
         
         // HOA Fee
@@ -3845,6 +3959,12 @@ private function create_demo_property( $data, $options = [] ) {
         throw new \Exception( esc_html( $post_id->get_error_message() ) );
     }
 
+    if ( class_exists( '\HvnlyNab\Admin\Data\DemoContentLocalizer' ) ) {
+        \HvnlyNab\Admin\Data\DemoContentLocalizer::mark_demo_post( (int) $post_id );
+    } else {
+        update_post_meta( (int) $post_id, '_hvnly_is_demo', '1' );
+    }
+
     // Persist contact presets after insert (editor + card footer). meta_input
     // already includes them; this guarantees the keys exist if anything in the
     // insert path skipped unregistered meta.
@@ -4154,6 +4274,8 @@ private function create_demo_property( $data, $options = [] ) {
                     if ( ! empty( $term ) ) {
                         if ( ! term_exists( $term, $taxonomy ) ) {
                             $term_name = ucwords( str_replace( [ '-', '_' ], ' ', $term ) );
+                            // Translate bundled demo term labels at seed time only.
+                            $term_name = __( $term_name, 'havenlytics' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
                             wp_insert_term( $term_name, $taxonomy, [ 'slug' => $term ] );
                         }
                         if ( term_exists( $term, $taxonomy ) ) {

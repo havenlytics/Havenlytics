@@ -34,7 +34,7 @@ class TextField extends BaseFieldType {
             esc_attr($field_id),
             esc_attr($field_name),
             esc_attr($value),
-            esc_attr($field['placeholder'] ?? ''),
+            hvnly_esc_attr_ui( (string) ( $field['placeholder'] ?? '' ) ),
             $is_required ? 'required' : ''
         );
         
@@ -60,7 +60,7 @@ class TextField extends BaseFieldType {
             return new \WP_Error('required_field', sprintf(
                 /* translators: %s: field label */
                 __('The field "%s" is required.', 'havenlytics'),
-                esc_html($field['label'])
+                hvnly_esc_html_ui( (string) $field['label'] )
             ));
         }
         return true;

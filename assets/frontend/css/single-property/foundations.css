@@ -1,0 +1,35 @@
+/**
+ * Havenlytics 3.7.0 — Single Property foundations
+ * ================================================
+ * Two page-wide accessibility rules, scoped to body.hvnly-property-single
+ * and both inert for the default (mouse, no-preference) user:
+ *  - keyboard :focus-visible ring
+ *  - prefers-reduced-motion damping
+ *
+ * @package Havenlytics
+ * @since   3.7.0
+ */
+
+/* ----------------------------------------------------------------------
+ * Focus states — one visible ring everywhere, keyboard-only.
+ * :focus-visible does not fire on mouse click, so pointer users see no
+ * change; keyboard users get a consistent brand ring.
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single :focus-visible {
+    outline: 2px solid var(--hvnly-brand-primary);
+    outline-offset: 2px;
+}
+
+/* ----------------------------------------------------------------------
+ * Reduced motion — collapse all motion for users who ask for it.
+ * -------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    body.hvnly-property-single *,
+    body.hvnly-property-single *::before,
+    body.hvnly-property-single *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

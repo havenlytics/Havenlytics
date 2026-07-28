@@ -127,9 +127,10 @@ abstract class BaseFieldType implements FieldTypeInterface {
         }
         
         $required = isset($field['is_required']) && $field['is_required'] ? '<span class="required">*</span>' : '';
+        $label    = isset( $field['label'] ) ? (string) $field['label'] : '';
         return sprintf(
             '<label>%s%s</label>',
-            esc_html($field['label']),
+            '' !== $label ? hvnly_esc_html_ui( $label ) : '',
             $required
         );
     }
@@ -147,7 +148,7 @@ abstract class BaseFieldType implements FieldTypeInterface {
         
         return sprintf(
             '<p class="description">%s</p>',
-            esc_html($field['description'])
+            hvnly_esc_html_ui( (string) $field['description'] )
         );
     }
 

@@ -29,7 +29,7 @@ class NumberField extends BaseFieldType {
             esc_attr($field['fieldid']),
             esc_attr($field['name']),
             esc_attr($value),
-            esc_attr($field['placeholder'] ?? ''),
+            hvnly_esc_attr_ui( (string) ( $field['placeholder'] ?? '' ) ),
             isset($field['is_required']) && $field['is_required'] ? 'required' : ''
         );
         
@@ -55,7 +55,7 @@ class NumberField extends BaseFieldType {
             return new \WP_Error('required_field', sprintf(
                 /* translators: %s: field label */
                 __('The field "%s" is required.', 'havenlytics'),
-                esc_html($field['label'])
+                hvnly_esc_html_ui( (string) $field['label'] )
             ));
         }
         
@@ -63,7 +63,7 @@ class NumberField extends BaseFieldType {
             return new \WP_Error('invalid_number', sprintf(
                 /* translators: %s: field label */
                 __('"%s" must be a valid number.', 'havenlytics'),
-                esc_html($field['label'])
+                hvnly_esc_html_ui( (string) $field['label'] )
             ));
         }
         

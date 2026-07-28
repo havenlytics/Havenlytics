@@ -37,6 +37,7 @@ $hvnly_mode = $mode ?? 'default';
 
 // Get bathrooms count from property meta
 $hvnly_bathrooms = absint(get_post_meta($hvnly_property_id, '_hvnly_property_bathrooms', true));
+$hvnly_field    = $field ?? array();
 
 // Show in preset mode OR if there are bathrooms in default mode
 if ($hvnly_bathrooms > 0 || $hvnly_mode === 'preset') :
@@ -53,18 +54,14 @@ if ($hvnly_bathrooms > 0 || $hvnly_mode === 'preset') :
             </span>
         <?php endif; ?>
         
-        <!-- Bath/Baths label with proper pluralization -->
+        <!-- Bath/Baths label -->
         <span class="hvnly-property-feature-label">
-            <?php 
-            /* translators: %s: number of bathrooms */
-            echo esc_html( 
-                _n( 
-                    'Bath', 
-                    'Baths', 
-                    $hvnly_bathrooms > 0 ? $hvnly_bathrooms : 1, 
-                    'havenlytics' 
-                ) 
-            ); 
+            <?php
+            echo esc_html(
+                function_exists( 'hvnly_archive_feature_label' )
+                    ? hvnly_archive_feature_label( $hvnly_field, 'Bath', 'Baths', $hvnly_bathrooms )
+                    : _n( 'Bath', 'Baths', $hvnly_bathrooms > 0 ? $hvnly_bathrooms : 1, 'havenlytics' )
+            );
             ?>
         </span>
     </div>

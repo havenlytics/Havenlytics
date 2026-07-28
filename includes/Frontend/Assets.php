@@ -50,6 +50,8 @@ class Assets
         add_action('wp_enqueue_scripts', [$this, 'setup_page_conditions'], 1);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
+        // Late: beat theme global button CSS (Astra, Kadence, Hello, etc.)
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_theme_button_isolation'], 999);
 
         add_action('template_redirect', [$this, 'start_output_buffering'], 1);
 
@@ -61,6 +63,7 @@ class Assets
         add_action('elementor/preview/enqueue_scripts', [$this, 'enqueue_elementor_assets'], 5);
         add_action('elementor/editor/after_enqueue_scripts', [$this, 'enqueue_elementor_editor_assets']);
         add_action('elementor/frontend/after_enqueue_styles', [$this, 'enqueue_elementor_styles'], 5);
+        add_action('elementor/frontend/after_enqueue_styles', [$this, 'enqueue_theme_button_isolation'], 20);
     }
 
     /**
@@ -447,8 +450,71 @@ class Assets
         
         // Always load responsive CSS last
         wp_enqueue_style('hvnly-frontend-property-responsive');
+
+        // Haven Design System v2 skin (@since 3.7.0) — single property ONLY.
+        // Enqueued last so it cascades after every legacy stylesheet; legacy
+        // CSS stays enqueued underneath (dequeue this one handle = rollback).
+        if ($this->is_single_property) {
+            if (!wp_style_is('hvnly-frontend-single-property-v2', 'registered')) {
+                wp_register_style(
+                    'hvnly-frontend-single-property-v2',
+                    HVNLYNAB_ASSETS_URL . '/frontend/css/single-property/single-property.css',
+                    ['hvnly-frontend-property-single', 'hvnly-frontend-property-responsive'],
+                    HVNLYNAB_VERSION
+                );
+            }
+            wp_enqueue_style('hvnly-frontend-single-property-v2');
+
+            // Hero image: the property's featured image is painted onto the
+            // header's image LAYER (the container ::before). The gradient
+            // scrim and all layout live in CSS; this only supplies the URL,
+            // so no featured image simply falls back to a neutral tint.
+            // Presentation only; no markup change.
+            $hvnly_hero_url = get_the_post_thumbnail_url(get_queried_object_id(), 'large');
+            if ($hvnly_hero_url) {
+                $hvnly_hero_css = sprintf(
+                    'body.hvnly-property-single .hvnly-property-single__header .hvnly-property-single__container::before{background-image:url(%s);}',
+                    esc_url($hvnly_hero_url)
+                );
+                wp_add_inline_style('hvnly-frontend-single-property-v2', $hvnly_hero_css);
+            }
+        }
     }
     
+    /**
+     * Enqueue theme button isolation CSS late so global theme `button` /
+     * `input[type=submit]` rules (Astra, Kadence, Hello Elementor, etc.)
+     * cannot restyle Havenlytics controls. Safe no-op when base styles
+     * were not registered (non-frontend contexts).
+     *
+     * @return void
+     */
+    public function enqueue_theme_button_isolation()
+    {
+        if (!wp_style_is('hvnly-frontend-default', 'registered') && !wp_style_is('hvnly-frontend-default', 'enqueued')) {
+            return;
+        }
+
+        if (!wp_style_is('hvnly-frontend-theme-button-isolation', 'registered')) {
+            wp_register_style(
+                'hvnly-frontend-theme-button-isolation',
+                HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-theme-button-isolation.css',
+                ['hvnly-frontend-default', 'hvnly-frontend-components'],
+                HVNLYNAB_VERSION
+            );
+        }
+
+        // Only when Havenlytics frontend CSS is actually in play.
+        if (
+            wp_style_is('hvnly-frontend-default', 'enqueued')
+            || wp_style_is('hvnly-frontend-components', 'enqueued')
+            || wp_style_is('hvnly-frontend-property-single', 'enqueued')
+            || wp_style_is('hvnly-frontend-property-ajax-filter', 'enqueued')
+        ) {
+            wp_enqueue_style('hvnly-frontend-theme-button-isolation');
+        }
+    }
+
     /**
      * Register all CSS files
      */
@@ -464,6 +530,12 @@ class Assets
             'hvnly-frontend-default' => [
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-default.css',
                 'deps' => [],
+                'ver' => HVNLYNAB_VERSION,
+                'media' => 'all'
+            ],
+            'hvnly-frontend-theme-button-isolation' => [
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-theme-button-isolation.css',
+                'deps' => ['hvnly-frontend-default', 'hvnly-frontend-components'],
                 'ver' => HVNLYNAB_VERSION,
                 'media' => 'all'
             ],
@@ -804,6 +876,14 @@ class Assets
 
         if ($this->is_single_agent) {
             wp_enqueue_script('hvnly-frontend-agent-single');
+            wp_localize_script('hvnly-frontend-agent-single', 'hvnly_agent_single', [
+                'i18n' => [
+                    'listingsMatchDepartment' =>
+                        /* translators: %d: Number of listings matching the selected department. */
+                        __( '%d listing(s) match this department.', 'havenlytics' ),
+                    'noListingsMatchDepartment' => __( 'No listings match this department.', 'havenlytics' ),
+                ],
+            ]);
 
             if (function_exists('hvnly_is_contact_agent_enabled') && hvnly_is_contact_agent_enabled()) {
                 wp_enqueue_script('hvnly-frontend-contact-agent');
@@ -1126,6 +1206,12 @@ class Assets
                 'loading_text'       => esc_html__('Loading...', 'havenlytics'),
                 'load_more_text'     => esc_html__('Load More Properties', 'havenlytics'),
                 'error_text'         => esc_html__('An error occurred. Please try again.', 'havenlytics'),
+                'error_message'      => esc_html__('An error occurred. Please try again.', 'havenlytics'),
+                'success_message'    => esc_html__('Success!', 'havenlytics'),
+                'success_text'       => esc_html__('Success!', 'havenlytics'),
+                'unknown_error'      => esc_html__('Unknown error', 'havenlytics'),
+                'failed_load_properties' => esc_html__('Failed to load properties:', 'havenlytics') . ' ',
+                'load_error'         => esc_html__('An error occurred while loading properties. Please try again.', 'havenlytics'),
                 'properties_found_text' => esc_html__('properties found', 'havenlytics'),
                 'view_type'          => $view_type,
                 'debug'              => ( function_exists( 'hvnly_is_debug_logging_enabled' ) && hvnly_is_debug_logging_enabled() ) ? '1' : '0',
@@ -1211,6 +1297,44 @@ class Assets
                 'is_single_property' => $this->is_single_property,
                 'is_property_archive' => $this->is_property_archive,
                 'debug' => ( function_exists( 'hvnly_is_debug_logging_enabled' ) && hvnly_is_debug_logging_enabled() ) ? '1' : '0',
+                'i18n' => [
+                    'requestTimedOut' => __( 'Request timed out. Please try again.', 'havenlytics' ),
+                    'errorLoadingProperties' => __( 'Error loading properties: ', 'havenlytics' ),
+                    'mapPlaceholderMissing' => __( 'Map placeholder not found on this page.', 'havenlytics' ),
+                    'mapContainerMissing' => __( 'Map container not found. Please try again.', 'havenlytics' ),
+                    'mapConfigError' => __( 'Configuration error: Unable to load map data.', 'havenlytics' ),
+                    'mapContainerInitMissing' => __( 'Map container not found during initialization.', 'havenlytics' ),
+                    'googleMapsMissing' => __( 'Google Maps library not loaded. Please refresh the page.', 'havenlytics' ),
+                    'mapLibraryMissing' => __( 'Map library not loaded. Please refresh the page.', 'havenlytics' ),
+                    'noPropertiesForMap' => __( 'No properties available for map view.', 'havenlytics' ),
+                    'noValidLocations' => __( 'No properties with valid location data found.', 'havenlytics' ),
+                    'noValidLocationsForSearch' => __( 'No properties with valid location data found for your search criteria.', 'havenlytics' ),
+                    'foundWithoutCoordinates' =>
+                        /* translators: %d: Number of properties found without map coordinates. */
+                        __( 'Found %d properties, but none have map coordinates saved. Add latitude/longitude in each property\'s map location field.', 'havenlytics' ),
+                    'noPropertiesMatchedMapFilters' => __( 'No properties matched your current search filters for map view.', 'havenlytics' ),
+                    'unableToLoadMapProperties' => __( 'Unable to load map properties. Please refresh and try again.', 'havenlytics' ),
+                    'errorInitMap' => __( 'Error initializing map: ', 'havenlytics' ),
+                    'errorInitMarkers' => __( 'Error initializing map markers: ', 'havenlytics' ),
+                    'untitledProperty' => __( 'Untitled Property', 'havenlytics' ),
+                    'toggleFullscreen' => __( 'Toggle Fullscreen', 'havenlytics' ),
+                    'exitFullscreen' => __( 'Exit Fullscreen', 'havenlytics' ),
+                    'fullScreen' => __( 'Full Screen', 'havenlytics' ),
+                    'exitFullScreen' => __( 'Exit Full Screen', 'havenlytics' ),
+                    'invalidCoordinates' => __( 'Invalid coordinates', 'havenlytics' ),
+                    'propertyAtLocation' => __( 'Property at this location', 'havenlytics' ),
+                    'propertyLocation' => __( 'Property Location', 'havenlytics' ),
+                    'propertiesAtLocation' => __( 'Properties at this location', 'havenlytics' ),
+                    'propertyImage' => __( 'Property Image', 'havenlytics' ),
+                    'dismissNotification' => __( 'Dismiss notification', 'havenlytics' ),
+                    'loadingMap' => __( 'Loading map…', 'havenlytics' ),
+                    'couldNotLoadProperties' => __( 'Couldn’t load properties.', 'havenlytics' ),
+                    'retry' => __( 'Retry', 'havenlytics' ),
+                    'mapUnavailable' => __( 'Map Unavailable', 'havenlytics' ),
+                    'save' => __( 'Save', 'havenlytics' ),
+                    'view' => __( 'View', 'havenlytics' ),
+                    'viewProperty' => __( 'View Property', 'havenlytics' ),
+                ],
             ];
         }
         
@@ -1266,7 +1390,18 @@ class Assets
         // Localize property data for single property pages
         wp_localize_script('hvnly-frontend-property-single-gallery', 'hvnly_property_data', [
             'property_id' => absint($property_id),
-            'gallery_images' => $this->get_property_gallery_images($property_id)
+            'gallery_images' => $this->get_property_gallery_images($property_id),
+            'i18n' => [
+                'propertyImage' => __( 'Property Image', 'havenlytics' ),
+                'viewImage' =>
+                    /* translators: %d: Image number in the gallery. */
+                    __( 'View image %d', 'havenlytics' ),
+                'goToSlide' =>
+                    /* translators: 1: Current slide group number, 2: Total slide groups. */
+                    __( 'Go to slide group %1$d of %2$d', 'havenlytics' ),
+                'dismissNotification' => __( 'Dismiss notification', 'havenlytics' ),
+                'videoCannotPlay' => __( 'Video cannot be played', 'havenlytics' ),
+            ],
         ]);
     }
     

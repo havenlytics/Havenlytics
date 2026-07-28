@@ -1,0 +1,10 @@
+{
+    "locale": "ru_RU",
+    "updated_at": "2026-07-27T18:50:35+00:00",
+    "cache": {
+        "%1$d %2$s": "%1$d %2$s",
+        "%1$d agent updated to %2$s.": "%1$d агент обновлен до %2$s.",
+        "%1$d agents updated to %2$s.": "%1$d агент обновлен до %2$s."
+    },
+    "permanent_skips": []
+}

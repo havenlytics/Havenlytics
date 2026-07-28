@@ -120,7 +120,7 @@
 		if ( ! url || ! action ) {
 			return Promise.resolve( {
 				ok: false,
-				message: t( 'genericError', 'Something went wrong. Please try again.' ),
+				message: t('genericError'),
 				data: {},
 				code: 'missing_config',
 			} );
@@ -160,7 +160,7 @@
 			.then( function ( json ) {
 				var ok = !! ( json && json.success );
 				var payload = json && json.data && typeof json.data === 'object' ? json.data : {};
-				var message = plain( payload.message ) || ( ok ? '' : t( 'genericError', 'Something went wrong. Please try again.' ) );
+				var message = plain( payload.message ) || ( ok ? '' : t('genericError') );
 				var code = payload.code ? String( payload.code ) : null;
 
 				if ( payload.nonces ) {
@@ -178,7 +178,7 @@
 			.catch( function () {
 				return {
 					ok: false,
-					message: t( 'networkError', 'Network error. Please check your connection and try again.' ),
+					message: t('networkError'),
 					data: {},
 					code: 'network_error',
 				};
@@ -266,16 +266,16 @@
 	AuthBlock.prototype.copy = function ( view ) {
 		var map = {
 			login: {
-				title: t( 'loginTitle', 'Sign in' ),
-				subtitle: t( 'loginSubtitle', 'Access your account.' ),
+				title: t('loginTitle'),
+				subtitle: t('loginSubtitle'),
 			},
 			register: {
-				title: t( 'registerTitle', 'Create account' ),
-				subtitle: t( 'registerSubtitle', 'Create your account to get started.' ),
+				title: t('registerTitle'),
+				subtitle: t('registerSubtitle'),
 			},
 			forgot: {
-				title: t( 'forgotTitle', 'Forgot password' ),
-				subtitle: t( 'forgotSubtitle', 'We will email you a link to reset your password.' ),
+				title: t('forgotTitle'),
+				subtitle: t('forgotSubtitle'),
 			},
 		};
 		return map[ view ] || map.login;
@@ -446,7 +446,7 @@
 		toggle.setAttribute( 'aria-pressed', show ? 'true' : 'false' );
 		toggle.setAttribute(
 			'aria-label',
-			show ? t( 'hidePassword', 'Hide password' ) : t( 'showPassword', 'Show password' )
+			show ? t('hidePassword') : t('showPassword')
 		);
 		toggle.classList.toggle( 'is-visible', show );
 	};
@@ -497,11 +497,11 @@
 
 		var invalid = false;
 		if ( ! log ) {
-			this.fieldError( form.querySelector( '[name="log"]' ), t( 'required', 'This field is required.' ) );
+			this.fieldError( form.querySelector( '[name="log"]' ), t('required') );
 			invalid = true;
 		}
 		if ( ! pwd ) {
-			this.fieldError( form.querySelector( '[name="pwd"]' ), t( 'required', 'This field is required.' ) );
+			this.fieldError( form.querySelector( '[name="pwd"]' ), t('required') );
 			invalid = true;
 		}
 		if ( invalid ) {
@@ -515,7 +515,7 @@
 			function ( res ) {
 				self.setBusy( form, false );
 				if ( res.ok ) {
-					self.setMessage( res.message || t( 'loginSuccess', 'Signed in. Redirecting…' ), 'success' );
+					self.setMessage( res.message || t('loginSuccess'), 'success' );
 					self.resolveRedirect( self.afterLogin, res.data && res.data.redirect );
 				} else {
 					self.setMessage( res.message, 'error' );
@@ -545,27 +545,27 @@
 
 		var invalid = false;
 		if ( ! fields.user_login ) {
-			this.fieldError( form.querySelector( '[name="user_login"]' ), t( 'required', 'This field is required.' ) );
+			this.fieldError( form.querySelector( '[name="user_login"]' ), t('required') );
 			invalid = true;
 		}
 		if ( ! fields.user_email ) {
-			this.fieldError( form.querySelector( '[name="user_email"]' ), t( 'required', 'This field is required.' ) );
+			this.fieldError( form.querySelector( '[name="user_email"]' ), t('required') );
 			invalid = true;
 		} else if ( ! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test( fields.user_email ) ) {
-			this.fieldError( form.querySelector( '[name="user_email"]' ), t( 'invalidEmail', 'Enter a valid email address.' ) );
+			this.fieldError( form.querySelector( '[name="user_email"]' ), t('invalidEmail') );
 			invalid = true;
 		}
 		if ( pass1.length < 8 ) {
-			this.fieldError( pass1El, t( 'passwordTooShort', 'Use a password with at least 8 characters.' ) );
+			this.fieldError( pass1El, t('passwordTooShort') );
 			invalid = true;
 		}
 		if ( pass1 !== pass2 ) {
-			this.fieldError( pass2El, t( 'passwordMismatch', 'Passwords do not match.' ) );
+			this.fieldError( pass2El, t('passwordMismatch') );
 			invalid = true;
 		}
 		var terms = form.querySelector( '[name="hvnly_auth_terms"]' );
 		if ( terms && ! terms.checked ) {
-			this.setMessage( t( 'termsRequired', 'Please accept the terms and conditions.' ), 'error' );
+			this.setMessage( t('termsRequired'), 'error' );
 			invalid = true;
 		}
 		if ( invalid ) {
@@ -590,7 +590,7 @@
 			if ( status === 'pending' ) {
 				// Approval mode — no session yet; show pending message, no redirect.
 				self.setMessage(
-					res.message || t( 'registerPending', 'Account created and awaiting administrator approval.' ),
+					res.message || t('registerPending'),
 					'success'
 				);
 				if ( self.forms.register ) {
@@ -598,7 +598,7 @@
 				}
 				return;
 			}
-			self.setMessage( res.message || t( 'registerSuccess', 'Account created. Redirecting…' ), 'success' );
+			self.setMessage( res.message || t('registerSuccess'), 'success' );
 			self.resolveRedirect( self.afterRegister, res.data && res.data.redirect );
 		} );
 	};
@@ -613,7 +613,7 @@
 
 		var user = this.val( form, 'user_login' );
 		if ( ! user ) {
-			this.fieldError( form.querySelector( '[name="user_login"]' ), t( 'required', 'This field is required.' ) );
+			this.fieldError( form.querySelector( '[name="user_login"]' ), t('required') );
 			return;
 		}
 
@@ -623,7 +623,7 @@
 		postAuthAction( actionFor( 'forgot' ), { user_login: user } ).then( function ( res ) {
 			self.setBusy( form, false );
 			self.setMessage(
-				res.message || t( 'forgotSuccess', 'Check your email for the reset link.' ),
+				res.message || t('forgotSuccess'),
 				res.ok ? 'success' : 'error'
 			);
 			if ( res.ok ) {

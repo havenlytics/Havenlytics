@@ -11,8 +11,8 @@
  * @wordpress-plugin
  * Plugin Name:       Havenlytics – Real Estate Listings, Property Search & Agent Workspace
  * Plugin URI:        https://wordpress.org/plugins/havenlytics/
- * Description:       Powerful WordPress real estate plugin with property listings, AJAX search, maps, galleries, drag-and-drop layouts, and an Agent Workspace.
- * Version:           3.6.0
+ * Description:       Powerful WordPress real estate plugin with property listings, AJAX search, Migration Engine, CSV Import & Export, Gutenberg blocks, Agent Workspace, and multilingual support.
+ * Version:           3.7.0
  * Author:            Havenlytics
  * Author URI:        https://havenlytics.com
  * Requires at least: 6.3
@@ -31,7 +31,7 @@ defined('ABSPATH') || exit;
  * Define plugin constants for paths, URLs, and configuration
  * These constants are used throughout the plugin for easy reference
  */
-define('HVNLYNAB_VERSION', '3.6.0');
+define('HVNLYNAB_VERSION', '3.7.0');
 define('HVNLYNAB_FILE', __FILE__);
 define('HVNLYNAB_BASENAME', plugin_basename(HVNLYNAB_FILE));
 define('HVNLYNAB_SLUG', 'havenlytics');
@@ -60,6 +60,11 @@ if ( is_readable( $hvnly_utility_functions ) ) {
     require_once $hvnly_utility_functions;
 }
 
+$hvnly_ui_storage_i18n = HVNLYNAB_INCLUDES . '/Functions/ui-storage-i18n.php';
+if ( is_readable( $hvnly_ui_storage_i18n ) ) {
+    require_once $hvnly_ui_storage_i18n;
+}
+
 $hvnly_email_functions = HVNLYNAB_INCLUDES . '/Functions/email-functions.php';
 if ( is_readable( $hvnly_email_functions ) ) {
     require_once $hvnly_email_functions;
@@ -78,6 +83,18 @@ if ( is_readable( $hvnly_deletion_safety ) ) {
 $hvnly_template_bootstrap = HVNLYNAB_INCLUDES . '/Functions/template-bootstrap.php';
 if ( is_readable( $hvnly_template_bootstrap ) ) {
     require_once $hvnly_template_bootstrap;
+}
+
+/**
+ * Plugin Check late-escaping compatibility.
+ *
+ * Plugin Check hardcodes standard=WordPress for EscapeOutput and never loads
+ * phpcs.xml.dist, so this bridge points late_escaping at
+ * phpcs-rulesets/havenlytics-plugin-check-escape.xml (recognizes hvnly_esc_*_ui).
+ */
+$hvnly_plugin_check_escape = HVNLYNAB_INCLUDES . '/Compatibility/plugin-check-escape-compat.php';
+if ( is_readable( $hvnly_plugin_check_escape ) ) {
+	require_once $hvnly_plugin_check_escape;
 }
 
 /**

@@ -27,6 +27,8 @@
                 transitionSpeed: 300, // Reduced from 800ms to 300ms for instant feel
             };
             
+            this.i18n = (window.hvnly_property_data && window.hvnly_property_data.i18n) || {};
+            this.galleryI18n = (key, fallback) => (this.i18n[key] || fallback || key);
             this.init();
         }
 
@@ -137,9 +139,9 @@
                         index: index,
                         src: fullImage,
                         thumbnail: thumbnailImage,
-                        alt: imageAlt || 'Property Image',
-                        title: imageTitle || 'Property Image',
-                        description: imageTitle || 'Property Image'
+                        alt: imageAlt || this.galleryI18n('propertyImage'),
+                        title: imageTitle || this.galleryI18n('propertyImage'),
+                        description: imageTitle || this.galleryI18n('propertyImage')
                     });
                 }
             });
@@ -191,10 +193,10 @@
                                  item.href;
                 const imageTitle = item.getAttribute('data-image-title') || 
                                   item.querySelector('img')?.alt || 
-                                  'Property Image';
+                                  this.galleryI18n('propertyImage');
                 const imageAlt = item.getAttribute('data-image-alt') || 
                                 item.querySelector('img')?.alt || 
-                                'Property Image';
+                                this.galleryI18n('propertyImage');
                 const thumbnailImage = item.querySelector('img')?.src || fullImage;
                 const itemIndex = parseInt(item.getAttribute('data-image-index')) || index;
                 
@@ -239,7 +241,7 @@
                     const imageTitle = link.getAttribute('title') || 
                                      link.getAttribute('aria-label') || 
                                      img?.alt || 
-                                     'Property Image';
+                                     this.galleryI18n('propertyImage');
                     const imageAlt = img?.alt || imageTitle;
                     const thumbnailImage = img?.src || href;
                     
@@ -357,6 +359,13 @@
             if (!originalUrl) return '';
             return originalUrl.replace(/(\/\d{3,4}x\d{3,4}\/)/, `/${this.parent.config.thumbnailSize}x${this.parent.config.thumbnailSize}/`);
         }
+
+        galleryI18n(key, fallback) {
+            if (this.parent && typeof this.parent.galleryI18n === 'function') {
+                return this.parent.galleryI18n(key, fallback);
+            }
+            return fallback || key;
+        }
     }
 
     // Gallery Module - FIXED for instant image changes
@@ -426,7 +435,7 @@
                 thumb.className = `hvnly-property-single__thumbnail ${index === 0 ? 'hvnly-property-single__thumbnail--active' : ''}`;
                 thumb.setAttribute('data-index', index);
                 thumb.setAttribute('role', 'button');
-                thumb.setAttribute('aria-label', `View image ${index + 1}`);
+                thumb.setAttribute('aria-label', (this.galleryI18n('viewImage') || '').replace('%d', String(index + 1)));
                 thumb.setAttribute('tabindex', '0');
                 
                 const bgImage = slide.style.backgroundImage;
@@ -638,7 +647,7 @@
                     const imageUrl = this.extractImageUrl(bgImage);
                     images.push({
                         src: imageUrl,
-                        alt: `Property Image ${index + 1}`,
+                        alt: this.galleryI18n('propertyImage') + ' ' + (index + 1),
                         title: `Image ${index + 1}`,
                         description: `Property view ${index + 1}`
                     });
@@ -968,7 +977,7 @@ class HavenlyticsSingleFancyboxModule extends HavenlyticsBaseGalleryModule {
         const thumb = document.createElement('div');
         thumb.className = `hvnly-property-single__fancybox-thumb ${index === this.currentGalleryIndex ? 'hvnly-property-single__fancybox-thumb--active' : ''}`;
         thumb.setAttribute('role', 'button');
-        thumb.setAttribute('aria-label', `View image ${index + 1}`);
+        thumb.setAttribute('aria-label', (this.galleryI18n('viewImage') || '').replace('%d', String(index + 1)));
         thumb.setAttribute('tabindex', '0');
         thumb.setAttribute('data-index', index);
         
@@ -1419,7 +1428,11 @@ class HavenlyticsSingleFancyboxModule extends HavenlyticsBaseGalleryModule {
                 const dot = document.createElement('button');
                 dot.className = 'hvnly-property-single__carousel-dot';
                 if (i === 0) dot.classList.add('hvnly-property-single__carousel-dot--active');
-                dot.setAttribute('aria-label', `Go to slide group ${i + 1} of ${totalPages}`);
+                dot.setAttribute('aria-label', (this.galleryI18n('goToSlide') || '')
+                    .replace('%1$d', String(i + 1))
+                    .replace('%2$d', String(totalPages))
+                    .replace('%d', String(i + 1))
+                    .replace('%d', String(totalPages)));
                 dot.setAttribute('tabindex', '0');
                 
                 dot.addEventListener('click', () => {

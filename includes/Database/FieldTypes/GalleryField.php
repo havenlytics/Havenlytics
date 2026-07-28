@@ -79,7 +79,7 @@ class GalleryField extends BaseFieldType {
     <div class="hvnly-gallery-title-field" style="margin-bottom: 15px;">
         <label for="gallery_title_<?php echo esc_attr($gallery_id); ?>"
             style="display: block; margin-bottom: 5px; font-weight: 600;">
-            <?php echo esc_html($field['label'] ?? 'Gallery Title'); ?>
+            <?php echo esc_html( hvnly_translate_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Gallery Title' ) ) ); ?>
         </label>
         <input type="text" id="gallery_title_<?php echo esc_attr($gallery_id); ?>"
             name="<?php echo esc_attr($title_field_name); ?>" value="<?php echo esc_attr($saved_title); ?>"
@@ -220,7 +220,7 @@ class GalleryField extends BaseFieldType {
             return new \WP_Error('required_gallery', sprintf(
                 /* translators: %s: gallery field label. */
                 __('At least one gallery image is required for "%s".', 'havenlytics'),
-                esc_html($field['label'] ?? __('Gallery', 'havenlytics'))
+                hvnly_esc_html_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Gallery' ) )
             ));
         }
 

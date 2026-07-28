@@ -25,7 +25,7 @@ $hvnly_display   = ( false !== $hvnly_timestamp )
 ?>
 <div class="hvnly-field hvnly-field--date hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_field_name ) ); ?>">
 	<?php if ( ! empty( $hvnly_label ) ) : ?>
-		<strong class="hvnly-field__label"><?php echo esc_html( $hvnly_label ); ?>:</strong>
+		<strong class="hvnly-field__label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>:</strong>
 	<?php endif; ?>
 	<span class="hvnly-field__value"><?php echo esc_html( $hvnly_display ); ?></span>
 </div>

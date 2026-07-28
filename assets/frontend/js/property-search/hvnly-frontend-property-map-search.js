@@ -89,6 +89,8 @@
             
             // Load map configuration from localized data
             this.mapConfig = window.hvnly_map_params || {};
+            this.i18n = this.mapConfig.i18n || {};
+            this.t = (key, fallback) => (this.i18n[key] || fallback || key);
             
             // Determine map provider based on settings and API key availability
             this.mapProvider = this.mapConfig.provider || 'leaflet';
@@ -816,7 +818,7 @@
                         } else if (page === 1 && data && !data.success) {
                             const errorMessage = typeof data.data === 'string'
                                 ? data.data
-                                : 'Unable to load map properties. Please refresh and try again.';
+                                : (this.t('unableToLoadMapProperties') || this.t('errorLoadingProperties') || '');
                             this.showMapError(errorMessage);
                             return;
                         }
@@ -847,11 +849,13 @@
                             const withCoords = parseInt(pagePayload.posts_with_coordinates, 10) || 0;
                             const scanned = parseInt(pagePayload.posts_scanned, 10) || 0;
 
-                            let message = 'No properties with valid location data found for your search criteria.';
+                            let message = this.t('noValidLocationsForSearch') || this.t('noValidLocations');
                             if (foundPosts > 0 && withCoords === 0) {
-                                message = `Found ${foundPosts} properties, but none have map coordinates saved. Add latitude/longitude in each property's map location field.`;
+                                message = (this.t('foundWithoutCoordinates') || '')
+                                    .replace('%d', String(foundPosts))
+                                    .replace('{count}', String(foundPosts));
                             } else if (foundPosts === 0) {
-                                message = 'No properties matched your current search filters for map view.';
+                                message = this.t('noPropertiesMatchedMapFilters') || this.t('noPropertiesForMap');
                             }
 
                             this.debugLog('loadCumulativeToPage empty result', {
@@ -887,9 +891,9 @@
                 
             } catch (error) {
                 if (error.name === 'AbortError') {
-                    this.showMapError('Request timed out. Please try again.');
+                    this.showMapError(this.t('requestTimedOut'));
                 } else {
-                    this.showMapError('Error loading properties: ' + error.message);
+                    this.showMapError(this.t('errorLoadingProperties') + error.message);
                 }
             } finally {
                 this.hideLoadMoreLoading();
@@ -984,7 +988,7 @@
 
             if (!propertyGrid || !mapPlaceholder) {
                 this.isLoadingContainer = false;
-                this.showMapError('Map placeholder not found on this page.');
+                this.showMapError(this.t('mapPlaceholderMissing'));
                 return;
             }
         
@@ -1092,7 +1096,7 @@
                     <div class="hvnly-map-view hvnly-google-map" id="hvnly-map-view-google" data-provider="google" data-zoom="${mapZoom}" data-scroll-wheel="${showScrollWheel}" style="height: 550px; min-height: 550px;">
                         <div class="hvnly-map-container" style="height: 100%;">
                             <div id="hvnly-properties-map" class="hvnly-properties-map" data-zoom-control="${showZoomControl}" style="height: 100%; width: 100%;"></div>
-                            ${showFullscreen ? `<button id="hvnly-google-map-fullscreen-btn" class="hvnly-map-fullscreen-btn hvnly-google-map-fullscreen-btn" title="Toggle Fullscreen" data-fullscreen-target="hvnly-properties-map"><i class="fas fa-expand"></i></button>` : ''}
+                            ${showFullscreen ? `<button id="hvnly-google-map-fullscreen-btn" class="hvnly-map-fullscreen-btn hvnly-google-map-fullscreen-btn" title="${this.t('toggleFullscreen')}" data-fullscreen-target="hvnly-properties-map"><i class="fas fa-expand"></i></button>` : ''}
                             <div class="hvnly-map-loading" style="display: none;">
                                 <div class="hvnly-map-loader"><i class="fas fa-map-marked-alt"></i><span>Loading Properties Map...</span></div>
                             </div>
@@ -1104,7 +1108,7 @@
                     <div class="hvnly-map-view hvnly-leaflet-map" id="hvnly-map-view-leaflet" data-provider="leaflet" data-zoom="${mapZoom}" data-scroll-wheel="${showScrollWheel}" style="height: 550px; min-height: 550px;">
                         <div class="hvnly-map-container" style="height: 100%;">
                             <div id="hvnly-properties-map" class="hvnly-properties-map" data-zoom-control="${showZoomControl}" style="height: 100%; width: 100%;"></div>
-                            ${showFullscreen ? `<button id="hvnly-leaflet-map-fullscreen-btn" class="hvnly-map-fullscreen-btn hvnly-leaflet-map-fullscreen-btn" title="Toggle Fullscreen" data-fullscreen-target="hvnly-properties-map"><i class="fas fa-expand"></i></button>` : ''}
+                            ${showFullscreen ? `<button id="hvnly-leaflet-map-fullscreen-btn" class="hvnly-map-fullscreen-btn hvnly-leaflet-map-fullscreen-btn" title="${this.t('toggleFullscreen')}" data-fullscreen-target="hvnly-properties-map"><i class="fas fa-expand"></i></button>` : ''}
                             <div class="hvnly-map-loading" style="display: none;">
                                 <div class="hvnly-map-loader"><i class="fas fa-map-marked-alt"></i><span>Loading Properties Map...</span></div>
                             </div>
@@ -1178,7 +1182,7 @@
                 }
                 
                 fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
-                fullscreenBtn.title = 'Exit Fullscreen';
+                fullscreenBtn.title = this.t('exitFullscreen');
             } else {
                 // Exit fullscreen
                 if (document.exitFullscreen) {
@@ -1192,7 +1196,7 @@
                 }
                 
                 fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-                fullscreenBtn.title = 'Toggle Fullscreen';
+                fullscreenBtn.title = this.t('toggleFullscreen');
             }
         }
         
@@ -1215,7 +1219,7 @@
                 const mapContainer = document.getElementById('hvnly-properties-map');
                 if (!mapContainer) {
                     this.hideLoadMoreLoading();
-                    this.showMapError('Map container not found. Please try again.');
+                    this.showMapError(this.t('mapContainerMissing'));
                     return;
                 }
                 
@@ -1224,7 +1228,7 @@
                 
                 if (!ajaxUrl) {
                     this.hideLoadMoreLoading();
-                    this.showMapError('Configuration error: Unable to load map data.');
+                    this.showMapError(this.t('mapConfigError'));
                     return;
                 }
                 
@@ -1589,9 +1593,9 @@
                 await this.loadCumulativeToPage(nextPage, this.currentInstanceId, { appendOnly: true });
             } catch (error) {
                 if (error.name === 'AbortError') {
-                    this.showMapError('Request timed out. Please try again.');
+                    this.showMapError(this.t('requestTimedOut'));
                 } else {
-                    this.showMapError('Error loading properties: ' + error.message);
+                    this.showMapError(this.t('errorLoadingProperties') + error.message);
                 }
             } finally {
                 this.hideLoadMoreLoading();
@@ -1781,21 +1785,21 @@
             const mapContainer = document.getElementById('hvnly-properties-map');
             
             if (!mapContainer) {
-                this.showMapError('Map container not found during initialization.');
+                this.showMapError(this.t('mapContainerInitMissing'));
                 return;
             }
             
             // Check if required libraries are loaded
             if (this.mapProvider === 'google' && typeof google === 'undefined') {
-                this.showMapError('Google Maps library not loaded. Please refresh the page.');
+                this.showMapError(this.t('googleMapsMissing'));
                 return;
             } else if ((this.mapProvider === 'leaflet' || this.mapProvider === 'openstreetmap') && typeof L === 'undefined') {
-                this.showMapError('Map library not loaded. Please refresh the page.');
+                this.showMapError(this.t('mapLibraryMissing'));
                 return;
             }
             
             if (!properties || !properties.length) {
-                this.showMapError('No properties available for map view.');
+                this.showMapError(this.t('noPropertiesForMap'));
                 return;
             }
             
@@ -1836,7 +1840,7 @@
                 });
                 
                 if (validProperties.length === 0) {
-                    this.showMapError('No properties with valid location data found.');
+                    this.showMapError(this.t('noValidLocations'));
                     return;
                 }
                 
@@ -1852,7 +1856,7 @@
                 this.isMapInitialized = true;
                 
             } catch (error) {
-                this.showMapError('Error initializing map: ' + error.message);
+                this.showMapError(this.t('errorInitMap') + error.message);
             }
         }
         
@@ -1978,7 +1982,7 @@
                             self.refreshLeafletClustersAfterLayout();
                         })
                         .catch((initError) => {
-                            self.showMapError('Error initializing map markers: ' + initError.message);
+                            self.showMapError(self.t('errorInitMarkers') + initError.message);
                         })
                         .finally(() => {
                             clearTimeout(timeoutId);
@@ -2108,7 +2112,7 @@
          * @since 2.0.0
          */
         createStyledPopupContent(property) {
-            const title = this.escapeHtml(property.title || 'Untitled Property');
+            const title = this.escapeHtml(property.title || this.t('untitledProperty'));
             const price = property.price ? this.escapeHtml(property.price) : '';
             const address = property.address ? this.escapeHtml(property.address) : '';
             const bedrooms = property.bedrooms ? parseInt(property.bedrooms) : 0;
@@ -2228,12 +2232,12 @@
             const header = `
                 <div class="hvnly-stack-popup__header">
                     <span class="hvnly-stack-popup__badge">${count}</span>
-                    <strong>${count} ${count === 1 ? 'Property' : 'Properties'} at this location</strong>
+                    <strong>${count === 1 ? this.t('propertyAtLocation') : (count + ' ' + this.t('propertiesAtLocation'))}</strong>
                 </div>
             `;
 
             const list = properties.map((property) => {
-                const title = this.escapeHtml(property.title || 'Untitled Property');
+                const title = this.escapeHtml(property.title || this.t('untitledProperty'));
                 const price = property.price ? this.escapeHtml(property.price) : '';
                 const link = property.link || '#';
                 const thumbnail = property.thumbnail || '';
@@ -2505,7 +2509,7 @@
                 const fullscreenButton = document.createElement('a');
                 fullscreenButton.id = 'hvnly-leaflet-map-fullscreen-btn';
                 fullscreenButton.href = '#';
-                fullscreenButton.title = 'Toggle Fullscreen';
+                fullscreenButton.title = self.t('toggleFullscreen');
                 fullscreenButton.className = 'custom-fullscreen-button';
                 fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
                 
@@ -2535,7 +2539,7 @@
             fullscreenButton.id = 'hvnly-google-map-fullscreen-btn';
             fullscreenButton.className = 'hvnly-map-fullscreen-btn hvnly-google-map-fullscreen-btn';
             fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
-            fullscreenButton.title = 'Toggle Fullscreen';
+            fullscreenButton.title = self.t('toggleFullscreen');
             
             fullscreenButton.addEventListener('click', () => {
                 this.toggleFullscreen();
@@ -2566,10 +2570,10 @@
                         <div class="hvnly-map-error-icon">
                             <i class="fas fa-exclamation-triangle"></i>
                         </div>
-                        <h3>Map Unavailable</h3>
+                        <h3>${this.t('mapUnavailable')}</h3>
                         <p>${message}</p>
                         <button class="hvnly-retry-map-btn" onclick="window.HavenlyticsPropertyMap.loadPropertyMap()">
-                            <i class="fas fa-redo"></i> Retry
+                            <i class="fas fa-redo"></i> ${this.t('retry')}
                         </button>
                     </div>
                 `;

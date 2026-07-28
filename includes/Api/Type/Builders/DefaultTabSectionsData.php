@@ -68,6 +68,18 @@ class DefaultTabSectionsData
      */
     public static function get_default_sections_for_dnd()
     {
+        static $building = false;
+        if ( ! $building && function_exists( 'hvnly_with_english_ui' ) ) {
+            $building = true;
+            try {
+                return hvnly_with_english_ui( static function () {
+                    return self::get_default_sections_for_dnd();
+                } );
+            } finally {
+                $building = false;
+            }
+        }
+
         $metabox_tabs = self::hvnly_metabox_tabs_builder();
         $dnd_sections = [];
 
@@ -154,7 +166,7 @@ class DefaultTabSectionsData
                     'order' => $index,
                     'group_id' => $current_group_id,
                     'group_type' => 'video',
-                    'group_name' => 'Video Information',
+                    'group_name' => __( 'Video Information', 'havenlytics' ),
                     'group_position' => $group_position,
                     'group_total' => $group_total,
                     'group_base_id' => $group_base_id,
@@ -189,7 +201,7 @@ class DefaultTabSectionsData
                     'order' => $index,
                     'group_id' => $current_group_id,
                     'group_type' => 'gallery',
-                    'group_name' => 'Property Gallery',
+                    'group_name' => __( 'Property Gallery', 'havenlytics' ),
                     'group_position' => $group_position,
                     'group_total' => $group_total,
                     'group_base_id' => $group_base_id,
@@ -225,7 +237,7 @@ class DefaultTabSectionsData
                     'order' => $index,
                     'group_id' => $current_group_id,
                     'group_type' => 'map',
-                    'group_name' => 'Map Location',
+                    'group_name' => __( 'Map Location', 'havenlytics' ),
                     'group_position' => $group_position,
                     'group_total' => $group_total,
                     'group_base_id' => $group_base_id,
@@ -269,7 +281,7 @@ class DefaultTabSectionsData
                     'order' => $index,
                     'group_id' => $current_group_id,
                     'group_type' => 'property_docs',
-                    'group_name' => 'Property Documents',
+                    'group_name' => __( 'Property Documents', 'havenlytics' ),
                     'group_position' => $group_position,
                     'group_total' => $group_total,
                     'group_base_id' => $group_base_id,
@@ -306,7 +318,7 @@ class DefaultTabSectionsData
                     'order' => $index,
                     'group_id' => $current_group_id,
                     'group_type' => 'faq',
-                    'group_name' => 'Frequently Asked Questions',
+                    'group_name' => __( 'Frequently Asked Questions', 'havenlytics' ),
                     'group_position' => $group_position,
                     'group_total' => $group_total,
                     'group_base_id' => $group_base_id,
@@ -343,7 +355,7 @@ class DefaultTabSectionsData
                     'order' => $index,
                     'group_id' => $current_group_id,
                     'group_type' => 'repeater',
-                    'group_name' => 'Property Highlights',
+                    'group_name' => __( 'Property Highlights', 'havenlytics' ),
                     'group_position' => $group_position,
                     'group_total' => $group_total,
                     'group_base_id' => $group_base_id,
@@ -380,7 +392,7 @@ class DefaultTabSectionsData
                     'order' => $index,
                     'group_id' => $current_group_id,
                     'group_type' => 'agents',
-                    'group_name' => 'Listing Agents',
+                    'group_name' => __( 'Listing Agents', 'havenlytics' ),
                     'group_position' => $group_position,
                     'group_total' => $group_total,
                     'group_base_id' => $group_base_id,
@@ -416,7 +428,7 @@ class DefaultTabSectionsData
                     'order' => $index,
                     'group_id' => $current_group_id,
                     'group_type' => 'features',
-                    'group_name' => 'Property Features',
+                    'group_name' => __( 'Property Features', 'havenlytics' ),
                     'group_position' => $group_position,
                     'group_total' => $group_total,
                     'group_base_id' => $group_base_id,

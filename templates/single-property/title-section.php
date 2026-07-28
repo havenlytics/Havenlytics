@@ -49,7 +49,7 @@ if ($hvnly_status_terms && !is_wp_error($hvnly_status_terms)) {
     $hvnly_status = $hvnly_status_terms[0];
     $hvnly_status_slug = sanitize_html_class($hvnly_status->slug);
     $hvnly_status_class = ' hvnly-property-single__status-badge--' . $hvnly_status_slug;
-    $hvnly_status_badge = '<span class="hvnly-property-single__status-badge' . esc_attr( $hvnly_status_class ) . '">' . esc_html($hvnly_status->name) . '</span>';
+    $hvnly_status_badge = '<span class="hvnly-property-single__status-badge' . esc_attr( $hvnly_status_class ) . '">' . ( function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_status->name ) ) : esc_html( $hvnly_status->name ) ) . '</span>';
 }
 
 $hvnly_dept_terms = get_the_terms($hvnly_property_id, 'hvnly_prop_depts');
@@ -61,7 +61,7 @@ if ($hvnly_dept_terms && !is_wp_error($hvnly_dept_terms)) {
         $hvnly_department_badges[] = sprintf(
             '<span class="hvnly-property-single__department-badge hvnly-property-single__department-badge--%1$s">%2$s</span>',
             esc_attr($hvnly_dept_slug),
-            esc_html($hvnly_dept_term->name)
+            ( function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_dept_term->name ) ) : esc_html( $hvnly_dept_term->name ) )
         );
     }
 }
@@ -95,7 +95,7 @@ $hvnly_formatted_price = hvnly_format_price($hvnly_actual_price);
         
         <?php if ($hvnly_full_address) : ?>
             <div class="hvnly-property-single__address">
-                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-map-marker"></use></svg>
                 <span><?php echo esc_html($hvnly_full_address); ?></span>
                 
             </div>

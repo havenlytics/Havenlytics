@@ -42,6 +42,52 @@ class UkImportLocations {
 	);
 
 	/**
+	 * Register UK street/city msgids for gettext extraction (not called at runtime).
+	 *
+	 * @return void
+	 */
+	public static function register_i18n_strings(): void {
+		if ( true ) {
+			return;
+		}
+		// Streets
+		__( 'High Street', 'havenlytics' );
+		__( 'Church Road', 'havenlytics' );
+		__( 'Victoria Road', 'havenlytics' );
+		__( 'Station Road', 'havenlytics' );
+		__( 'Park Lane', 'havenlytics' );
+		__( 'Queens Road', 'havenlytics' );
+		__( 'London Road', 'havenlytics' );
+		__( 'King Street', 'havenlytics' );
+		__( 'Market Street', 'havenlytics' );
+		__( 'Bridge Street', 'havenlytics' );
+		__( 'Mill Lane', 'havenlytics' );
+		__( 'Green Lane', 'havenlytics' );
+		__( 'Manor Road', 'havenlytics' );
+		__( 'Church Lane', 'havenlytics' );
+		__( 'New Road', 'havenlytics' );
+		__( 'London, United Kingdom', 'havenlytics' );
+		__( 'United Kingdom', 'havenlytics' );
+		__( 'Greater London', 'havenlytics' );
+		__( 'Greater Manchester', 'havenlytics' );
+		__( 'West Midlands', 'havenlytics' );
+		__( 'West Yorkshire', 'havenlytics' );
+		__( 'South Yorkshire', 'havenlytics' );
+		__( 'Tyne and Wear', 'havenlytics' );
+		__( 'East Yorkshire', 'havenlytics' );
+		__( 'North Yorkshire', 'havenlytics' );
+		__( 'City of Edinburgh', 'havenlytics' );
+		__( 'Glasgow City', 'havenlytics' );
+		__( 'County Antrim', 'havenlytics' );
+		foreach ( self::get_locations() as $loc ) {
+			// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+			__( $loc['city'], 'havenlytics' );
+			// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
+			__( $loc['county'], 'havenlytics' );
+		}
+	}
+
+	/**
 	 * @return array<int, array{slug: string, city: string, county: string, latitude: float, longitude: float, postcode: string}>
 	 */
 	public static function get_locations(): array {
@@ -147,7 +193,10 @@ class UkImportLocations {
 		$cycle     = (int) floor( $import_index / $count );
 
 		$building_number = (string) ( ( $import_index % 199 ) + 1 );
+		// Store English msgids only — DemoContentLocalizer translates at display time.
 		$street          = self::STREETS[ $import_index % count( self::STREETS ) ];
+		$city            = $location['city'];
+		$county          = $location['county'];
 		$address_line_1  = $building_number . ' ' . $street;
 
 		$jitter = self::coordinate_jitter( $import_index, $cycle );
@@ -157,22 +206,22 @@ class UkImportLocations {
 		$full_address = sprintf(
 			'%1$s, %2$s, %3$s, %4$s',
 			$address_line_1,
-			$location['city'],
-			$location['county'],
+			$city,
+			$county,
 			$location['postcode']
 		);
 
 		return array(
 			'slug'            => $location['slug'],
-			'city'            => $location['city'],
-			'county'          => $location['county'],
+			'city'            => $city,
+			'county'          => $county,
 			'postcode'        => $location['postcode'],
 			'building_number' => $building_number,
 			'street'          => $street,
 			'address_line_1'  => $address_line_1,
 			'address_line_2'  => '',
-			'town_city'       => $location['city'],
-			'country_state'   => $location['county'],
+			'town_city'       => $city,
+			'country_state'   => $county,
 			'zip_code'        => $location['postcode'],
 			'full_address'    => $full_address,
 			'map_address'     => $full_address,

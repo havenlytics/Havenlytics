@@ -307,12 +307,31 @@ class RewriteRulesManager {
 
 		global $wp_rewrite;
 		if ( isset( $wp_rewrite ) && $wp_rewrite instanceof \WP_Rewrite ) {
+			// init() rebuilds internals and clears add_rewrite_rule() extras from
+			// earlier in the same request — re-register plugin extras afterwards.
 			$wp_rewrite->init();
 		}
+
+		self::register_extra_rewrite_rules();
 
 		flush_rewrite_rules( true );
 
 		return true;
+	}
+
+	/**
+	 * Re-register non-CPT rewrite rules wiped by WP_Rewrite::init().
+	 *
+	 * @return void
+	 */
+	public static function register_extra_rewrite_rules() {
+		if ( class_exists( '\HvnlyNab\Workspace\WorkspacePage' ) ) {
+			\HvnlyNab\Workspace\WorkspacePage::add_catch_all_rewrite_rule();
+		}
+
+		if ( class_exists( PermalinkSettings::class ) && did_action( 'init' ) ) {
+			PermalinkSettings::register_agency_archive_rewrite();
+		}
 	}
 
 	/**

@@ -34,6 +34,7 @@ $hvnly_mode = $mode ?? 'default';
 
 // Get floors count from property meta
 $hvnly_floors = absint(get_post_meta($hvnly_property_id, '_hvnly_property_floors', true));
+$hvnly_field    = $field ?? array();
 
 // Show in preset mode OR if there are floors in default mode
 if ($hvnly_floors > 0 || $hvnly_mode === 'preset') :
@@ -52,16 +53,12 @@ if ($hvnly_floors > 0 || $hvnly_mode === 'preset') :
         
         <!-- Floor/Floors label with proper pluralization -->
         <span class="hvnly-property-feature-label">
-            <?php 
-            /* translators: %s: number of floors */
-            echo esc_html( 
-                _n( 
-                    'Floor', 
-                    'Floors', 
-                    $hvnly_floors > 0 ? $hvnly_floors : 1, 
-                    'havenlytics' 
-                ) 
-            ); 
+            <?php
+            echo esc_html(
+                function_exists( 'hvnly_archive_feature_label' )
+                    ? hvnly_archive_feature_label( $hvnly_field, 'Floor', 'Floors', $hvnly_floors )
+                    : _n( 'Floor', 'Floors', $hvnly_floors > 0 ? $hvnly_floors : 1, 'havenlytics' )
+            );
             ?>
         </span>
     </div>

@@ -393,7 +393,7 @@ class PropertySingleRenderer {
         echo '<div class="hvnly-property-single__details-card ' . esc_attr( $section_class ) . '">';
 
         if ( ! empty( $section_title ) ) {
-            echo '<h2 class="hvnly-property-single__section-title">' . esc_html( $section_title ) . '</h2>';
+            echo '<h2 class="hvnly-property-single__section-title">' . ( function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $section_title ) ) : esc_html( $section_title ) ) . '</h2>';
         }
 
         echo '<div class="hvnly-property-single__section-fields">';
@@ -589,7 +589,7 @@ class PropertySingleRenderer {
                     if ( ! empty( $label ) && ! empty( $url ) ) {
                         $result['documents'][] = array(
                             'icon'     => isset( $icons_array[ $i ] ) ? $icons_array[ $i ] : 'file-pdf',
-                            'label'    => $label,
+                            'label'    => function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( (string) $label ) : $label,
                             'url'      => $url,
                             'url_type' => 'custom',
                         );
@@ -840,6 +840,9 @@ class PropertySingleRenderer {
         $first_field = $group_fields[0];
         $group_type = $first_field['group_type'] ?? $this->detect_group_type( $first_field );
         $group_name = $first_field['group_name'] ?? '';
+        if ( $group_name !== '' && function_exists( 'hvnly_translate_ui' ) ) {
+            $group_name = hvnly_translate_ui( $group_name );
+        }
         $group_base_id = $first_field['group_base_id'] ?? '';
         $group_id = $first_field['group_id'] ?? '';
         $section_id = $first_field['section_id'] ?? '';
@@ -1026,7 +1029,7 @@ class PropertySingleRenderer {
                             if ( ! empty( $label ) && ! empty( $url ) ) {
                                 $documents[] = array(
                                     'icon' => isset( $icon_array[ $i ] ) ? $icon_array[ $i ] : 'file-pdf',
-                                    'label' => $label,
+                                    'label' => function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( (string) $label ) : $label,
                                     'url' => $url,
                                     'url_type' => 'custom',
                                 );
@@ -1260,7 +1263,9 @@ class PropertySingleRenderer {
             'field_value' => $value,
             'property_id' => $property_id,
             'field_name'  => $meta_key,
-            'field_label' => $field['label'] ?? '',
+            'field_label' => function_exists( 'hvnly_translate_ui' )
+                ? hvnly_translate_ui( (string) ( $field['label'] ?? '' ) )
+                : ( $field['label'] ?? '' ),
             'field_type'  => $field['type'] ?? 'text',
             'category'    => $category,
             'field_options' => isset( $field['options'] ) ? $field['options'] : [],

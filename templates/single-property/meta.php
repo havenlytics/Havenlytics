@@ -40,13 +40,19 @@ $hvnly_property_id_number = get_post_meta($hvnly_property_id, '_hvnly_unique_pro
 // Calculate total bathrooms
 $hvnly_total_bathrooms = $hvnly_bathrooms;
 if ($hvnly_half_bathrooms) {
-    $hvnly_total_bathrooms = $hvnly_bathrooms . ' + ' . $hvnly_half_bathrooms . ' half';
+    /* translators: %1$s: full bathrooms count, %2$s: half bathrooms count */
+    $hvnly_total_bathrooms = sprintf(
+        /* translators: %1$s: full bathrooms, %2$s: half bathrooms */
+        __( '%1$s + %2$s half', 'havenlytics' ),
+        $hvnly_bathrooms,
+        $hvnly_half_bathrooms
+    );
 }
 ?>
 <div class="hvnly-property-single__meta">
     <?php if (!empty($hvnly_bedrooms)) : ?>
         <div class="hvnly-property-single__meta-item">
-            <i class="fas fa-bed"></i>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-bed"></use></svg>
             <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_bedrooms); ?></span>
             <span class="hvnly-property-single__meta-label"><?php esc_html_e('Bedrooms', 'havenlytics'); ?></span>
         </div>
@@ -54,14 +60,14 @@ if ($hvnly_half_bathrooms) {
     
     <?php if (!empty($hvnly_bathrooms)) : ?>
         <div class="hvnly-property-single__meta-item">
-            <i class="fas fa-bath"></i>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-bath"></use></svg>
             <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_total_bathrooms); ?></span>
             <span class="hvnly-property-single__meta-label"><?php esc_html_e('Bathrooms', 'havenlytics'); ?></span>
         </div>
     <?php endif; ?>
     <?php if (!empty($hvnly_reception_rooms)) : ?>
         <div class="hvnly-property-single__meta-item">
-            <i class="fas fa-couch"></i>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-sofa"></use></svg>
             <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_reception_rooms); ?></span>
             <span class="hvnly-property-single__meta-label"><?php esc_html_e('Reception', 'havenlytics'); ?></span>
         </div>
@@ -69,51 +75,51 @@ if ($hvnly_half_bathrooms) {
     
     <?php if (!empty($hvnly_kitchens)) : ?>
         <div class="hvnly-property-single__meta-item">
-            <i class="fas fa-utensils"></i>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-utensils"></use></svg>
             <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_kitchens); ?></span>
             <span class="hvnly-property-single__meta-label"><?php esc_html_e('Kitchens', 'havenlytics'); ?></span>
         </div>
     <?php endif; ?>
     <?php if (!empty($hvnly_sqft)) : ?>
         <div class="hvnly-property-single__meta-item">
-            <i class="fas fa-ruler"></i>
-            <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_sqft); ?> sqft</span>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-ruler"></use></svg>
+            <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_sqft); ?> <?php esc_html_e( 'sqft', 'havenlytics' ); ?></span>
             <span class="hvnly-property-single__meta-label"><?php esc_html_e('Area', 'havenlytics'); ?></span>
         </div>
     <?php endif; ?>
     
     <?php if (!empty($hvnly_garage_sqft)) : ?>
         <div class="hvnly-property-single__meta-item">
-            <i class="fas fa-car"></i>
-            <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_garage_sqft); ?> sqft</span>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-car"></use></svg>
+            <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_garage_sqft); ?> <?php esc_html_e( 'sqft', 'havenlytics' ); ?></span>
             <span class="hvnly-property-single__meta-label"><?php esc_html_e('Garage', 'havenlytics'); ?></span>
         </div>
     <?php endif; ?>
     
     <?php if (!empty($hvnly_total_rooms)) : ?>
         <div class="hvnly-property-single__meta-item">
-            <i class="fas fa-hotel"></i>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-grid"></use></svg>
             <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_total_rooms); ?></span>
             <span class="hvnly-property-single__meta-label"><?php esc_html_e('Total Rooms', 'havenlytics'); ?></span>
         </div>
     <?php endif; ?>
     <?php if (!empty($hvnly_floors)) : ?>
         <div class="hvnly-property-single__meta-item">
-            <i class="fas fa-warehouse"></i>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-layers"></use></svg>
             <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_floors); ?></span>
             <span class="hvnly-property-single__meta-label"><?php esc_html_e('Floors', 'havenlytics'); ?></span>
         </div>
     <?php endif; ?>
     <?php if (!empty($hvnly_lot_size)) : ?>
         <div class="hvnly-property-single__meta-item">
-            <i class="fas fa-ruler"></i>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-lot-area"></use></svg>
             <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_lot_size); ?></span>
             <span class="hvnly-property-single__meta-label"><?php esc_html_e('Lot Size', 'havenlytics'); ?></span>
         </div>
     <?php endif; ?>
     <?php if (!empty($hvnly_year_built) && $hvnly_year_built != '0') : ?>
         <div class="hvnly-property-single__meta-item">
-            <i class="fas fa-calendar"></i>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-calendar"></use></svg>
             <span class="hvnly-property-single__meta-value"><?php echo esc_html($hvnly_year_built); ?></span>
             <span class="hvnly-property-single__meta-label"><?php esc_html_e('Built', 'havenlytics'); ?></span>
         </div>

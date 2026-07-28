@@ -173,6 +173,7 @@ body.hvnly_property_page_hvnly_property_reports_analytics:has(#HvnlyNab_reports_
 }
 
 .hvnly-admin-preloader.is-exiting,
+#hvnly-admin-static-preloader.is-exiting,
 #hvnly-admin-react-preloader.is-exiting {
   opacity: 0;
   visibility: hidden;

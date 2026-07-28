@@ -27,7 +27,7 @@ class AjaxHandler {
         // Verify nonce
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
         if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {
-            wp_send_json_error('Security check failed.');
+            wp_send_json_error(__( 'Security check failed.', 'havenlytics' ));
         }
 
         try {
@@ -85,7 +85,7 @@ class AjaxHandler {
             ]);
 
         } catch (\Exception $e) {
-            wp_send_json_error('An error occurred while loading more properties.');
+            wp_send_json_error(__( 'An error occurred while loading more properties.', 'havenlytics' ));
         }
     }
 

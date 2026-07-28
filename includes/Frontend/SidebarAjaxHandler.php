@@ -62,7 +62,7 @@ class SidebarAjaxHandler
         $nonce = $nonce_raw ? sanitize_text_field($nonce_raw) : '';
 
         if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {  
-            wp_send_json_error('Security check failed');
+            wp_send_json_error(__( 'Security check failed', 'havenlytics' ));
         }
 
         try {
@@ -93,7 +93,7 @@ class SidebarAjaxHandler
             $properties_query = new \WP_Query($args);
 
             if (is_wp_error($properties_query->posts)) {
-                wp_send_json_error('Query error occurred');
+                wp_send_json_error(__( 'Query error occurred', 'havenlytics' ));
             }
 
             // Generate response data using existing template system
@@ -107,9 +107,9 @@ class SidebarAjaxHandler
             wp_send_json_success($response_data);
 
         } catch (\Exception $e) {
-            wp_send_json_error('An error occurred while filtering properties. Please try again.');
+            wp_send_json_error(__( 'An error occurred while filtering properties. Please try again.', 'havenlytics' ));
         } catch (\Error $e) {
-            wp_send_json_error('An error occurred while filtering properties. Please try again.');
+            wp_send_json_error(__( 'An error occurred while filtering properties. Please try again.', 'havenlytics' ));
         }
     }
 

@@ -230,5 +230,80 @@ if (!defined('ABSPATH')) {
         <circle cx="12" cy="8" r="2"></circle>
         <path d="M8.84 12.84L2 19.5V22h20v-2.5l-6.84-6.66"></path>
     </symbol>
+    <?php // Haven Design System 1.0 icons (@since 3.7.0) — append-only. ?>
+    <symbol id="hvnly-share" viewBox="0 0 24 24">
+        <circle cx="18" cy="5" r="3"></circle>
+        <circle cx="6" cy="12" r="3"></circle>
+        <circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+    </symbol>
+    <symbol id="hvnly-download" viewBox="0 0 24 24">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+    </symbol>
+    <symbol id="hvnly-whatsapp" viewBox="0 0 24 24">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"></path>
+        <path d="M9 9.5c.5 2.5 3 5 5.5 5.5l1-1.5-2-1-1 .5c-.8-.5-1.5-1.2-2-2l.5-1-1-2z"></path>
+    </symbol>
+    <symbol id="hvnly-camera" viewBox="0 0 24 24">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+        <circle cx="12" cy="13" r="4"></circle>
+    </symbol>
+    <symbol id="hvnly-check" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12"></polyline>
+    </symbol>
+    <symbol id="hvnly-file" viewBox="0 0 24 24">
+        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+        <polyline points="13 2 13 9 20 9"></polyline>
+    </symbol>
+    <symbol id="hvnly-user" viewBox="0 0 24 24">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+    </symbol>
+    <symbol id="hvnly-building" viewBox="0 0 24 24">
+        <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+        <path d="M9 22v-4h6v4"></path>
+        <path d="M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01M12 6h.01M12 10h.01M12 14h.01"></path>
+    </symbol>
+    <symbol id="hvnly-globe" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+    </symbol>
+    <symbol id="hvnly-arrow-up" viewBox="0 0 24 24">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+    </symbol>
+    <symbol id="hvnly-sofa" viewBox="0 0 24 24">
+        <path d="M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"></path>
+        <path d="M2 14a2 2 0 0 1 2-2 2 2 0 0 1 2 2v2h12v-2a2 2 0 0 1 4 0v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"></path>
+        <line x1="5" y1="19" x2="5" y2="21"></line>
+        <line x1="19" y1="19" x2="19" y2="21"></line>
+    </symbol>
+    <symbol id="hvnly-utensils" viewBox="0 0 24 24">
+        <path d="M3 2v7a3 3 0 0 0 6 0V2"></path>
+        <line x1="6" y1="12" x2="6" y2="22"></line>
+        <path d="M21 15V2a5 5 0 0 0-5 5v6a2 2 0 0 0 2 2h3z"></path>
+        <line x1="18" y1="15" x2="18" y2="22"></line>
+    </symbol>
+    <symbol id="hvnly-layers" viewBox="0 0 24 24">
+        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+        <polyline points="2 12 12 17 22 12"></polyline>
+        <polyline points="2 17 12 22 22 17"></polyline>
+    </symbol>
+    <symbol id="hvnly-lot-area" viewBox="0 0 24 24">
+        <path d="M3 8V5a2 2 0 0 1 2-2h3"></path>
+        <path d="M16 3h3a2 2 0 0 1 2 2v3"></path>
+        <path d="M21 16v3a2 2 0 0 1-2 2h-3"></path>
+        <path d="M8 21H5a2 2 0 0 1-2-2v-3"></path>
+    </symbol>
+    <symbol id="hvnly-grid" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+    </symbol>
 
 </svg>

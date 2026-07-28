@@ -47,7 +47,7 @@ if ( is_array( $hvnly_value ) ) {
 ?>
 <div class="hvnly-field hvnly-field--fallback hvnly-field--<?php echo esc_attr( $hvnly_field_type ); ?> hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_field_name ) ); ?>">
     <?php if ( ! empty( $hvnly_label ) ) : ?>
-        <strong class="hvnly-field__label"><?php echo esc_html( $hvnly_label ); ?>:</strong>
+        <strong class="hvnly-field__label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>:</strong>
     <?php endif; ?>
     <span class="hvnly-field__value"><?php echo wp_kses_post( $hvnly_display_value ); ?></span>
 </div>

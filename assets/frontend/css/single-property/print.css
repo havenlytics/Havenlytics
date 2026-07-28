@@ -1,0 +1,30 @@
+/**
+ * Haven Design System 1.0 — Print foundation
+ * ===========================================
+ * Loaded with media="print" via the shell @import. Foundation only in
+ * Phase 1: hide interactive chrome that has no meaning on paper and
+ * normalize the canvas. Section-specific print rules land with their
+ * phases (Phase 7 polish completes coverage).
+ *
+ * @package Havenlytics
+ * @since   3.7.0
+ */
+
+body.hvnly-property-single {
+    background: #fff !important;
+}
+
+/* Interactive / transient chrome is meaningless on paper */
+body.hvnly-property-single .hvnly-property-single__scroll-progress,
+body.hvnly-property-single .hvnly-property-single__actions,
+body.hvnly-property-single .hvnly-mobile-contact-dock,
+body.hvnly-property-single #hvnlyPropertySingleScrollTopBtn,
+body.hvnly-property-single .hvnly-property-single__carousel-controls {
+    display: none !important;
+}
+
+/* Avoid splitting cards across pages */
+body.hvnly-property-single .hvnly-property-single__details-card {
+    break-inside: avoid;
+    box-shadow: none !important;
+}

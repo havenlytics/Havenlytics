@@ -110,12 +110,12 @@
                         }
                         this.handleSearchSuccess(response.data);
                     } else {
-                        const errorMsg = response.data || 'Unknown error';
-                        this.ui.showError('Failed to load properties: ' + errorMsg);
+                        const errorMsg = response.data || (window.hvnly_PROPERTY_ajax && window.hvnly_PROPERTY_ajax.unknown_error) || '';
+                        this.ui.showError(((window.hvnly_PROPERTY_ajax && window.hvnly_PROPERTY_ajax.failed_load_properties) || '') + errorMsg);
                     }
                 },
                 error: (xhr, status, error) => {
-                    this.ui.showError('An error occurred while loading properties. Please try again.');
+                    this.ui.showError((window.hvnly_PROPERTY_ajax && window.hvnly_PROPERTY_ajax.load_error) || '');
                 },
                 complete: () => {
                     const completedInstanceId = this.currentInstanceId;

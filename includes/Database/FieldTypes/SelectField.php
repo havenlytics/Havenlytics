@@ -30,7 +30,9 @@ class SelectField extends BaseFieldType {
                     '<option value="%s"%s>%s</option>',
                     esc_attr($option_value),
                     $selected,
-                    esc_html($option_label)
+                    '' !== (string) $option_label
+                        ? hvnly_esc_html_ui( (string) $option_label )
+                        : ''
                 );
             }
         }
@@ -62,7 +64,7 @@ class SelectField extends BaseFieldType {
             return new \WP_Error('required_field', sprintf(
                 /* translators: %s: field label */
                 __('The field "%s" is required.', 'havenlytics'),
-                esc_html($field['label'])
+                hvnly_esc_html_ui( (string) $field['label'] )
             ));
         }
         return true;

@@ -8,6 +8,12 @@
 (function() {
     'use strict';
 
+    function mapI18n(key, fallback) {
+        var i18n = (window.hvnly_map_params && window.hvnly_map_params.i18n) || {};
+        return i18n[key] || fallback || key;
+    }
+
+
     // Prevent multiple initializations
     if (window.hvnlySingleMapModuleInitialized) {
         return;
@@ -119,10 +125,10 @@
             const lat = parseFloat(container.getAttribute('data-lat') || container.getAttribute('data-latitude'));
             const lng = parseFloat(container.getAttribute('data-lng') || container.getAttribute('data-longitude'));
             const address = container.getAttribute('data-address') || '';
-            const title = container.getAttribute('data-title') || 'Property Location';
+            const title = container.getAttribute('data-title') || mapI18n('propertyLocation') || mapI18n('propertyAtLocation');
 
             if (isNaN(lat) || isNaN(lng)) {
-                showMapError(container, 'Invalid coordinates');
+                showMapError(container, mapI18n('invalidCoordinates'));
                 return;
             }
 
@@ -131,6 +137,10 @@
                 zoom: parseInt(mapConfig.zoom_level) || 14,
                 mapTypeId: mapConfig.google_map_type || 'roadmap',
                 fullscreenControl: mapConfig.show_fullscreen !== false,
+                fullscreenControlOptions: {
+                    title: mapI18n('fullScreen'),
+                    titleCancel: mapI18n('exitFullScreen')
+                },
                 zoomControl: mapConfig.show_zoom_control !== false,
                 scrollwheel: mapConfig.show_scroll_wheel !== false
             });
@@ -185,10 +195,10 @@
             const lat = parseFloat(container.getAttribute('data-lat') || container.getAttribute('data-latitude'));
             const lng = parseFloat(container.getAttribute('data-lng') || container.getAttribute('data-longitude'));
             const address = container.getAttribute('data-address') || '';
-            const title = container.getAttribute('data-title') || 'Property Location';
+            const title = container.getAttribute('data-title') || mapI18n('propertyLocation') || mapI18n('propertyAtLocation');
 
             if (isNaN(lat) || isNaN(lng)) {
-                showMapError(container, 'Invalid coordinates');
+                showMapError(container, mapI18n('invalidCoordinates'));
                 return;
             }
 

@@ -32,7 +32,7 @@ if ( empty( $hvnly_value ) ) {
 $hvnly_tel_link = preg_replace( '/[^0-9+]/', '', $hvnly_value );
 ?>
 <div class="hvnly-field hvnly-field--preset-phone hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_name ) ); ?>">
-    <strong class="hvnly-field__label"><?php echo esc_html( $hvnly_label ); ?>:</strong>
+    <strong class="hvnly-field__label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>:</strong>
     <span class="hvnly-field__value">
         <a href="tel:<?php echo esc_attr( $hvnly_tel_link ); ?>" class="hvnly-phone-link">
             <?php echo esc_html( $hvnly_value ); ?>

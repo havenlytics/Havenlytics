@@ -44,7 +44,7 @@ if ( strpos( $hvnly_name, 'sqft' ) !== false || strpos( $hvnly_name, 'area' ) !=
 ?>
 <div class="hvnly-field hvnly-field--number hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_name ) ); ?>">
     <?php if ( ! empty( $hvnly_label ) ) : ?>
-    <div class="hvnly-property-single__default-title"><?php echo esc_html( $hvnly_label ); ?></div>
+    <div class="hvnly-property-single__default-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?></div>
     <?php endif; ?>
     <span class="hvnly-field__value"><?php echo esc_html( $hvnly_formatted_value ); ?></span>
 </div>

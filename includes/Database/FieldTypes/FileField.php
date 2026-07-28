@@ -38,7 +38,7 @@ class FileField extends BaseFieldType {
 <div data-field-type="file" data-field-id="<?php echo esc_attr( $field_id ); ?>" class="hvnly-file-field-wrapper">
     <?php if (!empty($label)) : ?>
     <label for="<?php echo esc_attr( $field_id ); ?>" class="hvnly-field-label">
-        <?php echo esc_html( $label ); ?>
+        <?php echo esc_html( hvnly_translate_ui( (string) $label ) ); ?>
         <?php if (isset($field['is_required']) && $field['is_required']) : ?>
         <span class="hvnly-required-star" style="color: #d63638;">*</span>
         <?php endif; ?>
@@ -49,7 +49,7 @@ class FileField extends BaseFieldType {
         <div class="hvnly-meta-input">
             <input type="url" id="<?php echo esc_attr( $field_id ); ?>" name="<?php echo esc_attr( $field_name ); ?>"
                 class="widefat hvnly-file-input" value="<?php echo esc_attr($value); ?>"
-                placeholder="<?php echo esc_attr( $placeholder ); ?>" style="margin-bottom: 10px;" />
+                placeholder="<?php echo esc_attr( hvnly_translate_ui( (string) $placeholder ) ); ?>" style="margin-bottom: 10px;" />
 
             <div class="hvnly-preview-container"></div>
 
@@ -131,7 +131,7 @@ class FileField extends BaseFieldType {
                 sprintf(
                     /* translators: %s: file field label. */
                     __('The file field "%s" is required.', 'havenlytics'),
-                    esc_html($field['label'])
+                    hvnly_esc_html_ui( (string) $field['label'] )
                 )
             );
         }
@@ -143,7 +143,7 @@ class FileField extends BaseFieldType {
                 sprintf(
                     /* translators: %s: file field label. */
                     __('Please enter a valid URL for "%s".', 'havenlytics'),
-                    esc_html($field['label'])
+                    hvnly_esc_html_ui( (string) $field['label'] )
                 )
             );
         }

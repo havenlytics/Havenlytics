@@ -107,7 +107,7 @@ private function get_field_base_name($field) {
 
     <div class="hvnly-document-field-header">
         <div class="hvnly-document-field-label">
-            <label><?php echo esc_html($field['label'] ?? __('Property Documents', 'havenlytics')); ?></label>
+            <label><?php echo esc_html( hvnly_translate_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Property Documents' ) ) ); ?></label>
             <p class="description">
                 <?php esc_html_e('Add multiple documents. Each document can have an icon, label, and URL.', 'havenlytics'); ?>
             </p>
@@ -577,7 +577,7 @@ private function get_field_base_name($field) {
             $message = sprintf(
                 /* translators: %s: document field label. */
                 __('At least one document is required for "%s".', 'havenlytics'),
-                esc_html($field['label'])
+                hvnly_esc_html_ui( (string) $field['label'] )
             );
             return new \WP_Error('required_field', $message);
         }

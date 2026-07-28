@@ -46,7 +46,7 @@ if ( empty( $hvnly_value ) && $hvnly_value !== '0' ) {
 <div class="hvnly-field hvnly-field--text hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_name ) ); ?>">
 
     <?php if ( ! empty( $hvnly_label ) ) : ?>
-    <div class="hvnly-property-single__default-title"><?php echo esc_html( $hvnly_label ); ?></div>
+    <div class="hvnly-property-single__default-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?></div>
     <?php endif; ?>
 
     <span class="hvnly-field__value"><?php echo esc_html( $hvnly_value ); ?></span>

@@ -84,7 +84,7 @@ if ( isset( $hvnly_icon_map[ $hvnly_file_extension ] ) ) {
 ?>
 <div class="hvnly-field hvnly-field--file hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_field_name ) ); ?>">
     <?php if ( ! empty( $hvnly_label ) ) : ?>
-        <strong class="hvnly-field__label"><?php echo esc_html( $hvnly_label ); ?>:</strong>
+        <strong class="hvnly-field__label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>:</strong>
     <?php endif; ?>
     
     <div class="hvnly-field__file-wrapper">

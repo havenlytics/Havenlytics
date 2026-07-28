@@ -1573,16 +1573,16 @@ body.admin-bar .hvnly-property-single__scroll-progress {
 
 @media (min-width: 1200px) {
     body.admin-bar .hvnly-property-single__sidebar {
-        top: 52px;
+        top: 32px; /* flush sticky + WP admin bar only */
     }
 }
 
 body.admin-bar .hvnly-sidebar--single.hvnly-sidebar--sticky-desktop {
-    top: 52px;
+    top: 32px; /* flush sticky + WP admin bar only */
 }
 
 body.admin-bar .hvnly-agent-single__sidebar {
-    --hvnly-sticky-offset: 56px; /* 24px base + 32px admin bar */
+    --hvnly-sticky-offset: 32px; /* flush sticky + WP admin bar */
 }
 
 @media (max-width: 782px) {

@@ -41,7 +41,7 @@ class UrlField extends BaseFieldType {
 			esc_attr( $field_id ),
 			esc_attr( $field_name ),
 			esc_attr( (string) $value ),
-			esc_attr( $field['placeholder'] ?? '' ),
+			hvnly_esc_attr_ui( (string) ( $field['placeholder'] ?? '' ) ),
 			$is_required ? 'required' : ''
 		);
 		$html .= $this->render_description( $field );
@@ -83,7 +83,7 @@ class UrlField extends BaseFieldType {
 				sprintf(
 					/* translators: %s: field label */
 					__( 'The field "%s" is required.', 'havenlytics' ),
-					esc_html( $field['label'] ?? __( 'URL', 'havenlytics' ) )
+					hvnly_esc_html_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'URL' ) )
 				)
 			);
 		}
@@ -94,7 +94,7 @@ class UrlField extends BaseFieldType {
 				sprintf(
 					/* translators: %s: field label */
 					__( 'Please enter a valid URL for "%s".', 'havenlytics' ),
-					esc_html( $field['label'] ?? __( 'URL', 'havenlytics' ) )
+					hvnly_esc_html_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'URL' ) )
 				)
 			);
 		}

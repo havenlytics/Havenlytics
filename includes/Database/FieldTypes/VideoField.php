@@ -304,7 +304,7 @@ class VideoField extends BaseFieldType {
                 sprintf(
                     /* translators: %s: video field label. */
                     __('The video URL for "%s" is required.', 'havenlytics'),
-                    esc_html($field['label'] ?? __('Video', 'havenlytics'))
+                    hvnly_esc_html_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Video' ) )
                 )
             );
         }

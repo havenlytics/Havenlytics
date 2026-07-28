@@ -1,0 +1,1631 @@
+{
+    "translation-revision-date": "2026-07-28 16:15:36+0000",
+    "generator": "Havenlytics hvlynab-builder-admin ru_RU package",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "plural-forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);",
+                "lang": "ru"
+            },
+            "%s group is incomplete. Please recreate this field.": [
+                "Группа «%s» неполная. Создайте это поле заново."
+            ],
+            "(123) 456-7890": [
+                "(123) 456-7890"
+            ],
+            "120 reviews": [
+                "120 отзывов"
+            ],
+            "123 Main St, City": [
+                "ул. Главная, 123, Город"
+            ],
+            "123 Ocean View Drive, Malibu, CA": [
+                "ул. Оушен Вью, 123, Малибу, Калифорния"
+            ],
+            "12345": [
+                "12345"
+            ],
+            "2 days ago": [
+                "2 дня назад"
+            ],
+            "API Note:": [
+                "Примечание API:"
+            ],
+            "Active": [
+                "Активно"
+            ],
+            "Add": [
+                "Добавить"
+            ],
+            "Add Failed": [
+                "Ошибка добавления"
+            ],
+            "Add New": [
+                "Добавить"
+            ],
+            "Add New Field": [
+                "Добавить новое поле"
+            ],
+            "Add New Section": [
+                "Добавить новую секцию"
+            ],
+            "Add Property Form": [
+                "Форма добавления объекта"
+            ],
+            "Add a badge element": [
+                "Добавить элемент значка"
+            ],
+            "Add a carousel of images": [
+                "Добавить карусель изображений"
+            ],
+            "Add a date or time": [
+                "Добавить дату или время"
+            ],
+            "Add a favorite button": [
+                "Добавить кнопку «Избранное»"
+            ],
+            "Add a location address": [
+                "Добавить адрес расположения"
+            ],
+            "Add a phone number": [
+                "Добавить номер телефона"
+            ],
+            "Add a price element": [
+                "Добавить элемент цены"
+            ],
+            "Add a rating element": [
+                "Добавить элемент рейтинга"
+            ],
+            "Add a schedule tour button": [
+                "Добавить кнопку записи на просмотр"
+            ],
+            "Add a schedule tour element": [
+                "Добавить элемент записи на просмотр"
+            ],
+            "Add a single thumbnail image": [
+                "Добавить одно изображение-миниатюру"
+            ],
+            "Add a status indicator": [
+                "Добавить индикатор статуса"
+            ],
+            "Add a time element": [
+                "Добавить элемент времени"
+            ],
+            "Add a title element": [
+                "Добавить элемент заголовка"
+            ],
+            "Add a view counter": [
+                "Добавить счётчик просмотров"
+            ],
+            "Add a view property button": [
+                "Добавить кнопку просмотра объекта"
+            ],
+            "Add a website link": [
+                "Добавить ссылку на сайт"
+            ],
+            "Add an avatar image": [
+                "Добавить изображение аватара"
+            ],
+            "Add an email address": [
+                "Добавить адрес электронной почты"
+            ],
+            "Add floor number": [
+                "Добавить номер этажа"
+            ],
+            "Add number of bathrooms": [
+                "Добавить количество ванных комнат"
+            ],
+            "Add number of bedrooms": [
+                "Добавить количество спален"
+            ],
+            "Add number of kitchens": [
+                "Добавить количество кухонь"
+            ],
+            "Add number of reception rooms": [
+                "Добавить количество гостиных"
+            ],
+            "Add property excerpt": [
+                "Добавить краткое описание объекта"
+            ],
+            "Add property garage square footage": [
+                "Добавить площадь гаража объекта"
+            ],
+            "Add property location": [
+                "Добавить расположение объекта"
+            ],
+            "Add property price": [
+                "Добавить цену объекта"
+            ],
+            "Add property square footage": [
+                "Добавить площадь объекта"
+            ],
+            "Add property type badge": [
+                "Добавить значок типа объекта"
+            ],
+            "Address": [
+                "Адрес"
+            ],
+            "Admin Only": [
+                "Только для администратора"
+            ],
+            "Administrative Only": [
+                "Только для администраторов"
+            ],
+            "Agents": [
+                "Агенты"
+            ],
+            "Agents Section": [
+                "Секция агентов"
+            ],
+            "Agents Section (2 Fields)": [
+                "Секция агентов (2 поля)"
+            ],
+            "Agents Section Group": [
+                "Группа секции агентов"
+            ],
+            "All available fields have been added to this area": [
+                "Все доступные поля уже добавлены в эту область"
+            ],
+            "Already at bottom": [
+                "Уже внизу"
+            ],
+            "Already at top": [
+                "Уже вверху"
+            ],
+            "Already in use": [
+                "Уже используется"
+            ],
+            "Amenities": [
+                "Удобства"
+            ],
+            "An unexpected error occurred.": [
+                "Произошла непредвиденная ошибка."
+            ],
+            "Are you sure you want to delete the field": [
+                "Вы уверены, что хотите удалить поле"
+            ],
+            "Are you sure you want to delete the section": [
+                "Вы уверены, что хотите удалить секцию"
+            ],
+            "Are you sure you want to delete this group and all its fields?": [
+                "Вы уверены, что хотите удалить эту группу и все её поля?"
+            ],
+            "Are you sure you want to reset ONLY the": [
+                "Вы уверены, что хотите сбросить ТОЛЬКО"
+            ],
+            "Are you sure you want to reset all sections and fields? Required tabs (Basic Info) will be preserved.": [
+                "Вы уверены, что хотите сбросить все секции и поля? Обязательные вкладки (Основная информация) будут сохранены."
+            ],
+            "Are you sure you want to reset the": [
+                "Вы уверены, что хотите сбросить"
+            ],
+            "Assigned Agents": [
+                "Назначенные агенты"
+            ],
+            "Available Field Types": [
+                "Доступные типы полей"
+            ],
+            "Avatar": [
+                "Аватар"
+            ],
+            "Bad request - check data structure": [
+                "Неверный запрос — проверьте структуру данных"
+            ],
+            "Badge": [
+                "Значок"
+            ],
+            "Basic Fields": [
+                "Базовые поля"
+            ],
+            "Basic Info": [
+                "Основная информация"
+            ],
+            "Bathrooms": [
+                "Ванные"
+            ],
+            "Baths": [
+                "Ванные"
+            ],
+            "Bedrooms": [
+                "Спальни"
+            ],
+            "Beds": [
+                "Спальни"
+            ],
+            "Button": [
+                "Кнопка"
+            ],
+            "Button already selected. Remove it to choose a different button type.": [
+                "Кнопка уже выбрана. Удалите её, чтобы выбрать другой тип кнопки."
+            ],
+            "Cancel": [
+                "Отмена"
+            ],
+            "Cannot Add Field": [
+                "Нельзя добавить поле"
+            ],
+            "Cannot Delete": [
+                "Невозможно удалить"
+            ],
+            "Cannot Edit": [
+                "Невозможно редактировать"
+            ],
+            "Cannot Modify": [
+                "Невозможно изменить"
+            ],
+            "Cannot Move": [
+                "Невозможно переместить"
+            ],
+            "Cannot add fields to required tabs": [
+                "Нельзя добавлять поля на обязательные вкладки"
+            ],
+            "Cannot move field above a group. Move the group instead.": [
+                "Нельзя переместить поле выше группы. Переместите группу."
+            ],
+            "Cannot move field below a group. Move the group instead.": [
+                "Нельзя переместить поле ниже группы. Переместите группу."
+            ],
+            "Cannot reset while properties exist. Use override to proceed.": [
+                "Нельзя выполнить сброс, пока существуют объекты. Используйте принудительный сброс."
+            ],
+            "Card Content": [
+                "Содержимое карточки"
+            ],
+            "Card Footer Left": [
+                "Нижний колонтитул карточки слева"
+            ],
+            "Card Footer Right": [
+                "Нижний колонтитул карточки справа"
+            ],
+            "Card Title": [
+                "Заголовок карточки"
+            ],
+            "Checkbox": [
+                "Флажок"
+            ],
+            "Checkbox List Feature": [
+                "Список флажков (особенности)"
+            ],
+            "City": [
+                "Городской водопровод"
+            ],
+            "City name": [
+                "Название города"
+            ],
+            "Cleanup Complete": [
+                "Очистка завершена"
+            ],
+            "Cleanup Failed": [
+                "Очистка не выполнена"
+            ],
+            "Close": [
+                "Закрыть"
+            ],
+            "Collapse": [
+                "Свернуть"
+            ],
+            "Collapse Group": [
+                "Свернуть группу"
+            ],
+            "Company Name": [
+                "Название компании"
+            ],
+            "Configuration": [
+                "Конфигурация"
+            ],
+            "Configuration Error": [
+                "Ошибка конфигурации"
+            ],
+            "Configuration Loaded": [
+                "Конфигурация загружена"
+            ],
+            "Configuration Reset": [
+                "Конфигурация сброшена"
+            ],
+            "Configuration Reset Failed": [
+                "Сброс конфигурации не выполнен"
+            ],
+            "Configuration Saved": [
+                "Конфигурация сохранена"
+            ],
+            "Configuration reset and %d orphaned entries cleaned up": [
+                "Конфигурация сброшена, очищено осиротевших записей: %d"
+            ],
+            "Configuration reset successfully": [
+                "Конфигурация успешно сброшена"
+            ],
+            "Confirm Meta Cleanup": [
+                "Подтвердите очистку метаданных"
+            ],
+            "Content Area": [
+                "Область содержимого"
+            ],
+            "Custom Field": [
+                "Пользовательское поле"
+            ],
+            "Database Cleanup Complete": [
+                "Очистка базы данных завершена"
+            ],
+            "Date": [
+                "Дата"
+            ],
+            "Date\/Time": [
+                "Дата\/время"
+            ],
+            "Delete": [
+                "Удалить"
+            ],
+            "Delete Field": [
+                "Удалить поле"
+            ],
+            "Delete Field?": [
+                "Удалить поле?"
+            ],
+            "Delete Group": [
+                "Удалить группу"
+            ],
+            "Delete Group?": [
+                "Удалить группу?"
+            ],
+            "Delete Section?": [
+                "Удалить секцию?"
+            ],
+            "Delete Tab": [
+                "Удалить вкладку"
+            ],
+            "Disable Field": [
+                "Отключить поле"
+            ],
+            "Disabled": [
+                "Отключено"
+            ],
+            "Display a property URL field": [
+                "Показать поле URL объекта"
+            ],
+            "Display a property date field": [
+                "Показать поле даты объекта"
+            ],
+            "Document Icon": [
+                "Значок документа"
+            ],
+            "Document Label": [
+                "Название документа"
+            ],
+            "Document URL": [
+                "URL документа"
+            ],
+            "Documents": [
+                "Документы"
+            ],
+            "Documents hidden from sidebar widget": [
+                "Документы скрыты из виджета боковой панели"
+            ],
+            "Documents will show in sidebar widget": [
+                "Документы будут отображаться в виджете боковой панели"
+            ],
+            "Drag and drop to add fields": [
+                "Перетащите, чтобы добавить поля"
+            ],
+            "Drag to reorder": [
+                "Перетащите для изменения порядка"
+            ],
+            "Drag to reorder group": [
+                "Перетащите для изменения порядка группы"
+            ],
+            "Drop fields here": [
+                "Перетащите поля сюда"
+            ],
+            "Dropdown": [
+                "Выпадающий список"
+            ],
+            "Duplicate identity: %s": [
+                "Дублирующийся идентификатор: %s"
+            ],
+            "Edit": [
+                "Редактировать"
+            ],
+            "Edit Field": [
+                "Редактировать поле"
+            ],
+            "Edit Tab": [
+                "Редактировать вкладку"
+            ],
+            "Email": [
+                "Электронная почта"
+            ],
+            "Email Address": [
+                "Адрес электронной почты"
+            ],
+            "Enable Field": [
+                "Включить поле"
+            ],
+            "Enter company name": [
+                "Введите название компании"
+            ],
+            "Enter detailed information here": [
+                "Введите подробную информацию"
+            ],
+            "Enter document URL": [
+                "Введите URL документа"
+            ],
+            "Enter document URL or file path": [
+                "Введите URL документа или путь к файлу"
+            ],
+            "Enter field label": [
+                "Введите название поля"
+            ],
+            "Enter gallery title": [
+                "Введите название галереи"
+            ],
+            "Enter number here": [
+                "Введите число"
+            ],
+            "Enter placeholder text": [
+                "Введите текст подсказки"
+            ],
+            "Enter property bathrooms": [
+                "Введите количество ванных комнат объекта"
+            ],
+            "Enter property bedrooms": [
+                "Введите количество спален объекта"
+            ],
+            "Enter property garage square footage": [
+                "Введите площадь гаража объекта"
+            ],
+            "Enter property latitude": [
+                "Введите широту объекта"
+            ],
+            "Enter property longitude": [
+                "Введите долготу объекта"
+            ],
+            "Enter property map address": [
+                "Введите адрес объекта на карте"
+            ],
+            "Enter property price": [
+                "Введите цену объекта"
+            ],
+            "Enter property title": [
+                "Введите название объекта"
+            ],
+            "Enter property total floors": [
+                "Введите общее количество этажей объекта"
+            ],
+            "Enter property total kitchens": [
+                "Введите общее количество кухонь объекта"
+            ],
+            "Enter property total rooms": [
+                "Введите общее количество комнат объекта"
+            ],
+            "Enter property year built": [
+                "Введите год постройки объекта"
+            ],
+            "Enter reception rooms": [
+                "Введите количество гостиных"
+            ],
+            "Enter section title": [
+                "Введите заголовок секции"
+            ],
+            "Enter text here": [
+                "Введите текст"
+            ],
+            "Enter value here": [
+                "Введите значение"
+            ],
+            "Enter video URL": [
+                "Введите URL видео"
+            ],
+            "Enter video title": [
+                "Введите название видео"
+            ],
+            "Enter website URL": [
+                "Введите URL веб-сайта"
+            ],
+            "Enter your full name": [
+                "Введите полное имя"
+            ],
+            "Error": [
+                "Ошибка"
+            ],
+            "Excerpt": [
+                "Краткое описание"
+            ],
+            "Expand": [
+                "Развернуть"
+            ],
+            "Expand Group": [
+                "Развернуть группу"
+            ],
+            "FAQ": [
+                "FAQ"
+            ],
+            "FAQ Count": [
+                "Количество FAQ"
+            ],
+            "FAQ Group": [
+                "Группа FAQ"
+            ],
+            "FAQ Group (2 Fields)": [
+                "Группа FAQ (2 поля)"
+            ],
+            "FAQ Items": [
+                "Элементы FAQ"
+            ],
+            "FAQ Section": [
+                "Секция FAQ"
+            ],
+            "FAQs": [
+                "Частые вопросы"
+            ],
+            "Failed to add fields": [
+                "Не удалось добавить поля"
+            ],
+            "Failed to clean up database": [
+                "Не удалось очистить базу данных"
+            ],
+            "Failed to clean up orphaned meta": [
+                "Не удалось очистить осиротевшие метаданные"
+            ],
+            "Failed to load card layout": [
+                "Не удалось загрузить макет карточки"
+            ],
+            "Failed to load configuration:": [
+                "Не удалось загрузить конфигурацию:"
+            ],
+            "Failed to process field": [
+                "Не удалось обработать поле"
+            ],
+            "Failed to reset and cleanup": [
+                "Не удалось сбросить и очистить"
+            ],
+            "Failed to reset configuration:": [
+                "Не удалось сбросить конфигурацию:"
+            ],
+            "Failed to reset property card layout": [
+                "Не удалось сбросить макет карточки объекта"
+            ],
+            "Failed to reset sections": [
+                "Не удалось сбросить секции"
+            ],
+            "Failed to save configuration": [
+                "Не удалось сохранить конфигурацию"
+            ],
+            "Failed to save configuration:": [
+                "Не удалось сохранить конфигурацию:"
+            ],
+            "Failed to save property card layout": [
+                "Не удалось сохранить макет карточки объекта"
+            ],
+            "Failed to save sections": [
+                "Не удалось сохранить секции"
+            ],
+            "Favorite": [
+                "Избранное"
+            ],
+            "Favorite Button": [
+                "Кнопка «Избранное»"
+            ],
+            "Feature": [
+                "Особенность"
+            ],
+            "Featured": [
+                "Избранное"
+            ],
+            "Features": [
+                "Особенности"
+            ],
+            "Field": [
+                "Поле"
+            ],
+            "Field Added": [
+                "Поле добавлено"
+            ],
+            "Field Enabled": [
+                "Поле включено"
+            ],
+            "Field Label": [
+                "Метка поля"
+            ],
+            "Field Moved": [
+                "Поле перемещено"
+            ],
+            "Field Not Added": [
+                "Поле не добавлено"
+            ],
+            "Field Removed": [
+                "Поле удалено"
+            ],
+            "Field Type": [
+                "Тип поля"
+            ],
+            "Field Updated": [
+                "Поле обновлено"
+            ],
+            "Field added successfully": [
+                "Поле успешно добавлено"
+            ],
+            "Field deleted successfully": [
+                "Поле успешно удалено"
+            ],
+            "Field reordered successfully": [
+                "Порядок поля успешно изменён"
+            ],
+            "Field updated successfully": [
+                "Поле успешно обновлено"
+            ],
+            "Fields": [
+                "Поля"
+            ],
+            "Fields Added": [
+                "Поля добавлены"
+            ],
+            "Final Cleanup Complete": [
+                "Финальная очистка завершена"
+            ],
+            "Floor": [
+                "Этаж"
+            ],
+            "Full Name": [
+                "ФИО"
+            ],
+            "Gallery": [
+                "Галерея"
+            ],
+            "Gallery (2 Fields)": [
+                "Галерея (2 поля)"
+            ],
+            "Gallery Group": [
+                "Группа галереи"
+            ],
+            "Gallery Images": [
+                "Изображения галереи"
+            ],
+            "Gallery Title": [
+                "Название галереи"
+            ],
+            "Garage": [
+                "Гараж"
+            ],
+            "Garage Spaces": [
+                "Места в гараже"
+            ],
+            "Garden": [
+                "Сад"
+            ],
+            "Group": [
+                "Группа"
+            ],
+            "Group Deleted": [
+                "Группа удалена"
+            ],
+            "Group Field": [
+                "Поле группы"
+            ],
+            "Group Fields": [
+                "Групповые поля"
+            ],
+            "Group Moved": [
+                "Группа перемещена"
+            ],
+            "Group Replaced": [
+                "Группа заменена"
+            ],
+            "Group and %d fields deleted": [
+                "Группа и поля удалены: %d"
+            ],
+            "Group fields cannot be deleted individually. Delete the entire group.": [
+                "Поля группы нельзя удалять по отдельности. Удалите всю группу."
+            ],
+            "Group fields cannot be disabled individually. Manage from group header.": [
+                "Поля группы нельзя отключать по отдельности. Управляйте из заголовка группы."
+            ],
+            "Group fields cannot be edited individually. Edit the entire group.": [
+                "Поля группы нельзя редактировать по отдельности. Редактируйте всю группу."
+            ],
+            "Group fields cannot be modified individually. Manage from group header.": [
+                "Поля группы нельзя изменять по отдельности. Управляйте из заголовка группы."
+            ],
+            "Group fields cannot be moved individually. Move the entire group.": [
+                "Поля группы нельзя перемещать по отдельности. Переместите всю группу."
+            ],
+            "Group fields cannot be toggled individually. Manage from group header.": [
+                "Поля группы нельзя переключать по отдельности. Управляйте из заголовка группы."
+            ],
+            "Group fields create multiple related fields at once": [
+                "Групповые поля создают несколько связанных полей сразу"
+            ],
+            "Group moved down successfully": [
+                "Группа успешно перемещена вниз"
+            ],
+            "Group moved up successfully": [
+                "Группа успешно перемещена вверх"
+            ],
+            "Group not found": [
+                "Группа не найдена"
+            ],
+            "Group reordered successfully": [
+                "Порядок группы успешно изменён"
+            ],
+            "Group replaced with %s successfully": [
+                "Группа успешно заменена на %s"
+            ],
+            "Gsq ft": [
+                "брутто кв. фут"
+            ],
+            "HTTP error! status:": [
+                "Ошибка HTTP! статус:"
+            ],
+            "Has garage": [
+                "Есть гараж"
+            ],
+            "Has garden": [
+                "Есть сад"
+            ],
+            "Has swimming pool": [
+                "Есть бассейн"
+            ],
+            "Hidden": [
+                "Скрыто"
+            ],
+            "Hidden from sidebar": [
+                "Скрыто из боковой панели"
+            ],
+            "Hide from sidebar": [
+                "Скрыть из боковой панели"
+            ],
+            "Image Carousel": [
+                "Карусель изображений"
+            ],
+            "Image Overlay Bottom Left": [
+                "Наложение на изображение снизу слева"
+            ],
+            "Image Overlay Bottom Right": [
+                "Наложение на изображение снизу справа"
+            ],
+            "Image Overlay Left": [
+                "Наложение на изображение слева"
+            ],
+            "Image Overlay Right": [
+                "Наложение на изображение справа"
+            ],
+            "Image Upload": [
+                "Загрузка изображения"
+            ],
+            "Image type already selected. Remove it to choose a different type.": [
+                "Тип изображения уже выбран. Удалите его, чтобы выбрать другой тип."
+            ],
+            "Individual group fields cannot be deleted. Please delete the entire group.": [
+                "Отдельные поля группы нельзя удалить. Удалите всю группу."
+            ],
+            "Individual group fields cannot be edited. Please edit the entire group.": [
+                "Отдельные поля группы нельзя редактировать. Редактируйте всю группу."
+            ],
+            "Individual group fields cannot be modified. Please modify the entire group.": [
+                "Отдельные поля группы нельзя изменить. Измените всю группу."
+            ],
+            "Individual group fields cannot be moved. Please move the entire group.": [
+                "Отдельные поля группы нельзя переместить. Переместите всю группу."
+            ],
+            "Insert Element -": [
+                "Вставить элемент —"
+            ],
+            "Internal server error. Check PHP error logs.": [
+                "Внутренняя ошибка сервера. Проверьте журналы ошибок PHP."
+            ],
+            "Jun 20, 2026": [
+                "20 июня 2026 г."
+            ],
+            "Kitchens": [
+                "Кухни"
+            ],
+            "Load Failed": [
+                "Загрузка не выполнена"
+            ],
+            "Loaded %d sections with %d enabled fields": [
+                "Загружено секций: %d, включённых полей: %d"
+            ],
+            "Location": [
+                "Расположение"
+            ],
+            "Luxury Villa with Ocean View": [
+                "Роскошная вилла с видом на океан"
+            ],
+            "Make Admin Only": [
+                "Только для администратора"
+            ],
+            "Make Optional": [
+                "Сделать необязательным"
+            ],
+            "Make Public": [
+                "Сделать публичным"
+            ],
+            "Make Required": [
+                "Сделать обязательным"
+            ],
+            "Map Location": [
+                "Место на карте"
+            ],
+            "Map Location (4 Fields)": [
+                "Расположение на карте (4 поля)"
+            ],
+            "Map Location Group": [
+                "Группа расположения на карте"
+            ],
+            "Map Preview": [
+                "Предпросмотр карты"
+            ],
+            "Menu": [
+                "Меню"
+            ],
+            "Missing API configuration": [
+                "Отсутствует конфигурация API"
+            ],
+            "Move Down": [
+                "Переместить вниз"
+            ],
+            "Move Field Down": [
+                "Переместить поле вниз"
+            ],
+            "Move Field Up": [
+                "Переместить поле вверх"
+            ],
+            "Move Group Down": [
+                "Переместить группу вниз"
+            ],
+            "Move Group Up": [
+                "Переместить группу вверх"
+            ],
+            "Move Up": [
+                "Переместить вверх"
+            ],
+            "Network Error": [
+                "Ошибка сети"
+            ],
+            "New Field": [
+                "Новое поле"
+            ],
+            "New Section": [
+                "Новая секция"
+            ],
+            "No active tab selected": [
+                "Не выбрана активная вкладка"
+            ],
+            "No available fields to replace with. All other field types are already used in this area.": [
+                "Нет доступных полей для замены. Все остальные типы полей уже используются в этой области."
+            ],
+            "No data to save. Please add some sections and fields first.": [
+                "Нет данных для сохранения. Сначала добавьте секции и поля."
+            ],
+            "No icons found matching": [
+                "Иконки не найдены по запросу"
+            ],
+            "No preset fields found matching": [
+                "Не найдены предустановленные поля по запросу"
+            ],
+            "No response received from server. Check your connection.": [
+                "Ответ от сервера не получен. Проверьте подключение."
+            ],
+            "No sections found. Add your first section to get started.": [
+                "Секции не найдены. Добавьте первую секцию, чтобы начать."
+            ],
+            "Nothing available": [
+                "Ничего недоступно"
+            ],
+            "Number": [
+                "Число"
+            ],
+            "Number of bathrooms": [
+                "Количество ванных комнат"
+            ],
+            "Number of bedrooms": [
+                "Количество спален"
+            ],
+            "Number of garage spaces": [
+                "Количество мест в гараже"
+            ],
+            "Only one button allowed in this area. Remove current button to select a different one.": [
+                "В этой области допускается только одна кнопка. Удалите текущую кнопку, чтобы выбрать другую."
+            ],
+            "Only one image type allowed. Remove current image to select a different type.": [
+                "Допускается только один тип изображения. Удалите текущее изображение, чтобы выбрать другой тип."
+            ],
+            "Operation Failed": [
+                "Операция не выполнена"
+            ],
+            "Permission Denied": [
+                "Доступ запрещён"
+            ],
+            "Permission denied. Please check if you have administrator privileges.": [
+                "Доступ запрещён. Проверьте, есть ли у вас права администратора."
+            ],
+            "Permission denied. Please check your user capabilities.": [
+                "Доступ запрещён. Проверьте права пользователя."
+            ],
+            "Phone": [
+                "Телефон"
+            ],
+            "Phone Number": [
+                "Номер телефона"
+            ],
+            "Placeholder Text": [
+                "Текст подсказки"
+            ],
+            "Placeholder:": [
+                "Подсказка:"
+            ],
+            "Pool": [
+                "Бассейн"
+            ],
+            "Position": [
+                "Позиция"
+            ],
+            "Posted 2 days ago": [
+                "Опубликовано 2 дня назад"
+            ],
+            "Preset": [
+                "Предустановленное"
+            ],
+            "Preset Fields": [
+                "Готовые поля"
+            ],
+            "Price": [
+                "Цена"
+            ],
+            "Price Details": [
+                "Сведения о цене"
+            ],
+            "Price per Sq Ft": [
+                "Цена за кв. фут"
+            ],
+            "Property Bathrooms": [
+                "Ванные комнаты"
+            ],
+            "Property Bedrooms": [
+                "Спальни"
+            ],
+            "Property Builder": [
+                "Конструктор объектов"
+            ],
+            "Property Card Builder": [
+                "Конструктор карточки объекта"
+            ],
+            "Property Card Layout": [
+                "Макет карточки объекта"
+            ],
+            "Property Card Preview": [
+                "Предпросмотр карточки объекта"
+            ],
+            "Property Date": [
+                "Дата объекта"
+            ],
+            "Property Details": [
+                "Сведения об объекте"
+            ],
+            "Property Documents": [
+                "Документы объекта"
+            ],
+            "Property Documents (3 Fields)": [
+                "Документы объекта (3 поля)"
+            ],
+            "Property Documents Group": [
+                "Группа документов объекта"
+            ],
+            "Property Gallery": [
+                "Галерея объекта"
+            ],
+            "Property Garage Square Footage": [
+                "Площадь гаража"
+            ],
+            "Property Image": [
+                "Изображение объекта"
+            ],
+            "Property Latitude": [
+                "Широта"
+            ],
+            "Property Location": [
+                "Расположение объекта"
+            ],
+            "Property Longitude": [
+                "Долгота"
+            ],
+            "Property Map Address": [
+                "Адрес на карте"
+            ],
+            "Property Price": [
+                "Цена объекта"
+            ],
+            "Property Rating": [
+                "Рейтинг объекта"
+            ],
+            "Property Reception Rooms": [
+                "Гостиные"
+            ],
+            "Property Section & Fields": [
+                "Секции и поля объекта"
+            ],
+            "Property Title": [
+                "Название объекта"
+            ],
+            "Property Total Floors": [
+                "Всего этажей объекта"
+            ],
+            "Property Total Kitchens": [
+                "Всего кухонь объекта"
+            ],
+            "Property Total Rooms": [
+                "Всего комнат"
+            ],
+            "Property Type": [
+                "Тип объекта"
+            ],
+            "Property URL": [
+                "URL объекта"
+            ],
+            "Property Video": [
+                "Видео объекта"
+            ],
+            "Property Year Built": [
+                "Год постройки"
+            ],
+            "Property builder configuration saved successfully!": [
+                "Конфигурация конструктора объектов успешно сохранена!"
+            ],
+            "Property card layout reset successfully!": [
+                "Макет карточки объекта успешно сброшен!"
+            ],
+            "Property card layout saved successfully!": [
+                "Макет карточки объекта успешно сохранён!"
+            ],
+            "Radio Button": [
+                "Переключатель"
+            ],
+            "Rating": [
+                "Рейтинг"
+            ],
+            "Receptions": [
+                "Гостиные"
+            ],
+            "Remove some fields to see more options": [
+                "Удалите некоторые поля, чтобы увидеть больше вариантов"
+            ],
+            "Removed %d old entries, kept %d active keys": [
+                "Удалено старых записей: %d, сохранено активных ключей: %d"
+            ],
+            "Removed %d orphaned entries from %d properties": [
+                "Удалено осиротевших записей: %d из объектов: %d"
+            ],
+            "Removed %d orphaned meta entries": [
+                "Удалено осиротевших метазаписей: %d"
+            ],
+            "Repeater": [
+                "Повторитель"
+            ],
+            "Repeater Count": [
+                "Количество строк повторителя"
+            ],
+            "Repeater Group": [
+                "Группа-повторитель"
+            ],
+            "Repeater Group (2 Fields)": [
+                "Группа повторителя (2 поля)"
+            ],
+            "Repeater Items": [
+                "Элементы повторителя"
+            ],
+            "Repeater Section": [
+                "Секция повторителя"
+            ],
+            "Replace Field:": [
+                "Заменить поле:"
+            ],
+            "Replace With Group Field Type": [
+                "Заменить на тип группового поля"
+            ],
+            "Replacing this group will remove all existing fields in the current group and create a new group with different field structure.": [
+                "Замена этой группы удалит все существующие поля в текущей группе и создаст новую группу с другой структурой полей."
+            ],
+            "Required": [
+                "Обязательное"
+            ],
+            "Required Field": [
+                "Обязательное поле"
+            ],
+            "Required Field - Admin only setting locked": [
+                "Обязательное поле — настройка «только администратор» заблокирована"
+            ],
+            "Required Field - Always required": [
+                "Обязательное поле — всегда обязательно"
+            ],
+            "Required Field - Cannot be deleted": [
+                "Обязательное поле — нельзя удалить"
+            ],
+            "Required Field - Cannot be disabled": [
+                "Обязательное поле — нельзя отключить"
+            ],
+            "Required Field - Cannot be edited": [
+                "Обязательное поле — нельзя редактировать"
+            ],
+            "Required Field - Cannot be moved": [
+                "Обязательное поле — нельзя переместить"
+            ],
+            "Required Tab - Cannot be modified": [
+                "Обязательная вкладка — изменение недоступно"
+            ],
+            "Required field cannot be moved": [
+                "Обязательное поле нельзя переместить"
+            ],
+            "Required tab cannot be moved": [
+                "Обязательную вкладку нельзя переместить"
+            ],
+            "Reset": [
+                "Сбросить"
+            ],
+            "Reset All Sections?": [
+                "Сбросить все секции?"
+            ],
+            "Reset Blocked": [
+                "Сброс заблокирован"
+            ],
+            "Reset Complete": [
+                "Сброс завершён"
+            ],
+            "Reset Failed": [
+                "Сброс не выполнен"
+            ],
+            "Reset failed": [
+                "Сброс не выполнен"
+            ],
+            "Reset to unified configuration successfully": [
+                "Успешный сброс к единой конфигурации"
+            ],
+            "Resetting configuration...": [
+                "Сброс конфигурации..."
+            ],
+            "Resetting...": [
+                "Сброс..."
+            ],
+            "Rooms": [
+                "Комнаты"
+            ],
+            "Save Configuration": [
+                "Сохранить конфигурацию"
+            ],
+            "Save Failed": [
+                "Ошибка сохранения"
+            ],
+            "Save failed - invalid response structure": [
+                "Сохранение не удалось — недопустимая структура ответа"
+            ],
+            "Saving changes...": [
+                "Сохранение изменений..."
+            ],
+            "Saving...": [
+                "Сохранение..."
+            ],
+            "Schedule Tour": [
+                "Записаться на просмотр"
+            ],
+            "Schedule Tour Button": [
+                "Кнопка «Записаться на просмотр»"
+            ],
+            "Scroll to top": [
+                "Наверх"
+            ],
+            "Search icons...": [
+                "Поиск иконок..."
+            ],
+            "Search preset fields...": [
+                "Поиск готовых полей..."
+            ],
+            "Section": [
+                "Секция"
+            ],
+            "Section Title": [
+                "Заголовок секции"
+            ],
+            "Select Icon": [
+                "Выберите иконку"
+            ],
+            "Select a field type to replace": [
+                "Выберите тип поля для замены"
+            ],
+            "Select an option": [
+                "Выберите вариант"
+            ],
+            "Select location on map": [
+                "Выберите местоположение на карте"
+            ],
+            "Select property type": [
+                "Выберите тип объекта"
+            ],
+            "Selected Fields": [
+                "Выбранные поля"
+            ],
+            "Server Error": [
+                "Ошибка сервера"
+            ],
+            "Server error. Please check your PHP error logs.": [
+                "Ошибка сервера. Проверьте журналы ошибок PHP."
+            ],
+            "Show All Icons": [
+                "Показать все иконки"
+            ],
+            "Show FAQ item count only": [
+                "Показывать только количество пунктов FAQ"
+            ],
+            "Show Popular Only": [
+                "Только популярные"
+            ],
+            "Show in sidebar": [
+                "Показать в боковой панели"
+            ],
+            "Show repeater row count only": [
+                "Показывать только количество строк повторителя"
+            ],
+            "Sidebar": [
+                "Боковая панель"
+            ],
+            "Sidebar Updated": [
+                "Боковая панель обновлена"
+            ],
+            "Single Image": [
+                "Одно изображение"
+            ],
+            "Single fields can only be edited as single fields. Group fields are not available for editing single fields.": [
+                "Одиночные поля можно редактировать только как одиночные. Групповые поля недоступны при редактировании одиночных полей."
+            ],
+            "Sq ft": [
+                "кв. фут"
+            ],
+            "Square Feet": [
+                "Квадратные футы"
+            ],
+            "Status": [
+                "Статус"
+            ],
+            "Stunning oceanfront villa with panoramic views, modern amenities, and luxurious finishes. Features include infinity pool, home theater, and smart home technology.": [
+                "Впечатляющая вилла у океана с панорамными видами, современными удобствами и роскошной отделкой. Есть бассейн infinity, домашний кинотеатр и технологии умного дома."
+            ],
+            "Swimming Pool": [
+                "Бассейн"
+            ],
+            "Tab Added": [
+                "Вкладка добавлена"
+            ],
+            "Tab Moved": [
+                "Вкладка перемещена"
+            ],
+            "Tab Removed": [
+                "Вкладка удалена"
+            ],
+            "Tab Updated": [
+                "Вкладка обновлена"
+            ],
+            "Tab added successfully": [
+                "Вкладка успешно добавлена"
+            ],
+            "Tab reordered successfully": [
+                "Порядок вкладки успешно изменён"
+            ],
+            "Tab updated successfully": [
+                "Вкладка успешно обновлена"
+            ],
+            "Text Area": [
+                "Многострочный текст"
+            ],
+            "Text Field": [
+                "Текстовое поле"
+            ],
+            "Text Input": [
+                "Текстовое поле"
+            ],
+            "This field is required and cannot be deleted": [
+                "Это обязательное поле и его нельзя удалить"
+            ],
+            "This field is required and cannot be edited": [
+                "Это обязательное поле и его нельзя редактировать"
+            ],
+            "This field is required and cannot be modified": [
+                "Это обязательное поле и его нельзя изменить"
+            ],
+            "This field is required and cannot be moved": [
+                "Это обязательное поле и его нельзя переместить"
+            ],
+            "This group creates 2 fields for image galleries:": [
+                "Эта группа создаёт 2 поля для галерей изображений:"
+            ],
+            "This group creates 3 fields for video content:": [
+                "Эта группа создаёт 3 поля для видеоконтента:"
+            ],
+            "This group creates 4 fields for displaying a property on Google Maps:": [
+                "Эта группа создаёт 4 поля для отображения объекта на Google Maps:"
+            ],
+            "This group creates a question and answer accordion section:": [
+                "Эта группа создаёт секцию «вопрос — ответ» в виде аккордеона:"
+            ],
+            "This group creates a title\/value list for nearby places, specs, and more:": [
+                "Эта группа создаёт список «название\/значение» для ближайших мест, характеристик и другого:"
+            ],
+            "This group creates an agents section for the single property page:": [
+                "Эта группа создаёт секцию агентов для страницы объекта:"
+            ],
+            "This group creates document management fields:": [
+                "Эта группа создаёт поля для управления документами:"
+            ],
+            "This tab is required and cannot be deleted": [
+                "Эта вкладка обязательна и не может быть удалена"
+            ],
+            "This tab is required and cannot be edited": [
+                "Эта вкладка обязательна и не может быть изменена"
+            ],
+            "This will create a group of": [
+                "Будет создана группа из"
+            ],
+            "This will permanently delete orphaned meta. Continue?": [
+                "Осиротевшие метаданные будут удалены безвозвратно. Продолжить?"
+            ],
+            "This will reset all property card layout settings to defaults.": [
+                "Это сбросит все настройки макета карточки объекта до значений по умолчанию."
+            ],
+            "Thumbnail": [
+                "Миниатюра"
+            ],
+            "Thumbnail Image": [
+                "Изображение-миниатюра"
+            ],
+            "Time": [
+                "Время"
+            ],
+            "Title": [
+                "Заголовок"
+            ],
+            "Title Area": [
+                "Область заголовка"
+            ],
+            "Total number of rooms": [
+                "Общее количество комнат"
+            ],
+            "Total square footage": [
+                "Общая площадь"
+            ],
+            "Total:": [
+                "Всего:"
+            ],
+            "Type:": [
+                "Тип:"
+            ],
+            "URL": [
+                "URL"
+            ],
+            "Unable to add this field to the selected area.": [
+                "Не удалось добавить это поле в выбранную область."
+            ],
+            "Unknown field": [
+                "Неизвестное поле"
+            ],
+            "Untitled Field": [
+                "Безымянное поле"
+            ],
+            "Update": [
+                "Обновить"
+            ],
+            "Upload gallery images": [
+                "Загрузить изображения галереи"
+            ],
+            "Upload image": [
+                "Загрузить изображение"
+            ],
+            "Upload multiple images": [
+                "Загрузить несколько изображений"
+            ],
+            "Upload video": [
+                "Загрузить видео"
+            ],
+            "Upload video thumbnail": [
+                "Загрузить миниатюру видео"
+            ],
+            "Video": [
+                "Видео"
+            ],
+            "Video (3 Fields)": [
+                "Видео (3 поля)"
+            ],
+            "Video Group": [
+                "Группа видео"
+            ],
+            "Video Information": [
+                "Информация о видео"
+            ],
+            "Video Thumbnail": [
+                "Миниатюра видео"
+            ],
+            "Video Title": [
+                "Название видео"
+            ],
+            "Video URL": [
+                "URL видео"
+            ],
+            "View Property": [
+                "Смотреть объект"
+            ],
+            "View Property Button": [
+                "Кнопка «Смотреть объект»"
+            ],
+            "Views": [
+                "Просмотры"
+            ],
+            "Villa": [
+                "Вилла"
+            ],
+            "Visible in sidebar": [
+                "Видно в боковой панели"
+            ],
+            "Warning:": [
+                "Внимание:"
+            ],
+            "Website": [
+                "Веб-сайт"
+            ],
+            "You are editing a group field. You can only replace it with another group field type.": [
+                "Вы редактируете групповое поле. Его можно заменить только на другой тип группового поля."
+            ],
+            "You are editing a single field. You cannot convert it to a group field.": [
+                "Вы редактируете одиночное поле. Его нельзя преобразовать в групповое поле."
+            ],
+            "You can select multiple fields by clicking on them": [
+                "Вы можете выбрать несколько полей, нажимая на них"
+            ],
+            "You do not have permission to access this resource.": [
+                "У вас нет прав для доступа к этому ресурсу."
+            ],
+            "ZIP\/Postal Code": [
+                "Индекс"
+            ],
+            "added": [
+                "добавлено"
+            ],
+            "added to": [
+                "добавлено в"
+            ],
+            "e.g., Floor Plan": [
+                "напр., План этажа"
+            ],
+            "e.g., Floor Plan, Brochure, EPC": [
+                "напр., план этажа, брошюра, EPC"
+            ],
+            "e.g., Frequently Asked Questions": [
+                "напр., Часто задаваемые вопросы"
+            ],
+            "e.g., Listing Agents": [
+                "напр., Агенты по объекту"
+            ],
+            "e.g., Nearby Places": [
+                "напр., Рядом"
+            ],
+            "e.g., file-pdf, file-word, file-lines": [
+                "напр., file-pdf, file-word, file-lines"
+            ],
+            "field": [
+                "поле"
+            ],
+            "fields": [
+                "полей"
+            ],
+            "fields added successfully": [
+                "поля успешно добавлены"
+            ],
+            "fields enabled": [
+                "полей включено"
+            ],
+            "items": [
+                "элементов"
+            ],
+            "of": [
+                "из"
+            ],
+            "related fields that will be visually grouped together.": [
+                "связанных полей, которые будут визуально объединены."
+            ],
+            "removed successfully": [
+                "успешно удалена"
+            ],
+            "reset successfully!": [
+                "успешно сброшено!"
+            ],
+            "sections": [
+                "секций"
+            ],
+            "settings saved successfully!": [
+                "настройки успешно сохранены!"
+            ],
+            "settings?": [
+                "настройки?"
+            ],
+            "sq ft": [
+                "кв. фут"
+            ],
+            "views": [
+                "просмотров"
+            ],
+            "your.email@example.com": [
+                "your.email@example.com"
+            ],
+            "❓ FAQ Items - Add, remove, and sort questions and answers": [
+                "❓ Элементы FAQ — добавляйте, удаляйте и сортируйте вопросы и ответы"
+            ],
+            "❓ Section Title - Optional heading above the FAQ list": [
+                "❓ Заголовок секции — необязательный заголовок над списком FAQ"
+            ],
+            "🎬 Thumbnail - Custom thumbnail image": [
+                "🎬 Миниатюра — пользовательское изображение превью"
+            ],
+            "🎬 Video Title - Display name for the video": [
+                "🎬 Название видео — отображаемое имя видео"
+            ],
+            "🎬 Video URL - YouTube\/Vimeo or self-hosted URL": [
+                "🎬 URL видео — ссылка YouTube\/Vimeo или собственного хостинга"
+            ],
+            "👤 Assigned Agents - Select one or more agents for this section": [
+                "👤 Назначенные агенты — выберите одного или нескольких агентов для этой секции"
+            ],
+            "👤 Section Title - Heading shown on the property page": [
+                "👤 Заголовок секции — заголовок, отображаемый на странице объекта"
+            ],
+            "💡 Tip: Drag and drop to reorder gallery images": [
+                "💡 Совет: перетаскивайте, чтобы изменить порядок изображений в галерее"
+            ],
+            "💡 Tip: Each agents section can display different agents on the same property": [
+                "💡 Совет: каждая секция агентов может показывать разных агентов на одном объекте"
+            ],
+            "💡 Tip: FAQ items render as an accordion on the single property page": [
+                "💡 Совет: элементы FAQ отображаются аккордеоном на странице объекта"
+            ],
+            "💡 Tip: Use maps.ie to find accurate latitude\/longitude coordinates": [
+                "💡 Совет: используйте maps.ie для точных координат широты и долготы"
+            ],
+            "💡 Tip: Use repeater groups for nearby places, specifications, or amenities": [
+                "💡 Совет: используйте группы-повторители для ближайших мест, характеристик или удобств"
+            ],
+            "💡 Tip: Use the sidebar toggle to show\/hide documents in the property sidebar": [
+                "💡 Совет: используйте переключатель боковой панели, чтобы показать или скрыть документы в боковой панели объекта"
+            ],
+            "💡 Tip: YouTube videos work best with standard share URLs": [
+                "💡 Совет: для YouTube лучше всего подходят стандартные ссылки для публикации"
+            ],
+            "📄 Icon - FontAwesome icon name (e.g., file-pdf)": [
+                "📄 Иконка — имя иконки FontAwesome (например, file-pdf)"
+            ],
+            "📄 Label - Display name for the document": [
+                "📄 Метка — отображаемое имя документа"
+            ],
+            "📄 URL - Document file path or external link": [
+                "📄 URL — путь к файлу документа или внешняя ссылка"
+            ],
+            "📋 Repeater Items - Rows with title, value, and optional icon": [
+                "📋 Элементы повторителя — строки с названием, значением и необязательной иконкой"
+            ],
+            "📋 Section Title - Optional heading above the list": [
+                "📋 Заголовок секции — необязательный заголовок над списком"
+            ],
+            "📍 Address - The property street address": [
+                "📍 Адрес — улица и номер дома объекта"
+            ],
+            "📍 Latitude - Get coordinates from maps.ie": [
+                "📍 Широта — получите координаты на maps.ie"
+            ],
+            "📍 Longitude - Get coordinates from maps.ie": [
+                "📍 Долгота — получите координаты на maps.ie"
+            ],
+            "📍 Map Preview - Shows the interactive map": [
+                "📍 Предпросмотр карты — интерактивная карта"
+            ],
+            "🖼️ Gallery Images - Upload multiple images": [
+                "🖼️ Изображения галереи — загрузка нескольких изображений"
+            ],
+            "🖼️ Gallery Title - Name for the gallery": [
+                "🖼️ Название галереи — имя галереи"
+            ]
+        }
+    }
+}

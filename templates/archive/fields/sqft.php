@@ -31,6 +31,7 @@ $hvnly_mode = $mode ?? 'default';
 
 // Get square footage
 $hvnly_area = absint(get_post_meta($hvnly_property_id, '_hvnly_property_sqft', true));
+$hvnly_field = $field ?? array();
 
 if ($hvnly_area > 0 || $hvnly_mode === 'preset') :
 ?>
@@ -43,7 +44,14 @@ if ($hvnly_area > 0 || $hvnly_mode === 'preset') :
             </span>
         <?php endif; ?>
         <span class="hvnly-property-feature-label">
-            <?php echo esc_html__( 'sq ft', 'havenlytics' ); ?>
+            <?php
+            $hvnly_sqft_label = isset( $hvnly_field['label'] ) ? trim( (string) $hvnly_field['label'] ) : '';
+            echo esc_html(
+                '' !== $hvnly_sqft_label
+                    ? ( function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $hvnly_sqft_label ) : $hvnly_sqft_label )
+                    : __( 'sq ft', 'havenlytics' )
+            );
+            ?>
         </span>
     </div>
 </div>

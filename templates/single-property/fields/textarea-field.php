@@ -32,7 +32,7 @@ if ( empty( $hvnly_value ) ) {
 ?>
 <div class="hvnly-field hvnly-field--textarea hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_field_name ) ); ?>">
     <?php if ( ! empty( $hvnly_label ) ) : ?>
-        <h4 class="hvnly-field__title"><?php echo esc_html( $hvnly_label ); ?></h4>
+        <h4 class="hvnly-field__title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?></h4>
     <?php endif; ?>
     <div class="hvnly-field__value hvnly-field__value--textarea">
         <?php echo wp_kses_post( wpautop( $hvnly_value ) ); ?>

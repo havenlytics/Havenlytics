@@ -2317,33 +2317,37 @@ class Helpers
 
         $main_config = $this->hvnly_get_main_search_field_config($field_id);
         if (is_array($main_config) && !empty($main_config['placeholder'])) {
-            return (string) $main_config['placeholder'];
+            $placeholder = (string) $main_config['placeholder'];
+            return function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $placeholder ) : $placeholder;
         }
 
         $top_config = $this->hvnly_get_top_search_field_config($field_id);
         if (is_array($top_config) && !empty($top_config['placeholder'])) {
-            return (string) $top_config['placeholder'];
+            $placeholder = (string) $top_config['placeholder'];
+            return function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $placeholder ) : $placeholder;
         }
 
         $sidebar_placeholder = $this->hvnly_filter_sidebar_get_field_placeholder($field_id, '');
         if ($sidebar_placeholder !== '') {
-            return $sidebar_placeholder;
+            return function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( (string) $sidebar_placeholder ) : (string) $sidebar_placeholder;
         }
 
         foreach ($this->hvnly_get_default_main_search_fields() as $field) {
             if (($field['id'] ?? '') === $field_id && !empty($field['config']['placeholder'])) {
-                return (string) $field['config']['placeholder'];
+                $placeholder = (string) $field['config']['placeholder'];
+                return function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $placeholder ) : $placeholder;
             }
         }
 
         foreach ($this->hvnly_get_default_top_search_fields() as $field) {
             if (($field['id'] ?? '') === $field_id && !empty($field['config']['placeholder'])) {
-                return (string) $field['config']['placeholder'];
+                $placeholder = (string) $field['config']['placeholder'];
+                return function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $placeholder ) : $placeholder;
             }
         }
 
         if ($default !== '') {
-            return $default;
+            return function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( (string) $default ) : (string) $default;
         }
 
         return __('Any', 'havenlytics');

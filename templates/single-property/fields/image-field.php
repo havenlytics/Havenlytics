@@ -63,7 +63,7 @@ if ( empty( $hvnly_image_url ) ) {
 ?>
 <div class="hvnly-field hvnly-field--image hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_field_name ) ); ?>">
     <?php if ( ! empty( $hvnly_label ) ) : ?>
-    <div class="hvnly-property-single__default-title"><?php echo esc_html( $hvnly_label ); ?></div>
+    <div class="hvnly-property-single__default-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?></div>
     <?php endif; ?>
 
     <div class="hvnly-field__image-wrapper">

@@ -276,7 +276,7 @@
 		var close = document.createElement( 'button' );
 		close.type = 'button';
 		close.className = 'hvnly-toast__dismiss';
-		close.setAttribute( 'aria-label', toast.dismissLabel || 'Dismiss notification' );
+		close.setAttribute( 'aria-label', toast.dismissLabel || ((window.hvnly_map_params && window.hvnly_map_params.i18n && window.hvnly_map_params.i18n.dismissNotification) || (window.hvnly_property_data && window.hvnly_property_data.i18n && window.hvnly_property_data.i18n.dismissNotification) || '') );
 		close.innerHTML = '&times;';
 		close.addEventListener( 'click', function () {
 			dismiss( toast.id );

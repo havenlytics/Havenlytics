@@ -11,6 +11,7 @@
 
 namespace HvnlyNab\ImportExport\Import;
 
+use HvnlyNab\ImportExport\Capability\MigrationLimits;
 use HvnlyNab\ImportExport\Media\MediaImporter;
 use HvnlyNab\ImportExport\Package\PackageReader;
 use HvnlyNab\ImportExport\Package\PackageResult;
@@ -52,11 +53,15 @@ final class ImportJob {
 		$workdir      = '';
 		$warnings     = array();
 		$entities     = null;
+		$manifest     = null;
 		$media_index  = null;
 		$files        = array();
 
 		if ( ! empty( $options['entities'] ) && is_array( $options['entities'] ) ) {
 			$entities = $options['entities'];
+			if ( ! empty( $options['manifest'] ) && is_array( $options['manifest'] ) ) {
+				$manifest = $options['manifest'];
+			}
 			if ( ! empty( $options['media_index'] ) && is_array( $options['media_index'] ) ) {
 				$media_index = $options['media_index'];
 			}
@@ -77,6 +82,9 @@ final class ImportJob {
 			$payload     = $opened->data();
 			$entities    = isset( $payload['entities'] ) && is_array( $payload['entities'] )
 				? $payload['entities']
+				: null;
+			$manifest    = isset( $payload['manifest'] ) && is_array( $payload['manifest'] )
+				? $payload['manifest']
 				: null;
 			$workdir     = isset( $payload['workdir'] ) ? (string) $payload['workdir'] : '';
 			$media_index = isset( $payload['media_index'] ) && is_array( $payload['media_index'] )
@@ -99,6 +107,19 @@ final class ImportJob {
 				'hvnly_ie_entities_missing',
 				'Package did not contain a usable entities payload.',
 				array()
+			);
+		}
+
+		if ( ! is_array( $manifest ) && ! empty( $options['manifest'] ) && is_array( $options['manifest'] ) ) {
+			$manifest = $options['manifest'];
+		}
+		$allowed = MigrationLimits::assert_import_allowed( is_array( $manifest ) ? $manifest : null, $entities );
+		if ( is_wp_error( $allowed ) ) {
+			self::maybe_cleanup( $workdir, $options );
+			return PackageResult::failure(
+				(string) $allowed->get_error_code(),
+				(string) $allowed->get_error_message(),
+				(array) $allowed->get_error_data()
 			);
 		}
 

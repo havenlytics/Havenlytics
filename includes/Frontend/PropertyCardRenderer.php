@@ -403,12 +403,13 @@ class PropertyCardRenderer {
 					if ( isset( $mapping[ $field_type ] ) ) {
 						$field_template_name = $mapping[ $field_type ];
 						
-						// Use template function to render the field.
+						// Pass the builder field config so labels/button text are used.
 						hvnly_render_field(
 							$field_template_name,
 							$property_id,
 							$property_data,
-							'preset'
+							'preset',
+							$field
 						);
 					} else {
 						// Try to load template directly.

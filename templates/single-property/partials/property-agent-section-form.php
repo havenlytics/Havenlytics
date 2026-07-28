@@ -107,8 +107,10 @@ if ( ! $hvnly_property_id ) {
 				echo esc_textarea(
 					$hvnly_property_title
 						? sprintf(
-							/*( translators: %s: property title )*/ 
-							 __( "I'm interested in: %s\n\n", 'havenlytics' ), $hvnly_property_title )
+							/* translators: %s: Property title. */
+							__( "I'm interested in: %s\n\n", 'havenlytics' ),
+							$hvnly_property_title
+						)
 						: ''
 				);
 			?></textarea>

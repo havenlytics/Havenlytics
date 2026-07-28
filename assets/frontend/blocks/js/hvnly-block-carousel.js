@@ -194,7 +194,7 @@
 				dot.className =
 					'hvnly-block-carousel__dot' +
 					( page === self.index ? ' is-active' : '' );
-				dot.setAttribute( 'aria-label', 'Go to slide ' + ( page + 1 ) );
+				dot.setAttribute( 'aria-label', ((window.hvnly_block_carousel && window.hvnly_block_carousel.i18n && window.hvnly_block_carousel.i18n.goToSlide) || '').replace('%d', String(page + 1)) );
 				dot.setAttribute( 'role', 'tab' );
 				dot.addEventListener( 'click', function () {
 					self.go( page );

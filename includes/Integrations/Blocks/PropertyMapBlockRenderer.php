@@ -120,6 +120,15 @@ final class PropertyMapBlockRenderer {
             'showCta'        => !isset($attributes['showCta']) || !empty($attributes['showCta']),
             'center'         => self::default_center($map_config),
             'interactive'    => true,
+            'i18n'           => [
+                'loadingMap'            => __( 'Loading map…', 'havenlytics' ),
+                'couldNotLoadProperties'=> __( 'Couldn’t load properties.', 'havenlytics' ),
+                'retry'                 => __( 'Retry', 'havenlytics' ),
+                'save'                  => __( 'Save', 'havenlytics' ),
+                'view'                  => __( 'View', 'havenlytics' ),
+                'viewProperty'          => __( 'View Property', 'havenlytics' ),
+                'untitledProperty'      => __( 'Untitled Property', 'havenlytics' ),
+            ],
         ];
 
         $wrapper = function_exists('get_block_wrapper_attributes')

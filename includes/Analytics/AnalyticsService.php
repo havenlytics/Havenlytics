@@ -620,7 +620,11 @@ class AnalyticsService {
 		foreach ( $rows as $row ) {
 			$agent_id = (int) $row['agent_id'];
 			$result[] = array(
-				'label' => get_the_title( $agent_id ) ?: sprintf( __( 'Agent #%d', 'havenlytics' ), $agent_id ),
+				'label' => get_the_title( $agent_id ) ?: sprintf(
+					/* translators: %d: Agent post ID. */
+					__( 'Agent #%d', 'havenlytics' ),
+					$agent_id
+				),
 				'value' => (int) $row['total'],
 			);
 		}

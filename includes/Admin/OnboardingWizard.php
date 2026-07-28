@@ -14,6 +14,7 @@ namespace HvnlyNab\Admin;
 
 use HvnlyNab\Admin\Data\TabData;
 use HvnlyNab\Admin\Data\DemoData;
+use HvnlyNab\I18n\ScriptTranslations;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -243,9 +244,7 @@ class OnboardingWizard {
 			);
 		}
 
-		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( 'hvnly-setup-wizard-app', 'havenlytics' );
-		}
+		ScriptTranslations::attach( 'hvnly-setup-wizard-app' );
 
 		wp_localize_script(
 			'hvnly-setup-wizard-app',

@@ -72,7 +72,7 @@ if ($hvnly_display_all) {
                 <i class="<?php echo esc_attr($hvnly_icon_class); ?>"></i>
             <?php endif; ?>
             
-            <span class="hvnly-badge-text"><?php echo esc_html($hvnly_badge->name); ?></span>
+            <span class="hvnly-badge-text"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_badge->name ) ) : esc_html( $hvnly_badge->name ); ?></span>
         </div>
     <?php endforeach; ?>
 
@@ -97,7 +97,7 @@ if ($hvnly_display_all) {
                             <i class="<?php echo esc_attr($hvnly_icon_class); ?>"></i>
                         <?php endif; ?>
                         
-                        <span class="hvnly-badge-text"><?php echo esc_html($hvnly_badge->name); ?></span>
+                        <span class="hvnly-badge-text"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_badge->name ) ) : esc_html( $hvnly_badge->name ); ?></span>
                     </div>
                 <?php endforeach; ?>
             </div>

@@ -7,6 +7,9 @@
 (function($) {
     'use strict';
 
+    const i18n = (window.HvnlyGalleryField && window.HvnlyGalleryField.i18n) || {};
+    const t = (key, fallback) => (i18n[key] && String(i18n[key])) || fallback;
+
     class HavenlyticsGalleryField {
         constructor(galleryId, $container) {
             this.galleryId = galleryId;
@@ -125,13 +128,13 @@
 
         openMediaGallery() {
             if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
-                alert('Media library is not available.');
+                alert(t('mediaUnavailable', 'Media library is not available.'));
                 return;
             }
 
             const frame = wp.media({
-                title: 'Manage Gallery Images',
-                button: { text: 'Update Gallery' },
+                title: t('manageTitle', 'Manage Gallery Images'),
+                button: { text: t('updateGallery', 'Update Gallery') },
                 multiple: true,
                 library: { type: 'image' }
             });
@@ -199,10 +202,10 @@
                     <img src="${thumbnailUrl}" alt="${attachment.title || ''}" />
                     
                     <div class="hvnly-gallery-item-actions">
-                        <a href="#" class="hvnly-gallery-edit" title="Edit Image">
+                        <a href="#" class="hvnly-gallery-edit" title="${t('editRemoveImage', 'Edit/Remove Image')}">
                             <span class="dashicons dashicons-edit"></span>
                         </a>
-                        <a href="#" class="hvnly-gallery-remove" title="Remove Image">
+                        <a href="#" class="hvnly-gallery-remove" title="${t('editRemoveImage', 'Edit/Remove Image')}">
                             <span class="dashicons dashicons-no"></span>
                         </a>
                     </div>
@@ -233,8 +236,8 @@
             const attachmentId = $item.data('id');
 
             const frame = wp.media({
-                title: 'Edit Image',
-                button: { text: 'Update Image' },
+                title: t('editImage', 'Edit Image'),
+                button: { text: t('updateImage', 'Update Image') },
                 multiple: false,
                 library: { 
                     type: 'image',
@@ -263,7 +266,7 @@
         }
 
         clearGallery() {
-            if (confirm('Are you sure you want to remove all images from the gallery?')) {
+            if (confirm(t('confirmClearAll', 'Are you sure you want to remove all images from the gallery?'))) {
                 this.$imagesList.empty();
                 this.$hiddenInput.val('');
 

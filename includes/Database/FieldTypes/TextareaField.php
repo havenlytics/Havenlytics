@@ -24,7 +24,7 @@ class TextareaField extends BaseFieldType {
                 class="hvnly__dyamic_metabox_tab__textarea" 
                 data-field-type="textarea" %s>%s</textarea>',
             esc_attr($field['name']),
-            esc_attr($field['placeholder'] ?? ''),
+            hvnly_esc_attr_ui( (string) ( $field['placeholder'] ?? '' ) ),
             isset($field['is_required']) && $field['is_required'] ? 'required' : '',
             esc_textarea($value)
         );
@@ -47,7 +47,7 @@ class TextareaField extends BaseFieldType {
             return new \WP_Error('required_field', sprintf(
                 /* translators: %s: field label */
                 __('The field "%s" is required.', 'havenlytics'),
-                esc_html($field['label'])
+                hvnly_esc_html_ui( (string) $field['label'] )
             ));
         }
         return true;

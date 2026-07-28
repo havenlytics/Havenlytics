@@ -51,7 +51,7 @@ class FAQField extends BaseFieldType {
 		?>
 		<div class="hvnly-faq-field-container" data-field-name="<?php echo esc_attr( $field_name ); ?>" data-group-base-id="<?php echo esc_attr( $field_base ); ?>">
 			<div class="hvnly-faq-field-header">
-				<label class="hvnly-faq-field-label"><?php echo esc_html( $field['label'] ?? __( 'FAQ Items', 'havenlytics' ) ); ?></label>
+				<label class="hvnly-faq-field-label"><?php echo esc_html( hvnly_translate_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'FAQ Items' ) ) ); ?></label>
 				<p class="description"><?php esc_html_e( 'Add questions and answers. Drag to reorder.', 'havenlytics' ); ?></p>
 			</div>
 			<div class="hvnly-faq-repeater-items">
@@ -142,7 +142,7 @@ class FAQField extends BaseFieldType {
 				sprintf(
 					/* translators: %s: field label */
 					__( 'At least one FAQ item is required for "%s".', 'havenlytics' ),
-					esc_html( $field['label'] ?? __( 'FAQ', 'havenlytics' ) )
+					hvnly_esc_html_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'FAQ' ) )
 				)
 			);
 		}

@@ -90,7 +90,9 @@
                 }
                 
                 // Use existing spinner from your CSS (the .hvnly-load-more-spinner class)
-                const loadingText = $loadMoreBtn.closest('.hvnly-property-load-more-container').data('loading-text') || 'Loading...';
+                const loadingText = $loadMoreBtn.closest('.hvnly-property-load-more-container').data('loading-text')
+                    || (window.hvnly_PROPERTY_ajax && window.hvnly_PROPERTY_ajax.loading_text)
+                    || '';
                 $loadMoreBtn.html('<span class="hvnly-load-more-spinner"></span> ' + loadingText);
             }
         }
@@ -115,7 +117,7 @@
                 } else {
                     // Fallback: restore based on data attribute
                     const loadMoreContainer = $btn.closest('.hvnly-property-load-more-container');
-                    const loadMoreText = loadMoreContainer.data('load-more-text') || 'Load More Properties';
+                    const loadMoreText = loadMoreContainer.data('load-more-text') || (window.hvnly_PROPERTY_ajax && window.hvnly_PROPERTY_ajax.load_more_text) || '';
                     $btn.removeClass('loading');
                     $btn.prop('disabled', false);
                     $btn.html('<span class="hvnly-property-load-more-text">' + loadMoreText + '</span><i class="fas fa-plus"></i>');
@@ -133,7 +135,7 @@
             }
             
             const errorDiv = $('<div class="hvnly-ajax-error" role="alert">')
-                .text(message || window.hvnly_PROPERTY_ajax?.error_message || 'An error occurred. Please try again.');
+                .text(message || window.hvnly_PROPERTY_ajax?.error_message || window.hvnly_PROPERTY_ajax?.error_text || '');
             
             const propertyGrid = this.main.modules.utils.resolvePropertyGrid(this.getActiveInstanceId());
             if (propertyGrid.length) {
@@ -151,7 +153,7 @@
         updateLoadMoreButtonText() {
             const loadMoreContainer = this.main.modules.utils.resolveLoadMoreContainer(this.getActiveInstanceId());
             if (loadMoreContainer.length) {
-                const loadMoreText = loadMoreContainer.data('load-more-text') || 'Load More Properties';
+                const loadMoreText = loadMoreContainer.data('load-more-text') || (window.hvnly_PROPERTY_ajax && window.hvnly_PROPERTY_ajax.load_more_text) || '';
                 const loadMoreBtn = $('#hvnlyLoadMorePropertyBtn');
                 if (loadMoreBtn.length && !loadMoreBtn.hasClass('loading')) {
                     const originalHtml = '<span class="hvnly-property-load-more-text">' + loadMoreText + '</span><i class="fas fa-plus"></i>';
@@ -165,7 +167,7 @@
             $('.hvnly-ajax-success').remove();
             
             const successDiv = $('<div class="hvnly-ajax-success" role="status">')
-                .text(message || 'Success!')
+                .text(message || window.hvnly_PROPERTY_ajax?.success_message || window.hvnly_PROPERTY_ajax?.success_text || '')
                 .css({
                     background: '#d4edda',
                     color: '#155724',

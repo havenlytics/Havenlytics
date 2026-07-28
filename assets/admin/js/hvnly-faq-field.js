@@ -7,6 +7,9 @@
 (function ($) {
     'use strict';
 
+    const i18n = (window.HvnlyFaqField && window.HvnlyFaqField.i18n) || {};
+    const t = (key, fallback) => (i18n[key] && String(i18n[key])) || fallback;
+
     class HavenlyticsFaqField {
         constructor() {
             $(document).on('click', '.hvnly-faq-add-item', this.addItem.bind(this));
@@ -40,7 +43,7 @@
 
             $template.find('.hvnly-faq-question-input').attr('name', fieldName + '_questions[]').val('');
             $template.find('.hvnly-faq-answer-input').attr('name', fieldName + '_answers[]').val('');
-            $template.find('.hvnly-faq-item-title').text('New FAQ');
+            $template.find('.hvnly-faq-item-title').text(t('newFaq', 'New FAQ'));
 
             $items.append($template);
             this.initSortable();
@@ -52,7 +55,7 @@
             const $items = $item.parent();
             if ($items.find('.hvnly-faq-repeater-item').length <= 1) {
                 $item.find('input, textarea').val('');
-                $item.find('.hvnly-faq-item-title').text('New FAQ');
+                $item.find('.hvnly-faq-item-title').text(t('newFaq', 'New FAQ'));
                 return;
             }
             $item.remove();
@@ -60,7 +63,7 @@
 
         updateTitles(event) {
             const $input = $(event.currentTarget);
-            const title = $.trim($input.val()) || 'New FAQ';
+            const title = $.trim($input.val()) || t('newFaq', 'New FAQ');
             $input.closest('.hvnly-faq-repeater-item').find('.hvnly-faq-item-title').text(title);
         }
     }

@@ -39,7 +39,7 @@ $hvnly_repeater_id = 'hvnly-repeater-' . absint( $hvnly_property_id ) . '-' . sa
 ?>
 <div class="hvnly-property-single__repeater-field" id="<?php echo esc_attr( $hvnly_repeater_id ); ?>">
 	<?php if ( ! empty( $hvnly_title ) ) : ?>
-		<h3 class="hvnly-property-single__repeater-title"><?php echo esc_html( $hvnly_title ); ?></h3>
+		<h3 class="hvnly-property-single__repeater-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_title ?? $hvnly_label ) ) : esc_html( $hvnly_title ?? $hvnly_label ); ?></h3>
 	<?php endif; ?>
 	<div class="hvnly-property-single__repeater-table-wrap">
 		<table class="hvnly-property-single__repeater-table">

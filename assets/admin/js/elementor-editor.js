@@ -47,7 +47,7 @@
 
         openFileUploader($button) {
             if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
-                alert('Media uploader is not available.');
+                alert((window.hvnlyElementorEditor && window.hvnlyElementorEditor.mediaUnavailable) || 'Media uploader is not available.');
                 return;
             }
 
@@ -60,10 +60,13 @@
             }
 
             const type = $button.data('type') || 'image';
+            const i18n = (window.hvnlyElementorEditor && window.hvnlyElementorEditor.i18n) || {};
 
             const frame = wp.media({
-                title: type === 'image' ? 'Select Image' : 'Select File',
-                button: { text: 'Use this file' },
+                title: type === 'image'
+                    ? (i18n.selectImage || 'Select Image')
+                    : (i18n.selectFile || 'Select File'),
+                button: { text: i18n.useThisFile || 'Use this file' },
                 library: { type: type === 'image' ? 'image' : '' },
                 multiple: false
             });

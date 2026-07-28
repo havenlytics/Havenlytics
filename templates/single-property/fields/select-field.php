@@ -51,147 +51,29 @@ if ( ! empty( $hvnly_field_options ) && is_array( $hvnly_field_options ) ) {
     }
 }
 
-// SECOND PRIORITY: Specific handling for known fields based on your debug output
+// SECOND PRIORITY: Known field option maps (localized helpers)
 if ( $hvnly_display_value === $hvnly_value ) {
-    
-    // Handle cooling field
+    $hvnly_fallback_options = array();
+
     if ( $hvnly_name === '_hvnly_property_cooling' || strpos( $hvnly_name, 'cooling' ) !== false ) {
-        $hvnly_cooling_options = array(
-            'central'     => 'Central Air',
-            'window'      => 'Window Units',
-            'heat_pump'   => 'Heat Pump',
-            'baseboard'   => 'Baseboard',
-            'none'        => 'None',
-        );
-        
-        if ( isset( $hvnly_cooling_options[ $hvnly_value ] ) ) {
-            $hvnly_display_value = $hvnly_cooling_options[ $hvnly_value ];
-        }
+        $hvnly_fallback_options = function_exists( 'hvnly_get_cooling_field_options' ) ? hvnly_get_cooling_field_options() : array();
+    } elseif ( $hvnly_name === '_hvnly_property_heating' || strpos( $hvnly_name, 'heating' ) !== false ) {
+        $hvnly_fallback_options = function_exists( 'hvnly_get_heating_field_options' ) ? hvnly_get_heating_field_options() : array();
+    } elseif ( $hvnly_name === '_hvnly_property_water' || strpos( $hvnly_name, 'water' ) !== false ) {
+        $hvnly_fallback_options = function_exists( 'hvnly_get_water_field_options' ) ? hvnly_get_water_field_options() : array();
+    } elseif ( $hvnly_name === '_hvnly_property_location' || strpos( $hvnly_name, 'location' ) !== false ) {
+        $hvnly_fallback_options = function_exists( 'hvnly_get_location_field_options' ) ? hvnly_get_location_field_options() : array();
+    } elseif ( $hvnly_name === '_hvnly_property_country_location' || strpos( $hvnly_name, 'country' ) !== false ) {
+        $hvnly_fallback_options = function_exists( 'hvnly_get_country_field_options' ) ? hvnly_get_country_field_options() : array();
     }
-    
-    // Handle heating field
-    if ( $hvnly_name === '_hvnly_property_heating' || strpos( $hvnly_name, 'heating' ) !== false ) {
-        $hvnly_heating_options = array(
-            'forced_air'  => 'Forced Air',
-            'radiant'     => 'Radiant Heat',
-            'baseboard'   => 'Baseboard',
-            'heat_pump'   => 'Heat Pump',
-            'geothermal'  => 'Geothermal',
-            'none'        => 'None',
-        );
-        
-        if ( isset( $hvnly_heating_options[ $hvnly_value ] ) ) {
-            $hvnly_display_value = $hvnly_heating_options[ $hvnly_value ];
-        }
-    }
-    
-    // Handle water field
-    if ( $hvnly_name === '_hvnly_property_water' || strpos( $hvnly_name, 'water' ) !== false ) {
-        $hvnly_water_options = array(
-            'city'        => 'City Water',
-            'well'        => 'Well Water',
-            'shared'      => 'Shared Well',
-            'none'        => 'None',
-        );
-        
-        if ( isset( $hvnly_water_options[ $hvnly_value ] ) ) {
-            $hvnly_display_value = $hvnly_water_options[ $hvnly_value ];
-        }
-    }
-    
-    // Handle location field (convert slug to title)
-    if ( $hvnly_name === '_hvnly_property_location' || strpos( $hvnly_name, 'location' ) !== false ) {
-        $hvnly_display_value = ucwords( str_replace( array( '-', '_' ), ' ', $hvnly_value ) );
-    }
-    
-    // Handle country field
-    if ( $hvnly_name === '_hvnly_property_country_location' || strpos( $hvnly_name, 'country' ) !== false ) {
-        $hvnly_country_codes = array(
-            'AF' => 'Afghanistan',
-            'AL' => 'Albania',
-            'DZ' => 'Algeria',
-            'BD' => 'Bangladesh',
-            'US' => 'United States',
-            'GB' => 'United Kingdom',
-            'CA' => 'Canada',
-            'AU' => 'Australia',
-            'AE' => 'United Arab Emirates',
-            'IN' => 'India',
-            'PK' => 'Pakistan',
-            'NP' => 'Nepal',
-            'LK' => 'Sri Lanka',
-            'MY' => 'Malaysia',
-            'SG' => 'Singapore',
-            'TH' => 'Thailand',
-            'VN' => 'Vietnam',
-            'PH' => 'Philippines',
-            'ID' => 'Indonesia',
-            'CN' => 'China',
-            'JP' => 'Japan',
-            'KR' => 'South Korea',
-            'SA' => 'Saudi Arabia',
-            'QA' => 'Qatar',
-            'KW' => 'Kuwait',
-            'OM' => 'Oman',
-            'BH' => 'Bahrain',
-            'EG' => 'Egypt',
-            'ZA' => 'South Africa',
-            'NG' => 'Nigeria',
-            'KE' => 'Kenya',
-            'MA' => 'Morocco',
-            'TN' => 'Tunisia',
-            'DZ' => 'Algeria',
-            'LY' => 'Libya',
-            'SD' => 'Sudan',
-            'ET' => 'Ethiopia',
-            'UG' => 'Uganda',
-            'TZ' => 'Tanzania',
-            'MZ' => 'Mozambique',
-            'AO' => 'Angola',
-            'NA' => 'Namibia',
-            'BW' => 'Botswana',
-            'ZW' => 'Zimbabwe',
-            'ZM' => 'Zambia',
-            'MW' => 'Malawi',
-            'MG' => 'Madagascar',
-            'MU' => 'Mauritius',
-            'SC' => 'Seychelles',
-            'KM' => 'Comoros',
-            'CV' => 'Cape Verde',
-            'ST' => 'Sao Tome and Principe',
-            'GW' => 'Guinea-Bissau',
-            'GN' => 'Guinea',
-            'SL' => 'Sierra Leone',
-            'LR' => 'Liberia',
-            'CI' => 'Ivory Coast',
-            'GH' => 'Ghana',
-            'TG' => 'Togo',
-            'BJ' => 'Benin',
-            'BF' => 'Burkina Faso',
-            'ML' => 'Mali',
-            'SN' => 'Senegal',
-            'GM' => 'Gambia',
-            'MR' => 'Mauritania',
-            'NE' => 'Niger',
-            'TD' => 'Chad',
-            'CM' => 'Cameroon',
-            'CF' => 'Central African Republic',
-            'GQ' => 'Equatorial Guinea',
-            'GA' => 'Gabon',
-            'CG' => 'Republic of the Congo',
-            'CD' => 'Democratic Republic of the Congo',
-            'RW' => 'Rwanda',
-            'BI' => 'Burundi',
-            'DJ' => 'Djibouti',
-            'ER' => 'Eritrea',
-            'SS' => 'South Sudan',
-        );
-        
-        if ( isset( $hvnly_country_codes[ $hvnly_value ] ) ) {
-            $hvnly_display_value = $hvnly_country_codes[ $hvnly_value ];
-        } else {
-            // If not in list, just make it look nice
-            $hvnly_display_value = ucwords( strtolower( $hvnly_value ) );
+
+    if ( ! empty( $hvnly_fallback_options ) ) {
+        if ( isset( $hvnly_fallback_options[ $hvnly_value ] ) ) {
+            $hvnly_display_value = $hvnly_fallback_options[ $hvnly_value ];
+        } elseif ( isset( $hvnly_fallback_options[ strtoupper( (string) $hvnly_value ) ] ) ) {
+            $hvnly_display_value = $hvnly_fallback_options[ strtoupper( (string) $hvnly_value ) ];
+        } elseif ( isset( $hvnly_fallback_options[ strtolower( (string) $hvnly_value ) ] ) ) {
+            $hvnly_display_value = $hvnly_fallback_options[ strtolower( (string) $hvnly_value ) ];
         }
     }
 }
@@ -222,7 +104,7 @@ $hvnly_display_value = apply_filters( 'hvnly_select_field_display_value', $hvnly
 <!-- Single Select Field -->
 <div class="hvnly-field hvnly-field--select hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_name ) ); ?>">
     <?php if ( ! empty( $hvnly_label ) ) : ?>
-        <strong class="hvnly-field__label"><?php echo esc_html( $hvnly_label ); ?>:</strong>
+        <strong class="hvnly-field__label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>:</strong>
     <?php endif; ?>
-    <span class="hvnly-field__value"><?php echo esc_html( $hvnly_display_value ); ?></span>
+    <span class="hvnly-field__value"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_display_value ) ) : esc_html( $hvnly_display_value ); ?></span>
 </div>

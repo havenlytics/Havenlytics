@@ -335,6 +335,21 @@ final class AjaxController {
 		$media_index = isset( $data['media_index'] ) && is_array( $data['media_index'] ) ? $data['media_index'] : null;
 		$files       = isset( $data['files'] ) && is_array( $data['files'] ) ? $data['files'] : array();
 
+		// Free edition gate: reject oversized packages before any workspace write / import.
+		$allowed = MigrationLimits::assert_import_allowed( $manifest, $entities );
+		if ( is_wp_error( $allowed ) ) {
+			if ( '' !== $workdir ) {
+				TempStorage::delete_workdir( $workdir );
+			}
+			JobCleanup::dispose_upload_session( $token, array_merge( $session, array( 'delete_workdir' => true ) ) );
+			self::error(
+				(string) $allowed->get_error_code(),
+				(string) $allowed->get_error_message(),
+				402,
+				(array) $allowed->get_error_data()
+			);
+		}
+
 		JobWorkspace::write_json( $workdir, 'entities.json', $entities );
 		JobWorkspace::write_json( $workdir, 'manifest.json', $manifest );
 		JobWorkspace::write_json( $workdir, 'media_index.json', $media_index ? $media_index : array( 'files' => array() ) );
@@ -391,9 +406,26 @@ final class AjaxController {
 			self::error( 'hvnly_ie_upload_owner', 'Upload token belongs to another user.', 403 );
 		}
 
+		// Defense in depth: re-assert Free limit from validated workspace before creating a job.
+		$pkg_workdir = (string) $session['pkg_workdir'];
+		$manifest    = JobWorkspace::read_json( $pkg_workdir, 'manifest.json', null );
+		$entities    = JobWorkspace::read_json( $pkg_workdir, 'entities.json', null );
+		$allowed     = MigrationLimits::assert_import_allowed(
+			is_array( $manifest ) ? $manifest : null,
+			is_array( $entities ) ? $entities : null
+		);
+		if ( is_wp_error( $allowed ) ) {
+			self::error(
+				(string) $allowed->get_error_code(),
+				(string) $allowed->get_error_message(),
+				402,
+				(array) $allowed->get_error_data()
+			);
+		}
+
 		$options = self::import_options_from_request();
 		$job     = JobStateStore::new_job( JobStateStore::TYPE_IMPORT, $options, get_current_user_id() );
-		$job['workdir']        = (string) $session['pkg_workdir'];
+		$job['workdir']        = $pkg_workdir;
 		$job['upload_path']    = (string) ( $session['source_zip'] ?? '' );
 		$job['upload_workdir'] = (string) ( $session['workdir'] ?? '' );
 		$job['phase']          = 'prepare';
@@ -707,7 +739,7 @@ final class AjaxController {
 			'hvnly_ie_upload_token'      => 'Upload expired',
 			'hvnly_ie_download_token'    => 'Download unauthorized',
 			'hvnly_ie_download_owner'    => 'Download unauthorized',
-			'hvnly_ie_migration_limit'   => 'Migration limit reached',
+			'hvnly_ie_migration_limit'   => 'Free Edition Limit Reached',
 		);
 		return $map[ $code ] ?? 'Import / Export error';
 	}

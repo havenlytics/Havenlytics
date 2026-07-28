@@ -36,7 +36,7 @@ if ( ! preg_match( '/^https?:\/\//', $hvnly_value ) ) {
 }
 ?>
 <div class="hvnly-field hvnly-field--preset-website hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_name ) ); ?>">
-    <strong class="hvnly-field__label"><?php echo esc_html( $hvnly_label ); ?>:</strong>
+    <strong class="hvnly-field__label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>:</strong>
     <span class="hvnly-field__value">
         <a href="<?php echo esc_url( $hvnly_url ); ?>" target="_blank" rel="noopener">
             <?php echo esc_html( $hvnly_value ); ?>

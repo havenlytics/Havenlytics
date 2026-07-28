@@ -69,7 +69,7 @@ $hvnly_has_gallery = ! empty( $hvnly_images );
     data-images-key="<?php echo esc_attr( $hvnly_images_key ); ?>">
 
     <?php if ( ! empty( $hvnly_title ) ) : ?>
-    <div class="hvnly-property-single__gallery-title"><?php echo esc_html( $hvnly_title ); ?></div>
+    <div class="hvnly-property-single__gallery-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_title ?? $hvnly_label ) ) : esc_html( $hvnly_title ?? $hvnly_label ); ?></div>
     <?php endif; ?>
 
     <?php if ( $hvnly_has_gallery ) : ?>

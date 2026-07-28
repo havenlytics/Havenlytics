@@ -1052,3 +1052,62 @@
     outline: 2px solid var(--hvnly-primary-color);
     outline-offset: 2px;
 }
+
+/* ============================================================
+   Single-property rail soft overrides (v2 companion)
+   Scoped so archive / other widget areas keep legacy chrome.
+   Primary polish lives in single-property/agent.css (loaded last).
+   ============================================================ */
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget:hover {
+    transform: none;
+    border-color: rgba(var(--hvnly-primary-rgb), 0.18);
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget--agent,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget--mortgage,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget--documents {
+    background: var(--hvnly-color-bg-white, #fff);
+    border: 1px solid var(--hvnly-border-color, #e5e7eb);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-item a:hover {
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-meta-item:hover {
+    background: transparent;
+    color: inherit;
+    transform: none;
+    box-shadow: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-meta-item {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-meta-item i {
+    background: none;
+    color: var(--hvnly-brand-primary);
+    padding: 0;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__mortgage-result {
+    background: var(--hvnly-brand-primary);
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-mortgage-term-btn:hover {
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-carousel .hvnly-property-single__carousel-dot--active {
+    transform: none;
+}
+

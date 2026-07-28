@@ -7,6 +7,9 @@
 (function($) {
     'use strict';
 
+    const i18n = (window.HvnlyFieldRegistry && window.HvnlyFieldRegistry.i18n) || {};
+    const t = (key, fallback) => (i18n[key] && String(i18n[key])) || fallback;
+
     class HavenlyticsFieldRegistry {
         constructor() {
             this.version = '2.0.0';
@@ -98,39 +101,39 @@
                 // Set allowed file types based on field type
                 let allowedTypes = [];
                 let mimeTypes = '';
-                let title = 'Select File';
+                let title = t('selectFile', 'Select File');
                 
                 switch (type) {
                     case 'image':
                         // Only allow images for video thumbnails
                         allowedTypes = ['image'];
                         mimeTypes = 'image';
-                        title = 'Select Image';
+                        title = t('selectImage', 'Select Image');
                         break;
                         
                     case 'pdf':
                         // Only allow PDF files
                         allowedTypes = ['application/pdf'];
                         mimeTypes = 'application/pdf';
-                        title = 'Select PDF';
+                        title = t('selectPdf', 'Select PDF');
                         break;
                         
                     case 'file':
                         // Allow images and PDFs for general file fields
                         allowedTypes = ['image', 'application/pdf'];
                         mimeTypes = 'image,application/pdf';
-                        title = 'Select File';
+                        title = t('selectFile', 'Select File');
                         break;
                         
                     default:
                         allowedTypes = [];
                         mimeTypes = '';
-                        title = 'Select File';
+                        title = t('selectFile', 'Select File');
                 }
                 
                 frame = wp.media({
                     title: title,
-                    button: { text: 'Use this file' },
+                    button: { text: t('useThisFile', 'Use this file') },
                     library: { type: allowedTypes },
                     multiple: false
                 });
@@ -188,16 +191,16 @@
         getErrorMessage(type) {
             switch (type) {
                 case 'image':
-                    return 'Please select a valid image file (JPG, PNG, GIF, WebP, BMP)';
+                    return t('invalidImage', 'Please select a valid image file (JPG, PNG, GIF, WebP, BMP)');
                     
                 case 'pdf':
-                    return 'Please select a PDF file';
+                    return t('invalidPdf', 'Please select a PDF file');
                     
                 case 'file':
-                    return 'Please select an image (JPG, PNG, GIF, WebP, BMP) or PDF file';
+                    return t('invalidImageOrPdf', 'Please select an image (JPG, PNG, GIF, WebP, BMP) or PDF file');
                     
                 default:
-                    return 'Please select a valid file';
+                    return t('invalidFile', 'Please select a valid file');
             }
         }
 

@@ -68,18 +68,58 @@ final class WorkspacePage {
 			return;
 		}
 
-		add_rewrite_rule(
-			'^' . $slug . '/(.+?)/?$',
-			'index.php?pagename=' . $slug . '&' . self::ROUTE_QUERY_VAR . '=$matches[1]',
-			'top'
-		);
+		self::add_catch_all_rewrite_rule( $slug );
 
-		if ( (string) get_option( self::ROUTES_OPTION, '' ) !== $slug ) {
+		// ROUTES_OPTION alone is not enough — a flush can bake CPT rules while
+		// wiping this catch-all. Re-schedule when the rule is missing from options.
+		if ( ! self::catch_all_rewrite_is_baked( $slug ) ) {
 			update_option( self::ROUTES_OPTION, $slug, false );
 			if ( class_exists( '\HvnlyNab\Core\RewriteRulesManager' ) ) {
 				\HvnlyNab\Core\RewriteRulesManager::schedule_flush();
 			}
 		}
+	}
+
+	/**
+	 * Register the Workspace History-API catch-all rewrite (in-memory).
+	 *
+	 * Safe to call after WP_Rewrite::init() during a deferred flush so the rule
+	 * is included in the persisted rewrite_rules option.
+	 *
+	 * @param string|null $slug Page slug override; defaults to settings slug.
+	 * @return void
+	 */
+	public static function add_catch_all_rewrite_rule( ?string $slug = null ): void {
+		$slug = is_string( $slug ) && $slug !== '' ? $slug : WorkspaceSettings::get_page_slug();
+		if ( $slug === '' ) {
+			return;
+		}
+
+		add_rewrite_rule(
+			'^' . $slug . '/(.+?)/?$',
+			'index.php?pagename=' . $slug . '&' . self::ROUTE_QUERY_VAR . '=$matches[1]',
+			'top'
+		);
+	}
+
+	/**
+	 * Whether the catch-all rule is present in the persisted rewrite_rules option.
+	 *
+	 * @param string $slug Workspace page slug.
+	 * @return bool
+	 */
+	private static function catch_all_rewrite_is_baked( string $slug ): bool {
+		if ( (string) get_option( self::ROUTES_OPTION, '' ) !== $slug ) {
+			return false;
+		}
+
+		$rules = get_option( 'rewrite_rules' );
+		if ( ! is_array( $rules ) ) {
+			return false;
+		}
+
+		$pattern = '^' . $slug . '/(.+?)/?$';
+		return isset( $rules[ $pattern ] );
 	}
 
 	/**

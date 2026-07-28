@@ -41,6 +41,7 @@ $hvnly_mode = $mode ?? 'default';
 
 // Get bedrooms count from property meta
 $hvnly_bedrooms = absint(get_post_meta($hvnly_property_id, '_hvnly_property_bedrooms', true));
+$hvnly_field    = $field ?? array();
 
 // Show in preset mode OR if there are bedrooms in default mode
 if ($hvnly_bedrooms > 0 || $hvnly_mode === 'preset') :
@@ -59,16 +60,12 @@ if ($hvnly_bedrooms > 0 || $hvnly_mode === 'preset') :
         
         <!-- Bed/Beds label with proper pluralization -->
         <span class="hvnly-property-feature-label">
-            <?php 
-            /* translators: %s: number of bedrooms */
-            echo esc_html( 
-                _n( 
-                    'Bed', 
-                    'Beds', 
-                    $hvnly_bedrooms > 0 ? $hvnly_bedrooms : 1, 
-                    'havenlytics' 
-                ) 
-            ); 
+            <?php
+            echo esc_html(
+                function_exists( 'hvnly_archive_feature_label' )
+                    ? hvnly_archive_feature_label( $hvnly_field, 'Bed', 'Beds', $hvnly_bedrooms )
+                    : _n( 'Bed', 'Beds', $hvnly_bedrooms > 0 ? $hvnly_bedrooms : 1, 'havenlytics' )
+            );
             ?>
         </span>
     </div>

@@ -1,0 +1,912 @@
+/**
+ * Haven Design System 1.0 — Conversion rail (Phase 5 + premium polish)
+ * ====================================================================
+ * Sidebar widget shell, agent identity card, inquiry form, quick actions,
+ * social row, sibling rail widgets, and the mobile contact dock.
+ * The inquiry form is the page's primary CTA — everything else stays quiet.
+ *
+ * Loaded last via single-property.css so these rules win over legacy
+ * hvnly-frontend-widgets.css / hvnly-frontend-property-agent-widget.css
+ * without changing PHP, AJAX, or form field contracts.
+ *
+ * @package Havenlytics
+ * @since   3.7.0
+ */
+
+/* ----------------------------------------------------------------------
+ * Rail design tokens (scoped) — one language for every sidebar widget
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-sidebar--single {
+    --hvnly-rail-radius: var(--hvnly-card-radius, 8px);
+    --hvnly-rail-shadow: var(--hvnly-shadow-card, 0 2px 12px rgba(15, 23, 42, 0.05));
+    --hvnly-rail-shadow-hover: 0 4px 18px rgba(15, 23, 42, 0.08);
+    --hvnly-rail-pad-y: 18px;
+    --hvnly-rail-pad-x: 18px;
+    --hvnly-rail-gap: 12px;
+    /* Flush with viewport; admin-bar adds its own offset below */
+    --hvnly-rail-sticky-top: 0px;
+    --hvnly-rail-ease: cubic-bezier(0.2, 0, 0, 1);
+    --hvnly-rail-duration: 0.18s;
+}
+
+/* ----------------------------------------------------------------------
+ * Widget shell — quiet cards, no hover lift, one title treatment
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget,
+body.hvnly-property-single .hvnly-property-single__widget {
+    background: var(--hvnly-color-bg-white);
+    border: 1px solid var(--hvnly-border-color);
+    border-radius: var(--hvnly-rail-radius);
+    box-shadow: var(--hvnly-rail-shadow);
+    padding: var(--hvnly-rail-pad-y) var(--hvnly-rail-pad-x);
+    margin: 0 0 var(--hvnly-rail-gap);
+    transition: border-color var(--hvnly-rail-duration) var(--hvnly-rail-ease),
+                box-shadow var(--hvnly-rail-duration) var(--hvnly-rail-ease);
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget:last-child,
+body.hvnly-property-single .hvnly-property-single__widget-area > .hvnly-property-single__widget:last-child {
+    margin-bottom: 0;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget:hover,
+body.hvnly-property-single .hvnly-property-single__widget:hover {
+    border-color: rgba(var(--hvnly-primary-rgb), 0.18);
+    box-shadow: var(--hvnly-rail-shadow-hover);
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget-title,
+body.hvnly-property-single .hvnly-property-single__widget-title {
+    font-family: inherit;
+    font-size: var(--hvnly-font-size-md, 1rem);
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    line-height: 1.25;
+    color: var(--hvnly-text-primary);
+    margin: 0 0 12px;
+    padding: 0 0 10px;
+    border: 0;
+    border-bottom: 0 !important;
+    position: relative;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget-title::after,
+body.hvnly-property-single .hvnly-property-single__widget-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 24px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--hvnly-brand-primary);
+}
+
+/* Kill agent / mortgage / documents gradient shells on the single rail */
+body.hvnly-property-single .hvnly-property-single__widget--agent,
+body.hvnly-property-single .hvnly-property-single__widget--mortgage,
+body.hvnly-property-single .hvnly-property-single__widget--documents,
+body.hvnly-property-single .hvnly-property-single__widget--contact {
+    background: var(--hvnly-color-bg-white);
+    border: 1px solid var(--hvnly-border-color);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget--featured .hvnly-property-single__widget-title {
+    color: var(--hvnly-text-primary);
+}
+
+/* Generic widget lists */
+body.hvnly-property-single .hvnly-property-single__widget ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__widget ul li {
+    padding: 8px 0;
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+}
+
+body.hvnly-property-single .hvnly-property-single__widget ul li + li {
+    border-top: 1px solid var(--hvnly-border-color);
+}
+
+body.hvnly-property-single .hvnly-property-single__widget ul li a {
+    color: var(--hvnly-text-primary);
+    text-decoration: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__widget ul li a:hover {
+    color: var(--hvnly-brand-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* ----------------------------------------------------------------------
+ * Legacy neutralization — force v2 layout over agent-widget.css
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-agent-sidebar {
+    --hvnly-agent-sidebar-radius: var(--hvnly-rail-radius);
+    background: none;
+    border: 0;
+    padding: 0;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__card,
+body.hvnly-property-single .hvnly-agent-sidebar .hvnly-agent-sidebar__card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    overflow: visible;
+}
+
+/* Premium hierarchy: identity → form (primary) → Call/WhatsApp → social */
+body.hvnly-property-single .hvnly-agent-sidebar__footer {
+    display: contents;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__header { order: 1; }
+body.hvnly-property-single .hvnly-agent-sidebar__form-wrap { order: 2; }
+body.hvnly-property-single .hvnly-agent-sidebar__quick-actions { order: 3; }
+body.hvnly-property-single .hvnly-agent-sidebar__social { order: 4; }
+
+/* ----------------------------------------------------------------------
+ * Contact Agent — trust strip
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-agent-sidebar__header {
+    display: flex;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 14px;
+    padding: 0 !important;
+    margin: 0;
+    border-bottom: 0;
+    background: none;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__avatar,
+body.hvnly-property-single .hvnly-agent-sidebar__avatar--placeholder {
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 999px !important;
+    object-fit: cover;
+    flex-shrink: 0;
+    margin: 0 !important;
+    display: block;
+    border: 0 !important;
+    box-shadow: inset 0 0 0 1px rgba(20, 21, 28, 0.08) !important;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__avatar--placeholder {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: rgba(var(--hvnly-primary-rgb), 0.08);
+    color: var(--hvnly-brand-primary);
+    font-size: 1.5rem;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__meta {
+    min-width: 0;
+    flex: 1;
+    text-align: left !important;
+    width: auto;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__name {
+    margin: 0 0 2px;
+    font-family: inherit;
+    font-size: var(--hvnly-font-size-md, 1rem);
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    line-height: 1.3;
+    color: var(--hvnly-text-primary);
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__agent-select {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    margin: 0 0 2px;
+    border: 0 !important;
+    box-shadow: none !important;
+    background-color: transparent;
+    padding: 0 18px 0 0;
+    font-family: inherit;
+    font-size: var(--hvnly-font-size-md, 1rem);
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    line-height: 1.3;
+    color: var(--hvnly-text-primary);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236E7080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: 16px;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar[data-agent-count="1"] .hvnly-agent-sidebar__agent-select {
+    background-image: none;
+    pointer-events: none;
+    padding-right: 0;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__position {
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    line-height: 1.35;
+    color: var(--hvnly-text-secondary);
+    margin: 0 0 4px;
+}
+
+/* Quiet text contact rows — hide when Call/WhatsApp buttons already cover them */
+body.hvnly-property-single .hvnly-agent-sidebar__phone,
+body.hvnly-property-single .hvnly-agent-sidebar__email {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start !important;
+    gap: 8px;
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    line-height: 1.35;
+    color: var(--hvnly-text-secondary);
+    text-decoration: none;
+    padding: 1px 0;
+    min-width: 0;
+    transition: color 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Avoid duplicate phone when Call button already exposes it */
+body.hvnly-property-single .hvnly-agent-sidebar__card:has(.hvnly-agent-sidebar__btn--call) .hvnly-agent-sidebar__phone {
+    display: none;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__phone span,
+body.hvnly-property-single .hvnly-agent-sidebar__email span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__phone i,
+body.hvnly-property-single .hvnly-agent-sidebar__email i {
+    font-size: 12px;
+    color: var(--hvnly-brand-primary);
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__phone:hover,
+body.hvnly-property-single .hvnly-agent-sidebar__email:hover {
+    color: var(--hvnly-brand-primary);
+}
+
+/* ----------------------------------------------------------------------
+ * Inquiry form — primary conversion block
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-agent-sidebar__form-wrap {
+    background: none !important;
+    padding: 14px 0 0 !important;
+    border-top: 1px solid var(--hvnly-border-color);
+    border-radius: 0;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__form-title {
+    font-size: 0.72rem;
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--hvnly-text-secondary);
+    margin: 0 0 10px;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__field label {
+    font-size: 0.8125rem;
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    line-height: 1.25;
+    color: var(--hvnly-text-primary);
+    margin: 0;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__required {
+    color: var(--hvnly-brand-error);
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__field input,
+body.hvnly-property-single .hvnly-agent-sidebar__field textarea {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    background: var(--hvnly-color-bg-white);
+    border: 1px solid var(--hvnly-color-gray-200);
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    font-family: inherit;
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    line-height: 1.4;
+    color: var(--hvnly-text-primary);
+    box-shadow: none;
+    transition: border-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                box-shadow var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1));
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__field textarea {
+    min-height: 72px;
+    resize: vertical;
+    line-height: 1.45;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__field input::placeholder,
+body.hvnly-property-single .hvnly-agent-sidebar__field textarea::placeholder {
+    color: var(--hvnly-color-gray-500);
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__field input:focus,
+body.hvnly-property-single .hvnly-agent-sidebar__field textarea:focus {
+    outline: none;
+    border-color: var(--hvnly-brand-primary);
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.15);
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__field input:focus-visible,
+body.hvnly-property-single .hvnly-agent-sidebar__field textarea:focus-visible,
+body.hvnly-property-single .hvnly-agent-sidebar__submit:focus-visible,
+body.hvnly-property-single .hvnly-agent-sidebar__btn:focus-visible,
+body.hvnly-property-single .hvnly-agent-sidebar__social-link:focus-visible {
+    outline: 2px solid var(--hvnly-brand-primary);
+    outline-offset: 2px;
+}
+
+body.hvnly-property-single .hvnly-contact-agent__field--honeypot {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+}
+
+/* Primary CTA */
+body.hvnly-property-single .hvnly-agent-sidebar__submit {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--hvnly-brand-primary);
+    color: #fff;
+    border: 0;
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    font-family: inherit;
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    box-shadow: none;
+    transform: none;
+    transition: background-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                box-shadow var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                opacity var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1));
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__submit:hover {
+    background: var(--hvnly-brand-secondary);
+    transform: none;
+    box-shadow: 0 4px 14px rgba(var(--hvnly-primary-rgb), 0.22);
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__submit:active {
+    transform: none;
+    box-shadow: none;
+    opacity: 0.92;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__submit:disabled,
+body.hvnly-property-single .hvnly-agent-sidebar__submit.is-loading {
+    opacity: 0.72;
+    cursor: wait;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__feedback {
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    padding: 10px 12px;
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    line-height: 1.5;
+    background: var(--hvnly-color-bg-light);
+    color: var(--hvnly-text-primary);
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__feedback[class*="success"] {
+    background: rgba(11, 122, 85, 0.1);
+    color: #0B7A55;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__feedback[class*="error"] {
+    background: rgba(176, 31, 51, 0.08);
+    color: #B01F33;
+}
+
+/* ----------------------------------------------------------------------
+ * Secondary CTAs — Call / WhatsApp (after primary form)
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-agent-sidebar__quick-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 8px 12px;
+    background: var(--hvnly-color-bg-white);
+    border: 1px solid var(--hvnly-color-gray-200);
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    color: var(--hvnly-text-primary);
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    text-decoration: none;
+    box-shadow: none;
+    transform: none;
+    transition: border-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                background-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1));
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__btn i {
+    font-size: 13px;
+    color: var(--hvnly-text-secondary);
+    transition: color 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__btn--call {
+    border-color: rgba(var(--hvnly-primary-rgb), 0.28);
+    color: var(--hvnly-brand-primary);
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__btn--call i {
+    color: var(--hvnly-brand-primary);
+}
+
+/* Neutralize legacy solid-green WhatsApp fill — equal secondary outline */
+body.hvnly-property-single .hvnly-agent-sidebar__btn--whatsapp,
+body.hvnly-property-single .hvnly-agent-sidebar__footer .hvnly-agent-sidebar__btn--whatsapp {
+    background: var(--hvnly-color-bg-white);
+    color: var(--hvnly-text-primary);
+    border-color: var(--hvnly-color-gray-200);
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__btn--whatsapp:hover,
+body.hvnly-property-single .hvnly-agent-sidebar__footer .hvnly-agent-sidebar__btn--whatsapp:hover,
+body.hvnly-property-single .hvnly-agent-sidebar__footer .hvnly-agent-sidebar__btn--whatsapp:focus-visible {
+    background: rgba(37, 211, 102, 0.08);
+    border-color: rgba(37, 211, 102, 0.45);
+    color: var(--hvnly-text-primary);
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__btn:hover {
+    border-color: rgba(var(--hvnly-primary-rgb), 0.35);
+    color: var(--hvnly-brand-primary);
+    background: rgba(var(--hvnly-primary-rgb), 0.06);
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__btn:hover i {
+    color: inherit;
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__btn--whatsapp i {
+    color: #25D366;
+}
+
+/* Social — quiet closing row */
+body.hvnly-property-single .hvnly-agent-sidebar__social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-start !important;
+    padding: 10px 0 0 !important;
+    margin: 0;
+    border-top: 1px solid var(--hvnly-border-color);
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__social-link {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--hvnly-color-bg-light) !important;
+    color: var(--hvnly-text-secondary) !important;
+    font-size: 12px;
+    text-decoration: none;
+    border: 0;
+    transition: background-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1));
+}
+
+body.hvnly-property-single .hvnly-agent-sidebar__social-link:hover {
+    background: rgba(var(--hvnly-primary-rgb), 0.08) !important;
+    color: var(--hvnly-brand-primary) !important;
+}
+
+/* ----------------------------------------------------------------------
+ * Sibling rail widgets — Featured / Related / Mortgage / Carousel
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-item a,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__related-item a {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px;
+    background: var(--hvnly-color-bg-light);
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    border: 1px solid var(--hvnly-border-color);
+    transition: border-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                background-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1));
+    cursor: pointer;
+    min-width: 0;
+    text-decoration: none;
+    color: inherit;
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-item a:hover,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__related-item a:hover {
+    border-color: rgba(var(--hvnly-primary-rgb), 0.35);
+    background: rgba(var(--hvnly-primary-rgb), 0.04);
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-image,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__related-image {
+    width: 72px;
+    height: 56px;
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-top: 0;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-image img,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__related-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: none;
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-item:hover .hvnly-property-single__featured-image img {
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-info h5,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__related-info h5 {
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    margin: 0 0 4px;
+    line-height: 1.35;
+    color: var(--hvnly-text-primary);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-price {
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    color: var(--hvnly-brand-primary);
+}
+
+/* Soften featured meta pills */
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--hvnly-border-color);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    font-size: 0.72rem;
+    color: var(--hvnly-text-secondary);
+    transform: none !important;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-meta-item:hover {
+    background: transparent !important;
+    color: var(--hvnly-text-primary) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-meta-item i {
+    background: none !important;
+    color: var(--hvnly-brand-primary) !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    font-size: 11px !important;
+    display: inline !important;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-meta-item:hover i,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-meta-item:hover .hvnly-meta-value {
+    color: var(--hvnly-brand-primary) !important;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-meta-value {
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    color: var(--hvnly-text-primary);
+}
+
+/* Mortgage — quiet inputs matching Contact Agent */
+body.hvnly-property-single .hvnly-property-single__widget--mortgage .hvnly-property-single__form-input,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-mortgage-amount-input input,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__form-input {
+    height: 42px;
+    min-height: 42px;
+    border: 1px solid var(--hvnly-color-gray-200);
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    background: var(--hvnly-color-bg-white);
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    box-shadow: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__widget--mortgage .hvnly-property-single__form-input:focus {
+    border-color: var(--hvnly-brand-primary);
+    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.15);
+    outline: none;
+}
+
+body.hvnly-property-single .hvnly-mortgage-price-display {
+    background: var(--hvnly-color-bg-light);
+    border: 1px solid var(--hvnly-border-color);
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    padding: 12px;
+    margin-bottom: 14px;
+}
+
+body.hvnly-property-single .hvnly-property-single__mortgage-result {
+    background: var(--hvnly-brand-primary);
+    color: #fff;
+    padding: 16px;
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    margin-top: 14px;
+    text-align: center;
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-mortgage-term-btn {
+    min-height: 36px;
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    border: 1px solid var(--hvnly-color-gray-200);
+    background: var(--hvnly-color-bg-white);
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-mortgage-term-btn:hover,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-mortgage-term-btn.is-active,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-mortgage-term-btn.active {
+    border-color: rgba(var(--hvnly-primary-rgb), 0.35);
+    background: rgba(var(--hvnly-primary-rgb), 0.08);
+    color: var(--hvnly-brand-primary);
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__agent-btn:hover {
+    transform: none;
+}
+
+/* Single Call or WhatsApp button — full width */
+body.hvnly-property-single .hvnly-agent-sidebar__quick-actions:has(> .hvnly-agent-sidebar__btn:only-child) {
+    grid-template-columns: 1fr;
+}
+
+/* Agent listings carousel — quieter card chrome in the rail */
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-card {
+    border: 1px solid var(--hvnly-border-color);
+    border-radius: var(--hvnly-border-radius-md, 6px);
+    box-shadow: none;
+    background: var(--hvnly-color-bg-white);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-image {
+    height: 140px;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-image {
+    background: var(--hvnly-color-bg-light);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-nav-btn:hover:not(:disabled) {
+    background: rgba(var(--hvnly-primary-rgb), 0.08);
+    border-color: rgba(var(--hvnly-primary-rgb), 0.35);
+    color: var(--hvnly-brand-primary);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-nav-btn:hover i,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-nav-btn:focus i {
+    color: var(--hvnly-brand-primary);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-meta-item {
+    font-size: 0.72rem;
+    color: var(--hvnly-text-secondary);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-status {
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+}
+
+/* Carousel motion — soft transform only, no scale bounce */
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-track {
+    transition: transform 0.28s var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1));
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__carousel-dot,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-carousel .hvnly-property-single__carousel-dot {
+    transition: background-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                opacity var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1));
+    transform: none !important;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-agent-listings-nav-btn {
+    transition: background-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                border-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1));
+}
+
+/* Mortgage feedback / loading polish */
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__mortgage-result,
+body.hvnly-property-single .hvnly-mortgage-price-display {
+    transition: background-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                border-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1));
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-mortgage-term-btn {
+    transition: background-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                border-color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1)),
+                color var(--hvnly-rail-duration, 0.18s) var(--hvnly-rail-ease, cubic-bezier(0.2, 0, 0, 1));
+}
+
+/* Empty / quiet future widgets inherit shell; tighten WP default widgets */
+body.hvnly-property-single .hvnly-sidebar--single .widget,
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__widget-area > * {
+    max-width: 100%;
+}
+
+body.hvnly-property-single .hvnly-sidebar--single .hvnly-property-single__featured-grid {
+    gap: 10px;
+}
+
+/* ----------------------------------------------------------------------
+ * Sticky rail — flush to viewport; only admin-bar creates an offset.
+ * Legacy property-single.css used top:20px / agent.css used 24px, which
+ * left a visible gap once the rail stuck. Keep sticky desktop-only.
+ * -------------------------------------------------------------------- */
+/* Neutralize legacy sticky top:20px before the desktop media query wins */
+body.hvnly-property-single .hvnly-sidebar--single.hvnly-sidebar--sticky-desktop {
+    top: var(--hvnly-rail-sticky-top, 0px);
+}
+
+@media (min-width: 1200px) {
+    body.hvnly-property-single .hvnly-sidebar--single.hvnly-sidebar--sticky-desktop,
+    body.hvnly-property-single .hvnly-property-single__sidebar.hvnly-sidebar--sticky-desktop {
+        position: sticky;
+        align-self: start;
+        top: var(--hvnly-rail-sticky-top, 0px);
+        /* Avoid sticky jitter / layout thrash while scrolling */
+        backface-visibility: hidden;
+    }
+
+    body.admin-bar.hvnly-property-single .hvnly-sidebar--single.hvnly-sidebar--sticky-desktop,
+    body.admin-bar.hvnly-property-single .hvnly-property-single__sidebar.hvnly-sidebar--sticky-desktop {
+        top: 32px;
+    }
+}
+
+@media (max-width: 1199px) {
+    body.hvnly-property-single .hvnly-sidebar--single.hvnly-sidebar--sticky-desktop,
+    body.hvnly-property-single .hvnly-property-single__sidebar.hvnly-sidebar--sticky-desktop {
+        position: static;
+        top: auto;
+    }
+}
+
+/* ----------------------------------------------------------------------
+ * Mobile contact dock — visual alignment only; behavior unchanged
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-mobile-contact-dock__card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--hvnly-border-color);
+    border-radius: var(--hvnly-rail-radius);
+    box-shadow: 0 24px 56px rgba(20, 21, 28, 0.18);
+    padding: 12px var(--hvnly-space-md, 16px);
+}
+
+body.hvnly-property-single .hvnly-mobile-contact-avatar__img {
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgba(20, 21, 28, 0.06);
+}
+
+body.hvnly-property-single .hvnly-mobile-contact-name__text {
+    font-family: inherit;
+    font-size: var(--hvnly-font-size-md, 1rem);
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    color: var(--hvnly-text-primary);
+}
+
+body.hvnly-property-single .hvnly-mobile-contact-role {
+    font-size: 0.72rem;
+    color: var(--hvnly-text-secondary);
+    margin: 0;
+}
+
+body.hvnly-property-single .hvnly-mobile-contact-btn {
+    border-radius: 999px;
+    background: var(--hvnly-color-bg-light);
+    color: var(--hvnly-text-primary);
+    border: 0;
+    transition: background-color 0.15s cubic-bezier(0.2, 0, 0, 1),
+                color 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body.hvnly-property-single .hvnly-mobile-contact-btn:active {
+    background: rgba(var(--hvnly-primary-rgb), 0.08);
+    color: var(--hvnly-brand-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.hvnly-property-single .hvnly-sidebar--single *,
+    body.hvnly-property-single .hvnly-agent-sidebar * {
+        transition: none !important;
+    }
+}

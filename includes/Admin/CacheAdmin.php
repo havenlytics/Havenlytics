@@ -99,6 +99,37 @@ class CacheAdmin
             'errorText' => __('Error clearing cache', 'havenlytics'),
             'timeoutText' => __('Request timed out. Please try again.', 'havenlytics'),
             'networkErrorText' => __('Network error. Please try again.', 'havenlytics'),
+            'i18n' => [
+                'success' => __('Success', 'havenlytics'),
+                'failed' => __('Failed', 'havenlytics'),
+                'statsUpdated' => __('Stats Updated', 'havenlytics'),
+                'statsRefreshed' => __('Cache statistics have been refreshed.', 'havenlytics'),
+                'statsRefreshFailed' => __('Failed to refresh statistics.', 'havenlytics'),
+                'clearAllTitle' => __('Clear All Cache', 'havenlytics'),
+                'clearAllConfirm' => __('Are you sure you want to clear <strong>all</strong> Havenlytics cache? This removes search results, sidebar filters, terms, and shortcode data.', 'havenlytics'),
+                'noCacheTitle' => __('No Cache to Clear', 'havenlytics'),
+                'noCacheBody' => __('All cache is already empty.', 'havenlytics'),
+                'clearSearchTitle' => __('Clear Search Cache', 'havenlytics'),
+                'clearSearchConfirm' => __('This will clear all cached property search results. Recent searches may be slower until the cache rebuilds.', 'havenlytics'),
+                'clearSidebarTitle' => __('Clear Sidebar Cache', 'havenlytics'),
+                'clearSidebarConfirm' => __('This will clear all cached sidebar filter data.', 'havenlytics'),
+                'clearTermsTitle' => __('Clear Terms Cache', 'havenlytics'),
+                'clearTermsConfirm' => __('This will clear all cached taxonomy terms used in filters.', 'havenlytics'),
+                'clearShortcodeTitle' => __('Clear All Shortcode Cache', 'havenlytics'),
+                'clearShortcodeConfirm' => __('This will clear all cached shortcode outputs (grid, list, search). Fresh content will render on the next page load.', 'havenlytics'),
+                'clearCssTitle' => __('Clear Dynamic CSS Cache', 'havenlytics'),
+                'clearCssConfirm' => __('This will clear generated dynamic CSS. Styles will regenerate on the next frontend request.', 'havenlytics'),
+                'settingsSaved' => __('Settings Saved', 'havenlytics'),
+                'settingsSavedBody' => __('Cache settings have been saved.', 'havenlytics'),
+                'allEmpty' => __('All caches are empty', 'havenlytics'),
+                'insufficientPermissions' => __('Insufficient permissions', 'havenlytics'),
+                'error' => __('Error', 'havenlytics'),
+                'close' => __('Close', 'havenlytics'),
+                'dismiss' => __('Dismiss', 'havenlytics'),
+                'cacheCleared' => __('Cache Cleared', 'havenlytics'),
+                'shortcodeCacheCleared' => __('Shortcode Cache Cleared', 'havenlytics'),
+                'cssCacheCleared' => __('CSS Cache Cleared', 'havenlytics'),
+            ],
             'confirmRequired' => [
                 'hvnly-clear-cache',
                 'hvnly-clear-shortcode-cache',
@@ -394,7 +425,7 @@ class CacheAdmin
         }
 
         if (!current_user_can('manage_options')) {
-            wp_send_json_error('Insufficient permissions');
+            wp_send_json_error( __( 'Insufficient permissions', 'havenlytics' ) );
         }
 
         $cache_type = sanitize_key($_POST['cache_type'] ?? 'all');
@@ -440,7 +471,7 @@ class CacheAdmin
         }
 
         if (!current_user_can('manage_options')) {
-            wp_send_json_error('Insufficient permissions');
+            wp_send_json_error( __( 'Insufficient permissions', 'havenlytics' ) );
         }
 
         $stats = HVNLY_NAB()->engine()->get_cache_stats();
@@ -465,7 +496,7 @@ class CacheAdmin
         }
 
         if (! current_user_can('manage_options')) {
-            wp_send_json_error('Insufficient permissions');
+            wp_send_json_error( __( 'Insufficient permissions', 'havenlytics' ) );
         }
 
         $settings_raw = filter_input(INPUT_POST, 'settings', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?: [];
@@ -497,7 +528,7 @@ class CacheAdmin
         }
 
         if (!current_user_can('manage_options')) {
-            wp_send_json_error('Insufficient permissions');
+            wp_send_json_error( __( 'Insufficient permissions', 'havenlytics' ) );
         }
 
         $shortcode_type = sanitize_key($_POST['shortcode_type'] ?? 'all');
@@ -550,7 +581,7 @@ class CacheAdmin
         }
         
         if (!current_user_can('manage_options')) {
-            wp_send_json_error('Insufficient permissions');
+            wp_send_json_error( __( 'Insufficient permissions', 'havenlytics' ) );
         }
         
         // Clear the dynamic CSS cache

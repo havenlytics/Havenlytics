@@ -31,6 +31,7 @@ $hvnly_mode = $mode ?? 'default';
 
 // Get kitchens count
 $hvnly_kitchens = absint(get_post_meta($hvnly_property_id, '_hvnly_property_kitchens', true));
+$hvnly_field    = $field ?? array();
 
 if ($hvnly_kitchens > 0 || $hvnly_mode === 'preset') :
 ?>
@@ -43,16 +44,12 @@ if ($hvnly_kitchens > 0 || $hvnly_mode === 'preset') :
             </span>
         <?php endif; ?>
         <span class="hvnly-property-feature-label">
-            <?php 
-            /* translators: %s: number of kitchens */
-            echo esc_html( 
-                _n( 
-                    'Kitchen', 
-                    'Kitchens', 
-                    $hvnly_kitchens > 0 ? $hvnly_kitchens : 1, 
-                    'havenlytics' 
-                ) 
-            ); 
+            <?php
+            echo esc_html(
+                function_exists( 'hvnly_archive_feature_label' )
+                    ? hvnly_archive_feature_label( $hvnly_field, 'Kitchen', 'Kitchens', $hvnly_kitchens )
+                    : _n( 'Kitchen', 'Kitchens', $hvnly_kitchens > 0 ? $hvnly_kitchens : 1, 'havenlytics' )
+            );
             ?>
         </span>
     </div>

@@ -4,68 +4,14 @@
  * @package Havenlytics
  * @since   3.0.2
  */
- #adminmenu li#toplevel_page_edit-post_type-hvnly_agent a.wp-has-current-submenu {
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent a.wp-has-current-submenu {
     background: #6c60fe !important;
     color: #fff;
 }
-#adminmenu li#toplevel_page_edit-post_type-hvnly_agent ul.wp-submenu-wrap li.current a{
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent ul.wp-submenu-wrap li.current a,
+#adminmenu li#toplevel_page_edit-post_type-hvnly_agent ul.wp-submenu li.current a {
     color: #6c60fe !important;
-   
 }
-#adminmenu li#menu-posts-hvnly_property a:focus,
-#adminmenu li#menu-posts-hvnly_property a:hover {
-    background: #6c60fe;
-    color: #fff;
-}
-#adminmenu li#menu-posts-hvnly_property a.wp-has-current-submenu {
-    background: #6c60fe;
-    color: #fff;
-}
-/* When any child inside .wp-submenu is hovered, style the parent li */
-#adminmenu li#menu-posts-hvnly_property:has(.wp-submenu li:hover) > a,
-#adminmenu li#menu-posts-hvnly_property:has(.wp-submenu li:hover) {
-    background: #6c60fe !important;
-    color: #fff !important;
-}
-
-/* Keep your existing styles */
-#adminmenu li#menu-posts-hvnly_property a:focus,
-#adminmenu li#menu-posts-hvnly_property a:hover {
-    background: #6c60fe;
-    color: #fff;
-}
-/* Force override all states with very high specificity */
-/* #adminmenu li#menu-posts-hvnly_property.menu-top > a.menu-top,
-#adminmenu li#menu-posts-hvnly_property.menu-top > a.menu-top:hover,
-#adminmenu li#menu-posts-hvnly_property.menu-top > a.menu-top:focus,
-#adminmenu li#menu-posts-hvnly_property.menu-top:hover > a.menu-top,
-#adminmenu li#menu-posts-hvnly_property.menu-top.opensub > a.menu-top,
-#adminmenu li#menu-posts-hvnly_property.menu-top:has(.wp-submenu li:hover) > a.menu-top {
-    background: #6c60fe !important;
-    color: #fff !important;
-} */
-
- /* #adminmenu li#toplevel_page_hvn-realty a.toplevel_page_hvn-realty:hover{
-    background: #6c60fe !important;
-    color: #fff;
-} */
-
-/* Reset any transitions to avoid flicker */
-#adminmenu li#menu-posts-hvnly_property > a {
-    transition: none !important;
-}
-
-/* Keep active state */
-#adminmenu li#menu-posts-hvnly_property a.wp-has-current-submenu {
-    background: #6c60fe !important;
-    color: #fff !important;
-}
-#adminmenu li#menu-posts-hvnly_property a.wp-has-current-submenu {
-    background: #6c60fe;
-    color: #fff;
-}
-
-/* Agents menu - hover and focus states matching other Havenlytics menus */
 #adminmenu li#toplevel_page_edit-post_type-hvnly_agent a.menu-top:hover,
 #adminmenu li#toplevel_page_edit-post_type-hvnly_agent a.menu-top:focus {
     background: #6c60fe !important;
@@ -108,13 +54,19 @@
 
 .hvnly-agent-metabox {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	/* min() prevents track min-width from forcing #poststuff past the viewport. */
+	grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
 	gap: 12px 20px;
 	margin-top: 4px;
+	max-width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
 }
 
 .hvnly-agent-metabox__field {
 	margin: 0;
+	min-width: 0;
+	max-width: 100%;
 }
 
 .hvnly-agent-metabox__field label {

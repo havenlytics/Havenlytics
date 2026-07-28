@@ -394,6 +394,17 @@ class FieldRegistry {
                 'security' => wp_create_nonce('hvnly-metabox-security'),
                 'postType' => get_current_screen()->post_type ?? 'hvnly_property',
                 'ajaxUrl'  => admin_url('admin-ajax.php'),
+                'i18n'     => [
+                    'ok'                    => __('OK', 'havenlytics'),
+                    'requiredMissingTitle'  => __('Required Fields Missing', 'havenlytics'),
+                    'requiredFieldsIntro'   => __('The following required fields are empty or invalid:', 'havenlytics'),
+                    'numberGreaterThanZero' => __('(Please enter a number greater than 0)', 'havenlytics'),
+                    'requiredFieldsHint'    => __('Red border indicates empty or invalid field. Please fill in all highlighted fields before saving.', 'havenlytics'),
+                    'phpRequiredTitle'      => __('Please Complete Required Fields', 'havenlytics'),
+                    'phpRequiredIntro'      => __('The following required fields need attention:', 'havenlytics'),
+                    'phpZeroHint'           => __('Fields with value "0" are not accepted. Enter a number greater than 0.', 'havenlytics'),
+                    'alertBanner'           => __('PLEASE COMPLETE REQUIRED FIELDS', 'havenlytics'),
+                ],
             ]
         );
         
@@ -403,9 +414,117 @@ class FieldRegistry {
             'HvnlyFieldRegistry',
             [
                 'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonce'   => wp_create_nonce('hvnly-field-registry-nonce')
+                'nonce'   => wp_create_nonce('hvnly-field-registry-nonce'),
+                'i18n'    => [
+                    'selectFile'       => __('Select File', 'havenlytics'),
+                    'selectImage'      => __('Select Image', 'havenlytics'),
+                    'selectPdf'        => __('Select PDF', 'havenlytics'),
+                    'useThisFile'      => __('Use this file', 'havenlytics'),
+                    'invalidImage'     => __('Please select a valid image file (JPG, PNG, GIF, WebP, BMP)', 'havenlytics'),
+                    'invalidPdf'       => __('Please select a PDF file', 'havenlytics'),
+                    'invalidImageOrPdf'=> __('Please select an image (JPG, PNG, GIF, WebP, BMP) or PDF file', 'havenlytics'),
+                    'invalidFile'      => __('Please select a valid file', 'havenlytics'),
+                ],
             ]
         );
+
+        if (isset($this->js_assets['hvnly-map-field'])) {
+            wp_localize_script(
+                'hvnly-map-field',
+                'hvnlyMapFieldParams',
+                [
+                    'brandColor' => function_exists('hvnly_get_brand_color') ? hvnly_get_brand_color() : '#6C60FE',
+                    'i18n'       => [
+                        'noAddressSet'       => __('No address set', 'havenlytics'),
+                        'locationPopup'      => __('Location', 'havenlytics'),
+                        'latLabel'           => __('Lat:', 'havenlytics'),
+                        'lngLabel'           => __('Lng:', 'havenlytics'),
+                        'enterAddressFirst'  => __('Please enter an address first.', 'havenlytics'),
+                        'searching'          => __('Searching…', 'havenlytics'),
+                        'locationFound'      => __('Location found!', 'havenlytics'),
+                        'addressNotFound'    => __('Address not found.', 'havenlytics'),
+                        'searchError'        => __('Error searching for address.', 'havenlytics'),
+                        'getCoordinates'     => __('Get Coordinates from Address', 'havenlytics'),
+                        'noAddressesFound'   => __('No addresses found', 'havenlytics'),
+                    ],
+                ]
+            );
+        }
+
+        if (isset($this->js_assets['hvnly-gallery-field'])) {
+            wp_localize_script(
+                'hvnly-gallery-field',
+                'HvnlyGalleryField',
+                [
+                    'i18n' => [
+                        'mediaUnavailable' => __('Media library is not available.', 'havenlytics'),
+                        'manageTitle'      => __('Manage Gallery Images', 'havenlytics'),
+                        'updateGallery'    => __('Update Gallery', 'havenlytics'),
+                        'editImage'        => __('Edit Image', 'havenlytics'),
+                        'updateImage'      => __('Update Image', 'havenlytics'),
+                        'editRemoveImage'  => __('Edit/Remove Image', 'havenlytics'),
+                        'confirmClearAll'  => __('Are you sure you want to remove all images from the gallery?', 'havenlytics'),
+                    ],
+                ]
+            );
+        }
+
+        if (isset($this->js_assets['hvnly-file-field'])) {
+            wp_localize_script(
+                'hvnly-file-field',
+                'HvnlyFileField',
+                [
+                    'i18n' => [
+                        'mediaUnavailable' => __('Media library is not available.', 'havenlytics'),
+                        'selectImage'      => __('Select or Upload Image', 'havenlytics'),
+                        'selectFile'       => __('Select or Upload File', 'havenlytics'),
+                        'selectButton'     => __('Select File', 'havenlytics'),
+                        'invalidPdf'       => __('Please select a valid PDF file.', 'havenlytics'),
+                        'invalidImage'     => __('Please select a valid image file (JPG, PNG, GIF, WEBP, BMP).', 'havenlytics'),
+                    ],
+                ]
+            );
+        }
+
+        if (isset($this->js_assets['hvnly-video-field'])) {
+            wp_localize_script(
+                'hvnly-video-field',
+                'HvnlyVideoField',
+                [
+                    'i18n' => [
+                        'mediaUnavailable' => __('Media library is not available.', 'havenlytics'),
+                        'selectImage'      => __('Select or Upload Image', 'havenlytics'),
+                        'useThisImage'     => __('Use this image', 'havenlytics'),
+                        'selectButton'     => __('Select File', 'havenlytics'),
+                        'invalidImage'     => __('Please select a valid image file (JPG, PNG, GIF, WEBP, BMP).', 'havenlytics'),
+                    ],
+                ]
+            );
+        }
+
+        if (isset($this->js_assets['hvnly-faq-field'])) {
+            wp_localize_script(
+                'hvnly-faq-field',
+                'HvnlyFaqField',
+                [
+                    'i18n' => [
+                        'newFaq' => __('New FAQ', 'havenlytics'),
+                    ],
+                ]
+            );
+        }
+
+        if (isset($this->js_assets['hvnly-repeater-field'])) {
+            wp_localize_script(
+                'hvnly-repeater-field',
+                'HvnlyRepeaterField',
+                [
+                    'i18n' => [
+                        'newRow' => __('New Row', 'havenlytics'),
+                    ],
+                ]
+            );
+        }
         
         // Localize document field script with icons and strings.
         if (isset($this->js_assets['hvnly-document-field'])) {
@@ -426,9 +545,64 @@ class FieldRegistry {
                         'no'               => __('No', 'havenlytics'),
                         'newDocument'      => __('New Document', 'havenlytics'),
                         'selectIcon'       => __('Select Icon', 'havenlytics'),
-                        'searchIcons'      => __('Search icons...', 'havenlytics'),
+                        'searchIcons'      => __('Search icons…', 'havenlytics'),
                         'default'          => __('Default', 'havenlytics'),
-                    ]
+                        'showInSidebar'    => __('Show in sidebar', 'havenlytics'),
+                        'hideFromSidebar'  => __('Hide from sidebar', 'havenlytics'),
+                        'mediaUnavailable' => __('Media uploader is not available.', 'havenlytics'),
+                    ],
+                    'urlTypes' => [
+                        'custom' => [
+                            'label'       => __('Custom URL', 'havenlytics'),
+                            'placeholder' => 'https://example.com/document.pdf',
+                            'hint'        => __('Enter any valid URL', 'havenlytics'),
+                        ],
+                        'pdf' => [
+                            'label'       => __('PDF Document', 'havenlytics'),
+                            'placeholder' => 'https://example.com/document.pdf',
+                            'hint'        => __('Upload a PDF or enter a URL to a PDF file', 'havenlytics'),
+                        ],
+                        'youtube' => [
+                            'label'       => __('YouTube Video', 'havenlytics'),
+                            'placeholder' => 'https://youtu.be/xxxx or https://youtube.com/watch?v=xxxx',
+                            'hint'        => __('Enter YouTube video URL', 'havenlytics'),
+                        ],
+                        'vimeo' => [
+                            'label'       => __('Vimeo Video', 'havenlytics'),
+                            'placeholder' => 'https://vimeo.com/xxxx',
+                            'hint'        => __('Enter Vimeo video URL', 'havenlytics'),
+                        ],
+                        'website' => [
+                            'label'       => __('Website Link', 'havenlytics'),
+                            'placeholder' => 'https://example.com',
+                            'hint'        => __('Enter website URL', 'havenlytics'),
+                        ],
+                        'map' => [
+                            'label'       => __('Google Maps', 'havenlytics'),
+                            'placeholder' => 'https://maps.google.com/?q=...',
+                            'hint'        => __('Enter Google Maps URL', 'havenlytics'),
+                        ],
+                        'virtual_tour' => [
+                            'label'       => __('Virtual Tour', 'havenlytics'),
+                            'placeholder' => 'https://example.com/tour',
+                            'hint'        => __('Enter virtual tour URL', 'havenlytics'),
+                        ],
+                        'floor_plan' => [
+                            'label'       => __('Floor Plan', 'havenlytics'),
+                            'placeholder' => 'https://example.com/floor-plan.pdf',
+                            'hint'        => __('Enter floor plan image URL or PDF', 'havenlytics'),
+                        ],
+                        'image' => [
+                            'label'       => __('Image', 'havenlytics'),
+                            'placeholder' => 'https://example.com/image.jpg',
+                            'hint'        => __('Upload an image or enter image URL', 'havenlytics'),
+                        ],
+                        'video' => [
+                            'label'       => __('Video File', 'havenlytics'),
+                            'placeholder' => 'https://example.com/video.mp4',
+                            'hint'        => __('Upload a video file or enter video URL', 'havenlytics'),
+                        ],
+                    ],
                 ]
             );
         }

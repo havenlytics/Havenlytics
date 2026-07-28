@@ -5,10 +5,10 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.6.0
+Stable tag: 3.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Real estate plugin with Migration Engine, CSV Import & Export, AJAX search, maps, Gutenberg blocks, Elementor, and Agent Workspace.
+Real estate plugin with Migration Engine, CSV Import & Export, AJAX search, Gutenberg blocks, Elementor, Agent Workspace, Analytics, and multilingual support.
 
 == Description ==
 
@@ -36,10 +36,15 @@ Havenlytics works with **any WordPress theme**. The free [Havenlytics Realty](ht
 
 1. Install and activate Havenlytics.
 2. Run the Property Setup Wizard.
-3. Choose one: Import demo content, import property listings from CSV, migrate another Havenlytics website, or add your own properties.
-4. Customize property fields and search filters with the visual builders.
-5. Open **Analytics** to review listing and inquiry performance.
-6. Optionally install the Havenlytics Realty companion theme.
+3. Choose one of the following:
+   * Import demo content
+   * Import property listings from CSV
+   * Migrate an existing Havenlytics website
+   * Create your own property listings
+4. Customize property fields, search filters, and listing layouts using the visual builders.
+5. Open **Analytics** to monitor property listings, inquiries, and website performance.
+6. (Optional) Install the free **Havenlytics Realty** companion theme for a complete demo-ready experience.
+7. Visit **Havenlytics → Documentation** or **https://havenlytics.com/documentation/** for detailed guides, tutorials, and videos.
 
 🎥 Watch: How to Install Havenlytics
 
@@ -67,6 +72,10 @@ Havenlytics works with **any WordPress theme**. The free [Havenlytics Realty](ht
 📊 **Analytics Dashboard** — Track listings, inquiries, property views, and performance directly inside WordPress.
 
 👤 **Agent Workspace** — Secure frontend dashboard for agents with listings, favorites, identity verification, and workflow management.
+
+🧱 **Gutenberg & Elementor** — Native Gutenberg blocks, Elementor widgets, shortcodes, and template overrides using one shared rendering engine.
+
+🌍 **Multilingual Support** — Fully translation-ready with WordPress language packs. Includes complete Russian localization and supports any WordPress language.
 
 👨‍💻 **Developer Friendly** — REST APIs, 50+ hooks & filters, template overrides, and modular architecture.
 
@@ -108,7 +117,7 @@ Havenlytics works with **any WordPress theme**. The free [Havenlytics Realty](ht
 
 ✅ **REST API & Template Overrides** — Developer APIs, hooks, filters, and template customization.
 
-✅ **Translation Ready** — Complete internationalization support.
+✅ **Multilingual Support** — Translation-ready with WordPress language packs, complete Russian localization, and support for any WordPress language.
 
 Also includes 50+ shortcodes, grid/list/map layouts, mortgage calculator, property documents, media galleries, videos, responsive templates, 160+ currencies, and extensive developer hooks.
 
@@ -150,17 +159,35 @@ Display listings with `[hvnly_property_grid]`, `[hvnly_property_lists]`, `[hvnly
 
 Live demos: [property grid](https://demo.havenlytics.com/property-grid/), [property lists](https://demo.havenlytics.com/property-lists/), [property search](https://demo.havenlytics.com/property-search/).
 
-== Installation ==
+= Multilingual Support =
 
-1. Install via **Plugins → Add New** or upload to `/wp-content/plugins/havenlytics/`.
-2. Activate through the **Plugins** screen.
-3. Complete the Property Setup Wizard and optionally import demo listings.
-4. Open **Analytics** in the WordPress admin to review property and inquiry performance.
-5. Display listings with shortcodes, Elementor widgets, or the auto-created pages.
+Havenlytics is fully **internationalized** and follows WordPress localization standards.
+
+Features include:
+
+* Complete **Russian** translation included
+* Translation-ready for any WordPress-supported language
+* Compatible with WordPress language packs
+* Supports translate.wordpress.org language packs
+* RTL language compatible
+* Uses WordPress i18n APIs
+* Developer-friendly localization for custom extensions
+
+= Included Translations =
+
+* 🇷🇺 Russian (ru_RU)
+
 
 📘 Full documentation: [https://havenlytics.com/documentation/](https://havenlytics.com/documentation/)
 
+
 == Frequently Asked Questions ==
+
+= Which languages does Havenlytics support? =
+
+Havenlytics is fully translation-ready and works with WordPress language packs.
+
+The plugin includes complete Russian localization and supports any WordPress language through translate.wordpress.org or custom language files.
 
 = Do I need the Havenlytics Realty theme? =
 
@@ -295,8 +322,39 @@ No additional configuration or migration is required.
 15. Cache Management Dashboard
 16. Agent Workspace Dashboard — listing activity and account overview
 
-
 == Changelog ==
+
+= 3.7.0 - 2026-07-28 =
+
+**New**
+
+* **Complete Russian Language Pack** — Added full Russian localization across the plugin, including frontend templates, Gutenberg blocks, Elementor widgets, Agent Workspace, Analytics, Property Builder, Search Builder, Settings, Migration Engine, CSV Import & Export, email templates, and WordPress admin interfaces.
+
+**Improved**
+
+* **Single Property Page** — Complete frontend redesign with a premium hero header, improved gallery, cleaner property overview, redesigned Contact Agent sidebar, and refined visual hierarchy while maintaining full backward compatibility.
+* **Hero Header** — Added a premium featured-image hero with a gradient overlay, breadcrumb navigation, badges, property title, pricing, and Save action. Property details now appear in a dedicated overview card below the header.
+* **Mobile Experience** — Introduced a mobile-first property header with an optimized featured image, improved typography, responsive information cards, and better spacing on smaller screens.
+* **Property Overview** — Redesigned property specifications into responsive, easy-to-read layouts for desktop, tablet, and mobile devices.
+* **Contact Agent Sidebar** — Redesigned with a cleaner layout, improved spacing, quick contact actions, WhatsApp support, inquiry form enhancements, and social links.
+* **React Admin Localization** — Improved translation loading across Analytics, Property Builder, Search Builder, Settings, Migration Engine, CSV Import & Export, and other React-powered admin interfaces.
+* **Internationalization (i18n)** — Enhanced multilingual support, translation coverage, and localization consistency throughout the plugin.
+* **Accessibility & Responsive Design** — Improved keyboard navigation, reduced-motion support, responsive layouts (320px–1440px), refined spacing, and replaced legacy Font Awesome header icons with the built-in SVG icon system.
+
+**Fixed**
+
+* Fixed property header title wrapping on narrow screen sizes.
+* Removed remaining inline styles from the Location and Property Documents templates.
+* Fixed legacy spacing inconsistencies in the Contact Agent sidebar.
+* Improved responsive behavior across single property layouts.
+
+**Compatibility**
+
+* Presentation-only update. No changes to Property Builder, Dynamic Metabox, custom fields, database structure, migrations, REST API, CSV Import & Export, Migration Engine, template loading, hooks, filters, or existing integrations.
+* Existing theme template overrides remain fully compatible.
+* The redesigned frontend loads as a separate stylesheet on single property pages and can be disabled by dequeuing its stylesheet handle.
+* The Similar Properties section continues to work without changes.
+* No database migrations or manual upgrade steps are required.
 
 = 3.6.0 - 2026-07-26 =
 
@@ -408,6 +466,12 @@ No additional configuration or migration is required.
 
 For earlier versions, see the full history in CHANGELOG.md in the plugin package.
 == Upgrade Notice ==
+
+= 3.7.0 =
+Single Property presentation redesign (hero, gallery, overview, agent sidebar) plus mobile and accessibility polish. No Builder, field, REST, database, hook, or migration changes. Hard-refresh a property page after updating.
+
+= 3.6.0 =
+Adds the Migration Engine (HPTP) and universal CSV Import / Export for listings. Existing migration packages stay compatible; no breaking changes to listings, blocks, Elementor, shortcodes, templates, REST or the Agent Workspace. Requires the manage_options capability.
 
 = 3.5.0 =
 Adds native Gutenberg blocks (archive, search, inquiry, auth, dashboard, and more) that reuse existing rendering. Elementor, shortcodes, templates, and REST stay compatible. No migration required. Install the packaged release so the block bundle is present.

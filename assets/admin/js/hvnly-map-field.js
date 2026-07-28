@@ -6,6 +6,9 @@
 (function ($) {
     'use strict';
 
+    const mapI18n = (window.hvnlyMapFieldParams && window.hvnlyMapFieldParams.i18n) || {};
+    const t = (key, fallback) => (mapI18n[key] && String(mapI18n[key])) || fallback;
+
     const COORD_PRECISION = 6;
     const ADDRESS_DEBOUNCE_MS = 500;
     const COORD_DEBOUNCE_MS = 300;
@@ -82,12 +85,12 @@
             if (typeof address === 'string') {
                 const $live = this.$wrapper.find('.hvnly-map-current-address');
                 if ($live.length) {
-                    $live.text(address || 'No address set');
+                    $live.text(address || t('noAddressSet', 'No address set'));
                 }
             }
             if (this.type === 'leaflet' && this.marker && this.marker.bindPopup) {
                 this.marker.bindPopup(
-                    'Location<br>Lat: ' + this.formatCoord(lat) + '<br>Lng: ' + this.formatCoord(lng)
+                    t('locationPopup', 'Location') + '<br>' + t('latLabel', 'Lat:') + ' ' + this.formatCoord(lat) + '<br>' + t('lngLabel', 'Lng:') + ' ' + this.formatCoord(lng)
                 );
             }
         }
@@ -386,7 +389,7 @@
                     if (!data || !data.length) {
                         $container
                             .append(
-                                '<div style="padding:10px;color:#666;">No addresses found</div>'
+                                '<div style="padding:10px;color:#666;">' + t('noAddressesFound', 'No addresses found') + '</div>'
                             )
                             .show();
                         return;
@@ -430,26 +433,26 @@
                 e.preventDefault();
                 const address = self.$addressInput.val().trim();
                 if (!address) {
-                    alert('Please enter an address first.');
+                    alert(t('enterAddressFirst', 'Please enter an address first.'));
                     return;
                 }
-                $button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Searching...');
+                $button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> ' + t('searching', 'Searching…'));
                 Promise.resolve(self.forwardGeocode(address))
                     .then(function (result) {
                         if (result) {
                             self.onLocationResolved(result.address || address, result.lat, result.lng);
-                            alert('Location found!');
+                            alert(t('locationFound', 'Location found!'));
                         } else {
-                            alert('Address not found.');
+                            alert(t('addressNotFound', 'Address not found.'));
                         }
                     })
                     .catch(function () {
-                        alert('Error searching for address.');
+                        alert(t('searchError', 'Error searching for address.'));
                     })
                     .finally(function () {
                         $button
                             .prop('disabled', false)
-                            .html('<i class="fas fa-map-pin"></i> Get Coordinates from Address');
+                            .html('<i class="fas fa-map-pin"></i> ' + t('getCoordinates', 'Get Coordinates from Address'));
                     });
             });
         }

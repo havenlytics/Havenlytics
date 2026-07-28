@@ -68,7 +68,7 @@ if ($hvnly_display_all) {
                 <i class="<?php echo esc_attr($hvnly_icon_class); ?>"></i>
             <?php endif; ?>
             
-            <span class="hvnly-status-text"><?php echo esc_html($hvnly_status->name); ?></span>
+            <span class="hvnly-status-text"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_status->name ) ) : esc_html( $hvnly_status->name ); ?></span>
         </div>
     <?php endforeach; ?>
 
@@ -93,7 +93,7 @@ if ($hvnly_display_all) {
                             <i class="<?php echo esc_attr($hvnly_icon_class); ?>"></i>
                         <?php endif; ?>
                         
-                        <span class="hvnly-status-text"><?php echo esc_html($hvnly_status->name); ?></span>
+                        <span class="hvnly-status-text"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_status->name ) ) : esc_html( $hvnly_status->name ); ?></span>
                     </div>
                 <?php endforeach; ?>
             </div>

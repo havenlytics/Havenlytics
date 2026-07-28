@@ -23,6 +23,7 @@ defined( 'ABSPATH' ) || exit;
  */
 use HvnlyNab\Core\CacheInvalidator;
 use HvnlyNab\Core\RewriteRulesManager;
+use HvnlyNab\I18n\TranslationFallback;
 
 /**
  * Hook Manager Class
@@ -413,9 +414,23 @@ class HookManager {
 	 */
 	private function register_localization_hooks() {
 		/**
+		 * Never surface empty msgstr as blank UI — fall back to English source.
+		 */
+		TranslationFallback::register();
+
+		/**
 		 * Register JS translations in admin
 		 */
 		add_action( 'init', array( $this, 'localization_setup' ) );
+
+		/**
+		 * Persist English msgids only; recover if translated labels were saved.
+		 */
+		add_action( 'init', 'hvnly_maybe_normalize_stored_ui_labels', 20 );
+		add_action( 'update_option_WPLANG', 'hvnly_invalidate_locale_caches', 10, 0 );
+		add_filter( 'pre_update_option_hvnly_plugin_settings', 'hvnly_pre_update_canonicalize_option', 10, 1 );
+		add_filter( 'pre_update_option_hvnly_property_builder.sections', 'hvnly_pre_update_canonicalize_option', 10, 1 );
+		add_filter( 'pre_update_option_hvnly_property_card.sections', 'hvnly_pre_update_canonicalize_option', 10, 1 );
 
 		/**
 		 * Handle textdomain loading warnings in debug mode
@@ -610,20 +625,25 @@ class HookManager {
 	}
 
 	/**
-	 * Set up plugin localization and translations
+	 * Set up plugin localization and translations.
 	 *
-	 * For WordPress.org plugins, load_plugin_textdomain() is no longer needed
-	 * because translations are loaded automatically. We preserve JS translations.
+	 * Loads PHP translations from the plugin languages directory (Poedit / Loco /
+	 * manual .mo installs). WordPress.org language packs in WP_LANG_DIR continue
+	 * to work via just-in-time loading.
+	 *
+	 * JavaScript / React script translations are attached at enqueue time for each
+	 * real script handle (see Admin\Assets, OnboardingWizard, WorkspaceAssets,
+	 * BlockRegistrar). Do not call wp_set_script_translations here for a stale
+	 * handle — that prevents React admin UI from receiving locale JSON.
 	 *
 	 * @return void
 	 */
 	public function localization_setup() {
-		/**
-		 * Only keep JS translations for admin scripts
-		 */
-		if ( is_admin() ) {
-			wp_set_script_translations( 'havenlytics-app', 'havenlytics', HVNLYNAB_LANG_DIR );
-		}
+		load_plugin_textdomain(
+			'havenlytics',
+			false,
+			dirname( HVNLYNAB_BASENAME ) . '/languages'
+		);
 	}
 
 	/**

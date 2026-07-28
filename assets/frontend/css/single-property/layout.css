@@ -1,0 +1,847 @@
+/**
+ * Havenlytics 3.7.0 — Single Property Header (rebuilt from first principles)
+ * =========================================================================
+ * Presentation only. Existing plugin markup, hooks and Property Builder
+ * output are untouched; existing Havenlytics variables only (no new tokens).
+ *
+ * Two deliberate, separate layouts — not one scaled hero:
+ *
+ *   MOBILE  (base, < 768px)
+ *     A clean white information card. The featured image renders as a
+ *     normal responsive block at the top (container ::before), then
+ *     breadcrumb / badges / title / address / price / Save / facts follow
+ *     as DARK text on white. No overlay drama — readability first.
+ *
+ *   TABLET / DESKTOP  (>= 768px)
+ *     A CONTAINED image hero card (no full-bleed → no horizontal overflow
+ *     at any width). The image (::before) and a gradient scrim (::after)
+ *     fill a bounded band ~340–400px tall; breadcrumb sits top, the title
+ *     block anchors to the band's bottom, Save sits top-right — all in
+ *     white over the scrim. Property FACTS are NOT in the hero: they flow
+ *     below the band as a white "overview" card, followed by the IDs.
+ *
+ * The image URL is injected onto the ::before by Assets.php; everything
+ * else (scrim, layout, colour) is here.
+ *
+ * @package Havenlytics
+ * @since   3.7.0
+ */
+
+/* ----------------------------------------------------------------------
+ * Canvas + icon primitive
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single {
+    background-color: var(--hvnly-color-bg-light);
+}
+
+body.hvnly-property-single .hvnly-property-single__content-wrapper {
+    background: none;
+}
+
+body.hvnly-property-single .hvnly-icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* ======================================================================
+ * MOBILE (base) — white information card, image as a responsive block
+ * ==================================================================== */
+body.hvnly-property-single .hvnly-property-single__header {
+    position: relative;
+    margin: 0 0 var(--hvnly-space-xl, 32px);
+    padding: 0;
+    background: transparent;
+}
+
+body.hvnly-property-single .hvnly-property-single__header .hvnly-property-single__container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: var(--hvnly-space-lg, 24px);
+    background: var(--hvnly-color-bg-white);
+    border: 1px solid var(--hvnly-border-color);
+    border-radius: var(--hvnly-card-radius, 12px);
+    box-shadow: var(--hvnly-shadow-card);
+}
+
+/* Featured image — normal responsive block, bled to the card's top edge */
+body.hvnly-property-single .hvnly-property-single__header .hvnly-property-single__container::before {
+    content: '';
+    order: 0;
+    display: block;
+    width: auto;
+    aspect-ratio: 16 / 10;
+    margin: calc(-1 * var(--hvnly-space-lg, 24px)) calc(-1 * var(--hvnly-space-lg, 24px)) 4px;
+    background-color: var(--hvnly-color-bg-light);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: var(--hvnly-card-radius, 12px) var(--hvnly-card-radius, 12px) 0 0;
+}
+
+/* Scrim layer — mobile has none (dark text on white) */
+body.hvnly-property-single .hvnly-property-single__header .hvnly-property-single__container::after {
+    content: none;
+}
+
+/* Flow order inside the card */
+body.hvnly-property-single .hvnly-property-breadcrumb { order: 1; }
+body.hvnly-property-single .hvnly-property-single__title-section { order: 2; }
+body.hvnly-property-single .hvnly-property-single__actions { order: 3; }
+body.hvnly-property-single .hvnly-property-single__meta { order: 4; }
+body.hvnly-property-single .hvnly-property-single__property-ids { order: 5; }
+
+/* Breadcrumb — quiet on white */
+body.hvnly-property-single .hvnly-property-breadcrumb {
+    margin: 0;
+    padding: 0;
+    border-bottom: 0;
+    background: none;
+}
+
+body.hvnly-property-single .hvnly-property-breadcrumb__container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    line-height: 1.5;
+}
+
+body.hvnly-property-single .hvnly-property-breadcrumb__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--hvnly-text-secondary);
+    background: none;
+    border: 0;
+    padding: 0;
+    box-shadow: none;
+    text-decoration: none;
+    transition: color 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body.hvnly-property-single .hvnly-property-breadcrumb__item:hover {
+    color: var(--hvnly-brand-primary);
+    background: none;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transform: none;
+    box-shadow: none;
+}
+
+body.hvnly-property-single .hvnly-property-breadcrumb__item .hvnly-icon {
+    width: 15px;
+    height: 15px;
+}
+
+body.hvnly-property-single .hvnly-property-breadcrumb__separator {
+    width: 14px;
+    height: 14px;
+    color: var(--hvnly-color-gray-500);
+    margin: 0;
+    font-size: 10px;
+}
+
+body.hvnly-property-single .hvnly-property-breadcrumb__current {
+    display: inline-block;
+    color: var(--hvnly-text-primary);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    background: none;
+    border: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 55vw;
+    vertical-align: bottom;
+}
+
+/* Mobile header refinements live at the END of this file (after the base
+   header rules) so source order lets them win — see the max-width:767 block. */
+
+/* Title block */
+body.hvnly-property-single .hvnly-property-single__title-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 0;
+}
+
+body.hvnly-property-single .hvnly-property-single__badge-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 4px;
+}
+
+/* Badges — soft chips (mobile: on white) */
+body.hvnly-property-single .hvnly-property-single__status-badge,
+body.hvnly-property-single .hvnly-property-single__department-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    min-width: 0;
+    background: rgba(var(--hvnly-primary-rgb), 0.08);
+    color: var(--hvnly-brand-primary);
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.35;
+    border: 1px solid rgba(var(--hvnly-primary-rgb), 0.18);
+    border-radius: var(--hvnly-border-radius-sm);
+    box-shadow: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__department-badge {
+    background: var(--hvnly-color-bg-light);
+    color: var(--hvnly-text-secondary);
+    border-color: var(--hvnly-color-gray-200);
+}
+
+body.hvnly-property-single .hvnly-property-single__status-badge::after {
+    content: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__status-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+/* Title */
+body.hvnly-property-single .hvnly-property-single__title {
+    font-family: Marcellus, "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: clamp(1.375rem, 1.15rem + 1vw, 1.65rem);
+    font-weight: 500;
+    line-height: 1.22;
+    letter-spacing: 0;
+    color: var(--hvnly-text-primary);
+    margin: 0 0 10px;
+    display: block;
+    word-wrap: normal;
+    overflow-wrap: normal;
+    line-break: auto;
+}
+
+body.hvnly-property-single .hvnly-property-single__title::after {
+    content: none;
+}
+
+/* Address */
+body.hvnly-property-single .hvnly-property-single__address {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--hvnly-text-secondary);
+    font-size: var(--hvnly-font-size-md, 1rem);
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+
+body.hvnly-property-single .hvnly-property-single__address .hvnly-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--hvnly-brand-primary);
+    opacity: 1;
+}
+
+body.hvnly-property-single .hvnly-property-single__address i {
+    font-size: 15px;
+    color: var(--hvnly-brand-primary);
+    opacity: 1;
+}
+
+/* Price */
+body.hvnly-property-single .hvnly-property-single__price {
+    font-family: Marcellus, "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: clamp(1.5rem, 1.3rem + 0.9vw, 1.85rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    color: var(--hvnly-brand-primary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* Save / Print actions — outline button on white (mobile) */
+body.hvnly-property-single .hvnly-property-single__actions {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+body.hvnly-property-single .hvnly-property-single__actions-wrapper {
+    display: flex;
+    gap: 8px;
+}
+
+body.hvnly-property-single button.hvnly-property-single__action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+    min-height: 42px;
+    padding: 9px 16px;
+    background: var(--hvnly-color-bg-white);
+    border: 1px solid var(--hvnly-color-gray-200);
+    border-radius: 999px;
+    color: var(--hvnly-text-primary);
+    font-family: inherit;
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.15s cubic-bezier(0.2, 0, 0, 1),
+                color 0.15s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.15s cubic-bezier(0.2, 0, 0, 1);
+    box-shadow: none;
+}
+
+body.hvnly-property-single button.hvnly-property-single__action-btn:hover {
+    background: rgba(var(--hvnly-primary-rgb), 0.08);
+    border-color: rgba(var(--hvnly-primary-rgb), 0.25);
+    color: var(--hvnly-brand-primary);
+    transform: none;
+    box-shadow: none;
+}
+
+body.hvnly-property-single button.hvnly-property-single__action-btn .hvnly-icon {
+    width: 18px;
+    height: 18px;
+}
+
+body.hvnly-property-single button.hvnly-property-single__action-btn i {
+    font-size: 16px;
+}
+
+body.hvnly-property-single button.hvnly-property-single__save-btn.is-favorited i {
+    color: var(--hvnly-brand-error);
+}
+
+/* ----------------------------------------------------------------------
+ * FACTS — the Overview strip (dark text on light in every layout)
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-property-single__meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+    margin: 4px 0 0;
+    padding: var(--hvnly-space-md, 16px) 0 0;
+    border-top: 1px solid var(--hvnly-border-color);
+    border-bottom: 0;
+}
+
+body.hvnly-property-single .hvnly-property-single__meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 2px;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__meta-item:hover {
+    transform: none;
+    box-shadow: none;
+    background: none;
+    border: 0;
+}
+
+body.hvnly-property-single .hvnly-property-single__meta-item .hvnly-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--hvnly-brand-primary);
+    margin-bottom: 4px;
+}
+
+body.hvnly-property-single .hvnly-property-single__meta-item i {
+    color: var(--hvnly-brand-primary);
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+body.hvnly-property-single .hvnly-property-single__meta-value {
+    font-family: inherit;
+    font-size: var(--hvnly-font-size-lg, 1.125rem);
+    font-weight: var(--hvnly-font-weight-semibold, 600);
+    line-height: 1.3;
+    color: var(--hvnly-text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+body.hvnly-property-single .hvnly-property-single__meta-label {
+    font-size: 0.78rem;
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--hvnly-text-secondary);
+    margin-top: 0;
+}
+
+/* Reference IDs — quiet mono line */
+body.hvnly-property-single .hvnly-property-single__property-ids {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px var(--hvnly-space-lg, 24px);
+    justify-content: flex-start;
+    padding: 0;
+    border-bottom: 0;
+}
+
+body.hvnly-property-single .hvnly-property-single__property-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--hvnly-color-gray-500);
+}
+
+body.hvnly-property-single .hvnly-property-single__property-id strong {
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    color: var(--hvnly-text-secondary);
+}
+
+/* ======================================================================
+ * TABLET / DESKTOP (>= 768px) — contained image hero + overview card
+ * ==================================================================== */
+@media (min-width: 768px) {
+
+    /* Container becomes the hero band host; its top padding reserves the
+       image band, so the facts card flows in below it. Contained width
+       (no full-bleed) means zero horizontal overflow at any size. */
+    body.hvnly-property-single .hvnly-property-single__header .hvnly-property-single__container {
+        display: block;
+        position: relative;
+        padding: 0;
+        padding-top: clamp(340px, 30vw + 120px, 400px);
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        gap: 0;
+    }
+
+    /* Image band */
+    body.hvnly-property-single .hvnly-property-single__header .hvnly-property-single__container::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: clamp(340px, 30vw + 120px, 400px);
+        width: auto;
+        aspect-ratio: auto;
+        margin: 0;
+        border-radius: var(--hvnly-card-radius, 12px);
+        /* Bias slightly downward so façades read more than sky in wide heroes. */
+        background-position: center 38%;
+        z-index: 0;
+    }
+
+    /* Gradient scrim — soft top veil for breadcrumb contrast, clearer mid so
+       the photo stays premium, deep base for title/price. */
+    body.hvnly-property-single .hvnly-property-single__header .hvnly-property-single__container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: clamp(340px, 30vw + 120px, 400px);
+        border-radius: var(--hvnly-card-radius, 12px);
+        background: linear-gradient(180deg,
+            rgba(10, 12, 24, 0.46) 0%,
+            rgba(10, 12, 24, 0.26) 30%,
+            rgba(10, 12, 24, 0.38) 55%,
+            rgba(8, 10, 20, 0.88) 100%);
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    /* Hero text overlays the band */
+    body.hvnly-property-single .hvnly-property-breadcrumb {
+        position: absolute;
+        top: var(--hvnly-space-lg, 24px);
+        left: var(--hvnly-space-lg, 24px);
+        right: var(--hvnly-space-lg, 24px);
+        z-index: 3;
+    }
+
+    /* Anchor the title block to the BAND's bottom edge, not the container
+       bottom (the container also holds the facts card below). top = band
+       height, then translateY(-100% - inset) lifts it so its bottom sits
+       just inside the band regardless of title length. */
+    body.hvnly-property-single .hvnly-property-single__title-section {
+        position: absolute;
+        left: var(--hvnly-space-lg, 24px);
+        right: var(--hvnly-space-lg, 24px);
+        top: clamp(340px, 30vw + 120px, 400px);
+        transform: translateY(calc(-100% - var(--hvnly-space-lg, 24px)));
+        z-index: 3;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 32px;
+        margin: 0;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__actions {
+        position: absolute;
+        top: 18px;
+        right: var(--hvnly-space-lg, 24px);
+        z-index: 4;
+        margin: 0;
+        justify-content: flex-end;
+    }
+
+    /* White-on-photo text treatment */
+    body.hvnly-property-single .hvnly-property-breadcrumb__item {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    body.hvnly-property-single .hvnly-property-breadcrumb__item:hover {
+        color: #fff;
+    }
+
+    body.hvnly-property-single .hvnly-property-breadcrumb__separator {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    body.hvnly-property-single .hvnly-property-breadcrumb__current {
+        color: #fff;
+        max-width: 40ch;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__status-badge,
+    body.hvnly-property-single .hvnly-property-single__department-badge {
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__status-badge--for-sale::before { background: #2FBE8F; }
+    body.hvnly-property-single .hvnly-property-single__status-badge--for-rent::before,
+    body.hvnly-property-single .hvnly-property-single__status-badge--to-let::before { background: #2FBEBE; }
+    body.hvnly-property-single .hvnly-property-single__status-badge--pending::before,
+    body.hvnly-property-single .hvnly-property-single__status-badge--under-offer::before { background: #F0A83C; }
+    body.hvnly-property-single .hvnly-property-single__status-badge--sold::before,
+    body.hvnly-property-single .hvnly-property-single__status-badge--let::before { background: #EB5D71; }
+
+    body.hvnly-property-single .hvnly-property-single__title {
+        font-size: clamp(1.9rem, 1.1rem + 2vw, 2.85rem);
+        line-height: 1.12;
+        color: #fff;
+        margin: 0 0 10px;
+        text-shadow: 0 2px 18px rgba(8, 10, 20, 0.5);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__address {
+        color: rgba(255, 255, 255, 0.82);
+        text-shadow: 0 1px 10px rgba(8, 10, 20, 0.5);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__address .hvnly-icon,
+    body.hvnly-property-single .hvnly-property-single__address i {
+        color: #fff;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__price {
+        text-align: right;
+        color: #fff;
+        font-size: clamp(1.85rem, 1.2rem + 1.6vw, 2.6rem);
+        text-shadow: 0 2px 18px rgba(8, 10, 20, 0.55);
+        flex-shrink: 0;
+    }
+
+    /* Save — glass ghost button top-right over the photo */
+    body.hvnly-property-single button.hvnly-property-single__action-btn {
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.24);
+        color: #fff;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+
+    body.hvnly-property-single button.hvnly-property-single__action-btn:hover {
+        background: rgba(255, 255, 255, 0.24);
+        border-color: rgba(255, 255, 255, 0.4);
+        color: #fff;
+    }
+
+    /* FACTS overview card — flows below the band on the canvas */
+    body.hvnly-property-single .hvnly-property-single__meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+        gap: 16px 24px;
+        margin: var(--hvnly-space-lg, 24px) 0 0;
+        padding: 20px 24px;
+        background: var(--hvnly-color-bg-white);
+        border: 1px solid var(--hvnly-border-color);
+        border-radius: var(--hvnly-card-radius, 12px);
+        box-shadow: var(--hvnly-shadow-card);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-item {
+        position: relative;
+        padding-left: 20px;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-item + .hvnly-property-single__meta-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 4px;
+        bottom: 4px;
+        width: 1px;
+        background: var(--hvnly-border-color);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__property-ids {
+        margin-top: 12px;
+        padding: 0 4px;
+    }
+}
+
+/* ======================================================================
+ * DESKTOP (>= 1024px) — a touch more breathing room in the band
+ * ==================================================================== */
+@media (min-width: 1024px) {
+    body.hvnly-property-single .hvnly-property-single__header .hvnly-property-single__container {
+        padding-top: 400px;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__header .hvnly-property-single__container::before,
+    body.hvnly-property-single .hvnly-property-single__header .hvnly-property-single__container::after {
+        height: 400px;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__title-section {
+        top: 400px;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+        align-items: stretch;
+        padding: 0;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-item {
+        align-items: center;
+        justify-content: center;
+        min-height: 116px;
+        gap: 6px;
+        padding: 18px 16px 16px;
+        text-align: center;
+        background: var(--hvnly-color-bg-white);
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-item + .hvnly-property-single__meta-item::before {
+        content: none;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-item .hvnly-icon {
+        width: 18px;
+        height: 18px;
+        margin-bottom: 2px;
+        color: var(--hvnly-brand-primary);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-item i {
+        font-size: 16px;
+        margin-bottom: 2px;
+        color: var(--hvnly-brand-primary);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-value {
+        font-size: clamp(1.28rem, 1.1vw, 1.5rem);
+        font-weight: 700;
+        line-height: 1.15;
+        text-align: center;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-align: center;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__property-ids {
+        gap: 10px 24px;
+        margin-top: 18px;
+        padding: 0;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__property-id {
+        font-size: 0.76rem;
+        letter-spacing: 0.04em;
+    }
+}
+
+/* ======================================================================
+ * MOBILE OVERVIEW FACTS (<= 767px) — dedicated single-column spec list.
+ * Not the desktop grid compressed: one fact per row, gold icon + readable
+ * label on the left, bold value on the right, generous touch height and
+ * hairline dividers. Scoped to max-width so the >=768px header is
+ * untouched. No horizontal scrolling at 320 / 360 / 390 / 430.
+ * ==================================================================== */
+@media (max-width: 767px) {
+    body.hvnly-property-single .hvnly-property-single__meta {
+        display: block;
+        grid-template-columns: none;
+        gap: 0;
+        margin: 8px 0 0;
+        padding: 4px 0 0;
+        border-top: 1px solid var(--hvnly-border-color);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 2px;
+        min-height: 52px;
+        text-align: left;
+        border-bottom: 1px solid var(--hvnly-border-color);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-item:last-child {
+        border-bottom: 0;
+    }
+
+    /* Icon: same gold stroke set as desktop, nudged up for the row */
+    body.hvnly-property-single .hvnly-property-single__meta-item .hvnly-icon {
+        width: 22px;
+        height: 22px;
+        margin: 0;
+        color: var(--hvnly-brand-primary);
+        flex-shrink: 0;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__meta-item i {
+        font-size: 20px;
+        margin: 0;
+        color: var(--hvnly-brand-primary);
+        flex-shrink: 0;
+    }
+
+    /* Label = the readable key (left). Normal case + larger for legibility. */
+    body.hvnly-property-single .hvnly-property-single__meta-label {
+        order: 1;
+        font-size: var(--hvnly-font-size-md, 1rem);
+        font-weight: var(--hvnly-font-weight-medium, 500);
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--hvnly-text-primary);
+        margin: 0;
+        min-width: 0;
+    }
+
+    /* Value = bold, pinned right */
+    body.hvnly-property-single .hvnly-property-single__meta-value {
+        order: 2;
+        margin-left: auto;
+        padding-left: 12px;
+        font-size: var(--hvnly-font-size-md, 1rem);
+        font-weight: var(--hvnly-font-weight-semibold, 600);
+        line-height: 1.3;
+        color: var(--hvnly-text-primary);
+        text-align: right;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+/* ======================================================================
+ * MOBILE HEADER (<= 767px) — a true mobile hierarchy, not a compressed
+ * desktop. Placed last so it wins on source order over the base header
+ * rules; scoped to max-width so the >=768px hero is untouched.
+ * ==================================================================== */
+@media (max-width: 767px) {
+
+    /* Breadcrumb — single line: Home > Properties > Current. Department /
+       location / intermediate levels + their separators hidden; current
+       title ellipsizes; never wraps. */
+    body.hvnly-property-single .hvnly-property-breadcrumb__container {
+        flex-wrap: nowrap;
+        overflow: hidden;
+    }
+
+    body.hvnly-property-single .hvnly-property-breadcrumb__container > a.hvnly-property-breadcrumb__item:nth-of-type(n+3),
+    body.hvnly-property-single .hvnly-property-breadcrumb__container > svg.hvnly-property-breadcrumb__separator:not(:nth-of-type(1)):not(:nth-last-of-type(1)) {
+        display: none;
+    }
+
+    body.hvnly-property-single .hvnly-property-breadcrumb__item {
+        flex-shrink: 0;
+    }
+
+    body.hvnly-property-single .hvnly-property-breadcrumb__current {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: none;
+    }
+
+    /* Title — cap at two lines */
+    body.hvnly-property-single .hvnly-property-single__title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Address — quieter, tighter under the title */
+    body.hvnly-property-single .hvnly-property-single__address {
+        font-size: var(--hvnly-font-size-sm, 0.875rem);
+        line-height: 1.45;
+    }
+
+    /* Save — full touch target directly under the price, compact, left */
+    body.hvnly-property-single .hvnly-property-single__actions {
+        margin-top: 2px;
+        justify-content: flex-start;
+    }
+
+    body.hvnly-property-single button.hvnly-property-single__action-btn {
+        min-height: 48px;
+        padding: 12px 22px;
+        font-size: var(--hvnly-font-size-md, 1rem);
+    }
+}

@@ -142,7 +142,7 @@ $hvnly_video_card_id = 'hvnly-video-' . ( $hvnly_group_base_id ?: uniqid() ) . '
 			</div>
 
 			<?php if ( $hvnly_title ) : ?>
-			<h3 class="hvnly-property-single__video-title"><?php echo esc_html( $hvnly_title ); ?></h3>
+			<h3 class="hvnly-property-single__video-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_title ?? $hvnly_label ) ) : esc_html( $hvnly_title ?? $hvnly_label ); ?></h3>
 			<?php else : ?>
 			<h3 class="hvnly-property-single__video-title"><?php esc_html_e( 'Virtual Tour', 'havenlytics' ); ?></h3>
 			<?php endif; ?>

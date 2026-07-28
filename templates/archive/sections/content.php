@@ -77,7 +77,7 @@ $hvnly_configured_fields = hvnly_get_configured_field_types( $hvnly_all_sections
                     }
                     
                     // Render other field types.
-                    hvnly_render_field( $hvnly_field_type, $hvnly_property_id, $hvnly_property_data, $hvnly_mode );
+                    hvnly_render_field( $hvnly_field_type, $hvnly_property_id, $hvnly_property_data, $hvnly_mode, $hvnly_field );
                 }
             }
         }

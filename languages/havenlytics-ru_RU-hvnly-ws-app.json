@@ -1,0 +1,2045 @@
+{
+    "translation-revision-date": "2026-07-28 16:15:36+0000",
+    "generator": "Havenlytics hvnly-ws-app ru_RU package",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "plural-forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);",
+                "lang": "ru"
+            },
+            "%1$s %2$d": [
+                "%1$s %2$d"
+            ],
+            "%1$s %2$s": [
+                "%1$s %2$s"
+            ],
+            "%1$s. Total %2$d %3$s.": [
+                "%1$s. Всего %2$d %3$s."
+            ],
+            "%1$s: %2$d": [
+                "%1$s: %2$d"
+            ],
+            "%d day ago": [
+                "%d день назад "
+            ],
+            "%d days ago": [
+                "%d дней назад"
+            ],
+            "%d hour ago": [
+                "%d час назад"
+            ],
+            "%d hours ago": [
+                "%d часов назад"
+            ],
+            "%d image selected · click to edit the gallery": [
+                "Выбрано %d изображения · нажмите, чтобы отредактировать галерею"
+            ],
+            "%d images selected · click to edit the gallery": [
+                "Выбрано %d изображений · нажмите, чтобы отредактировать галерею"
+            ],
+            "%d in gallery": [
+                "%d в галерее"
+            ],
+            "%d min ago": [
+                "%d мин. назад"
+            ],
+            "%d min left": [
+                "Осталось %d мин."
+            ],
+            "%d required field needs attention.": [
+                "%d обязательное поле требует внимания."
+            ],
+            "%d required fields need attention.": [
+                "%d обязательных полей требуют внимания."
+            ],
+            "%d unread": [
+                "Непрочитанных: %d"
+            ],
+            "%d unread notifications": [
+                "Непрочитанных уведомлений: %d"
+            ],
+            "%d view in the last 7 days": [
+                "%d просмотров за последние 7 дней"
+            ],
+            "%d views in the last 7 days": [
+                "%d просмотров за последние 7 дней"
+            ],
+            "%ds left": [
+                "Осталось %ds"
+            ],
+            "%s is required.": [
+                "Поле «%s» обязательно."
+            ],
+            "%s was selected instead of creating a request.": [
+                "Выбран «%s» вместо создания запроса."
+            ],
+            "%s. No data for this period.": [
+                "%с. Данных за этот период нет. %s"
+            ],
+            "30 Days": [
+                "30 дней"
+            ],
+            "7 Days": [
+                "7 дней"
+            ],
+            "Account": [
+                "Аккаунт"
+            ],
+            "Account details, preferences, and notification controls.": [
+                "Данные аккаунта, предпочтения и настройки уведомлений."
+            ],
+            "Account settings": [
+                "Настройки аккаунта"
+            ],
+            "Action failed.": [
+                "Действие не выполнено."
+            ],
+            "Action issue": [
+                "Проблема с действием"
+            ],
+            "Actions": [
+                "Действия"
+            ],
+            "Active": [
+                "Активно"
+            ],
+            "Active Listings": [
+                "Активные объявления"
+            ],
+            "Add Listing": [
+                "Добавить объявление"
+            ],
+            "Add a YouTube tour or embed to bring the listing to life.": [
+                "Добавьте тур на YouTube или встройте его, чтобы оживить страницу."
+            ],
+            "Add a question buyers commonly ask about this property.": [
+                "Добавьте вопрос, который покупатели обычно задают об этой недвижимости."
+            ],
+            "Add and arrange the items in this section.": [
+                "Добавляйте и упорядочивайте элементы в этом разделе."
+            ],
+            "Add another document": [
+                "Добавить еще один документ"
+            ],
+            "Add another feature": [
+                "Добавить еще одну функцию"
+            ],
+            "Add another item": [
+                "Добавить ещё"
+            ],
+            "Add another question": [
+                "Добавить еще один вопрос"
+            ],
+            "Add one entry per row — reorder or remove any time.": [
+                "Добавляйте по одной записи в строке — меняйте порядок или удаляйте в любое время."
+            ],
+            "Add or manage images": [
+                "Добавляйте изображения или управляйте ими"
+            ],
+            "Add your first entry to build this list.": [
+                "Добавьте первую запись, чтобы сформировать список."
+            ],
+            "Add your first item to start building this section.": [
+                "Добавьте свой первый элемент, чтобы начать создание этого раздела."
+            ],
+            "Address": [
+                "Адрес"
+            ],
+            "Administrator": [
+                "Администратор"
+            ],
+            "Agency": [
+                "Агентство"
+            ],
+            "Agency Manager": [
+                "Менеджер агентства"
+            ],
+            "Agency Owner": [
+                "Владелец агентства"
+            ],
+            "Agent": [
+                "Агент"
+            ],
+            "Agent dashboard": [
+                "Панель агента"
+            ],
+            "All": [
+                "Все"
+            ],
+            "All Time": [
+                "Все время"
+            ],
+            "All active": [
+                "Все активные"
+            ],
+            "All caught up": [
+                "Всё прочитано"
+            ],
+            "Analytics": [
+                "Аналитика"
+            ],
+            "Analytics REST URL is not configured.": [
+                "URL-адрес REST Analytics не настроен."
+            ],
+            "Analytics date range": [
+                "Диапазон дат Аналитики"
+            ],
+            "Announcements": [
+                "Объявления"
+            ],
+            "Answer": [
+                "Ответ"
+            ],
+            "Answer the questions buyers ask most — shown as an accordion on the listing.": [
+                "Ответьте на вопросы, которые покупатели задают чаще всего (они показаны в объявлении аккордеоном)."
+            ],
+            "Apply": [
+                "Применить"
+            ],
+            "Archive": [
+                "Архив"
+            ],
+            "Archived": [
+                "В архиве"
+            ],
+            "Ascending": [
+                "По возрастанию"
+            ],
+            "Assign the agents responsible for this listing.": [
+                "Назначьте агентов, ответственных за этот список."
+            ],
+            "Assigned via Agent Agency taxonomy in wp-admin.": [
+                "Назначается через таксономию агентского агентства в wp-admin."
+            ],
+            "Attach brochures, floor plans, EPCs, or other downloadable files.": [
+                "Прикрепите брошюры, планы этажей, EPC или другие загружаемые файлы."
+            ],
+            "Attach brochures, floor plans, EPCs, or other files for this listing.": [
+                "Прикрепите брошюры, планы этажей, EPC или другие файлы к этому объявлению."
+            ],
+            "Attachment #%d": [
+                "Вложение #%d"
+            ],
+            "Avatar": [
+                "Аватар"
+            ],
+            "Awaiting coordinates": [
+                "Ожидание координат"
+            ],
+            "Awaiting review": [
+                "Ожидают проверки"
+            ],
+            "Back": [
+                "Назад"
+            ],
+            "Back to inbox": [
+                "Назад во входящие"
+            ],
+            "Badges": [
+                "Значки"
+            ],
+            "Biography": [
+                "Биографии"
+            ],
+            "Breadcrumb": [
+                "Навигационная цепочка"
+            ],
+            "Builder-driven listing editor. Save, then submit or publish when permitted.": [
+                "Редактор объявлений на основе конструктора. Сохраните, затем отправьте или опубликуйте при наличии прав."
+            ],
+            "Bulk action": [
+                "Массовое действие"
+            ],
+            "Bulk action failed.": [
+                "Массовое действие не выполнено."
+            ],
+            "Bulk action finished.": [
+                "Массовое действие завершено."
+            ],
+            "Buyer": [
+                "Покупатель"
+            ],
+            "Call out the details that make this property special.": [
+                "Вызовите детали, которые делают эту недвижимость особенной."
+            ],
+            "Cancel": [
+                "Отмена"
+            ],
+            "Canu2019t find it? Request New %s": [
+                "Не можешь найти? Запросить новый %s"
+            ],
+            "Caps Lock is on.": [
+                "Включён Caps Lock."
+            ],
+            "Change password": [
+                "Сменить пароль"
+            ],
+            "Clear filters": [
+                "Сбросить фильтры"
+            ],
+            "Clear gallery": [
+                "Очистить галерею"
+            ],
+            "Click to open the media library and choose photos": [
+                "Нажмите, чтобы открыть медиатеку и выбрать фотографии."
+            ],
+            "Close": [
+                "Закрыть"
+            ],
+            "Closed Volume (MTD)": [
+                "Закрытый объём (с начала месяца)"
+            ],
+            "Collapse": [
+                "Свернуть"
+            ],
+            "Company": [
+                "Компания"
+            ],
+            "Confirm": [
+                "Подтвердить"
+            ],
+            "Confirm Password": [
+                "Подтвердите пароль"
+            ],
+            "Confirm this action?": [
+                "Подтвердить это действие?"
+            ],
+            "Contact Information": [
+                "Контактная информация"
+            ],
+            "Continue as guest": [
+                "Продолжить как гость"
+            ],
+            "Conversation detail": [
+                "Детали переписки"
+            ],
+            "Could not load preview.": [
+                "Не удалось загрузить предварительный просмотр."
+            ],
+            "Could not mark notifications read.": [
+                "Не удалось отметить уведомления как прочитанные."
+            ],
+            "Could not remove image.": [
+                "Не удалось удалить изображение."
+            ],
+            "Could not reorder gallery.": [
+                "Не удалось изменить порядок галереи."
+            ],
+            "Could not save": [
+                "Не удалось сохранить"
+            ],
+            "Could not save profile.": [
+                "Не удалось сохранить профиль."
+            ],
+            "Could not save settings.": [
+                "Не удалось сохранить настройки."
+            ],
+            "Could not send reply.": [
+                "Не удалось отправить ответ."
+            ],
+            "Could not set featured image.": [
+                "Не удалось установить обложку."
+            ],
+            "Could not update inquiry.": [
+                "Не удалось обновить запрос."
+            ],
+            "Could not update notification.": [
+                "Не удалось обновить уведомление."
+            ],
+            "Could not update status.": [
+                "Не удалось обновить статус."
+            ],
+            "Create Property": [
+                "Создать объект"
+            ],
+            "Create a listing to get started.": [
+                "Создайте объявление, чтобы начать."
+            ],
+            "Create a property to see status distribution.": [
+                "Создайте свойство, чтобы увидеть распределение статусов."
+            ],
+            "Create and save the property draft first, then upload a featured image and gallery.": [
+                "Сначала создайте и сохраните черновик объекта, затем загрузите обложку и галерею."
+            ],
+            "Create property": [
+                "Создать объект"
+            ],
+            "Create your first property": [
+                "Создайте первый объект"
+            ],
+            "Create your first property to populate this dashboard.": [
+                "Создайте первый объект, чтобы заполнить эту панель."
+            ],
+            "Created": [
+                "Создано"
+            ],
+            "Current Password": [
+                "Текущий пароль"
+            ],
+            "Current password is required.": [
+                "Требуется текущий пароль."
+            ],
+            "Custom URL": [
+                "Произвольный URL"
+            ],
+            "Custom footer text…": [
+                "Свой текст подвала…"
+            ],
+            "Custom price label": [
+                "Своя подпись цены"
+            ],
+            "Customize Workspace branding for your brokerage. These controls are placeholders and do not save yet.": [
+                "Настройте брендинг Workspace для вашего агентства. Эти элементы пока заглушки и не сохраняются."
+            ],
+            "Dashboard": [
+                "Панель управления"
+            ],
+            "Dashboard Logo": [
+                "Логотип панели"
+            ],
+            "Dashboard Name": [
+                "Название панели"
+            ],
+            "Date": [
+                "Дата"
+            ],
+            "Date Format": [
+                "Формат даты"
+            ],
+            "Date created": [
+                "Дата создания"
+            ],
+            "Date listed": [
+                "Дата размещения"
+            ],
+            "Default Property View": [
+                "Отображение объектов по умолчанию"
+            ],
+            "Delete": [
+                "Удалить"
+            ],
+            "Delete account requests are not available yet.": [
+                "Запросы на удаление аккаунта пока недоступны."
+            ],
+            "Delete permanently": [
+                "Удалить навсегда"
+            ],
+            "Department": [
+                "Отдел"
+            ],
+            "Descending": [
+                "По убыванию"
+            ],
+            "Description": [
+                "Описание"
+            ],
+            "Description (optional)": [
+                "Описание (необязательно)"
+            ],
+            "Desktop": [
+                "Рабочее место"
+            ],
+            "Developer diagnostics": [
+                "Диагностика для разработчиков"
+            ],
+            "Did you mean?": [
+                "Возможно, вы имели в виду?"
+            ],
+            "Discard": [
+                "Отменить"
+            ],
+            "Display Name": [
+                "Отображаемое имя"
+            ],
+            "Display name is required.": [
+                "Требуется отображаемое имя."
+            ],
+            "Document %d": [
+                "Документ %d"
+            ],
+            "Document Icon": [
+                "Значок документа"
+            ],
+            "Document Label": [
+                "Название документа"
+            ],
+            "Document URL": [
+                "URL документа"
+            ],
+            "Done": [
+                "Готово"
+            ],
+            "Draft": [
+                "Черновик"
+            ],
+            "Draft saved successfully": [
+                "Черновик успешно сохранён"
+            ],
+            "Drag gallery tiles to reorder. Changes save immediately.": [
+                "Перетаскивайте плитки галереи для изменения порядка. Изменения сохраняются сразу."
+            ],
+            "Duplicate": [
+                "Дублировать"
+            ],
+            "Duplicated.": [
+                "Продублировано."
+            ],
+            "Edit": [
+                "Редактировать"
+            ],
+            "Edit property": [
+                "Редактировать объект"
+            ],
+            "Email Preferences": [
+                "Настройки email"
+            ],
+            "Email and in-app preferences are independent. Desktop and sound notifications are planned.": [
+                "Настройки email и в приложении независимы. Уведомления на рабочем столе и звук планируются."
+            ],
+            "Email delivery failed for this reply.": [
+                "Не удалось доставить этот ответ по электронной почте."
+            ],
+            "Email notifications": [
+                "Email-уведомления"
+            ],
+            "Enter a valid URL.": [
+                "Введите действительный URL-адрес."
+            ],
+            "Enter a valid YouTube URL (watch, youtu.be, or embed).": [
+                "Введите действительный URL-адрес YouTube (смотреть, youtu.be или встроить)."
+            ],
+            "Enter a valid login email.": [
+                "Введите действительный адрес электронной почты для входа."
+            ],
+            "Enter a valid price.": [
+                "Введите корректную цену."
+            ],
+            "Enter a valid public email.": [
+                "Введите действительный общедоступный адрес электронной почты."
+            ],
+            "Enter latitude and longitude below to preview the location on the map.": [
+                "Введите широту и долготу ниже, чтобы просмотреть местоположение на карте."
+            ],
+            "Excerpt": [
+                "Краткое описание"
+            ],
+            "Existing term selected": [
+                "Выбран существующий термин"
+            ],
+            "Exit full": [
+                "Выход полон"
+            ],
+            "Exit guest mode": [
+                "Выйти из гостевого режима"
+            ],
+            "Expand": [
+                "Развернуть"
+            ],
+            "Experience (years)": [
+                "Опыт (лет)"
+            ],
+            "Facebook": [
+                "Facebook"
+            ],
+            "Fair": [
+                "Средний"
+            ],
+            "Favicon": [
+                "Фавикон"
+            ],
+            "Feature %d": [
+                "Особенность %d"
+            ],
+            "Featured": [
+                "Избранное"
+            ],
+            "Featured image": [
+                "Обложка"
+            ],
+            "Featured image updated.": [
+                "Обложка обновлена."
+            ],
+            "Features": [
+                "Особенности"
+            ],
+            "Filters": [
+                "Фильтры"
+            ],
+            "First Name": [
+                "Имя"
+            ],
+            "Floor Plan": [
+                "План этажа"
+            ],
+            "Footer Branding": [
+                "Брендинг подвала"
+            ],
+            "Form actions": [
+                "Действия формы"
+            ],
+            "From": [
+                "От"
+            ],
+            "Fullscreen": [
+                "На весь экран"
+            ],
+            "Gallery": [
+                "Галерея"
+            ],
+            "Gallery Title": [
+                "Название галереи"
+            ],
+            "Gallery images": [
+                "Изображения галереи"
+            ],
+            "Gallery is empty": [
+                "Галерея пуста"
+            ],
+            "General": [
+                "Общие"
+            ],
+            "Global search is not available in this release": [
+                "Глобальный поиск недоступен в этом выпуске"
+            ],
+            "Good afternoon": [
+                "Добрый день"
+            ],
+            "Good evening": [
+                "Добрый вечер"
+            ],
+            "Good morning": [
+                "Доброе утро"
+            ],
+            "Good night": [
+                "Доброй ночи"
+            ],
+            "Grid": [
+                "Сетка"
+            ],
+            "Guest": [
+                "Гость"
+            ],
+            "Guest mode": [
+                "Гостевой режим"
+            ],
+            "Guest mode is a temporary, read-only preview. Nothing can be created, edited or deleted.": [
+                "Гостевой режим — временный просмотр только для чтения. Создавать, изменять и удалять нельзя."
+            ],
+            "Guest sessions do not have an editable profile.": [
+                "У гостевых сессий нет редактируемого профиля."
+            ],
+            "Havenlytics links": [
+                "Ссылки Havenlytics"
+            ],
+            "Hide password": [
+                "Скрыть пароль"
+            ],
+            "Icon (optional)": [
+                "Значок (необязательно)"
+            ],
+            "Image": [
+                "Изображение"
+            ],
+            "Image added to gallery.": [
+                "Изображение добавлено в галерею."
+            ],
+            "Image must be 5MB or smaller.": [
+                "Размер изображения должен составлять 5 МБ или меньше."
+            ],
+            "Image preview": [
+                "Предпросмотр изображения"
+            ],
+            "Image removed.": [
+                "Изображение удалено."
+            ],
+            "Image replaced.": [
+                "Изображение заменено."
+            ],
+            "Images": [
+                "Изображения"
+            ],
+            "In-app notifications": [
+                "Уведомления в приложении"
+            ],
+            "Inbox": [
+                "Входящие"
+            ],
+            "Inquiries": [
+                "Запросы"
+            ],
+            "Inquiry": [
+                "Запрос"
+            ],
+            "Inquiry Inbox": [
+                "Входящие запросы"
+            ],
+            "Inquiry archived.": [
+                "Запрос в архиве."
+            ],
+            "Inquiry emails": [
+                "Письма о запросах"
+            ],
+            "Inquiry updated.": [
+                "Запрос обновлён."
+            ],
+            "Instagram": [
+                "Instagram"
+            ],
+            "Item": [
+                "Элемент"
+            ],
+            "Item %d": [
+                "Объект %d"
+            ],
+            "Items Per Page": [
+                "Элементов на странице"
+            ],
+            "Just now": [
+                "Прямо сейчас"
+            ],
+            "Keep editing": [
+                "Продолжить редактирование"
+            ],
+            "Keep your public agent details accurate for clients and co-workers.": [
+                "Следите за тем, чтобы данные вашего публичного агента были точными для клиентов и коллег."
+            ],
+            "Language": [
+                "Язык"
+            ],
+            "Last 30 days": [
+                "Последние 30 дней"
+            ],
+            "Last 7 days": [
+                "Последние 7 дней"
+            ],
+            "Last Name": [
+                "Фамилия"
+            ],
+            "Last updated": [
+                "Последнее обновление"
+            ],
+            "Latitude": [
+                "Широта"
+            ],
+            "License": [
+                "Лицензия"
+            ],
+            "LinkedIn": [
+                "LinkedIn"
+            ],
+            "List": [
+                "Список"
+            ],
+            "List the amenities and standout features buyers care about.": [
+                "Перечислите удобства и выдающиеся особенности, которые волнуют покупателей."
+            ],
+            "List the amenities that make this property stand out.": [
+                "Перечислите удобства, которые выделяют этот объект недвижимости."
+            ],
+            "Listing": [
+                "Список"
+            ],
+            "Listing Views": [
+                "Просмотры объявлений"
+            ],
+            "Listing status": [
+                "Статус объявления"
+            ],
+            "Listing views for the last 7 days. No views recorded yet.": [
+                "Просмотры объявлений за последние 7 дней. Пока нет данных."
+            ],
+            "Listing views for the last 7 days. Total %d views.": [
+                "Просмотры объявлений за последние 7 дней. Всего: %d."
+            ],
+            "Listings Created": [
+                "Объявления созданы"
+            ],
+            "Listings by Status": [
+                "Объявления по статусу"
+            ],
+            "Listings by status. Total %d.": [
+                "Объявления по статусу. Всего %d."
+            ],
+            "Listings you have saved. Remove any you no longer need.": [
+                "Сохранённые объявления. Удалите ненужные."
+            ],
+            "Listings you saved in this browser. Sign in to keep them on your account.": [
+                "Объявления, сохранённые в этом браузере. Войдите, чтобы сохранить их в аккаунте."
+            ],
+            "Loading": [
+                "Загрузка"
+            ],
+            "Loading %s…": [
+                "Загрузка %s…"
+            ],
+            "Loading analytics…": [
+                "Загрузка аналитики…"
+            ],
+            "Loading conversation…": [
+                "Загрузка разговора…"
+            ],
+            "Loading dashboard…": [
+                "Загрузка панели…"
+            ],
+            "Loading inquiries…": [
+                "Загрузка запросов…"
+            ],
+            "Loading media…": [
+                "Загрузка медиа…"
+            ],
+            "Loading notifications…": [
+                "Загрузка уведомлений…"
+            ],
+            "Loading preview…": [
+                "Загрузка предварительного просмотра…"
+            ],
+            "Loading profile…": [
+                "Загрузка профиля…"
+            ],
+            "Loading properties…": [
+                "Загрузка объектов…"
+            ],
+            "Loading saved properties…": [
+                "Загрузка сохранённых объектов…"
+            ],
+            "Loading settings…": [
+                "Загрузка настроек…"
+            ],
+            "Loading…": [
+                "Загрузка…"
+            ],
+            "Location set": [
+                "Набор локаций"
+            ],
+            "Locations": [
+                "Расположения"
+            ],
+            "Log out": [
+                "Выйти"
+            ],
+            "Login Email": [
+                "Email для входа"
+            ],
+            "Login Logo": [
+                "Логотип входа"
+            ],
+            "Longitude": [
+                "Долгота"
+            ],
+            "Manage all →": [
+                "Управлять всеми →"
+            ],
+            "Manage drafts, pending, published, rejected, and trashed listings.": [
+                "Управляйте черновиками, ожидающими, опубликованными, отклонёнными и удалёнными объявлениями."
+            ],
+            "Manage gallery images": [
+                "Управление изображениями галереи"
+            ],
+            "Map": [
+                "Карта"
+            ],
+            "Mark all read": [
+                "Отметить все как прочитанные"
+            ],
+            "Mark read": [
+                "Отметить как прочитанное"
+            ],
+            "Marketing emails": [
+                "Маркетинговые письма"
+            ],
+            "Media": [
+                "Медиа"
+            ],
+            "Media Library unavailable": [
+                "Медиабиблиотека недоступна"
+            ],
+            "Media error": [
+                "Ошибка медиа"
+            ],
+            "Menu": [
+                "Меню"
+            ],
+            "Messages from your Contact Agent forms.": [
+                "Сообщения из форм «Связаться с агентом»."
+            ],
+            "Minimum 10 characters. Sends email via Contact Agent.": [
+                "Минимум 10 символов. Отправляет электронную почту через контактного агента."
+            ],
+            "Mobile": [
+                "Подвижный"
+            ],
+            "More": [
+                "Ещё"
+            ],
+            "Move down": [
+                "Переместить вниз"
+            ],
+            "Move this property to trash?": [
+                "Переместить этот объект в корзину?"
+            ],
+            "Move to Trash": [
+                "В корзину"
+            ],
+            "Move up": [
+                "Перейти выше"
+            ],
+            "Moved to trash.": [
+                "Перемещено в корзину."
+            ],
+            "My Profile": [
+                "Мой профиль"
+            ],
+            "My Properties": [
+                "Мои объекты"
+            ],
+            "My profile": [
+                "Мой профиль"
+            ],
+            "My properties": [
+                "Мои объекты"
+            ],
+            "New": [
+                "Новое"
+            ],
+            "New Inquiries": [
+                "Новые запросы"
+            ],
+            "New Password": [
+                "Новый пароль"
+            ],
+            "New accounts require administrator approval before Workspace access.": [
+                "Новые аккаунты требуют одобрения администратора перед доступом к Workspace."
+            ],
+            "New password must be at least 8 characters.": [
+                "Новый пароль должен содержать не менее 8 символов."
+            ],
+            "Newest Listings": [
+                "Новейшие объявления"
+            ],
+            "Next page": [
+                "Следующая страница"
+            ],
+            "No %s recorded yet.": [
+                "%s пока не записано."
+            ],
+            "No Property Builder sections are available. Configure sections in wp-admin → Property Builder, then reload Workspace.": [
+                "Нет доступных разделов конструктора. Настройте разделы в wp-admin → Конструктор объектов, затем перезагрузите Workspace."
+            ],
+            "No additional details for this notification.": [
+                "Нет дополнительных сведений по этому уведомлению."
+            ],
+            "No agents": [
+                "Нет операторов"
+            ],
+            "No announcements": [
+                "Нет объявлений"
+            ],
+            "No changes": [
+                "Изменений нет"
+            ],
+            "No data available for this chart.": [
+                "Для этой диаграммы нет данных."
+            ],
+            "No documents attached": [
+                "Документы не приложены"
+            ],
+            "No enabled fields in this Property Builder section.": [
+                "В этом разделе конструктора нет включённых полей."
+            ],
+            "No featured image": [
+                "Нет обложки"
+            ],
+            "No featured image selected.": [
+                "Обложка не выбрана."
+            ],
+            "No features added yet": [
+                "Функции пока не добавлены"
+            ],
+            "No inquiries yet": [
+                "Пока нет запросов"
+            ],
+            "No items yet": [
+                "Пока нет элементов"
+            ],
+            "No listings yet": [
+                "Пока нет объявлений"
+            ],
+            "No matches": [
+                "Нет совпадений"
+            ],
+            "No notifications": [
+                "Нет уведомлений"
+            ],
+            "No notifications yet.": [
+                "Пока нет уведомлений."
+            ],
+            "No privacy policy page is configured on this site.": [
+                "На сайте не настроена страница политики конфиденциальности."
+            ],
+            "No properties found": [
+                "Объекты не найдены"
+            ],
+            "No published listings yet": [
+                "Пока нет опубликованных объявлений"
+            ],
+            "No questions yet": [
+                "Пока вопросов нет"
+            ],
+            "No recent activity": [
+                "Нет недавней активности"
+            ],
+            "No saved properties yet": [
+                "Пока нет сохранённых объектов"
+            ],
+            "No section": [
+                "Нет раздела"
+            ],
+            "No thumbnail selected.": [
+                "Миниатюра не выбрана."
+            ],
+            "No unread notifications": [
+                "Нет непрочитанных уведомлений"
+            ],
+            "No updates yet": [
+                "Обновлений пока нет"
+            ],
+            "No views in the last 7 days yet.": [
+                "За последние 7 дней просмотров пока нет."
+            ],
+            "No views yet": [
+                "Просмотров пока нет"
+            ],
+            "Not available": [
+                "Недоступно"
+            ],
+            "Note (optional)": [
+                "Примечание (необязательно)"
+            ],
+            "Nothing here yet": [
+                "Пока ничего нет"
+            ],
+            "Notification": [
+                "Уведомление"
+            ],
+            "Notifications": [
+                "Уведомления"
+            ],
+            "Notifications, %d unread": [
+                "Уведомления, непрочитанных: %d"
+            ],
+            "Once listings are published they will appear here.": [
+                "После публикации объявления появятся здесь."
+            ],
+            "Only JPEG, PNG, and WebP images are allowed.": [
+                "Разрешены только изображения JPEG, PNG и WebP."
+            ],
+            "Open tab": [
+                "Открыть вкладку"
+            ],
+            "Options": [
+                "Параметры"
+            ],
+            "Order": [
+                "Порядок"
+            ],
+            "PDF": [
+                "PDF"
+            ],
+            "PHP date format, e.g. F j, Y": [
+                "Формат даты PHP, напр. F j, Y"
+            ],
+            "Pagination": [
+                "Пагинация"
+            ],
+            "Password confirmation does not match.": [
+                "Подтверждение пароля не совпадает."
+            ],
+            "Password strength": [
+                "Надёжность пароля"
+            ],
+            "Passwords do not match.": [
+                "Пароли не совпадают."
+            ],
+            "Passwords match.": [
+                "Пароли совпадают."
+            ],
+            "Pending": [
+                "В ожидании"
+            ],
+            "Pending Listings": [
+                "Объявления на проверке"
+            ],
+            "Performance across your listings · %s.": [
+                "Эффективность ваших объявлений · %s."
+            ],
+            "Performance across your listings.": [
+                "Эффективность ваших объявлений."
+            ],
+            "Permanently delete this property? This cannot be undone.": [
+                "Удалить этот объект навсегда? Это нельзя отменить."
+            ],
+            "Permanently deleted.": [
+                "Удалено навсегда."
+            ],
+            "Personal Information": [
+                "Персональная информация"
+            ],
+            "Phone": [
+                "Телефон"
+            ],
+            "Pinpoint the location with coordinates and preview it on the map.": [
+                "Определите местоположение с помощью координат и просмотрите его на карте."
+            ],
+            "Please complete the highlighted fields.": [
+                "Заполните выделенные поля."
+            ],
+            "Please enter at least 10 characters.": [
+                "Пожалуйста, введите не менее 10 символов."
+            ],
+            "Please fix the highlighted fields.": [
+                "Пожалуйста, исправьте выделенные поля."
+            ],
+            "Please try again later.": [
+                "Попробуйте позже."
+            ],
+            "Please try again.": [
+                "Пожалуйста, попробуйте снова."
+            ],
+            "Position": [
+                "Позиция"
+            ],
+            "Preferences are saved on your Agent profile. Site-wide Contact Agent notify toggles remain admin-controlled.": [
+                "Предпочтения сохраняются в профиле агента. Сайтовые переключатели уведомлений Contact Agent остаются под контролем администратора."
+            ],
+            "Preview": [
+                "Просмотр"
+            ],
+            "Preview %s": [
+                "Предпросмотр %s"
+            ],
+            "Preview URL unavailable.": [
+                "URL-адрес предварительного просмотра недоступен."
+            ],
+            "Preview listing": [
+                "Предварительный просмотр листинга"
+            ],
+            "Preview opened.": [
+                "Предпросмотр открыт."
+            ],
+            "Preview unavailable": [
+                "Предварительный просмотр недоступен"
+            ],
+            "Preview width": [
+                "Ширина предварительного просмотра"
+            ],
+            "Previous page": [
+                "Предыдущая страница"
+            ],
+            "Price": [
+                "Цена"
+            ],
+            "Primary": [
+                "Основной"
+            ],
+            "Privacy": [
+                "Конфиденциальность"
+            ],
+            "Privacy notice": [
+                "Уведомление о конфиденциальности"
+            ],
+            "Professional Information": [
+                "Профессиональная информация"
+            ],
+            "Profile": [
+                "Профиль"
+            ],
+            "Profile Photo": [
+                "Фото профиля"
+            ],
+            "Profile menu": [
+                "Меню профиля"
+            ],
+            "Profile saved.": [
+                "Профиль сохранен."
+            ],
+            "Properties": [
+                "Объекты"
+            ],
+            "Property": [
+                "Объект"
+            ],
+            "Property #%d": [
+                "Объект #%d"
+            ],
+            "Property Builder not configured": [
+                "Конструктор объектов не настроен"
+            ],
+            "Property Builder sections": [
+                "Разделы конструктора объектов"
+            ],
+            "Property Views": [
+                "Просмотры недвижимости"
+            ],
+            "Property creates, updates, and workflow events will appear here.": [
+                "Здесь появятся создание объектов, обновления и события процесса."
+            ],
+            "Property description": [
+                "Описание объекта"
+            ],
+            "Property excerpt": [
+                "Краткое описание объекта"
+            ],
+            "Property listing preview": [
+                "Предварительный просмотр списка недвижимости"
+            ],
+            "Property preview": [
+                "Предварительный просмотр недвижимости"
+            ],
+            "Property title": [
+                "Название объекта"
+            ],
+            "Property type": [
+                "Тип недвижимости"
+            ],
+            "Property type is required.": [
+                "Тип объекта обязателен."
+            ],
+            "Property workflow emails": [
+                "Письма о процессе объекта"
+            ],
+            "Public Email": [
+                "Публичная электронная почта"
+            ],
+            "Public profile fields (photo, bio, contact) are edited on": [
+                "Поля публичного профиля (фото, био, контакты) редактируются на"
+            ],
+            "Publish": [
+                "Опубликовать"
+            ],
+            "Publish agents in wp-admin to assign them here.": [
+                "Опубликуйте агентов в wp-admin, чтобы назначить их здесь."
+            ],
+            "Publish listing?": [
+                "Опубликовать объявление?"
+            ],
+            "Publish this property now?": [
+                "Опубликовать этот объект сейчас?"
+            ],
+            "Published": [
+                "Опубликовано"
+            ],
+            "Published listings on this site. Guest mode is read-only.": [
+                "Опубликованные объявления на этом сайте. Гостевой режим — только чтение."
+            ],
+            "Published.": [
+                "Опубликовано."
+            ],
+            "Question": [
+                "Вопрос"
+            ],
+            "Question %d": [
+                "Вопрос %d: "
+            ],
+            "Quick Actions": [
+                "Быстрые действия"
+            ],
+            "Read": [
+                "Прочитано"
+            ],
+            "Read only": [
+                "Только для чтения"
+            ],
+            "Read-only visitor": [
+                "Посетитель (только чтение)"
+            ],
+            "Reason (optional)": [
+                "Причина (необязательно)"
+            ],
+            "Recent Activity": [
+                "Недавняя активность"
+            ],
+            "Recent Properties": [
+                "Недавние объекты"
+            ],
+            "Recently Updated Listings": [
+                "Недавно обновленные списки"
+            ],
+            "Recently modified properties will appear here.": [
+                "Здесь появятся недавно измененные свойства."
+            ],
+            "Recently saved": [
+                "Недавно сохранённые"
+            ],
+            "Refresh": [
+                "Обновить"
+            ],
+            "Refresh the page or contact an administrator.": [
+                "Обновите страницу или обратитесь к администратору."
+            ],
+            "Registration Status": [
+                "Статус регистрации"
+            ],
+            "Reject": [
+                "Отклонить"
+            ],
+            "Reject listing?": [
+                "Отклонить объявление?"
+            ],
+            "Rejected": [
+                "Отклонено"
+            ],
+            "Rejection note": [
+                "Примечание об отклонении"
+            ],
+            "Rejection reason": [
+                "Причина отклонения"
+            ],
+            "Remove": [
+                "Удалить"
+            ],
+            "Remove feature %d": [
+                "Удалить объект %d"
+            ],
+            "Remove featured image": [
+                "Удалить обложку"
+            ],
+            "Remove image": [
+                "Удалить изображение"
+            ],
+            "Remove item": [
+                "Удалить элемент"
+            ],
+            "Remove photo": [
+                "Удалить фото"
+            ],
+            "Removed from Favorites": [
+                "Удалено из избранного"
+            ],
+            "Replace": [
+                "Заменить"
+            ],
+            "Replace failed.": [
+                "Не удалось заменить."
+            ],
+            "Replace featured": [
+                "Заменить обложку"
+            ],
+            "Replace image": [
+                "Заменить изображение"
+            ],
+            "Replace photo": [
+                "Заменить фото"
+            ],
+            "Replied": [
+                "Отвечено"
+            ],
+            "Reply": [
+                "Ответить"
+            ],
+            "Reply sent.": [
+                "Ответ отправлен."
+            ],
+            "Request Name": [
+                "Название запроса"
+            ],
+            "Request New %s": [
+                "Запросить новый %s"
+            ],
+            "Request name is required.": [
+                "Укажите название запроса."
+            ],
+            "Request not submitted": [
+                "Запрос не отправлен"
+            ],
+            "Request submitted": [
+                "Запрос отправлен"
+            ],
+            "Restore": [
+                "Восстановить"
+            ],
+            "Restored.": [
+                "Восстановлено."
+            ],
+            "Return to Draft": [
+                "Вернуть в черновик"
+            ],
+            "Review Fields": [
+                "Проверить поля"
+            ],
+            "Role": [
+                "Роль"
+            ],
+            "Save": [
+                "Сохранить"
+            ],
+            "Save before submitting or publishing so reviewers see the latest content.": [
+                "Сохраните перед отправкой или публикацией, чтобы проверяющие видели актуальный контент."
+            ],
+            "Save draft before preview": [
+                "Сохранить черновик перед предварительным просмотром"
+            ],
+            "Save draft to manage media": [
+                "Сохраните черновик, чтобы управлять медиа"
+            ],
+            "Save failed": [
+                "Ошибка сохранения"
+            ],
+            "Save first": [
+                "Сначала сохраните"
+            ],
+            "Save profile": [
+                "Сохранить профиль"
+            ],
+            "Save settings": [
+                "Сохранить настройки"
+            ],
+            "Save the draft before previewing.": [
+                "Сохраните черновик перед предварительным просмотром."
+            ],
+            "Save the draft before submitting or publishing.": [
+                "Сохраните черновик перед отправкой или публикацией."
+            ],
+            "Saved": [
+                "Сохранено"
+            ],
+            "Saved Properties": [
+                "Сохранённые объекты"
+            ],
+            "Saved on %s": [
+                "Сохранено %s"
+            ],
+            "Saved properties": [
+                "Сохранённые объекты"
+            ],
+            "Saving…": [
+                "Сохранение…"
+            ],
+            "Search": [
+                "Поиск"
+            ],
+            "Search %s": [
+                "Искать %s"
+            ],
+            "Search %s…": [
+                "Поиск: %s…"
+            ],
+            "Search Havenlytics": [
+                "Поиск Havenlytics"
+            ],
+            "Search Havenlytics (unavailable)": [
+                "Поиск Havenlytics (недоступен)"
+            ],
+            "Search by title…": [
+                "Поиск по названию…"
+            ],
+            "Search icons…": [
+                "Поиск значков…"
+            ],
+            "Search name, email, or message": [
+                "Поиск по имени, email или сообщению"
+            ],
+            "Search options": [
+                "Поиск вариантов"
+            ],
+            "Search properties": [
+                "Поиск объектов"
+            ],
+            "Search unavailable": [
+                "Поиск недоступен"
+            ],
+            "Searching existing terms…": [
+                "Поиск существующих терминов…"
+            ],
+            "Search…": [
+                "Поиск…"
+            ],
+            "Section": [
+                "Секция"
+            ],
+            "Section has validation errors": [
+                "В разделе есть ошибки проверки"
+            ],
+            "Sections": [
+                "Разделы"
+            ],
+            "Select %s": [
+                "Выбрать %s"
+            ],
+            "Select all on page": [
+                "Выбрать все на странице"
+            ],
+            "Select image": [
+                "Выберите изображение"
+            ],
+            "Select or Upload Image": [
+                "Выбрать или загрузить изображение"
+            ],
+            "Select the heart on any listing to save it here for later.": [
+                "Нажмите сердечко на объявлении, чтобы сохранить его здесь."
+            ],
+            "Select the heart on any listing to save it. Guest saves stay in this browser until you sign in.": [
+                "Нажмите сердечко на объявлении, чтобы сохранить его. Гостевые сохранения остаются в браузере до входа."
+            ],
+            "Select video thumbnail": [
+                "Выбрать миниатюру видео"
+            ],
+            "Select…": [
+                "Выберите…"
+            ],
+            "Send reply": [
+                "Отправить ответ"
+            ],
+            "Sending…": [
+                "отправка…"
+            ],
+            "Set featured": [
+                "Сделать обложкой"
+            ],
+            "Set featured image": [
+                "Установить обложку"
+            ],
+            "Set profile photo": [
+                "Установить фото профиля"
+            ],
+            "Settings": [
+                "Настройки"
+            ],
+            "Settings saved.": [
+                "Настройки сохранены."
+            ],
+            "Short summary (WordPress excerpt).": [
+                "Краткое описание (отрывок WordPress)."
+            ],
+            "Show password": [
+                "Показать пароль"
+            ],
+            "Signing out…": [
+                "Выход…"
+            ],
+            "Site policy (read-only): registration": [
+                "Политика сайта (только чтение): регистрация"
+            ],
+            "Skip to main content": [
+                "Перейти к основному содержимому"
+            ],
+            "Social Links": [
+                "Социальные ссылки"
+            ],
+            "Something went wrong. Please try again.": [
+                "Что-то пошло не так. Попробуйте ещё раз."
+            ],
+            "Sort by": [
+                "Сортировать по"
+            ],
+            "Status": [
+                "Статус"
+            ],
+            "Status history": [
+                "История статусов"
+            ],
+            "Status timeline": [
+                "История статуса"
+            ],
+            "Status update failed": [
+                "Не удалось обновить статус"
+            ],
+            "Status updated.": [
+                "Статус обновлён."
+            ],
+            "Stored as the Agent address field (same as wp-admin).": [
+                "Хранится как поле адреса агента (так же, как wp-admin)."
+            ],
+            "Street, city, state, country, postal code": [
+                "Улица, город, штат, страна, почтовый индекс"
+            ],
+            "Strength:": [
+                "Надёжность:"
+            ],
+            "Strong": [
+                "Надёжный"
+            ],
+            "Submit": [
+                "Отправить"
+            ],
+            "Submit Request": [
+                "Отправить запрос"
+            ],
+            "Submit for Review": [
+                "Отправить на проверку"
+            ],
+            "Submit for review?": [
+                "Отправить на проверку?"
+            ],
+            "Submit this property for review?": [
+                "Отправить этот объект на проверку?"
+            ],
+            "Submitted.": [
+                "Отправлено."
+            ],
+            "Submitting…": [
+                "Отправка…"
+            ],
+            "Success": [
+                "Успешно"
+            ],
+            "Suggest a strong password": [
+                "Предложить надёжный пароль"
+            ],
+            "Tablet": [
+                "Таблетки"
+            ],
+            "Tabs": [
+                "Вкладки"
+            ],
+            "Tags": [
+                "Метки"
+            ],
+            "This Month": [
+                "В этом месяце"
+            ],
+            "This Property Builder tab was not found in the current configuration.": [
+                "Эта вкладка конструктора объектов не найдена в текущей конфигурации."
+            ],
+            "This field": [
+                "Это поле"
+            ],
+            "This field needs attention.": [
+                "Это поле требует внимания."
+            ],
+            "This gallery group has no images storage key in the Builder schema.": [
+                "Эта группа галерей не имеет ключа хранения изображений в схеме Builder."
+            ],
+            "This is a read-only preview. Creating, editing and deleting are disabled, and your session ends automatically.": [
+                "Это предварительный просмотр только для чтения. Создание, редактирование и удаление отключены, и ваш сеанс завершается автоматически."
+            ],
+            "This listing will be marked Rejected and returned for edits.": [
+                "Объявление будет отмечено как отклонённое и возвращено на правки."
+            ],
+            "This listing will go live on the public site.": [
+                "Объявление станет доступно на публичном сайте."
+            ],
+            "This listing will move to Pending Review for admin approval.": [
+                "Объявление перейдёт в статус «На проверке» для одобрения администратором."
+            ],
+            "This listing will return to Draft and leave the public site.": [
+                "Объявление вернётся в черновик и исчезнет с публичного сайта."
+            ],
+            "This listing will return to Draft.": [
+                "Объявление вернётся в черновик."
+            ],
+            "TikTok": [
+                "TikTok"
+            ],
+            "Timezone": [
+                "Часовой пояс"
+            ],
+            "Title": [
+                "Заголовок"
+            ],
+            "Title is required.": [
+                "Название обязательно."
+            ],
+            "To": [
+                "До"
+            ],
+            "Today": [
+                "Сегодня"
+            ],
+            "Top Viewed Listings": [
+                "Самые просматриваемые объявления"
+            ],
+            "Total": [
+                "Итого"
+            ],
+            "Total Listings": [
+                "Всего объявлений"
+            ],
+            "Trash": [
+                "Корзина"
+            ],
+            "Try different filters or search.": [
+                "Попробуйте другие фильтры или поиск."
+            ],
+            "Type": [
+                "Тип"
+            ],
+            "URL type": [
+                "Тип URL-адреса"
+            ],
+            "Unable to load": [
+                "Не удалось загрузить"
+            ],
+            "Unable to load analytics": [
+                "Невозможно загрузить аналитику"
+            ],
+            "Unable to load analytics (%d).": [
+                "Невозможно загрузить аналитику (%d)."
+            ],
+            "Unable to load analytics.": [
+                "Не удалось загрузить аналитику."
+            ],
+            "Unable to load dashboard": [
+                "Не удалось загрузить панель"
+            ],
+            "Unable to load inquiries": [
+                "Не удалось загрузить запросы"
+            ],
+            "Unable to load media.": [
+                "Не удалось загрузить медиа."
+            ],
+            "Unable to load profile": [
+                "Невозможно загрузить профиль"
+            ],
+            "Unable to load properties": [
+                "Не удалось загрузить объекты"
+            ],
+            "Unable to load property form": [
+                "Не удалось загрузить форму объекта"
+            ],
+            "Unable to load settings": [
+                "Не удалось загрузить настройки"
+            ],
+            "Unable to open inquiry": [
+                "Невозможно открыть запрос"
+            ],
+            "Unable to process the request.": [
+                "Не удалось обработать запрос."
+            ],
+            "Unable to remove this property.": [
+                "Не удалось удалить этот объект."
+            ],
+            "Unable to restore this property.": [
+                "Не удалось восстановить этот объект."
+            ],
+            "Unable to submit this request.": [
+                "Не удалось отправить запрос."
+            ],
+            "Unarchive": [
+                "Разархивировать"
+            ],
+            "Unarchive this inquiry to reply.": [
+                "Разархивируйте этот запрос, чтобы ответить."
+            ],
+            "Undo": [
+                "Отменить"
+            ],
+            "Unknown": [
+                "Неизвестно"
+            ],
+            "Unlinked": [
+                "Не связано"
+            ],
+            "Unpublish": [
+                "Снять с публикации"
+            ],
+            "Unpublish listing?": [
+                "Снять с публикации?"
+            ],
+            "Unread": [
+                "Непрочитанные"
+            ],
+            "Unread Inquiries": [
+                "Непрочитанные запросы"
+            ],
+            "Unsaved changes": [
+                "Несохранённые изменения"
+            ],
+            "Update gallery": [
+                "Обновить галерею"
+            ],
+            "Updated": [
+                "Обновлено"
+            ],
+            "Updated %s": [
+                "Обновлено %s"
+            ],
+            "Updates from properties, inquiries, and your account appear here.": [
+                "Здесь появляются обновления по объектам, запросам и аккаунту."
+            ],
+            "Updates from properties, inquiries, and your account.": [
+                "Обновления по объектам, запросам и аккаунту."
+            ],
+            "Upload a JPEG, PNG, or WebP image (max 5MB).": [
+                "Загрузите изображение JPEG, PNG или WebP (макс. 5 МБ)."
+            ],
+            "Upload failed.": [
+                "Ошибка загрузки."
+            ],
+            "Upload favicon…": [
+                "Загрузить фавикон…"
+            ],
+            "Upload featured": [
+                "Загрузить обложку"
+            ],
+            "Upload images": [
+                "Загрузить изображения"
+            ],
+            "Upload images, then drag to reorder. Set any image as featured.": [
+                "Загрузите изображения, затем перетащите для изменения порядка. Любое можно сделать обложкой."
+            ],
+            "Upload login logo…": [
+                "Загрузить логотип входа…"
+            ],
+            "Upload logo…": [
+                "Загрузить логотип…"
+            ],
+            "Upload photo": [
+                "Загрузить фото"
+            ],
+            "Upload photos that showcase the property. The first image leads the listing.": [
+                "Загрузите фотографии, демонстрирующие объект. Первое изображение возглавляет список."
+            ],
+            "Upload property images": [
+                "Загрузить изображения недвижимости"
+            ],
+            "Uploading %d%%": [
+                "Загрузка %d%%"
+            ],
+            "Use Submit \/ Publish actions to change listing status.": [
+                "Используйте действия «Отправить» \/ «Опубликовать», чтобы изменить статус объявления."
+            ],
+            "Use a stronger password with a mix of uppercase, lowercase, numbers, and symbols.": [
+                "Используйте более надёжный пароль: заглавные и строчные буквы, цифры и символы."
+            ],
+            "Use a stronger password with uppercase, lowercase, numbers, and symbols.": [
+                "Используйте более надежный пароль, содержащий прописные и строчные буквы, цифры и символы."
+            ],
+            "Use at least 8 characters and avoid obvious words from your username or email.": [
+                "Используйте не менее 8 символов и избегайте очевидных слов из имени пользователя или email."
+            ],
+            "Use at least 8 characters and avoid obvious words from your username.": [
+                "Используйте не менее 8 символов и избегайте очевидных слов из имени пользователя."
+            ],
+            "Use photo": [
+                "Использовать фото"
+            ],
+            "Use the password for your Workspace account.": [
+                "Используйте пароль вашей учётной записи Workspace."
+            ],
+            "Use this image": [
+                "Использовать изображение"
+            ],
+            "Username": [
+                "Имя пользователя"
+            ],
+            "Usernames cannot be changed.": [
+                "Имена пользователей не могут быть изменены."
+            ],
+            "Uses the WordPress Media Library (Agent featured image).": [
+                "Использует медиабиблиотеку WordPress (обложка агента)."
+            ],
+            "Validate": [
+                "Проверка"
+            ],
+            "Validation failed": [
+                "Ошибка проверки"
+            ],
+            "Value": [
+                "Значение"
+            ],
+            "Very strong": [
+                "Очень надёжный"
+            ],
+            "Very weak": [
+                "Очень слабый"
+            ],
+            "Video": [
+                "Видео"
+            ],
+            "Video Thumbnail": [
+                "Миниатюра видео"
+            ],
+            "Video Title": [
+                "Название видео"
+            ],
+            "Video URL": [
+                "URL видео"
+            ],
+            "Video thumbnail": [
+                "Миниатюра видео"
+            ],
+            "View": [
+                "Просмотр"
+            ],
+            "View all notifications": [
+                "Все уведомления"
+            ],
+            "View all →": [
+                "Смотреть все →"
+            ],
+            "View inquiries": [
+                "Смотреть запросы"
+            ],
+            "View related": [
+                "Смотреть связанное"
+            ],
+            "View unavailable.": [
+                "Просмотр недоступен."
+            ],
+            "Views": [
+                "Просмотры"
+            ],
+            "Views (Last 30 Days)": [
+                "Просмотры (последние 30 дней)"
+            ],
+            "Views (Last 7 Days)": [
+                "Просмотры (последние 7 дней)"
+            ],
+            "Views appear after visitors open your published listings.": [
+                "Просмотры появляются после того, как посетители открывают ваши опубликованные объявления."
+            ],
+            "Views will appear once your listings receive traffic.": [
+                "Просмотры появятся, когда объявления начнут получать трафик."
+            ],
+            "Vimeo": [
+                "Vimeo"
+            ],
+            "Virtual Tour": [
+                "Виртуальный тур"
+            ],
+            "Weak": [
+                "Слабый"
+            ],
+            "Website": [
+                "Веб-сайт"
+            ],
+            "WhatsApp": [
+                "WhatsApp"
+            ],
+            "When something happens with your listings, inquiries, or account, it will show up here.": [
+                "Когда что-то происходит с объявлениями, запросами или аккаунтом, это появится здесь."
+            ],
+            "When visitors contact you about a property, their messages appear here.": [
+                "Когда посетители связываются с вами об объекте, их сообщения появляются здесь."
+            ],
+            "White Label": [
+                "White Label"
+            ],
+            "Withdraw": [
+                "Отозвать"
+            ],
+            "Withdraw submission?": [
+                "Отозвать отправку?"
+            ],
+            "WordPress user locale (site-default if empty).": [
+                "Локаль пользователя WordPress (по умолчанию сайта, если пусто)."
+            ],
+            "Workflow actions": [
+                "Действия процесса"
+            ],
+            "Workflow status": [
+                "Статус рабочего процесса"
+            ],
+            "Working…": [
+                "Выполняется…"
+            ],
+            "Workspace": [
+                "Рабочая область"
+            ],
+            "Workspace Branding": [
+                "Брендинг Workspace"
+            ],
+            "Workspace navigation": [
+                "Навигация Workspace"
+            ],
+            "Workspace tips and system notices will appear here when available.": [
+                "Здесь появятся советы Workspace и системные уведомления."
+            ],
+            "X": [
+                "X"
+            ],
+            "Yesterday": [
+                "Вчера"
+            ],
+            "You are exploring in guest mode": [
+                "Вы изучаете информацию в гостевом режиме"
+            ],
+            "You can view your profile but cannot edit it.": [
+                "Вы можете просматривать свой профиль, но не можете его редактировать."
+            ],
+            "You have %1$d %2$s, %3$d pending, and %4$d %5$s.": [
+                "У вас %1$d %2$s, %3$d на проверке и %4$d %5$s."
+            ],
+            "You have unsaved changes. Discard them and leave this form?": [
+                "Есть несохранённые изменения. Отменить их и покинуть форму?"
+            ],
+            "YouTube": [
+                "YouTube"
+            ],
+            "YouTube URL recognized.": [
+                "URL-адрес YouTube распознан."
+            ],
+            "YouTube preview": [
+                "предварительный просмотр на YouTube"
+            ],
+            "YouTube thumbnail": [
+                "Миниатюра YouTube"
+            ],
+            "Your newest properties will show up here.": [
+                "Здесь появятся ваши новые объекты недвижимости."
+            ],
+            "Your profile": [
+                "Ваш профиль"
+            ],
+            "Your recently updated listings will appear here.": [
+                "Здесь появятся недавно обновлённые объявления."
+            ],
+            "active listing": [
+                "активный листинг"
+            ],
+            "active listings": [
+                "активные объявления"
+            ],
+            "draft": [
+                "черновик"
+            ],
+            "drafts": [
+                "проекты "
+            ],
+            "e.g. Acme Realty Workspace": [
+                "напр. Acme Realty Workspace"
+            ],
+            "e.g. America\/New_York (leave blank for site default)": [
+                "напр. America\/New_York (оставьте пустым для значения сайта)"
+            ],
+            "e.g. Private garden, Sea view": [
+                "например Частный сад, Вид на море"
+            ],
+            "featured image": [
+                "обложка"
+            ],
+            "gallery image": [
+                "изображение галереи"
+            ],
+            "listings created": [
+                "создано объявлений"
+            ],
+            "options": [
+                "варианты"
+            ],
+            "or": [
+                "или"
+            ],
+            "saved": [
+                "сохранённые"
+            ],
+            "there": [
+                "там"
+            ],
+            "unread": [
+                "непрочитанные"
+            ],
+            "views": [
+                "просмотров"
+            ],
+            "· agents may publish directly": [
+                "· агенты могут публиковать напрямую"
+            ],
+            "· listings require review": [
+                "· объявления требуют проверки"
+            ]
+        }
+    }
+}

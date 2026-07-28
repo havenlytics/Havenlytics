@@ -64,7 +64,7 @@ $hvnly_toast_data = function_exists('hvnly_get_favorite_toast_data')
         <?php if ($hvnly_print_enabled) : ?>
         <button type="button" class="hvnly-property-single__action-btn hvnly-property-single__print-btn"
             onclick="window.print();" aria-label="<?php esc_attr_e('Print this property', 'havenlytics'); ?>">
-            <i class="fas fa-print" aria-hidden="true"></i>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-print"></use></svg>
             <span class="hvnly-action-text"><?php esc_html_e('Print', 'havenlytics'); ?></span>
         </button>
         <?php endif; ?>

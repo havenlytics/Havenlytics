@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Search Filters Template
  * 
@@ -93,7 +93,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
             <a href="<?php echo esc_url( $hvnly_tab_url ); ?>"
                 class="hvnly-property-search-tab <?php echo $hvnly_is_active ? 'active' : ''; ?>"
                 data-value="<?php echo esc_attr( $hvnly_department->slug ); ?>">
-                <?php echo esc_html( $hvnly_department->name ); ?>
+                <?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_department->name ) ) : esc_html( $hvnly_department->name ); ?>
             </a>
             <?php endforeach; ?>
             <?php else : ?>
@@ -134,7 +134,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                         case 'keyword_search': ?>
                 <div class="hvnly-property-form-item hvnly-ajax-search">
                     <input type="text" class="hvnly-property-form-input-multiselect" name="address_keyword"
-                        placeholder="<?php echo esc_attr( $hvnly_placeholder ); ?>"
+                        placeholder="<?php echo function_exists( 'hvnly_translate_ui' ) ? esc_attr( hvnly_translate_ui( $hvnly_placeholder ) ) : esc_attr( $hvnly_placeholder ); ?>"
                         value="<?php echo esc_attr( $current_search ); ?>">
                 </div>
                 <?php break;
@@ -143,7 +143,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                 <?php if ( ! empty( $prop_types ) && ! is_wp_error( $prop_types ) ) : ?>
                 <div class="hvnly-property-form-item hvnly-property-tax-multichebox">
                     <input type="text" class="hvnly-property-form-input-multiselect hvnly-tax-search"
-                        placeholder="<?php echo esc_attr( $hvnly_placeholder ); ?>" data-taxonomy="hvnly_prop_types">
+                        placeholder="<?php echo function_exists( 'hvnly_translate_ui' ) ? esc_attr( hvnly_translate_ui( $hvnly_placeholder ) ) : esc_attr( $hvnly_placeholder ); ?>" data-taxonomy="hvnly_prop_types">
                     <div class="hvnly-property-taxonomyDropdown-items">
                         <div class="hvnly-property-selected-items-container-tags"></div>
                         <ul>
@@ -164,7 +164,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                                                 ?>>
                                     <span class="hvnly-property-custom-mlt-checkbox"></span>
                                     <span
-                                        class="hvnly-property-checkbox-mlt-label"><?php echo esc_html( $hvnly_prop_type->name ); ?></span>
+                                        class="hvnly-property-checkbox-mlt-label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_prop_type->name ) ) : esc_html( $hvnly_prop_type->name ); ?></span>
                                 </label>
                             </li>
                             <?php endforeach; ?>
@@ -184,7 +184,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                 <?php if ( ! empty( $locations ) && ! is_wp_error( $locations ) ) : ?>
                 <div class="hvnly-property-form-item hvnly-property-tax-multichebox">
                     <input type="text" class="hvnly-property-form-input-multiselect hvnly-tax-search"
-                        placeholder="<?php echo esc_attr( $hvnly_placeholder ); ?>"
+                        placeholder="<?php echo function_exists( 'hvnly_translate_ui' ) ? esc_attr( hvnly_translate_ui( $hvnly_placeholder ) ) : esc_attr( $hvnly_placeholder ); ?>"
                         data-taxonomy="hvnly_prop_locations">
                     <div class="hvnly-property-taxonomyDropdown-items">
                         <div class="hvnly-property-selected-items-container-tags"></div>
@@ -206,7 +206,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                                                 ?>>
                                     <span class="hvnly-property-custom-mlt-checkbox"></span>
                                     <span
-                                        class="hvnly-property-checkbox-mlt-label"><?php echo esc_html( $hvnly_location->name ); ?></span>
+                                        class="hvnly-property-checkbox-mlt-label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_location->name ) ) : esc_html( $hvnly_location->name ); ?></span>
                                 </label>
                             </li>
                             <?php endforeach; ?>
@@ -256,7 +256,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                         case 'bedrooms': ?>
                 <div class="hvnly-property-additional-field-item">
                     <label for="hvnly-property-search-bedrooms"
-                        class="hvnly-property-search-label"><?php echo esc_html( $hvnly_field_title ); ?></label>
+                        class="hvnly-property-search-label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></label>
                     <select id="hvnly-property-search-bedrooms" name="bedrooms">
                         <option value=""><?php echo esc_html( $hvnly_empty_label ); ?></option>
                         <?php 
@@ -274,7 +274,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                         case 'bathrooms': ?>
                 <div class="hvnly-property-additional-field-item">
                     <label for="hvnly-property-search-bathrooms"
-                        class="hvnly-property-search-label"><?php echo esc_html( $hvnly_field_title ); ?></label>
+                        class="hvnly-property-search-label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></label>
                     <select id="hvnly-property-search-bathrooms" name="bathrooms">
                         <option value=""><?php echo esc_html( $hvnly_empty_label ); ?></option>
                         <?php 
@@ -292,7 +292,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                         case 'min_price': ?>
                 <div class="hvnly-property-additional-field-item">
                     <label for="hvnly-property-search-min-price"
-                        class="hvnly-property-search-label"><?php echo esc_html( $hvnly_field_title ); ?></label>
+                        class="hvnly-property-search-label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></label>
                     <select id="hvnly-property-search-min-price" name="min_price">
                         <option value=""><?php echo esc_html( $hvnly_empty_label ); ?></option>
                         <?php 
@@ -300,7 +300,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                                     foreach ( $hvnly_min_price_options as $hvnly_value => $hvnly_label ) : ?>
                         <option value="<?php echo esc_attr( $hvnly_value ); ?>"
                             <?php selected( isset( $current_filters['min_price'] ) && $current_filters['min_price'] == $hvnly_value ); ?>>
-                            <?php echo esc_html( $hvnly_label ); ?>
+                            <?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>
                         </option>
                         <?php endforeach; ?>
                     </select>
@@ -310,7 +310,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                         case 'max_price': ?>
                 <div class="hvnly-property-additional-field-item">
                     <label for="hvnly-property-search-max-price"
-                        class="hvnly-property-search-label"><?php echo esc_html( $hvnly_field_title ); ?></label>
+                        class="hvnly-property-search-label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></label>
                     <select id="hvnly-property-search-max-price" name="max_price">
                         <option value=""><?php echo esc_html( $hvnly_empty_label ); ?></option>
                         <?php 
@@ -318,7 +318,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
                                     foreach ( $hvnly_max_price_options as $hvnly_value => $hvnly_label ) : ?>
                         <option value="<?php echo esc_attr( $hvnly_value ); ?>"
                             <?php selected( isset( $current_filters['max_price'] ) && $current_filters['max_price'] == $hvnly_value ); ?>>
-                            <?php echo esc_html( $hvnly_label ); ?>
+                            <?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>
                         </option>
                         <?php endforeach; ?>
                     </select>

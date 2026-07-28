@@ -347,23 +347,29 @@ body {
   align-items: center;
   justify-content: center;
   font-family: inherit;
-  /* font-size: var(--hvnly-font-size-label, 1rem);
-  font-weight: var(--hvnly-font-weight-medium);
-  padding: var(--hvnly-button-padding);
-  border-radius: var(--hvnly-button-radius);
-  border: 1px solid var(--hvnly-button-bg);
-  background-color: var(--hvnly-button-bg);
-  color: var(--hvnly-button-color); */
   cursor: pointer;
-  transition: all var(--hvnly-transition-time);
+  /* Avoid `transition: all` — themes amplify it into layout jumps */
+  transition: background-color var(--hvnly-transition-time),
+              border-color var(--hvnly-transition-time),
+              color var(--hvnly-transition-time),
+              box-shadow var(--hvnly-transition-time),
+              opacity var(--hvnly-transition-time);
   position: relative;    
   border: 0;
-  overflow: hidden;
-  outline:0
+  outline: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  text-transform: none;
+  letter-spacing: normal;
+  text-shadow: none;
 }
 
-/* Button Hover */
-/* .hvnly-content-wrapper button:hover, */
+/* Button Hover — do NOT force brand fill on every control.
+   Component CSS (`.hvnly-btn`, submit, etc.) owns hover paint.
+   Forcing background here broke Fancybox / gallery / map icon buttons
+   under themes that also style `button:hover`. */
 .hvnly-content-wrapper [type=button]:focus, 
 .hvnly-content-wrapper [type=button]:hover, 
 .hvnly-content-wrapper [type=submit]:focus, 
@@ -388,8 +394,7 @@ body {
 .hvnly-property-display-shortcode input[type="submit"]:focus,
 .hvnly-property-display-shortcode input[type="reset"]:hover
  {
-  background-color: var(--hvnly-button-bg-hover);
-  /* transform: translateY(-1px); */
+  transform: none;
 }
 
 /* Button Focus.

@@ -1,0 +1,34 @@
+/**
+ * Havenlytics — Single Property v2 skin (Haven Design System 1.0)
+ * ================================================================
+ * Shell stylesheet for handle `hvnly-frontend-single-property-v2`.
+ * Loads ONLY on single property pages, AFTER all legacy styles.
+ *
+ * Architecture (per docs/architecture/SINGLE-PROPERTY-REDESIGN-3.7.0-PLAN.md §3.5):
+ *   _tokens.css      Haven design tokens, scoped to body.hvnly-property-single
+ *   foundations.css  a11y utilities, focus ring, reduced-motion, base primitives
+ *   layout.css       header, grid, sticky sidebar          (Phase 2+)
+ *   hero-gallery.css gallery grid, carousel, lightbox      (Phase 3)
+ *   sections.css     content section recipes                (Phase 4)
+ *   agent.css        agent card, inquiry, mobile dock       (Phase 5)
+ *   similar.css      related-properties carousel            (Phase 6)
+ *   print.css        print foundation                       (print media only)
+ *
+ * Rules (locked):
+ *  - Additive skin: legacy CSS remains enqueued underneath; dequeuing this
+ *    one handle restores the 3.6.0 look.
+ *  - No `:root` declarations anywhere in this directory — all tokens are
+ *    scoped to body.hvnly-property-single (see _tokens.css).
+ *  - Consumes admin brand settings via the existing --hvnly-* variables.
+ *
+ * @package Havenlytics
+ * @since   3.7.0
+ */
+
+@import url("foundations.css");
+@import url("layout.css");
+@import url("hero-gallery.css");
+@import url("sections.css");
+@import url("agent.css");
+@import url("similar.css");
+@import url("print.css") print;

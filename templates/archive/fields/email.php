@@ -34,7 +34,6 @@ $hvnly_email = get_post_meta($hvnly_property_id, 'preset_hvnly_property_field_em
 
     <?php if ($hvnly_email): ?>
         <div class="hvnly-property-field-email hvnly-property-contact-info-mode-<?php echo esc_attr($hvnly_mode); ?>">
-          
             <div class="hvnly-property-content-feature-icon">
                 <i class="fas fa-envelope"></i>
             </div>

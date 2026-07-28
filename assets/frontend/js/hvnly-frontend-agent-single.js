@@ -45,8 +45,9 @@
 				} else {
 					footnote.hidden = false;
 					footnote.textContent = visible
-						? visible + ' listing(s) match this department.'
-						: 'No listings match this department.';
+						? ((window.hvnly_agent_single && window.hvnly_agent_single.i18n && window.hvnly_agent_single.i18n.listingsMatchDepartment) || '')
+							.replace('%d', String(visible))
+						: ((window.hvnly_agent_single && window.hvnly_agent_single.i18n && window.hvnly_agent_single.i18n.noListingsMatchDepartment) || '');
 				}
 			}
 		}

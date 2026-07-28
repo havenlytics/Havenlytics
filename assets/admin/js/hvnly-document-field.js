@@ -10,7 +10,8 @@
     class HavenlyticsDocumentField {
         constructor() {
             this.iconModal = null;
-            this.strings = {
+            const localized = (window.HvnlyDocumentField && window.HvnlyDocumentField.strings) || {};
+            this.strings = Object.assign({
                 confirmRemove: 'Remove this document?',
                 confirmRemoveAll: 'Remove all documents? This will clear all data.',
                 uploadTitle: 'Select Document',
@@ -20,10 +21,17 @@
                 searchIcons: 'Search icons...',
                 default: 'Default',
                 showInSidebar: 'Show in Sidebar',
-                hideFromSidebar: 'Hide from Sidebar'
-            };
-            
-            this.icons = {
+                hideFromSidebar: 'Hide from Sidebar',
+                preview: 'Preview',
+                yes: 'Yes',
+                no: 'No',
+                mediaUnavailable: 'Media uploader is not available.'
+            }, localized);
+
+            if (window.HvnlyDocumentField && window.HvnlyDocumentField.icons) {
+                this.icons = window.HvnlyDocumentField.icons;
+            } else {
+                this.icons = {
                 // Original icons (preserved)
                 'file-pdf': 'PDF',
                 'file-word': 'Word',
@@ -203,6 +211,7 @@
                 'screwdriver-wrench': 'Maintenance',
                 'toolbox': 'Tools/Workshop'
             };
+            }
             
             this.urlTypes = {
                 'custom': {
@@ -276,6 +285,13 @@
                     showUpload: true
                 }
             };
+
+            const localizedUrlTypes = (window.HvnlyDocumentField && window.HvnlyDocumentField.urlTypes) || {};
+            Object.keys(this.urlTypes).forEach((key) => {
+                if (localizedUrlTypes[key]) {
+                    this.urlTypes[key] = Object.assign({}, this.urlTypes[key], localizedUrlTypes[key]);
+                }
+            });
             
             this.init();
         }
@@ -750,7 +766,7 @@
             const urlType = $select.val();
             
             if (typeof wp === 'undefined' || typeof wp.media === 'undefined') {
-                alert('Media uploader is not available.');
+                alert(this.strings.mediaUnavailable || 'Media uploader is not available.');
                 return;
             }
             

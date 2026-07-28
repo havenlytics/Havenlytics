@@ -97,6 +97,20 @@ class DefaultSettingsData
         if (null !== self::$cached_defaults) {
             return self::$cached_defaults;
         }
+
+        static $building = false;
+        if ( ! $building && function_exists( 'hvnly_with_english_ui' ) ) {
+            $building = true;
+            try {
+                self::$cached_defaults = hvnly_with_english_ui( static function () {
+                    self::$cached_defaults = null;
+                    return self::get_default_settings();
+                } );
+                return self::$cached_defaults;
+            } finally {
+                $building = false;
+            }
+        }
         
         $schema_defaults = SettingsSchema::get_all_defaults();
         

@@ -29,7 +29,7 @@ if ( empty( $hvnly_value ) || ! is_email( $hvnly_value ) ) {
 }
 ?>
 <div class="hvnly-field hvnly-field--preset-email hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_name ) ); ?>">
-    <strong class="hvnly-field__label"><?php echo esc_html( $hvnly_label ); ?>:</strong>
+    <strong class="hvnly-field__label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>:</strong>
     <span class="hvnly-field__value">
         <a href="mailto:<?php echo esc_attr( $hvnly_value ); ?>" class="hvnly-email-link">
             <?php echo esc_html( $hvnly_value ); ?>

@@ -117,6 +117,10 @@
 			  '" loading="lazy">'
 			: '<div class="hvnly-block-map__popup-img hvnly-block-map__popup-img--empty"></div>';
 
+		var i18n = cfg.i18n || {};
+		var t = function ( key, fallback ) {
+			return i18n[ key ] || fallback || key;
+		};
 		var title = p.title ? esc( p.title ) : '';
 
 		var status =
@@ -134,9 +138,11 @@
 			  '" data-property-thumb="' +
 			  esc( p.thumbnail ) +
 			  '"' +
-			  ' aria-pressed="false" aria-label="Save ' +
-			  ( title || 'property' ) +
-			  ' to favorites"><i class="far fa-heart" aria-hidden="true"></i></button>'
+			  ' aria-pressed="false" aria-label="' +
+			  esc( t('save') ) +
+			  ' ' +
+			  ( title || t('untitledProperty') ) +
+			  '"><i class="far fa-heart" aria-hidden="true"></i></button>'
 			: '';
 
 		var price =
@@ -147,9 +153,13 @@
 		var cta = show( cfg, 'showCta' )
 			? '<a class="hvnly-block-map__popup-cta" href="' +
 			  esc( p.link ) +
-			  '" aria-label="View ' +
-			  ( title || 'property' ) +
-			  '"><span>View Property</span><i class="fas fa-arrow-right" aria-hidden="true"></i></a>'
+			  '" aria-label="' +
+			  esc( t('view') ) +
+			  ' ' +
+			  ( title || t('untitledProperty') ) +
+			  '"><span>' +
+			  esc( t('viewProperty') ) +
+			  '</span><i class="fas fa-arrow-right" aria-hidden="true"></i></a>'
 			: '';
 
 		var cardClass =
@@ -160,7 +170,7 @@
 			'<div class="' +
 			cardClass +
 			'" role="group" aria-label="' +
-			( title || 'Property' ) +
+			( title || t('untitledProperty') ) +
 			'" style="--hvnly-block-map-popup-w:' +
 			parseInt( cfg.popupWidth || 300, 10 ) +
 			'px">' +
@@ -274,16 +284,30 @@
 		if ( ! loading ) {
 			return;
 		}
+		var cfg = {};
+		try {
+			cfg = JSON.parse( root.getAttribute( 'data-config' ) || '{}' );
+		} catch ( e ) {
+			cfg = {};
+		}
+		var i18n = cfg.i18n || {};
+		var loadingLabel = i18n.loadingMap || '';
+		var errorLabel = i18n.couldNotLoadProperties || '';
+		var retryLabel = i18n.retry || '';
 		loading.hidden = false;
 		loading.classList.add( 'is-error' );
 		loading.innerHTML =
-			'<span class="hvnly-block-map__error-text">Couldn’t load properties.</span>' +
-			'<button type="button" class="hvnly-block-map__error-retry">Retry</button>';
+			'<span class="hvnly-block-map__error-text">' +
+			errorLabel +
+			'</span>' +
+			'<button type="button" class="hvnly-block-map__error-retry">' +
+			retryLabel +
+			'</button>';
 		var retry = loading.querySelector( '.hvnly-block-map__error-retry' );
 		if ( retry ) {
 			retry.addEventListener( 'click', function () {
 				loading.classList.remove( 'is-error' );
-				loading.innerHTML = 'Loading map…';
+				loading.innerHTML = loadingLabel;
 				retryFn();
 			} );
 		}

@@ -31,47 +31,44 @@ $hvnly_home_url = esc_url(home_url('/'));
 $hvnly_archive_url = esc_url(get_post_type_archive_link('hvnly_property'));
 $hvnly_type_url = $hvnly_primary_type ? esc_url(get_term_link($hvnly_primary_type)) : '';
 $hvnly_location_url = $hvnly_primary_location ? esc_url(get_term_link($hvnly_primary_location)) : '';
-$hvnly_type_name = $hvnly_primary_type ? esc_html($hvnly_primary_type->name) : '';
-$hvnly_location_name = $hvnly_primary_location ? esc_html($hvnly_primary_location->name) : '';
+$hvnly_type_name = $hvnly_primary_type ? ( function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $hvnly_primary_type->name ) : $hvnly_primary_type->name ) : '';
+$hvnly_location_name = $hvnly_primary_location ? ( function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $hvnly_primary_location->name ) : $hvnly_primary_location->name ) : '';
 $hvnly_current_title = esc_html(wp_trim_words(get_the_title(), 4, '...'));
 ?>
-<div class="hvnly-property-breadcrumb">
+<div class="hvnly-property-breadcrumb" role="navigation" aria-label="<?php esc_attr_e('Breadcrumb', 'havenlytics'); ?>">
     <div class="hvnly-property-breadcrumb__container">
         <a href="<?php echo esc_url( $hvnly_home_url ); ?>" class="hvnly-property-breadcrumb__item"
             aria-label="<?php esc_attr_e('Go to homepage', 'havenlytics'); ?>">
-            <i class="fas fa-home" aria-hidden="true"></i>
+            <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-home"></use></svg>
             <span><?php esc_html_e('Home', 'havenlytics'); ?></span>
         </a>
 
-        <i class="fas fa-chevron-right hvnly-property-breadcrumb__separator" aria-hidden="true"></i>
+        <svg class="hvnly-icon hvnly-property-breadcrumb__separator" aria-hidden="true"><use xlink:href="#hvnly-chevron-right"></use></svg>
 
         <a href="<?php echo esc_url( $hvnly_archive_url ); ?>" class="hvnly-property-breadcrumb__item"
             aria-label="<?php esc_attr_e('View all properties', 'havenlytics'); ?>">
-            <i class="fas fa-building" aria-hidden="true"></i>
             <span><?php esc_html_e('Properties', 'havenlytics'); ?></span>
         </a>
 
         <?php if ($hvnly_primary_type) : ?>
-        <i class="fas fa-chevron-right hvnly-property-breadcrumb__separator" aria-hidden="true"></i>
+        <svg class="hvnly-icon hvnly-property-breadcrumb__separator" aria-hidden="true"><use xlink:href="#hvnly-chevron-right"></use></svg>
         <a href="<?php echo esc_url( $hvnly_type_url ); ?>" class="hvnly-property-breadcrumb__item" aria-label="<?php echo esc_attr(sprintf(
                 /* translators: %1$s: property type name */
                 __('View all %s properties', 'havenlytics'), $hvnly_type_name)); ?>">
-            <i class="fas fa-tag" aria-hidden="true"></i>
             <span><?php echo esc_html( $hvnly_type_name ); ?></span>
         </a>
         <?php endif; ?>
 
         <?php if ($hvnly_primary_location) : ?>
-        <i class="fas fa-chevron-right hvnly-property-breadcrumb__separator" aria-hidden="true"></i>
+        <svg class="hvnly-icon hvnly-property-breadcrumb__separator" aria-hidden="true"><use xlink:href="#hvnly-chevron-right"></use></svg>
         <a href="<?php echo esc_url( $hvnly_location_url ); ?>" class="hvnly-property-breadcrumb__item" aria-label="<?php echo esc_attr(sprintf(
                 /* translators: %1$s: property location name */
                 __('View all properties in %s', 'havenlytics'), $hvnly_location_name)); ?>">
-            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
             <span><?php echo esc_html( $hvnly_location_name ); ?></span>
         </a>
         <?php endif; ?>
 
-        <i class="fas fa-chevron-right hvnly-property-breadcrumb__separator" aria-hidden="true"></i>
+        <svg class="hvnly-icon hvnly-property-breadcrumb__separator" aria-hidden="true"><use xlink:href="#hvnly-chevron-right"></use></svg>
 
         <span class="hvnly-property-breadcrumb__current" aria-current="page">
             <?php echo esc_html( $hvnly_current_title ); ?>

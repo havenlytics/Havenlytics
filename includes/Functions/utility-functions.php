@@ -4,6 +4,81 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Translate a Havenlytics default UI string for the current locale.
+ *
+ * Used for stored builder labels/section titles that ship as English msgids.
+ * If a translated string was incorrectly persisted, it is canonicalized back to
+ * the English msgid first so locale switches remain recoverable.
+ * Custom user-authored labels that are not in the catalog pass through unchanged.
+ *
+ * @param string $text English UI label or section title (or a known translation thereof).
+ * @return string
+ */
+function hvnly_translate_ui( $text ) {
+	$text = is_string( $text ) ? $text : '';
+	if ( $text === '' ) {
+		return '';
+	}
+
+	if ( function_exists( 'hvnly_canonicalize_ui_label' ) ) {
+		$text = hvnly_canonicalize_ui_label( $text );
+	}
+
+	// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- Dynamic catalog lookup for default UI labels.
+	return __( $text, 'havenlytics' );
+}
+
+/**
+ * Escape HTML and translate a Havenlytics default UI string.
+ *
+ * WPCS / Plugin Check escaping wrapper: return value is safe for echo.
+ * Registered via phpcs.xml.dist and phpcs-rulesets/havenlytics-plugin-check-escape.xml.
+ *
+ * @param string $text English UI label or section title.
+ * @return string Escaped HTML-safe string.
+ */
+function hvnly_esc_html_ui( $text ) {
+	return esc_html( hvnly_translate_ui( $text ) );
+}
+
+/**
+ * Escape attribute and translate a Havenlytics default UI string.
+ *
+ * WPCS / Plugin Check escaping wrapper: return value is safe for attributes.
+ * Registered via phpcs.xml.dist and phpcs-rulesets/havenlytics-plugin-check-escape.xml.
+ *
+ * @param string $text English UI label or section title.
+ * @return string Escaped attribute-safe string.
+ */
+function hvnly_esc_attr_ui( $text ) {
+	return esc_attr( hvnly_translate_ui( $text ) );
+}
+
+/**
+ * Resolve an archive card feature label from builder config.
+ *
+ * Prefers the saved builder label (translated when it is still a default English
+ * msgid). Falls back to pluralized gettext strings when no custom label exists.
+ *
+ * @param array  $field    Builder field config.
+ * @param string $singular Default singular msgid.
+ * @param string $plural   Default plural msgid.
+ * @param int    $count    Quantity for pluralization.
+ * @return string
+ */
+function hvnly_archive_feature_label( array $field, $singular, $plural, $count ) {
+	$label = isset( $field['label'] ) ? trim( (string) $field['label'] ) : '';
+	if ( '' !== $label ) {
+		return hvnly_translate_ui( $label );
+	}
+
+	$count = max( 1, (int) $count );
+
+	// phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralSingle,WordPress.WP.I18n.NonSingularStringLiteralSingular,WordPress.WP.I18n.NonSingularStringLiteralPlural
+	return _n( $singular, $plural, $count, 'havenlytics' );
+}
+
+/**
  * Whether Havenlytics should write debug messages to the PHP error log.
  *
  * Requires both WP_DEBUG and WP_DEBUG_LOG per WordPress best practice.
@@ -871,7 +946,7 @@ if (!function_exists('hvnly_get_cache_stats')) {
 if (!function_exists('hvnly_clear_cache')) {
     function hvnly_clear_cache()
     {
-        HVNLY_NAB()->clear_all_cache();
+        HVNLY_NAB()->clear_cache();
     }
 }
 /**

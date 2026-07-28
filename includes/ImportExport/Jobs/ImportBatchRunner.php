@@ -9,6 +9,7 @@
 namespace HvnlyNab\ImportExport\Jobs;
 
 use HvnlyNab\ImportExport\Cache\ImportExportCacheCoordinator;
+use HvnlyNab\ImportExport\Capability\MigrationLimits;
 use HvnlyNab\ImportExport\Import\AgenciesImporter;
 use HvnlyNab\ImportExport\Import\AgentsImporter;
 use HvnlyNab\ImportExport\Import\BuilderImportPolicy;
@@ -89,6 +90,24 @@ final class ImportBatchRunner {
 					'code'    => 'hvnly_ie_import_prepare_missing',
 					'message' => 'Import job is missing validated package data.',
 					'context' => array(),
+				)
+			);
+		}
+
+		// Final Free-limit gate before any term/property/media writes.
+		$manifest = JobWorkspace::read_json( $dir, 'manifest.json', null );
+		$allowed  = MigrationLimits::assert_import_allowed(
+			is_array( $manifest ) ? $manifest : null,
+			$entities
+		);
+		if ( is_wp_error( $allowed ) ) {
+			$job['status'] = JobStateStore::STATUS_FAILED;
+			return JobStateStore::push_error(
+				$job,
+				array(
+					'code'    => (string) $allowed->get_error_code(),
+					'message' => (string) $allowed->get_error_message(),
+					'context' => (array) $allowed->get_error_data(),
 				)
 			);
 		}

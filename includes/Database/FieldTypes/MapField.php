@@ -371,7 +371,7 @@ class MapField extends BaseFieldType {
                 sprintf(
                     /* translators: %s: map field label. */
                     __('The map address for "%s" is required.', 'havenlytics'),
-                    esc_html($field['label'] ?? __('Map', 'havenlytics'))
+                    hvnly_esc_html_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Map' ) )
                 )
             );
         }
@@ -397,6 +397,19 @@ class MapField extends BaseFieldType {
                 'hvnlyMapFieldParams',
                 array(
                     'brandColor' => function_exists( 'hvnly_get_brand_color' ) ? hvnly_get_brand_color() : '#6C60FE',
+                    'i18n'       => array(
+                        'noAddressSet'      => __( 'No address set', 'havenlytics' ),
+                        'locationPopup'     => __( 'Location', 'havenlytics' ),
+                        'latLabel'          => __( 'Lat:', 'havenlytics' ),
+                        'lngLabel'          => __( 'Lng:', 'havenlytics' ),
+                        'enterAddressFirst' => __( 'Please enter an address first.', 'havenlytics' ),
+                        'searching'         => __( 'Searching…', 'havenlytics' ),
+                        'locationFound'     => __( 'Location found!', 'havenlytics' ),
+                        'addressNotFound'   => __( 'Address not found.', 'havenlytics' ),
+                        'searchError'       => __( 'Error searching for address.', 'havenlytics' ),
+                        'getCoordinates'    => __( 'Get Coordinates from Address', 'havenlytics' ),
+                        'noAddressesFound'  => __( 'No addresses found', 'havenlytics' ),
+                    ),
                 )
             );
         }

@@ -35,7 +35,7 @@
 				var dot = document.createElement('button');
 				dot.type = 'button';
 				dot.className = 'hvnly-agent-widget__dot' + (i === index ? ' is-active' : '');
-				dot.setAttribute('aria-label', 'Agent ' + (i + 1));
+				dot.setAttribute('aria-label', ((window.hvnly_agent_widget && window.hvnly_agent_widget.i18n && window.hvnly_agent_widget.i18n.agentN) || '').replace('%d', String(i + 1)));
 				dot.dataset.index = String(i);
 				dotsWrap.appendChild(dot);
 			}

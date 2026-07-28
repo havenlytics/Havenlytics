@@ -1,0 +1,50 @@
+/**
+ * Havenlytics 3.7.0 — Single Property page chrome
+ * ================================================
+ * NOTE: The "Similar Properties" section was reverted to its original
+ * pre-3.7.0 implementation. Its markup (similar-carousel-properties.php),
+ * carousel JS, and styling (assets/frontend/css/hvnly-frontend-property-single.css)
+ * are the backup versions and are NOT touched here — this file deliberately
+ * carries NO Similar Properties / carousel rules so the legacy stylesheet
+ * renders that section exactly as before.
+ *
+ * The only rules kept here are page-wide chrome introduced by the 3.7.0
+ * redesign (scroll-progress bar, back-to-top), which are not part of the
+ * Similar Properties section.
+ *
+ * @package Havenlytics
+ * @since   3.7.0
+ */
+
+/* ----------------------------------------------------------------------
+ * Page chrome: scroll progress + back-to-top
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-property-single__scroll-progress {
+    height: 2px;
+    background: transparent;
+}
+
+body.hvnly-property-single .hvnly-property-single__scroll-progress-bar {
+    height: 2px;
+    background: var(--hvnly-brand-primary);
+    box-shadow: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__gallery-scroll-top {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: var(--hvnly-color-bg-white);
+    border: 1px solid var(--hvnly-color-gray-200);
+    color: var(--hvnly-text-primary);
+    box-shadow: var(--hvnly-shadow-card);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+body.hvnly-property-single .hvnly-property-single__gallery-scroll-top:hover {
+    border-color: rgba(var(--hvnly-primary-rgb), 0.4);
+    color: var(--hvnly-brand-primary);
+}

@@ -7,6 +7,9 @@
 (function ($) {
     'use strict';
 
+    const i18n = (window.HvnlyRepeaterField && window.HvnlyRepeaterField.i18n) || {};
+    const t = (key, fallback) => (i18n[key] && String(i18n[key])) || fallback;
+
     class HavenlyticsRepeaterField {
         constructor() {
             $(document).on('click', '.hvnly-repeater-add-item', this.addItem.bind(this));
@@ -58,7 +61,7 @@
         updateHeaderIcon($item) {
             const iconValue = String($item.find('.hvnly-document-icon-input').val() || '').trim().replace(/^fa-/, '');
             const $headerTitle = $item.find('.hvnly-repeater-item-title');
-            const titleText = $.trim($item.find('.hvnly-repeater-title-input').val()) || 'New Row';
+            const titleText = $.trim($item.find('.hvnly-repeater-title-input').val()) || t('newRow', 'New Row');
 
             $headerTitle.empty();
             if (iconValue) {

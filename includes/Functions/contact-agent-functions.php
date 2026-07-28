@@ -480,8 +480,12 @@ function hvnly_localize_contact_agent_script( int $property_id = 0 ): void {
 				'networkError'           => __( 'Unable to send your message. Please refresh the page and try again.', 'havenlytics' ),
 				'sessionExpired'         => __( 'Security token expired. Please refresh the page and try again.', 'havenlytics' ),
 				'handlerMissing'         => __( 'Contact form endpoint is unavailable. Please refresh the page or contact the site administrator.', 'havenlytics' ),
-				'contactTitle'           => __( 'Contact %s', 'havenlytics' ),
-				'sendTo'                 => __( 'Send to %s', 'havenlytics' ),
+				'contactTitle'           =>
+					/* translators: %s: Agent display name. */
+					__( 'Contact %s', 'havenlytics' ),
+				'sendTo'                 =>
+					/* translators: %s: Agent display name. */
+					__( 'Send to %s', 'havenlytics' ),
 				'agentOffline'           => __( 'This agent is offline and not accepting inquiries at this time.', 'havenlytics' ),
 				'validationNameRequired' => __( 'Please enter your full name.', 'havenlytics' ),
 				'validationNameMin'        => __( 'Please enter your full name.', 'havenlytics' ),

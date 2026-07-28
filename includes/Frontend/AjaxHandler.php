@@ -448,7 +448,7 @@ class AjaxHandler
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
         
         if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {
-            wp_send_json_error('Security check failed');
+            wp_send_json_error(__( 'Security check failed', 'havenlytics' ));
         }
         
         $provider = isset($_POST['provider']) ? sanitize_text_field(wp_unslash($_POST['provider'])) : 'leaflet';
@@ -474,7 +474,7 @@ class AjaxHandler
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
         
         if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {  
-            wp_send_json_error('Security check failed');
+            wp_send_json_error(__( 'Security check failed', 'havenlytics' ));
         }
 
         try {
@@ -511,7 +511,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             ]);
 
             if (is_wp_error($properties_query->posts)) {
-                wp_send_json_error('Query error occurred');
+                wp_send_json_error(__( 'Query error occurred', 'havenlytics' ));
             }
 
             // Generate response data using templates
@@ -524,9 +524,9 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
 
             wp_send_json_success($response_data);
         } catch (\Exception $e) {
-            wp_send_json_error('An error occurred while loading properties. Please try again.');
+            wp_send_json_error(__( 'An error occurred while loading properties. Please try again.', 'havenlytics' ));
         } catch (\Error $e) {
-            wp_send_json_error('An error occurred while loading properties. Please try again.');
+            wp_send_json_error(__( 'An error occurred while loading properties. Please try again.', 'havenlytics' ));
         }
     }
 
@@ -1242,7 +1242,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
         
         if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {  
-            wp_send_json_error('Security check failed');
+            wp_send_json_error(__( 'Security check failed', 'havenlytics' ));
         }
 
         try {
@@ -1410,9 +1410,9 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             wp_send_json_success($response_data);
             
         } catch (\Exception $e) {
-            wp_send_json_error('An error occurred while loading map properties.');
+            wp_send_json_error(__( 'An error occurred while loading map properties.', 'havenlytics' ));
         } catch (\Error $e) {
-            wp_send_json_error('An error occurred while loading map properties.');
+            wp_send_json_error(__( 'An error occurred while loading map properties.', 'havenlytics' ));
         }
     }
 
@@ -1437,7 +1437,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
         
         if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {
-            wp_send_json_error('Security check failed');
+            wp_send_json_error(__( 'Security check failed', 'havenlytics' ));
         }
 
         // Fixed taxonomy parameter handling

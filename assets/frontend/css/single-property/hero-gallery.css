@@ -1,0 +1,557 @@
+/**
+ * Haven Design System 1.0 — Hero gallery (Phase 3)
+ * =================================================
+ * Presentation-only reskin of the existing custom gallery. The frozen JS
+ * (hvnly-frontend-property-single-gallery.js) keeps running untouched:
+ * it stacks slides with inline opacity/z-index, injects thumbnails, and
+ * opens the lightbox on any click inside #hvnlyPropertySingleGalleryMain.
+ *
+ * Strategy per breakpoint:
+ *  - <640px  : keep the JS carousel presentation, reskinned (Haven chips,
+ *              dots, arrows, 4:3 media frame).
+ *  - >=640px : the main container becomes a CSS photo GRID. Slide
+ *              visibility is pinned with !important so the JS's inline
+ *              opacity writes (autoplay ticks) cannot hide grid tiles —
+ *              the JS still runs, clicks still open the lightbox at any
+ *              tile. Carousel chrome (dots/arrows) hides; the count chip
+ *              stays. Layout adapts to photo count via :has():
+ *                1 photo  -> single 21:9 hero
+ *                2 photos -> large + one tall tile
+ *                3-4      -> large + two stacked tiles (counter says +N)
+ *                5+ @1200 -> large + 2x2 stack
+ *              (No :has() support -> falls back to the 3-photo layout.)
+ *
+ * The pinned-grid tiles keep their JS-toggled aria-hidden attribute; the
+ * slides are empty decorative background divs (no content, not focusable)
+ * so the attribute has no screen-reader effect. Documented in Phase 3 QA.
+ *
+ * @package Havenlytics
+ * @since   3.7.0
+ */
+
+/* ----------------------------------------------------------------------
+ * Section shell: the hero gallery is a Framed section (§ Part III) —
+ * no card box, no visible "Property Gallery" heading. The H2 stays in
+ * the DOM (visually hidden) so the document outline is unchanged.
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-property-single__details-card.hvnly-property-single__section-gallery {
+    background: none;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    border-radius: 0;
+}
+
+body.hvnly-property-single .hvnly-property-single__section-gallery > .hvnly-property-single__section-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ----------------------------------------------------------------------
+ * Shared frame — media edge (Framed recipe §16), card chrome removed
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-property-single__gallery {
+    background: none;
+    border: 0;
+    box-shadow: none;
+    border-radius: var(--hvnly-card-radius, 12px);
+    overflow: hidden;
+}
+
+body.hvnly-property-single .hvnly-property-single__gallery-main {
+    background: var(--hvnly-color-bg-light); /* loading tint behind images */
+    border-radius: var(--hvnly-card-radius, 12px);
+}
+
+/* Slides: loading tint + zoom-in affordance */
+body.hvnly-property-single .hvnly-property-single__gallery-slide {
+    background-color: var(--hvnly-color-bg-light);
+    cursor: zoom-in;
+}
+
+/* Entrance: one quiet rise on load (§27 — motion whispers). Applied to
+   the frame, not the slides, so it cannot fight the JS inline styles. */
+@media (prefers-reduced-motion: no-preference) {
+    body.hvnly-property-single .hvnly-property-single__gallery-main {
+        animation: hvnly-property-single-gallery-enter 400ms cubic-bezier(0.2, 0, 0, 1) both;
+    }
+
+    @keyframes hvnly-property-single-gallery-enter {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+/* Outer thumbnail rail retires at every width — the count chip invites
+   the lightbox, whose own rail is the thumbnail surface (§16). The JS
+   still populates and updates it harmlessly. */
+body.hvnly-property-single .hvnly-property-single__thumbnail-container {
+    display: none;
+}
+
+/* ----------------------------------------------------------------------
+ * Count chip (on-photo, §8) — JS keeps writing "current/total" into it
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-property-single__gallery-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    bottom: var(--hvnly-space-md, 16px);
+    right: var(--hvnly-space-md, 16px);
+    background: rgba(20, 21, 28, 0.72);
+    color: #fff;
+    padding: 7px 13px;
+    border-radius: var(--hvnly-border-radius-md);
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    /* Clicks fall through to the slide beneath, which the JS click test
+       recognizes — the chip becomes a working "open gallery" surface. */
+    pointer-events: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__gallery-counter::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'/%3E%3Ccircle cx='12' cy='13' r='4'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'/%3E%3Ccircle cx='12' cy='13' r='4'/%3E%3C/svg%3E") center / contain no-repeat;
+    flex-shrink: 0;
+}
+
+/* Single photo: a "1/1" chip is noise */
+body.hvnly-property-single .hvnly-property-single__gallery-main:not(:has(.hvnly-property-single__gallery-slide:nth-child(2))) .hvnly-property-single__gallery-counter {
+    display: none;
+}
+
+/* ----------------------------------------------------------------------
+ * Mobile (<640px): reskinned carousel
+ * -------------------------------------------------------------------- */
+@media (max-width: 639px) {
+    body.hvnly-property-single .hvnly-property-single__gallery-main {
+        height: auto;
+        aspect-ratio: 4 / 3; /* 4/3 on mobile */
+    }
+
+    /* Dots — Haven pill indicators */
+    body.hvnly-property-single .hvnly-property-single__gallery-indicators {
+        bottom: var(--hvnly-space-md, 16px);
+        background: rgba(20, 21, 28, 0.72);
+        padding: 6px 10px;
+        border-radius: 999px;
+        gap: 6px;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-indicator {
+        width: 6px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.45);
+        transition: background-color 0.15s cubic-bezier(0.2, 0, 0, 1),
+                    width 0.2s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-indicator--active {
+        width: 16px;
+        border-radius: 999px;
+        background: #fff;
+    }
+
+    /* Hide dots 7+ to avoid a dot soup; the chip carries the count */
+    body.hvnly-property-single .hvnly-property-single__gallery-indicator:nth-child(n+7) {
+        display: none;
+    }
+
+    /* Arrows are the only nav on touch (the gallery module has no swipe
+       handlers) — full touch-target size, quiet until pressed. */
+    body.hvnly-property-single .hvnly-property-single__gallery-btn {
+        background: rgba(20, 21, 28, 0.42);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-btn:active {
+        background: rgba(20, 21, 28, 0.8);
+    }
+}
+
+/* Arrows — on-photo circles (mobile + any non-grid fallback) */
+body.hvnly-property-single .hvnly-property-single__gallery-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: rgba(20, 21, 28, 0.72);
+    color: #fff;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: background-color 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body.hvnly-property-single .hvnly-property-single__gallery-btn:hover {
+    background: rgba(20, 21, 28, 0.86);
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__gallery-btn i {
+    font-size: 14px;
+}
+
+body.hvnly-property-single .hvnly-property-single__gallery-btn .hvnly-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* ----------------------------------------------------------------------
+ * Tablet & desktop (>=640px): photo grid hero
+ * -------------------------------------------------------------------- */
+@media (min-width: 640px) {
+    body.hvnly-property-single .hvnly-property-single__gallery-main {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        height: clamp(360px, 40vw, 560px);
+        overflow: visible; /* tiles clip themselves; hover halo may breathe */
+        background: none;
+    }
+
+    /* Pin tiles against the JS carousel's inline opacity/z-index writes.
+       The JS keeps running (clicks/lightbox unaffected); tiles just stay
+       visible. */
+    body.hvnly-property-single .hvnly-property-single__gallery-slide {
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+        z-index: auto !important;
+        width: auto;
+        height: auto;
+        border-radius: var(--hvnly-border-radius-sm);
+        overflow: hidden;
+        transition: filter 0.2s cubic-bezier(0.2, 0, 0, 1);
+        /* crisp containment on bright photos */
+        box-shadow: inset 0 0 0 1px rgba(20, 21, 28, 0.06);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-slide:hover {
+        filter: brightness(0.92) saturate(1.04);
+    }
+
+    /* Hover affordance: frosted expand glyph rises in the tile center —
+       icon-only (no text), so it needs no translation. */
+    body.hvnly-property-single .hvnly-property-single__gallery-slide::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 46px;
+        height: 46px;
+        border-radius: 999px;
+        background-color: rgba(20, 21, 28, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        opacity: 0;
+        transform: translate(-50%, -46%);
+        transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1),
+                    transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+        pointer-events: none;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-slide::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 18px;
+        height: 18px;
+        background: #fff;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6'/%3E%3Cpath d='M9 21H3v-6'/%3E%3Cpath d='M21 3l-7 7'/%3E%3Cpath d='M3 21l7-7'/%3E%3C/svg%3E") center / contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6'/%3E%3Cpath d='M9 21H3v-6'/%3E%3Cpath d='M21 3l-7 7'/%3E%3Cpath d='M3 21l7-7'/%3E%3C/svg%3E") center / contain no-repeat;
+        opacity: 0;
+        transform: translate(-50%, -46%);
+        transition: opacity 0.2s cubic-bezier(0.2, 0, 0, 1),
+                    transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+        pointer-events: none;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-slide:hover::before,
+    body.hvnly-property-single .hvnly-property-single__gallery-slide:hover::after {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    /* --------------------------------------------------------------
+     * Corner harmony: the group reads as ONE composed object — large
+     * radius on the group's outer corners, small everywhere inside.
+     * -------------------------------------------------------------- */
+
+    /* Lead tile owns the left edge */
+    body.hvnly-property-single .hvnly-property-single__gallery-slide:nth-child(1) {
+        grid-row: 1 / -1;
+        border-top-left-radius: var(--hvnly-card-radius, 12px);
+        border-bottom-left-radius: var(--hvnly-card-radius, 12px);
+    }
+
+    /* 3-4 photo mode: stacked tiles own the right edge */
+    body.hvnly-property-single .hvnly-property-single__gallery-slide:nth-child(2) {
+        border-top-right-radius: var(--hvnly-card-radius, 12px);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-slide:nth-child(3) {
+        border-bottom-right-radius: var(--hvnly-card-radius, 12px);
+    }
+
+    /* Default (fallback + 3-4 photos): show 3 tiles */
+    body.hvnly-property-single .hvnly-property-single__gallery-slide:nth-child(n+4) {
+        display: none;
+    }
+
+    /* Exactly 1 photo: single wide hero */
+    body.hvnly-property-single .hvnly-property-single__gallery-main:not(:has(.hvnly-property-single__gallery-slide:nth-child(2))) {
+        display: block;
+        height: auto;
+        aspect-ratio: 21 / 9;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-main:not(:has(.hvnly-property-single__gallery-slide:nth-child(2))) .hvnly-property-single__gallery-slide {
+        position: absolute !important;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: var(--hvnly-card-radius, 12px);
+    }
+
+    /* Exactly 2 photos: large + one tall tile */
+    body.hvnly-property-single .hvnly-property-single__gallery-main:has(.hvnly-property-single__gallery-slide:nth-child(2)):not(:has(.hvnly-property-single__gallery-slide:nth-child(3))) .hvnly-property-single__gallery-slide:nth-child(2) {
+        grid-row: 1 / -1;
+        border-radius: var(--hvnly-border-radius-sm) var(--hvnly-card-radius, 12px)
+                       var(--hvnly-card-radius, 12px) var(--hvnly-border-radius-sm);
+    }
+
+    /* Carousel chrome retires in grid mode; the JS listeners stay bound */
+    body.hvnly-property-single .hvnly-property-single__gallery-indicators,
+    body.hvnly-property-single .hvnly-property-single__gallery-controls {
+        display: none;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-counter {
+        bottom: var(--hvnly-space-md, 16px);
+        right: var(--hvnly-space-md, 16px);
+    }
+}
+
+/* Desktop (>=1200px) with 5+ photos: large + 2x2 stack */
+@media (min-width: 1200px) {
+    body.hvnly-property-single .hvnly-property-single__gallery-main:has(.hvnly-property-single__gallery-slide:nth-child(5)) {
+        grid-template-columns: 2fr 1fr 1fr;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-main:has(.hvnly-property-single__gallery-slide:nth-child(5)) .hvnly-property-single__gallery-slide:nth-child(-n+5) {
+        display: block;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-main:has(.hvnly-property-single__gallery-slide:nth-child(5)) .hvnly-property-single__gallery-slide:nth-child(n+6) {
+        display: none;
+    }
+
+    /* Corner harmony in 2x2 mode: slides 2/4 become inner tiles, slide 3
+       takes the top-right corner, slide 5 the bottom-right. */
+    body.hvnly-property-single .hvnly-property-single__gallery-main:has(.hvnly-property-single__gallery-slide:nth-child(5)) .hvnly-property-single__gallery-slide:nth-child(2) {
+        border-top-right-radius: var(--hvnly-border-radius-sm);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-main:has(.hvnly-property-single__gallery-slide:nth-child(5)) .hvnly-property-single__gallery-slide:nth-child(3) {
+        border-top-right-radius: var(--hvnly-card-radius, 12px);
+        border-bottom-right-radius: var(--hvnly-border-radius-sm);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__gallery-main:has(.hvnly-property-single__gallery-slide:nth-child(5)) .hvnly-property-single__gallery-slide:nth-child(5) {
+        border-bottom-right-radius: var(--hvnly-card-radius, 12px);
+    }
+}
+
+/* ----------------------------------------------------------------------
+ * Lightbox reskin (§16) — same DOM, same JS, Haven chrome.
+ * Design intent: the photograph floats free on the scrim — no content
+ * panel, no chrome competing with the image.
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single .hvnly-property-single__fancybox-popup {
+    background: rgba(13, 14, 20, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+/* Remove the legacy slate panel — image on scrim, nothing else */
+body.hvnly-property-single .hvnly-property-single__fancybox-content,
+body.hvnly-property-single .hvnly-property-single__fancybox-main,
+body.hvnly-property-single .hvnly-property-single__fancybox-sidebar {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-img-wrap {
+    background: transparent;
+    border-radius: var(--hvnly-card-radius, 12px);
+    overflow: hidden;
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-close,
+body.hvnly-property-single .hvnly-property-single__fancybox-fullscreen,
+body.hvnly-property-single .hvnly-property-single__fancybox-nav {
+    background: rgba(20, 21, 28, 0.72);
+    color: #fff;
+    border: 0;
+    border-radius: 999px;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+    min-height: 0;
+    min-width: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: inherit;
+    line-height: 1;
+    transition: background-color 0.15s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-nav {
+    transform: translateY(-50%);
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-close:hover,
+body.hvnly-property-single .hvnly-property-single__fancybox-fullscreen:hover,
+body.hvnly-property-single .hvnly-property-single__fancybox-nav:hover {
+    background: rgba(20, 21, 28, 0.9);
+    /* Keep translateY(-50%) centering on nav — never reset to none */
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-nav:hover,
+body.hvnly-property-single .hvnly-property-single__fancybox-nav:focus,
+body.hvnly-property-single .hvnly-property-single__fancybox-nav:focus-visible,
+body.hvnly-property-single .hvnly-property-single__fancybox-nav:active {
+    transform: translateY(-50%);
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-close:hover,
+body.hvnly-property-single .hvnly-property-single__fancybox-fullscreen:hover {
+    transform: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-counter {
+    background: rgba(20, 21, 28, 0.72);
+    color: #fff;
+    border-radius: var(--hvnly-border-radius-sm);
+    padding: 6px 12px;
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    font-variant-numeric: tabular-nums;
+    border: 0;
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-img {
+    border-radius: var(--hvnly-card-radius, 12px);
+    box-shadow: 0 24px 56px rgba(20, 21, 28, 0.18);
+}
+
+/* Caption: quiet identity line — never competes with the photo */
+body.hvnly-property-single .hvnly-property-single__fancybox-caption {
+    color: rgba(255, 255, 255, 0.78);
+    font-family: inherit;
+    font-size: var(--hvnly-font-size-md, 1rem);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    letter-spacing: 0.01em;
+    text-shadow: none;
+}
+
+/* Context link: on-photo ghost — present, never shouting */
+body.hvnly-property-single .hvnly-property-single__fancybox-property-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    padding: 9px 18px;
+    font-family: inherit;
+    font-size: var(--hvnly-font-size-sm, 0.875rem);
+    font-weight: var(--hvnly-font-weight-medium, 500);
+    text-decoration: none;
+    box-shadow: none;
+    transition: background-color 0.15s cubic-bezier(0.2, 0, 0, 1),
+                border-color 0.15s cubic-bezier(0.2, 0, 0, 1),
+                color 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-property-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #fff;
+}
+
+/* Thumbnail rail: filmstrip of quiet 3:2 tiles; the active frame gets a
+   white ring — neutral against any admin brand color */
+body.hvnly-property-single .hvnly-property-single__fancybox-thumbnails {
+    background: transparent;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-thumb {
+    border-radius: var(--hvnly-border-radius-sm);
+    overflow: hidden;
+    opacity: 0.45;
+    border: 0;
+    flex: 0 0 auto;
+    cursor: pointer;
+    transition: opacity 0.15s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-thumb:hover {
+    opacity: 0.8;
+}
+
+body.hvnly-property-single .hvnly-property-single__fancybox-thumb--active {
+    opacity: 1;
+    box-shadow: 0 0 0 2px #fff;
+}

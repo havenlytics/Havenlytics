@@ -194,7 +194,7 @@ if ( ! function_exists( 'hvnly_get_feature_icon' ) ) {
 ?>
 
 <?php if ( ! empty( $hvnly_label ) ) : ?>
-    <h3 class="hvnly-property-single__features-title"><?php echo esc_html( $hvnly_label ); ?></h3>
+    <h3 class="hvnly-property-single__features-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?></h3>
 <?php endif; ?>
 
 <div class="hvnly-property-single__features-grid hvnly-property-single__features-grid--icons">

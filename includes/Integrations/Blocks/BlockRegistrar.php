@@ -13,6 +13,8 @@
 
 namespace HvnlyNab\Integrations\Blocks;
 
+use HvnlyNab\I18n\ScriptTranslations;
+
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
     exit;
@@ -95,6 +97,7 @@ final class BlockRegistrar {
         $this->build_dir = trailingslashit(HVNLYNAB_PATH) . 'build/blocks/';
 
         add_filter('block_categories_all', [$this, 'register_category'], 10, 1);
+        add_filter('allowed_block_types_all', [$this, 'filter_allowed_block_types_for_widgets'], 10, 2);
         add_action('init', [$this, 'register_blocks']);
 
         // Frontend + editor asset loading (reuses the existing pipeline).
@@ -108,6 +111,53 @@ final class BlockRegistrar {
 
         // Editor-only rich pickers for Property Inquiry (no Inquiry backend changes).
         InquiryBlockEditorSupport::register();
+    }
+
+    /**
+     * Registered Havenlytics block names (from block.json `name`).
+     *
+     * @return array<int, string>
+     */
+    public static function get_block_names(): array {
+        return array_keys(self::RENDERERS);
+    }
+
+    /**
+     * Hide Havenlytics Gutenberg blocks from the Widgets / Customizer widget editors.
+     *
+     * Official WordPress approach via `allowed_block_types_all` + editor context name
+     * (`core/edit-widgets`, `core/customize-widgets`). Post, page, and Site Editor
+     * contexts are unchanged. Classic `WP_Widget` sidebar widgets are unaffected.
+     *
+     * @param bool|string[]               $allowed_block_types  Allowed types, or true for all.
+     * @param \WP_Block_Editor_Context    $editor_context       Current editor context.
+     * @return bool|string[]
+     */
+    public function filter_allowed_block_types_for_widgets($allowed_block_types, $editor_context) {
+        if (!is_object($editor_context) || empty($editor_context->name)) {
+            return $allowed_block_types;
+        }
+
+        $widget_contexts = ['core/edit-widgets', 'core/customize-widgets'];
+        if (!in_array((string) $editor_context->name, $widget_contexts, true)) {
+            return $allowed_block_types;
+        }
+
+        $hvnly_blocks = self::get_block_names();
+        if ($hvnly_blocks === []) {
+            return $allowed_block_types;
+        }
+
+        // Default is true (all registered blocks). Convert to an explicit list, then remove ours.
+        if (true === $allowed_block_types) {
+            $allowed_block_types = array_keys(\WP_Block_Type_Registry::get_instance()->get_all_registered());
+        }
+
+        if (!is_array($allowed_block_types)) {
+            return $allowed_block_types;
+        }
+
+        return array_values(array_diff($allowed_block_types, $hvnly_blocks));
     }
 
     /**
@@ -260,6 +310,8 @@ final class BlockRegistrar {
             $version,
             true
         );
+
+        ScriptTranslations::attach(self::EDITOR_HANDLE);
 
         // Editor-only styles emitted by the same build (numeric CSS bundle).
         if (isset($asset['style'])) {

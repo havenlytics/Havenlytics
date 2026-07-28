@@ -250,7 +250,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 				?>
     <div class="hvnly-property-filter-group collapsed">
         <div class="hvnly-property-filter-group-header">
-            <h4 class="hvnly-property-filter-group-title"><?php echo esc_html( $hvnly_field_title ); ?></h4>
+            <h4 class="hvnly-property-filter-group-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></h4>
             <div class="hvnly-property-filter-group-toggle">
                 <i class="fas fa-chevron-down"></i>
             </div>
@@ -269,7 +269,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 										?>
                         <option value="<?php echo esc_attr( $hvnly_value ); ?>"
                             <?php selected( $hvnly_current_min_price, $hvnly_value ); ?>>
-                            <?php echo esc_html( $hvnly_label ); ?>
+                            <?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>
                         </option>
                         <?php endforeach; ?>
                     </select>
@@ -286,7 +286,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 										?>
                         <option value="<?php echo esc_attr( $hvnly_value ); ?>"
                             <?php selected( $hvnly_current_max_price, $hvnly_value ); ?>>
-                            <?php echo esc_html( $hvnly_label ); ?>
+                            <?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>
                         </option>
                         <?php endforeach; ?>
                     </select>
@@ -306,7 +306,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 					?>
     <div class="hvnly-property-filter-group collapsed">
         <div class="hvnly-property-filter-group-header">
-            <h4 class="hvnly-property-filter-group-title"><?php echo esc_html( $hvnly_field_title ); ?></h4>
+            <h4 class="hvnly-property-filter-group-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></h4>
             <div class="hvnly-property-filter-group-toggle">
                 <i class="fas fa-chevron-down"></i>
             </div>
@@ -322,7 +322,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
                             data-term-id="<?php echo esc_attr( $hvnly_status->term_id ); ?>"
                             data-filter="<?php echo esc_attr( $hvnly_status_taxonomy ); ?>"
                             <?php checked( in_array( $hvnly_status->slug, (array) ( $hvnly_current_property_status ?? array() ), true ) ); ?>>
-                        <span><?php echo esc_html( $hvnly_status->name ); ?></span>
+                        <span><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_status->name ) ) : esc_html( $hvnly_status->name ); ?></span>
                     </div>
                 </label>
                 <?php endforeach; ?>
@@ -335,7 +335,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 					?>
     <div class="hvnly-property-filter-group collapsed">
         <div class="hvnly-property-filter-group-header">
-            <h4 class="hvnly-property-filter-group-title"><?php echo esc_html( $hvnly_field_title ); ?></h4>
+            <h4 class="hvnly-property-filter-group-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></h4>
             <div class="hvnly-property-filter-group-toggle">
                 <i class="fas fa-chevron-down"></i>
             </div>
@@ -351,7 +351,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
                             data-term-id="<?php echo esc_attr( $hvnly_location->term_id ); ?>"
                             data-filter="hvnly_prop_locations"
                             <?php checked( in_array( $hvnly_location->slug, (array) ( $hvnly_current_locations ?? array() ), true ) ); ?>>
-                        <span><?php echo esc_html( $hvnly_location->name ); ?></span>
+                        <span><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_location->name ) ) : esc_html( $hvnly_location->name ); ?></span>
                     </div>
                 </label>
                 <?php endforeach; ?>
@@ -364,7 +364,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 					?>
     <div class="hvnly-property-filter-group collapsed">
         <div class="hvnly-property-filter-group-header">
-            <h4 class="hvnly-property-filter-group-title"><?php echo esc_html( $hvnly_field_title ); ?></h4>
+            <h4 class="hvnly-property-filter-group-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></h4>
             <div class="hvnly-property-filter-group-toggle">
                 <i class="fas fa-chevron-down"></i>
             </div>
@@ -379,7 +379,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
                             value="<?php echo esc_attr( $hvnly_tag->slug ); ?>"
                             data-term-id="<?php echo esc_attr( $hvnly_tag->term_id ); ?>" data-filter="hvnly_prop_tags"
                             <?php checked( in_array( $hvnly_tag->slug, (array) ( $hvnly_current_tags ?? array() ), true ) ); ?>>
-                        <span><?php echo esc_html( $hvnly_tag->name ); ?></span>
+                        <span><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_tag->name ) ) : esc_html( $hvnly_tag->name ); ?></span>
                     </div>
                 </label>
                 <?php endforeach; ?>
@@ -399,7 +399,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 					?>
     <div class="hvnly-property-filter-group collapsed">
         <div class="hvnly-property-filter-group-header">
-            <h4 class="hvnly-property-filter-group-title"><?php echo esc_html( $hvnly_field_title ); ?></h4>
+            <h4 class="hvnly-property-filter-group-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></h4>
             <div class="hvnly-property-filter-group-toggle">
                 <i class="fas fa-chevron-down"></i>
             </div>
@@ -415,7 +415,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
                             data-term-id="<?php echo esc_attr( $hvnly_type->term_id ); ?>"
                             data-filter="hvnly_prop_types"
                             <?php checked( in_array( $hvnly_type->slug, (array) ( $hvnly_current_property_types ?? array() ), true ) ); ?>>
-                        <span><?php echo esc_html( $hvnly_type->name ); ?></span>
+                        <span><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_type->name ) ) : esc_html( $hvnly_type->name ); ?></span>
                     </div>
                 </label>
                 <?php endforeach; ?>
@@ -428,7 +428,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 					?>
     <div class="hvnly-property-filter-group collapsed">
         <div class="hvnly-property-filter-group-header">
-            <h4 class="hvnly-property-filter-group-title"><?php echo esc_html( $hvnly_field_title ); ?></h4>
+            <h4 class="hvnly-property-filter-group-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></h4>
             <div class="hvnly-property-filter-group-toggle">
                 <i class="fas fa-chevron-down"></i>
             </div>
@@ -444,7 +444,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
                             data-term-id="<?php echo esc_attr( $hvnly_feature->term_id ); ?>"
                             data-filter="hvnly_prop_features"
                             <?php checked( in_array( $hvnly_feature->slug, (array) ( $hvnly_current_features ?? array() ), true ) ); ?>>
-                        <span><?php echo esc_html( $hvnly_feature->name ); ?></span>
+                        <span><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_feature->name ) ) : esc_html( $hvnly_feature->name ); ?></span>
                     </div>
                 </label>
                 <?php endforeach; ?>
@@ -457,7 +457,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 					?>
     <div class="hvnly-property-filter-group collapsed">
         <div class="hvnly-property-filter-group-header">
-            <h4 class="hvnly-property-filter-group-title"><?php echo esc_html( $hvnly_field_title ); ?></h4>
+            <h4 class="hvnly-property-filter-group-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></h4>
             <div class="hvnly-property-filter-group-toggle">
                 <i class="fas fa-chevron-down"></i>
             </div>
@@ -473,7 +473,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
                             data-term-id="<?php echo esc_attr( $hvnly_badge->term_id ); ?>"
                             data-filter="hvnly_prop_badges"
                             <?php checked( in_array( $hvnly_badge->slug, (array) ( $hvnly_current_badges ?? array() ), true ) ); ?>>
-                        <span><?php echo esc_html( $hvnly_badge->name ); ?></span>
+                        <span><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_badge->name ) ) : esc_html( $hvnly_badge->name ); ?></span>
                     </div>
                 </label>
                 <?php endforeach; ?>
@@ -489,10 +489,27 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 			// =================================================================
 			case 'group':
 				if ( 'bedrooms_bathrooms' === $hvnly_field_id ) :
+					$hvnly_sub_fields = ( isset( $hvnly_field['config']['subFields'] ) && is_array( $hvnly_field['config']['subFields'] ) )
+						? $hvnly_field['config']['subFields']
+						: array();
+					$hvnly_bedrooms_label  = __( 'Bedrooms', 'havenlytics' );
+					$hvnly_bathrooms_label = __( 'Bathrooms', 'havenlytics' );
+					foreach ( $hvnly_sub_fields as $hvnly_sub_field ) {
+						$hvnly_sub_id = $hvnly_sub_field['id'] ?? '';
+						$hvnly_sub_label = isset( $hvnly_sub_field['label'] ) ? (string) $hvnly_sub_field['label'] : '';
+						if ( '' === $hvnly_sub_label ) {
+							continue;
+						}
+						if ( 'bedrooms' === $hvnly_sub_id ) {
+							$hvnly_bedrooms_label = function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $hvnly_sub_label ) : $hvnly_sub_label;
+						} elseif ( 'bathrooms' === $hvnly_sub_id ) {
+							$hvnly_bathrooms_label = function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $hvnly_sub_label ) : $hvnly_sub_label;
+						}
+					}
 					?>
     <div class="hvnly-property-filter-group collapsed">
         <div class="hvnly-property-filter-group-header">
-            <h4 class="hvnly-property-filter-group-title"><?php echo esc_html( $hvnly_field_title ); ?></h4>
+            <h4 class="hvnly-property-filter-group-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></h4>
             <div class="hvnly-property-filter-group-toggle">
                 <i class="fas fa-chevron-down"></i>
             </div>
@@ -501,7 +518,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <!-- Bedrooms Filter -->
                 <div class="hvnly-property-filter-group collapsed">
-                    <label class="hvnly-property-filter-label"><?php esc_html_e( 'Bedrooms', 'havenlytics' ); ?></label>
+                    <label class="hvnly-property-filter-label"><?php echo esc_html( $hvnly_bedrooms_label ); ?></label>
                     <select class="hvnly-property-form-select" name="bedrooms" data-filter="bedrooms">
                         <option value=""><?php echo esc_html( hvnly_get_search_field_placeholder( 'bedrooms', __( 'Any', 'havenlytics' ) ) ); ?></option>
                         <?php
@@ -518,7 +535,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
                 <!-- Bathrooms Filter -->
                 <div class="hvnly-property-filter-group collapsed">
                     <label
-                        class="hvnly-property-filter-label"><?php esc_html_e( 'Bathrooms', 'havenlytics' ); ?></label>
+                        class="hvnly-property-filter-label"><?php echo esc_html( $hvnly_bathrooms_label ); ?></label>
                     <select class="hvnly-property-form-select" name="bathrooms" data-filter="bathrooms">
                         <option value=""><?php echo esc_html( hvnly_get_search_field_placeholder( 'bathrooms', __( 'Any', 'havenlytics' ) ) ); ?></option>
                         <?php
@@ -547,7 +564,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 					?>
     <div class="hvnly-property-filter-group collapsed">
         <div class="hvnly-property-filter-group-header">
-            <h4 class="hvnly-property-filter-group-title"><?php echo esc_html( $hvnly_field_title ); ?></h4>
+            <h4 class="hvnly-property-filter-group-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></h4>
             <div class="hvnly-property-filter-group-toggle">
                 <i class="fas fa-chevron-down"></i>
             </div>
@@ -581,7 +598,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
 					?>
     <div class="hvnly-property-filter-group collapsed">
         <div class="hvnly-property-filter-group-header">
-            <h4 class="hvnly-property-filter-group-title"><?php echo esc_html( $hvnly_field_title ); ?></h4>
+            <h4 class="hvnly-property-filter-group-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_field_title ) ) : esc_html( $hvnly_field_title ); ?></h4>
             <div class="hvnly-property-filter-group-toggle">
                 <i class="fas fa-chevron-down"></i>
             </div>

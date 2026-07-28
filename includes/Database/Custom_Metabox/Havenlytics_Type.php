@@ -517,7 +517,7 @@ class Havenlytics_Type extends Custom_Metabox {
             
             $tabs[] = [
                 'id'        => $tab['id'] ?? $tab_id,
-                'title'     => $tab['title'] ?? 'Untitled Section',
+                'title'     => $tab['title'] ?? __( 'Untitled Section', 'havenlytics' ),
                 'icon'      => $this->normalize_icon( $tab['icon'] ?? 'fas fa-cog' ),
                 'fields'    => $this->process_group_fields( $tab_fields, (string) ( $tab['id'] ?? $tab_id ) ),
                 'order'     => $tab['order'] ?? 0,
@@ -618,7 +618,7 @@ class Havenlytics_Type extends Custom_Metabox {
                         'fieldid'         => $documents_field_name,
                         'name'            => $documents_field_name,
                         'type'            => 'property_docs',
-                        'label'           => $field['label'] ?? 'Property Documents',
+                        'label'           => $field['label'] ?? __( 'Property Documents', 'havenlytics' ),
                         'placeholder'     => '',
                         'is_required'     => $docs_required,
                         'admin_only'      => false,
@@ -626,7 +626,7 @@ class Havenlytics_Type extends Custom_Metabox {
                         'order'           => $field['order'] ?? count( $processed_fields ),
                         'group_id'        => $group_id,
                         'group_type'      => 'property_docs',
-                        'group_name'      => $field['group_name'] ?? 'Property Documents',
+                        'group_name'      => $field['group_name'] ?? __( 'Property Documents', 'havenlytics' ),
                         'group_base_id'   => $group_base_id,
                         'show_in_sidebar' => $field['show_in_sidebar'] ?? true,
                         ),
@@ -994,7 +994,7 @@ class Havenlytics_Type extends Custom_Metabox {
         foreach ( $default_tabs as $index => $tab ) {
             $tabs[] = [
                 'id'        => $tab['id'] ?? 'tab_' . $index,
-                'title'     => $tab['hvnly__sectiontitle'] ?? 'Untitled Section',
+                'title'     => $tab['hvnly__sectiontitle'] ?? __( 'Untitled Section', 'havenlytics' ),
                 'icon'      => $this->normalize_icon( $tab['icon'] ?? 'fas fa-cog' ),
                 'fields'    => $this->process_group_fields( $tab['fields'] ?? [], (string) ( $tab['id'] ?? 'tab_' . $index ) ),
                 'order'     => $index,
@@ -1025,7 +1025,7 @@ class Havenlytics_Type extends Custom_Metabox {
                 <a href="javascript:void(0)" data-target=".hvnly-tab-<?php echo esc_attr( $tab['id'] ); ?>"
                     class="<?php echo esc_attr( $nav_active_class ); ?>">
                     <i class="<?php echo esc_attr( $tab['icon'] ); ?>"></i>
-                    <?php echo esc_html( $tab['title'] ); ?>
+                    <?php echo esc_html( hvnly_translate_ui( (string) $tab['title'] ) ); ?>
                 </a>
             </li>
             <?php endforeach; ?>
@@ -1039,7 +1039,7 @@ class Havenlytics_Type extends Custom_Metabox {
             ?>
         <div
             class="hvnly__dyamic_metabox_tab__tab-content hvnly-tab-<?php echo esc_attr( $tab['id'] ); ?> <?php echo esc_attr( $panel_active_class ); ?>">
-            <h3><?php echo esc_html( $tab['title'] ); ?></h3>
+            <h3><?php echo esc_html( hvnly_translate_ui( (string) $tab['title'] ) ); ?></h3>
 
             <?php if ( ! empty( $tab['fields'] ) ) : ?>
             <div class="hvnly__dyamic_metabox_tab__fields">

@@ -53,5 +53,5 @@ $hvnly_label = sprintf(
 	<div class="hvnly-property-content-feature-icon">
 		<i class="fas fa-list" aria-hidden="true"></i>
 	</div>
-	<span class="hvnly-property-repeater-count-text"><?php echo esc_html( $hvnly_label ); ?></span>
+	<span class="hvnly-property-repeater-count-text"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?></span>
 </div>

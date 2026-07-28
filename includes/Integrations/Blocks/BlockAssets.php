@@ -128,6 +128,17 @@ final class BlockAssets {
             self::file_version('frontend/blocks/js/hvnly-block-carousel.js', $ver),
             true
         );
+        wp_localize_script(
+            'hvnly-block-carousel',
+            'hvnly_block_carousel',
+            [
+                'i18n' => [
+                    'goToSlide' =>
+                        /* translators: %d: Slide number. */
+                        __( 'Go to slide %d', 'havenlytics' ),
+                ],
+            ]
+        );
 
         // Authentication block — dedicated shell CSS + controller. Reuses the
         // existing SessionAuthController AJAX endpoints; no card stack needed.

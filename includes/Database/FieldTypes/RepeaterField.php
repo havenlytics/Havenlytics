@@ -52,7 +52,7 @@ class RepeaterField extends BaseFieldType {
 		?>
 		<div class="hvnly-repeater-field-container" data-field-name="<?php echo esc_attr( $field_name ); ?>" data-group-base-id="<?php echo esc_attr( $field_base ); ?>">
 			<div class="hvnly-repeater-field-header">
-				<label class="hvnly-repeater-field-label"><?php echo esc_html( $field['label'] ?? __( 'Repeater Items', 'havenlytics' ) ); ?></label>
+				<label class="hvnly-repeater-field-label"><?php echo esc_html( hvnly_translate_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Repeater Items' ) ) ); ?></label>
 				<p class="description"><?php esc_html_e( 'Add rows with a title and value. Drag to reorder.', 'havenlytics' ); ?></p>
 			</div>
 			<div class="hvnly-repeater-items">
@@ -146,7 +146,7 @@ class RepeaterField extends BaseFieldType {
 				sprintf(
 					/* translators: %s: field label */
 					__( 'At least one row is required for "%s".', 'havenlytics' ),
-					esc_html( $field['label'] ?? __( 'Repeater', 'havenlytics' ) )
+					hvnly_esc_html_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Repeater' ) )
 				)
 			);
 		}

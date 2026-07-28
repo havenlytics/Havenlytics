@@ -11,10 +11,15 @@
         constructor() {
             this.initialized = false;
             this.config = window.HvnlyNabMetaBox || {};
+            this.i18n = this.config.i18n || {};
             
             $(() => {
                 this.init();
             });
+        }
+
+        t(key, fallback) {
+            return (this.i18n && this.i18n[key]) ? String(this.i18n[key]) : fallback;
         }
 
         /**
@@ -244,7 +249,7 @@
             const $btn = $(`
                 <button type="button" class="hvnly-validation-popup-button primary">
                     <i class="fas fa-check"></i>
-                    OK
+                    ${this.t('ok', 'OK')}
                 </button>
             `);
             
@@ -274,28 +279,28 @@
          * Show validation error modal with formatted content
          */
         showValidationErrorModal(emptyFields) {
-            let body = '<p class="hvnly-validation-popup-message" style="margin-bottom: 15px;">The following required fields are empty or invalid:</p>';
+            let body = '<p class="hvnly-validation-popup-message" style="margin-bottom: 15px;">' + this.t('requiredFieldsIntro', 'The following required fields are empty or invalid:') + '</p>';
             body += '<ul style="margin: 15px 0; padding-left: 20px; list-style: disc; color: var(--hvnly-text-secondary, #555);">';
             
             emptyFields.forEach((field) => {
                 body += `<li style="margin-bottom: 8px;"><strong>${this.escapeHtml(field.label)}</strong>`;
                 if (field.type === 'number') {
-                    body += ` <span style="color: var(--hvnly-brand-accent, #FF6A00); font-size: 12px;">(Please enter a number greater than 0)</span>`;
+                    body += ` <span style="color: var(--hvnly-brand-accent, #FF6A00); font-size: 12px;">${this.t('numberGreaterThanZero', '(Please enter a number greater than 0)')}</span>`;
                 }
                 body += `</li>`;
             });
             
             body += '</ul>';
-            body += '<p class="hvnly-validation-popup-message" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--hvnly-border-color, #E4E4ED);">⚠️ Red border indicates empty or invalid field. Please fill in all highlighted fields before saving.</p>';
+            body += '<p class="hvnly-validation-popup-message" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--hvnly-border-color, #E4E4ED);">⚠️ ' + this.t('requiredFieldsHint', 'Red border indicates empty or invalid field. Please fill in all highlighted fields before saving.') + '</p>';
             
-            this.showValidationModal('⚠️ Required Fields Missing', body);
+            this.showValidationModal('⚠️ ' + this.t('requiredMissingTitle', 'Required Fields Missing'), body);
         }
     
         /**
          * Show PHP validation error modal
          */
         showPHPValidationErrorModal(errorMessages) {
-            let body = '<p class="hvnly-validation-popup-message" style="margin-bottom: 15px;">The following required fields need attention:</p>';
+            let body = '<p class="hvnly-validation-popup-message" style="margin-bottom: 15px;">' + this.t('phpRequiredIntro', 'The following required fields need attention:') + '</p>';
             body += '<ul style="margin: 15px 0; padding-left: 20px; list-style: disc; color: var(--hvnly-text-secondary, #555);">';
             
             errorMessages.forEach((msg) => {
@@ -303,9 +308,9 @@
             });
             
             body += '</ul>';
-            body += '<p class="hvnly-validation-popup-message" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--hvnly-border-color, #E4E4ED);">💡 Fields with value "0" are not accepted. Enter a number greater than 0.</p>';
+            body += '<p class="hvnly-validation-popup-message" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--hvnly-border-color, #E4E4ED);">💡 ' + this.t('phpZeroHint', 'Fields with value "0" are not accepted. Enter a number greater than 0.') + '</p>';
             
-            this.showValidationModal('⚠️ Please Complete Required Fields', body);
+            this.showValidationModal('⚠️ ' + this.t('phpRequiredTitle', 'Please Complete Required Fields'), body);
         }
     
         /**
@@ -342,7 +347,7 @@
                                 this.showPHPValidationErrorModal(errorMessages);
                             } catch(e) {
                                 let alertMessage = '╔════════════════════════════════════════════════════╗\n';
-                                alertMessage += '║           PLEASE COMPLETE REQUIRED FIELDS            ║\n';
+                                alertMessage += '║           ' + this.t('alertBanner', 'PLEASE COMPLETE REQUIRED FIELDS') + '            ║\n';
                                 alertMessage += '╚════════════════════════════════════════════════════╝\n\n';
                                 alertMessage += 'The following required fields need attention:\n\n';
                                 

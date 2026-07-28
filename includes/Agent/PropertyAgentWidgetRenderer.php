@@ -246,6 +246,17 @@ final class PropertyAgentWidgetRenderer {
 			}
 
 			wp_enqueue_script( 'hvnly-frontend-property-agent-widget' );
+			wp_localize_script(
+				'hvnly-frontend-property-agent-widget',
+				'hvnly_agent_widget',
+				array(
+					'i18n' => array(
+						'agentN' =>
+							/* translators: %d: Agent number in a multi-agent widget. */
+							__( 'Agent %d', 'havenlytics' ),
+					),
+				)
+			);
 		}
 	}
 

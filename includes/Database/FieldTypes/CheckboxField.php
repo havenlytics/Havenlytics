@@ -28,14 +28,14 @@ class CheckboxField extends BaseFieldType {
         
         $field_id = $field['id'];
         $field_name = $field['name'];
-        $field_label = $field['label'];
+        $field_label = isset( $field['label'] ) ? (string) $field['label'] : '';
         
         ob_start();
         ?>
 <div class="hvnly-checkbox-repeater-field" data-field-id="<?php echo esc_attr($field_id); ?>">
     <div class="hvnly-checkbox-repeater-label">
-        <label><?php echo esc_html($field_label); ?></label>
-        <p class="description"><?php echo esc_html($field['description'] ?? ''); ?></p>
+        <label><?php echo '' !== $field_label ? esc_html( hvnly_translate_ui( $field_label ) ) : ''; ?></label>
+        <p class="description"><?php echo ! empty( $field['description'] ) ? esc_html( hvnly_translate_ui( (string) $field['description'] ) ) : ''; ?></p>
     </div>
 
     <div class="hvnly-checkbox-repeater-items">

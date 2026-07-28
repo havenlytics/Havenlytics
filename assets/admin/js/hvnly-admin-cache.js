@@ -1,6 +1,9 @@
 jQuery(document).ready(function($) {
     'use strict';
 
+    const cacheI18n = (window.hvnlyCacheAdmin && window.hvnlyCacheAdmin.i18n) || {};
+    const t = (key, fallback) => (cacheI18n[key] && String(cacheI18n[key])) || fallback;
+
     const AJAX_TIMEOUT = 30000;
     const $actionButtons = $('.hvnly-cache-actions .button[data-default-label]');
     const $refreshStatsBtn = $('#hvnly-refresh-stats');
@@ -18,7 +21,7 @@ jQuery(document).ready(function($) {
                 <div class="hvnly-modal" id="hvnly-modal">
                     <div class="hvnly-modal-header">
                         <h3 class="hvnly-modal-title" id="hvnly-modal-title"></h3>
-                        <button type="button" class="hvnly-modal-close" id="hvnly-modal-close" aria-label="Close">
+                        <button type="button" class="hvnly-modal-close" id="hvnly-modal-close" aria-label="${t('close', 'Close')}">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -91,7 +94,7 @@ jQuery(document).ready(function($) {
                     <h4 class="hvnly-toast-title"></h4>
                     <p class="hvnly-toast-message"></p>
                 </div>
-                <button type="button" class="hvnly-toast-close" aria-label="Dismiss">&times;</button>
+                <button type="button" class="hvnly-toast-close" aria-label="${t('dismiss', 'Dismiss')}">&times;</button>
             </div>
         `);
 
@@ -217,7 +220,7 @@ jQuery(document).ready(function($) {
         }).done(function(res) {
             if (res && res.success) {
                 showToast(
-                    options.successTitle || 'Success',
+                    options.successTitle || t('success', 'Success'),
                     getResponseMessage(res) || options.successFallback || hvnlyCacheAdmin.clearedText,
                     'success',
                     4000
@@ -234,7 +237,7 @@ jQuery(document).ready(function($) {
                 refreshStats();
             } else {
                 showToast(
-                    'Failed',
+                    t('failed', 'Failed'),
                     getResponseMessage(res) || options.errorFallback || hvnlyCacheAdmin.errorText,
                     'error',
                     5000
@@ -244,7 +247,7 @@ jQuery(document).ready(function($) {
             const message = status === 'timeout'
                 ? (hvnlyCacheAdmin.timeoutText || 'Request timed out.')
                 : (hvnlyCacheAdmin.networkErrorText || 'Network error. Please try again.');
-            showToast('Error', message, 'error', 5000);
+            showToast(t('error', 'Error'), message, 'error', 5000);
         }).always(function() {
             setButtonLoading($btn, false);
             restoreAllButtons();
@@ -329,7 +332,7 @@ jQuery(document).ready(function($) {
             if ($('.cache-empty-notice').length === 0) {
                 $('.hvnly-cache-action-cards').prepend(`
                     <div class="cache-empty-notice" style="grid-column:1/-1;margin-bottom:4px;padding:12px;background:rgba(108,96,254,.08);border-left:4px solid var(--hvnly-brand-primary,#6c60fe);border-radius:8px;">
-                        <strong>${escapeHtml('All caches are empty')}</strong>
+                        <strong>${escapeHtml(t('allEmpty', 'All caches are empty'))}</strong>
                         <span style="margin-left:6px;color:var(--hvnly-text-secondary,#646970);">No cache data to clear.</span>
                     </div>
                 `);
@@ -365,16 +368,16 @@ jQuery(document).ready(function($) {
                 updateLastClearedLabels(res.data.last_cleared);
                 updateButtonStates();
                 if ($btn && $btn.length) {
-                    showToast('Stats Updated', 'Cache statistics have been refreshed.', 'success', 2500);
+                    showToast(t('statsUpdated', 'Stats Updated'), t('statsRefreshed', 'Cache statistics have been refreshed.'), 'success', 2500);
                 }
             } else {
-                showToast('Error', 'Failed to refresh statistics.', 'error', 4000);
+                showToast(t('error', 'Error'), t('statsRefreshFailed', 'Failed to refresh statistics.'), 'error', 4000);
             }
         }).fail(function(xhr, status) {
             const message = status === 'timeout'
                 ? (hvnlyCacheAdmin.timeoutText || 'Request timed out.')
                 : (hvnlyCacheAdmin.networkErrorText || 'Network error. Please try again.');
-            showToast('Error', message, 'error', 4000);
+            showToast(t('error', 'Error'), message, 'error', 4000);
         }).always(function() {
             if ($btn && $btn.length) {
                 setButtonLoading($btn, false);
@@ -393,7 +396,7 @@ jQuery(document).ready(function($) {
                 action: 'hvnly_clear_cache',
                 cache_type: cacheType
             },
-            successTitle: 'Cache Cleared'
+            successTitle: t('cacheCleared', 'Cache Cleared')
         });
     }
 
@@ -404,7 +407,7 @@ jQuery(document).ready(function($) {
                 action: 'hvnly_clear_shortcode_cache',
                 shortcode_type: shortcodeType
             },
-            successTitle: 'Shortcode Cache Cleared'
+            successTitle: t('shortcodeCacheCleared', 'Shortcode Cache Cleared')
         });
     }
 
@@ -414,7 +417,7 @@ jQuery(document).ready(function($) {
             data: {
                 action: 'hvnly_clear_dynamic_css'
             },
-            successTitle: 'CSS Cache Cleared'
+            successTitle: t('cssCacheCleared', 'CSS Cache Cleared')
         });
     }
 
@@ -442,12 +445,12 @@ jQuery(document).ready(function($) {
 
     bindClearButton('#hvnly-clear-cache', {
         confirm: {
-            title: 'Clear All Cache',
-            message: 'Are you sure you want to clear <strong>all</strong> Havenlytics cache? This removes search results, sidebar filters, terms, and shortcode data.'
+            title: t('clearAllTitle', 'Clear All Cache'),
+            message: t('clearAllConfirm', 'Are you sure you want to clear <strong>all</strong> Havenlytics cache? This removes search results, sidebar filters, terms, and shortcode data.')
         },
         run: function($btn) {
             if (getStatValue('total_cached_items') === 0) {
-                showToast('No Cache to Clear', 'All cache is already empty.', 'info', 3000);
+                showToast(t('noCacheTitle', 'No Cache to Clear'), t('noCacheBody', 'All cache is already empty.'), 'info', 3000);
                 return;
             }
             clearCacheType('all', $btn);
@@ -456,12 +459,12 @@ jQuery(document).ready(function($) {
 
     bindClearButton('#hvnly-clear-search-cache', {
         confirm: {
-            title: 'Clear Search Cache',
-            message: 'This will clear all cached property search results. Recent searches may be slower until the cache rebuilds.'
+            title: t('clearSearchTitle', 'Clear Search Cache'),
+            message: t('clearSearchConfirm', 'This will clear all cached property search results. Recent searches may be slower until the cache rebuilds.')
         },
         run: function($btn) {
             if (getStatValue('search_cache_count') === 0) {
-                showToast('No Search Cache', 'Search cache is already empty.', 'info', 3000);
+                showToast(t('noCacheTitle', 'No Cache to Clear'), t('noCacheBody', 'All cache is already empty.'), 'info', 3000);
                 return;
             }
             clearCacheType('search', $btn);
@@ -470,12 +473,12 @@ jQuery(document).ready(function($) {
 
     bindClearButton('#hvnly-clear-sidebar-cache', {
         confirm: {
-            title: 'Clear Sidebar Cache',
-            message: 'This will clear all cached sidebar filter data.'
+            title: t('clearSidebarTitle', 'Clear Sidebar Cache'),
+            message: t('clearSidebarConfirm', 'This will clear all cached sidebar filter data.')
         },
         run: function($btn) {
             if (getStatValue('sidebar_cache_count') === 0) {
-                showToast('No Sidebar Cache', 'Sidebar cache is already empty.', 'info', 3000);
+                showToast(t('noCacheTitle', 'No Cache to Clear'), t('noCacheBody', 'All cache is already empty.'), 'info', 3000);
                 return;
             }
             clearCacheType('sidebar', $btn);
@@ -484,12 +487,12 @@ jQuery(document).ready(function($) {
 
     bindClearButton('#hvnly-clear-terms-cache', {
         confirm: {
-            title: 'Clear Terms Cache',
-            message: 'This will clear all cached taxonomy terms used in filters.'
+            title: t('clearTermsTitle', 'Clear Terms Cache'),
+            message: t('clearTermsConfirm', 'This will clear all cached taxonomy terms used in filters.')
         },
         run: function($btn) {
             if (getStatValue('term_cache_count') === 0) {
-                showToast('No Terms Cache', 'Terms cache is already empty.', 'info', 3000);
+                showToast(t('noCacheTitle', 'No Cache to Clear'), t('noCacheBody', 'All cache is already empty.'), 'info', 3000);
                 return;
             }
             clearCacheType('terms', $btn);
@@ -498,8 +501,8 @@ jQuery(document).ready(function($) {
 
     bindClearButton('#hvnly-clear-shortcode-cache', {
         confirm: {
-            title: 'Clear All Shortcode Cache',
-            message: 'This will clear all cached shortcode outputs (grid, list, search). Fresh content will render on the next page load.'
+            title: t('clearShortcodeTitle', 'Clear All Shortcode Cache'),
+            message: t('clearShortcodeConfirm', 'This will clear all cached shortcode outputs (grid, list, search). Fresh content will render on the next page load.')
         },
         run: function($btn) {
             clearShortcodeCache('all', $btn);
@@ -526,8 +529,8 @@ jQuery(document).ready(function($) {
 
     bindClearButton('#hvnly-clear-dynamic-css', {
         confirm: {
-            title: 'Clear Dynamic CSS Cache',
-            message: 'This will clear generated dynamic CSS. Styles will regenerate on the next frontend request.'
+            title: t('clearCssTitle', 'Clear Dynamic CSS Cache'),
+            message: t('clearCssConfirm', 'This will clear generated dynamic CSS. Styles will regenerate on the next frontend request.')
         },
         run: function($btn) {
             clearDynamicCss($btn);
@@ -541,7 +544,7 @@ jQuery(document).ready(function($) {
 
     // Settings saved toast
     if (sessionStorage.getItem('hvnly_settings_saved') === 'true') {
-        showToast('Settings Saved', 'Your cache settings have been updated successfully.', 'success', 4000);
+        showToast(t('settingsSaved', 'Settings Saved'), t('settingsSavedBody', 'Cache settings have been saved.'), 'success', 4000);
         sessionStorage.removeItem('hvnly_settings_saved');
     }
 

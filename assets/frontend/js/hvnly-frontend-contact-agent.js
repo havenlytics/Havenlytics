@@ -184,22 +184,22 @@
 		switch (name) {
 			case 'sender_name':
 				if (!trimmed) {
-					return getI18n('validationNameRequired', 'Please enter your full name.');
+					return getI18n('validationNameRequired');
 				}
 				if (trimmed.length < rules.nameMinLength) {
-					return getI18n('validationNameMin', 'Please enter your full name.');
+					return getI18n('validationNameMin');
 				}
 				if (trimmed.length > rules.nameMaxLength) {
-					return getI18n('validationNameMax', 'Your name is too long.');
+					return getI18n('validationNameMax');
 				}
 				return '';
 
 			case 'sender_email':
 				if (!trimmed) {
-					return getI18n('validationEmailRequired', 'Email address is required.');
+					return getI18n('validationEmailRequired');
 				}
 				if (!isValidEmail(trimmed) || trimmed.length > rules.emailMaxLength) {
-					return getI18n('validationEmailInvalid', 'Please enter a valid email address.');
+					return getI18n('validationEmailInvalid');
 				}
 				return '';
 
@@ -208,31 +208,28 @@
 					return '';
 				}
 				if (trimmed.length > rules.phoneMaxLength) {
-					return getI18n('validationPhoneMax', 'Your phone number is too long.');
+					return getI18n('validationPhoneMax');
 				}
 				if (!isValidPhone(trimmed)) {
-					return getI18n('validationPhoneInvalid', 'Please enter a valid phone number.');
+					return getI18n('validationPhoneInvalid');
 				}
 				return '';
 
 			case 'message':
 				if (!trimmed) {
-					return getI18n('validationMessageRequired', 'Message is required.');
+					return getI18n('validationMessageRequired');
 				}
 				if (trimmed.length < rules.messageMinLength) {
-					return getI18n(
-						'validationMessageMin',
-						'Message must contain at least ' + rules.messageMinLength + ' characters.'
-					);
+					return getI18n('validationMessageMin');
 				}
 				if (trimmed.length > rules.messageMaxLength) {
-					return getI18n('validationMessageMax', 'Your message is too long.');
+					return getI18n('validationMessageMax');
 				}
 				return '';
 
 			case 'privacy':
 				if (!value || value === false) {
-					return getI18n('validationPrivacyRequired', 'Please accept the Privacy Policy.');
+					return getI18n('validationPrivacyRequired');
 				}
 				return '';
 
@@ -524,7 +521,7 @@
 		var agentName = agentData.agentName || '';
 		var titleNode = modal.querySelector('.js-hvnly-contact-agent-modal-title');
 		if (titleNode && agentName) {
-			titleNode.textContent = formatI18n('contactTitle', 'Contact %s', agentName);
+			titleNode.textContent = formatI18n('contactTitle', agentName);
 		}
 
 		var nameNode = modal.querySelector('.js-hvnly-contact-agent-chip-name');
@@ -552,7 +549,7 @@
 		var submitBtn = modal.querySelector('.js-hvnly-contact-agent-submit');
 		if (submitBtn && agentName && !submitBtn.classList.contains('is-loading')) {
 			var label = submitBtn.querySelector('.hvnly-contact-agent__btn-label');
-			var text = formatI18n('sendTo', 'Send to %s', agentName);
+			var text = formatI18n('sendTo', agentName);
 			if (label) {
 				label.textContent = text;
 			} else {
@@ -562,9 +559,9 @@
 		}
 	}
 
-	function formatI18n(key, fallback, value) {
-		var template = getI18n(key, fallback);
-		return template.indexOf('%s') !== -1 ? template.replace('%s', value) : template + ' ' + value;
+	function formatI18n(key, value) {
+		var template = getI18n(key) || '';
+		return template.indexOf('%s') !== -1 ? template.replace('%s', value) : (template ? template + ' ' + value : String(value || ''));
 	}
 
 	function closeModal() {
@@ -628,15 +625,12 @@
 
 		var message =
 			(responseData && responseData.message) ||
-			getI18n('success', 'Thank you. Your message has been received.');
+			getI18n('success');
 		var referenceId = responseData && responseData.inquiryId ? formatReferenceId(responseData.inquiryId) : '';
-		var title = getI18n('successTitle', 'Inquiry Sent Successfully');
-		var subtitle = getI18n(
-			'successSubtitle',
-			'Thank you for contacting us. Your inquiry has been received successfully.'
-		);
-		var responseTime = getI18n('successResponseTime', 'Within 1 business day.');
-		var referenceLabel = getI18n('successReferenceLabel', 'Reference ID');
+		var title = getI18n('successTitle');
+		var subtitle = getI18n('successSubtitle');
+		var responseTime = getI18n('successResponseTime');
+		var referenceLabel = getI18n('successReferenceLabel');
 
 		feedback.innerHTML =
 			'<div class="hvnly-inquiry-form__notice-card">' +
@@ -658,7 +652,7 @@
 				  '</span></p>'
 				: '') +
 			'<p class="hvnly-inquiry-form__notice-meta"><strong>' +
-			escapeHtml(getI18n('successResponseLabel', 'Expected response time')) +
+			escapeHtml(getI18n('successResponseLabel')) +
 			':</strong> ' +
 			escapeHtml(responseTime) +
 			'</p>' +
@@ -684,8 +678,8 @@
 			return;
 		}
 
-		var title = getI18n('errorTitle', 'Unable to send your inquiry');
-		var hint = getI18n('errorHint', 'Please try again in a few minutes or contact us directly.');
+		var title = getI18n('errorTitle');
+		var hint = getI18n('errorHint');
 
 		feedback.innerHTML =
 			'<div class="hvnly-inquiry-form__notice-card">' +
@@ -694,7 +688,7 @@
 			escapeHtml(title) +
 			'</h3>' +
 			'<p class="hvnly-inquiry-form__notice-body">' +
-			escapeHtml(message || getI18n('error', 'Something went wrong. Please try again.')) +
+			escapeHtml(message || getI18n('error')) +
 			'</p>' +
 			'<p class="hvnly-inquiry-form__notice-meta">' +
 			escapeHtml(hint) +
@@ -730,7 +724,7 @@
 				submitBtn.innerHTML =
 					'<span class="hvnly-contact-agent__btn-spinner" aria-hidden="true"></span>' +
 					'<span class="hvnly-contact-agent__btn-label">' +
-					escapeHtml(getI18n('submitting', 'Sending...')) +
+					escapeHtml(getI18n('submitting')) +
 					'</span>';
 			} else if (submitBtn.dataset.originalHtml) {
 				submitBtn.innerHTML = submitBtn.dataset.originalHtml;
@@ -798,17 +792,11 @@
 			var trimmed = xhr.responseText.trim();
 
 			if (trimmed === '0') {
-				return getI18n(
-					'handlerMissing',
-					'Contact form endpoint is unavailable. Please refresh the page or contact the site administrator.'
-				);
+				return getI18n('handlerMissing');
 			}
 
 			if (trimmed === '-1') {
-				return getI18n(
-					'sessionExpired',
-					'Security token expired. Please refresh the page and try again.'
-				);
+				return getI18n('sessionExpired');
 			}
 		}
 
@@ -854,7 +842,7 @@
 		var errorMessage =
 			(response && response.data && response.data.message) ||
 			extractErrorMessage(xhr) ||
-			getI18n('error', 'Something went wrong. Please try again.');
+			getI18n('error');
 
 		showErrorNotice(form, errorMessage);
 	}
@@ -891,7 +879,7 @@
 		}
 
 		if (!config.nonce) {
-			showErrorNotice(form, getI18n('error', 'Something went wrong. Please try again.'));
+			showErrorNotice(form, getI18n('error'));
 			return;
 		}
 

@@ -510,6 +510,12 @@ final class DemoAgentAgencyImporter {
 			return 0;
 		}
 
+		if ( class_exists( '\HvnlyNab\Admin\Data\DemoContentLocalizer' ) ) {
+			\HvnlyNab\Admin\Data\DemoContentLocalizer::mark_demo_post( absint( $post_id ) );
+		} else {
+			update_post_meta( absint( $post_id ), '_hvnly_is_demo', '1' );
+		}
+
 		return absint( $post_id );
 	}
 

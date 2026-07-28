@@ -7,6 +7,9 @@
 (function($) {
     'use strict';
 
+    const i18n = (window.HvnlyVideoField && window.HvnlyVideoField.i18n) || {};
+    const t = (key, fallback) => (i18n[key] && String(i18n[key])) || fallback;
+
     class HavenlyticsVideoField {
         constructor(containerId, $container) {
             this.containerId = containerId;
@@ -90,9 +93,9 @@
 
             // Create new media frame
             this.mediaFrame = wp.media({
-                title: 'Select or Upload Image',
+                title: t('selectImage', 'Select or Upload Image'),
                 button: {
-                    text: 'Use this image'
+                    text: t('useThisImage', 'Use this image')
                 },
                 multiple: false,
                 library: {
@@ -126,7 +129,7 @@
                 // Validate image type
                 const isValid = /\.(jpe?g|png|gif|webp|bmp)$/i.test(fileUrl) || (attachment.mime && attachment.mime.startsWith('image/'));
                 if (!isValid) {
-                    alert('Please select a valid image file (JPG, PNG, GIF, WEBP, BMP).');
+                    alert(t('invalidImage', 'Please select a valid image file (JPG, PNG, GIF, WEBP, BMP).'));
                     self.isSelecting = false;
                     return;
                 }

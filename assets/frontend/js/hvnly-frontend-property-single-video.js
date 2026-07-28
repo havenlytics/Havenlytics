@@ -115,7 +115,7 @@
         const videoId = card.getAttribute('data-video-id');
         
         if (!videoSource || !videoId) {
-            alert('Video cannot be played');
+            alert((window.hvnly_property_data && window.hvnly_property_data.i18n && window.hvnly_property_data.i18n.videoCannotPlay) || (window.hvnly_map_params && window.hvnly_map_params.i18n && window.hvnly_map_params.i18n.videoCannotPlay) || '');
             return;
         }
         

@@ -2,6 +2,8 @@
 
 namespace HvnlyNab\Admin;
 
+use HvnlyNab\I18n\ScriptTranslations;
+
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
@@ -48,12 +50,22 @@ final class Assets
             'script' => '0.js',
             'style'  => '0.css',
         ],
-        'analytics_page_hvnly_analytics_overview' => [
-            'folder' => 'reports',
-            'asset'  => 'reports.asset.php',
-            'script' => '0.js',
-            'style'  => '0.css',
-        ],
+    ];
+
+    /**
+     * Reports bundle config (Analytics top-level + Overview submenu).
+     *
+     * Overview must not be keyed by a locale-dependent hook suffix.
+     *
+     * @var array{handle: string, folder: string, asset: string, script: string, style: string, localize: bool}
+     */
+    private const REPORTS_PAGE_ASSETS = [
+        'handle'   => 'hvlynab-reports-admin',
+        'folder'   => 'reports',
+        'asset'    => 'reports.asset.php',
+        'script'   => 'reports.js',
+        'style'    => 'reports.css',
+        'localize' => true,
     ];
 
     public function __construct()
@@ -106,18 +118,24 @@ final class Assets
      */
     public function admin_enqueue_scripts_callback($hook_suffix)
     {
+        $hook_suffix = is_string( $hook_suffix ) ? $hook_suffix : '';
+
+        // Overview submenu hook prefix is locale-dependent (translated parent title).
+        $is_analytics_overview = Menu::is_analytics_overview_request( $hook_suffix );
+
         $allowed_pages = [
             'hvnly_property_page_hvnly_property_settings',
             'hvnly_property_page_hvnly_property_builder',
             'hvnly_property_page_hvnly_property_reports_analytics',
             'toplevel_page_hvnly_property_builder',
             'toplevel_page_hvnly_property_reports_analytics',
-            'analytics_page_hvnly_analytics_overview',
             'toplevel_page_hvnly_inquiries',
             'marketing_page_hvnly_marketing_inquiries',
             'hvnly_property_page_hvnly_property_cache',
             'hvnly_property_page_hvnly-property-setup',
         ];
+
+        $is_plugin_admin_page = in_array( $hook_suffix, $allowed_pages, true ) || $is_analytics_overview;
 
         $default_version = defined('HVNLYNAB_VERSION') ? HVNLYNAB_VERSION : '1.0.0';
 
@@ -139,7 +157,7 @@ final class Assets
             );
         }
 
-        if (in_array($hook_suffix, $allowed_pages, true)) {
+        if ( $is_plugin_admin_page ) {
             $this->enqueue_admin_fonts_styles($default_version);
         }
 
@@ -159,24 +177,28 @@ final class Assets
             || $hook_suffix === 'hvnly_property_page_hvnly_property_reports_analytics'
             || $hook_suffix === 'toplevel_page_hvnly_property_builder'
             || $hook_suffix === 'toplevel_page_hvnly_property_reports_analytics'
-            || $hook_suffix === 'analytics_page_hvnly_analytics_overview'
+            || $is_analytics_overview
             || $hook_suffix === 'toplevel_page_hvnly_inquiries'
             || $hook_suffix === 'marketing_page_hvnly_marketing_inquiries'
         ) {
             $this->enqueue_admin_boot_styles($default_version);
         }
 
-        // Agent CPT screens (list + edit) need brand tokens for branded menu states.
+        // Agent CPT screens (list + edit + add-new) need brand tokens for menu states.
+        // Prefer current_screen: post.php edit URLs omit ?post_type=.
+        $screen             = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+        $screen_post_type   = ( $screen && isset( $screen->post_type ) ) ? (string) $screen->post_type : '';
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only enqueue routing.
-        $post_type = isset($_GET['post_type']) ? sanitize_key( wp_unslash( (string) $_GET['post_type'] ) ) : '';
+        $query_post_type    = isset( $_GET['post_type'] ) ? sanitize_key( wp_unslash( (string) $_GET['post_type'] ) ) : '';
+        $is_agent_admin_cpt = in_array( 'hvnly_agent', array( $screen_post_type, $query_post_type ), true );
         if (
             in_array( $hook_suffix, [ 'edit.php', 'post.php', 'post-new.php' ], true )
-            && 'hvnly_agent' === $post_type
+            && $is_agent_admin_cpt
         ) {
             $this->enqueue_admin_boot_styles($default_version);
         }
 
-        if (!in_array($hook_suffix, $allowed_pages, true)) {
+        if ( ! $is_plugin_admin_page ) {
             return;
         }
 
@@ -205,35 +227,14 @@ final class Assets
                 'style'    => 'builder.css',
                 'localize' => true,
             ],
-            'hvnly_property_page_hvnly_property_reports_analytics' => [
-                'handle'   => 'hvlynab-reports-admin',
-                'folder'   => 'reports',
-                'asset'    => 'reports.asset.php',
-                'script'   => 'reports.js',
-                'style'    => 'reports.css',
-                'localize' => true,
-            ],
-            'toplevel_page_hvnly_property_reports_analytics' => [
-                'handle'   => 'hvlynab-reports-admin',
-                'folder'   => 'reports',
-                'asset'    => 'reports.asset.php',
-                'script'   => 'reports.js',
-                'style'    => 'reports.css',
-                'localize' => true,
-            ],
-            'analytics_page_hvnly_analytics_overview' => [
-                'handle'   => 'hvlynab-reports-admin',
-                'folder'   => 'reports',
-                'asset'    => 'reports.asset.php',
-                'script'   => 'reports.js',
-                'style'    => 'reports.css',
-                'localize' => true,
-            ],
+            'hvnly_property_page_hvnly_property_reports_analytics' => self::REPORTS_PAGE_ASSETS,
+            'toplevel_page_hvnly_property_reports_analytics'       => self::REPORTS_PAGE_ASSETS,
         ];
 
-        if (isset($pages[$hook_suffix])) {
-            $page = $pages[$hook_suffix];
-            $this->enqueue_page_assets($page, $default_version);
+        if ( isset( $pages[ $hook_suffix ] ) ) {
+            $this->enqueue_page_assets( $pages[ $hook_suffix ], $default_version );
+        } elseif ( $is_analytics_overview ) {
+            $this->enqueue_page_assets( self::REPORTS_PAGE_ASSETS, $default_version );
         }
     }
 
@@ -395,6 +396,9 @@ final class Assets
             true
         );
 
+        // Required for React __() / @wordpress/i18n — must use the real enqueue handle.
+        ScriptTranslations::attach($page['handle']);
+
         $css_file = HVNLYNAB_BUILD_PATH . '/' . $page['folder'] . '/' . $style_name;
         if (file_exists($css_file)) {
             wp_enqueue_style(
@@ -463,6 +467,18 @@ final class Assets
                     // Settings footer + cache-safe boot payload (never hardcode).
                     'version' => defined( 'HVNLYNAB_VERSION' ) ? (string) HVNLYNAB_VERSION : '',
                     'pluginVersion' => defined( 'HVNLYNAB_VERSION' ) ? (string) HVNLYNAB_VERSION : '',
+                    // PHP-localized boot chrome stages (Option A — no Jed for preloader text).
+                    'boot' => array(
+                        'stages' => array(
+                            'loading'                 => __( 'Loading…', 'havenlytics' ),
+                            'loading_settings'        => __( 'Loading settings…', 'havenlytics' ),
+                            'ready'                   => __( 'Ready', 'havenlytics' ),
+                            'loading_configuration'   => __( 'Loading configuration…', 'havenlytics' ),
+                            'configuration_loaded'    => __( 'Configuration loaded', 'havenlytics' ),
+                            'loading_analytics'       => __( 'Loading analytics…', 'havenlytics' ),
+                            'loading_charts'          => __( 'Loading charts and reports…', 'havenlytics' ),
+                        ),
+                    ),
                 ]
             );
         }
@@ -608,7 +624,7 @@ final class Assets
 
     /**
      * Admin bundles externalize React (window.React / window.ReactDOM). Ensure core
-     * vendor scripts are registered and keep react + react-dom in the dependency list.
+     * vendor scripts are registered and keep react + react-dom + wp-i18n in the dependency list.
      *
      * @param array<int, string> $dependencies Asset dependencies from the build manifest.
      * @return array<int, string>
@@ -621,6 +637,12 @@ final class Assets
 
         if (!in_array('wp-element', $normalized, true)) {
             $normalized[] = 'wp-element';
+        }
+
+        // React admin UI uses @wordpress/i18n (__ / _x / _n). Keep the dependency
+        // even if an older asset.php omitted it so locale data can load.
+        if (!in_array('wp-i18n', $normalized, true)) {
+            $normalized[] = 'wp-i18n';
         }
 
         if (!in_array('react', $normalized, true)) {
@@ -676,11 +698,16 @@ final class Assets
         }
 
         $screen = function_exists('get_current_screen') ? get_current_screen() : null;
-        if (!$screen || !isset(self::REACT_BUILD_PAGES[$screen->id])) {
+        if ( ! $screen ) {
             return;
         }
 
-        $missing = self::get_missing_react_build_asset_paths($screen->id);
+        $build_page = self::resolve_react_build_page( $screen );
+        if ( null === $build_page ) {
+            return;
+        }
+
+        $missing = self::get_missing_react_build_asset_paths_for_page( $build_page );
         if ($missing === []) {
             return;
         }
@@ -702,16 +729,48 @@ final class Assets
     }
 
     /**
+     * Resolve React build metadata for the current admin screen.
+     *
+     * Analytics Overview uses a locale-dependent screen ID; match via page slug.
+     *
+     * @param \WP_Screen $screen Current screen.
+     * @return array{folder: string, asset: string, script: string, style: string}|null
+     */
+    private static function resolve_react_build_page( \WP_Screen $screen ): ?array {
+        if ( isset( self::REACT_BUILD_PAGES[ $screen->id ] ) ) {
+            return self::REACT_BUILD_PAGES[ $screen->id ];
+        }
+
+        if ( Menu::is_analytics_overview_request() ) {
+            return self::REACT_BUILD_PAGES['toplevel_page_hvnly_property_reports_analytics'];
+        }
+
+        return null;
+    }
+
+    /**
      * @param string $screen_id Current admin screen ID.
      * @return string[] Plugin-relative paths that are missing on disk.
      */
     private static function get_missing_react_build_asset_paths(string $screen_id): array
     {
-        if (!defined('HVNLYNAB_BUILD_PATH') || !isset(self::REACT_BUILD_PAGES[$screen_id])) {
+        if ( ! isset( self::REACT_BUILD_PAGES[ $screen_id ] ) ) {
             return [];
         }
 
-        $page       = self::REACT_BUILD_PAGES[$screen_id];
+        return self::get_missing_react_build_asset_paths_for_page( self::REACT_BUILD_PAGES[ $screen_id ] );
+    }
+
+    /**
+     * @param array{folder: string, asset: string, script: string, style: string} $page Build page config.
+     * @return string[] Plugin-relative paths that are missing on disk.
+     */
+    private static function get_missing_react_build_asset_paths_for_page( array $page ): array
+    {
+        if (!defined('HVNLYNAB_BUILD_PATH')) {
+            return [];
+        }
+
         $build_dir  = HVNLYNAB_BUILD_PATH . '/' . $page['folder'];
         $asset_file = $build_dir . '/' . $page['asset'];
         $script     = $page['script'];

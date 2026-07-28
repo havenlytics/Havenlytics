@@ -79,13 +79,13 @@ final class AgentAdminMenu {
 	}
 
 	/**
-	 * Keep the Agents menu highlighted on agency taxonomy screens.
+	 * Keep the Agents menu highlighted on all agent CPT and agency taxonomy screens.
 	 *
 	 * @param string $parent_file Parent menu file.
 	 * @return string
 	 */
 	public function highlight_parent_menu( string $parent_file ): string {
-		if ( $this->is_agency_taxonomy_screen() ) {
+		if ( $this->is_agency_taxonomy_screen() || $this->is_agent_post_screen() ) {
 			return self::MENU_SLUG;
 		}
 
@@ -93,18 +93,64 @@ final class AgentAdminMenu {
 	}
 
 	/**
-	 * Highlight the Agencies submenu on taxonomy screens.
+	 * Highlight the correct Agents submenu (All Agents / Add New / Agencies).
 	 *
 	 * @param string|null $submenu_file Submenu file.
 	 * @param string      $parent_file  Parent menu file.
 	 * @return string|null
 	 */
 	public function highlight_submenu( $submenu_file, string $parent_file ) {
-		if ( ! $this->is_agency_taxonomy_screen() ) {
+		unset( $parent_file );
+
+		if ( $this->is_agency_taxonomy_screen() ) {
+			return self::AGENCIES_SUBMENU_SLUG;
+		}
+
+		if ( ! $this->is_agent_post_screen() ) {
 			return $submenu_file;
 		}
 
-		return self::AGENCIES_SUBMENU_SLUG;
+		global $pagenow;
+
+		if ( 'post-new.php' === $pagenow ) {
+			return 'post-new.php?post_type=' . AgentConstants::POST_TYPE;
+		}
+
+		// List + edit existing agent → All Agents.
+		return self::MENU_SLUG;
+	}
+
+	/**
+	 * Detect Agents list / edit / add-new admin screens.
+	 *
+	 * @return bool
+	 */
+	private function is_agent_post_screen(): bool {
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( $screen && AgentConstants::POST_TYPE === $screen->post_type ) {
+			return true;
+		}
+
+		global $pagenow;
+		if ( ! in_array( $pagenow, array( 'edit.php', 'post.php', 'post-new.php' ), true ) ) {
+			return false;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only menu routing.
+		if ( isset( $_GET['post_type'] ) && AgentConstants::POST_TYPE === sanitize_key( wp_unslash( (string) $_GET['post_type'] ) ) ) {
+			return true;
+		}
+
+		// post.php?post={id}&action=edit has no post_type query arg.
+		if ( 'post.php' === $pagenow ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only menu routing.
+			$post_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
+			if ( $post_id > 0 && AgentConstants::POST_TYPE === get_post_type( $post_id ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**

@@ -29,6 +29,6 @@ if ( empty( $hvnly_value ) && $hvnly_value !== 0 && $hvnly_value !== '0' ) {
 }
 ?>
 <div class="hvnly-field hvnly-field--preset-bedrooms hvnly-field--<?php echo esc_attr( sanitize_title( $hvnly_name ) ); ?>">
-    <strong class="hvnly-field__label"><?php echo esc_html( $hvnly_label ); ?>:</strong>
+    <strong class="hvnly-field__label"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_label ) ) : esc_html( $hvnly_label ); ?>:</strong>
     <span class="hvnly-field__value"><?php echo esc_html( $hvnly_value ); ?></span>
 </div>

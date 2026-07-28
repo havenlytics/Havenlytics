@@ -409,7 +409,7 @@
 			return cfg.savedPropertiesUrl
 				? [
 						{
-							label: t.viewFavorites || 'View Favorites',
+							label: t.viewFavorites || '',
 							variant: 'primary',
 							onClick: function () {
 								window.location.href = cfg.savedPropertiesUrl;
@@ -422,7 +422,7 @@
 		return cfg.loginUrl
 			? [
 					{
-						label: t.login || 'Login',
+						label: t.login || '',
 						variant: 'primary',
 						onClick: function () {
 							window.location.href = cfg.loginUrl;
@@ -451,7 +451,7 @@
 
 		toast.show( {
 			type: 'favorite',
-			title: t.addedTitle || 'Added to Favorites',
+			title: t.addedTitle || '',
 			// The property name is the message line: one line, truncated.
 			message: meta.title,
 			thumbnail: meta.thumb,
@@ -460,7 +460,7 @@
 			// One toast per property: hammering the heart replaces rather
 			// than stacks.
 			dedupeKey: 'hvnly-favorite-' + id,
-			dismissLabel: t.dismiss || 'Dismiss notification',
+			dismissLabel: t.dismiss || '',
 		} );
 	}
 
@@ -483,12 +483,12 @@
 
 		toast.show( {
 			type: 'unfavorite',
-			title: t.removedTitle || 'Removed from Favorites',
+			title: t.removedTitle || '',
 			message: meta.title,
 			thumbnail: meta.thumb,
 			actions: [
 				{
-					label: t.undo || 'Undo',
+					label: t.undo || '',
 					variant: 'secondary',
 					onClick: function () {
 						// Re-add through the normal path so REST, local
@@ -500,7 +500,7 @@
 			],
 			duration: FAVORITE_TOAST_MS,
 			dedupeKey: 'hvnly-favorite-' + id,
-			dismissLabel: t.dismiss || 'Dismiss notification',
+			dismissLabel: t.dismiss || '',
 		} );
 	}
 
@@ -615,8 +615,7 @@
 				const toast = toastManager();
 				if ( toast ) {
 					toast.error(
-						( cfg.toast && cfg.toast.errorTitle ) ||
-							'Could not update favorites',
+						( cfg.toast && cfg.toast.errorTitle ) || '',
 						message,
 						{ dedupeKey: 'hvnly-favorite-' + id }
 					);
@@ -731,7 +730,7 @@
 
 				// Re-read the authoritative set so the UI reflects exactly
 				// what was stored (invalid or over-limit ids were dropped).
-				return request( 'GET', '/ids' ).then( function ( idsJson ) {
+				return request('GET').then( function ( idsJson ) {
 					const ids =
 						( idsJson && idsJson.data && idsJson.data.ids ) || [];
 					setState( ids );

@@ -48,40 +48,36 @@ if ( $hvnly_is_single ) {
 	<?php endif; ?>
 
 	<?php if ( $hvnly_is_single ) : ?>
-		<div class="hvnly-agents-section__layout">
-			<div class="hvnly-agents-section__profile-col">
+		<?php
+		hvnly_get_template_part(
+			'single-property/partials/property-agent-section-card',
+			null,
+			array(
+				'agent'      => $hvnly_agents[0],
+				'is_primary' => true,
+				'layout'     => 'featured',
+			)
+		);
+		?>
+
+		<?php if ( $hvnly_show_form ) : ?>
+			<div class="hvnly-agents-section__form-row">
 				<?php
 				hvnly_get_template_part(
-					'single-property/partials/property-agent-section-card',
+					'single-property/partials/property-agent-section-form',
 					null,
 					array(
-						'agent'      => $hvnly_agents[0],
-						'is_primary' => true,
-						'layout'     => 'featured',
+						'property_id'    => $hvnly_property_id,
+						'property_title' => $hvnly_property_title,
+						'agents'         => $hvnly_agents,
+						'agent'          => $hvnly_agents[0],
+						'section_id'     => $hvnly_group_id,
+						'form_id'        => $hvnly_group_id . '-contact-form',
 					)
 				);
 				?>
 			</div>
-
-			<?php if ( $hvnly_show_form ) : ?>
-				<div class="hvnly-agents-section__form-col">
-					<?php
-					hvnly_get_template_part(
-						'single-property/partials/property-agent-section-form',
-						null,
-						array(
-							'property_id'    => $hvnly_property_id,
-							'property_title' => $hvnly_property_title,
-							'agents'         => $hvnly_agents,
-							'agent'          => $hvnly_agents[0],
-							'section_id'     => $hvnly_group_id,
-							'form_id'        => $hvnly_group_id . '-contact-form',
-						)
-					);
-					?>
-				</div>
-			<?php endif; ?>
-		</div>
+		<?php endif; ?>
 	<?php else : ?>
 		<div class="hvnly-agents-section__grid">
 			<?php

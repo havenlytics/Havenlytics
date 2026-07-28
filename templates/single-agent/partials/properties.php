@@ -76,7 +76,7 @@ if ( is_wp_error( $hvnly_department_terms ) ) {
 							role="tab"
 							aria-selected="false"
 						>
-							<?php echo esc_html( $hvnly_dept_term->name ); ?>
+							<?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_dept_term->name ) ) : esc_html( $hvnly_dept_term->name ); ?>
 						</button>
 					</li>
 				<?php endforeach; ?>

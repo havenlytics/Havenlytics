@@ -1,0 +1,2981 @@
+{
+    "translation-revision-date": "2026-07-28 16:15:36+0000",
+    "generator": "Havenlytics hvlynab-settings-admin ru_RU package",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "plural-forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);",
+                "lang": "ru"
+            },
+            "0px": [
+                "0px"
+            ],
+            "1 000.00 (Space separator)": [
+                "1 000.00 (разделитель — пробел)"
+            ],
+            "1 Column": [
+                "1 колонка"
+            ],
+            "1,000.00 (Comma separator)": [
+                "1,000.00 (разделитель — запятая)"
+            ],
+            "1.000,00 (Dot separator)": [
+                "1.000,00 (разделитель — точка)"
+            ],
+            "10 (City Level)": [
+                "10 (уровень города)"
+            ],
+            "100% (Full Width)": [
+                "100% (на всю ширину)"
+            ],
+            "10px": [
+                "10px"
+            ],
+            "1140px": [
+                "1140px"
+            ],
+            "12 (Street Level)": [
+                "12 (уровень улицы)"
+            ],
+            "1200px": [
+                "1200px"
+            ],
+            "1220px": [
+                "1220px"
+            ],
+            "1240px": [
+                "1240px"
+            ],
+            "1320px": [
+                "1320px"
+            ],
+            "1399px": [
+                "1399px"
+            ],
+            "14 (Detailed)": [
+                "14 (подробно)"
+            ],
+            "1400px": [
+                "1400px"
+            ],
+            "16 (Building Level)": [
+                "16 (уровень здания)"
+            ],
+            "1600px": [
+                "1600px"
+            ],
+            "18 (Very Detailed)": [
+                "18 (очень подробно)"
+            ],
+            "1800px": [
+                "1800px"
+            ],
+            "2 Columns": [
+                "2 колонки"
+            ],
+            "20px": [
+                "20px"
+            ],
+            "24 Per Page": [
+                "24 на странице"
+            ],
+            "2X Large (XXL) - Desktop (1200px - 1439px)": [
+                "2X большой (XXL) — десктоп (1200px - 1439px)"
+            ],
+            "3 Columns": [
+                "3 колонки"
+            ],
+            "30px": [
+                "30px"
+            ],
+            "3X Large (XXXL) - Large Desktop (1440px - 1919px)": [
+                "3X большой (XXXL) — большой десктоп (1440px - 1919px)"
+            ],
+            "4 Columns": [
+                "4 колонки"
+            ],
+            "4K \/ Ultra HD (2560px and above)": [
+                "4K \/ Ultra HD (2560px и выше)"
+            ],
+            "5 Columns": [
+                "5 колонок"
+            ],
+            "540px": [
+                "540px"
+            ],
+            "6 Columns": [
+                "6 колонок"
+            ],
+            "6 Per Page": [
+                "6 на странице"
+            ],
+            "720px": [
+                "720px"
+            ],
+            "8 (Far - City Level)": [
+                "8 (далеко — уровень города)"
+            ],
+            "960px": [
+                "960px"
+            ],
+            "A Migration job is currently running on this site.": [
+                "На этом сайте сейчас выполняется задача миграции."
+            ],
+            "A preview of your mapped rows was validated below. Rows with errors are skipped automatically during import; the full CSV is re-checked row-by-row as it imports.": [
+                "Ниже показан результат проверки образца сопоставленных строк. Строки с ошибками автоматически пропускаются при импорте; весь CSV повторно проверяется построчно в процессе импорта."
+            ],
+            "A private front-end hub for your agents": [
+                "Закрытый фронтенд-центр для ваших агентов"
+            ],
+            "A to Z (title)": [
+                "А → Я (название)"
+            ],
+            "AJAX Load More": [
+                "AJAX «Загрузить ещё»"
+            ],
+            "AJAX Load More disabled": [
+                "AJAX «Загрузить ещё» отключён"
+            ],
+            "AJAX Load More enabled": [
+                "AJAX «Загрузить ещё» включён"
+            ],
+            "API Key Required": [
+                "Требуется API-ключ"
+            ],
+            "About your registration — {{site_name}}": [
+                "О вашей регистрации — {{site_name}}"
+            ],
+            "Access Control": [
+                "Управление доступом"
+            ],
+            "Account Activated & Archived": [
+                "Аккаунт активирован и архивирован"
+            ],
+            "Account Suspended": [
+                "Аккаунт приостановлен"
+            ],
+            "Actions": [
+                "Действия"
+            ],
+            "Activate Theme": [
+                "Активировать тему"
+            ],
+            "Add %s option": [
+                "Добавить параметр %s"
+            ],
+            "Add Custom": [
+                "Добавить свой"
+            ],
+            "Add Listing": [
+                "Добавить объявление"
+            ],
+            "Add Max Price Option": [
+                "Добавить параметр макс. цены"
+            ],
+            "Add Min Price Option": [
+                "Добавить параметр мин. цены"
+            ],
+            "Add Option": [
+                "Добавить параметр"
+            ],
+            "Add Preset Option": [
+                "Добавить предустановленный параметр"
+            ],
+            "Add Property Page": [
+                "Страница добавления объекта"
+            ],
+            "Add new option": [
+                "Добавить новый параметр"
+            ],
+            "Admin Approval": [
+                "Одобрение администратором"
+            ],
+            "Admin Email Override": [
+                "Замена email администратора"
+            ],
+            "Advanced": [
+                "Расширенные"
+            ],
+            "Advanced Options": [
+                "Дополнительные параметры"
+            ],
+            "Advanced Settings": [
+                "Расширенные настройки"
+            ],
+            "Advanced Tracking": [
+                "Продвинутое отслеживание"
+            ],
+            "Advanced cache management tools remain available under Properties → Cache.": [
+                "Расширенные инструменты управления кэшем по-прежнему доступны в разделе «Объекты → Кэш»."
+            ],
+            "Agencies": [
+                "Агентства"
+            ],
+            "Agencies Archive Slug": [
+                "Ярлык архива агентств"
+            ],
+            "Agency Shortcodes": [
+                "Шорткоды агентств"
+            ],
+            "Agency Single Slug": [
+                "Ярлык страницы агентства"
+            ],
+            "Agent": [
+                "Агент"
+            ],
+            "Agent & Agency Layouts": [
+                "Макеты агентов и агентств"
+            ],
+            "Agent & Agency Shortcodes": [
+                "Шорткоды агентов и агентств"
+            ],
+            "Agent Account Approved": [
+                "Учётная запись агента одобрена"
+            ],
+            "Agent Account Rejected": [
+                "Учётная запись агента отклонена"
+            ],
+            "Agent Login": [
+                "Вход агента"
+            ],
+            "Agent Registration": [
+                "Регистрация агента"
+            ],
+            "Agent Registration Welcome": [
+                "Приветствие при регистрации агента"
+            ],
+            "Agent Shortcodes": [
+                "Шорткоды агентов"
+            ],
+            "Agent Single Slug": [
+                "Ярлык страницы агента"
+            ],
+            "Agent Workspace": [
+                "Рабочая область агента"
+            ],
+            "Agent Workspace Quick Start": [
+                "Быстрый старт рабочей области агента"
+            ],
+            "Agent Workspace sections": [
+                "Разделы рабочей области агента"
+            ],
+            "Agent accounts & security": [
+                "Учётные записи агентов и безопасность"
+            ],
+            "Agents": [
+                "Агенты"
+            ],
+            "Agents Archive Slug": [
+                "Ярлык архива агентов"
+            ],
+            "Agents Base": [
+                "База агентов"
+            ],
+            "Agents can manage listings and inquiries without entering WordPress admin. Contact Agent sends property inquiries to the assigned agent and keeps workspace notifications in one place.": [
+                "Агенты могут управлять объявлениями и запросами без входа в админку WordPress. Contact Agent отправляет запросы по объектам назначенному агенту и собирает уведомления рабочей области в одном месте."
+            ],
+            "Agents receive welcome, verification, or invitation emails.": [
+                "Агенты получают письма с приветствием, подтверждением или приглашением."
+            ],
+            "Agents securely reset an existing password.": [
+                "Агенты безопасно сбрасывают существующий пароль."
+            ],
+            "Agents sign in": [
+                "Вход агентов"
+            ],
+            "All Agents": [
+                "Все агенты"
+            ],
+            "All Categories": [
+                "Все категории"
+            ],
+            "All Courses": [
+                "Все курсы"
+            ],
+            "All Listings": [
+                "Все объявления"
+            ],
+            "All Locations": [
+                "Все расположения"
+            ],
+            "Allow Guest Login": [
+                "Разрешить вход гостя"
+            ],
+            "Allow access to Administrators": [
+                "Разрешить доступ администраторам"
+            ],
+            "Allow access to Editors": [
+                "Разрешить доступ редакторам"
+            ],
+            "Allow custom value input": [
+                "Разрешить ввод произвольного значения"
+            ],
+            "Allow registered users to save properties to their favorites list.": [
+                "Разрешить зарегистрированным пользователям сохранять объекты в избранное."
+            ],
+            "Allow registration when needed": [
+                "Разрешать регистрацию при необходимости"
+            ],
+            "Allow users to print property details directly from the property page.": [
+                "Разрешить пользователям печатать сведения об объекте прямо со страницы объекта."
+            ],
+            "Allow users to zoom the map using mouse scroll wheel.": [
+                "Разрешить пользователям масштабировать карту колёсиком мыши."
+            ],
+            "Another Migration job may be locked. Wait for it to finish or cancel it before starting a new one.": [
+                "Возможно, заблокирована другая задача миграции. Дождитесь её завершения или отмените её, прежде чем запускать новую."
+            ],
+            "Any": [
+                "Любой"
+            ],
+            "Apartment for Rent": [
+                "Квартира в аренду"
+            ],
+            "Applies to Properties and Agents. When disabled, the classic editor is used (default).": [
+                "Применяется к объектам и агентам. При отключении используется классический редактор (по умолчанию)."
+            ],
+            "Apply builder policy": [
+                "Применить правило для конструкторов"
+            ],
+            "Archive Container Width": [
+                "Ширина контейнера архива"
+            ],
+            "Are you sure you want to reset all settings? This cannot be undone.": [
+                "Вы уверены, что хотите сбросить все настройки? Это действие нельзя отменить."
+            ],
+            "Area \/ Square Footage": [
+                "Площадь \/ квадратные футы"
+            ],
+            "Author Profile": [
+                "Профиль автора"
+            ],
+            "Auto-reply to Sender": [
+                "Автоответ отправителю"
+            ],
+            "Automatically switch to Leaflet (OpenStreetMap) when Google Maps quota is exceeded. This ensures your map never breaks.": [
+                "Автоматически переключаться на Leaflet (OpenStreetMap), когда превышена квота Google Maps. Так карта не перестанет работать."
+            ],
+            "Available merge tags: {{sender_name}}, {{agent_name}}, {{property_title}}, {{property_url}}, {{site_name}}, {{site_url}}": [
+                "Доступные теги слияния: {{sender_name}}, {{agent_name}}, {{property_title}}, {{property_url}}, {{site_name}}, {{site_url}}"
+            ],
+            "Available merge tags: {{user_name}}, {{user_email}}, {{import_count}}, {{properties_url}}, {{site_name}}, {{site_url}}": [
+                "Доступные merge-теги: {{user_name}}, {{user_email}}, {{import_count}}, {{properties_url}}, {{site_name}}, {{site_url}}"
+            ],
+            "Back": [
+                "Назад"
+            ],
+            "Badges": [
+                "Значки"
+            ],
+            "Baseline capabilities for Workspace agents. Administrators always retain full access.": [
+                "Базовые возможности для агентов Workspace. Администраторы всегда сохраняют полный доступ."
+            ],
+            "Basic List": [
+                "Базовый список"
+            ],
+            "Basic List Views": [
+                "Основные виды списка"
+            ],
+            "Basic Shortcodes": [
+                "Основные шорткоды"
+            ],
+            "Basic Tracking": [
+                "Базовое отслеживание"
+            ],
+            "Bathrooms": [
+                "Ванные"
+            ],
+            "Bathrooms Filter": [
+                "Фильтр по ванным"
+            ],
+            "Bedrooms": [
+                "Спальни"
+            ],
+            "Bedrooms & Bathrooms": [
+                "Спальни и ванные"
+            ],
+            "Bedrooms Filter": [
+                "Фильтр по спальням"
+            ],
+            "Better Havenlytics Integration": [
+                "Улучшенная интеграция Havenlytics"
+            ],
+            "Billion Text - B or Billion": [
+                "Текст для миллиарда — B или Billion"
+            ],
+            "Bold (700)": [
+                "Bold (700)"
+            ],
+            "Both": [
+                "Сверху и снизу"
+            ],
+            "Bottom": [
+                "Снизу"
+            ],
+            "Brand\/Primary Color": [
+                "Фирменный \/ основной цвет"
+            ],
+            "Bring properties in from a CSV file, or export your properties to CSV. Map columns your way and save the mapping as a reusable profile.": [
+                "Импортируйте объекты из CSV-файла или экспортируйте их в CSV. Сопоставьте столбцы по своему усмотрению и сохраните сопоставление как переиспользуемый профиль."
+            ],
+            "Builder policy": [
+                "Правило для конструкторов"
+            ],
+            "Builder summary": [
+                "Сводка по конструкторам"
+            ],
+            "By Area": [
+                "По площади"
+            ],
+            "By Bathrooms": [
+                "По ванным"
+            ],
+            "By Bedrooms": [
+                "По спальням"
+            ],
+            "CR Checkout": [
+                "CR Checkout"
+            ],
+            "CSV Column": [
+                "Столбец CSV"
+            ],
+            "CSV Import \/ Export": [
+                "Импорт \/ экспорт CSV"
+            ],
+            "CSV Transfer": [
+                "Перенос CSV"
+            ],
+            "CSV export completed.": [
+                "Экспорт CSV завершён."
+            ],
+            "CSV import completed.": [
+                "Импорт CSV завершён."
+            ],
+            "CSV upload dropzone": [
+                "Зона загрузки CSV"
+            ],
+            "Cache System Control": [
+                "Управление системой кэширования"
+            ],
+            "Can Create Property": [
+                "Может создавать объекты"
+            ],
+            "Can Delete Own Property": [
+                "Может удалять свои объекты"
+            ],
+            "Can Edit Own Property": [
+                "Может редактировать свои объекты"
+            ],
+            "Can Edit Profile": [
+                "Может редактировать профиль"
+            ],
+            "Can Publish Property": [
+                "Может публиковать объекты"
+            ],
+            "Can Receive Inquiries": [
+                "Может получать запросы"
+            ],
+            "Can Reply To Inquiries": [
+                "Может отвечать на запросы"
+            ],
+            "Can Submit Property": [
+                "Может отправлять объекты"
+            ],
+            "Can Upload Media": [
+                "Может загружать медиафайлы"
+            ],
+            "Can View Dashboard": [
+                "Может просматривать панель управления"
+            ],
+            "Cancel": [
+                "Отмена"
+            ],
+            "Cancel job?": [
+                "Отменить задачу?"
+            ],
+            "Cancelled": [
+                "Отменено"
+            ],
+            "Cancelling stops the current batch. Partial work may already be applied for imports.": [
+                "Отмена останавливает текущий пакет. При импорте часть изменений могла уже быть применена."
+            ],
+            "Categories": [
+                "Категории"
+            ],
+            "Category": [
+                "Категория"
+            ],
+            "Category Page": [
+                "Страница категории"
+            ],
+            "Changes needed: {{property_title}}": [
+                "Требуются изменения: {{property_title}}"
+            ],
+            "Checkbox": [
+                "Флажок"
+            ],
+            "Checkbox Items": [
+                "Элементы флажков"
+            ],
+            "Checkbox Options": [
+                "Параметры флажков"
+            ],
+            "Checking for an active job…": [
+                "Проверка активной задачи…"
+            ],
+            "Checkout": [
+                "Оформление заказа"
+            ],
+            "Choose CSV File": [
+                "Выбрать CSV-файл"
+            ],
+            "Choose Your Previous Platform (Optional)": [
+                "Выберите предыдущую платформу (необязательно)"
+            ],
+            "Choose ZIP File": [
+                "Выбрать ZIP-файл"
+            ],
+            "Choose a .zip package first.": [
+                "Сначала выберите пакет .zip."
+            ],
+            "Choose a CSV file first.": [
+                "Сначала выберите CSV-файл."
+            ],
+            "Choose which columns and property statuses to include, then export a CSV file.": [
+                "Выберите столбцы и статусы объектов для включения, затем экспортируйте CSV-файл."
+            ],
+            "Clear": [
+                "Очистить"
+            ],
+            "Close": [
+                "Закрыть"
+            ],
+            "Columns": [
+                "Колонки"
+            ],
+            "Columns Mapped": [
+                "Сопоставлено столбцов"
+            ],
+            "Coming Soon": [
+                "Скоро"
+            ],
+            "Coming soon": [
+                "Скоро"
+            ],
+            "Commercial": [
+                "Коммерческая"
+            ],
+            "Compatibility": [
+                "Совместимость"
+            ],
+            "Compatible with warnings": [
+                "Совместимо с предупреждениями"
+            ],
+            "Compatible — ready to import": [
+                "Совместимо — готово к импорту"
+            ],
+            "Complete": [
+                "Готово"
+            ],
+            "Completely free - No API key required": [
+                "Полностью бесплатно — API-ключ не нужен"
+            ],
+            "Condo for Rent": [
+                "Кондоминиум в аренду"
+            ],
+            "Configure": [
+                "Настроить"
+            ],
+            "Configure Agent Workspace": [
+                "Настроить рабочую область агента"
+            ],
+            "Configure Bedrooms, Bathrooms, Min Price & Max Price fields": [
+                "Настройка полей спален, ванных, мин. и макс. цены"
+            ],
+            "Configure Field Options": [
+                "Настроить параметры поля"
+            ],
+            "Configure map provider and display settings for property listings. Choose between Leaflet (free, OpenStreetMap) or Google Maps (requires API key with billing enabled).": [
+                "Настройте провайдера карты и параметры отображения для объявлений. Выберите Leaflet (бесплатно, OpenStreetMap) или Google Maps (требуется API-ключ с включённой оплатой)."
+            ],
+            "Configure the Agent Workspace shell, registration, default permissions, transactional emails, and property inquiry forms. Option keys remain backward compatible.": [
+                "Настройте оболочку рабочей области агента, регистрацию, права по умолчанию, транзакционные письма и формы запросов по объектам. Ключи параметров сохраняют обратную совместимость."
+            ],
+            "Configure the display and functionality of your single property pages.": [
+                "Настройте отображение и функции страниц отдельных объектов."
+            ],
+            "Configure the maximum width of the main container at different screen sizes. These values control the responsive behavior of your property pages.": [
+                "Настройте максимальную ширину основного контейнера для разных размеров экрана. Эти значения управляют адаптивным поведением страниц объектов."
+            ],
+            "Configured": [
+                "Настроено"
+            ],
+            "Confirm import": [
+                "Подтвердите импорт"
+            ],
+            "Connect each listing to the right agent.": [
+                "Привяжите каждое объявление к нужному агенту."
+            ],
+            "Contact": [
+                "Контакты"
+            ],
+            "Contact Agent Confirmation": [
+                "Подтверждение обращения к агенту"
+            ],
+            "Continue to Validation": [
+                "Перейти к проверке"
+            ],
+            "Control caching behavior for property listings. When disabled, grid, list, map, and sidebar data always load live from the database.": [
+                "Управление кэшированием списков объектов. При отключении данные сетки, списка, карты и боковой панели всегда загружаются напрямую из базы данных."
+            ],
+            "Control the maximum width of property archive, taxonomy, and search results pages. Does not affect single property, agent, or agency pages.": [
+                "Управляйте максимальной шириной страниц архива объектов, таксономий и результатов поиска. Не влияет на страницы отдельного объекта, агента или агентства."
+            ],
+            "Copied to clipboard": [
+                "Скопировано в буфер обмена"
+            ],
+            "Copy to clipboard": [
+                "Копировать в буфер обмена"
+            ],
+            "Could not import that file — is it a valid mapping profile JSON?": [
+                "Не удалось импортировать файл — это корректный JSON профиля сопоставления?"
+            ],
+            "Counts": [
+                "Счётчики"
+            ],
+            "Create": [
+                "Создать"
+            ],
+            "Create new": [
+                "Создавать новые"
+            ],
+            "Create or assign agents": [
+                "Создать или назначить агентов"
+            ],
+            "Created": [
+                "Создано"
+            ],
+            "Currency": [
+                "Валюта"
+            ],
+            "Currency Options": [
+                "Параметры валюты"
+            ],
+            "Currency Position": [
+                "Положение валюты"
+            ],
+            "Currency Thousand\/Million\/Billion Format": [
+                "Формат тысяч\/миллионов\/миллиардов валюты"
+            ],
+            "Current Phase": [
+                "Текущий этап"
+            ],
+            "Current Task": [
+                "Текущая операция"
+            ],
+            "Custom Builder Fields": [
+                "Пользовательские поля конструктора"
+            ],
+            "Custom CSS Class": [
+                "Произвольный CSS-класс"
+            ],
+            "Custom CSS Class & ID": [
+                "Произвольные CSS-класс и ID"
+            ],
+            "Custom Class & ID": [
+                "Произвольные класс и ID"
+            ],
+            "Custom Ordering": [
+                "Произвольная сортировка"
+            ],
+            "Custom Title & Subtitle": [
+                "Произвольные заголовок и подзаголовок"
+            ],
+            "Custom Width": [
+                "Произвольная ширина"
+            ],
+            "Custom marker HTML": [
+                "HTML пользовательского маркера"
+            ],
+            "Custom markers can also be overridden by adding custom-marker.php template in your theme: your-theme\/havenlytics\/map\/custom-marker.php": [
+                "Пользовательские маркеры также можно переопределить, добавив шаблон custom-marker.php в тему: your-theme\/havenlytics\/map\/custom-marker.php"
+            ],
+            "Customize Havenlytics URL slugs. Changes apply automatically — you do not need to visit WordPress Permalink Settings.": [
+                "Настройте ярлыки URL Havenlytics. Изменения применяются автоматически — посещать настройки постоянных ссылок WordPress не нужно."
+            ],
+            "Dashboard": [
+                "Панель управления"
+            ],
+            "Dashboard Configuration": [
+                "Конфигурация панели"
+            ],
+            "Dashboard Page": [
+                "Страница панели"
+            ],
+            "Dashboard Settings": [
+                "Настройки панели"
+            ],
+            "Dashboard settings content will go here...": [
+                "Содержимое настроек панели будет здесь..."
+            ],
+            "Date": [
+                "Дата"
+            ],
+            "Date: Newest First": [
+                "Дата: сначала новые"
+            ],
+            "Date: Oldest First": [
+                "Дата: сначала старые"
+            ],
+            "Decimal Separator": [
+                "Десятичный разделитель"
+            ],
+            "Default": [
+                "По умолчанию"
+            ],
+            "Default (Current)": [
+                "По умолчанию (текущий)"
+            ],
+            "Default Agent Permissions": [
+                "Права агента по умолчанию"
+            ],
+            "Default Latitude": [
+                "Широта по умолчанию"
+            ],
+            "Default Longitude": [
+                "Долгота по умолчанию"
+            ],
+            "Default Property View": [
+                "Отображение объектов по умолчанию"
+            ],
+            "Default Role": [
+                "Роль по умолчанию"
+            ],
+            "Default User Role": [
+                "Роль пользователя по умолчанию"
+            ],
+            "Default Zoom Level": [
+                "Масштаб по умолчанию"
+            ],
+            "Default center latitude when no properties are loaded.": [
+                "Широта центра по умолчанию, когда объекты не загружены."
+            ],
+            "Default center longitude when no properties are loaded.": [
+                "Долгота центра по умолчанию, когда объекты не загружены."
+            ],
+            "Default options cannot be deleted": [
+                "Параметры по умолчанию нельзя удалить"
+            ],
+            "Delete": [
+                "Удалить"
+            ],
+            "Delete Custom Option?": [
+                "Удалить пользовательский параметр?"
+            ],
+            "Department Filters": [
+                "Фильтры по направлению"
+            ],
+            "Departments": [
+                "Отделы"
+            ],
+            "Departments Base": [
+                "База отделов"
+            ],
+            "Design": [
+                "Дизайн"
+            ],
+            "Developer Info - Template Overrides": [
+                "Для разработчиков — переопределение шаблонов"
+            ],
+            "Developer Mode": [
+                "Режим разработчика"
+            ],
+            "Developer Tools": [
+                "Инструменты разработчика"
+            ],
+            "Disable": [
+                "Отключить"
+            ],
+            "Disabled": [
+                "Отключено"
+            ],
+            "Dismiss": [
+                "Закрыть"
+            ],
+            "Display + and - buttons for zooming in and out.": [
+                "Отображать кнопки + и − для увеличения и уменьшения масштаба."
+            ],
+            "Display breadcrumb navigation to help users navigate back to property listings.": [
+                "Показывать навигацию «хлебные крошки», чтобы пользователи могли вернуться к спискам объектов."
+            ],
+            "Display button to toggle fullscreen mode on the map.": [
+                "Отображать кнопку переключения полноэкранного режима карты."
+            ],
+            "Documentation": [
+                "Документация"
+            ],
+            "Download CSV": [
+                "Скачать CSV"
+            ],
+            "Download Package": [
+                "Скачать пакет"
+            ],
+            "Download Report": [
+                "Скачать отчёт"
+            ],
+            "Download featured image, gallery & document URLs into the Media Library": [
+                "Скачать URL изображений обложки, галереи и документов в медиабиблиотеку"
+            ],
+            "Download is not available.": [
+                "Скачивание недоступно."
+            ],
+            "Draft": [
+                "Черновик"
+            ],
+            "Drag & Drop CSV": [
+                "Перетащите CSV"
+            ],
+            "Drag & Drop ZIP": [
+                "Перетащите ZIP"
+            ],
+            "Drag to reorder | Click Edit to rename | Click Configure to set options": [
+                "Перетащите для изменения порядка | Нажмите «Изменить» для переименования | Нажмите «Настроить» для параметров"
+            ],
+            "Dropdown": [
+                "Выпадающий список"
+            ],
+            "Dropdown Options": [
+                "Параметры выпадающего списка"
+            ],
+            "Duplicate policy": [
+                "Правило для дубликатов"
+            ],
+            "Duplicate policy (matched by MLS, Reference, or Title)": [
+                "Правило для дубликатов (сопоставление по MLS, Reference или Title)"
+            ],
+            "Edit": [
+                "Редактировать"
+            ],
+            "Edit Label": [
+                "Изменить метку"
+            ],
+            "Edit Title": [
+                "Изменить заголовок"
+            ],
+            "Editor Settings": [
+                "Настройки редактора"
+            ],
+            "Elapsed Time": [
+                "Прошедшее время"
+            ],
+            "Email": [
+                "Электронная почта"
+            ],
+            "Email Message": [
+                "Текст письма"
+            ],
+            "Email Notifications Checked by Default on Import Page": [
+                "Уведомления по email отмечены по умолчанию на странице импорта"
+            ],
+            "Email Subject": [
+                "Тема письма"
+            ],
+            "Email Verification": [
+                "Подтверждение email"
+            ],
+            "Emails": [
+                "Письма"
+            ],
+            "Enable": [
+                "Включить"
+            ],
+            "Enable AJAX Load More Button": [
+                "Включить кнопку AJAX «Загрузить ещё»"
+            ],
+            "Enable Auto Fallback to Leaflet": [
+                "Включить автоматический переход на Leaflet"
+            ],
+            "Enable Back to Top Button": [
+                "Включить кнопку «Наверх»"
+            ],
+            "Enable Breadcrumbs Navigation": [
+                "Включить навигацию «хлебные крошки»"
+            ],
+            "Enable Cache System": [
+                "Включить систему кэширования"
+            ],
+            "Enable Contact Agent": [
+                "Включить Contact Agent"
+            ],
+            "Enable Currency Text Format": [
+                "Включить текстовый формат валюты"
+            ],
+            "Enable Geocoding API": [
+                "Включить Geocoding API"
+            ],
+            "Enable Gutenberg Editor for Havenlytics Post Types": [
+                "Включить редактор Gutenberg для типов записей Havenlytics"
+            ],
+            "Enable Havenlytics Analytics": [
+                "Включить аналитику Havenlytics"
+            ],
+            "Enable Honeypot": [
+                "Включить Honeypot"
+            ],
+            "Enable Laravel Sync placeholder": [
+                "Включить заглушку синхронизации Laravel"
+            ],
+            "Enable Maps JavaScript API": [
+                "Включить Maps JavaScript API"
+            ],
+            "Enable Marker Clustering": [
+                "Включить кластеризацию маркеров"
+            ],
+            "Enable Print Button on Property Pages": [
+                "Включить кнопку печати на страницах объектов"
+            ],
+            "Enable Property Setup Success Emails": [
+                "Включить письма об успешном импорте объектов"
+            ],
+            "Enable Save Property Button": [
+                "Включить кнопку сохранения объекта"
+            ],
+            "Enable Scroll Wheel Zoom": [
+                "Включить масштабирование колёсиком мыши"
+            ],
+            "Enable User Tracking": [
+                "Включить отслеживание пользователей"
+            ],
+            "Enable Workspace": [
+                "Включить рабочую область"
+            ],
+            "Enable custom styled markers instead of default map markers.": [
+                "Включить маркеры с пользовательским стилем вместо стандартных."
+            ],
+            "Enable property inquiry form": [
+                "Включить форму запроса по объекту"
+            ],
+            "Enable the workspace and choose registration and permissions.": [
+                "Включите рабочую область и выберите регистрацию и права доступа."
+            ],
+            "Enhanced Tracking": [
+                "Расширенное отслеживание"
+            ],
+            "Enter hex color": [
+                "Введите HEX-цвет"
+            ],
+            "Enter placeholder text...": [
+                "Введите текст-заполнитель..."
+            ],
+            "Enter value": [
+                "Введите значение"
+            ],
+            "Enter your Google Maps API key. Billing MUST be enabled in Google Cloud Console.": [
+                "Введите API-ключ Google Maps. Оплата ОБЯЗАТЕЛЬНО должна быть включена в Google Cloud Console."
+            ],
+            "Entity Counts": [
+                "Количество сущностей"
+            ],
+            "Error": [
+                "Ошибка"
+            ],
+            "Error message display": [
+                "Отображение сообщения об ошибке"
+            ],
+            "Errors": [
+                "Ошибки"
+            ],
+            "Examples: 1220, 1240, 1280, 1360, 1500": [
+                "Примеры: 1220, 1240, 1280, 1360, 1500"
+            ],
+            "Exclude Property IDs": [
+                "Исключить ID объектов"
+            ],
+            "Exclude Specific Properties": [
+                "Исключить конкретные объекты"
+            ],
+            "Existing agents sign in to their workspace.": [
+                "Существующие агенты входят в свою рабочую область."
+            ],
+            "Expired": [
+                "Истекло"
+            ],
+            "Explore the live demo": [
+                "Посмотреть демо"
+            ],
+            "Export": [
+                "Экспорт"
+            ],
+            "Export Agencies": [
+                "Экспортировать агентства"
+            ],
+            "Export Agents": [
+                "Экспортировать агентов"
+            ],
+            "Export Builders": [
+                "Экспортировать конструкторы"
+            ],
+            "Export Date": [
+                "Дата экспорта"
+            ],
+            "Export Havenlytics Package": [
+                "Экспорт пакета Havenlytics"
+            ],
+            "Export Package": [
+                "Экспортировать пакет"
+            ],
+            "Export Properties": [
+                "Экспортировать объекты"
+            ],
+            "Export Properties to CSV": [
+                "Экспорт объектов в CSV"
+            ],
+            "Export Settings": [
+                "Экспортировать настройки"
+            ],
+            "Export Taxonomies": [
+                "Экспортировать таксономии"
+            ],
+            "Export cancelled.": [
+                "Экспорт отменён."
+            ],
+            "Export complete —": [
+                "Экспорт завершён —"
+            ],
+            "Export completed successfully.": [
+                "Экспорт успешно завершён."
+            ],
+            "Export contents": [
+                "Содержимое экспорта"
+            ],
+            "Export failed.": [
+                "Экспорт не выполнен."
+            ],
+            "Export in progress…": [
+                "Идёт экспорт…"
+            ],
+            "Export started.": [
+                "Экспорт запущен."
+            ],
+            "Export with selected options": [
+                "Экспорт с выбранными параметрами"
+            ],
+            "Export your Havenlytics data, builders, templates, agents, agencies, properties and media into a portable package.": [
+                "Экспортируйте данные Havenlytics, конструкторы, шаблоны, агентов, агентства, объекты и медиа в переносимый пакет."
+            ],
+            "Exported": [
+                "Экспортировано"
+            ],
+            "Exporting…": [
+                "Экспорт…"
+            ],
+            "Extra Large (XL) - Laptop (992px - 1199px)": [
+                "Очень большой (XL) — ноутбук (992px - 1199px)"
+            ],
+            "Extra Small (XS) - Mobile (< 480px)": [
+                "Очень маленький (XS) — мобильный (< 480px)"
+            ],
+            "Failed": [
+                "Сбой"
+            ],
+            "Failed to create custom option": [
+                "Не удалось создать пользовательский параметр"
+            ],
+            "Failed to create option": [
+                "Не удалось создать параметр"
+            ],
+            "Failed to delete custom option": [
+                "Не удалось удалить пользовательский параметр"
+            ],
+            "Failed to delete option": [
+                "Не удалось удалить параметр"
+            ],
+            "Failed to load settings": [
+                "Не удалось загрузить настройки"
+            ],
+            "Failed to reset all settings": [
+                "Не удалось сбросить все настройки"
+            ],
+            "Failed to reset settings": [
+                "Не удалось сбросить настройки"
+            ],
+            "Failed to save all settings": [
+                "Не удалось сохранить все настройки"
+            ],
+            "Failed to save field configuration": [
+                "Не удалось сохранить конфигурацию поля"
+            ],
+            "Failed to save main search fields": [
+                "Не удалось сохранить основные поля поиска"
+            ],
+            "Failed to save search fields": [
+                "Не удалось сохранить поля поиска"
+            ],
+            "Failed to save settings": [
+                "Не удалось сохранить настройки"
+            ],
+            "Failed to save top search fields": [
+                "Не удалось сохранить верхние поля поиска"
+            ],
+            "Failed to update custom option": [
+                "Не удалось обновить пользовательский параметр"
+            ],
+            "Failed to update option": [
+                "Не удалось обновить параметр"
+            ],
+            "Faster Website Setup": [
+                "Быстрая настройка сайта"
+            ],
+            "Featured + Department": [
+                "Избранные + направление"
+            ],
+            "Featured - Rent": [
+                "Избранные — аренда"
+            ],
+            "Featured Only": [
+                "Только избранные"
+            ],
+            "Featured Properties": [
+                "Избранные объекты"
+            ],
+            "Featured Rent": [
+                "Избранная аренда"
+            ],
+            "Featured Sale": [
+                "Избранная продажа"
+            ],
+            "Features": [
+                "Особенности"
+            ],
+            "Features Base": [
+                "База особенностей"
+            ],
+            "Field ID": [
+                "ID поля"
+            ],
+            "Field Label": [
+                "Метка поля"
+            ],
+            "Field configuration saved!": [
+                "Конфигурация поля сохранена!"
+            ],
+            "Field label updated!": [
+                "Метка поля обновлена!"
+            ],
+            "Field title": [
+                "Заголовок поля"
+            ],
+            "Field title cannot be empty": [
+                "Заголовок поля не может быть пустым"
+            ],
+            "Field title updated!": [
+                "Заголовок поля обновлён!"
+            ],
+            "Final Report": [
+                "Итоговый отчёт"
+            ],
+            "For Rent": [
+                "Сдаётся"
+            ],
+            "For Sale": [
+                "Продаётся"
+            ],
+            "Forgot Password": [
+                "Забыли пароль"
+            ],
+            "Free Version": [
+                "Бесплатная версия"
+            ],
+            "From Email Address": [
+                "Email отправителя"
+            ],
+            "From Name": [
+                "Имя отправителя"
+            ],
+            "Full Width (100%)": [
+                "На всю ширину (100%)"
+            ],
+            "Future Email Templates": [
+                "Будущие шаблоны писем"
+            ],
+            "Future Laravel Sync": [
+                "Будущая синхронизация Laravel"
+            ],
+            "GD Archive": [
+                "GD Archive"
+            ],
+            "GD Archive Item": [
+                "GD Archive Item"
+            ],
+            "GD Details": [
+                "GD Details"
+            ],
+            "Garage": [
+                "Гараж"
+            ],
+            "Garage & Garden - Sale": [
+                "Гараж и сад — продажа"
+            ],
+            "General": [
+                "Общие"
+            ],
+            "General Settings": [
+                "Общие настройки"
+            ],
+            "Generate Pages": [
+                "Создать страницы"
+            ],
+            "Global Colors": [
+                "Глобальные цвета"
+            ],
+            "Global Sender": [
+                "Глобальный отправитель"
+            ],
+            "Global Style": [
+                "Глобальный стиль"
+            ],
+            "Google Map Type": [
+                "Тип карты Google"
+            ],
+            "Google Maps - Requires API Key (Billing Required)": [
+                "Google Maps — требуется API-ключ (нужна оплата)"
+            ],
+            "Google Maps API Key": [
+                "API-ключ Google Maps"
+            ],
+            "Google Maps Quota Information:": [
+                "Информация о квоте Google Maps:"
+            ],
+            "Google Maps requires a valid API key with billing enabled. Without a key, the map will not display. Get a key from Google Cloud Console → Credentials.": [
+                "Google Maps требует действительный API-ключ с включённой оплатой. Без ключа карта не отобразится. Получите ключ в Google Cloud Console → Credentials."
+            ],
+            "Grid Property": [
+                "Объект в сетке"
+            ],
+            "Grid View": [
+                "Вид сеткой"
+            ],
+            "Group": [
+                "Группа"
+            ],
+            "Group nearby markers together when zoomed out for better performance and cleaner display.": [
+                "Объединять близкие маркеры при уменьшении масштаба для лучшей производительности и более аккуратного отображения."
+            ],
+            "HPTP": [
+                "HPTP"
+            ],
+            "Handle properties, inquiries, notifications, profiles, and verification.": [
+                "Управление объектами, запросами, уведомлениями, профилями и проверкой."
+            ],
+            "Havenlytics": [
+                "Havenlytics"
+            ],
+            "Havenlytics Settings": [
+                "Настройки Havenlytics"
+            ],
+            "Havenlytics includes a complete Property Onboarding Wizard that imports fully configured demo properties with galleries, maps, documents, videos, agents, taxonomies, and custom fields.": [
+                "В Havenlytics есть полноценный мастер онбординга объектов, который импортирует полностью настроенные демо-объекты с галереями, картами, документами, видео, агентами, таксономиями и пользовательскими полями."
+            ],
+            "Havenlytics works with any WordPress theme. For the best experience, install the official Havenlytics Realty theme.": [
+                "Havenlytics работает с любой темой WordPress. Для наилучшего опыта установите официальную тему Havenlytics Realty."
+            ],
+            "Hide Header": [
+                "Скрыть заголовок"
+            ],
+            "Hide Left Search Filter Sidebar": [
+                "Скрыть левую боковую панель фильтра поиска"
+            ],
+            "Hide Pagination": [
+                "Скрыть пагинацию"
+            ],
+            "Hide Results Count": [
+                "Скрыть количество результатов"
+            ],
+            "Hide Search": [
+                "Скрыть поиск"
+            ],
+            "Hide Top Search Bar": [
+                "Скрыть верхнюю панель поиска"
+            ],
+            "Hide Top Search Page Title": [
+                "Скрыть заголовок страницы поиска сверху"
+            ],
+            "Hide Top Search Title": [
+                "Скрыть верхний заголовок поиска"
+            ],
+            "Hide View Controls": [
+                "Скрыть элементы управления видом"
+            ],
+            "House for Sale": [
+                "Дом на продажу"
+            ],
+            "Hybrid": [
+                "Гибрид"
+            ],
+            "Identity Verification Approved": [
+                "Проверка личности одобрена"
+            ],
+            "Identity Verification Rejected": [
+                "Проверка личности отклонена"
+            ],
+            "Identity Verification Submitted": [
+                "Проверка личности отправлена"
+            ],
+            "Import": [
+                "Импорт"
+            ],
+            "Import \/ Export": [
+                "Импорт \/ Экспорт"
+            ],
+            "Import Another CSV": [
+                "Импортировать другой CSV"
+            ],
+            "Import Complete": [
+                "Импорт завершён"
+            ],
+            "Import Havenlytics Package": [
+                "Импорт пакета Havenlytics"
+            ],
+            "Import Profile JSON": [
+                "Импортировать JSON профиля"
+            ],
+            "Import agencies": [
+                "Импортировать агентства"
+            ],
+            "Import agents": [
+                "Импортировать агентов"
+            ],
+            "Import and export progress appears here while a job is running. Refreshing this page resumes an active job automatically.": [
+                "Здесь отображается ход импорта и экспорта во время выполнения задачи. Обновление страницы автоматически возобновляет активную задачу."
+            ],
+            "Import cancelled": [
+                "Импорт отменён"
+            ],
+            "Import cancelled.": [
+                "Импорт отменён."
+            ],
+            "Import completed": [
+                "Импорт завершён"
+            ],
+            "Import completed successfully.": [
+                "Импорт успешно завершён."
+            ],
+            "Import failed": [
+                "Импорт не выполнен"
+            ],
+            "Import failed. See the summary for details.": [
+                "Импорт не выполнен. Подробности см. в сводке."
+            ],
+            "Import finished": [
+                "Импорт завершён"
+            ],
+            "Import in progress…": [
+                "Идёт импорт…"
+            ],
+            "Import media": [
+                "Импортировать медиа"
+            ],
+            "Import options": [
+                "Параметры импорта"
+            ],
+            "Import properties": [
+                "Импортировать объекты"
+            ],
+            "Import started.": [
+                "Импорт запущен."
+            ],
+            "Import taxonomies": [
+                "Импортировать таксономии"
+            ],
+            "Import will create or update content on this site according to your selected policies. This cannot be undone automatically. Continue?": [
+                "Импорт создаст или обновит содержимое на этом сайте согласно выбранным правилам. Автоматически отменить это действие нельзя. Продолжить?"
+            ],
+            "Imported": [
+                "Импортировано"
+            ],
+            "Importing…": [
+                "Импорт…"
+            ],
+            "In development": [
+                "В разработке"
+            ],
+            "Include Media": [
+                "Включить медиа"
+            ],
+            "Include Specific Properties": [
+                "Включить конкретные объекты"
+            ],
+            "Included": [
+                "Включено"
+            ],
+            "Included with Havenlytics": [
+                "Входит в Havenlytics"
+            ],
+            "Independent of WordPress Membership “Anyone can register”.": [
+                "Независимо от настройки WordPress Membership «Любой может зарегистрироваться»."
+            ],
+            "Inquiry Notifications": [
+                "Уведомления о заявках"
+            ],
+            "Inquiry Received": [
+                "Заявка получена"
+            ],
+            "Inquiry Sent to Agent": [
+                "Заявка отправлена агенту"
+            ],
+            "Inquiry Spam Protection": [
+                "Защита запросов от спама"
+            ],
+            "Inquiry button and modal are active on single property pages.": [
+                "Кнопка и модальное окно запроса активны на страницах отдельных объектов."
+            ],
+            "Inquiry form is disabled. No frontend inquiry UI or submissions will run.": [
+                "Форма запроса отключена. Интерфейс запроса на фронтенде и отправка не будут работать."
+            ],
+            "Install Theme": [
+                "Установить тему"
+            ],
+            "Integration AI": [
+                "Интеграция AI"
+            ],
+            "Integration Settings": [
+                "Настройки интеграций"
+            ],
+            "Job cancelled.": [
+                "Задача отменена."
+            ],
+            "Job failed. See the final report.": [
+                "Задача завершилась с ошибкой. См. итоговый отчёт."
+            ],
+            "Job progress": [
+                "Прогресс задачи"
+            ],
+            "Keep destination builders": [
+                "Сохранить конструкторы на сайте назначения"
+            ],
+            "Keep running": [
+                "Продолжить выполнение"
+            ],
+            "Keyword Search": [
+                "Поиск по ключевым словам"
+            ],
+            "Label": [
+                "Метка"
+            ],
+            "Label cannot be empty": [
+                "Метка не может быть пустой"
+            ],
+            "Labels Base": [
+                "База меток"
+            ],
+            "Large (LG) - Tablet Landscape (768px - 991px)": [
+                "Большой (LG) — планшет альбомный (768px - 991px)"
+            ],
+            "Layout & Search Result Page": [
+                "Макет и страница результатов поиска"
+            ],
+            "Leaflet (OpenStreetMap) - Free, No API Key": [
+                "Leaflet (OpenStreetMap) — бесплатно, без API-ключа"
+            ],
+            "Leaflet\/OpenStreetMap Features:": [
+                "Возможности Leaflet\/OpenStreetMap:"
+            ],
+            "Learn More": [
+                "Подробнее"
+            ],
+            "Learn more": [
+                "Подробнее"
+            ],
+            "Leave empty to let WordPress choose a site-domain sender": [
+                "Оставьте пустым, чтобы WordPress выбрал отправителя на домене сайта"
+            ],
+            "Leave empty to use your site name": [
+                "Оставьте пустым, чтобы использовать название сайта"
+            ],
+            "Left": [
+                "Слева"
+            ],
+            "Left Sidebar Filter": [
+                "Фильтр в левой боковой панели"
+            ],
+            "Let": [
+                "Сдача"
+            ],
+            "Light (300)": [
+                "Light (300)"
+            ],
+            "Link Color": [
+                "Цвет ссылок"
+            ],
+            "Link Hover Color": [
+                "Цвет ссылок при наведении"
+            ],
+            "List Property": [
+                "Объект в списке"
+            ],
+            "List View": [
+                "Вид списком"
+            ],
+            "Listing Form": [
+                "Форма объявления"
+            ],
+            "Listings": [
+                "Объявления"
+            ],
+            "Load More": [
+                "Загрузить ещё"
+            ],
+            "Load saved mapping": [
+                "Загрузить сохранённое сопоставление"
+            ],
+            "Loading CSV Import \/ Export…": [
+                "Загрузка импорта \/ экспорта CSV…"
+            ],
+            "Loading main search fields...": [
+                "Загрузка основных полей поиска..."
+            ],
+            "Loading search fields...": [
+                "Загрузка полей поиска..."
+            ],
+            "Loading top search fields...": [
+                "Загрузка верхних полей поиска..."
+            ],
+            "Loading…": [
+                "Загрузка…"
+            ],
+            "Location": [
+                "Расположение"
+            ],
+            "Location Filters": [
+                "Фильтры по локации"
+            ],
+            "Locations": [
+                "Расположения"
+            ],
+            "Locations Base": [
+                "База локаций"
+            ],
+            "Locked": [
+                "Заблокировано"
+            ],
+            "Login - Registration": [
+                "Вход — регистрация"
+            ],
+            "Login Redirect": [
+                "Перенаправление после входа"
+            ],
+            "Logout Redirect": [
+                "Перенаправление после выхода"
+            ],
+            "Los Angeles - Sale": [
+                "Лос-Анджелес — продажа"
+            ],
+            "Luxury - Rent": [
+                "Люкс — аренда"
+            ],
+            "Main Container Width": [
+                "Ширина основного контейнера"
+            ],
+            "Main Search Fields": [
+                "Основные поля поиска"
+            ],
+            "Main map container": [
+                "Основной контейнер карты"
+            ],
+            "Make assigned listings available to agents and buyers.": [
+                "Делать назначенные объявления доступными агентам и покупателям."
+            ],
+            "Manage Custom Options": [
+                "Управление пользовательскими параметрами"
+            ],
+            "Manage Havenlytics transactional email sender details and templates. Property inquiry and Workspace registration emails are configured under Agent Workspace.": [
+                "Управляйте данными отправителя и шаблонами транзакционных писем Havenlytics. Письма о заявках по объектам и регистрации в Workspace настраиваются в разделе Agent Workspace."
+            ],
+            "Manage Search Filter Fields": [
+                "Управление полями фильтра поиска"
+            ],
+            "Manage Top Search Fields": [
+                "Управление верхними полями поиска"
+            ],
+            "Manage daily work": [
+                "Управление повседневной работой"
+            ],
+            "Manage taxonomy terms": [
+                "Управление терминами таксономии"
+            ],
+            "Map": [
+                "Карта"
+            ],
+            "Map Columns": [
+                "Сопоставление столбцов"
+            ],
+            "Map Controls": [
+                "Элементы управления картой"
+            ],
+            "Map Display Settings": [
+                "Настройки отображения карты"
+            ],
+            "Map Provider": [
+                "Провайдер карты"
+            ],
+            "Map Settings": [
+                "Настройки карты"
+            ],
+            "Map Templates can be overridden in your theme:": [
+                "Шаблоны карты можно переопределить в теме:"
+            ],
+            "Map Tile Style": [
+                "Стиль тайлов карты"
+            ],
+            "Mapping profile deleted.": [
+                "Профиль сопоставления удалён."
+            ],
+            "Mapping profile imported.": [
+                "Профиль сопоставления импортирован."
+            ],
+            "Mapping profile saved.": [
+                "Профиль сопоставления сохранён."
+            ],
+            "Mapping profiles remember how CSV columns map to Havenlytics fields, so repeat imports from the same source are one click.": [
+                "Профили сопоставления запоминают соответствие столбцов CSV полям Havenlytics, поэтому повторный импорт из того же источника выполняется в один клик."
+            ],
+            "Maps To": [
+                "Соответствует"
+            ],
+            "Marker Color": [
+                "Цвет маркера"
+            ],
+            "Marker Settings": [
+                "Настройки маркеров"
+            ],
+            "Match each CSV column to a Havenlytics property field. Fields are grouped and searchable. Fields marked with * are required.": [
+                "Сопоставьте каждый столбец CSV с полем объекта Havenlytics. Поля сгруппированы и доступны для поиска. Поля, отмеченные *, обязательны."
+            ],
+            "Max Price": [
+                "Макс. цена"
+            ],
+            "Max Price Options": [
+                "Параметры макс. цены"
+            ],
+            "Max Price Placeholder": [
+                "Плейсхолдер макс. цены"
+            ],
+            "Max price option value is required": [
+                "Значение параметра макс. цены обязательно"
+            ],
+            "Maximum Value": [
+                "Максимальное значение"
+            ],
+            "Media": [
+                "Медиа"
+            ],
+            "Media Fetched": [
+                "Медиа загружено"
+            ],
+            "Media summary": [
+                "Сводка по медиа"
+            ],
+            "Medium (500)": [
+                "Medium (500)"
+            ],
+            "Medium (MD) - Tablet (640px - 767px)": [
+                "Средний (MD) — планшет (640px - 767px)"
+            ],
+            "Migration": [
+                "Миграция"
+            ],
+            "Migration Engine": [
+                "Движок миграции"
+            ],
+            "Migration limit": [
+                "Ограничение миграции"
+            ],
+            "Million Text - M or Million": [
+                "Текст для миллиона — M или Million"
+            ],
+            "Min Price": [
+                "Мин. цена"
+            ],
+            "Min Price Options": [
+                "Параметры мин. цены"
+            ],
+            "Min Price Placeholder": [
+                "Плейсхолдер мин. цены"
+            ],
+            "Min price option value is required": [
+                "Значение параметра мин. цены обязательно"
+            ],
+            "Minimal (No Header, Search, or Controls)": [
+                "Минимальный (без заголовка, поиска и элементов управления)"
+            ],
+            "Minimum Value": [
+                "Минимальное значение"
+            ],
+            "Misc Settings": [
+                "Прочие настройки"
+            ],
+            "Mortgage Calculator": [
+                "Ипотечный калькулятор"
+            ],
+            "Move Down": [
+                "Переместить вниз"
+            ],
+            "Move Up": [
+                "Переместить вверх"
+            ],
+            "Multiple Filters": [
+                "Несколько фильтров"
+            ],
+            "My Account": [
+                "Мой аккаунт"
+            ],
+            "My Profile": [
+                "Мой профиль"
+            ],
+            "Name": [
+                "Имя"
+            ],
+            "Need sample data?": [
+                "Нужны примеры данных?"
+            ],
+            "New": [
+                "Новое"
+            ],
+            "New & Popular - Sale": [
+                "Новые и популярные — продажа"
+            ],
+            "New Custom Label": [
+                "Новая пользовательская метка"
+            ],
+            "New Property Inquiry • {{property_title}}": [
+                "Новая заявка по объекту • {{property_title}}"
+            ],
+            "New Property Inquiry • {{property_title}} (#{{inquiry_id}})": [
+                "Новая заявка по объекту • {{property_title}} (#{{inquiry_id}})"
+            ],
+            "New York - Rent": [
+                "Нью-Йорк — аренда"
+            ],
+            "New accounts receive the Agent WordPress role and a linked Agent profile automatically. Approve \/ Reject from the Agents admin screen — not by publishing the Agent CPT alone.": [
+                "Новые учётные записи автоматически получают роль агента WordPress и связанный профиль агента. Одобряйте или отклоняйте заявки на экране «Агенты» в админке — а не только публикацией записи типа Agent."
+            ],
+            "New agents create a workspace account.": [
+                "Новые агенты создают учётную запись рабочей области."
+            ],
+            "Newest": [
+                "Сначала новые"
+            ],
+            "No active job": [
+                "Нет активной задачи"
+            ],
+            "No daily quota limits": [
+                "Нет дневных лимитов квоты"
+            ],
+            "No main search fields found.": [
+                "Основные поля поиска не найдены."
+            ],
+            "No matching fields": [
+                "Нет подходящих полей"
+            ],
+            "No properties found to export.": [
+                "Объекты для экспорта не найдены."
+            ],
+            "No report available to download.": [
+                "Нет отчёта для скачивания."
+            ],
+            "No report yet": [
+                "Отчёта пока нет"
+            ],
+            "No saved mapping profiles yet. Save one from the Mapping step during an import.": [
+                "Пока нет сохранённых профилей сопоставления. Сохраните профиль на шаге сопоставления во время импорта."
+            ],
+            "No search fields found.": [
+                "Поля поиска не найдены."
+            ],
+            "No top search fields found.": [
+                "Верхние поля поиска не найдены."
+            ],
+            "None": [
+                "Нет"
+            ],
+            "Notice": [
+                "Уведомление"
+            ],
+            "Notify Property Agent": [
+                "Уведомлять агента объекта"
+            ],
+            "Number": [
+                "Число"
+            ],
+            "Number Field Settings": [
+                "Настройки числового поля"
+            ],
+            "Number of Bedrooms": [
+                "Количество спален"
+            ],
+            "Number of Columns": [
+                "Количество столбцов"
+            ],
+            "Number of Decimals": [
+                "Число десятичных знаков"
+            ],
+            "Number of properties to display per page. Enter a number between 1 and 100.": [
+                "Количество объектов на странице. Введите число от 1 до 100."
+            ],
+            "Oldest": [
+                "Сначала старые"
+            ],
+            "One-click Demo Import": [
+                "Импорт демо в один клик"
+            ],
+            "Open Registration": [
+                "Открытая регистрация"
+            ],
+            "Open live demo": [
+                "Открыть демо"
+            ],
+            "OpenStreetMap (Direct) - Free, No API Key": [
+                "OpenStreetMap (напрямую) — бесплатно, без API-ключа"
+            ],
+            "Optimized Property Templates": [
+                "Оптимизированные шаблоны объектов"
+            ],
+            "Option Label": [
+                "Метка параметра"
+            ],
+            "Option Value": [
+                "Значение параметра"
+            ],
+            "Option value cannot be empty": [
+                "Значение параметра не может быть пустым"
+            ],
+            "Option value is required": [
+                "Значение параметра обязательно"
+            ],
+            "Optional path or URL after Workspace login (blank = Workspace dashboard).": [
+                "Необязательный путь или URL после входа в рабочую область (пусто = панель рабочей области)."
+            ],
+            "Optional path or URL after logout (blank = Workspace login).": [
+                "Необязательный путь или URL после выхода (пусто = вход в рабочую область)."
+            ],
+            "Options": [
+                "Параметры"
+            ],
+            "Order by Date (Newest)": [
+                "Сортировка по дате (новые)"
+            ],
+            "Order by Name (Z to A)": [
+                "Сортировка по имени (Я–А)"
+            ],
+            "Overall progress": [
+                "Общий прогресс"
+            ],
+            "Overwrite": [
+                "Перезаписать"
+            ],
+            "Package Version": [
+                "Версия пакета"
+            ],
+            "Package summary": [
+                "Сводка по пакету"
+            ],
+            "Package upload dropzone": [
+                "Зона загрузки пакета"
+            ],
+            "Package validated successfully.": [
+                "Пакет успешно проверен."
+            ],
+            "Page Setup": [
+                "Настройка страниц"
+            ],
+            "Page slug for the Workspace (default: agent-dashboard).": [
+                "Ярлык страницы рабочей области (по умолчанию: agent-dashboard)."
+            ],
+            "Pagination": [
+                "Пагинация"
+            ],
+            "Password Reset": [
+                "Сброс пароля"
+            ],
+            "Password Reset & Changed": [
+                "Сброс и смена пароля"
+            ],
+            "Pending": [
+                "В ожидании"
+            ],
+            "Performance": [
+                "Производительность"
+            ],
+            "Permalink Settings": [
+                "Настройки постоянных ссылок"
+            ],
+            "Permalink Slugs": [
+                "Ярлыки постоянных ссылок"
+            ],
+            "Permalinks": [
+                "Постоянные ссылки"
+            ],
+            "Permissions": [
+                "Права доступа"
+            ],
+            "Placeholder": [
+                "Плейсхолдер"
+            ],
+            "Please enter a label": [
+                "Пожалуйста, введите метку"
+            ],
+            "Please map required field(s):": [
+                "Сопоставьте обязательные поля:"
+            ],
+            "Plugin Activation": [
+                "Активация плагина"
+            ],
+            "Plugin Version": [
+                "Версия плагина"
+            ],
+            "Pool - Rent": [
+                "Бассейн — аренда"
+            ],
+            "Posts Per Page": [
+                "Записей на странице"
+            ],
+            "Preset Options": [
+                "Предустановленные параметры"
+            ],
+            "Preset Options (Optional)": [
+                "Предустановленные параметры (необязательно)"
+            ],
+            "Preset option value is required": [
+                "Значение предустановленного параметра обязательно"
+            ],
+            "Preview upcoming Workspace capabilities. These controls are reserved for a future release and do not activate services yet.": [
+                "Предпросмотр будущих возможностей Workspace. Эти элементы зарезервированы для следующего релиза и пока не активируют сервисы."
+            ],
+            "Price": [
+                "Цена"
+            ],
+            "Price Format": [
+                "Формат цены"
+            ],
+            "Price Range": [
+                "Диапазон цен"
+            ],
+            "Price Range Settings": [
+                "Настройки диапазона цен"
+            ],
+            "Price on call Text": [
+                "Текст «Цена по запросу»"
+            ],
+            "Price: High to Low": [
+                "Цена: по убыванию"
+            ],
+            "Price: Low to High": [
+                "Цена: по возрастанию"
+            ],
+            "Pricing": [
+                "Цены"
+            ],
+            "Primary Text Color": [
+                "Основной цвет текста"
+            ],
+            "Privacy & Policy": [
+                "Конфиденциальность и политика"
+            ],
+            "Private": [
+                "Личное"
+            ],
+            "Pro": [
+                "Pro"
+            ],
+            "Processed": [
+                "Обработано"
+            ],
+            "Profile Updated": [
+                "Профиль обновлён"
+            ],
+            "Profile mapping applied.": [
+                "Сопоставление из профиля применено."
+            ],
+            "Profile name": [
+                "Имя профиля"
+            ],
+            "Profiles": [
+                "Профили"
+            ],
+            "Progress": [
+                "Прогресс"
+            ],
+            "Properties": [
+                "Объекты"
+            ],
+            "Properties Archive Settings": [
+                "Настройки архива объектов"
+            ],
+            "Properties Archive Slug": [
+                "Ярлык архива объектов"
+            ],
+            "Properties Per Page": [
+                "Объектов на странице"
+            ],
+            "Properties → Property Taxonomies": [
+                "Объекты → Таксономии объектов"
+            ],
+            "Property": [
+                "Объект"
+            ],
+            "Property Agencies Shortcode": [
+                "Шорткод агентств объектов"
+            ],
+            "Property Agents Shortcode": [
+                "Шорткод агентов объектов"
+            ],
+            "Property Details": [
+                "Сведения об объекте"
+            ],
+            "Property Grid Shortcode": [
+                "Шорткод сетки объектов"
+            ],
+            "Property Grid Variations": [
+                "Варианты сетки объектов"
+            ],
+            "Property ID": [
+                "ID объекта"
+            ],
+            "Property Information": [
+                "Сведения об объекте"
+            ],
+            "Property Inquiry Form": [
+                "Форма запроса по объекту"
+            ],
+            "Property List Variations": [
+                "Варианты списка объектов"
+            ],
+            "Property Lists Shortcode": [
+                "Шорткод списков объектов"
+            ],
+            "Property Pending Review": [
+                "Объект ожидает проверки"
+            ],
+            "Property Published": [
+                "Объект опубликован"
+            ],
+            "Property Rejected": [
+                "Объект отклонён"
+            ],
+            "Property Search Bar": [
+                "Панель поиска объектов"
+            ],
+            "Property Search Shortcode": [
+                "Шорткод поиска объектов"
+            ],
+            "Property Setup Success": [
+                "Успешная настройка объектов"
+            ],
+            "Property Single Slug": [
+                "Ярлык страницы объекта"
+            ],
+            "Property Sort By": [
+                "Сортировка объектов"
+            ],
+            "Property Status": [
+                "Статус объекта"
+            ],
+            "Property Submitted": [
+                "Объект отправлен"
+            ],
+            "Property Thumbnail Size": [
+                "Размер миниатюры объекта"
+            ],
+            "Property Type": [
+                "Тип объекта"
+            ],
+            "Property Types": [
+                "Типы объектов"
+            ],
+            "Property View Types": [
+                "Типы отображения объектов"
+            ],
+            "Property popup content": [
+                "Содержимое всплывающего окна объекта"
+            ],
+            "Property setup & inquiries": [
+                "Настройка объектов и заявки"
+            ],
+            "Property setup complete — {{site_name}}": [
+                "Настройка объектов завершена — {{site_name}}"
+            ],
+            "Property view settings synced": [
+                "Настройки отображения объектов синхронизированы"
+            ],
+            "Propovoice Estimate": [
+                "Propovoice Estimate"
+            ],
+            "Propovoice Form": [
+                "Propovoice Form"
+            ],
+            "Propovoice Invoice": [
+                "Propovoice Invoice"
+            ],
+            "Provides address autocomplete suggestions while typing for better user experience.": [
+                "Предлагает автодополнение адреса при вводе для удобства пользователей."
+            ],
+            "Publish properties": [
+                "Публиковать объекты"
+            ],
+            "Published": [
+                "Опубликовано"
+            ],
+            "Quick Links to Enable APIs:": [
+                "Быстрые ссылки для включения API:"
+            ],
+            "REST Debug": [
+                "Отладка REST"
+            ],
+            "Random Order": [
+                "Случайный порядок"
+            ],
+            "Random Property": [
+                "Случайный объект"
+            ],
+            "Range": [
+                "Диапазон"
+            ],
+            "Rate Limit Max": [
+                "Макс. лимит запросов"
+            ],
+            "Rate Limit Window (seconds)": [
+                "Окно лимита запросов (секунды)"
+            ],
+            "Rating": [
+                "Рейтинг"
+            ],
+            "Ready": [
+                "Готово"
+            ],
+            "Ready-Made Email Templates": [
+                "Готовые шаблоны писем"
+            ],
+            "Reception Rooms": [
+                "Гостиные"
+            ],
+            "Recommended Theme": [
+                "Рекомендуемая тема"
+            ],
+            "Recommended theme": [
+                "Рекомендуемая тема"
+            ],
+            "Refresh": [
+                "Обновить"
+            ],
+            "Regenerate": [
+                "Пересоздать"
+            ],
+            "Registration": [
+                "Регистрация"
+            ],
+            "Registration & Invitation": [
+                "Регистрация и приглашение"
+            ],
+            "Registration Approved": [
+                "Регистрация одобрена"
+            ],
+            "Registration Mode": [
+                "Режим регистрации"
+            ],
+            "Registration Rejected": [
+                "Регистрация отклонена"
+            ],
+            "Registration, inquiry, password, taxonomy, email-verification, and property workflow emails are already active. The identity-review states below need a verification provider and lifecycle before they can send.": [
+                "Письма о регистрации, заявках, пароле, таксономии, подтверждении email и рабочем процессе объектов уже активны. Состояния проверки личности ниже требуют провайдера верификации и жизненного цикла, прежде чем смогут отправляться."
+            ],
+            "Regular (400)": [
+                "Regular (400)"
+            ],
+            "Remaining": [
+                "Осталось"
+            ],
+            "Remove": [
+                "Удалить"
+            ],
+            "Rename Ajax Load More Properties": [
+                "Переименовать кнопку Ajax «Загрузить ещё» для объектов"
+            ],
+            "Rent": [
+                "Аренда"
+            ],
+            "Rent ($200k - $500k)": [
+                "Аренда ($200k - $500k)"
+            ],
+            "Rent - 10 per page": [
+                "Аренда — 10 на странице"
+            ],
+            "Rent - 1500 sqft": [
+                "Аренда — 1500 sqft"
+            ],
+            "Rent - 2 Bathrooms": [
+                "Аренда — 2 ванные"
+            ],
+            "Rent - 2 Bedrooms Featured": [
+                "Аренда — 2 спальни, избранные"
+            ],
+            "Rent - 2 Garages": [
+                "Аренда — 2 гаража"
+            ],
+            "Rent - 2 Reception Rooms": [
+                "Аренда — 2 гостиные"
+            ],
+            "Rent - 3 Bedrooms": [
+                "Аренда — 3 спальни"
+            ],
+            "Rent - Built 2020": [
+                "Аренда — построен в 2020"
+            ],
+            "Rent: 3 Bed, 2 Bath, Featured": [
+                "Аренда: 3 спальни, 2 ванные, избранные"
+            ],
+            "Replace existing": [
+                "Заменять существующие"
+            ],
+            "Replace with package builders": [
+                "Заменить конструкторами из пакета"
+            ],
+            "Report Generation": [
+                "Создание отчётов"
+            ],
+            "Report Issue": [
+                "Сообщить о проблеме"
+            ],
+            "Report downloaded.": [
+                "Отчёт скачан."
+            ],
+            "Report settings content will go here...": [
+                "Содержимое настроек отчётов будет здесь..."
+            ],
+            "Reports Settings": [
+                "Настройки отчётов"
+            ],
+            "Requests & property workflow": [
+                "Заявки и рабочий процесс объектов"
+            ],
+            "Required Google APIs (Must be enabled in Google Cloud Console)": [
+                "Необходимые Google API (должны быть включены в Google Cloud Console)"
+            ],
+            "Required for address search and reverse geocoding (converting lat\/lng to address). Without this, dragging the marker will NOT update the address field.": [
+                "Необходимо для поиска адреса и обратного геокодирования (преобразование lat\/lng в адрес). Без этого перетаскивание маркера НЕ обновит поле адреса."
+            ],
+            "Required for displaying the map. Without this, no map will appear.": [
+                "Необходимо для отображения карты. Без этого карта не появится."
+            ],
+            "Reserved for future cloud identity sync. Does not call external APIs yet.": [
+                "Зарезервировано для будущей облачной синхронизации идентичности. Пока не вызывает внешние API."
+            ],
+            "Reset All": [
+                "Сбросить всё"
+            ],
+            "Reset Changes": [
+                "Сбросить изменения"
+            ],
+            "Reset Settings?": [
+                "Сбросить настройки?"
+            ],
+            "Reset to Default": [
+                "Сбросить по умолчанию"
+            ],
+            "Reset to Defaults": [
+                "Сбросить к значениям по умолчанию"
+            ],
+            "Reset your password — {{site_name}}": [
+                "Сброс пароля — {{site_name}}"
+            ],
+            "Resetting...": [
+                "Сброс..."
+            ],
+            "Results Bar Position": [
+                "Позиция панели результатов"
+            ],
+            "Right": [
+                "Справа"
+            ],
+            "Right Sidebar Filter": [
+                "Фильтр в правой боковой панели"
+            ],
+            "Roadmap": [
+                "Дорожная карта"
+            ],
+            "Row": [
+                "Строка"
+            ],
+            "Row issues (sample)": [
+                "Проблемы в строках (образец)"
+            ],
+            "SEO": [
+                "SEO"
+            ],
+            "Sale": [
+                "Продажа"
+            ],
+            "Sale ($500k - $1M)": [
+                "Продажа ($500k - $1M)"
+            ],
+            "Sale - 15 per page": [
+                "Продажа — 15 на странице"
+            ],
+            "Sale - 2000 area": [
+                "Продажа — площадь 2000"
+            ],
+            "Sale - 3 Bathrooms": [
+                "Продажа — 3 ванные"
+            ],
+            "Sale - 4 Bedrooms": [
+                "Продажа — 4 спальни"
+            ],
+            "Sale: 4 Bed, 3 Bath, Min $500k": [
+                "Продажа: 4 спальни, 3 ванные, от $500k"
+            ],
+            "Sample Page": [
+                "Пример страницы"
+            ],
+            "Sample Value": [
+                "Пример значения"
+            ],
+            "Sampled Rows": [
+                "Проверено строк"
+            ],
+            "Satellite": [
+                "Спутник"
+            ],
+            "Save": [
+                "Сохранить"
+            ],
+            "Save Advanced Settings": [
+                "Сохранить расширенные настройки"
+            ],
+            "Save All Settings": [
+                "Сохранить все настройки"
+            ],
+            "Save Configuration": [
+                "Сохранить конфигурацию"
+            ],
+            "Save Currency Settings": [
+                "Сохранить настройки валюты"
+            ],
+            "Save Dashboard Settings": [
+                "Сохранить настройки панели"
+            ],
+            "Save Design Settings": [
+                "Сохранить настройки дизайна"
+            ],
+            "Save Email Settings": [
+                "Сохранить настройки email"
+            ],
+            "Save General Settings": [
+                "Сохранить общие настройки"
+            ],
+            "Save Integration AI Settings": [
+                "Сохранить настройки интеграции AI"
+            ],
+            "Save Integration Settings": [
+                "Сохранить настройки интеграций"
+            ],
+            "Save Map Settings": [
+                "Сохранить настройки карты"
+            ],
+            "Save Misc Settings": [
+                "Сохранить прочие настройки"
+            ],
+            "Save Permalink Settings": [
+                "Сохранить настройки постоянных ссылок"
+            ],
+            "Save Properties Settings": [
+                "Сохранить настройки объектов"
+            ],
+            "Save Property Details Settings": [
+                "Сохранить настройки страницы объекта"
+            ],
+            "Save Reports Settings": [
+                "Сохранить настройки отчётов"
+            ],
+            "Save Search Property Settings": [
+                "Сохранить настройки поиска объектов"
+            ],
+            "Save Search Result Settings": [
+                "Сохранить настройки результатов поиска"
+            ],
+            "Save Search Settings": [
+                "Сохранить настройки поиска"
+            ],
+            "Save Settings": [
+                "Сохранить настройки"
+            ],
+            "Save Support Settings": [
+                "Сохранить настройки поддержки"
+            ],
+            "Save Typography Settings": [
+                "Сохранить настройки типографики"
+            ],
+            "Save User & Agent Settings": [
+                "Сохранить настройки пользователя и агента"
+            ],
+            "Save as Profile": [
+                "Сохранить как профиль"
+            ],
+            "Saved Mapping Profiles": [
+                "Сохранённые профили сопоставления"
+            ],
+            "Saving...": [
+                "Сохранение..."
+            ],
+            "Schema Version": [
+                "Версия схемы"
+            ],
+            "Search": [
+                "Поиск"
+            ],
+            "Search Address": [
+                "Поиск адреса"
+            ],
+            "Search Button Text": [
+                "Текст кнопки поиска"
+            ],
+            "Search Configuration": [
+                "Конфигурация поиска"
+            ],
+            "Search Havenlytics fields…": [
+                "Поиск полей Havenlytics…"
+            ],
+            "Search Home": [
+                "Поиск на главной"
+            ],
+            "Search Location": [
+                "Поиск расположения"
+            ],
+            "Search Page": [
+                "Страница поиска"
+            ],
+            "Search Placeholder Text": [
+                "Текст-заполнитель поиска"
+            ],
+            "Search Properties": [
+                "Поиск объектов"
+            ],
+            "Search Property": [
+                "Поиск объектов"
+            ],
+            "Search Property Layout": [
+                "Макет поиска объектов"
+            ],
+            "Search Radius (km)": [
+                "Радиус поиска (км)"
+            ],
+            "Search Result": [
+                "Результат поиска"
+            ],
+            "Search Results Per Page": [
+                "Результатов поиска на странице"
+            ],
+            "Search Settings": [
+                "Настройки поиска"
+            ],
+            "Search fields": [
+                "Поиск полей"
+            ],
+            "Search fields…": [
+                "Поиск полей…"
+            ],
+            "Search properties...": [
+                "Поиск объектов..."
+            ],
+            "Secondary Color": [
+                "Дополнительный цвет"
+            ],
+            "Secondary Text Color": [
+                "Вторичный цвет текста"
+            ],
+            "Securely migrate your complete Havenlytics website to another Havenlytics installation while preserving all supported data and relationships.": [
+                "Безопасно перенесите весь сайт Havenlytics на другую установку Havenlytics с сохранением всех поддерживаемых данных и связей."
+            ],
+            "Select Currency": [
+                "Выберите валюту"
+            ],
+            "Select Location": [
+                "Выберите расположение"
+            ],
+            "Select Map Provider": [
+                "Выберите провайдера карты"
+            ],
+            "Select One": [
+                "Выберите один"
+            ],
+            "Select Settings Page": [
+                "Выберите страницу настроек"
+            ],
+            "Select Sidebar Layout": [
+                "Выберите макет боковой панели"
+            ],
+            "Select Status": [
+                "Выберите статус"
+            ],
+            "Select Tags": [
+                "Выберите метки"
+            ],
+            "Select a color": [
+                "Выберите цвет"
+            ],
+            "Select a saved profile…": [
+                "Выберите сохранённый профиль…"
+            ],
+            "Select an option": [
+                "Выберите вариант"
+            ],
+            "Select the platform your CSV was exported from. Havenlytics will automatically pre-map common fields to save time. You can still review and adjust every mapping before importing.": [
+                "Укажите платформу, из которой экспортирован CSV. Havenlytics автоматически предварительно сопоставит распространённые поля, чтобы сэкономить время. Перед импортом вы сможете проверить и скорректировать каждое соответствие."
+            ],
+            "Select...": [
+                "Выберите..."
+            ],
+            "Selected": [
+                "Выбрано"
+            ],
+            "Semi-Bold (600)": [
+                "Semi-Bold (600)"
+            ],
+            "Send Admin Copy": [
+                "Отправлять копию администратору"
+            ],
+            "Send account access": [
+                "Отправлять доступ к учётной записи"
+            ],
+            "Sender Intro": [
+                "Вступление для отправителя"
+            ],
+            "Sender Subject": [
+                "Тема для отправителя"
+            ],
+            "Set up in eight simple steps": [
+                "Настройка за восемь простых шагов"
+            ],
+            "Settings are packaged with builders in the current transfer format.": [
+                "В текущем формате переноса настройки включаются в пакет вместе с конструкторами."
+            ],
+            "Settings resources": [
+                "Ресурсы настроек"
+            ],
+            "Settings sections": [
+                "Разделы настроек"
+            ],
+            "Shortcodes": [
+                "Шорткоды"
+            ],
+            "Show Fullscreen Button": [
+                "Показывать кнопку полноэкранного режима"
+            ],
+            "Show Zoom Controls": [
+                "Показывать элементы масштабирования"
+            ],
+            "Sign In": [
+                "Войти"
+            ],
+            "Single Category": [
+                "Отдельная категория"
+            ],
+            "Single Location": [
+                "Отдельная локация"
+            ],
+            "Single Property Page": [
+                "Страница объекта"
+            ],
+            "Single Tag": [
+                "Отдельный тег"
+            ],
+            "Skip duplicates": [
+                "Пропускать дубликаты"
+            ],
+            "Skipped": [
+                "Пропущено"
+            ],
+            "Small (SM) - Mobile Landscape (480px - 639px)": [
+                "Маленький (SM) — мобильный альбомный (480px - 639px)"
+            ],
+            "Some sampled rows are missing required fields. Those rows will be skipped automatically; everything else will import normally.": [
+                "В некоторых проверенных строках отсутствуют обязательные поля. Эти строки будут автоматически пропущены; остальные импортируются как обычно."
+            ],
+            "Something went wrong.": [
+                "Что-то пошло не так."
+            ],
+            "Source": [
+                "Источник"
+            ],
+            "Specific Property IDs": [
+                "Конкретные ID объектов"
+            ],
+            "Square Footage": [
+                "Площадь"
+            ],
+            "Standard": [
+                "Стандартная"
+            ],
+            "Start Export": [
+                "Начать экспорт"
+            ],
+            "Start Import": [
+                "Начать импорт"
+            ],
+            "Start New Export": [
+                "Начать новый экспорт"
+            ],
+            "Starting…": [
+                "Запуск…"
+            ],
+            "Status": [
+                "Статус"
+            ],
+            "Status Filters": [
+                "Фильтры по статусу"
+            ],
+            "Status: OFF — listings use live queries without cache.": [
+                "Статус: ВЫКЛ — списки используют живые запросы без кэша."
+            ],
+            "Status: ON — listings (grid, list, map, sidebar) use cached AJAX responses.": [
+                "Статус: ВКЛ — списки (сетка, список, карта, боковая панель) используют кэшированные AJAX-ответы."
+            ],
+            "Sub-Fields Configuration": [
+                "Конфигурация подполей"
+            ],
+            "Subject:": [
+                "Тема:"
+            ],
+            "Submitted for review: {{property_title}}": [
+                "Отправлено на проверку: {{property_title}}"
+            ],
+            "Success": [
+                "Успешно"
+            ],
+            "Success Message": [
+                "Сообщение об успехе"
+            ],
+            "Support Settings": [
+                "Настройки поддержки"
+            ],
+            "Supports": [
+                "Поддержка"
+            ],
+            "Supports custom tile layers": [
+                "Поддерживает пользовательские слои тайлов"
+            ],
+            "Tags": [
+                "Метки"
+            ],
+            "Tags Base": [
+                "База меток-тегов"
+            ],
+            "Taxonomies": [
+                "Таксономии"
+            ],
+            "Taxonomy": [
+                "Таксономия"
+            ],
+            "Taxonomy Field Settings": [
+                "Настройки поля таксономии"
+            ],
+            "Taxonomy Request Approved": [
+                "Запрос таксономии одобрен"
+            ],
+            "Taxonomy Request Rejected": [
+                "Запрос таксономии отклонён"
+            ],
+            "Taxonomy Request Submitted": [
+                "Запрос таксономии отправлен"
+            ],
+            "Taxonomy Terms": [
+                "Термины таксономии"
+            ],
+            "Taxonomy request approved": [
+                "Запрос таксономии одобрен"
+            ],
+            "Taxonomy request rejected": [
+                "Запрос таксономии отклонён"
+            ],
+            "Taxonomy request submitted": [
+                "Запрос таксономии отправлен"
+            ],
+            "Terms & Conditions": [
+                "Условия использования"
+            ],
+            "Terms and Conditions": [
+                "Условия использования"
+            ],
+            "Terrain": [
+                "Рельеф"
+            ],
+            "Text": [
+                "Текст"
+            ],
+            "Text Field Settings": [
+                "Настройки текстового поля"
+            ],
+            "These live emails include a responsive branded HTML layout, a sensible subject, placeholder data, and context-aware action links. Their content is ready to use automatically.": [
+                "Эти рабочие письма включают адаптивную фирменную HTML-вёрстку, подходящую тему, данные-заполнители и контекстные ссылки действий. Их содержимое готово к использованию автоматически."
+            ],
+            "They use your Workspace login page, not WordPress admin.": [
+                "Они используют страницу входа Workspace, а не админку WordPress."
+            ],
+            "This field type does not require additional configuration.": [
+                "Этот тип поля не требует дополнительной настройки."
+            ],
+            "This field uses taxonomy terms. Terms are managed in WordPress admin under:": [
+                "Это поле использует термины таксономии. Термины управляются в админке WordPress в разделе:"
+            ],
+            "This is a group field. Configure its sub-fields below.": [
+                "Это групповое поле. Настройте его подполя ниже."
+            ],
+            "This website contains %1$d properties. Havenlytics Free allows migration of up to %2$d properties. Upgrade to Havenlytics Pro to migrate unlimited listings.": [
+                "На этом сайте %1$d объектов. Havenlytics Free позволяет мигрировать до %2$d объектов. Перейдите на Havenlytics Pro, чтобы мигрировать неограниченное число объявлений."
+            ],
+            "Thousand Separator": [
+                "Разделитель тысяч"
+            ],
+            "Thousand Text - K or Thousand": [
+                "Текст тысяч — K или Thousand"
+            ],
+            "Title Text Color": [
+                "Цвет текста заголовков"
+            ],
+            "Title: A to Z": [
+                "Заголовок: А–Я"
+            ],
+            "Title: Z to A": [
+                "Заголовок: Я–А"
+            ],
+            "Top": [
+                "Сверху"
+            ],
+            "Top Search Fields": [
+                "Верхние поля поиска"
+            ],
+            "Top Search Fields (Additional Filters)": [
+                "Верхние поля поиска (дополнительные фильтры)"
+            ],
+            "Top search fields saved!": [
+                "Верхние поля поиска сохранены!"
+            ],
+            "Total Rows": [
+                "Всего строк"
+            ],
+            "Tracking Mode": [
+                "Режим отслеживания"
+            ],
+            "Turn each transactional email on or off. These switches control the live registration, approval, password, and property notifications. Custom HTML template editing is planned for a later release.": [
+                "Включайте или отключайте каждое транзакционное письмо. Эти переключатели управляют актуальными уведомлениями о регистрации, одобрении, пароле и объектах. Редактирование пользовательских HTML-шаблонов планируется в следующем релизе."
+            ],
+            "Turn on the property inquiry form.": [
+                "Включить форму запроса по объекту."
+            ],
+            "Turns the Agent Workspace on or off for every \/agent-dashboard\/* route. This is the global feature flag.": [
+                "Включает или отключает рабочую область агента для каждого маршрута \/agent-dashboard\/*. Это глобальный флаг функции."
+            ],
+            "Types Base": [
+                "База типов"
+            ],
+            "Typography Settings": [
+                "Настройки типографики"
+            ],
+            "Update": [
+                "Обновить"
+            ],
+            "Update existing": [
+                "Обновлять существующие"
+            ],
+            "Updated": [
+                "Обновлено"
+            ],
+            "Upgrade to Havenlytics Pro for unlimited property migration.": [
+                "Перейдите на Havenlytics Pro для неограниченной миграции объектов."
+            ],
+            "Upgrade to Pro": [
+                "Перейти на Pro"
+            ],
+            "Upgrade\/Regenerate Pages": [
+                "Обновить \/ пересоздать страницы"
+            ],
+            "Upload": [
+                "Загрузка"
+            ],
+            "Upload & Continue": [
+                "Загрузить и продолжить"
+            ],
+            "Upload CSV File": [
+                "Загрузить CSV-файл"
+            ],
+            "Upload a CSV export from your previous property plugin (or any spreadsheet). You will map its columns to Havenlytics fields on the next step.": [
+                "Загрузите CSV-экспорт из предыдущего плагина объектов (или любую таблицу). На следующем шаге вы сопоставите столбцы с полями Havenlytics."
+            ],
+            "Upload a Havenlytics Property Transfer Package (.zip). The package is validated before any data is written.": [
+                "Загрузите пакет переноса объектов Havenlytics (.zip). Перед записью данных пакет будет проверен."
+            ],
+            "Uploading…": [
+                "Загрузка…"
+            ],
+            "Use Custom Marker Style": [
+                "Использовать свой стиль маркеров"
+            ],
+            "Use Preset Values (Dropdown instead of input)": [
+                "Использовать предустановленные значения (выпадающий список вместо ввода)"
+            ],
+            "Use first gallery image as Featured Image when no Featured Image column is mapped": [
+                "Использовать первое изображение галереи как изображение обложки, если столбец Featured Image не сопоставлен"
+            ],
+            "Use open registration or require administrator approval.": [
+                "Используйте открытую регистрацию или требуйте одобрения администратора."
+            ],
+            "Use the Property Onboarding Wizard to explore the complete Havenlytics property structure.": [
+                "Используйте мастер онбординга объектов, чтобы изучить полную структуру объектов Havenlytics."
+            ],
+            "User & Agent": [
+                "Пользователь и агент"
+            ],
+            "User Dashboard": [
+                "Панель пользователя"
+            ],
+            "User Experience Settings": [
+                "Настройки пользовательского опыта"
+            ],
+            "User Settings": [
+                "Настройки пользователя"
+            ],
+            "Using default main search fields": [
+                "Используются основные поля поиска по умолчанию"
+            ],
+            "Using default search fields": [
+                "Используются поля поиска по умолчанию"
+            ],
+            "Using default top search fields": [
+                "Используются верхние поля поиска по умолчанию"
+            ],
+            "Valid": [
+                "Корректных"
+            ],
+            "Validate": [
+                "Проверка"
+            ],
+            "Validate & Configure": [
+                "Проверка и настройка"
+            ],
+            "Validate Package": [
+                "Проверить пакет"
+            ],
+            "Validating…": [
+                "Проверка…"
+            ],
+            "Validation warnings": [
+                "Предупреждения проверки"
+            ],
+            "Value": [
+                "Значение"
+            ],
+            "Verify your email for {{site_name}}": [
+                "Подтвердите email для {{site_name}}"
+            ],
+            "View Counts": [
+                "Количество просмотров"
+            ],
+            "Visual style for the map tiles (applies to Leaflet\/OpenStreetMap only).": [
+                "Визуальный стиль тайлов карты (только для Leaflet\/OpenStreetMap)."
+            ],
+            "Warning": [
+                "Предупреждение"
+            ],
+            "Warnings": [
+                "Предупреждения"
+            ],
+            "Waterfront & New - Sale": [
+                "У воды и новые — продажа"
+            ],
+            "We received your inquiry • {{property_title}} — {{site_name}}": [
+                "Мы получили вашу заявку • {{property_title}} — {{site_name}}"
+            ],
+            "Welcome to {{site_name}}": [
+                "Добро пожаловать на {{site_name}}"
+            ],
+            "When an import or export finishes, a full report will appear here.": [
+                "После завершения импорта или экспорта здесь появится полный отчёт."
+            ],
+            "When enabled, admins can receive a setup confirmation after completing the Property Import wizard (if Email Notifications is checked on the import page).": [
+                "Если включено, администраторы могут получать подтверждение после завершения мастера импорта объектов (если на странице импорта отмечены уведомления по email)."
+            ],
+            "When enabled, properties will load via AJAX without page refresh using a \"Load More\" button. When disabled, traditional pagination will be used.": [
+                "При включении объекты загружаются через AJAX без обновления страницы с помощью кнопки «Загрузить ещё». При отключении используется обычная пагинация."
+            ],
+            "Width (px)": [
+                "Ширина (px)"
+            ],
+            "Working…": [
+                "Выполняется…"
+            ],
+            "Works out of the box": [
+                "Работает сразу после установки"
+            ],
+            "Workspace Debug": [
+                "Отладка рабочей области"
+            ],
+            "Workspace Email Templates": [
+                "Шаблоны писем Workspace"
+            ],
+            "Workspace Page": [
+                "Страница рабочей области"
+            ],
+            "Workspace Registration": [
+                "Регистрация в рабочей области"
+            ],
+            "Workspace Shell": [
+                "Оболочка рабочей области"
+            ],
+            "Year Built": [
+                "Год постройки"
+            ],
+            "Yes, cancel": [
+                "Да, отменить"
+            ],
+            "You can migrate up to %d properties.": [
+                "Вы можете мигрировать до %d объектов."
+            ],
+            "Your CSV is being imported. Keep this tab open until it finishes.": [
+                "Идёт импорт CSV. Не закрывайте эту вкладку до завершения."
+            ],
+            "Your property has been published": [
+                "Ваш объект опубликован"
+            ],
+            "Your property setup on {{site_name}} is complete. {{import_count}} listings are ready to review.": [
+                "Настройка объектов на {{site_name}} завершена. {{import_count}} объявлений готовы к просмотру."
+            ],
+            "Your site routes:": [
+                "Маршруты вашего сайта:"
+            ],
+            "Your workspace is ready — {{site_name}}": [
+                "Ваш workspace готов — {{site_name}}"
+            ],
+            "Z to A (title)": [
+                "Я → А (название)"
+            ],
+            "custom": [
+                "пользовательский"
+            ],
+            "e.g. My CRM Export": [
+                "напр. Экспорт из моей CRM"
+            ],
+            "e.g., Contact Agent, Negotiable, Upon Request": [
+                "напр., Связаться с агентом, Договорная, По запросу"
+            ],
+            "or": [
+                "или"
+            ],
+            "properties written to CSV.": [
+                "объектов записано в CSV."
+            ],
+            "— Do not import —": [
+                "— Не импортировать —"
+            ]
+        }
+    }
+}

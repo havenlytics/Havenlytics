@@ -31,6 +31,7 @@ $hvnly_mode = $mode ?? 'default';
 
 // Get reception rooms count
 $hvnly_reception = absint(get_post_meta($hvnly_property_id, '_hvnly_property_reception_rooms', true));
+$hvnly_field    = $field ?? array();
 
 if ($hvnly_reception > 0 || $hvnly_mode === 'preset') :
 ?>
@@ -43,16 +44,12 @@ if ($hvnly_reception > 0 || $hvnly_mode === 'preset') :
             </span>
         <?php endif; ?>
         <span class="hvnly-property-feature-label">
-            <?php 
-            /* translators: %s: number of reception rooms */
-            echo esc_html( 
-                _n( 
-                    'Recep', 
-                    'Recep', 
-                    $hvnly_reception > 0 ? $hvnly_reception : 1, 
-                    'havenlytics' 
-                ) 
-            ); 
+            <?php
+            echo esc_html(
+                function_exists( 'hvnly_archive_feature_label' )
+                    ? hvnly_archive_feature_label( $hvnly_field, 'Recep', 'Recep', $hvnly_reception )
+                    : _n( 'Recep', 'Recep', $hvnly_reception > 0 ? $hvnly_reception : 1, 'havenlytics' )
+            );
             ?>
         </span>
     </div>

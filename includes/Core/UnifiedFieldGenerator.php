@@ -280,6 +280,18 @@ class UnifiedFieldGenerator
      */
     public function get_unified_configuration()
     {
+        static $building = false;
+        if ( ! $building && function_exists( 'hvnly_with_english_ui' ) ) {
+            $building = true;
+            try {
+                return hvnly_with_english_ui( function () {
+                    return $this->get_unified_configuration();
+                } );
+            } finally {
+                $building = false;
+            }
+        }
+
         // Always use the stored master IDs — never generate fresh ones here.
         // get_or_create_master_base_ids() creates them on first call and then
         // returns the same values on every subsequent call.
@@ -310,7 +322,7 @@ class UnifiedFieldGenerator
         return [
             $basic_info_id => [
                 'id' => $basic_info_id,
-                'title' => 'Basic Info',
+                'title' => __( 'Basic Info', 'havenlytics' ),
                 'icon' => 'fas fa-home',
                 'required' => true,
                 'order' => 0,
@@ -319,7 +331,7 @@ class UnifiedFieldGenerator
             ],
             $additional_info_id => [
                 'id' => $additional_info_id,
-                'title' => 'Additional Information',
+                'title' => __( 'Additional Information', 'havenlytics' ),
                 'icon' => 'fas fa-info-circle',
                 'required' => false,
                 'order' => 1,
@@ -328,7 +340,7 @@ class UnifiedFieldGenerator
             ],
             $address_neighborhood_id => [
                 'id' => $address_neighborhood_id,
-                'title' => 'Address & Neighborhood',
+                'title' => __( 'Address & Neighborhood', 'havenlytics' ),
                 'icon' => 'fas fa-building',
                 'required' => false,
                 'order' => 2,
@@ -337,7 +349,7 @@ class UnifiedFieldGenerator
             ],
             $video_id => [
                 'id' => $video_id,
-                'title' => 'Property Video',
+                'title' => __( 'Property Video', 'havenlytics' ),
                 'icon' => 'fas fa-video',
                 'required' => false,
                 'order' => 3,
@@ -346,7 +358,7 @@ class UnifiedFieldGenerator
             ],
             $gallery_id => [
                 'id' => $gallery_id,
-                'title' => 'Property Gallery',
+                'title' => __( 'Property Gallery', 'havenlytics' ),
                 'icon' => 'fas fa-images',
                 'required' => false,
                 'order' => 4,
@@ -355,7 +367,7 @@ class UnifiedFieldGenerator
             ],
             $location_id => [
                 'id' => $location_id,
-                'title' => 'Property Location',
+                'title' => __( 'Property Location', 'havenlytics' ),
                 'icon' => 'fas fa-map-marker-alt',
                 'required' => false,
                 'order' => 5,
@@ -364,7 +376,7 @@ class UnifiedFieldGenerator
             ],
             $documents_id => [
                 'id' => $documents_id,
-                'title' => 'Property Documents',
+                'title' => __( 'Property Documents', 'havenlytics' ),
                 'icon' => 'fas fa-file-pdf',
                 'required' => false,
                 'order' => 6,
@@ -373,7 +385,7 @@ class UnifiedFieldGenerator
             ],
             $faq_id => [
                 'id' => $faq_id,
-                'title' => 'Frequently Asked Questions',
+                'title' => __( 'Frequently Asked Questions', 'havenlytics' ),
                 'icon' => 'fas fa-question-circle',
                 'required' => false,
                 'order' => 7,
@@ -382,7 +394,7 @@ class UnifiedFieldGenerator
             ],
             $repeater_id => [
                 'id' => $repeater_id,
-                'title' => 'Property Highlights',
+                'title' => __( 'Property Highlights', 'havenlytics' ),
                 'icon' => 'fas fa-list',
                 'required' => false,
                 'order' => 8,
@@ -391,7 +403,7 @@ class UnifiedFieldGenerator
             ],
             $features_id => [
                 'id' => $features_id,
-                'title' => 'Property Features',
+                'title' => __( 'Property Features', 'havenlytics' ),
                 'icon' => 'fas fa-check-square',
                 'required' => false,
                 'order' => 9,
@@ -400,7 +412,7 @@ class UnifiedFieldGenerator
             ],
             $agents_id => [
                 'id' => $agents_id,
-                'title' => 'Listing Agents',
+                'title' => __( 'Listing Agents', 'havenlytics' ),
                 'icon' => 'fas fa-user-tie',
                 'required' => false,
                 'order' => 10,
@@ -416,17 +428,17 @@ class UnifiedFieldGenerator
     public function get_basic_info_fields()
     {
         return [
-            ['id' => '_hvnly_property_price', 'name' => '_hvnly_property_price', 'type' => 'price_label', 'label' => 'Property Price', 'placeholder' => 'Enter property price', 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false],
-            ['id' => '_hvnly_property_reception_rooms', 'name' => '_hvnly_property_reception_rooms', 'type' => 'number', 'label' => 'Property Reception Rooms', 'placeholder' => 'Enter reception rooms', 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false],
-            ['id' => '_hvnly_property_bedrooms', 'name' => '_hvnly_property_bedrooms', 'type' => 'number', 'label' => 'Property Bedrooms', 'placeholder' => 'Enter property bedrooms', 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 2, 'hidden' => false],
-            ['id' => '_hvnly_property_bathrooms', 'name' => '_hvnly_property_bathrooms', 'type' => 'number', 'label' => 'Property Bathrooms', 'placeholder' => 'Enter property bathrooms', 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 3, 'hidden' => false],
-            ['id' => '_hvnly_property_half_bathrooms', 'name' => '_hvnly_property_half_bathrooms', 'type' => 'number', 'label' => 'Property Half Baths', 'placeholder' => 'Enter property half baths', 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 4, 'hidden' => false],
-            ['id' => '_hvnly_property_kitchens', 'name' => '_hvnly_property_kitchens', 'type' => 'number', 'label' => 'Property Kitchen', 'placeholder' => 'Enter property kitchen', 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 5, 'hidden' => false],
-            ['id' => '_hvnly_property_total_rooms', 'name' => '_hvnly_property_total_rooms', 'type' => 'number', 'label' => 'Property Total Rooms', 'placeholder' => 'Enter property total rooms', 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 6, 'hidden' => false],
-            ['id' => '_hvnly_property_floors', 'name' => '_hvnly_property_floors', 'type' => 'number', 'label' => 'Property Floors', 'placeholder' => 'Enter property floors', 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 7, 'hidden' => false],
-            ['id' => '_hvnly_property_year_built', 'name' => '_hvnly_property_year_built', 'type' => 'number', 'label' => 'Property Year Built', 'placeholder' => 'Enter property year built', 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 8, 'hidden' => false],
-            ['id' => '_hvnly_property_mls_number', 'name' => '_hvnly_property_mls_number', 'type' => 'text', 'label' => 'Property MLS Number', 'placeholder' => 'Enter property MLS number', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 9, 'hidden' => false],
-            ['id' => '_hvnly_property_garage_sqft', 'name' => '_hvnly_property_garage_sqft', 'type' => 'number', 'label' => 'Property Garage Square Footage', 'placeholder' => 'Enter property garage square footage', 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 10, 'hidden' => false],
+            ['id' => '_hvnly_property_price', 'name' => '_hvnly_property_price', 'type' => 'price_label', 'label' => __( 'Property Price', 'havenlytics' ), 'placeholder' => __( 'Enter property price', 'havenlytics' ), 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false],
+            ['id' => '_hvnly_property_reception_rooms', 'name' => '_hvnly_property_reception_rooms', 'type' => 'number', 'label' => __( 'Property Reception Rooms', 'havenlytics' ), 'placeholder' => __( 'Enter reception rooms', 'havenlytics' ), 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false],
+            ['id' => '_hvnly_property_bedrooms', 'name' => '_hvnly_property_bedrooms', 'type' => 'number', 'label' => __( 'Property Bedrooms', 'havenlytics' ), 'placeholder' => __( 'Enter property bedrooms', 'havenlytics' ), 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 2, 'hidden' => false],
+            ['id' => '_hvnly_property_bathrooms', 'name' => '_hvnly_property_bathrooms', 'type' => 'number', 'label' => __( 'Property Bathrooms', 'havenlytics' ), 'placeholder' => __( 'Enter property bathrooms', 'havenlytics' ), 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 3, 'hidden' => false],
+            ['id' => '_hvnly_property_half_bathrooms', 'name' => '_hvnly_property_half_bathrooms', 'type' => 'number', 'label' => __( 'Property Half Baths', 'havenlytics' ), 'placeholder' => __( 'Enter property half baths', 'havenlytics' ), 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 4, 'hidden' => false],
+            ['id' => '_hvnly_property_kitchens', 'name' => '_hvnly_property_kitchens', 'type' => 'number', 'label' => __( 'Property Kitchen', 'havenlytics' ), 'placeholder' => __( 'Enter property kitchen', 'havenlytics' ), 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 5, 'hidden' => false],
+            ['id' => '_hvnly_property_total_rooms', 'name' => '_hvnly_property_total_rooms', 'type' => 'number', 'label' => __( 'Property Total Rooms', 'havenlytics' ), 'placeholder' => __( 'Enter property total rooms', 'havenlytics' ), 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 6, 'hidden' => false],
+            ['id' => '_hvnly_property_floors', 'name' => '_hvnly_property_floors', 'type' => 'number', 'label' => __( 'Property Floors', 'havenlytics' ), 'placeholder' => __( 'Enter property floors', 'havenlytics' ), 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 7, 'hidden' => false],
+            ['id' => '_hvnly_property_year_built', 'name' => '_hvnly_property_year_built', 'type' => 'number', 'label' => __( 'Property Year Built', 'havenlytics' ), 'placeholder' => __( 'Enter property year built', 'havenlytics' ), 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 8, 'hidden' => false],
+            ['id' => '_hvnly_property_mls_number', 'name' => '_hvnly_property_mls_number', 'type' => 'text', 'label' => __( 'Property MLS Number', 'havenlytics' ), 'placeholder' => __( 'Enter property MLS number', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 9, 'hidden' => false],
+            ['id' => '_hvnly_property_garage_sqft', 'name' => '_hvnly_property_garage_sqft', 'type' => 'number', 'label' => __( 'Property Garage Square Footage', 'havenlytics' ), 'placeholder' => __( 'Enter property garage square footage', 'havenlytics' ), 'required' => true, 'locked' => true, 'adminOnly' => false, 'enabled' => true, 'order' => 10, 'hidden' => false],
         ];
     }
     
@@ -436,13 +448,13 @@ class UnifiedFieldGenerator
     public function get_additional_info_fields()
     {
         return [
-            ['id' => '_hvnly_property_sqft', 'name' => '_hvnly_property_sqft', 'type' => 'number', 'label' => 'Property Area, sq ft', 'placeholder' => 'Enter property area in square feet', 'required' => true, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false],
-            ['id' => '_hvnly_property_lot_size', 'name' => '_hvnly_property_lot_size', 'type' => 'text', 'label' => 'Property Lot size, sq ft', 'placeholder' => 'Enter property lot size', 'required' => true, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false],
-            ['id' => '_hvnly_property_hoa_fee', 'name' => '_hvnly_property_hoa_fee', 'type' => 'text', 'label' => 'Property HOA Fee', 'placeholder' => 'Enter property HOA fee', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 2, 'hidden' => false],
-            ['id' => '_hvnly_property_annual_tax_amount', 'name' => '_hvnly_property_annual_tax_amount', 'type' => 'number', 'label' => 'Property Annual Tax Amount', 'placeholder' => 'Enter property annual tax amount', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 3, 'hidden' => false],
-            ['id' => '_hvnly_property_heating', 'name' => '_hvnly_property_heating', 'type' => 'select', 'label' => 'Heating', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 4, 'hidden' => false, 'options' => ['forced_air' => 'Forced Air', 'radiator' => 'Radiator', 'heat_pump' => 'Heat Pump', 'baseboard' => 'Baseboard', 'none' => 'None']],
-            ['id' => '_hvnly_property_cooling', 'name' => '_hvnly_property_cooling', 'type' => 'select', 'label' => 'Cooling', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 5, 'hidden' => false, 'options' => ['central' => 'Central Air', 'window' => 'Window Units', 'heat_pump' => 'Heat Pump', 'baseboard' => 'Baseboard', 'none' => 'None']],
-            ['id' => '_hvnly_property_water', 'name' => '_hvnly_property_water', 'type' => 'select', 'label' => 'Water Source', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 6, 'hidden' => false, 'options' => ['city' => 'City', 'well' => 'Well', 'shared_well' => 'Shared Well', 'none' => 'None']],
+            ['id' => '_hvnly_property_sqft', 'name' => '_hvnly_property_sqft', 'type' => 'number', 'label' => __( 'Property Area, sq ft', 'havenlytics' ), 'placeholder' => __( 'Enter property area in square feet', 'havenlytics' ), 'required' => true, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false],
+            ['id' => '_hvnly_property_lot_size', 'name' => '_hvnly_property_lot_size', 'type' => 'text', 'label' => __( 'Property Lot size, sq ft', 'havenlytics' ), 'placeholder' => __( 'Enter property lot size', 'havenlytics' ), 'required' => true, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false],
+            ['id' => '_hvnly_property_hoa_fee', 'name' => '_hvnly_property_hoa_fee', 'type' => 'text', 'label' => __( 'Property HOA Fee', 'havenlytics' ), 'placeholder' => __( 'Enter property HOA fee', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 2, 'hidden' => false],
+            ['id' => '_hvnly_property_annual_tax_amount', 'name' => '_hvnly_property_annual_tax_amount', 'type' => 'number', 'label' => __( 'Property Annual Tax Amount', 'havenlytics' ), 'placeholder' => __( 'Enter property annual tax amount', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 3, 'hidden' => false],
+            ['id' => '_hvnly_property_heating', 'name' => '_hvnly_property_heating', 'type' => 'select', 'label' => __( 'Heating', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 4, 'hidden' => false, 'options' => ['forced_air' => __( 'Forced Air', 'havenlytics' ), 'radiator' => __( 'Radiator', 'havenlytics' ), 'heat_pump' => __( 'Heat Pump', 'havenlytics' ), 'baseboard' => __( 'Baseboard', 'havenlytics' ), 'none' => __( 'None', 'havenlytics' )]],
+            ['id' => '_hvnly_property_cooling', 'name' => '_hvnly_property_cooling', 'type' => 'select', 'label' => __( 'Cooling', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 5, 'hidden' => false, 'options' => ['central' => __( 'Central Air', 'havenlytics' ), 'window' => __( 'Window Units', 'havenlytics' ), 'heat_pump' => __( 'Heat Pump', 'havenlytics' ), 'baseboard' => __( 'Baseboard', 'havenlytics' ), 'none' => __( 'None', 'havenlytics' )]],
+            ['id' => '_hvnly_property_water', 'name' => '_hvnly_property_water', 'type' => 'select', 'label' => __( 'Water Source', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 6, 'hidden' => false, 'options' => ['city' => __( 'City', 'havenlytics' ), 'well' => __( 'Well', 'havenlytics' ), 'shared_well' => __( 'Shared Well', 'havenlytics' ), 'none' => __( 'None', 'havenlytics' )]],
         ];
     }
     
@@ -452,37 +464,37 @@ class UnifiedFieldGenerator
     public function get_address_neighborhood_fields()
     {
         return [
-            ['id' => '_hvnly_property_reference_number', 'name' => '_hvnly_property_reference_number', 'type' => 'text', 'label' => 'Property Reference Number', 'placeholder' => 'Enter property reference number', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false],
-            ['id' => '_hvnly_property_building_number', 'name' => '_hvnly_property_building_number', 'type' => 'text', 'label' => 'Property Building Number', 'placeholder' => 'Enter property building number', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false],
-            ['id' => '_hvnly_property_street', 'name' => '_hvnly_property_street', 'type' => 'text', 'label' => 'Property Street', 'placeholder' => 'Enter property street', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 2, 'hidden' => false],
-            ['id' => '_hvnly_property_address_line_1', 'name' => '_hvnly_property_address_line_1', 'type' => 'text', 'label' => 'Property Address Line 1', 'placeholder' => 'Enter property address line 1', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 3, 'hidden' => false],
-            ['id' => '_hvnly_property_address_line_2', 'name' => '_hvnly_property_address_line_2', 'type' => 'text', 'label' => 'Property Address Line 2', 'placeholder' => 'Enter property address line 2', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 4, 'hidden' => false],
-            ['id' => '_hvnly_property_town_city', 'name' => '_hvnly_property_town_city', 'type' => 'text', 'label' => 'Property Town/City', 'placeholder' => 'Enter property town/city', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 5, 'hidden' => false],
-            ['id' => '_hvnly_property_country_state', 'name' => '_hvnly_property_country_state', 'type' => 'text', 'label' => 'Property Country/State', 'placeholder' => 'Enter property country/state', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 6, 'hidden' => false],
-            ['id' => '_hvnly_property_zip_code', 'name' => '_hvnly_property_zip_code', 'type' => 'text', 'label' => 'Property Zip Code', 'placeholder' => 'Enter property zip code', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 7, 'hidden' => false],
-            ['id' => '_hvnly_property_location', 'name' => '_hvnly_property_location', 'type' => 'select', 'label' => 'Property Location', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 8, 'hidden' => false, 'options' => $this->get_property_locations()],
-            ['id' => '_hvnly_property_country_location', 'name' => '_hvnly_property_country_location', 'type' => 'select', 'label' => 'Property Country', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 9, 'hidden' => false, 'options' => $this->get_property_countries()],
+            ['id' => '_hvnly_property_reference_number', 'name' => '_hvnly_property_reference_number', 'type' => 'text', 'label' => __( 'Property Reference Number', 'havenlytics' ), 'placeholder' => __( 'Enter property reference number', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false],
+            ['id' => '_hvnly_property_building_number', 'name' => '_hvnly_property_building_number', 'type' => 'text', 'label' => __( 'Property Building Number', 'havenlytics' ), 'placeholder' => __( 'Enter property building number', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false],
+            ['id' => '_hvnly_property_street', 'name' => '_hvnly_property_street', 'type' => 'text', 'label' => __( 'Property Street', 'havenlytics' ), 'placeholder' => __( 'Enter property street', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 2, 'hidden' => false],
+            ['id' => '_hvnly_property_address_line_1', 'name' => '_hvnly_property_address_line_1', 'type' => 'text', 'label' => __( 'Property Address Line 1', 'havenlytics' ), 'placeholder' => __( 'Enter property address line 1', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 3, 'hidden' => false],
+            ['id' => '_hvnly_property_address_line_2', 'name' => '_hvnly_property_address_line_2', 'type' => 'text', 'label' => __( 'Property Address Line 2', 'havenlytics' ), 'placeholder' => __( 'Enter property address line 2', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 4, 'hidden' => false],
+            ['id' => '_hvnly_property_town_city', 'name' => '_hvnly_property_town_city', 'type' => 'text', 'label' => __( 'Property Town/City', 'havenlytics' ), 'placeholder' => __( 'Enter property town/city', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 5, 'hidden' => false],
+            ['id' => '_hvnly_property_country_state', 'name' => '_hvnly_property_country_state', 'type' => 'text', 'label' => __( 'Property Country/State', 'havenlytics' ), 'placeholder' => __( 'Enter property country/state', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 6, 'hidden' => false],
+            ['id' => '_hvnly_property_zip_code', 'name' => '_hvnly_property_zip_code', 'type' => 'text', 'label' => __( 'Property Zip Code', 'havenlytics' ), 'placeholder' => __( 'Enter property zip code', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 7, 'hidden' => false],
+            ['id' => '_hvnly_property_location', 'name' => '_hvnly_property_location', 'type' => 'select', 'label' => __( 'Property Location', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 8, 'hidden' => false, 'options' => $this->get_property_locations()],
+            ['id' => '_hvnly_property_country_location', 'name' => '_hvnly_property_country_location', 'type' => 'select', 'label' => __( 'Property Country', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 9, 'hidden' => false, 'options' => $this->get_property_countries()],
         ];
     }
     
     private function get_property_locations()
     {
         return [
-            'new-york' => 'New York', 'los-angeles' => 'Los Angeles', 'chicago' => 'Chicago',
-            'miami' => 'Miami', 'san-francisco' => 'San Francisco', 'austin' => 'Austin',
-            'dallas' => 'Dallas', 'seattle' => 'Seattle', 'boston' => 'Boston',
-            'london' => 'London', 'paris' => 'Paris', 'tokyo' => 'Tokyo',
-            'dubai' => 'Dubai', 'singapore' => 'Singapore', 'sydney' => 'Sydney',
+            'new-york' => __( 'New York', 'havenlytics' ), 'los-angeles' => __( 'Los Angeles', 'havenlytics' ), 'chicago' => __( 'Chicago', 'havenlytics' ),
+            'miami' => __( 'Miami', 'havenlytics' ), 'san-francisco' => __( 'San Francisco', 'havenlytics' ), 'austin' => __( 'Austin', 'havenlytics' ),
+            'dallas' => __( 'Dallas', 'havenlytics' ), 'seattle' => __( 'Seattle', 'havenlytics' ), 'boston' => __( 'Boston', 'havenlytics' ),
+            'london' => __( 'London', 'havenlytics' ), 'paris' => __( 'Paris', 'havenlytics' ), 'tokyo' => __( 'Tokyo', 'havenlytics' ),
+            'dubai' => __( 'Dubai', 'havenlytics' ), 'singapore' => __( 'Singapore', 'havenlytics' ), 'sydney' => __( 'Sydney', 'havenlytics' ),
         ];
     }
     
     private function get_property_countries()
     {
         return [
-            'US' => 'United States', 'GB' => 'United Kingdom', 'CA' => 'Canada',
-            'AU' => 'Australia', 'DE' => 'Germany', 'FR' => 'France',
-            'ES' => 'Spain', 'IT' => 'Italy', 'NL' => 'Netherlands',
-            'AE' => 'United Arab Emirates', 'SG' => 'Singapore', 'JP' => 'Japan',
+            'US' => __( 'United States', 'havenlytics' ), 'GB' => __( 'United Kingdom', 'havenlytics' ), 'CA' => __( 'Canada', 'havenlytics' ),
+            'AU' => __( 'Australia', 'havenlytics' ), 'DE' => __( 'Germany', 'havenlytics' ), 'FR' => __( 'France', 'havenlytics' ),
+            'ES' => __( 'Spain', 'havenlytics' ), 'IT' => __( 'Italy', 'havenlytics' ), 'NL' => __( 'Netherlands', 'havenlytics' ),
+            'AE' => __( 'United Arab Emirates', 'havenlytics' ), 'SG' => __( 'Singapore', 'havenlytics' ), 'JP' => __( 'Japan', 'havenlytics' ),
         ];
     }
     
@@ -494,9 +506,9 @@ class UnifiedFieldGenerator
         $group_id = 'grp_video_' . substr(uniqid(), -8);
         
         return [
-            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => 'Video Title', 'placeholder' => 'Enter video title', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'video', 'group_name' => 'Video Information', 'group_position' => 0, 'group_total' => 3, 'group_base_id' => $group_base_id, 'metaKey' => 'title', 'group_collapsed' => false],
-            ['id' => $group_base_id . '_url', 'name' => $group_base_id . '_url', 'type' => 'video', 'label' => 'Video URL', 'placeholder' => 'Enter video URL', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'video', 'group_name' => 'Video Information', 'group_position' => 1, 'group_total' => 3, 'group_base_id' => $group_base_id, 'metaKey' => 'url', 'group_collapsed' => false],
-            ['id' => $group_base_id . '_thumbnail', 'name' => $group_base_id . '_thumbnail', 'type' => 'file', 'label' => 'Video Thumbnail', 'placeholder' => 'Upload video thumbnail', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 2, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'video', 'group_name' => 'Video Information', 'group_position' => 2, 'group_total' => 3, 'group_base_id' => $group_base_id, 'metaKey' => 'thumbnail', 'group_collapsed' => false, 'fileType' => 'image'],
+            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => __( 'Video Title', 'havenlytics' ), 'placeholder' => __( 'Enter video title', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'video', 'group_name' => __( 'Video Information', 'havenlytics' ), 'group_position' => 0, 'group_total' => 3, 'group_base_id' => $group_base_id, 'metaKey' => 'title', 'group_collapsed' => false],
+            ['id' => $group_base_id . '_url', 'name' => $group_base_id . '_url', 'type' => 'video', 'label' => __( 'Video URL', 'havenlytics' ), 'placeholder' => __( 'Enter video URL', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'video', 'group_name' => __( 'Video Information', 'havenlytics' ), 'group_position' => 1, 'group_total' => 3, 'group_base_id' => $group_base_id, 'metaKey' => 'url', 'group_collapsed' => false],
+            ['id' => $group_base_id . '_thumbnail', 'name' => $group_base_id . '_thumbnail', 'type' => 'file', 'label' => __( 'Video Thumbnail', 'havenlytics' ), 'placeholder' => __( 'Upload video thumbnail', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 2, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'video', 'group_name' => __( 'Video Information', 'havenlytics' ), 'group_position' => 2, 'group_total' => 3, 'group_base_id' => $group_base_id, 'metaKey' => 'thumbnail', 'group_collapsed' => false, 'fileType' => 'image'],
         ];
     }
     
@@ -508,8 +520,8 @@ class UnifiedFieldGenerator
         $group_id = 'grp_gallery_' . substr(uniqid(), -8);
         
         return [
-            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => 'Gallery Title', 'placeholder' => 'Enter gallery title', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'gallery', 'group_name' => 'Property Gallery', 'group_position' => 0, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'title', 'group_collapsed' => false],
-            ['id' => $group_base_id . '_images', 'name' => $group_base_id . '_images', 'type' => 'gallery', 'label' => 'Gallery Images', 'placeholder' => 'Upload gallery images', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'gallery', 'group_name' => 'Property Gallery', 'group_position' => 1, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'images', 'group_collapsed' => false],
+            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => __( 'Gallery Title', 'havenlytics' ), 'placeholder' => __( 'Enter gallery title', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'gallery', 'group_name' => __( 'Property Gallery', 'havenlytics' ), 'group_position' => 0, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'title', 'group_collapsed' => false],
+            ['id' => $group_base_id . '_images', 'name' => $group_base_id . '_images', 'type' => 'gallery', 'label' => __( 'Gallery Images', 'havenlytics' ), 'placeholder' => __( 'Upload gallery images', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'gallery', 'group_name' => __( 'Property Gallery', 'havenlytics' ), 'group_position' => 1, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'images', 'group_collapsed' => false],
         ];
     }
     
@@ -521,10 +533,10 @@ class UnifiedFieldGenerator
         $group_id = 'grp_map_' . substr(uniqid(), -8);
         
         return [
-            ['id' => $group_base_id . '_address', 'name' => $group_base_id . '_address', 'type' => 'text', 'label' => 'Property Map Address', 'placeholder' => 'Enter property map address', 'required' => true, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => 'Map Location', 'group_position' => 0, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'address', 'group_collapsed' => false],
-            ['id' => $group_base_id . '_latitude', 'name' => $group_base_id . '_latitude', 'type' => 'text', 'label' => 'Property Latitude', 'placeholder' => 'Enter property latitude', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => true, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => 'Map Location', 'group_position' => 1, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'latitude', 'group_collapsed' => false],
-            ['id' => $group_base_id . '_longitude', 'name' => $group_base_id . '_longitude', 'type' => 'text', 'label' => 'Property Longitude', 'placeholder' => 'Enter property longitude', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 2, 'hidden' => true, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => 'Map Location', 'group_position' => 2, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'longitude', 'group_collapsed' => false],
-            ['id' => $group_base_id . '_preview', 'name' => $group_base_id . '_preview', 'type' => 'map', 'label' => 'Map Preview', 'placeholder' => '', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 3, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => 'Map Location', 'group_position' => 3, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'preview', 'group_collapsed' => false, 'address_field_name' => $group_base_id . '_address', 'lat_field_name' => $group_base_id . '_latitude', 'lng_field_name' => $group_base_id . '_longitude', 'map_field_name' => $group_base_id . '_preview'],
+            ['id' => $group_base_id . '_address', 'name' => $group_base_id . '_address', 'type' => 'text', 'label' => __( 'Property Map Address', 'havenlytics' ), 'placeholder' => __( 'Enter property map address', 'havenlytics' ), 'required' => true, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => __( 'Map Location', 'havenlytics' ), 'group_position' => 0, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'address', 'group_collapsed' => false],
+            ['id' => $group_base_id . '_latitude', 'name' => $group_base_id . '_latitude', 'type' => 'text', 'label' => __( 'Property Latitude', 'havenlytics' ), 'placeholder' => __( 'Enter property latitude', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => true, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => __( 'Map Location', 'havenlytics' ), 'group_position' => 1, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'latitude', 'group_collapsed' => false],
+            ['id' => $group_base_id . '_longitude', 'name' => $group_base_id . '_longitude', 'type' => 'text', 'label' => __( 'Property Longitude', 'havenlytics' ), 'placeholder' => __( 'Enter property longitude', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 2, 'hidden' => true, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => __( 'Map Location', 'havenlytics' ), 'group_position' => 2, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'longitude', 'group_collapsed' => false],
+            ['id' => $group_base_id . '_preview', 'name' => $group_base_id . '_preview', 'type' => 'map', 'label' => __( 'Map Preview', 'havenlytics' ), 'placeholder' => '', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 3, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => __( 'Map Location', 'havenlytics' ), 'group_position' => 3, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'preview', 'group_collapsed' => false, 'address_field_name' => $group_base_id . '_address', 'lat_field_name' => $group_base_id . '_latitude', 'lng_field_name' => $group_base_id . '_longitude', 'map_field_name' => $group_base_id . '_preview'],
         ];
     }
     
@@ -542,8 +554,8 @@ class UnifiedFieldGenerator
                 'id' => $group_base_id . '_icon',
                 'name' => $group_base_id . '_icon',
                 'type' => 'text',
-                'label' => 'Document Icon',
-                'placeholder' => 'e.g., file-pdf, file-word, file-lines',
+                'label' => __( 'Document Icon', 'havenlytics' ),
+                'placeholder' => __( 'e.g., file-pdf, file-word, file-lines', 'havenlytics' ),
                 'required' => false,
                 'locked' => false,
                 'adminOnly' => false,
@@ -552,7 +564,7 @@ class UnifiedFieldGenerator
                 'hidden' => false,
                 'group_id' => $group_id,
                 'group_type' => 'property_docs',
-                'group_name' => 'Property Documents',
+                'group_name' => __( 'Property Documents', 'havenlytics' ),
                 'group_position' => 0,
                 'group_total' => 3,
                 'group_base_id' => $group_base_id,
@@ -564,8 +576,8 @@ class UnifiedFieldGenerator
                 'id' => $group_base_id . '_label',
                 'name' => $group_base_id . '_label',
                 'type' => 'text',
-                'label' => 'Document Label',
-                'placeholder' => 'e.g., Floor Plan, Brochure, EPC',
+                'label' => __( 'Document Label', 'havenlytics' ),
+                'placeholder' => __( 'e.g., Floor Plan, Brochure, EPC', 'havenlytics' ),
                 'required' => true,
                 'locked' => false,
                 'adminOnly' => false,
@@ -574,7 +586,7 @@ class UnifiedFieldGenerator
                 'hidden' => false,
                 'group_id' => $group_id,
                 'group_type' => 'property_docs',
-                'group_name' => 'Property Documents',
+                'group_name' => __( 'Property Documents', 'havenlytics' ),
                 'group_position' => 1,
                 'group_total' => 3,
                 'group_base_id' => $group_base_id,
@@ -586,8 +598,8 @@ class UnifiedFieldGenerator
                 'id' => $group_base_id . '_url',
                 'name' => $group_base_id . '_url',
                 'type' => 'text',
-                'label' => 'Document URL',
-                'placeholder' => 'Enter document URL or file path',
+                'label' => __( 'Document URL', 'havenlytics' ),
+                'placeholder' => __( 'Enter document URL or file path', 'havenlytics' ),
                 'required' => true,
                 'locked' => false,
                 'adminOnly' => false,
@@ -596,7 +608,7 @@ class UnifiedFieldGenerator
                 'hidden' => false,
                 'group_id' => $group_id,
                 'group_type' => 'property_docs',
-                'group_name' => 'Property Documents',
+                'group_name' => __( 'Property Documents', 'havenlytics' ),
                 'group_position' => 2,
                 'group_total' => 3,
                 'group_base_id' => $group_base_id,
@@ -615,8 +627,8 @@ class UnifiedFieldGenerator
         $group_id = $this->generate_unique_group_id('faq');
 
         return [
-            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => 'Section Title', 'placeholder' => 'e.g., Frequently Asked Questions', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'faq', 'group_name' => 'Frequently Asked Questions', 'group_position' => 0, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'title', 'group_collapsed' => false, 'show_in_sidebar' => true],
-            ['id' => $group_base_id . '_faqs', 'name' => $group_base_id . '_faqs', 'type' => 'faq', 'label' => 'FAQ Items', 'placeholder' => '', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'faq', 'group_name' => 'Frequently Asked Questions', 'group_position' => 1, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'faqs', 'group_collapsed' => false, 'show_in_sidebar' => true],
+            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => __( 'Section Title', 'havenlytics' ), 'placeholder' => __( 'e.g., Frequently Asked Questions', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'faq', 'group_name' => __( 'Frequently Asked Questions', 'havenlytics' ), 'group_position' => 0, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'title', 'group_collapsed' => false, 'show_in_sidebar' => true],
+            ['id' => $group_base_id . '_faqs', 'name' => $group_base_id . '_faqs', 'type' => 'faq', 'label' => __( 'FAQ Items', 'havenlytics' ), 'placeholder' => '', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'faq', 'group_name' => __( 'Frequently Asked Questions', 'havenlytics' ), 'group_position' => 1, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'faqs', 'group_collapsed' => false, 'show_in_sidebar' => true],
         ];
     }
 
@@ -628,8 +640,8 @@ class UnifiedFieldGenerator
         $group_id = $this->generate_unique_group_id('repeater');
 
         return [
-            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => 'Section Title', 'placeholder' => 'e.g., Property Highlights', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'repeater', 'group_name' => 'Property Highlights', 'group_position' => 0, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'title', 'group_collapsed' => false, 'show_in_sidebar' => true],
-            ['id' => $group_base_id . '_items', 'name' => $group_base_id . '_items', 'type' => 'repeater', 'label' => 'Repeater Items', 'placeholder' => '', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'repeater', 'group_name' => 'Property Highlights', 'group_position' => 1, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'items', 'group_collapsed' => false, 'show_in_sidebar' => true],
+            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => __( 'Section Title', 'havenlytics' ), 'placeholder' => __( 'e.g., Property Highlights', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'repeater', 'group_name' => __( 'Property Highlights', 'havenlytics' ), 'group_position' => 0, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'title', 'group_collapsed' => false, 'show_in_sidebar' => true],
+            ['id' => $group_base_id . '_items', 'name' => $group_base_id . '_items', 'type' => 'repeater', 'label' => __( 'Repeater Items', 'havenlytics' ), 'placeholder' => '', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'repeater', 'group_name' => __( 'Property Highlights', 'havenlytics' ), 'group_position' => 1, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'items', 'group_collapsed' => false, 'show_in_sidebar' => true],
         ];
     }
 
@@ -641,8 +653,8 @@ class UnifiedFieldGenerator
         $group_id = $this->generate_unique_group_id('agents');
 
         return [
-            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => 'Section Title', 'placeholder' => 'e.g., Listing Agents', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'agents', 'group_name' => 'Listing Agents', 'group_position' => 0, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'title', 'group_collapsed' => false, 'show_in_sidebar' => true],
-            ['id' => $group_base_id . '_agents', 'name' => $group_base_id . '_agents', 'type' => 'agents', 'label' => 'Assigned Agents', 'placeholder' => '', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'agents', 'group_name' => 'Listing Agents', 'group_position' => 1, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'agents', 'group_collapsed' => false, 'show_in_sidebar' => true],
+            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => __( 'Section Title', 'havenlytics' ), 'placeholder' => __( 'e.g., Listing Agents', 'havenlytics' ), 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'agents', 'group_name' => __( 'Listing Agents', 'havenlytics' ), 'group_position' => 0, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'title', 'group_collapsed' => false, 'show_in_sidebar' => true],
+            ['id' => $group_base_id . '_agents', 'name' => $group_base_id . '_agents', 'type' => 'agents', 'label' => __( 'Assigned Agents', 'havenlytics' ), 'placeholder' => '', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 1, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'agents', 'group_name' => __( 'Listing Agents', 'havenlytics' ), 'group_position' => 1, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'agents', 'group_collapsed' => false, 'show_in_sidebar' => true],
         ];
     }
 
@@ -654,7 +666,7 @@ class UnifiedFieldGenerator
         $group_id = $this->generate_unique_group_id('features');
 
         return [
-            ['id' => $group_base_id . '_features', 'name' => $group_base_id . '_features', 'type' => 'checkbox', 'label' => 'Property Features', 'placeholder' => '', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'features', 'group_name' => 'Property Features', 'group_position' => 0, 'group_total' => 1, 'group_base_id' => $group_base_id, 'metaKey' => 'features', 'group_collapsed' => false, 'show_in_sidebar' => true],
+            ['id' => $group_base_id . '_features', 'name' => $group_base_id . '_features', 'type' => 'checkbox', 'label' => __( 'Property Features', 'havenlytics' ), 'placeholder' => '', 'required' => false, 'locked' => false, 'adminOnly' => false, 'enabled' => true, 'order' => 0, 'hidden' => false, 'group_id' => $group_id, 'group_type' => 'features', 'group_name' => __( 'Property Features', 'havenlytics' ), 'group_position' => 0, 'group_total' => 1, 'group_base_id' => $group_base_id, 'metaKey' => 'features', 'group_collapsed' => false, 'show_in_sidebar' => true],
         ];
     }
 

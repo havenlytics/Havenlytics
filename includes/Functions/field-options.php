@@ -15,12 +15,14 @@ defined( 'ABSPATH' ) || exit;
  */
 function hvnly_get_heating_field_options() {
     return array(
-        'forced_air' => __( 'Forced Air', 'havenlytics' ),
-        'radiator'   => __( 'Radiator', 'havenlytics' ),
-        'heat_pump'  => __( 'Heat Pump', 'havenlytics' ),
-        'baseboard'  => __( 'Baseboard', 'havenlytics' ),
-        'central'    => __( 'Central', 'havenlytics' ),
-        'none'       => __( 'None', 'havenlytics' ),
+        'forced_air'  => __( 'Forced Air', 'havenlytics' ),
+        'radiator'    => __( 'Radiator', 'havenlytics' ),
+        'radiant'     => __( 'Radiant Heat', 'havenlytics' ),
+        'heat_pump'   => __( 'Heat Pump', 'havenlytics' ),
+        'baseboard'   => __( 'Baseboard', 'havenlytics' ),
+        'central'     => __( 'Central', 'havenlytics' ),
+        'geothermal'  => __( 'Geothermal', 'havenlytics' ),
+        'none'        => __( 'None', 'havenlytics' ),
     );
 }
 
@@ -46,8 +48,8 @@ function hvnly_get_cooling_field_options() {
  */
 function hvnly_get_water_field_options() {
     return array(
-        'city'        => __( 'City', 'havenlytics' ),
-        'well'        => __( 'Well', 'havenlytics' ),
+        'city'        => __( 'City Water', 'havenlytics' ),
+        'well'        => __( 'Well Water', 'havenlytics' ),
         'shared_well' => __( 'Shared Well', 'havenlytics' ),
         'shared'      => __( 'Shared Well', 'havenlytics' ),
         'none'        => __( 'None', 'havenlytics' ),

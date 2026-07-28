@@ -31,6 +31,7 @@ $hvnly_mode = $mode ?? 'default';
 
 // Get total rooms count
 $hvnly_total_rooms = absint(get_post_meta($hvnly_property_id, '_hvnly_property_total_rooms', true));
+$hvnly_field    = $field ?? array();
 
 if ($hvnly_total_rooms > 0 || $hvnly_mode === 'preset') :
 ?>
@@ -43,16 +44,12 @@ if ($hvnly_total_rooms > 0 || $hvnly_mode === 'preset') :
             </span>
         <?php endif; ?>
         <span class="hvnly-property-feature-label">
-            <?php 
-            /* translators: %s: number of rooms */
-            echo esc_html( 
-                _n( 
-                    'Room', 
-                    'Rooms', 
-                    $hvnly_total_rooms > 0 ? $hvnly_total_rooms : 1, 
-                    'havenlytics' 
-                ) 
-            ); 
+            <?php
+            echo esc_html(
+                function_exists( 'hvnly_archive_feature_label' )
+                    ? hvnly_archive_feature_label( $hvnly_field, 'Room', 'Rooms', $hvnly_total_rooms )
+                    : _n( 'Room', 'Rooms', $hvnly_total_rooms > 0 ? $hvnly_total_rooms : 1, 'havenlytics' )
+            );
             ?>
         </span>
     </div>

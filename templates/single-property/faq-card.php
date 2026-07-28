@@ -39,7 +39,7 @@ $hvnly_faq_id = 'hvnly-faq-' . absint( $hvnly_property_id ) . '-' . sanitize_htm
 ?>
 <div class="hvnly-property-single__faq-field" id="<?php echo esc_attr( $hvnly_faq_id ); ?>">
 	<?php if ( ! empty( $hvnly_title ) ) : ?>
-		<h3 class="hvnly-property-single__faq-title"><?php echo esc_html( $hvnly_title ); ?></h3>
+		<h3 class="hvnly-property-single__faq-title"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_title ?? $hvnly_label ) ) : esc_html( $hvnly_title ?? $hvnly_label ); ?></h3>
 	<?php endif; ?>
 	<div class="hvnly-property-single__faq-accordion" role="region" aria-label="<?php echo esc_attr( $hvnly_title ?: __( 'Frequently Asked Questions', 'havenlytics' ) ); ?>">
 		<?php foreach ( $hvnly_items as $hvnly_faq_index => $hvnly_faq_item ) : ?>

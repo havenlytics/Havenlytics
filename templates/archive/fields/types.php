@@ -71,7 +71,7 @@ if ($hvnly_display_all) {
             <?php elseif (!empty($hvnly_icon_class)): ?>
                 <i class="<?php echo esc_attr($hvnly_icon_class); ?>"></i>
             <?php endif; ?>
-            <span class="hvnly-property-type-text"><?php echo esc_html($hvnly_property_type->name); ?></span>
+            <span class="hvnly-property-type-text"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_property_type->name ) ) : esc_html( $hvnly_property_type->name ); ?></span>
         </a>
     <?php endforeach; ?>
 
@@ -100,7 +100,7 @@ if ($hvnly_display_all) {
                         <?php elseif (!empty($hvnly_icon_class)): ?>
                             <i class="<?php echo esc_attr($hvnly_icon_class); ?>"></i>
                         <?php endif; ?>
-                        <span class="hvnly-property-type-text"><?php echo esc_html($hvnly_property_type->name); ?></span>
+                        <span class="hvnly-property-type-text"><?php echo function_exists( 'hvnly_translate_ui' ) ? esc_html( hvnly_translate_ui( $hvnly_property_type->name ) ) : esc_html( $hvnly_property_type->name ); ?></span>
                     </a>
                 <?php endforeach; ?>
             </div>

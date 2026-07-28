@@ -1,0 +1,998 @@
+{
+    "translation-revision-date": "2026-07-28 16:15:36+0000",
+    "generator": "Havenlytics hvnly-blocks-editor ru_RU package",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "plural-forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);",
+                "lang": "ru"
+            },
+            "%d Listings": [
+                "%d объявлений"
+            ],
+            "0 keeps clustering at every zoom level.": [
+                "0 сохраняет кластеризацию на каждом уровне масштабирования."
+            ],
+            "0 keeps the form full width of its column.": [
+                "0 сохраняет форму на всю ширину столбца."
+            ],
+            "2 Column": [
+                "2 колонки"
+            ],
+            "Active Listings": [
+                "Активные объявления"
+            ],
+            "Add Property": [
+                "Добавить объект"
+            ],
+            "Advanced": [
+                "Расширенные"
+            ],
+            "After login": [
+                "После входа?"
+            ],
+            "After login URL": [
+                "URL-адрес после входа"
+            ],
+            "After registration": [
+                "После регистрации"
+            ],
+            "After registration URL": [
+                "URL-адрес после регистрации"
+            ],
+            "Agent": [
+                "Агент"
+            ],
+            "Agent ID": [
+                "ID Агента"
+            ],
+            "Agent source": [
+                "Источник агента"
+            ],
+            "Agents": [
+                "Агенты"
+            ],
+            "Alignment": [
+                "Выравнивание"
+            ],
+            "Analytics": [
+                "Аналитика"
+            ],
+            "Animations": [
+                "Анимация"
+            ],
+            "Applies to grid view.": [
+                "Применяется к виду сетки."
+            ],
+            "Ascending": [
+                "По возрастанию"
+            ],
+            "Authentication mode": [
+                "Режим аутентификации"
+            ],
+            "Auto": [
+                "Автоматический режим"
+            ],
+            "Auto (app default)": [
+                "Авто (по умолчанию в приложении)"
+            ],
+            "Auto (form when logged out, account when logged in)": [
+                "Авто (форма при выходе из системы, учетная запись при входе в систему)"
+            ],
+            "Auto-fit to markers": [
+                "Автоматическая подгонка к маркерам"
+            ],
+            "Autoplay": [
+                "Автовоспроизведение"
+            ],
+            "Bordered": [
+                "С границами"
+            ],
+            "Browse published agents. Search is optional.": [
+                "Просмотр опубликованных агентов. Поиск не является обязательным."
+            ],
+            "Browse published properties. Search is optional.": [
+                "Просмотрите опубликованные свойства. Поиск не является обязательным."
+            ],
+            "Button URL": [
+                "URL кнопки"
+            ],
+            "Button URL (blank = Workspace login)": [
+                "URL-адрес кнопки (пусто = вход в рабочую область)"
+            ],
+            "Button alignment": [
+                "Выравнивание кнопок"
+            ],
+            "Button icon": [
+                "Значок кнопки"
+            ],
+            "Button label": [
+                "Метка кнопки"
+            ],
+            "Button text": [
+                "Текст кнопки"
+            ],
+            "Button width": [
+                "Ширина кнопки"
+            ],
+            "Cancel": [
+                "Отмена"
+            ],
+            "Card": [
+                "Card"
+            ],
+            "Card and Floating wrap the form in a bordered surface.": [
+                "Card и Floating оборачивают форму в поверхность с рамкой."
+            ],
+            "Card radius (px, 0 = inherit)": [
+                "Радиус карты (px, 0 = наследовать)"
+            ],
+            "Card width (px)": [
+                "Ширина карты (пикселей)"
+            ],
+            "Carousel": [
+                "Карусель"
+            ],
+            "Center": [
+                "По центру"
+            ],
+            "Center mode": [
+                "Центральный режим"
+            ],
+            "Change": [
+                "Изменение"
+            ],
+            "Check": [
+                "Проверка"
+            ],
+            "Choose a property for this inquiry form. The Havenlytics inquiry system requires a published property.": [
+                "Выберите недвижимость для этой формы запроса. Для системы запросов Havenlytics требуется опубликованное свойство."
+            ],
+            "Choose at least one property so visitors can select where to send their inquiry.": [
+                "Выберите хотя бы один объект размещения, чтобы посетители могли выбрать, куда отправить запрос."
+            ],
+            "Choose how login and registration appear on this page.": [
+                "Выберите, как будут отображаться вход и регистрация на этой странице."
+            ],
+            "Choose which property and agent this form is about. Visitors never see IDs.": [
+                "Выберите, о каком объекте недвижимости и агенте идет речь в этой форме. Посетители никогда не видят удостоверения личности."
+            ],
+            "Classic": [
+                "Классические"
+            ],
+            "Closed Volume": [
+                "Закрытый том"
+            ],
+            "Cluster radius": [
+                "Радиус кластера"
+            ],
+            "Collapsed": [
+                "Свернуто"
+            ],
+            "Columns": [
+                "Колонки"
+            ],
+            "Compact": [
+                "Компактный"
+            ],
+            "Compact agent summary above the form.": [
+                "Компактное резюме агента над формой."
+            ],
+            "Compact card": [
+                "Компактная карта"
+            ],
+            "Compact sign-in prompt": [
+                "Компактное приглашение для входа в систему"
+            ],
+            "Configure block settings in the sidebar.": [
+                "Настройте параметры блока на боковой панели."
+            ],
+            "Consent text": [
+                "Текст согласия"
+            ],
+            "Contained": [
+                "Содержится"
+            ],
+            "Container style": [
+                "Стиль контейнера"
+            ],
+            "Container width (px, 0 = inherit)": [
+                "Ширина контейнера (пикселей, 0 = наследовать)"
+            ],
+            "Content": [
+                "Контент"
+            ],
+            "Controls the archive layout visitors see first.": [
+                "Управляет макетом архива, который посетители видят в первую очередь."
+            ],
+            "Current Property": [
+                "Текущая недвижимость"
+            ],
+            "Current agent (agent pages)": [
+                "Текущий агент (страницы агента)"
+            ],
+            "Current location button": [
+                "Кнопка текущего местоположения"
+            ],
+            "Current page": [
+                "Текущая страница"
+            ],
+            "Custom URL": [
+                "Произвольный URL"
+            ],
+            "Custom success message": [
+                "Персонализированное сообщение об успехе"
+            ],
+            "Dark": [
+                "Темный"
+            ],
+            "Dashboard": [
+                "Панель управления"
+            ],
+            "Dashboard layout": [
+                "Макет информационной панели"
+            ],
+            "Date added": [
+                "Дата добавления"
+            ],
+            "Default": [
+                "По умолчанию"
+            ],
+            "Default card": [
+                "Карта по умолчанию"
+            ],
+            "Default section": [
+                "Раздел по умолчанию"
+            ],
+            "Default tab": [
+                "Вкладка по умолчанию"
+            ],
+            "Default view": [
+                "Вид по умолчанию"
+            ],
+            "Default zoom": [
+                "Масштаб по умолчанию"
+            ],
+            "Department (slug)": [
+                "Отдел (слизняк)"
+            ],
+            "Descending": [
+                "По убыванию"
+            ],
+            "Description": [
+                "Описание"
+            ],
+            "Desktop": [
+                "Рабочее место"
+            ],
+            "Developer fallbacks. Prefer the searchable pickers above.": [
+                "Резервные варианты разработчиков. Отдайте предпочтение средствам поиска, указанным выше."
+            ],
+            "Disable clustering at zoom": [
+                "Отключить кластеризацию при масштабировании"
+            ],
+            "Display": [
+                "Отображение"
+            ],
+            "Dot": [
+                "Точка"
+            ],
+            "Edit Profile": [
+                "Редактировать профиль"
+            ],
+            "Empty & signed-out state": [
+                "Пустое состояние и выход из системы"
+            ],
+            "Empty-state button text": [
+                "Пустой текст кнопки"
+            ],
+            "Enter term slugs to pre-filter results. Visitors can still refine with the search filters.": [
+                "Введите краткие термины для предварительной фильтрации результатов. Посетители по-прежнему могут уточнять результаты с помощью поисковых фильтров."
+            ],
+            "Enter term slugs to pre-filter the listing. Visitors can still refine results with the search filters.": [
+                "Введите краткие термины, чтобы предварительно отфильтровать список. Посетители по-прежнему могут уточнять результаты с помощью поисковых фильтров."
+            ],
+            "Envelope": [
+                "Огибающая"
+            ],
+            "Expanded": [
+                "Развернуто"
+            ],
+            "Fallback property": [
+                "Резервное свойство"
+            ],
+            "Favorites use the same Property Card Builder as archive listings.": [
+                "Избранное использует тот же конструктор карточек свойств, что и архивные списки."
+            ],
+            "Featured listings reuse the Property Card Builder design.": [
+                "Избранные объявления повторно используют дизайн Property Card Builder."
+            ],
+            "Featured only": [
+                "Только избранные"
+            ],
+            "Featured properties only": [
+                "Только избранные объекты"
+            ],
+            "Fields": [
+                "Поля"
+            ],
+            "Filter agents (optional)…": [
+                "Фильтрующие агенты (опционально)…"
+            ],
+            "Filter by title, address, or MLS (optional)…": [
+                "Фильтровать по названию, адресу или MLS (необязательно)…"
+            ],
+            "Flat": [
+                "Квартира"
+            ],
+            "Floating Card": [
+                "Плавающая карта"
+            ],
+            "Form layout": [
+                "Макет формы сохранен"
+            ],
+            "Full screen (match Workspace)": [
+                "Полный экран (соответствует Workspace)"
+            ],
+            "Full width": [
+                "Полная ширина"
+            ],
+            "General": [
+                "Общие"
+            ],
+            "Grid": [
+                "Сетка"
+            ],
+            "Havenlytics": [
+                "Havenlytics"
+            ],
+            "Havenlytics block": [
+                "Блок Хэвенлитикс"
+            ],
+            "Header": [
+                "Шапка"
+            ],
+            "Header & preview": [
+                "Заголовок и предварительный просмотр"
+            ],
+            "Heading": [
+                "Подгруппа"
+            ],
+            "Height (px)": [
+                "Высота (px)"
+            ],
+            "Horizontal": [
+                "Горизонтальные"
+            ],
+            "How close markers must be to group.": [
+                "Насколько близко маркеры должны быть к группе."
+            ],
+            "Inherit": [
+                "Унаследовать"
+            ],
+            "Initial sidebar state on wide screens. The app stays fully responsive on tablet and mobile.": [
+                "Исходное состояние боковой панели на широких экранах. Приложение остается полностью адаптивным на планшетах и ​​мобильных устройствах."
+            ],
+            "Inquiries": [
+                "Запросы"
+            ],
+            "Items per page": [
+                "Элементов на странице"
+            ],
+            "Large": [
+                "Большой"
+            ],
+            "Layout": [
+                "Макет"
+            ],
+            "Layout style": [
+                "Стиль макета"
+            ],
+            "Leave empty for default": [
+                "Оставьте пустым по умолчанию"
+            ],
+            "Left": [
+                "Слева"
+            ],
+            "Light": [
+                "Легкий"
+            ],
+            "List": [
+                "Список"
+            ],
+            "Load more": [
+                "Загрузить ещё"
+            ],
+            "Loading…": [
+                "Загрузка…"
+            ],
+            "Loads every mappable property (capped at 500 for performance).": [
+                "Загружает все отображаемые свойства (для производительности ограничено 500)."
+            ],
+            "Locations (slugs)": [
+                "Локации (слизни)"
+            ],
+            "Logged-in panel": [
+                "Панель входа в систему"
+            ],
+            "Login": [
+                "Вход"
+            ],
+            "Login + Register tabs": [
+                "Вкладки «Вход + Регистрация»"
+            ],
+            "Login only": [
+                "Только зарегистрированные"
+            ],
+            "Manual Agent ID": [
+                "Идентификатор агента вручную"
+            ],
+            "Manual Agent ID (Advanced)": [
+                "Идентификатор агента вручную (расширенный)"
+            ],
+            "Manual Agent ID is enabled under Advanced.": [
+                "Идентификатор агента вручную включен в разделе «Дополнительно»."
+            ],
+            "Manual Property ID": [
+                "Идентификатор свойства вручную"
+            ],
+            "Manual Property ID (Advanced)": [
+                "Идентификатор свойства вручную (расширенный)"
+            ],
+            "Manual Property ID is enabled under Advanced.": [
+                "Идентификатор свойства вручную включен в разделе «Дополнительно»."
+            ],
+            "Map": [
+                "Карта"
+            ],
+            "Map style": [
+                "Стиль карты"
+            ],
+            "Marker clustering": [
+                "Кластеризация маркеров"
+            ],
+            "Marker pulse and popup entrance. Reduced-motion preferences are always honored.": [
+                "Импульс маркера и вход во всплывающее окно. Предпочтения по ограничению движения всегда соблюдаются."
+            ],
+            "Marker size": [
+                "Размер маркера"
+            ],
+            "Marker style": [
+                "Стиль маркера"
+            ],
+            "Markers": [
+                "Маркеры"
+            ],
+            "Max properties": [
+                "Макс. свойства"
+            ],
+            "Max width (px)": [
+                "Максимальная ширина (пикселей)"
+            ],
+            "Medium": [
+                "Средний"
+            ],
+            "Message": [
+                "Сообщение"
+            ],
+            "Minimal": [
+                "Минимальная"
+            ],
+            "Minimum height (px)": [
+                "Минимальная высота (пикселей)"
+            ],
+            "Mobile": [
+                "Подвижный"
+            ],
+            "Modern": [
+                "Современность"
+            ],
+            "Multiple Agents": [
+                "Несколько агентов"
+            ],
+            "Multiple Properties": [
+                "Несколько свойств"
+            ],
+            "Multiple properties selected — the form will show a property dropdown with titles.": [
+                "Выбрано несколько свойств — в форме отобразится раскрывающийся список свойств с названиями."
+            ],
+            "My Properties": [
+                "Мои объекты"
+            ],
+            "My account (profile)": [
+                "Мой аккаунт (профиль)"
+            ],
+            "Name": [
+                "Имя"
+            ],
+            "Name, email and message stay required by the inquiry system.": [
+                "Имя, адрес электронной почты и сообщение остаются обязательными для системы запросов."
+            ],
+            "New Inquiries": [
+                "Новые запросы"
+            ],
+            "New tab": [
+                "Новая вкладка"
+            ],
+            "Newest first": [
+                "Сначала самые новые"
+            ],
+            "Newest saved": [
+                "Новейшие сохраненные"
+            ],
+            "No matches found.": [
+                "Совпадений не найдено."
+            ],
+            "No published agents found.": [
+                "Опубликованных агентов не обнаружено."
+            ],
+            "No published properties found.": [
+                "Опубликованные свойства не найдены."
+            ],
+            "No specific agent": [
+                "Нет конкретного агента"
+            ],
+            "None": [
+                "Нет"
+            ],
+            "None (show one page)": [
+                "Нет (показать одну страницу)"
+            ],
+            "Notifications": [
+                "Уведомления"
+            ],
+            "Number of properties": [
+                "Количество объектов"
+            ],
+            "Numbered pages": [
+                "Нумерованные страницы"
+            ],
+            "Numbered pages reload the page — saved lists are user-specific and are never paged through the shared archive AJAX.": [
+                "Пронумерованные страницы перезагружают страницу — сохраненные списки зависят от пользователя и никогда не просматриваются через общий архив AJAX."
+            ],
+            "Oldest saved": [
+                "Самый старый сохраненный"
+            ],
+            "Open link in": [
+                "Открыть ссылку в"
+            ],
+            "Open on click": [
+                "Открыть по клику"
+            ],
+            "Open on hover": [
+                "Открыть при наведении"
+            ],
+            "Optional URL after the success notice appears.": [
+                "Необязательный URL-адрес после появления уведомления об успехе."
+            ],
+            "Optional eyebrow": [
+                "Дополнительная бровь"
+            ],
+            "Optional heading above the listings. Leave empty fields blank to hide them.": [
+                "Необязательный заголовок над списками. Оставьте пустые поля пустыми, чтобы скрыть их."
+            ],
+            "Optional overlay on the existing success notice.": [
+                "Необязательное наложение на существующее уведомление об успехе."
+            ],
+            "Order": [
+                "Порядок"
+            ],
+            "Order by": [
+                "Сортировать по"
+            ],
+            "Ordering": [
+                "Размещение заказа"
+            ],
+            "Pagination": [
+                "Пагинация"
+            ],
+            "Pending Listings": [
+                "Объявления на проверке"
+            ],
+            "Pin": [
+                "Штифт"
+            ],
+            "Popup card": [
+                "Всплывающая карточка"
+            ],
+            "Popup style": [
+                "Стиль всплывающего окна"
+            ],
+            "Popup trigger": [
+                "Триггер всплывающего окна"
+            ],
+            "Popup width (px)": [
+                "Ширина всплывающего окна (пикселей)"
+            ],
+            "Preview": [
+                "Просмотр"
+            ],
+            "Preview will appear after configuring the block.": [
+                "Предварительный просмотр появится после настройки блока."
+            ],
+            "Price": [
+                "Цена"
+            ],
+            "Price: high to low": [
+                "Цена: от высокой к низкой"
+            ],
+            "Price: low to high": [
+                "Цена: от низкой к высокой"
+            ],
+            "Profile": [
+                "Профиль"
+            ],
+            "Properties": [
+                "Объекты"
+            ],
+            "Properties per page": [
+                "Свойства на странице"
+            ],
+            "Property": [
+                "Объект"
+            ],
+            "Property ID": [
+                "ID объекта"
+            ],
+            "Property assigned agent(s)": [
+                "Агент(ы), назначенные недвижимостью"
+            ],
+            "Property source": [
+                "Источник свойства"
+            ],
+            "Property title": [
+                "Название объекта"
+            ],
+            "Property type (slug)": [
+                "Тип свойства (слаг)"
+            ],
+            "Property types (slugs)": [
+                "Типы свойств (слизни)"
+            ],
+            "Query": [
+                "Запрос"
+            ],
+            "Quick Actions": [
+                "Быстрые действия"
+            ],
+            "Random": [
+                "В случайном порядке"
+            ],
+            "Recent Activity": [
+                "Недавняя активность"
+            ],
+            "Recent Properties": [
+                "Недавние объекты"
+            ],
+            "Recently updated": [
+                "Недавно обновлено"
+            ],
+            "Recipients are still validated by the Contact Agent system.": [
+                "Получатели по-прежнему проверяются системой Contact Agent."
+            ],
+            "Redirect after success": [
+                "Перенаправление после успеха"
+            ],
+            "Redirects": [
+                "Редиректы"
+            ],
+            "Register": [
+                "Регистрация"
+            ],
+            "Register only": [
+                "Только зарегистрироваться"
+            ],
+            "Registration": [
+                "Регистрация"
+            ],
+            "Remove": [
+                "Удалить"
+            ],
+            "Renders the page through the existing Workspace canvas template — no theme header\/footer, full-bleed and pixel-identical to the standalone Agent Workspace. Turn off to embed the dashboard inside the normal themed page.": [
+                "Отображает страницу через существующий шаблон холста Workspace — без шапки\/подвала темы, на всю ширину и визуально идентично автономному Agent Workspace. Отключите, чтобы встроить панель в обычную страницу темы."
+            ],
+            "Require terms checkbox": [
+                "Флажок «Требовать условия»"
+            ],
+            "Responsive": [
+                "Оперативность реагирования"
+            ],
+            "Responsive slides": [
+                "Адаптивные слайды"
+            ],
+            "Reuses the HVN: Authentication block — no separate login form is created.": [
+                "Повторно использует блок HVN: Authentication — отдельная форма входа не создается."
+            ],
+            "Right": [
+                "Справа"
+            ],
+            "Same archive experience as the Elementor Property Archive widget.": [
+                "Тот же опыт архивирования, что и виджет «Архив свойств Elementor»."
+            ],
+            "Same tab": [
+                "Та же вкладка"
+            ],
+            "Saved Properties": [
+                "Сохранённые объекты"
+            ],
+            "Scroll-wheel zoom": [
+                "Масштабирование с помощью колеса прокрутки"
+            ],
+            "Search-first archive. Same filters and cards as Property Archive.": [
+                "Архив поиска в первую очередь. Те же фильтры и карточки, что и в «Архиве свойств»."
+            ],
+            "Searching…": [
+                "Поиск…"
+            ],
+            "Section description": [
+                "Описание раздела"
+            ],
+            "Section header": [
+                "Заголовок раздела"
+            ],
+            "Section title": [
+                "Название раздела"
+            ],
+            "Selected Agent": [
+                "Выбранный агент"
+            ],
+            "Selected Property": [
+                "Выбранная недвижимость"
+            ],
+            "Send": [
+                "Отправить"
+            ],
+            "Settings": [
+                "Настройки"
+            ],
+            "Shadow": [
+                "Тень"
+            ],
+            "Show CTA button": [
+                "Показать кнопку CTA"
+            ],
+            "Show activity": [
+                "Показать активность"
+            ],
+            "Show agent card": [
+                "Показать карточку агента"
+            ],
+            "Show all properties": [
+                "Показать все свойства"
+            ],
+            "Show arrows": [
+                "Показать стрелки"
+            ],
+            "Show avatar": [
+                "Показать аватар"
+            ],
+            "Show button": [
+                "Показать кнопку"
+            ],
+            "Show consent checkbox": [
+                "Показать флажок согласия"
+            ],
+            "Show description": [
+                "Показать описание"
+            ],
+            "Show dots": [
+                "Показать точки"
+            ],
+            "Show email": [
+                "Показать email"
+            ],
+            "Show favorite button": [
+                "Показать кнопку избранного"
+            ],
+            "Show favorites": [
+                "Показать избранное"
+            ],
+            "Show filter sidebar": [
+                "Показать боковую панель фильтров"
+            ],
+            "Show first \/ last name fields": [
+                "Показать поля имени\/фамилии"
+            ],
+            "Show header": [
+                "Показать заголовок"
+            ],
+            "Show heading": [
+                "Показать заголовок"
+            ],
+            "Show loading state": [
+                "Показать состояние загрузки"
+            ],
+            "Show logo": [
+                "Показать логотип"
+            ],
+            "Show message": [
+                "Показать сообщение"
+            ],
+            "Show meta (beds\/baths\/area)": [
+                "Показать мета (кровати\/ванны\/площадь)"
+            ],
+            "Show name": [
+                "Показывать название"
+            ],
+            "Show navigation arrows": [
+                "Показать стрелки навигации"
+            ],
+            "Show phone": [
+                "Показать номер телефона"
+            ],
+            "Show price": [
+                "Показать цену"
+            ],
+            "Show profile summary": [
+                "Показать сводку профиля"
+            ],
+            "Show property address": [
+                "Показать адрес объекта недвижимости"
+            ],
+            "Show property image": [
+                "Показать изображение объекта недвижимости"
+            ],
+            "Show property price": [
+                "Показать цену недвижимости"
+            ],
+            "Show quick actions": [
+                "Показать быстрые действия"
+            ],
+            "Show quick links": [
+                "Показать быстрые ссылки"
+            ],
+            "Show recent properties": [
+                "Показать недавние объекты недвижимости"
+            ],
+            "Show register link": [
+                "Показать ссылку на регистрацию"
+            ],
+            "Show search": [
+                "Показывать поиск"
+            ],
+            "Show section description": [
+                "Показать описание раздела"
+            ],
+            "Show section title": [
+                "Показать название раздела"
+            ],
+            "Show sidebar": [
+                "Показать боковую панель"
+            ],
+            "Show statistics": [
+                "Показать статистику"
+            ],
+            "Show status badge": [
+                "Показать значок статуса"
+            ],
+            "Show success notice": [
+                "Показать уведомление об успехе"
+            ],
+            "Show title": [
+                "Показать заголовок"
+            ],
+            "Show top search bar": [
+                "Показать верхнюю панель поиска"
+            ],
+            "Show view controls": [
+                "Показать элементы управления видом"
+            ],
+            "Show welcome card": [
+                "Показать приветственную открытку"
+            ],
+            "Show welcome panel": [
+                "Показать панель приветствия"
+            ],
+            "Sidebar": [
+                "Боковая панель"
+            ],
+            "Sidebar position": [
+                "Положение боковой панели"
+            ],
+            "Sign in": [
+                "Войти"
+            ],
+            "Sign in to your dashboard": [
+                "Войдите в свою панель управления"
+            ],
+            "Sign-in button": [
+                "Кнопка входа"
+            ],
+            "Sign-in form": [
+                "Форма входа"
+            ],
+            "Sign-in form (Authentication block)": [
+                "Форма входа (блокировка аутентификации)"
+            ],
+            "Signed-out state": [
+                "Состояние выхода из системы"
+            ],
+            "Slide count and navigation for the property carousel.": [
+                "Количество слайдов и навигация по карусели свойств."
+            ],
+            "Small": [
+                "Маленький"
+            ],
+            "Spacing (px, 0 = inherit)": [
+                "Интервал (пикселей, 0 = наследовать)"
+            ],
+            "Standard": [
+                "Стандартная"
+            ],
+            "Status (slug)": [
+                "Статус (ссылка)"
+            ],
+            "Status (slugs)": [
+                "Статус (слабы)"
+            ],
+            "Style": [
+                "Стиль"
+            ],
+            "Submit & success": [
+                "Отправить и добиться успеха"
+            ],
+            "Subtitle": [
+                "Субтитры"
+            ],
+            "Tablet": [
+                "Таблетки"
+            ],
+            "Taxonomy filters": [
+                "Таксономические фильтры"
+            ],
+            "Terms page URL": [
+                "URL страницы условий"
+            ],
+            "The Workspace view shown first when the dashboard loads.": [
+                "Представление «Рабочая область», отображаемое первым при загрузке панели мониторинга."
+            ],
+            "Title": [
+                "Заголовок"
+            ],
+            "Title (A–Z)": [
+                "Название (А–Я)"
+            ],
+            "Touch devices always open on tap.": [
+                "Сенсорные устройства всегда открываются при нажатии."
+            ],
+            "Untitled agent": [
+                "Безымянный агент"
+            ],
+            "Untitled property": [
+                "Безымянная собственность"
+            ],
+            "Used in grid view.": [
+                "Используется в виде сетки."
+            ],
+            "Used when this page is not a single property.": [
+                "Используется, когда эта страница не является отдельным свойством."
+            ],
+            "Uses your global Havenlytics map provider and API settings.": [
+                "Использует вашего глобального поставщика карт Havenlytics и настройки API."
+            ],
+            "Vertical": [
+                "Вертикальный"
+            ],
+            "Visible slides": [
+                "Видимые слайды"
+            ],
+            "Visitors choose who receives the inquiry.": [
+                "Посетители выбирают, кто получит запрос."
+            ],
+            "Visitors pick one title; the existing property_id is submitted.": [
+                "Посетители выбирают одно название; передается существующий property_id."
+            ],
+            "When signed out": [
+                "При выходе из системы"
+            ],
+            "When signed out, show": [
+                "После выхода из системы показать"
+            ],
+            "You must sign in to access your dashboard.": [
+                "Вы должны войти в систему, чтобы получить доступ к панели управления."
+            ]
+        }
+    }
+}

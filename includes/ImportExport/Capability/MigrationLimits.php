@@ -16,7 +16,9 @@ use WP_Error;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * MigrationLimits — extensible capability gate for migration exports.
+ * MigrationLimits — extensible capability gate for migration import / export.
+ *
+ * Single source of truth — never duplicate these checks elsewhere.
  *
  * @since 3.6.1
  */
@@ -51,7 +53,7 @@ final class MigrationLimits {
 	}
 
 	/**
-	 * Maximum properties allowed for export (PHP_INT_MAX when Pro).
+	 * Maximum properties allowed for export/import (PHP_INT_MAX when Pro).
 	 *
 	 * @param string $dimension Limit dimension (future: agents, media, …).
 	 * @return int
@@ -111,6 +113,29 @@ final class MigrationLimits {
 	}
 
 	/**
+	 * Resolve property count from a package manifest and/or entities payload.
+	 *
+	 * Prefer manifest counts; fall back to counting entities.properties.
+	 *
+	 * @param array<string, mixed>|null $manifest Manifest array.
+	 * @param array<string, mixed>|null $entities Entities array.
+	 * @return int
+	 */
+	public static function count_package_properties( $manifest = null, $entities = null ): int {
+		if ( is_array( $manifest ) && isset( $manifest['counts'] ) && is_array( $manifest['counts'] ) ) {
+			if ( isset( $manifest['counts']['properties'] ) ) {
+				return max( 0, (int) $manifest['counts']['properties'] );
+			}
+		}
+
+		if ( is_array( $entities ) && isset( $entities['properties'] ) && is_array( $entities['properties'] ) ) {
+			return count( $entities['properties'] );
+		}
+
+		return 0;
+	}
+
+	/**
 	 * Whether an export of $count properties is allowed.
 	 *
 	 * @param int                  $count   Property count.
@@ -144,8 +169,57 @@ final class MigrationLimits {
 				'is_pro'      => false,
 				'upgrade_url' => $upgrade,
 				'dimension'   => self::DIMENSION_PROPERTIES,
+				'operation'   => 'export',
 			)
 		);
+	}
+
+	/**
+	 * Whether importing a package with $count properties is allowed.
+	 *
+	 * @param int $count Property count from package manifest / entities.
+	 * @return true|WP_Error
+	 */
+	public static function can_import_properties( int $count ) {
+		$max = self::max_properties();
+		if ( $count <= $max ) {
+			return true;
+		}
+
+		$upgrade = self::upgrade_url();
+
+		return new WP_Error(
+			'hvnly_ie_migration_limit',
+			sprintf(
+				/* translators: 1: properties in package, 2: free max */
+				__(
+					'This migration package contains %1$d properties. The Free edition supports migration of up to %2$d properties. Upgrade to Havenlytics Pro to migrate unlimited properties.',
+					'havenlytics'
+				),
+				$count,
+				self::FREE_MAX_PROPERTIES
+			),
+			array(
+				'count'       => $count,
+				'max'         => self::FREE_MAX_PROPERTIES,
+				'is_pro'      => false,
+				'upgrade_url' => $upgrade,
+				'dimension'   => self::DIMENSION_PROPERTIES,
+				'operation'   => 'import',
+			)
+		);
+	}
+
+	/**
+	 * Assert Free import limit from manifest and/or entities before any DB writes.
+	 *
+	 * @param array<string, mixed>|null $manifest Manifest.
+	 * @param array<string, mixed>|null $entities Entities.
+	 * @return true|WP_Error
+	 */
+	public static function assert_import_allowed( $manifest = null, $entities = null ) {
+		$count = self::count_package_properties( $manifest, $entities );
+		return self::can_import_properties( $count );
 	}
 
 	/**

@@ -8,6 +8,8 @@
 
 namespace HvnlyNab\Workspace;
 
+use HvnlyNab\I18n\ScriptTranslations;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -190,13 +192,7 @@ final class WorkspaceAssets {
 				true
 			);
 
-			if ( function_exists( 'wp_set_script_translations' ) ) {
-				wp_set_script_translations(
-					WorkspaceConstants::SCRIPT_HANDLE,
-					'havenlytics',
-					HVNLYNAB_LANG_DIR
-				);
-			}
+			ScriptTranslations::attach( WorkspaceConstants::SCRIPT_HANDLE );
 		}
 
 		/**

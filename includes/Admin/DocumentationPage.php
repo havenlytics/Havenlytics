@@ -526,6 +526,17 @@ final class DocumentationPage {
 		$settings_ok  = self::build_asset_ready( 'settings' );
 		$rest_ok      = function_exists( 'rest_url' ) && is_string( rest_url() ) && rest_url() !== '';
 
+		$migration_ok = class_exists( '\HvnlyNab\ImportExport\ImportExportModule' );
+		$csv_ok       = class_exists( '\HvnlyNab\CsvTransfer\CsvTransferModule' );
+		$blocks_ok    = class_exists( '\HvnlyNab\Integrations\Blocks\BlockRegistrar' )
+			&& function_exists( 'register_block_type' );
+		// Capability check only — does not require Elementor to be installed.
+		$elementor_ok = class_exists( '\HvnlyNab\Integrations\Elementor\Bootstrap' )
+			|| class_exists( '\HvnlyNab\Integrations\Elementor\ElementorIntegration' );
+
+		$locale         = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+		$translation_ok = self::is_havenlytics_translation_loaded( $locale );
+
 		$modules = array();
 		if ( post_type_exists( 'hvnly_property' ) ) {
 			$modules[] = __( 'Properties', 'havenlytics' );
@@ -545,7 +556,7 @@ final class DocumentationPage {
 		$modules[] = __( 'Analytics', 'havenlytics' );
 		$modules[] = __( 'Agent Workspace System', 'havenlytics' );
 
-		return array(
+		$rows = array(
 			array(
 				'label' => __( 'Plugin Version', 'havenlytics' ),
 				'value' => defined( 'HVNLYNAB_VERSION' ) ? (string) HVNLYNAB_VERSION : '—',
@@ -591,7 +602,132 @@ final class DocumentationPage {
 				'value'  => '🟢 ' . __( 'Active', 'havenlytics' ),
 				'status' => 'ok',
 			),
+			array(
+				'label'  => __( 'Migration Engine', 'havenlytics' ),
+				'value'  => $migration_ok ? '🟢 ' . __( 'Active', 'havenlytics' ) : '🔴 ' . __( 'Missing', 'havenlytics' ),
+				'status' => $migration_ok ? 'ok' : 'missing',
+			),
+			array(
+				'label'  => __( 'CSV Import & Export', 'havenlytics' ),
+				'value'  => $csv_ok ? '🟢 ' . __( 'Active', 'havenlytics' ) : '🔴 ' . __( 'Missing', 'havenlytics' ),
+				'status' => $csv_ok ? 'ok' : 'missing',
+			),
+			array(
+				'label'  => __( 'Gutenberg Blocks', 'havenlytics' ),
+				'value'  => $blocks_ok ? '🟢 ' . __( 'Active', 'havenlytics' ) : '🔴 ' . __( 'Missing', 'havenlytics' ),
+				'status' => $blocks_ok ? 'ok' : 'missing',
+			),
+			array(
+				'label'  => __( 'Elementor Integration', 'havenlytics' ),
+				'value'  => $elementor_ok ? '🟢 ' . __( 'Active', 'havenlytics' ) : '🔴 ' . __( 'Missing', 'havenlytics' ),
+				'status' => $elementor_ok ? 'ok' : 'missing',
+			),
+			array(
+				'label' => __( 'Frontend Language', 'havenlytics' ),
+				'value' => (string) $locale,
+			),
+			array(
+				'label'  => __( 'Translation Status', 'havenlytics' ),
+				'value'  => $translation_ok
+					? __( 'Loaded Successfully', 'havenlytics' )
+					: __( 'Not Loaded', 'havenlytics' ),
+				'status' => $translation_ok ? 'ok' : 'missing',
+			),
+			array(
+				'label' => __( 'Available Languages', 'havenlytics' ),
+				'value' => self::get_available_language_labels(),
+			),
+			array(
+				'label' => __( 'Localization Engine', 'havenlytics' ),
+				'value' => __( 'WordPress gettext + @wordpress/i18n', 'havenlytics' ),
+			),
+			array(
+				'label' => __( 'REST API Version', 'havenlytics' ),
+				'value' => 'v1',
+			),
 		);
+
+		return $rows;
+	}
+
+	/**
+	 * Whether the havenlytics text domain is loaded for the active locale.
+	 *
+	 * English locales always count as loaded (source language). Other locales
+	 * require a readable .mo catalog under languages/.
+	 *
+	 * @param string $locale Active locale (e.g. ru_RU).
+	 * @return bool
+	 */
+	private static function is_havenlytics_translation_loaded( string $locale ): bool {
+		$normalized = strtolower( str_replace( '-', '_', $locale ) );
+		if ( $normalized === 'en' || strpos( $normalized, 'en_' ) === 0 ) {
+			return true;
+		}
+
+		if ( ! is_textdomain_loaded( 'havenlytics' ) ) {
+			return false;
+		}
+
+		$languages_dir = defined( 'HVNLYNAB_PATH' )
+			? trailingslashit( HVNLYNAB_PATH ) . 'languages'
+			: '';
+
+		if ( $languages_dir === '' || ! is_dir( $languages_dir ) ) {
+			return false;
+		}
+
+		$mo = trailingslashit( $languages_dir ) . 'havenlytics-' . $locale . '.mo';
+		return is_readable( $mo );
+	}
+
+	/**
+	 * Human-readable list of shipped plugin languages (English + installed .mo packs).
+	 *
+	 * @return string
+	 */
+	private static function get_available_language_labels(): string {
+		$labels = array(
+			__( 'English', 'havenlytics' ),
+		);
+
+		$languages_dir = defined( 'HVNLYNAB_PATH' )
+			? trailingslashit( HVNLYNAB_PATH ) . 'languages'
+			: '';
+
+		if ( $languages_dir === '' || ! is_dir( $languages_dir ) ) {
+			return implode( ', ', $labels );
+		}
+
+		$files = glob( trailingslashit( $languages_dir ) . 'havenlytics-*.mo' );
+		if ( ! is_array( $files ) ) {
+			return implode( ', ', $labels );
+		}
+
+		$locale_labels = array(
+			'ru_RU' => __( 'Russian', 'havenlytics' ),
+		);
+
+		foreach ( $files as $file ) {
+			$base = basename( (string) $file, '.mo' );
+			if ( ! preg_match( '/^havenlytics-(.+)$/', $base, $match ) ) {
+				continue;
+			}
+
+			$pack_locale = $match[1];
+			$normalized  = strtolower( str_replace( '-', '_', $pack_locale ) );
+			if ( $normalized === 'en' || strpos( $normalized, 'en_' ) === 0 ) {
+				continue;
+			}
+
+			$labels[] = isset( $locale_labels[ $pack_locale ] )
+				? $locale_labels[ $pack_locale ]
+				: $pack_locale;
+		}
+
+		$labels = array_values( array_unique( $labels ) );
+
+		return implode( ', ', $labels );
 	}
 
 	/**

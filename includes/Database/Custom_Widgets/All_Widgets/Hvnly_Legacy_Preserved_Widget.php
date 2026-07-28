@@ -189,7 +189,15 @@ class Hvnly_Legacy_Preserved_Widget extends \WP_Widget {
 					foreach ( $selected as $property_id ) :
 						?>
 						<div class="hvnly-selected-property" data-id="<?php echo esc_attr( (string) $property_id ); ?>">
-							<span><?php echo esc_html( get_the_title( $property_id ) ?: sprintf( __( 'Property #%d', 'havenlytics' ), $property_id ) ); ?></span>
+							<span><?php
+							echo esc_html(
+								get_the_title( $property_id ) ?: sprintf(
+									/* translators: %d: Property post ID. */
+									__( 'Property #%d', 'havenlytics' ),
+									$property_id
+								)
+							);
+							?></span>
 							<input type="hidden" name="<?php echo esc_attr( $target ); ?>[]" value="<?php echo esc_attr( (string) $property_id ); ?>" />
 						</div>
 					<?php endforeach; ?>

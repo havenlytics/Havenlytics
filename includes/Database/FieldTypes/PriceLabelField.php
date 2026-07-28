@@ -357,7 +357,7 @@ class PriceLabelField extends BaseFieldType {
             return new \WP_Error('required_field', sprintf(
             /* translators: %s: Field label */
                 __('The field "%s" is required.', 'havenlytics'),
-                esc_html($field['label'])
+                hvnly_esc_html_ui( (string) $field['label'] )
             ));
         }
         

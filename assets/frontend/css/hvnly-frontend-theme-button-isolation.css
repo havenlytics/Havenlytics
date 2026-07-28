@@ -1,0 +1,388 @@
+/**
+ * Havenlytics — Theme button CSS isolation
+ * ========================================
+ * Compatibility layer for popular themes that style global `button`,
+ * `input[type="submit"]`, `.button`, `.wp-element-button`, etc.
+ *
+ * Themes covered (non-exhaustive): Astra, Hello Elementor, Kadence,
+ * GeneratePress, OceanWP, Blocksy, Neve, Twenty Twenty-Five.
+ *
+ * Strategy:
+ * - Scope to Havenlytics roots + `[class*="hvnly-"]` controls only
+ * - Neutralize theme leakage (transform, appearance, font, line-height)
+ * - Do NOT redefine component look-and-feel (padding/colors live in
+ *   component CSS)
+ * - Prefer specificity over blanket !important (surgical !important only
+ *   where themes force transform/padding with !important)
+ *
+ * Load order: enqueue late (priority 999) so this wins cascade order
+ * without touching theme files.
+ *
+ * @package Havenlytics
+ * @since   3.7.1
+ */
+
+/* ----------------------------------------------------------------------
+ * Shared control list (interactive elements carrying hvnly- classes)
+ * -------------------------------------------------------------------- */
+.hvnly-content-wrapper :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"],
+	input[type="reset"][class*="hvnly-"]
+),
+.hvnly-property-display-shortcode :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"],
+	input[type="reset"][class*="hvnly-"]
+),
+body.hvnly-plugin-active :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"],
+	input[type="reset"][class*="hvnly-"]
+),
+body.hvnly-content-active :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"],
+	input[type="reset"][class*="hvnly-"]
+),
+body.hvnly-property-single :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"]
+),
+body.hvnly-property-archive :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"]
+),
+body.hvnly-agent-single :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"]
+),
+body.hvnly-agency-single :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"]
+),
+.hvnly-mobile-contact-dock :is(
+	button[class*="hvnly-"],
+	a[class*="hvnly-"][class*="btn"]
+),
+.hvnly-contact-agent :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"]
+),
+.hvnly-toast :is(
+	button[class*="hvnly-"]
+) {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	box-sizing: border-box;
+	font-family: inherit;
+	letter-spacing: normal;
+	text-transform: none;
+	text-shadow: none;
+	text-decoration: none;
+	vertical-align: middle;
+	-webkit-tap-highlight-color: transparent;
+	/* Themes love `transition: all` — limit blast radius */
+	transition-property: background-color, background, border-color, color, box-shadow, opacity, filter;
+	transition-duration: 0.2s;
+	transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Hover / focus / active: kill theme lift / bounce / scale */
+.hvnly-content-wrapper :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"]
+):is(:hover, :focus, :active, :focus-visible),
+.hvnly-property-display-shortcode :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"]
+):is(:hover, :focus, :active, :focus-visible),
+body.hvnly-plugin-active :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"]
+):is(:hover, :focus, :active, :focus-visible),
+body.hvnly-property-single :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"]
+):is(:hover, :focus, :active, :focus-visible),
+body.hvnly-property-archive :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"]
+):is(:hover, :focus, :active, :focus-visible),
+body.hvnly-agent-single :is(
+	button[class*="hvnly-"],
+	input[type="submit"][class*="hvnly-"],
+	input[type="button"][class*="hvnly-"]
+):is(:hover, :focus, :active, :focus-visible),
+.hvnly-mobile-contact-dock :is(
+	button[class*="hvnly-"]
+):is(:hover, :focus, :active, :focus-visible),
+.hvnly-contact-agent :is(
+	button[class*="hvnly-"]
+):is(:hover, :focus, :active, :focus-visible) {
+	transform: none;
+	/* Themes sometimes force padding/line-height on :hover */
+	letter-spacing: normal;
+	text-decoration: none;
+}
+
+/* Icons / SVG inside controls — prevent theme icon jumps */
+.hvnly-content-wrapper :is(button[class*="hvnly-"], a[class*="hvnly-"][class*="btn"]) :is(i, svg, .hvnly-icon),
+.hvnly-property-display-shortcode :is(button[class*="hvnly-"], a[class*="hvnly-"][class*="btn"]) :is(i, svg, .hvnly-icon),
+body.hvnly-plugin-active :is(button[class*="hvnly-"], a[class*="hvnly-"][class*="btn"]) :is(i, svg, .hvnly-icon),
+body.hvnly-property-single :is(button[class*="hvnly-"], a[class*="hvnly-"][class*="btn"]) :is(i, svg, .hvnly-icon),
+body.hvnly-property-archive :is(button[class*="hvnly-"], a[class*="hvnly-"][class*="btn"]) :is(i, svg, .hvnly-icon),
+.hvnly-mobile-contact-dock :is(button[class*="hvnly-"], a[class*="hvnly-"]) :is(i, svg, .hvnly-icon) {
+	transform: none;
+	vertical-align: middle;
+	line-height: 1;
+	max-width: none;
+	max-height: none;
+	/* Avoid theme `button svg { width:1em; float }` quirks */
+	float: none;
+	position: static;
+}
+
+.hvnly-content-wrapper :is(button[class*="hvnly-"], a[class*="hvnly-"][class*="btn"]):is(:hover, :focus, :active) :is(i, svg, .hvnly-icon),
+body.hvnly-plugin-active :is(button[class*="hvnly-"], a[class*="hvnly-"][class*="btn"]):is(:hover, :focus, :active) :is(i, svg, .hvnly-icon),
+body.hvnly-property-single :is(button[class*="hvnly-"], a[class*="hvnly-"][class*="btn"]):is(:hover, :focus, :active) :is(i, svg, .hvnly-icon) {
+	transform: none;
+}
+
+/* Anchor-as-button patterns (.hvnly-btn, agent Call/WhatsApp, etc.) */
+.hvnly-content-wrapper a.hvnly-btn,
+.hvnly-property-display-shortcode a.hvnly-btn,
+body.hvnly-plugin-active a.hvnly-btn,
+body.hvnly-property-single a[class*="hvnly-"][class*="btn"],
+body.hvnly-property-single .hvnly-agent-sidebar__btn,
+.hvnly-content-wrapper .hvnly-agent-sidebar__btn {
+	-webkit-appearance: none;
+	appearance: none;
+	box-sizing: border-box;
+	text-decoration: none;
+	font-family: inherit;
+	letter-spacing: normal;
+	text-transform: none;
+	text-shadow: none;
+}
+
+.hvnly-content-wrapper a.hvnly-btn:is(:hover, :focus, :active),
+body.hvnly-plugin-active a.hvnly-btn:is(:hover, :focus, :active),
+body.hvnly-property-single a[class*="hvnly-"][class*="btn"]:is(:hover, :focus, :active),
+body.hvnly-property-single .hvnly-agent-sidebar__btn:is(:hover, :focus, :active) {
+	transform: none;
+	text-decoration: none;
+}
+
+/* ----------------------------------------------------------------------
+ * Fancybox / gallery modal controls
+ * Themes (esp. Kadence / Astra / Blocksy) apply button:hover { transform }
+ * which REPLACES translateY(-50%) centering and makes arrows jump.
+ * -------------------------------------------------------------------- */
+body.hvnly-property-single button.hvnly-property-single__fancybox-close,
+body.hvnly-property-single button.hvnly-property-single__fancybox-fullscreen,
+body.hvnly-property-single button.hvnly-property-single__fancybox-nav,
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-close,
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-fullscreen,
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-nav {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	box-sizing: border-box;
+	font-family: inherit;
+	line-height: 1;
+	letter-spacing: normal;
+	text-transform: none;
+	text-shadow: none;
+	text-decoration: none;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+	vertical-align: middle;
+	/* Do not inherit theme height / min-height on icon buttons */
+	min-height: 0;
+	min-width: 0;
+}
+
+/* Preserve vertical centering on prev/next — never allow theme hover lift */
+body.hvnly-property-single button.hvnly-property-single__fancybox-nav,
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-nav {
+	transform: translateY(-50%);
+}
+
+body.hvnly-property-single button.hvnly-property-single__fancybox-nav:is(:hover, :focus, :active, :focus-visible),
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-nav:is(:hover, :focus, :active, :focus-visible) {
+	/* Keep centering; paint-only hover lives in component CSS.
+	   Surgical !important: Kadence/Astra often force button:hover transform. */
+	transform: translateY(-50%) !important;
+	padding: 0;
+	font-size: inherit;
+	line-height: 1;
+	border-radius: 50%;
+}
+
+body.hvnly-property-single button.hvnly-property-single__fancybox-close:is(:hover, :focus, :active),
+body.hvnly-property-single button.hvnly-property-single__fancybox-fullscreen:is(:hover, :focus, :active),
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-close:is(:hover, :focus, :active),
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-fullscreen:is(:hover, :focus, :active) {
+	transform: none;
+}
+
+body.hvnly-property-single button.hvnly-property-single__fancybox-nav :is(i, svg, .hvnly-icon),
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-nav :is(i, svg, .hvnly-icon) {
+	transform: none;
+	display: block;
+	margin: 0;
+	float: none;
+	position: static;
+	vertical-align: middle;
+	line-height: 1;
+}
+
+body.hvnly-property-single button.hvnly-property-single__fancybox-nav:is(:hover, :focus, :active) :is(i, svg, .hvnly-icon),
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-nav:is(:hover, :focus, :active) :is(i, svg, .hvnly-icon) {
+	transform: none;
+}
+
+/* ----------------------------------------------------------------------
+ * High-traffic component anchors (extra specificity for stubborn themes)
+ * -------------------------------------------------------------------- */
+
+/* Gallery / carousel / similar */
+body.hvnly-property-single :is(
+	button.hvnly-property-single__gallery-btn,
+	button.hvnly-property-single__carousel-btn,
+	button.hvnly-property-single__carousel-dot,
+	button.hvnly-property-single__action-btn,
+	button.hvnly-property-single__print-btn
+):is(:hover, :focus, :active) {
+	transform: none;
+}
+
+/* Sidebar agent + mortgage + listings */
+body.hvnly-property-single :is(
+	button.hvnly-agent-sidebar__submit,
+	button.hvnly-mortgage-term-btn,
+	button.hvnly-agent-listings-nav-btn,
+	a.hvnly-agent-sidebar__btn
+):is(:hover, :focus, :active) {
+	transform: none;
+}
+
+/* Archive / search / pagination */
+body.hvnly-property-archive :is(
+	button.hvnly-property-view-btn,
+	button.hvnly-property-filter-toggle,
+	button.hvnly-property-reset-filters-btn,
+	button.hvnly-property-pagination-item,
+	button.hvnly-property-carousel-nav-btn,
+	button.hvnly-property--archive__search-btn,
+	button.hvnly-property--archive__view-btn,
+	button.hvnly-ajax-retry-btn
+):is(:hover, :focus, :active),
+.hvnly-content-wrapper :is(
+	button.hvnly-property-view-btn,
+	button.hvnly-property-filter-toggle,
+	button.hvnly-property-reset-filters-btn,
+	button.hvnly-property-pagination-item,
+	button.hvnly-property-carousel-nav-btn,
+	button.hvnly-property--archive__search-btn,
+	button.hvnly-property--archive__view-btn
+):is(:hover, :focus, :active) {
+	transform: none;
+}
+
+/* Blocks: map / carousel / auth */
+.hvnly-content-wrapper :is(
+	button.hvnly-block-map__btn,
+	button.hvnly-block-carousel__arrow,
+	button.hvnly-auth__btn,
+	button.hvnly-auth__tab,
+	button.hvnly-auth__toggle,
+	button.hvnly-auth__linkbtn
+):is(:hover, :focus, :active) {
+	transform: none;
+}
+
+/* Favorites / compare / card actions */
+.hvnly-content-wrapper :is(
+	button[class*="hvnly-"][class*="favorite"],
+	button.hvnly-property--grid-list--favorite,
+	button[class*="hvnly-"][class*="compare"],
+	button.hvnly-btn
+):is(:hover, :focus, :active),
+body.hvnly-plugin-active :is(
+	button[class*="hvnly-"][class*="favorite"],
+	button.hvnly-property--grid-list--favorite,
+	button[class*="hvnly-"][class*="compare"]
+):is(:hover, :focus, :active) {
+	transform: none;
+}
+
+/* Contact agent modal (may render outside single body class scopes) */
+.hvnly-contact-agent :is(
+	button.hvnly-contact-agent__btn,
+	button.js-hvnly-contact-agent-close,
+	button.js-hvnly-contact-agent-submit
+):is(:hover, :focus, :active) {
+	transform: none;
+}
+
+/* Agent / agency single */
+body.hvnly-agent-single :is(
+	button.hvnly-agent-single__submit,
+	button.hvnly-agent-single__status-tab,
+	button.hvnly-agent-widget__nav-btn
+):is(:hover, :focus, :active) {
+	transform: none;
+}
+
+/* Map retry */
+button.hvnly-retry-map-btn:is(:hover, :focus, :active) {
+	transform: none;
+}
+
+/* ----------------------------------------------------------------------
+ * Soften conflict with our own legacy global hover paint
+ * (default.css used to force brand background on every button:hover)
+ * -------------------------------------------------------------------- */
+.hvnly-content-wrapper :is(
+	button.hvnly-property-single__fancybox-nav,
+	button.hvnly-property-single__fancybox-close,
+	button.hvnly-property-single__fancybox-fullscreen,
+	button.hvnly-property-single__gallery-btn,
+	button.hvnly-property-single__carousel-btn,
+	button.hvnly-property-single__carousel-dot,
+	button.hvnly-agent-listings-nav-btn,
+	button.hvnly-block-map__btn,
+	button.hvnly-block-carousel__arrow,
+	button.hvnly-property-carousel-nav-btn,
+	button.hvnly-auth__toggle,
+	button.hvnly-auth__linkbtn,
+	button.hvnly-auth__tab
+):is(:hover, :focus) {
+	/* Prevent default.css brand fill from painting icon/nav controls */
+	background-image: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hvnly-content-wrapper :is(button[class*="hvnly-"], input[type="submit"][class*="hvnly-"]),
+	body.hvnly-plugin-active :is(button[class*="hvnly-"], input[type="submit"][class*="hvnly-"]),
+	body.hvnly-property-single :is(button[class*="hvnly-"], input[type="submit"][class*="hvnly-"]) {
+		transition: none;
+	}
+}

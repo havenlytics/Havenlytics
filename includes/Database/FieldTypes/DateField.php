@@ -83,7 +83,7 @@ class DateField extends BaseFieldType {
 				sprintf(
 					/* translators: %s: field label */
 					__( 'The field "%s" is required.', 'havenlytics' ),
-					esc_html( $field['label'] ?? __( 'Date', 'havenlytics' ) )
+					hvnly_esc_html_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Date' ) )
 				)
 			);
 		}
@@ -94,7 +94,7 @@ class DateField extends BaseFieldType {
 				sprintf(
 					/* translators: %s: field label */
 					__( 'Please enter a valid date for "%s".', 'havenlytics' ),
-					esc_html( $field['label'] ?? __( 'Date', 'havenlytics' ) )
+					hvnly_esc_html_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Date' ) )
 				)
 			);
 		}

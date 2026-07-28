@@ -1,0 +1,368 @@
+{
+    "translation-revision-date": "2026-07-28 16:15:36+0000",
+    "generator": "Havenlytics hvnly-setup-wizard-app ru_RU package",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "plural-forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);",
+                "lang": "ru"
+            },
+            "%d demo properties were created. Explore your site or start adding your own listings.": [
+                "Создано %d демонстрационных свойств. Изучите свой сайт или начните добавлять свои собственные объявления."
+            ],
+            "3 baths": [
+                "3 ванные"
+            ],
+            "3,200 sq ft": [
+                "3200 кв. футов"
+            ],
+            "4 beds": [
+                "4 койки"
+            ],
+            "A few quick steps to configure your locale, workspace, and starter content. You can change any of this later in Settings. This takes about two minutes.": [
+                "Несколько быстрых шагов по настройке языкового стандарта, рабочей области и начального контента. Вы можете изменить все это позже в настройках. Это занимает около двух минут."
+            ],
+            "A front-end portal where your agents sign in and manage their own listings, inquiries, and profile — no wp-admin access needed.": [
+                "Интерфейсный портал, на котором ваши агенты входят в систему и управляют своими списками, запросами и профилями — доступ wp-admin не требуется."
+            ],
+            "Address lookup is unavailable right now. Drag the marker instead.": [
+                "Поиск адреса сейчас недоступен. Вместо этого перетащите маркер."
+            ],
+            "Admin approval — you approve each agent": [
+                "Одобрение администратора — вы утверждаете каждого агента"
+            ],
+            "Agent Workspace": [
+                "Рабочая область агента"
+            ],
+            "Agent Workspace is off": [
+                "Рабочая область агента отключена"
+            ],
+            "Agent Workspace is on": [
+                "Рабочая область агента включена"
+            ],
+            "Agent registration": [
+                "Регистрация агента"
+            ],
+            "All set": [
+                "Готово."
+            ],
+            "Approval workflow for new listings": [
+                "Процесс утверждения новых объявлений"
+            ],
+            "Back": [
+                "Назад"
+            ],
+            "Building sections": [
+                "Разделы здания"
+            ],
+            "Business": [
+                "Бизнес"
+            ],
+            "Choose a map provider and set the default location for your listings. Search an address, drag the pin, or type coordinates — the preview updates live.": [
+                "Выберите поставщика карт и установите местоположение по умолчанию для ваших объявлений. Найдите адрес, перетащите булавку или введите координаты — предварительный просмотр обновляется в реальном времени."
+            ],
+            "Comma (,)": [
+                "Запятая (,)"
+            ],
+            "Comma (1,250,000)": [
+                "Запятая (1 250 000)"
+            ],
+            "Completed": [
+                "Завершено"
+            ],
+            "Connection error.": [
+                "Ошибка подключения."
+            ],
+            "Connection interrupted. Retrying (%1$d\/%2$d)…": [
+                "Соединение прервано. Повторная попытка (%1$d\/%2$d)…"
+            ],
+            "Content": [
+                "Контент"
+            ],
+            "Continue": [
+                "Продолжить"
+            ],
+            "Country & currency for your listings.": [
+                "Страна и валюта для ваших объявлений."
+            ],
+            "Creating properties": [
+                "Создание свойств"
+            ],
+            "Currency": [
+                "Валюта"
+            ],
+            "Decimal separator": [
+                "Десятичный разделитель"
+            ],
+            "Decimals": [
+                "Десятичные"
+            ],
+            "Default city": [
+                "Город по умолчанию"
+            ],
+            "Default region \/ state": [
+                "Регион\/штат по умолчанию"
+            ],
+            "Demo properties to create": [
+                "Демо-объекты для создания"
+            ],
+            "Design your listing fields": [
+                "Создайте поля для листинга"
+            ],
+            "Dot (.)": [
+                ". (точка)"
+            ],
+            "Dot (1.250.000)": [
+                "Точка (1.250.000)"
+            ],
+            "Drag to set your default map location": [
+                "Перетащите, чтобы установить местоположение на карте по умолчанию"
+            ],
+            "Email me when the import finishes": [
+                "Напишите мне, когда импорт завершится"
+            ],
+            "Enable the Agent Workspace?": [
+                "Включить рабочую область агента?"
+            ],
+            "Enable the Maps JavaScript API and Geocoding API for this key in Google Cloud Console.": [
+                "Включите API JavaScript Карт и API геокодирования для этого ключа в Google Cloud Console."
+            ],
+            "Exit": [
+                "Выход"
+            ],
+            "Featured": [
+                "Избранное"
+            ],
+            "Find your area": [
+                "Найдите свой район"
+            ],
+            "Fine-tune everything": [
+                "Точная настройка всего"
+            ],
+            "Get started": [
+                "Начать"
+            ],
+            "Go to my dashboard": [
+                "Зайти в мою панель"
+            ],
+            "Google Maps API key": [
+                "Ключ API Карт Google"
+            ],
+            "Google Maps needs an API key with billing enabled. The preview below uses OpenStreetMap and works without a key.": [
+                "Для Google Maps требуется ключ API с включенной оплатой. Предварительный просмотр ниже использует OpenStreetMap и работает без ключа."
+            ],
+            "Havenlytics": [
+                "Havenlytics"
+            ],
+            "Havenlytics Realty": [
+                "Хавенлитикс Недвижимость"
+            ],
+            "Havenlytics setup": [
+                "Настройка Havenlytics"
+            ],
+            "How should prices look?": [
+                "Как должны выглядеть цены?"
+            ],
+            "Import %d properties": [
+                "Импортировать %d свойств"
+            ],
+            "Import stopped: no further progress could be made. Completed properties are kept — you can retry to resume.": [
+                "Импорт остановлен: дальнейшего прогресса добиться не удалось. Завершенные свойства сохраняются — вы можете повторить попытку возобновления."
+            ],
+            "Importing your demo content…": [
+                "Импорт демо-контента…"
+            ],
+            "Include demo images (needs internet; skipped automatically offline)": [
+                "Включить демонстрационные изображения (требуется Интернет; автоматически пропускаются в автономном режиме)"
+            ],
+            "Inquiry inbox per agent": [
+                "Почтовый ящик для запросов для каждого агента"
+            ],
+            "Interactive map. Use the latitude and longitude fields for precise placement.": [
+                "Интерактивная карта. Используйте поля широты и долготы для точного размещения."
+            ],
+            "Interactive preview — drag the pin or click the map": [
+                "Интерактивный предварительный просмотр — перетащите булавку или щелкните карту."
+            ],
+            "Latitude": [
+                "Широта"
+            ],
+            "Let agents manage their own listings.": [
+                "Позвольте агентам управлять своими собственными списками."
+            ],
+            "Let’s set up your property website": [
+                "Давайте настроим сайт вашей недвижимости"
+            ],
+            "Listing agent": [
+                "Листинговый агент"
+            ],
+            "Live preview": [
+                "Предварительный просмотр в реальном времени"
+            ],
+            "Localize": [
+                "Локализация"
+            ],
+            "Location": [
+                "Расположение"
+            ],
+            "Longitude": [
+                "Долгота"
+            ],
+            "Luxury Villa with Ocean View": [
+                "Роскошная вилла с видом на океан"
+            ],
+            "Map preview could not load. You can still set the default location using the latitude and longitude fields.": [
+                "Не удалось загрузить предварительный просмотр карты. Вы по-прежнему можете установить местоположение по умолчанию, используя поля широты и долготы."
+            ],
+            "Map provider": [
+                "Поставщик карт"
+            ],
+            "No match found. Drag the marker to set the location manually.": [
+                "Ничего не найдено. Перетащите маркер, чтобы установить местоположение вручную."
+            ],
+            "None (1250000)": [
+                "Нет (1250000)"
+            ],
+            "Open — agents can register immediately": [
+                "Открытый — агенты могут зарегистрироваться сразу"
+            ],
+            "OpenStreetMap is free and needs no API key.": [
+                "OpenStreetMap бесплатен и не требует ключа API."
+            ],
+            "Optional": [
+                "Необязательно"
+            ],
+            "Optional demo properties to explore.": [
+                "Дополнительные демонстрационные свойства для изучения."
+            ],
+            "Optional sample properties, agents, and agencies so you can explore a working site immediately. You can delete them anytime.": [
+                "Дополнительные образцы свойств, агентов и агентств, чтобы вы могли немедленно изучить работающий сайт. Вы можете удалить их в любое время."
+            ],
+            "Pick your currency and number format. The live preview updates as you go.": [
+                "Выберите валюту и числовой формат. Предварительный просмотр обновляется по мере вашего продвижения."
+            ],
+            "Pre-fills the location on new listings so you type less. Change it per property anytime.": [
+                "Предварительно заполняет местоположение в новых объявлениях, чтобы вы вводили меньше. Измените его для каждого свойства в любое время."
+            ],
+            "Preparing import": [
+                "Подготовка импорта"
+            ],
+            "Preparing your import…": [
+                "Подготовка импорта…"
+            ],
+            "Primary country": [
+                "Основная страна"
+            ],
+            "Processing images": [
+                "Обработка изображений"
+            ],
+            "Profile & avatar control": [
+                "Управление профилем и аватаром"
+            ],
+            "Property Builder": [
+                "Конструктор объектов"
+            ],
+            "Retry (keeps progress)": [
+                "Повторить попытку (сохранить прогресс)"
+            ],
+            "Saving…": [
+                "Сохранение…"
+            ],
+            "Search": [
+                "Поиск"
+            ],
+            "Searching…": [
+                "Поиск…"
+            ],
+            "See your listings": [
+                "Посмотреть ваши объявления"
+            ],
+            "Self-service listing management": [
+                "Самостоятельное управление листингом"
+            ],
+            "Set up your maps": [
+                "Настройте свои карты"
+            ],
+            "Settings": [
+                "Настройки"
+            ],
+            "Setup steps": [
+                "Этапы настройки"
+            ],
+            "Setup wizard step": [
+                "Шаг мастера установки"
+            ],
+            "Skip for now": [
+                "Пропустить пока"
+            ],
+            "Skip to content": [
+                "Перейти к содержимому"
+            ],
+            "Skip — start empty": [
+                "Пропустить — начать пусто"
+            ],
+            "Space (1 250 000)": [
+                "Пространство (1 250 000)"
+            ],
+            "Start with demo content?": [
+                "Начать с демо-контента?"
+            ],
+            "Starter content": [
+                "Стартовый контент"
+            ],
+            "Symbol position": [
+                "Положение символа"
+            ],
+            "The import didn’t finish": [
+                "Импорт не завершился"
+            ],
+            "The server returned an unexpected response.": [
+                "Сервер вернул неожиданный ответ."
+            ],
+            "This sets sensible defaults for currency, location fields, and maps. You can refine everything later.": [
+                "Это устанавливает разумные значения по умолчанию для валюты, полей местоположения и карт. Вы можете уточнить все позже."
+            ],
+            "This sets the default centre for property maps. Each listing can override it later.": [
+                "Это устанавливает центр по умолчанию для карт свойств. Каждое объявление может быть переопределено позже."
+            ],
+            "Thousands": [
+                "Тысячи"
+            ],
+            "Up to %d demo properties.": [
+                "До %d демонстрационных свойств."
+            ],
+            "Used as the default for new property listings and the map centre.": [
+                "Используется по умолчанию для новых списков недвижимости и центра карты."
+            ],
+            "View properties": [
+                "Посмотреть недвижимость"
+            ],
+            "Welcome to Havenlytics": [
+                "Добро пожаловать в Havenlytics"
+            ],
+            "Where do you do business?": [
+                "Где вы ведете бизнес?"
+            ],
+            "Workspace": [
+                "Рабочая область"
+            ],
+            "Your locale and workspace are configured. Add your first listing whenever you’re ready.": [
+                "Ваш языковой стандарт и рабочее пространство настроены. Добавьте свое первое объявление, когда будете готовы."
+            ],
+            "Your property site is ready": [
+                "Ваш сайт недвижимости готов"
+            ],
+            "e.g. Greater London": [
+                "например Большой Лондон"
+            ],
+            "e.g. London": [
+                "например \"Лондон\""
+            ],
+            "e.g. London, United Kingdom": [
+                "например Лондон, Великобритания"
+            ]
+        }
+    }
+}
