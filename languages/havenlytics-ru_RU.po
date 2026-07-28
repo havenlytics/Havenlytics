@@ -1,5 +1,5 @@
 msgid ""
-msgstr "Project-Id-Version: Havenlytics 3.7.0\nReport-Msgid-Bugs-To: https://havenlytics.com/support/\nPOT-Creation-Date: 2026-07-28 08:25:10+0000\nPO-Revision-Date: 2026-07-28 08:25:10+0000\nLast-Translator: Havenlytics Translation Manager\nLanguage-Team: ru_RU\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\nX-Domain: havenlytics\nX-Generator: Havenlytics Translation Manager\n"
+msgstr "Project-Id-Version: Havenlytics 3.7.1\nReport-Msgid-Bugs-To: https://havenlytics.com/support/\nPOT-Creation-Date: 2026-07-28 08:25:10+0000\nPO-Revision-Date: 2026-07-28 08:25:10+0000\nLast-Translator: Havenlytics Translation Manager\nLanguage-Team: ru_RU\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\nX-Domain: havenlytics\nX-Generator: Havenlytics Translation Manager\n"
 
 #: includes/Api/Type/Settings/PriceOnCallTextAPI.php:183
 msgid "\"%s\" created successfully"

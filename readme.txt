@@ -5,10 +5,10 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.7.0
+Stable tag: 3.7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Real estate plugin with Migration Engine, CSV Import & Export, AJAX search, Gutenberg blocks, Elementor, Agent Workspace, Analytics, and multilingual support.
+Real estate plugin with AJAX search, Migration Engine, CSV import/export, Gutenberg, Elementor, Agent Workspace, and Analytics.
 
 == Description ==
 
@@ -324,6 +324,14 @@ No additional configuration or migration is required.
 
 == Changelog ==
 
+= 3.7.1 - 2026-07-28 =
+
+**Fixed**
+
+* Shortened the plugin short description in `readme.txt` to comply with the WordPress.org parser's 150-character limit.
+* Improved WordPress.org readme compatibility and repository metadata.
+* Maintenance release with no functional changes.
+
 = 3.7.0 - 2026-07-28 =
 
 **New**
@@ -467,6 +475,9 @@ No additional configuration or migration is required.
 For earlier versions, see the full history in CHANGELOG.md in the plugin package.
 == Upgrade Notice ==
 
+= 3.7.1 =
+Maintenance release that improves WordPress.org readme compatibility by shortening the plugin short description. No functional changes.
+
 = 3.7.0 =
 Single Property presentation redesign (hero, gallery, overview, agent sidebar) plus mobile and accessibility polish. No Builder, field, REST, database, hook, or migration changes. Hard-refresh a property page after updating.
 
@@ -507,21 +518,17 @@ Contributions and feedback are welcome:
 == Privacy Policy ==
 
 Havenlytics includes the Appsero SDK for optional usage telemetry.
-
-Telemetry is **disabled by default** and is only enabled if an administrator explicitly opts in. When enabled, limited diagnostic and environment information is sent to `api.appsero.com` to help improve the plugin.
-
+Telemetry is **disabled by default** and is only enabled if an administrator opts in.
 Privacy Policy: https://appsero.com/privacy-policy/
+All Havenlytics data is stored in your own WordPress database. Contact Agent inquiries are also stored locally. Maps may use OpenStreetMap, Carto, or Google Maps (when configured). Imported CSV files may download remote media you provide.
 
-All Havenlytics data—including properties, agents, inquiries, favorites, saved properties, and Agent Workspace data—is stored in your own WordPress database.
-
-When maps are enabled, tile/basemap requests may be made to OpenStreetMap, Carto, and/or Google Maps (when an API key is configured). Contact Agent forms store inquiry PII in your database. CSV Transfer may fetch remote media URLs you provide during import.
-
-Uninstall removes plugin options, custom tables, cron events, and Appsero telemetry leftovers. Property/agent posts and Media Library attachments are retained as site content unless you delete them manually.
+Uninstall removes plugin options, custom tables, cron events, and Appsero telemetry data. Property posts and Media Library files are retained unless deleted manually.
 
 == Credits ==
 
 This plugin bundles:
-- Font Awesome Free (Icons CC BY 4.0, Fonts SIL OFL 1.1, Code MIT) — see assets/admin/css/LICENSE-Font-Awesome.txt
-- Leaflet (BSD-2-Clause), Leaflet.markercluster (MIT), and leaflet.fullscreen (MIT) — see assets/frontend/lib/leaflet/LICENSE.txt
-- Inter font (SIL OFL 1.1) — see assets/admin/fonts/inter/LICENSE-Inter.txt
-- Appsero Client SDK (MIT) for optional telemetry
+
+- Font Awesome Free (CC BY 4.0, SIL OFL 1.1, MIT)
+- Leaflet, Leaflet.markercluster, and leaflet.fullscreen (BSD-2-Clause/MIT)
+- Inter font (SIL OFL 1.1)
+- Appsero Client SDK (MIT)
