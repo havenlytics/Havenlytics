@@ -382,11 +382,12 @@ final class PropertyFormMapper {
 		// WordPress featured image (post thumbnail) — not Builder meta.
 		if ( array_key_exists( 'featuredImageId', $values ) ) {
 			$thumb_id = absint( $values['featuredImageId'] );
-			if ( $thumb_id > 0 && wp_attachment_is_image( $thumb_id ) ) {
-				set_post_thumbnail( $post_id, $thumb_id );
-			} else {
+			if ( $thumb_id <= 0 ) {
 				delete_post_thumbnail( $post_id );
+			} elseif ( self::user_may_use_attachment( $post_id, $thumb_id ) ) {
+				set_post_thumbnail( $post_id, $thumb_id );
 			}
+			// Unauthorized ID: leave the existing thumbnail unchanged.
 		}
 
 		$current_listing = (string) get_post_meta( $post_id, self::META_LISTING_STATUS, true );
@@ -435,7 +436,7 @@ final class PropertyFormMapper {
 				continue;
 			}
 
-			$encoded = self::encode_field_value( $incoming[ $value_key ], $row );
+			$encoded = self::encode_field_value( $incoming[ $value_key ], $row, $post_id );
 			self::update_meta( $post_id, $name, $encoded );
 
 			// Mirror Admin MapField / MetaResolver legacy aliases for map scalars.
@@ -880,11 +881,12 @@ final class PropertyFormMapper {
 	}
 
 	/**
-	 * @param mixed                 $value Incoming value.
-	 * @param array<string, string> $row   Storage row.
+	 * @param mixed                 $value   Incoming value.
+	 * @param array<string, string> $row     Storage row.
+	 * @param int                   $post_id Property post ID (attachment auth for gallery).
 	 * @return mixed
 	 */
-	private static function encode_field_value( $value, array $row ) {
+	private static function encode_field_value( $value, array $row, int $post_id = 0 ) {
 		$comp       = (string) ( $row['component'] ?? '' );
 		$group_type = (string) ( $row['groupType'] ?? '' );
 		$type       = (string) ( $row['type'] ?? '' );
@@ -947,7 +949,7 @@ final class PropertyFormMapper {
 
 		// Admin GalleryField stores comma-separated attachment IDs.
 		if ( ( 'gallery' === $comp || 'gallery' === $group_type ) && false !== strpos( (string) ( $row['name'] ?? '' ), '_images' ) ) {
-			return self::encode_gallery_images_value( $value );
+			return self::encode_gallery_images_value( $value, $post_id );
 		}
 
 		if ( is_bool( $value ) ) {
@@ -1007,12 +1009,45 @@ final class PropertyFormMapper {
 	}
 
 	/**
+	 * Whether the current user may bind an attachment to this property.
+	 *
+	 * Admins (imports / migration) pass. Agents may use attachments they own or
+	 * that are already linked to this property (preserve admin-seeded media).
+	 *
+	 * @param int $post_id       Property post ID.
+	 * @param int $attachment_id Attachment ID.
+	 * @return bool
+	 */
+	private static function user_may_use_attachment( int $post_id, int $attachment_id ): bool {
+		$attachment_id = absint( $attachment_id );
+		if ( $attachment_id <= 0 || ! wp_attachment_is_image( $attachment_id ) ) {
+			return false;
+		}
+
+		if ( current_user_can( 'manage_options' ) ) {
+			return true;
+		}
+
+		if ( class_exists( PropertyMediaService::class ) ) {
+			if ( PropertyMediaService::user_owns_attachment( $attachment_id ) ) {
+				return true;
+			}
+			if ( $post_id > 0 && PropertyMediaService::is_linked( $post_id, $attachment_id ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Encode gallery images as admin GalleryField CSV of attachment IDs.
 	 *
-	 * @param mixed $value Incoming.
+	 * @param mixed $value   Incoming.
+	 * @param int   $post_id Property post ID for attachment authorization.
 	 * @return string
 	 */
-	private static function encode_gallery_images_value( $value ): string {
+	private static function encode_gallery_images_value( $value, int $post_id = 0 ): string {
 		$ids = array();
 		if ( is_array( $value ) ) {
 			foreach ( $value as $item ) {
@@ -1021,7 +1056,7 @@ final class PropertyFormMapper {
 				} else {
 					$id = absint( $item );
 				}
-				if ( $id > 0 ) {
+				if ( $id > 0 && self::user_may_use_attachment( $post_id, $id ) ) {
 					$ids[] = $id;
 				}
 			}
@@ -1029,12 +1064,12 @@ final class PropertyFormMapper {
 			if ( '{' === $value[0] || '[' === $value[0] ) {
 				$decoded = json_decode( $value, true );
 				if ( is_array( $decoded ) ) {
-					return self::encode_gallery_images_value( $decoded );
+					return self::encode_gallery_images_value( $decoded, $post_id );
 				}
 			}
 			foreach ( explode( ',', $value ) as $part ) {
 				$id = absint( trim( $part ) );
-				if ( $id > 0 ) {
+				if ( $id > 0 && self::user_may_use_attachment( $post_id, $id ) ) {
 					$ids[] = $id;
 				}
 			}

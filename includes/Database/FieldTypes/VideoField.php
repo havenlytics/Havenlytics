@@ -38,75 +38,158 @@ class VideoField extends BaseFieldType {
         $url_value       = $this->resolve_video_subfield_value( $post_id, $field, $field_base, 'url', $url_field, $value );
         $thumbnail_value = $this->resolve_video_subfield_value( $post_id, $field, $field_base, 'thumbnail', $thumbnail_field );
 
+        $youtube_id      = ! empty( $url_value ) ? $this->extract_youtube_id( $url_value ) : null;
+        $hero_image_url  = '';
+        $hero_source     = 'empty';
+
+        if ( ! empty( $thumbnail_value ) ) {
+            $hero_image_url = $thumbnail_value;
+            $hero_source    = 'custom';
+        } elseif ( $youtube_id ) {
+            $hero_image_url = 'https://img.youtube.com/vi/' . $youtube_id . '/hqdefault.jpg';
+            $hero_source    = 'youtube';
+        }
+
+        $has_hero     = '' !== $hero_image_url;
+        $can_preview  = (bool) $youtube_id;
+        $has_custom   = ! empty( $thumbnail_value );
+        $embed_title  = $title_value ? $title_value : __( 'Property Video', 'havenlytics' );
+
         ob_start();
         ?>
-<div class="hvnly-video-field-container hvnly-video-group-wrapper"
+<div class="hvnly-video-field-container hvnly-video-group-wrapper<?php echo $has_hero ? '' : ' is-empty'; ?><?php echo $can_preview ? ' has-video-url' : ''; ?><?php echo $has_custom ? ' has-custom-thumb' : ''; ?>"
     data-field-id="<?php echo esc_attr($field['id']); ?>"
-    data-group-base-id="<?php echo esc_attr($field_base); ?>">
-    <!-- Video Title Field -->
-    <div class="hvnly-video-subfield" data-field-id="<?php echo esc_attr($title_field); ?>"
-        data-field-type="text">
-        <div class="hvnly-video-subfield-input">
-            <label><?php esc_html_e('Video Title', 'havenlytics'); ?></label>
-            <input type="text" id="<?php echo esc_attr($title_field); ?>" name="<?php echo esc_attr($title_field); ?>"
-                value="<?php echo esc_attr($title_value); ?>"
-                placeholder="<?php esc_attr_e('Enter video title', 'havenlytics'); ?>"
-                class="hvnly__dyamic_metabox_tab__input widefat" data-field-type="text">
-        </div>
-    </div>
+    data-group-base-id="<?php echo esc_attr($field_base); ?>"
+    data-hero-source="<?php echo esc_attr( $hero_source ); ?>">
 
-    <!-- Video URL Field -->
-    <div class="hvnly-video-subfield" data-field-id="<?php echo esc_attr($url_field); ?>"
-        data-field-type="text">
-        <div class="hvnly-video-subfield-input">
-            <label><?php esc_html_e('Video URL', 'havenlytics'); ?></label>
-            <input type="url" id="<?php echo esc_attr($url_field); ?>" name="<?php echo esc_attr($url_field); ?>"
-                value="<?php echo esc_attr($url_value); ?>"
-                placeholder="<?php esc_attr_e('Enter full YouTube URL or ID', 'havenlytics'); ?>"
-                class="hvnly__dyamic_metabox_tab__input widefat" data-field-type="url">
-            <?php if (!empty($url_value)) : ?>
-            <div class="hvnly-video-preview" style="margin-top: 10px;">
-                <?php 
-                $video_id = $this->extract_youtube_id($url_value);
-                if ($video_id) : ?>
-                <iframe src="https://www.youtube.com/embed/<?php echo esc_attr($video_id); ?>" frameborder="0"
-                    allowfullscreen style="width: 100%; max-width: 400px; height: 225px; border-radius: 8px;"></iframe>
-                <?php endif; ?>
-            </div>
-            <?php endif; ?>
-        </div>
-    </div>
-
-    <!-- Video Thumbnail Field -->
-    <div class="hvnly-video-subfield" data-field-id="<?php echo esc_attr($thumbnail_field); ?>"
-        data-field-type="file">
-        <div class="hvnly-video-subfield-input">
-            <label><?php esc_html_e('Video Thumbnail', 'havenlytics'); ?></label>
-            <div class="hvnly-meta-field" style="display: block; margin: 0px">
-                <div class="hvnly-meta-input hvnly-popup-meta-input">
-                    <input type="text" id="<?php echo esc_attr($thumbnail_field); ?>"
-                        name="<?php echo esc_attr($thumbnail_field); ?>" class="widefat"
-                        value="<?php echo esc_attr($thumbnail_value); ?>"
-                        placeholder="<?php esc_attr_e('Enter image URL or upload', 'havenlytics'); ?>">
-                    <div class="hvnly-preview-container">
-                        <?php if (!empty($thumbnail_value)): ?>
-                        <div class="hvnly-preview-wrapper">
-                            <img src="<?php echo esc_url($thumbnail_value); ?>" alt=""
-                                style="max-width: 150px; height: auto;">
-                            <button type="button" class="hvnly-remove-preview"
-                                data-target="#<?php echo esc_attr($thumbnail_field); ?>">
-                                <span class="dashicons dashicons-no-alt"></span>
-                            </button>
+    <div class="hvnly-video-layout">
+        <div class="hvnly-video-col hvnly-video-col--media">
+            <section class="hvnly-video-media" aria-label="<?php esc_attr_e( 'Video thumbnail', 'havenlytics' ); ?>">
+                <div class="hvnly-video-hero<?php echo $has_hero ? '' : ' is-empty'; ?>">
+                    <div class="hvnly-preview-container hvnly-video-hero-media" aria-live="polite">
+                        <?php if ( $has_hero ) : ?>
+                        <div class="hvnly-preview-wrapper hvnly-video-hero-frame">
+                            <img src="<?php echo esc_url( $hero_image_url ); ?>"
+                                alt="<?php esc_attr_e( 'Video thumbnail', 'havenlytics' ); ?>"
+                                class="hvnly-video-hero-image"
+                                data-hero-source="<?php echo esc_attr( $hero_source ); ?>">
+                        </div>
+                        <?php else : ?>
+                        <div class="hvnly-video-hero-empty">
+                            <span class="dashicons dashicons-format-image" aria-hidden="true"></span>
+                            <p class="hvnly-video-hero-empty-title"><?php esc_html_e( 'No thumbnail yet', 'havenlytics' ); ?></p>
+                            <p class="hvnly-video-hero-empty-subtitle"><?php esc_html_e( 'Upload a poster image, or paste a YouTube URL to use its default frame.', 'havenlytics' ); ?></p>
                         </div>
                         <?php endif; ?>
                     </div>
-                    <button type="button" class="button hvnly-upload-button"
-                        data-target="#<?php echo esc_attr($thumbnail_field); ?>" data-type="image">
-                        <?php esc_html_e('Upload Thumbnail', 'havenlytics'); ?>
+
+                    <button type="button"
+                        class="hvnly-video-play-overlay"
+                        <?php disabled( ! $can_preview ); ?>
+                        aria-label="<?php esc_attr_e( 'Preview Video', 'havenlytics' ); ?>"
+                        <?php echo $can_preview ? '' : ' hidden'; ?>>
+                        <span class="hvnly-video-play-btn" aria-hidden="true">
+                            <svg class="hvnly-video-play-icon" viewBox="0 0 24 24" width="28" height="28" focusable="false">
+                                <path fill="currentColor" d="M8.5 6.2v11.6c0 .7.8 1.1 1.4.7l9-5.8c.5-.4.5-1.1 0-1.4l-9-5.8c-.6-.4-1.4 0-1.4.7z"/>
+                            </svg>
+                        </span>
                     </button>
                 </div>
-            </div>
+
+                <div class="hvnly-video-actions" role="toolbar" aria-label="<?php esc_attr_e( 'Thumbnail actions', 'havenlytics' ); ?>">
+                    <button type="button" class="hvnly-upload-button hvnly-video-action hvnly-video-action-primary"
+                        data-target="#<?php echo esc_attr($thumbnail_field); ?>" data-type="image">
+                        <span class="dashicons dashicons-upload" aria-hidden="true"></span>
+                        <span class="hvnly-video-action-label hvnly-video-action-label--replace"><?php echo $has_custom ? esc_html__( 'Replace Thumbnail', 'havenlytics' ) : esc_html__( 'Upload Thumbnail', 'havenlytics' ); ?></span>
+                    </button>
+                    <button type="button" class="hvnly-video-action hvnly-video-preview-toggle"
+                        <?php disabled( ! $can_preview ); ?>
+                        aria-expanded="false"
+                        aria-controls="hvnly-video-inline-preview-<?php echo esc_attr( $field_base ); ?>">
+                        <span class="dashicons dashicons-controls-play" aria-hidden="true"></span>
+                        <?php esc_html_e( 'Preview Video', 'havenlytics' ); ?>
+                    </button>
+                    <button type="button" class="hvnly-remove-preview hvnly-video-action hvnly-video-remove-thumb"
+                        data-target="#<?php echo esc_attr($thumbnail_field); ?>"
+                        <?php disabled( ! $has_custom ); ?>
+                        aria-label="<?php esc_attr_e( 'Remove Thumbnail', 'havenlytics' ); ?>">
+                        <?php esc_html_e( 'Remove', 'havenlytics' ); ?>
+                    </button>
+                </div>
+            </section>
         </div>
+
+        <div class="hvnly-video-col hvnly-video-col--fields">
+            <header class="hvnly-video-header">
+                <div class="hvnly-video-header-icon" aria-hidden="true">
+                    <span class="dashicons dashicons-video-alt3"></span>
+                </div>
+                <div class="hvnly-video-header-copy">
+                    <h3 class="hvnly-video-header-title"><?php esc_html_e( 'Property Video', 'havenlytics' ); ?></h3>
+                    <p class="hvnly-video-header-help"><?php esc_html_e( 'Set the listing poster and YouTube link. Preview only when you need to verify the embed.', 'havenlytics' ); ?></p>
+                </div>
+            </header>
+
+            <div class="hvnly-video-fields-primary">
+                <!-- Video Title Field -->
+                <div class="hvnly-video-subfield" data-field-id="<?php echo esc_attr($title_field); ?>"
+                    data-field-type="text">
+                    <div class="hvnly-video-subfield-input">
+                        <label for="<?php echo esc_attr($title_field); ?>"><?php esc_html_e('Video Title', 'havenlytics'); ?></label>
+                        <input type="text" id="<?php echo esc_attr($title_field); ?>" name="<?php echo esc_attr($title_field); ?>"
+                            value="<?php echo esc_attr($title_value); ?>"
+                            placeholder="<?php esc_attr_e('Enter video title', 'havenlytics'); ?>"
+                            class="hvnly__dyamic_metabox_tab__input widefat" data-field-type="text">
+                    </div>
+                </div>
+
+                <!-- Video URL Field -->
+                <div class="hvnly-video-subfield" data-field-id="<?php echo esc_attr($url_field); ?>"
+                    data-field-type="text">
+                    <div class="hvnly-video-subfield-input">
+                        <label for="<?php echo esc_attr($url_field); ?>"><?php esc_html_e('Video URL', 'havenlytics'); ?></label>
+                        <input type="url" id="<?php echo esc_attr($url_field); ?>" name="<?php echo esc_attr($url_field); ?>"
+                            value="<?php echo esc_attr($url_value); ?>"
+                            placeholder="<?php esc_attr_e('Enter full YouTube URL or ID', 'havenlytics'); ?>"
+                            class="hvnly__dyamic_metabox_tab__input widefat" data-field-type="url">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thumbnail URL stays in DOM for save / media target; collapsed as Advanced. -->
+            <details class="hvnly-video-advanced">
+                <summary class="hvnly-video-advanced-summary">
+                    <span><?php esc_html_e( 'Advanced', 'havenlytics' ); ?></span>
+                </summary>
+                <div class="hvnly-video-subfield hvnly-video-subfield--thumbnail" data-field-id="<?php echo esc_attr($thumbnail_field); ?>"
+                    data-field-type="file">
+                    <div class="hvnly-video-subfield-input">
+                        <div class="hvnly-meta-field">
+                            <div class="hvnly-meta-input hvnly-popup-meta-input">
+                                <label class="hvnly-video-thumb-url-label" for="<?php echo esc_attr($thumbnail_field); ?>"><?php esc_html_e('Thumbnail URL', 'havenlytics'); ?></label>
+                                <p class="description hvnly-video-advanced-help"><?php esc_html_e( 'Usually set via Upload / Replace. Edit manually only if you need a direct image URL.', 'havenlytics' ); ?></p>
+                                <input type="text" id="<?php echo esc_attr($thumbnail_field); ?>"
+                                    name="<?php echo esc_attr($thumbnail_field); ?>" class="widefat"
+                                    value="<?php echo esc_attr($thumbnail_value); ?>"
+                                    placeholder="<?php esc_attr_e('Enter image URL or upload', 'havenlytics'); ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="hvnly-video-inline-preview"
+        id="hvnly-video-inline-preview-<?php echo esc_attr( $field_base ); ?>"
+        hidden>
+        <div class="hvnly-video-inline-preview-bar">
+            <span class="hvnly-video-inline-preview-label"><?php esc_html_e( 'Video Preview', 'havenlytics' ); ?></span>
+            <button type="button" class="button-link hvnly-video-inline-preview-close">
+                <?php esc_html_e( 'Close preview', 'havenlytics' ); ?>
+            </button>
+        </div>
+        <div class="hvnly-video-preview" data-role="embed" data-embed-title="<?php echo esc_attr( $embed_title ); ?>"></div>
     </div>
 </div>
 <?php
@@ -314,6 +397,13 @@ class VideoField extends BaseFieldType {
     
     public function enqueue_assets() {
         wp_enqueue_media();
+
+        wp_enqueue_style(
+            'hvnly-video-field',
+            HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-video-field.css',
+            array( 'hvnly-admin-metabox' ),
+            HVNLYNAB_VERSION
+        );
         
         wp_enqueue_script(
             'hvnly-video-field',

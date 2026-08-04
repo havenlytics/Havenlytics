@@ -1,5 +1,5 @@
 msgid ""
-msgstr "Project-Id-Version: Havenlytics 3.7.1\nReport-Msgid-Bugs-To: https://havenlytics.com/support/\nPOT-Creation-Date: 2026-07-28 08:25:10+0000\nPO-Revision-Date: 2026-07-28 08:25:10+0000\nLast-Translator: Havenlytics Translation Manager\nLanguage-Team: ru_RU\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\nX-Domain: havenlytics\nX-Generator: Havenlytics Translation Manager\n"
+msgstr "Project-Id-Version: Havenlytics 3.7.2\nReport-Msgid-Bugs-To: https://havenlytics.com/support/\nPOT-Creation-Date: 2026-07-28 08:25:10+0000\nPO-Revision-Date: 2026-07-28 08:25:10+0000\nLast-Translator: Havenlytics Translation Manager\nLanguage-Team: ru_RU\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\nX-Domain: havenlytics\nX-Generator: Havenlytics Translation Manager\n"
 
 #: includes/Api/Type/Settings/PriceOnCallTextAPI.php:183
 msgid "\"%s\" created successfully"
@@ -8439,7 +8439,7 @@ msgstr "Унаследовать"
 
 #: src/blocks/dashboard/edit.js:353
 msgid "Initial sidebar state on wide screens. The app stays fully responsive on tablet and mobile."
-msgstr "Исходное состояние боковой панели на широких экранах. Приложение остается полностью адаптивным на планшетах и ​​мобильных устройствах."
+msgstr "Исходное состояние боковой панели на широких экранах. Приложение остается полностью адаптивным на планшетах и мобильных устройствах."
 
 #: includes/Admin/PropertyImportWizard.php:510
 msgid "Initializing property builder…"
@@ -20165,3 +20165,434 @@ msgstr "Английский"
 msgid "Russian"
 msgstr "Русский"
 
+#: src/setup/steps/DemoImportStep.jsx:59
+msgid "%1$d of %2$d properties created"
+msgstr "Создано объектов: %1$d из %2$d"
+
+#: src/setup/steps/WelcomeStep.jsx:76
+msgid "%d guided steps"
+msgstr "%d пошаговых этапов"
+
+#: src/setup/steps/DemoImportStep.jsx:113
+msgid "%d properties were created and kept."
+msgstr "Создано и сохранено объектов: %d."
+
+#: src/setup/steps/WelcomeStep.jsx:75
+msgid "About 2 minutes"
+msgstr "Около 2 минут"
+
+#: src/setup/steps/WorkspaceStep.jsx:16
+msgid "Admin approval"
+msgstr "Одобрение администратором"
+
+#: src/setup/steps/WelcomeStep.jsx:24
+msgid "Agents & content"
+msgstr "Агенты и контент"
+
+#: src/setup/steps/WorkspaceStep.jsx:11
+msgid "Agents create an account and can start working immediately."
+msgstr "Агенты создают учётную запись и могут сразу приступить к работе."
+
+#: src/setup/steps/DemoImportStep.jsx:17
+msgid "Already have listings elsewhere? The Migration Engine and CSV Import bring them in later."
+msgstr "Уже есть объявления в другом плагине? Движок миграции и импорт CSV перенесут их позже."
+
+#: src/setup/steps/WelcomeStep.jsx:142
+msgid "Already included in your install"
+msgstr "Уже включено в вашу установку"
+
+#: src/setup/steps/WelcomeStep.jsx:48 src/setup/steps/WorkspaceStep.jsx:154
+msgid "Analytics Dashboard"
+msgstr "Панель аналитики"
+
+#: src/setup/steps/DemoImportStep.jsx:242
+msgid "Bringing your own listings?"
+msgstr "Переносите свои объявления?"
+
+#: src/setup/steps/WelcomeStep.jsx:104
+msgid "Browse documentation"
+msgstr "Открыть документацию"
+
+#: src/setup/steps/DemoImportStep.jsx:54
+msgid "Building your demo site…"
+msgstr "Создаём демонстрационный сайт…"
+
+#: src/setup/steps/WelcomeStep.jsx:6
+msgid "Business & location"
+msgstr "Бизнес и местоположение"
+
+#: src/setup/steps/BusinessStep.jsx:97
+msgid "Carry these over to the next step"
+msgstr "Эти данные перейдут на следующий шаг"
+
+#: src/setup/steps/CurrencyStep.jsx:247
+msgid "Custom fields and badges"
+msgstr "Пользовательские поля и метки"
+
+#: src/setup/steps/FinishStep.jsx:94 src/setup/steps/MapStep.jsx:213
+msgid "Default location"
+msgstr "Местоположение по умолчанию"
+
+#: src/setup/steps/FinishStep.jsx:114
+msgid "Demo content"
+msgstr "Демоконтент"
+
+#: src/setup/steps/DemoImportStep.jsx:247
+msgid "Demo content is only a starting point. When you are ready to move real data in, Havenlytics already includes the tools for it."
+msgstr "Демоконтент — это только отправная точка. Когда вы будете готовы перенести реальные данные, в Havenlytics уже есть все нужные инструменты."
+
+#: src/setup/steps/DemoImportStep.jsx:14
+msgid "Demo listings are spread across Sale, Rent, Commercial, and Letting so every view has content."
+msgstr "Демообъявления распределяются по разделам «Продажа», «Аренда», «Коммерческая» и «Сдача», чтобы контент был во всех представлениях."
+
+#: src/setup/steps/FinishStep.jsx:150
+msgid "Design your listing fields and cards."
+msgstr "Настройте поля и карточки объявлений."
+
+#: src/setup/steps/DemoImportStep.jsx:195
+msgid "Downloads gallery photos for each listing. Needs an internet connection and is skipped automatically when offline."
+msgstr "Загружает фотографии галереи для каждого объявления. Требуется подключение к интернету; без него шаг пропускается автоматически."
+
+#: src/setup/steps/MapStep.jsx:313
+msgid "Drag the pin or click the map to move it. This becomes the default centre for property maps — each listing can override it later."
+msgstr "Перетащите маркер или щёлкните по карте, чтобы переместить его. Это станет центром карт объектов по умолчанию — каждое объявление может задать своё значение."
+
+#: src/setup/steps/CurrencyStep.jsx:245
+msgid "Drag-and-drop property card sections"
+msgstr "Секции карточки объекта с перетаскиванием"
+
+#: src/setup/steps/DemoImportStep.jsx:16
+msgid "Each demo property arrives with an agent, an agency, and a gallery you can safely edit or delete."
+msgstr "Каждый демообъект поставляется с агентом, агентством и галереей, которые можно спокойно изменить или удалить."
+
+#: src/setup/steps/WelcomeStep.jsx:47
+msgid "Elementor Widgets"
+msgstr "Виджеты Elementor"
+
+#: src/setup/steps/WorkspaceStep.jsx:74
+msgid "Enable the Agent Workspace"
+msgstr "Включить рабочее пространство агента"
+
+#: src/setup/steps/FinishStep.jsx:50
+msgid "Enabled · %s"
+msgstr "Включено · %s"
+
+#: src/setup/steps/FinishStep.jsx:127
+msgid "Every one of these stays editable under Havenlytics → Settings."
+msgstr "Все эти параметры можно изменить в разделе Havenlytics → Настройки."
+
+#: src/setup/SetupApp.jsx:259
+msgid "Everything here can be changed later in Settings."
+msgstr "Всё это можно изменить позже в настройках."
+
+#: src/setup/SetupApp.jsx:148
+msgid "Exit setup"
+msgstr "Выйти из настройки"
+
+#: src/setup/SetupApp.jsx:193
+msgid "Go back to %s"
+msgstr "Вернуться к шагу «%s»"
+
+#: includes/Frontend/Assets.php:1288
+msgid "Go to slide group %1$d of %2$d"
+msgstr "Перейти к группе слайдов %1$d из %2$d"
+
+#: src/setup/steps/FinishStep.jsx:163
+msgid "Guides for blocks, widgets, and imports."
+msgstr "Руководства по блокам, виджетам и импорту."
+
+#: src/setup/steps/BusinessStep.jsx:109
+msgid "Havenlytics is fully translation-ready and ships with a complete Russian language pack, so your admin and front-end text follow your WordPress site language."
+msgstr "Havenlytics полностью готов к переводу и поставляется с полным русским языковым пакетом, поэтому тексты в админке и на сайте следуют языку вашего сайта WordPress."
+
+#: src/setup/steps/DemoImportStep.jsx:152
+msgid "How much content"
+msgstr "Объём контента"
+
+#: src/setup/steps/WelcomeStep.jsx:49
+msgid "Identity Verification"
+msgstr "Подтверждение личности"
+
+#: src/setup/steps/WorkspaceStep.jsx:144
+msgid "Identity verification"
+msgstr "Подтверждение личности"
+
+#: src/setup/steps/DemoImportStep.jsx:266
+msgid "Import & migration documentation"
+msgstr "Документация по импорту и миграции"
+
+#: src/setup/steps/DemoImportStep.jsx:256
+msgid "Import and export listings as CSV"
+msgstr "Импорт и экспорт объявлений в CSV"
+
+#: includes/Admin/PropertyImportWizard.php:1823
+msgid "Import cancelled after %1$d of %2$d properties."
+msgstr "Импорт отменён после %1$d из %2$d объектов."
+
+#: includes/Admin/PropertyImportWizard.php:1966
+msgid "Imported %1$d of %2$d properties..."
+msgstr "Импортировано %1$d из %2$d объектов..."
+
+#: src/setup/steps/DemoImportStep.jsx:189
+msgid "Include demo images"
+msgstr "Включить демоизображения"
+
+#: src/setup/steps/MapStep.jsx:289
+msgid "Interactive preview"
+msgstr "Интерактивный предпросмотр"
+
+#: src/setup/steps/DemoImportStep.jsx:83
+msgid "Keep this tab open until the import finishes. Everything already created is kept if it stops early."
+msgstr "Не закрывайте эту вкладку до завершения импорта. Всё уже созданное сохранится, даже если импорт прервётся."
+
+#: src/setup/steps/WorkspaceStep.jsx:126
+msgid "Leave it off for now — you can enable the Agent Workspace at any time under Settings → Agent Workspace without losing anything you set up here."
+msgstr "Пока можно оставить выключенным — рабочее пространство агента включается в любой момент в разделе «Настройки → Рабочее пространство агента» без потери сделанных здесь настроек."
+
+#: src/setup/steps/WorkspaceStep.jsx:155
+msgid "Listing views and inquiries are tracked automatically, so you can see how each agent’s portfolio performs."
+msgstr "Просмотры объявлений и заявки отслеживаются автоматически, поэтому вы видите результаты портфеля каждого агента."
+
+#: src/setup/steps/MapStep.jsx:331
+msgid "Live map search results"
+msgstr "Живые результаты поиска на карте"
+
+#: includes/Admin/Assets.php:459
+msgid "Loading charts and reports…"
+msgstr "Загрузка графиков и отчётов…"
+
+#: src/setup/steps/MapStep.jsx:331
+msgid "Map blocks, widgets, and shortcodes"
+msgstr "Блоки, виджеты и шорткоды карт"
+
+#: src/setup/steps/MapStep.jsx:335
+msgid "Map documentation"
+msgstr "Документация по картам"
+
+#: src/setup/steps/DemoImportStep.jsx:259
+msgid "Map fields, images, and taxonomies before importing"
+msgstr "Сопоставление полей, изображений и таксономий перед импортом"
+
+#: src/setup/steps/MapStep.jsx:323
+msgid "Map search & Search Builder"
+msgstr "Поиск на карте и конструктор поиска"
+
+#: src/setup/steps/WelcomeStep.jsx:15
+msgid "Maps & prices"
+msgstr "Карты и цены"
+
+#: src/setup/steps/DemoImportStep.jsx:255
+msgid "Migrate listings from another real-estate plugin"
+msgstr "Перенос объявлений из другого плагина недвижимости"
+
+#: src/setup/steps/DemoImportStep.jsx:244
+msgid "Migration Engine & CSV Import"
+msgstr "Движок миграции и импорт CSV"
+
+#: src/setup/steps/WelcomeStep.jsx:50
+msgid "Multilingual Ready"
+msgstr "Готовность к мультиязычности"
+
+#: src/setup/steps/FinishStep.jsx:54
+msgid "Not enabled"
+msgstr "Не включено"
+
+#: src/setup/steps/WorkspaceStep.jsx:125
+msgid "Not sure yet?"
+msgstr "Ещё не определились?"
+
+#: src/setup/steps/WelcomeStep.jsx:81
+msgid "Nothing is locked in"
+msgstr "Ничего не фиксируется навсегда"
+
+#: src/setup/steps/CurrencyStep.jsx:105
+msgid "Number format"
+msgstr "Формат чисел"
+
+#: src/setup/steps/CurrencyStep.jsx:250
+msgid "Open Property Builder"
+msgstr "Открыть конструктор объектов"
+
+#: src/setup/steps/WorkspaceStep.jsx:10
+msgid "Open registration"
+msgstr "Открытая регистрация"
+
+#: src/setup/steps/DemoImportStep.jsx:139
+msgid "Optional sample properties, agents, and agencies so you can explore a working site immediately. You can delete them at any time."
+msgstr "Необязательные примеры объектов, агентов и агентств, чтобы сразу изучить работающий сайт. Их можно удалить в любой момент."
+
+#: src/setup/steps/WelcomeStep.jsx:129
+msgid "Part %d"
+msgstr "Часть %d"
+
+#: src/setup/steps/MapStep.jsx:332
+msgid "Per-listing coordinate overrides"
+msgstr "Переопределение координат для каждого объявления"
+
+#: src/setup/steps/WelcomeStep.jsx:15
+msgid "Pick a map provider, drop your default map pin, and choose exactly how prices are formatted."
+msgstr "Выберите поставщика карт, поставьте маркер по умолчанию и задайте формат отображения цен."
+
+#: src/setup/steps/CurrencyStep.jsx:44
+msgid "Pick your currency and number format. The sample listing on the right updates as you go."
+msgstr "Выберите валюту и формат чисел. Пример объявления справа обновляется на ходу."
+
+#: src/setup/steps/CurrencyStep.jsx:238 src/setup/steps/MapStep.jsx:322
+msgid "Powered by this step"
+msgstr "Использует этот шаг"
+
+#: src/setup/steps/BusinessStep.jsx:90
+msgid "Pre-fills the location on new listings. You can still change it per property."
+msgstr "Подставляет местоположение в новые объявления. Его можно изменить для каждого объекта."
+
+#: src/setup/steps/FinishStep.jsx:104
+msgid "Price format"
+msgstr "Формат цены"
+
+#: src/setup/steps/MapStep.jsx:157
+msgid "Provider"
+msgstr "Поставщик"
+
+#: src/setup/components/Ui.jsx:54
+msgid "Read the docs"
+msgstr "Читать документацию"
+
+#: src/setup/steps/FinishStep.jsx:133 src/setup/steps/FinishStep.jsx:140
+msgid "Recommended next steps"
+msgstr "Рекомендуемые следующие шаги"
+
+#: src/setup/steps/DemoImportStep.jsx:123
+msgid "Resume import"
+msgstr "Продолжить импорт"
+
+#: src/setup/steps/CurrencyStep.jsx:246
+msgid "Same card across grids, blocks, and widgets"
+msgstr "Одна карточка в сетках, блоках и виджетах"
+
+#: src/setup/steps/FinishStep.jsx:156
+msgid "Search, maps, email, permalinks, and more."
+msgstr "Поиск, карты, почта, постоянные ссылки и многое другое."
+
+#: src/setup/steps/FinishStep.jsx:146
+msgid "See how properties look on your live site."
+msgstr "Посмотрите, как объекты выглядят на действующем сайте."
+
+#: src/setup/steps/DemoImportStep.jsx:211
+msgid "Sends a short confirmation to your administrator address."
+msgstr "Отправляет короткое подтверждение на адрес администратора."
+
+#: src/setup/SetupApp.jsx:128
+msgid "Setup"
+msgstr "Настройка"
+
+#: src/setup/steps/FinishStep.jsx:62
+msgid "Setup complete"
+msgstr "Настройка завершена"
+
+#: src/setup/SetupApp.jsx:215
+msgid "Some settings could not be saved automatically. Your setup continues — you can re-apply them any time under Havenlytics → Settings."
+msgstr "Некоторые настройки не удалось сохранить автоматически. Настройка продолжается — их можно задать заново в разделе Havenlytics → Настройки."
+
+#: src/setup/SetupApp.jsx:135
+msgid "Step %1$d of %2$d"
+msgstr "Шаг %1$d из %2$d"
+
+#: src/setup/steps/WorkspaceStep.jsx:146
+msgid "Taxonomy requests for admin review"
+msgstr "Заявки на таксономии для проверки администратором"
+
+#: src/setup/steps/BusinessStep.jsx:98
+msgid "The city and region you enter here are reused to search for your default map location on the next step."
+msgstr "Указанные здесь город и регион используются для поиска местоположения карты по умолчанию на следующем шаге."
+
+#: includes/ImportExport/Capability/MigrationLimits.php:124
+msgid "This migration package contains %1$d properties. The Free edition supports migration of up to %2$d properties. Upgrade to Havenlytics Pro to migrate unlimited properties."
+msgstr "Этот пакет миграции содержит %1$d объектов. Бесплатная версия поддерживает миграцию до %2$d объектов. Перейдите на Havenlytics Pro, чтобы переносить неограниченное количество объектов."
+
+#: src/setup/steps/CurrencyStep.jsx:240
+msgid "This price format is applied wherever a listing price appears — and the card itself is fully configurable."
+msgstr "Этот формат цены применяется везде, где отображается цена объявления, а сама карточка полностью настраивается."
+
+#: src/setup/steps/BusinessStep.jsx:18
+msgid "This sets sensible defaults for currency, location fields, and maps so you type less on every new listing."
+msgstr "Это задаёт разумные значения по умолчанию для валюты, полей местоположения и карт, чтобы вы меньше печатали в каждом новом объявлении."
+
+#: src/setup/steps/WelcomeStep.jsx:65
+msgid "Three short sections cover your locale, your maps and prices, and how your agents and listings get started. Nothing here is permanent — every choice stays editable in Settings."
+msgstr "Три коротких раздела охватывают локаль, карты и цены, а также запуск агентов и объявлений. Ничего необратимого: любой выбор можно изменить в настройках."
+
+#: src/setup/steps/WelcomeStep.jsx:24
+msgid "Turn on the Agent Workspace and, if you like, load demo listings to explore a working site."
+msgstr "Включите рабочее пространство агента и при желании загрузите демообъявления, чтобы изучить работающий сайт."
+
+#: src/setup/steps/WorkspaceStep.jsx:55
+msgid "Turned off. You can switch it on here or later in Settings."
+msgstr "Выключено. Можно включить здесь или позже в настройках."
+
+#: src/setup/steps/WorkspaceStep.jsx:51
+msgid "Turned on. Your agent portal routes are active on the front end."
+msgstr "Включено. Маршруты портала агента активны на сайте."
+
+#: src/setup/steps/DemoImportStep.jsx:170
+msgid "Up to %d curated demo properties, spread evenly across departments."
+msgstr "До %d подготовленных демообъектов, равномерно распределённых по разделам."
+
+#: src/setup/steps/FinishStep.jsx:144
+msgid "View your listings"
+msgstr "Посмотреть объявления"
+
+#: src/setup/steps/FinishStep.jsx:86
+msgid "What you configured"
+msgstr "Что вы настроили"
+
+#: src/setup/steps/WelcomeStep.jsx:110
+msgid "What you will set up"
+msgstr "Что вы настроите"
+
+#: src/setup/steps/WorkspaceStep.jsx:137
+msgid "What your agents get"
+msgstr "Что получают ваши агенты"
+
+#: src/setup/steps/WelcomeStep.jsx:116
+msgid "What you’ll set up"
+msgstr "Что вы настроите"
+
+#: src/setup/steps/WorkspaceStep.jsx:153
+msgid "Works alongside"
+msgstr "Работает вместе с"
+
+#: src/setup/steps/WorkspaceStep.jsx:160
+msgid "Workspace documentation"
+msgstr "Документация по рабочему пространству"
+
+#: src/setup/steps/WorkspaceStep.jsx:17
+msgid "You review and approve every agent before they get access."
+msgstr "Вы проверяете и одобряете каждого агента перед предоставлением доступа."
+
+#: src/setup/steps/FinishStep.jsx:79
+msgid "Your configuration"
+msgstr "Ваша конфигурация"
+
+#: src/setup/steps/MapStep.jsx:324
+msgid "Your default coordinates seed the AJAX map search and every map embed across the site."
+msgstr "Ваши координаты по умолчанию используются в AJAX-поиске на карте и во всех встраиваемых картах на сайте."
+
+#: src/setup/steps/FinishStep.jsx:72
+msgid "Your locale, maps, and workspace are configured. Add your first listing whenever you’re ready."
+msgstr "Локаль, карты и рабочее пространство настроены. Добавьте первое объявление, когда будете готовы."
+
+#: src/setup/steps/WelcomeStep.jsx:8
+msgid "Your primary country plus the default city and region used to pre-fill new listings."
+msgstr "Основная страна, а также город и регион по умолчанию для подстановки в новые объявления."
+
+#: src/setup/steps/DemoImportStep.jsx:18
+msgid "Your property cards, fields, and search filters are all configurable after setup."
+msgstr "Карточки объектов, поля и фильтры поиска настраиваются после завершения установки."
+
+#: src/setup/steps/FinishStep.jsx:52
+msgid "admin approval"
+msgstr "одобрение администратором"
+
+#: src/setup/steps/FinishStep.jsx:53
+msgid "open registration"
+msgstr "открытая регистрация"

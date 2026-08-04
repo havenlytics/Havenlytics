@@ -1225,6 +1225,137 @@ if (!function_exists('hvnly_get_current_filters')) {
 }
 
 /**
+ * Canonical filter keys for property search (executor / cache / saved searches).
+ *
+ * @return string[]
+ */
+if ( ! function_exists( 'hvnly_get_search_filter_keys' ) ) {
+	function hvnly_get_search_filter_keys() {
+		if ( class_exists( '\\HvnlyNab\\Frontend\\Query\\PropertyQueryCache' ) ) {
+			return \HvnlyNab\Frontend\Query\PropertyQueryCache::relevant_filter_keys();
+		}
+		return array();
+	}
+}
+
+/**
+ * Normalize a raw client/URL/AJAX filter bag into PropertyQueryExecutor keys.
+ *
+ * Does not invent a parallel filter system — aliases map onto Free's internal keys.
+ *
+ * @param array<string, mixed> $raw Raw filters.
+ * @return array<string, mixed>
+ */
+if ( ! function_exists( 'hvnly_canonicalize_search_filters' ) ) {
+	function hvnly_canonicalize_search_filters( $raw ) {
+		if ( ! is_array( $raw ) ) {
+			return array();
+		}
+
+		$aliases = array(
+			'search'           => 'address_keyword',
+			'min-price'        => 'min_price',
+			'max-price'        => 'max_price',
+			'beds'             => 'bedrooms',
+			'baths'            => 'bathrooms',
+			'reception'        => 'reception_rooms',
+			'garage'           => 'garages',
+			'sort'             => 'orderby',
+			'type'             => 'department',
+			'view'             => 'view_type',
+			'page'             => 'paged',
+			'property_type'    => 'hvnly_prop_types',
+			'location'         => 'hvnly_prop_locations',
+			'status'           => 'hvnly_prop_status',
+			'feature'          => 'hvnly_prop_features',
+			'review'           => 'hvnly_prop_reviews',
+			'tag'              => 'hvnly_prop_tags',
+			'badge'            => 'hvnly_prop_badges',
+			'amenity'          => 'amenities',
+			'department'       => 'department',
+			'in_tag'           => 'in_tag',
+			'in_badge'         => 'in_badge',
+			'in_status'        => 'in_status',
+			'in_type'          => 'in_type',
+			'in_location'      => 'in_location',
+			'in_feature'       => 'in_feature',
+			'in_review'        => 'in_review',
+		);
+
+		$out = array();
+		foreach ( $raw as $key => $value ) {
+			if ( ! is_string( $key ) || '' === $key ) {
+				continue;
+			}
+			// Strip AJAX plumbing.
+			if ( in_array( $key, array( 'action', 'nonce', '_wpnonce', 'page', 'paged', 'per_page', 'instance_id' ), true ) ) {
+				continue;
+			}
+			$canonical = $aliases[ $key ] ?? $key;
+			if ( array_key_exists( $canonical, $out ) && ( null === $value || '' === $value || array() === $value ) ) {
+				continue;
+			}
+			$out[ $canonical ] = $value;
+		}
+
+		// Expand clean taxonomy ID lists into slug arrays when possible (same as URL restore path).
+		$clean_taxonomy = array(
+			'in_tag'      => 'hvnly_prop_tags',
+			'in_status'   => 'hvnly_prop_status',
+			'in_type'     => 'hvnly_prop_types',
+			'in_location' => 'hvnly_prop_locations',
+			'in_feature'  => 'hvnly_prop_features',
+			'in_review'   => 'hvnly_prop_reviews',
+			'in_badge'    => 'hvnly_prop_badges',
+		);
+		foreach ( $clean_taxonomy as $clean_key => $taxonomy ) {
+			if ( empty( $out[ $clean_key ] ) || ! empty( $out[ $taxonomy ] ) ) {
+				continue;
+			}
+			$raw_ids = $out[ $clean_key ];
+			if ( is_string( $raw_ids ) ) {
+				$raw_ids = explode( ',', str_replace( '%2C', ',', $raw_ids ) );
+			}
+			if ( ! is_array( $raw_ids ) ) {
+				continue;
+			}
+			$slugs = array();
+			foreach ( $raw_ids as $term_id ) {
+				$term = get_term( absint( $term_id ), $taxonomy );
+				if ( $term && ! is_wp_error( $term ) ) {
+					$slugs[] = $term->slug;
+				}
+			}
+			if ( ! empty( $slugs ) ) {
+				$out[ $taxonomy ] = $slugs;
+			}
+		}
+
+		$allowed = function_exists( 'hvnly_get_search_filter_keys' ) ? hvnly_get_search_filter_keys() : array();
+		if ( empty( $allowed ) ) {
+			return $out;
+		}
+
+		$filtered = array();
+		foreach ( $allowed as $key ) {
+			if ( ! array_key_exists( $key, $out ) ) {
+				continue;
+			}
+			$filtered[ $key ] = $out[ $key ];
+		}
+
+		/**
+		 * Allow Pro / custom fields to keep additional executor keys.
+		 *
+		 * @param array<string, mixed> $filtered Canonical subset.
+		 * @param array<string, mixed> $out      Full aliased bag.
+		 */
+		$extra = apply_filters( 'hvnly_canonical_search_filters_result', $filtered, $out );
+		return is_array( $extra ) ? $extra : $filtered;
+	}
+}
+
+/**
  * Generate clean URL parameters from filter data
  */
 if (!function_exists('hvnly_build_clean_url_params')) {

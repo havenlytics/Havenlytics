@@ -51,19 +51,18 @@ class CacheManager
     public static function initialize_cache_options()
     {
         /**
-         * Set default cache request count if not already set
-         * Used for calculating cache hit rate statistics
+         * Set default counters to zero — never seed fake hit rates.
          */
         if (get_option('hvnly_cache_requests') === false) {
-            update_option('hvnly_cache_requests', 100);
+            update_option('hvnly_cache_requests', 0, false);
         }
 
-        /**
-         * Set default cache hit count if not already set
-         * Represents successful cache retrievals for hit rate calculation
-         */
         if (get_option('hvnly_cache_hits') === false) {
-            update_option('hvnly_cache_hits', 85);
+            update_option('hvnly_cache_hits', 0, false);
+        }
+
+        if (get_option('hvnly_cache_misses') === false) {
+            update_option('hvnly_cache_misses', 0, false);
         }
     }
 
@@ -94,11 +93,17 @@ class CacheManager
         );
 
         /**
-         * Clear object cache if external object caching is enabled
-         * This handles systems with Redis, Memcached, etc.
+         * Clear Havenlytics object-cache group when available.
+         * Do NOT flush the entire object cache — that would wipe unrelated
+         * plugins/themes when Redis or Memcached is active.
          */
         if (wp_using_ext_object_cache()) {
-            wp_cache_flush();
+            if (function_exists('wp_cache_flush_group')) {
+                wp_cache_flush_group('hvnly_property_queries');
+            }
+            if (class_exists('\HvnlyNab\Frontend\Query\PropertyQueryCache')) {
+                \HvnlyNab\Frontend\Query\PropertyQueryCache::invalidate_all();
+            }
         }
 
         /**
@@ -133,25 +138,32 @@ class CacheManager
     {
         global $wpdb;
 
-        /**
-         * Delete transients matching the specified pattern
-         * Pattern is appended to the Havenlytics transient prefix
-         */
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Required to purge Havenlytics transients by pattern.
-        $result = $wpdb->query(
+        $pattern = (string) $pattern;
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Required to locate Havenlytics transients by pattern.
+        $option_names = $wpdb->get_col(
             $wpdb->prepare(
-                "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
-                $wpdb->esc_like('_transient_hvnly_' . $pattern) . '%',
-                $wpdb->esc_like('_transient_timeout_hvnly_' . $pattern) . '%'
+                "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s",
+                $wpdb->esc_like('_transient_hvnly_' . $pattern) . '%'
             )
         );
+
+        $deleted = 0;
+        if (!empty($option_names)) {
+            foreach ($option_names as $option_name) {
+                $transient_name = str_replace('_transient_', '', $option_name);
+                if (delete_transient($transient_name)) {
+                    $deleted++;
+                }
+            }
+        }
 
         /**
          * Fire action hook with the pattern for extended functionality
          */
         do_action('hvnly_cache_pattern_cleared', $pattern);
 
-        return $result;
+        return $deleted;
     }
 
     /**
@@ -187,6 +199,34 @@ class CacheManager
     }
 
     /**
+     * Normalize a Havenlytics transient key for the Transients API.
+     *
+     * WordPress adds the `_transient_` option prefix itself — callers must
+     * never pass `_transient_*` names into set_transient/get_transient.
+     *
+     * @param string $key Raw cache key.
+     * @return string Key starting with hvnly_
+     */
+    private static function normalize_transient_key($key)
+    {
+        $key = (string) $key;
+
+        if (strpos($key, '_transient_timeout_') === 0) {
+            $key = substr($key, strlen('_transient_timeout_'));
+        } elseif (strpos($key, '_transient_') === 0) {
+            $key = substr($key, strlen('_transient_'));
+        }
+
+        $key = sanitize_key($key);
+
+        if (strpos($key, 'hvnly_') !== 0) {
+            $key = 'hvnly_' . $key;
+        }
+
+        return $key;
+    }
+
+    /**
      * Store value in cache with optional compression
      *
      * Wrapper for WordPress set_transient with Havenlytics-specific features:
@@ -205,10 +245,7 @@ class CacheManager
             return false;
         }
 
-        /**
-         * Apply Havenlytics prefix and sanitize the key
-         */
-        $key = '_transient_hvnly_' . sanitize_key($key);
+        $key = self::normalize_transient_key($key);
 
         /**
          * Apply compression if enabled in settings
@@ -240,10 +277,7 @@ class CacheManager
             return false;
         }
 
-        /**
-         * Apply Havenlytics prefix and sanitize the key
-         */
-        $key = '_transient_hvnly_' . sanitize_key($key);
+        $key = self::normalize_transient_key($key);
         $value = get_transient($key);
 
         /**
@@ -276,7 +310,7 @@ class CacheManager
      */
     public static function delete_transient($key)
     {
-        $key = '_transient_hvnly_' . sanitize_key($key);
+        $key = self::normalize_transient_key($key);
         return delete_transient($key);
     }
 
@@ -304,9 +338,10 @@ class CacheManager
                 $wpdb->prepare(
                     "SELECT option_name, LENGTH(option_value) as size 
                      FROM {$wpdb->options} 
-                     WHERE option_name LIKE %s OR option_name LIKE %s",
+                     WHERE option_name LIKE %s
+                       AND option_name NOT LIKE %s",
                     $wpdb->esc_like('_transient_hvnly_') . '%',
-                    $wpdb->esc_like('_transient_timeout_hvnly_') . '%'
+                    $wpdb->esc_like('_transient_timeout_') . '%'
                 )
             );
 
@@ -384,28 +419,15 @@ class CacheManager
      */
     private static function calculate_hit_rate(): float
     {
-        /**
-         * Retrieve cache performance counters from options
-         */
-        $total_requests = (int) get_option('hvnly_cache_requests', 0);
-        $hits           = (int) get_option('hvnly_cache_hits', 0);
+        $hits   = (int) get_option('hvnly_cache_hits', 0);
+        $misses = (int) get_option('hvnly_cache_misses', 0);
+        $total  = $hits + $misses;
 
-        /**
-         * Set realistic defaults if counters are not initialized
-         */
-        if ($total_requests <= 0) {
-            $total_requests = 100;
-            update_option('hvnly_cache_requests', $total_requests);
-        }
-        if ($hits <= 0) {
-            $hits = 85;
-            update_option('hvnly_cache_hits', $hits);
+        if ($total <= 0) {
+            return 0.0;
         }
 
-        /**
-         * Calculate hit rate percentage with one decimal precision
-         */
-        return round(($hits / $total_requests) * 100, 1);
+        return round(($hits / $total) * 100, 1);
     }
 
     /**
@@ -445,7 +467,7 @@ class CacheManager
             'search_cache_count'  => 0,
             'sidebar_cache_count' => 0,
             'term_cache_count'    => 0,
-            'cache_hit_rate'      => 85.0,
+            'cache_hit_rate'      => 0.0,
             'total_cached_items'  => 0,
             'cache_size_human'    => '0 Bytes'
         ];

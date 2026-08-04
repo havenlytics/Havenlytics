@@ -69,68 +69,95 @@ class GalleryField extends BaseFieldType {
         $ids_input_name = 'hvnly_gallery_ids_' . $gallery_id;
         
         ob_start();
+        $image_count   = count( array_filter( $gallery_images ) );
+        $is_empty_class = $image_count < 1 ? ' hvnly-gallery-is-empty' : '';
+        $status_suffix  = ( 1 === (int) $image_count )
+            ? __( 'Image', 'havenlytics' )
+            : __( 'Images', 'havenlytics' );
         ?>
-<div class="hvnly-gallery-container" data-field-id="<?php echo esc_attr($gallery_id); ?>"
+<div class="hvnly-gallery-container<?php echo esc_attr( $is_empty_class ); ?>" data-field-id="<?php echo esc_attr($gallery_id); ?>"
     data-gallery-id="<?php echo esc_attr($gallery_id); ?>" data-title-name="<?php echo esc_attr($title_input_name); ?>"
     data-caption-name="<?php echo esc_attr($caption_input_name); ?>"
     data-ids-name="<?php echo esc_attr($ids_input_name); ?>">
 
-    <!-- GALLERY TITLE FIELD -->
-    <div class="hvnly-gallery-title-field" style="margin-bottom: 15px;">
-        <label for="gallery_title_<?php echo esc_attr($gallery_id); ?>"
-            style="display: block; margin-bottom: 5px; font-weight: 600;">
+    <div class="hvnly-gallery-title-field">
+        <label for="gallery_title_<?php echo esc_attr($gallery_id); ?>">
             <?php echo esc_html( hvnly_translate_ui( (string) ( ! empty( $field['label'] ) ? $field['label'] : 'Gallery Title' ) ) ); ?>
         </label>
         <input type="text" id="gallery_title_<?php echo esc_attr($gallery_id); ?>"
             name="<?php echo esc_attr($title_field_name); ?>" value="<?php echo esc_attr($saved_title); ?>"
-            placeholder="<?php esc_attr_e('Enter gallery title', 'havenlytics'); ?>" class="widefat"
-            style="margin-bottom: 15px;" />
+            placeholder="<?php esc_attr_e('Enter gallery title', 'havenlytics'); ?>" class="widefat" />
     </div>
 
-    <div class="hvnly-gallery-instructions">
-        <?php esc_html_e('Add images to your gallery. Drag to reorder.', 'havenlytics'); ?>
-    </div>
+    <div class="hvnly-gallery-panel">
+        <div class="hvnly-gallery-toolbar">
+            <div class="hvnly-gallery-toolbar-copy">
+                <span class="hvnly-gallery-toolbar-title"><?php esc_html_e( 'Gallery Images', 'havenlytics' ); ?></span>
+                <p class="hvnly-gallery-instructions"><?php esc_html_e( 'Drag media cards to reorder. Hover a card to edit or remove.', 'havenlytics' ); ?></p>
+            </div>
+            <div class="hvnly-gallery-toolbar-controls">
+                <button type="button" class="hvnly-gallery-action hvnly-gallery-action-primary hvnly-add-gallery"
+                    data-gallery-id="<?php echo esc_attr($gallery_id); ?>"
+                    data-title-name="<?php echo esc_attr($title_input_name); ?>"
+                    data-caption-name="<?php echo esc_attr($caption_input_name); ?>"
+                    data-ids-name="<?php echo esc_attr($ids_input_name); ?>"
+                    data-target-field="#hvnly_gallery_<?php echo esc_attr($gallery_id); ?>" data-type="image">
+                    <span class="dashicons dashicons-images-alt2" aria-hidden="true"></span>
+                    <?php esc_html_e( 'Manage Images', 'havenlytics' ); ?>
+                </button>
+                <button type="button" class="hvnly-gallery-action hvnly-gallery-action-secondary hvnly-clear-gallery"
+                    data-gallery-id="<?php echo esc_attr($gallery_id); ?>"
+                    data-target-field="#hvnly_gallery_<?php echo esc_attr($gallery_id); ?>">
+                    <?php esc_html_e( 'Clear', 'havenlytics' ); ?>
+                </button>
+                <span class="hvnly-gallery-status" id="hvnly-gallery-status-<?php echo esc_attr($gallery_id); ?>">
+                    <span class="hvnly-gallery-status-count"><?php echo (int) $image_count; ?></span>
+                    <span class="hvnly-gallery-status-label"><?php echo esc_html( $status_suffix ); ?></span>
+                </span>
+            </div>
+        </div>
 
-    <ul class="hvnly-gallery-images" id="hvnly-gallery-list-<?php echo esc_attr($gallery_id); ?>">
-        <?php 
-        if (!empty($gallery_images)) {
-            foreach ($gallery_images as $image_id): 
-                if (!empty($image_id)) {
-                    $this->render_gallery_item($image_id, $gallery_id, $title_input_name, $caption_input_name, $ids_input_name);
+        <div class="hvnly-gallery-stage">
+            <ul class="hvnly-gallery-images" id="hvnly-gallery-list-<?php echo esc_attr($gallery_id); ?>">
+                <?php
+                if (!empty($gallery_images)) {
+                    foreach ($gallery_images as $image_id) {
+                        if (!empty($image_id)) {
+                            $this->render_gallery_item($image_id, $gallery_id, $title_input_name, $caption_input_name, $ids_input_name);
+                        }
+                    }
                 }
-            endforeach; 
-        }
-        ?>
-    </ul>
+                ?>
+            </ul>
 
-    <!-- Hidden field that stores the comma-separated image IDs -->
+            <div class="hvnly-gallery-empty" role="status">
+                <div class="hvnly-gallery-empty-visual" aria-hidden="true">
+                    <span class="hvnly-gallery-empty-icon">
+                        <svg viewBox="0 0 48 48" width="40" height="40" focusable="false">
+                            <rect x="6" y="10" width="36" height="28" rx="6" fill="currentColor" opacity="0.12"/>
+                            <path d="M14 30l7-8 5 6 4-4 8 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.55"/>
+                            <circle cx="18.5" cy="18.5" r="2.5" fill="currentColor" opacity="0.45"/>
+                        </svg>
+                    </span>
+                </div>
+                <p class="hvnly-gallery-empty-title"><?php esc_html_e( 'No images yet', 'havenlytics' ); ?></p>
+                <p class="hvnly-gallery-empty-subtitle"><?php esc_html_e( 'Add photos from the Media Library to build this gallery.', 'havenlytics' ); ?></p>
+                <button type="button" class="hvnly-gallery-action hvnly-gallery-action-primary hvnly-add-gallery"
+                    data-gallery-id="<?php echo esc_attr($gallery_id); ?>"
+                    data-title-name="<?php echo esc_attr($title_input_name); ?>"
+                    data-caption-name="<?php echo esc_attr($caption_input_name); ?>"
+                    data-ids-name="<?php echo esc_attr($ids_input_name); ?>"
+                    data-target-field="#hvnly_gallery_<?php echo esc_attr($gallery_id); ?>" data-type="image">
+                    <span class="dashicons dashicons-plus-alt2" aria-hidden="true"></span>
+                    <?php esc_html_e( 'Add Images', 'havenlytics' ); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <input type="hidden" id="hvnly_gallery_<?php echo esc_attr($gallery_id); ?>"
         name="<?php echo esc_attr($field_name); ?>" value="<?php echo esc_attr($saved_value); ?>"
         class="hvnly-gallery-hidden" />
-
-    <div class="hvnly-gallery-actions" style="display:flex;align-items:center;flex-wrap:wrap;gap:0.75rem;">
-        <button type="button" class="button button-primary hvnly-add-gallery"
-            data-gallery-id="<?php echo esc_attr($gallery_id); ?>"
-            data-title-name="<?php echo esc_attr($title_input_name); ?>"
-            data-caption-name="<?php echo esc_attr($caption_input_name); ?>"
-            data-ids-name="<?php echo esc_attr($ids_input_name); ?>"
-            data-target-field="#hvnly_gallery_<?php echo esc_attr($gallery_id); ?>" data-type="image"
-            style="display:inline-flex;align-items:center;gap:0.4rem;">
-            <span class="dashicons dashicons-format-gallery"></span>
-            <?php esc_html_e('Manage Images', 'havenlytics'); ?>
-        </button>
-        <button type="button" class="button hvnly-clear-gallery" data-gallery-id="<?php echo esc_attr($gallery_id); ?>"
-            data-target-field="#hvnly_gallery_<?php echo esc_attr($gallery_id); ?>"
-            style="display:inline-flex;align-items:center;gap:0.4rem;">
-            <span class="dashicons dashicons-trash"></span>
-            <?php esc_html_e('Clear All', 'havenlytics'); ?>
-        </button>
-        <span class="hvnly-gallery-status" id="hvnly-gallery-status-<?php echo esc_attr($gallery_id); ?>">
-            <span class="dashicons dashicons-images-alt2"></span>
-            <span class="hvnly-gallery-status-count"><?php echo count( $gallery_images ); ?></span>
-            <?php esc_html_e('image(s)', 'havenlytics'); ?>
-        </span>
-    </div>
 </div>
 <?php
         return ob_get_clean();
@@ -140,23 +167,38 @@ class GalleryField extends BaseFieldType {
      * Render a single gallery item
      */
     private function render_gallery_item($image_id, $gallery_id, $title_input_name, $caption_input_name, $ids_input_name) {
-        if ($image = wp_get_attachment_image_src($image_id, 'thumbnail')) {
-            $attachment = get_post($image_id);
-            $title = $attachment ? $attachment->post_title : '';
-            $caption = $attachment ? $attachment->post_excerpt : '';
-            ?>
+        $image = wp_get_attachment_image_src( (int) $image_id, 'medium' );
+        if ( ! $image ) {
+            $image = wp_get_attachment_image_src( (int) $image_id, 'thumbnail' );
+        }
+        if ( ! $image ) {
+            return;
+        }
+
+        $attachment = get_post( $image_id );
+        $title      = $attachment ? $attachment->post_title : '';
+        $caption    = $attachment ? $attachment->post_excerpt : '';
+        $file_path  = get_attached_file( (int) $image_id );
+        $filename   = $file_path ? wp_basename( $file_path ) : ( $title ? $title : (string) $image_id );
+        ?>
 <li class="hvnly-gallery-item" data-id="<?php echo esc_attr($image_id); ?>"
     data-gallery-id="<?php echo esc_attr($gallery_id); ?>">
 
-    <img src="<?php echo esc_url($image[0]); ?>" alt="<?php echo esc_attr($title); ?>" />
-
-    <div class="hvnly-gallery-item-actions">
-        <a href="#" class="hvnly-gallery-edit" title="<?php esc_attr_e('Edit Image', 'havenlytics'); ?>">
-            <span class="dashicons dashicons-edit"></span>
-        </a>
-        <a href="#" class="hvnly-gallery-remove" title="<?php esc_attr_e('Remove Image', 'havenlytics'); ?>">
-            <span class="dashicons dashicons-no"></span>
-        </a>
+    <div class="hvnly-gallery-item-media">
+        <img src="<?php echo esc_url($image[0]); ?>" alt="<?php echo esc_attr($title); ?>" />
+        <div class="hvnly-gallery-item-overlay">
+            <div class="hvnly-gallery-item-actions">
+                <a href="#" class="hvnly-gallery-edit" title="<?php esc_attr_e('Edit Image', 'havenlytics'); ?>" aria-label="<?php esc_attr_e('Edit Image', 'havenlytics'); ?>">
+                    <span class="dashicons dashicons-edit" aria-hidden="true"></span>
+                </a>
+                <a href="#" class="hvnly-gallery-remove" title="<?php esc_attr_e('Remove Image', 'havenlytics'); ?>" aria-label="<?php esc_attr_e('Remove Image', 'havenlytics'); ?>">
+                    <span class="dashicons dashicons-trash" aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="hvnly-gallery-item-meta">
+                <span class="hvnly-gallery-item-filename"><?php echo esc_html( $filename ); ?></span>
+            </div>
+        </div>
     </div>
 
     <input type="hidden" name="<?php echo esc_attr($title_input_name); ?>[]" value="<?php echo esc_attr($title); ?>" />
@@ -167,7 +209,6 @@ class GalleryField extends BaseFieldType {
     <input type="hidden" name="<?php echo esc_attr($ids_input_name); ?>[]" value="<?php echo esc_attr($image_id); ?>" />
 </li>
 <?php
-        }
     }
     
     public function save($post_id, $field_name, $value, $extra = null) {
@@ -230,6 +271,13 @@ class GalleryField extends BaseFieldType {
     public function enqueue_assets() {
         wp_enqueue_media();
         wp_enqueue_script('jquery-ui-sortable');
+
+        wp_enqueue_style(
+            'hvnly-gallery-field',
+            HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-gallery-field.css',
+            [],
+            HVNLYNAB_VERSION
+        );
         
         wp_enqueue_script(
             'hvnly-gallery-field',

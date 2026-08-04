@@ -145,6 +145,22 @@
 			  '"><i class="far fa-heart" aria-hidden="true"></i></button>'
 			: '';
 
+		// Compare must sit beside Favorite whenever Favorite is shown.
+		var cmp = fav
+			? '<button type="button" class="hvnly-compare-toggle hvnly-compare-toggle--card hvnly-property--grid-list--compare hvnly-block-map__popup-cmp"' +
+			  ' data-hvnly-compare="1" data-hvnly-compare-native="1" data-property-id="' +
+			  esc( p.id ) +
+			  '"' +
+			  ' data-property-title="' +
+			  title +
+			  '" data-property-thumb="' +
+			  esc( p.thumbnail ) +
+			  '"' +
+			  ' aria-pressed="false" aria-label="' +
+			  esc( t('compare') || 'Add to compare' ) +
+			  '"><span class="hvnly-compare-toggle__icon" aria-hidden="true"></span></button>'
+			: '';
+
 		var price =
 			show( cfg, 'showPrice' ) && p.price
 				? '<span class="hvnly-block-map__popup-price">' + esc( p.price ) + '</span>'
@@ -178,6 +194,7 @@
 			img +
 			status +
 			fav +
+			cmp +
 			price +
 			'</div>' +
 			'<div class="hvnly-block-map__popup-body">' +
@@ -568,9 +585,20 @@
 							minWidth: popupWidth,
 							maxWidth: popupWidth,
 							autoPan: interactive,
-							autoPanPadding: [ 28, 28 ],
+							/* Extra top padding on narrow viewports so the
+							   tall property card isn't clipped after autoPan. */
+							autoPanPadding:
+								( win.innerWidth || 1024 ) < 768 ? [ 24, 56 ] : [ 28, 28 ],
 							autoClose: interactive,
-							closeOnClick: interactive,
+							/* Touch devices synthesize a map click after the
+							   marker tap, which would instantly close the
+							   popup when closeOnClick is true. */
+							closeOnClick:
+								interactive &&
+								! (
+									win.matchMedia &&
+									win.matchMedia( '(hover: none)' ).matches
+								),
 						} );
 
 						wirePopupImages( m );

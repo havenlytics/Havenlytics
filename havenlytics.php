@@ -12,7 +12,7 @@
  * Plugin Name:       Havenlytics – Real Estate Listings, Property Search & Agent Workspace
  * Plugin URI:        https://wordpress.org/plugins/havenlytics/
  * Description:       Powerful WordPress real estate plugin with property listings, AJAX search, Migration Engine, CSV Import & Export, Gutenberg blocks, Agent Workspace, and multilingual support.
- * Version:           3.7.1
+ * Version:           3.7.3
  * Author:            Havenlytics
  * Author URI:        https://havenlytics.com
  * Requires at least: 6.3
@@ -31,7 +31,7 @@ defined('ABSPATH') || exit;
  * Define plugin constants for paths, URLs, and configuration
  * These constants are used throughout the plugin for easy reference
  */
-define('HVNLYNAB_VERSION', '3.7.1');
+define('HVNLYNAB_VERSION', '3.7.3');
 define('HVNLYNAB_FILE', __FILE__);
 define('HVNLYNAB_BASENAME', plugin_basename(HVNLYNAB_FILE));
 define('HVNLYNAB_SLUG', 'havenlytics');

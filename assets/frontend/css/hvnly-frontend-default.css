@@ -153,15 +153,8 @@
   --hvnly-transition-time: 0.3s ease;
   --hvnly-transition-hover-time: 0.5s ease;
 
-  /* Container widths — defaults; overridden by DynamicStyleGenerator from admin settings */
-  --hvnly-container-xs: 100%;
-  --hvnly-container-sm: 540px;
-  --hvnly-container-md: 720px;
-  --hvnly-container-lg: 960px;
-  --hvnly-container-xl: 1140px;
-  --hvnly-container-xxl: 1320px;
-  --hvnly-container-xxxl: 1399px;
-  --hvnly-container-4k: 1400px;
+  /* Container widths: --hvnly-container-* are emitted only by DynamicStyleGenerator
+     from Settings (DefaultSettingsData factory → DB → DSG). Do not redefine here. */
 }
 /* ======================
    Havenlytics CSS Reset

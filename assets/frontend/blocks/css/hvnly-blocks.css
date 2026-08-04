@@ -126,15 +126,84 @@
 		var(--hvnly-block-brand-2)
 	);
 	border-radius: var(--hvnly-block-radius);
-	box-shadow: 0 8px 20px rgba(108, 96, 254, 0.24);
-	transition: transform 0.25s var(--hvnly-block-ease), box-shadow 0.25s ease;
+	box-shadow: 0 8px 20px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.24);
+	/* Shared primary CTA motion (match .hvnly-btn-primary in this file). */
+	transition:
+		background-color var(--hvnly-transition-time, 0.3s ease),
+		box-shadow 0.25s ease,
+		transform 0.25s var(--hvnly-block-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
 }
 
 .hvnly-block-section-header__button:hover,
-.hvnly-block-section-header__button:focus {
+.hvnly-block-section-header__button:focus-visible {
 	color: #fff;
 	transform: translateY(-2px);
-	box-shadow: 0 14px 30px rgba(108, 96, 254, 0.36);
+	box-shadow: 0 10px 24px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.28);
+	outline: none;
+}
+
+.hvnly-block-section-header__button:active {
+	transform: translateY(0);
+	box-shadow: 0 4px 12px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.2);
+}
+
+.hvnly-block-section-header__button:focus-visible {
+	outline: 2px solid var(--hvnly-brand-primary, var(--hvnly-block-brand));
+	outline-offset: 2px;
+}
+
+/*
+ * Card Builder "View Property" (.hvnly-btn-primary) inside Gutenberg wrappers.
+ * .hvnly-content-wrapper a { color: text } out-specs the shared button color;
+ * restore shared primary tokens + the standard translateY hover motion here
+ * without inventing a new button class or touching Elementor/shortcode CSS.
+ */
+.hvnly-content-wrapper a.hvnly-btn-primary,
+.hvnly-content-wrapper a.hvnly-btn--primary,
+.hvnly-content-wrapper a.hvnly-btn.hvnly-btn-primary,
+.hvnly-content-wrapper a.hvnly-btn.hvnly-btn--primary {
+	color: var(--hvnly-button-color, #fff);
+	background-color: var(--hvnly-button-bg);
+	border-color: var(--hvnly-button-bg);
+	text-decoration: none;
+	transition:
+		background-color var(--hvnly-transition-time, 0.3s ease),
+		border-color var(--hvnly-transition-time, 0.3s ease),
+		color var(--hvnly-transition-time, 0.3s ease),
+		box-shadow 0.25s ease,
+		transform 0.25s var(--hvnly-block-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+.hvnly-content-wrapper a.hvnly-btn-primary:hover,
+.hvnly-content-wrapper a.hvnly-btn--primary:hover,
+.hvnly-content-wrapper a.hvnly-btn.hvnly-btn-primary:hover,
+.hvnly-content-wrapper a.hvnly-btn.hvnly-btn--primary:hover,
+.hvnly-content-wrapper a.hvnly-btn-primary:focus-visible,
+.hvnly-content-wrapper a.hvnly-btn--primary:focus-visible,
+.hvnly-content-wrapper a.hvnly-btn.hvnly-btn-primary:focus-visible,
+.hvnly-content-wrapper a.hvnly-btn.hvnly-btn--primary:focus-visible {
+	color: var(--hvnly-button-color, #fff);
+	background-color: var(--hvnly-button-bg-hover);
+	border-color: var(--hvnly-button-bg-hover);
+	transform: translateY(-2px);
+	box-shadow: 0 10px 24px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.28);
+	text-decoration: none;
+}
+
+.hvnly-content-wrapper a.hvnly-btn-primary:active,
+.hvnly-content-wrapper a.hvnly-btn--primary:active,
+.hvnly-content-wrapper a.hvnly-btn.hvnly-btn-primary:active,
+.hvnly-content-wrapper a.hvnly-btn.hvnly-btn--primary:active {
+	transform: translateY(0);
+	box-shadow: 0 4px 12px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.2);
+}
+
+.hvnly-content-wrapper a.hvnly-btn-primary:focus-visible,
+.hvnly-content-wrapper a.hvnly-btn--primary:focus-visible,
+.hvnly-content-wrapper a.hvnly-btn.hvnly-btn-primary:focus-visible,
+.hvnly-content-wrapper a.hvnly-btn.hvnly-btn--primary:focus-visible {
+	outline: 2px solid var(--hvnly-brand-primary);
+	outline-offset: 2px;
 }
 
 /*
@@ -315,16 +384,17 @@
 	margin-right: 3px;
 }
 
-.hvnly-block-carousel__stage .hvnly-block-carousel__arrow:hover {
-	background: linear-gradient(
-		135deg,
-		var(--hvnly-block-brand),
-		var(--hvnly-block-brand-2)
-	);
+.hvnly-block-carousel__stage .hvnly-block-carousel__arrow:hover,
+.hvnly-block-carousel__stage .hvnly-block-carousel__arrow:active,
+.hvnly-block-carousel__stage .hvnly-block-carousel__arrow:focus-visible,
+.hvnly-block-carousel__stage .hvnly-block-carousel__arrow:focus
+ {
+	background: var(--hvnly-brand-primary);
 	color: #fff;
-	transform: translateY(-50%) scale(1.06);
+	transform: translateY(-50%) scale(1.06) !important;
 	box-shadow: 0 12px 28px rgba(108, 96, 254, 0.3);
 }
+
 
 .hvnly-block-carousel__stage .hvnly-block-carousel__arrow:disabled,
 .hvnly-block-carousel__stage .hvnly-block-carousel__arrow[aria-disabled='true'] {
@@ -885,8 +955,10 @@
 		var(--hvnly-block-brand-2)
 	);
 	border-radius: 12px;
-	box-shadow: 0 6px 16px rgba(108, 96, 254, 0.24);
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	box-shadow: 0 6px 16px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.24);
+	transition:
+		box-shadow 0.25s ease,
+		transform 0.25s var(--hvnly-block-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
 }
 
 .hvnly-block-map__popup-host .hvnly-block-map__popup-cta i {
@@ -896,8 +968,8 @@
 .hvnly-block-map__popup-host .hvnly-block-map__popup-cta:hover,
 .hvnly-block-map__popup-host .hvnly-block-map__popup-cta:focus-visible {
 	color: #fff;
-	transform: translateY(-1px);
-	box-shadow: 0 12px 24px rgba(108, 96, 254, 0.34);
+	transform: translateY(-2px);
+	box-shadow: 0 10px 24px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.28);
 	outline: none;
 }
 
@@ -906,9 +978,14 @@
 	transform: translateX(4px);
 }
 
+.hvnly-block-map__popup-host .hvnly-block-map__popup-cta:active {
+	transform: translateY(0);
+}
+
 .hvnly-block-map__popup-host .hvnly-block-map__popup-cta:focus-visible {
-	box-shadow: 0 12px 24px rgba(108, 96, 254, 0.34),
-		0 0 0 3px rgba(108, 96, 254, 0.4);
+	outline: 2px solid var(--hvnly-brand-primary, var(--hvnly-block-brand));
+	outline-offset: 2px;
+	box-shadow: 0 10px 24px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.28);
 }
 
 /* Leaflet popup chrome — scoped to our class */
@@ -1211,8 +1288,24 @@
 		height: 40px;
 	}
 
+	/*
+	 * Property Map (mobile): previously capped at 420px, which left too little
+	 * vertical room for the premium popup + Leaflet autoPan padding — the card
+	 * opened and was clipped/pushed out of view. Raise the floor so the popup
+	 * stays comfortably visible; desktop height is unchanged (this query only).
+	 */
 	.hvnly-block-map__canvas {
-		height: min(var(--hvnly-block-map-height, 480px), 420px);
+		height: max(var(--hvnly-block-map-height, 480px), 560px);
+	}
+
+	/* Slightly shorter media so the card itself fits more easily on short phones */
+	.hvnly-block-map__popup-host .hvnly-block-map__popup-media {
+		aspect-ratio: 16 / 9;
+		max-height: 148px;
+	}
+
+	.hvnly-block-map__popup-host .hvnly-block-map__popup--compact .hvnly-block-map__popup-media {
+		max-height: 120px;
 	}
 }
 

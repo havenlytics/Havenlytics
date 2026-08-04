@@ -18,10 +18,12 @@
             $(document).on('click', '.hvnly-checkbox-repeater-remove-item', this.removeItem.bind(this));
             $(document).on('click', '.hvnly-checkbox-repeater-move-up', this.moveItemUp.bind(this));
             $(document).on('click', '.hvnly-checkbox-repeater-move-down', this.moveItemDown.bind(this));
-            $(document).on('input', '.hvnly-checkbox-repeater-field input[type="text"]', this.updateHiddenField.bind(this));
+            $(document).on('input', '.hvnly-checkbox-repeater-field input[type="text"]', this.onRowInput.bind(this));
+            $(document).on('input', '.hvnly-checkbox-repeater-search', this.filterItems.bind(this));
             
-            // Initialize button states
+            // Initialize button states + empty/search UI
             this.updateButtonStates();
+            this.syncEmptyStates();
         }
 
         addItem(e) {
@@ -39,12 +41,14 @@
             
             // Update item index and clear value
             $newItem.attr('data-item-index', itemIndex);
+            $newItem.removeClass('hvnly-checkbox-repeater-item--filtered');
             
             // Update input name and clear value
             $newItem.find('input[type="text"]').each(function() {
                 const $input = $(this);
                 const name = $input.attr('name').replace(/\[\d+\]/, `[${itemIndex}]`);
                 $input.attr('name', name).val('');
+                $input.attr('aria-label', `Feature ${itemIndex + 1}`);
             });
             
             // Add the new item
@@ -55,6 +59,10 @@
             
             // Update the hidden field
             this.updateHiddenField();
+            this.syncEmptyStates($field);
+            this.filterItems({ currentTarget: $field.find('.hvnly-checkbox-repeater-search').get(0) });
+
+            $newItem.find('input[type="text"]').first().trigger('focus');
         }
 
         removeItem(e) {
@@ -81,6 +89,8 @@
             
             // Update the hidden field
             this.updateHiddenField();
+            this.syncEmptyStates($field);
+            this.filterItems({ currentTarget: $field.find('.hvnly-checkbox-repeater-search').get(0) });
         }
 
         moveItemUp(e) {
@@ -175,6 +185,7 @@
                         const $input = $(this);
                         const name = $input.attr('name').replace(/\[\d+\]/, `[${index}]`);
                         $input.attr('name', name);
+                        $input.attr('aria-label', `Feature ${index + 1}`);
                     });
                 });
             });
@@ -200,6 +211,58 @@
                 
                 $hiddenField.val(JSON.stringify(items));
             });
+        }
+
+        onRowInput(e) {
+            this.updateHiddenField();
+            const $field = $(e.currentTarget).closest('.hvnly-checkbox-repeater-field');
+            this.syncEmptyStates($field);
+            this.filterItems({ currentTarget: $field.find('.hvnly-checkbox-repeater-search').get(0) });
+        }
+
+        syncEmptyStates($scope) {
+            const $fields = $scope && $scope.length
+                ? $scope.filter('.hvnly-checkbox-repeater-field').add($scope.find('.hvnly-checkbox-repeater-field'))
+                : $('.hvnly-checkbox-repeater-field');
+
+            $fields.each(function() {
+                const $field = $(this);
+                let hasValues = false;
+
+                $field.find('.hvnly-checkbox-repeater-item input[type="text"]').each(function() {
+                    if (String($(this).val() || '').trim() !== '') {
+                        hasValues = true;
+                        return false;
+                    }
+                });
+
+                $field.toggleClass('is-empty', !hasValues);
+                $field.find('.hvnly-checkbox-repeater-empty').prop('hidden', hasValues);
+            });
+        }
+
+        filterItems(e) {
+            const $input = e && e.currentTarget ? $(e.currentTarget) : $();
+            if (!$input.length) {
+                return;
+            }
+
+            const $field = $input.closest('.hvnly-checkbox-repeater-field');
+            const query = String($input.val() || '').toLowerCase().trim();
+            let visibleCount = 0;
+
+            $field.find('.hvnly-checkbox-repeater-item').each(function() {
+                const $item = $(this);
+                const value = String($item.find('input[type="text"]').val() || '').toLowerCase();
+                const match = !query || value.indexOf(query) !== -1;
+                $item.toggleClass('hvnly-checkbox-repeater-item--filtered', !match);
+                if (match) {
+                    visibleCount += 1;
+                }
+            });
+
+            const showNoResults = !!query && visibleCount === 0;
+            $field.find('.hvnly-checkbox-repeater-no-results').prop('hidden', !showNoResults);
         }
     }
 

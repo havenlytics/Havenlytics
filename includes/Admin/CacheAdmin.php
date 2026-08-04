@@ -83,6 +83,17 @@ class CacheAdmin
             return;
         }
 
+        // Design tokens (same handle as Assets) for consistent Havenlytics admin UI.
+        $boot_css = HVNLYNAB_ASSETS_PATH . '/admin/css/hvnly-admin-boot.css';
+        if (file_exists($boot_css)) {
+            wp_enqueue_style(
+                'hvnly-admin-boot',
+                HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-admin-boot.css',
+                [],
+                HVNLYNAB_VERSION
+            );
+        }
+
         wp_enqueue_script(
             'hvnly-admin-cache',
             HVNLYNAB_ASSETS_URL . '/admin/js/hvnly-admin-cache.js',
@@ -140,25 +151,9 @@ class CacheAdmin
         wp_enqueue_style(
             'hvnly-admin-cache',
             HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-admin-cache.css',
-            [],
+            ['hvnly-admin-boot'],
             HVNLYNAB_VERSION
         );
-
-        wp_add_inline_style('hvnly-admin-cache', '
-            .hvnly-cache-action-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-bottom:20px}
-            .hvnly-cache-action-card{background:#f8f9fa;border:1px solid var(--hvnly-border-color,#dee2e6);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:16px}
-            .hvnly-cache-action-card .card-header h3{margin:0 0 8px;font-size:16px;font-weight:600;color:var(--hvnly-text-primary,#1d2327)}
-            .hvnly-cache-action-card .card-desc{margin:0;font-size:13px;line-height:1.5;color:var(--hvnly-text-secondary,#646970)}
-            .hvnly-cache-action-card .card-meta{margin:0;font-size:12px;color:var(--hvnly-text-secondary,#646970);font-style:italic}
-            .hvnly-cache-action-card .card-actions{display:flex;flex-wrap:wrap;gap:10px}
-            .hvnly-cache-action-card .card-actions .button{min-width:0;flex:1 1 auto}
-            .hvnly-cache-action-card .card-actions .button.is-disabled,.hvnly-cache-action-card .card-actions .button:disabled{opacity:.55;cursor:not-allowed}
-            .hvnly-cache-action-card--system{background:linear-gradient(135deg,rgba(108,96,254,.04),rgba(255,255,255,1))}
-            .hvnly-cache-toolbar{display:flex;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--hvnly-border-color,#dee2e6)}
-            .hvnly-cache-stats h2,.hvnly-cache-actions h2,.hvnly-cache-performance h2,.hvnly-cache-settings h2{margin:0 0 16px;font-size:18px;font-weight:600}
-            .hvnly-cache-performance .perf-grid{margin-top:0}
-            @media(max-width:960px){.hvnly-cache-action-cards{grid-template-columns:1fr}}
-        ');
     }
 
     public function cache_admin_page()
@@ -180,30 +175,63 @@ class CacheAdmin
         $cache_compression = (bool) get_option('hvnly_cache_compression', 0);
         $cache_debug = (bool) get_option('hvnly_cache_debug', 0);
 
+        $health_key = isset($cache_stats['cache_health']) ? (string) $cache_stats['cache_health'] : 'idle';
+        $status_key = isset($cache_stats['cache_status']) ? (string) $cache_stats['cache_status'] : ($cache_enabled ? 'active' : 'disabled');
+
+        $health_labels = [
+            'healthy'  => __('Healthy', 'havenlytics'),
+            'warming'  => __('Warming', 'havenlytics'),
+            'idle'     => __('Idle', 'havenlytics'),
+            'disabled' => __('Disabled', 'havenlytics'),
+        ];
+        $status_labels = [
+            'active'   => __('Active', 'havenlytics'),
+            'disabled' => __('Disabled', 'havenlytics'),
+        ];
+
+        $avg_query = (float) ($performance_metrics['average_query_time'] ?? 0);
+        $avg_query_display = $avg_query > 0 ? (round($avg_query, 4) . 's') : '—';
+
         $stat_items = [
+            'cache_status' => [
+                'label' => __('Cache Status', 'havenlytics'),
+                'value' => $status_labels[$status_key] ?? $status_labels['active'],
+                'mod'   => 'status-' . $status_key,
+            ],
+            'cache_health' => [
+                'label' => __('Cache Health', 'havenlytics'),
+                'value' => $health_labels[$health_key] ?? $health_labels['idle'],
+                'mod'   => 'health-' . $health_key,
+            ],
             'cache_size_human' => [
-                'label' => __('Total Cache Size', 'havenlytics'),
+                'label' => __('Cache Size', 'havenlytics'),
                 'value' => $cache_stats['cache_size_human'],
-            ],
-            'search_cache_count' => [
-                'label' => __('Main Search Cache', 'havenlytics'),
-                'value' => number_format($cache_stats['search_cache_count']),
-            ],
-            'term_cache_count' => [
-                'label' => __('Term Cache', 'havenlytics'),
-                'value' => number_format($cache_stats['term_cache_count']),
-            ],
-            'cache_hit_rate' => [
-                'label' => __('Cache Hit Rate', 'havenlytics'),
-                'value' => esc_html($cache_stats['cache_hit_rate']) . '%',
-            ],
-            'sidebar_cache_count' => [
-                'label' => __('Sidebar Cache', 'havenlytics'),
-                'value' => number_format($cache_stats['sidebar_cache_count']),
+                'mod'   => 'size',
             ],
             'total_cached_items' => [
                 'label' => __('Total Cached Items', 'havenlytics'),
                 'value' => number_format($cache_stats['total_cached_items']),
+                'mod'   => 'items',
+            ],
+            'cache_hit_rate' => [
+                'label' => __('Cache Hit Rate', 'havenlytics'),
+                'value' => esc_html($cache_stats['cache_hit_rate']) . '%',
+                'mod'   => 'hitrate',
+            ],
+            'search_cache_count' => [
+                'label' => __('Search Cache', 'havenlytics'),
+                'value' => number_format($cache_stats['search_cache_count']),
+                'mod'   => 'search',
+            ],
+            'sidebar_cache_count' => [
+                'label' => __('Sidebar Cache', 'havenlytics'),
+                'value' => number_format($cache_stats['sidebar_cache_count']),
+                'mod'   => 'sidebar',
+            ],
+            'term_cache_count' => [
+                'label' => __('Term Cache', 'havenlytics'),
+                'value' => number_format($cache_stats['term_cache_count']),
+                'mod'   => 'terms',
             ],
         ];
 
@@ -216,13 +244,13 @@ class CacheAdmin
                 'label' => __('Cache Misses', 'havenlytics'),
                 'value' => number_format($performance_metrics['cache_misses']),
             ],
-            'queries_executed' => [
-                'label' => __('Queries Executed', 'havenlytics'),
-                'value' => number_format($performance_metrics['queries_executed']),
+            'total_queries_saved' => [
+                'label' => __('Queries Saved', 'havenlytics'),
+                'value' => number_format($performance_metrics['total_queries_saved']),
             ],
             'average_query_time' => [
                 'label' => __('Average Query Time', 'havenlytics'),
-                'value' => round($performance_metrics['average_query_time'], 4) . 's',
+                'value' => $avg_query_display,
             ],
             'cache_efficiency' => [
                 'label' => __('Cache Efficiency', 'havenlytics'),
@@ -232,36 +260,57 @@ class CacheAdmin
                 'label' => __('Memory Usage', 'havenlytics'),
                 'value' => size_format($performance_metrics['memory_usage']),
             ],
-            'total_queries_saved' => [
-                'label' => __('Total Queries Saved', 'havenlytics'),
-                'value' => number_format($performance_metrics['total_queries_saved']),
+            'queries_executed' => [
+                'label' => __('Queries Executed', 'havenlytics'),
+                'value' => number_format($performance_metrics['queries_executed']),
             ],
         ];
 
+        $object_cache_label = !empty($cache_stats['object_cache'])
+            ? __('External object cache detected (Redis / Memcached compatible).', 'havenlytics')
+            : __('Using WordPress transients (database / default object cache).', 'havenlytics');
+
 ?>
         <div class="wrap hvnly-cache-admin">
-            <h1><?php esc_html_e('Havenlytics Cache Management', 'havenlytics'); ?></h1>
+            <header class="hvnly-cache-hero">
+                <div class="hvnly-cache-hero__copy">
+                    <p class="hvnly-cache-hero__eyebrow"><?php esc_html_e('Performance', 'havenlytics'); ?></p>
+                    <h1><?php esc_html_e('Cache Management', 'havenlytics'); ?></h1>
+                    <p class="hvnly-cache-hero__desc"><?php esc_html_e('Monitor Havenlytics cache layers, clear stale data, and tune TTL — without affecting builders, REST, or front-end templates.', 'havenlytics'); ?></p>
+                    <p class="hvnly-cache-hero__meta"><?php echo esc_html($object_cache_label); ?></p>
+                </div>
+                <div class="hvnly-cache-hero__badges">
+                    <span class="hvnly-cache-badge hvnly-cache-badge--<?php echo esc_attr($status_key); ?>" data-stat-badge="cache_status"><?php echo esc_html($status_labels[$status_key] ?? ''); ?></span>
+                    <span class="hvnly-cache-badge hvnly-cache-badge--<?php echo esc_attr($health_key); ?>" data-stat-badge="cache_health"><?php echo esc_html($health_labels[$health_key] ?? ''); ?></span>
+                </div>
+            </header>
 
-            <!-- Cache Statistics -->
-            <div class="hvnly-cache-stats">
-                <h2><?php esc_html_e('Cache Overview', 'havenlytics'); ?></h2>
+            <section class="hvnly-cache-stats" aria-labelledby="hvnly-cache-overview-heading">
+                <div class="hvnly-cache-section-head">
+                    <h2 id="hvnly-cache-overview-heading"><?php esc_html_e('Cache Overview', 'havenlytics'); ?></h2>
+                    <button type="button" id="hvnly-refresh-stats" class="button hvnly-cache-refresh" data-default-label="<?php esc_attr_e('Refresh Stats', 'havenlytics'); ?>">
+                        <?php esc_html_e('Refresh Stats', 'havenlytics'); ?>
+                    </button>
+                </div>
                 <div class="stats-grid" id="hvnly-cache-stats-grid">
                     <?php foreach ($stat_items as $stat_key => $stat_item) : ?>
-                        <div class="stat-card" data-stat="<?php echo esc_attr($stat_key); ?>">
+                        <div class="stat-card <?php echo esc_attr('stat-card--' . ($stat_item['mod'] ?? 'default')); ?>" data-stat="<?php echo esc_attr($stat_key); ?>">
                             <h3><?php echo esc_html($stat_item['label']); ?></h3>
                             <div class="stat-value"><?php echo esc_html($stat_item['value']); ?></div>
                         </div>
                     <?php endforeach; ?>
                 </div>
-            </div>
+            </section>
 
-            <!-- Quick Actions -->
-            <div class="hvnly-cache-actions">
-                <h2><?php esc_html_e('Cache Actions', 'havenlytics'); ?></h2>
+            <section class="hvnly-cache-actions" aria-labelledby="hvnly-cache-actions-heading">
+                <div class="hvnly-cache-section-head">
+                    <h2 id="hvnly-cache-actions-heading"><?php esc_html_e('Quick Actions', 'havenlytics'); ?></h2>
+                </div>
                 <div class="action-buttons hvnly-cache-action-cards">
 
                     <div class="hvnly-cache-action-card">
                         <div class="card-header">
+                            <span class="card-icon" aria-hidden="true"><span class="dashicons dashicons-search"></span></span>
                             <h3><?php esc_html_e('Search Cache', 'havenlytics'); ?></h3>
                             <p class="card-desc"><?php esc_html_e('Property search results and AJAX listing responses cached for faster page loads.', 'havenlytics'); ?></p>
                         </div>
@@ -274,6 +323,7 @@ class CacheAdmin
 
                     <div class="hvnly-cache-action-card">
                         <div class="card-header">
+                            <span class="card-icon" aria-hidden="true"><span class="dashicons dashicons-filter"></span></span>
                             <h3><?php esc_html_e('Sidebar Cache', 'havenlytics'); ?></h3>
                             <p class="card-desc"><?php esc_html_e('Filter sidebar data and taxonomy term lists used in property search filters.', 'havenlytics'); ?></p>
                         </div>
@@ -289,6 +339,7 @@ class CacheAdmin
 
                     <div class="hvnly-cache-action-card">
                         <div class="card-header">
+                            <span class="card-icon" aria-hidden="true"><span class="dashicons dashicons-shortcode"></span></span>
                             <h3><?php esc_html_e('Shortcode Cache', 'havenlytics'); ?></h3>
                             <p class="card-desc"><?php esc_html_e('Rendered output for property grid, list, and search shortcodes.', 'havenlytics'); ?></p>
                             <p class="card-meta" id="hvnly-last-cleared-shortcode"><?php echo esc_html($this->get_last_cleared_label('hvnly_cache_last_cleared_shortcode')); ?></p>
@@ -311,6 +362,7 @@ class CacheAdmin
 
                     <div class="hvnly-cache-action-card hvnly-cache-action-card--system">
                         <div class="card-header">
+                            <span class="card-icon" aria-hidden="true"><span class="dashicons dashicons-admin-generic"></span></span>
                             <h3><?php esc_html_e('System Cache', 'havenlytics'); ?></h3>
                             <p class="card-desc"><?php esc_html_e('Dynamic CSS, global transients, and all Havenlytics cache layers.', 'havenlytics'); ?></p>
                             <p class="card-meta" id="hvnly-last-cleared-all"><?php echo esc_html($this->get_last_cleared_label('hvnly_cache_last_cleared_all')); ?></p>
@@ -320,89 +372,95 @@ class CacheAdmin
                             <button type="button" id="hvnly-clear-dynamic-css" class="button button-secondary" data-default-label="<?php esc_attr_e('Clear Dynamic CSS Cache', 'havenlytics'); ?>">
                                 <?php esc_html_e('Clear Dynamic CSS Cache', 'havenlytics'); ?>
                             </button>
-                            <button type="button" id="hvnly-clear-cache" class="button button-primary" data-default-label="<?php esc_attr_e('Clear All Cache', 'havenlytics'); ?>">
+                            <button type="button" id="hvnly-clear-cache" class="button button-primary button-danger" data-default-label="<?php esc_attr_e('Clear All Cache', 'havenlytics'); ?>">
                                 <?php esc_html_e('Clear All Cache', 'havenlytics'); ?>
                             </button>
                         </div>
                     </div>
 
                 </div>
-                <div class="hvnly-cache-toolbar">
-                    <button type="button" id="hvnly-refresh-stats" class="button" data-default-label="<?php esc_attr_e('Refresh Stats', 'havenlytics'); ?>">
-                        <?php esc_html_e('Refresh Stats', 'havenlytics'); ?>
-                    </button>
-                </div>
-            </div>
+            </section>
 
-            <!-- Cache Settings -->
-            <div class="hvnly-cache-settings">
-                <h2><?php esc_html_e('Cache Settings', 'havenlytics'); ?></h2>
-                <form method="post" action="options.php" id="hvnly-cache-settings-form">
+            <section class="hvnly-cache-settings" aria-labelledby="hvnly-cache-settings-heading">
+                <div class="hvnly-cache-section-head">
+                    <h2 id="hvnly-cache-settings-heading"><?php esc_html_e('Cache Settings', 'havenlytics'); ?></h2>
+                </div>
+                <form method="post" action="options.php" id="hvnly-cache-settings-form" class="hvnly-cache-settings-form">
                     <?php settings_fields('hvnly_cache_settings'); ?>
-                    <table class="form-table">
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Enable Caching', 'havenlytics'); ?></th>
-                            <td>
-                                <label>
-                                    <input type="checkbox" name="hvnly_cache_enabled" value="1" <?php echo checked($cache_enabled, 1, false); ?> />
-                                    <?php esc_html_e('Enable property search and term caching', 'havenlytics'); ?>
-                                </label>
+                    <div class="hvnly-cache-settings-grid">
+                        <div class="hvnly-cache-setting-card">
+                            <div class="setting-copy">
+                                <h3><?php esc_html_e('Enable Caching', 'havenlytics'); ?></h3>
                                 <p class="description">
                                     <?php esc_html_e('When enabled, listings use cached AJAX responses. When disabled, all data loads live from the database.', 'havenlytics'); ?>
                                     <a href="<?php echo esc_url(admin_url('edit.php?post_type=hvnly_property&page=hvnly_property_settings')); ?>">
                                         <?php esc_html_e('Manage in Settings → Performance', 'havenlytics'); ?>
                                     </a>
                                 </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Cache Duration', 'havenlytics'); ?></th>
-                            <td>
-                                <select name="hvnly_cache_ttl">
-                                    <?php
-                                    $ttl_options = [
-                                        3600 => __('1 Hour', 'havenlytics'),
-                                        7200 => __('2 Hours', 'havenlytics'),
-                                        21600 => __('6 Hours', 'havenlytics'),
-                                        43200 => __('12 Hours', 'havenlytics'),
-                                        86400 => __('24 Hours', 'havenlytics')
-                                    ];
+                            </div>
+                            <label class="hvnly-cache-switch">
+                                <input type="checkbox" name="hvnly_cache_enabled" value="1" <?php echo checked($cache_enabled, 1, false); ?> />
+                                <span class="hvnly-cache-switch__ui" aria-hidden="true"></span>
+                                <span class="screen-reader-text"><?php esc_html_e('Enable property search and term caching', 'havenlytics'); ?></span>
+                            </label>
+                        </div>
 
-                                    foreach ($ttl_options as $value => $label) : ?>
-                                        <option value="<?php echo esc_attr($value); ?>" <?php echo selected($cache_ttl, $value, false); ?>>
-                                            <?php echo esc_html($label); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                        <div class="hvnly-cache-setting-card">
+                            <div class="setting-copy">
+                                <h3><?php esc_html_e('Cache Duration', 'havenlytics'); ?></h3>
                                 <p class="description"><?php esc_html_e('How long should cached data be stored?', 'havenlytics'); ?></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Cache Compression', 'havenlytics'); ?></th>
-                            <td>
-                                <label>
-                                    <input type="checkbox" name="hvnly_cache_compression" value="1" <?php echo checked($cache_compression, 1, false); ?> />
-                                    <?php esc_html_e('Compress cached data to save database space', 'havenlytics'); ?>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Debug Mode', 'havenlytics'); ?></th>
-                            <td>
-                                <label>
-                                    <input type="checkbox" name="hvnly_cache_debug" value="1" <?php echo checked($cache_debug, 1, false); ?> />
-                                    <?php esc_html_e('Enable debug logging for cache operations', 'havenlytics'); ?>
-                                </label>
-                            </td>
-                        </tr>
-                    </table>
-                    <?php submit_button(__('Save Settings', 'havenlytics')); ?>
-                </form>
-            </div>
+                            </div>
+                            <select name="hvnly_cache_ttl" class="hvnly-cache-select">
+                                <?php
+                                $ttl_options = [
+                                    3600 => __('1 Hour', 'havenlytics'),
+                                    7200 => __('2 Hours', 'havenlytics'),
+                                    21600 => __('6 Hours', 'havenlytics'),
+                                    43200 => __('12 Hours', 'havenlytics'),
+                                    86400 => __('24 Hours', 'havenlytics')
+                                ];
 
-            <!-- Performance Metrics -->
-            <div class="hvnly-cache-performance">
-                <h2><?php esc_html_e('Performance Metrics', 'havenlytics'); ?></h2>
+                                foreach ($ttl_options as $value => $label) : ?>
+                                    <option value="<?php echo esc_attr($value); ?>" <?php echo selected($cache_ttl, $value, false); ?>>
+                                        <?php echo esc_html($label); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="hvnly-cache-setting-card">
+                            <div class="setting-copy">
+                                <h3><?php esc_html_e('Cache Compression', 'havenlytics'); ?></h3>
+                                <p class="description"><?php esc_html_e('Compress cached data to save database space', 'havenlytics'); ?></p>
+                            </div>
+                            <label class="hvnly-cache-switch">
+                                <input type="checkbox" name="hvnly_cache_compression" value="1" <?php echo checked($cache_compression, 1, false); ?> />
+                                <span class="hvnly-cache-switch__ui" aria-hidden="true"></span>
+                                <span class="screen-reader-text"><?php esc_html_e('Compress cached data to save database space', 'havenlytics'); ?></span>
+                            </label>
+                        </div>
+
+                        <div class="hvnly-cache-setting-card">
+                            <div class="setting-copy">
+                                <h3><?php esc_html_e('Debug Mode', 'havenlytics'); ?></h3>
+                                <p class="description"><?php esc_html_e('Enable debug logging for cache operations', 'havenlytics'); ?></p>
+                            </div>
+                            <label class="hvnly-cache-switch">
+                                <input type="checkbox" name="hvnly_cache_debug" value="1" <?php echo checked($cache_debug, 1, false); ?> />
+                                <span class="hvnly-cache-switch__ui" aria-hidden="true"></span>
+                                <span class="screen-reader-text"><?php esc_html_e('Enable debug logging for cache operations', 'havenlytics'); ?></span>
+                            </label>
+                        </div>
+                    </div>
+                    <?php submit_button(__('Save Settings', 'havenlytics'), 'primary', 'submit', false, ['class' => 'button button-primary hvnly-cache-save']); ?>
+                </form>
+            </section>
+
+            <section class="hvnly-cache-performance" aria-labelledby="hvnly-cache-perf-heading">
+                <div class="hvnly-cache-section-head">
+                    <h2 id="hvnly-cache-perf-heading"><?php esc_html_e('Performance Metrics', 'havenlytics'); ?></h2>
+                    <p class="hvnly-cache-section-note"><?php esc_html_e('Live counters from actual cache hits and misses — not estimated placeholders.', 'havenlytics'); ?></p>
+                </div>
                 <div class="stats-grid perf-grid" id="hvnly-cache-performance-grid">
                     <?php foreach ($performance_items as $perf_key => $perf_item) : ?>
                         <div class="stat-card" data-perf="<?php echo esc_attr($perf_key); ?>">
@@ -411,7 +469,7 @@ class CacheAdmin
                         </div>
                     <?php endforeach; ?>
                 </div>
-            </div>
+            </section>
         </div>
 <?php
     }
@@ -599,8 +657,9 @@ class CacheAdmin
         }
         
         // Clear via engine if available
-        if (function_exists('HVN') && HVNLY_NAB()->engine()) {
-            HVNLY_NAB()->engine()->clear_transients_by_pattern('hvnly_dynamic_css');
+        if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine()) {
+            HVNLY_NAB()->engine()->clear_transients_by_pattern('dynamic_css');
+            delete_transient('hvnly_dynamic_css');
         }
         
         update_option('hvnly_cache_last_cleared_css', time(), false);

@@ -15,9 +15,16 @@
 
 /* ----------------------------------------------------------------------
  * Rail design tokens (scoped) — one language for every sidebar widget
+ * AND the mobile contact dock (fixed outside .hvnly-sidebar--single).
+ * --hvnly-rail-radius must live on body so dock cards can resolve it;
+ * defining it only on the sidebar made var(--hvnly-rail-radius) invalid
+ * on .hvnly-mobile-contact-dock__card → border-radius computed to 0.
  * -------------------------------------------------------------------- */
-body.hvnly-property-single .hvnly-sidebar--single {
+body.hvnly-property-single {
     --hvnly-rail-radius: var(--hvnly-card-radius, 8px);
+}
+
+body.hvnly-property-single .hvnly-sidebar--single {
     --hvnly-rail-shadow: var(--hvnly-shadow-card, 0 2px 12px rgba(15, 23, 42, 0.05));
     --hvnly-rail-shadow-hover: 0 4px 18px rgba(15, 23, 42, 0.08);
     --hvnly-rail-pad-y: 18px;
@@ -867,7 +874,8 @@ body.hvnly-property-single .hvnly-mobile-contact-dock__card {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--hvnly-border-color);
-    border-radius: var(--hvnly-rail-radius);
+    /* Inherits --hvnly-rail-radius from body.hvnly-property-single (see tokens above). */
+    border-radius: var(--hvnly-rail-radius, var(--hvnly-card-radius, 8px));
     box-shadow: 0 24px 56px rgba(20, 21, 28, 0.18);
     padding: 12px var(--hvnly-space-md, 16px);
 }

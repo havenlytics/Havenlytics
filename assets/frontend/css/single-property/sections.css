@@ -357,6 +357,10 @@ body.hvnly-property-single .hvnly-property-single__video-overlay {
 body.hvnly-property-single .hvnly-property-single__video-play-btn {
     width: 68px;
     height: 68px;
+    min-width: 68px;
+    min-height: 68px;
+    flex-shrink: 0;
+    box-sizing: border-box;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.16);
     border: 1px solid rgba(255, 255, 255, 0.35);
@@ -366,6 +370,9 @@ body.hvnly-property-single .hvnly-property-single__video-play-btn {
     align-items: center;
     justify-content: center;
     color: #fff;
+    /* Kill legacy margin that fights overlay gap and shrinks the control. */
+    margin: 0;
+    padding: 0;
     transition: background-color 0.2s cubic-bezier(0.2, 0, 0, 1),
                 transform 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
@@ -373,9 +380,13 @@ body.hvnly-property-single .hvnly-property-single__video-play-btn {
 body.hvnly-property-single .hvnly-property-single__video-play-btn .hvnly-icon {
     width: 24px;
     height: 24px;
+    min-width: 24px;
+    min-height: 24px;
     margin-left: 3px;
+    flex-shrink: 0;
     fill: currentColor;
     stroke: currentColor;
+    display: block;
 }
 
 body.hvnly-property-single .hvnly-property-single__video-container:hover .hvnly-property-single__video-play-btn {
@@ -582,6 +593,9 @@ body.hvnly-property-single a.hvnly-property-single__stat-item--link:hover::after
 
 /* ======================================================================
  * FAQ — hairline accordion inside its card
+ * Smooth height via a tiny JS helper (see property-single.js); chevron /
+ * hover / focus / open states are CSS-only. Respects prefers-reduced-motion
+ * via foundations.css (transitions collapse to ~0).
  * ==================================================================== */
 body.hvnly-property-single .hvnly-property-single__faq-field {
     background: none;
@@ -601,10 +615,16 @@ body.hvnly-property-single .hvnly-property-single__faq-item {
     margin: 0;
     padding: 0;
     box-shadow: none;
+    transition: background-color 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
 body.hvnly-property-single .hvnly-property-single__faq-item:last-child {
     border-bottom: 0;
+}
+
+body.hvnly-property-single .hvnly-property-single__faq-item[open],
+body.hvnly-property-single .hvnly-property-single__faq-item.is-open {
+    background: color-mix(in srgb, var(--hvnly-brand-primary) 4%, transparent);
 }
 
 body.hvnly-property-single .hvnly-property-single__faq-question {
@@ -612,16 +632,32 @@ body.hvnly-property-single .hvnly-property-single__faq-question {
     align-items: center;
     justify-content: space-between;
     gap: var(--hvnly-space-md, 16px);
-    padding: var(--hvnly-space-md, 16px) 0;
+    padding: var(--hvnly-space-md, 16px) 4px;
+    margin: 0 -4px;
     cursor: pointer;
     list-style: none;
     background: none;
     border: 0;
-    transition: color 0.15s cubic-bezier(0.2, 0, 0, 1);
+    border-radius: 8px;
+    transition: color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                background-color 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
 body.hvnly-property-single .hvnly-property-single__faq-question::-webkit-details-marker {
     display: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__faq-question:hover {
+    background: color-mix(in srgb, var(--hvnly-brand-primary) 5%, transparent);
+}
+
+body.hvnly-property-single .hvnly-property-single__faq-question:focus {
+    outline: none;
+}
+
+body.hvnly-property-single .hvnly-property-single__faq-question:focus-visible {
+    outline: 2px solid var(--hvnly-brand-primary);
+    outline-offset: 2px;
 }
 
 body.hvnly-property-single .hvnly-property-single__faq-question-text {
@@ -630,9 +666,12 @@ body.hvnly-property-single .hvnly-property-single__faq-question-text {
     font-weight: var(--hvnly-font-weight-semibold, 600);
     line-height: 1.5;
     color: var(--hvnly-text-primary);
+    transition: color 0.2s cubic-bezier(0.2, 0, 0, 1);padding-left: 15px;
 }
 
-body.hvnly-property-single .hvnly-property-single__faq-question:hover .hvnly-property-single__faq-question-text {
+body.hvnly-property-single .hvnly-property-single__faq-question:hover .hvnly-property-single__faq-question-text,
+body.hvnly-property-single .hvnly-property-single__faq-item[open] .hvnly-property-single__faq-question-text,
+body.hvnly-property-single .hvnly-property-single__faq-item.is-open .hvnly-property-single__faq-question-text {
     color: var(--hvnly-brand-primary);
 }
 
@@ -645,8 +684,9 @@ body.hvnly-property-single .hvnly-property-single__faq-chevron {
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") center / contain no-repeat;
     border: 0;
     transform: rotate(0deg);
-    transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1),
-                background-color 0.15s cubic-bezier(0.2, 0, 0, 1);
+    transition: transform 0.22s cubic-bezier(0.2, 0, 0, 1),
+                background-color 0.22s cubic-bezier(0.2, 0, 0, 1);
+    will-change: transform;
 }
 
 body.hvnly-property-single .hvnly-property-single__faq-chevron::before,
@@ -654,19 +694,43 @@ body.hvnly-property-single .hvnly-property-single__faq-chevron::after {
     content: none !important;
 }
 
-body.hvnly-property-single .hvnly-property-single__faq-item[open] .hvnly-property-single__faq-chevron {
+body.hvnly-property-single .hvnly-property-single__faq-question:hover .hvnly-property-single__faq-chevron {
+    background: var(--hvnly-brand-primary);
+}
+
+body.hvnly-property-single .hvnly-property-single__faq-item[open] .hvnly-property-single__faq-chevron,
+body.hvnly-property-single .hvnly-property-single__faq-item.is-open .hvnly-property-single__faq-chevron {
     transform: rotate(180deg);
     background: var(--hvnly-brand-primary);
 }
 
 body.hvnly-property-single .hvnly-property-single__faq-answer {
-    padding: 0 0 var(--hvnly-space-md, 16px);
+    padding:  15px;
     font-size: var(--hvnly-font-size-sm, 0.875rem);
     line-height: 1.6;
     color: var(--hvnly-text-primary);
     max-width: 68ch;
     background: none;
     border: 0;
+    overflow: hidden;
+}
+
+body.hvnly-property-single .hvnly-property-single__faq-answer.is-animating {
+    will-change: height, opacity;
+}
+
+body.hvnly-property-single .hvnly-property-single__faq-answer p:last-child {
+    margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.hvnly-property-single .hvnly-property-single__faq-chevron {
+        will-change: auto;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__faq-answer.is-animating {
+        will-change: auto;
+    }
 }
 
 /* ======================================================================
@@ -755,6 +819,164 @@ body.hvnly-property-single .hvnly-property-single__repeater-cell-value {
     font-weight: var(--hvnly-font-weight-semibold, 600);
     color: var(--hvnly-text-primary);
     font-variant-numeric: tabular-nums;
+}
+
+/* ----------------------------------------------------------------------
+ * HIGHLIGHTS — mobile (<=767px)
+ * Legacy property-single.css stacks the table into centered “cards” with
+ * Title/Value ::before labels. Restore a premium side-by-side row layout
+ * (aligned with the overview facts list) without touching desktop/tablet.
+ * -------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    /* Section headings — slightly smaller than desktop; beats theme h2 (24px). */
+    body.hvnly-property-single .hvnly-property-single__section-title {
+        font-size: 1.125rem; /* 18px — mobile-only; desktop token unchanged */
+        line-height: 1.35;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__section-title::after {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Video play — proportional mobile size; keep circular (no flex-shrink). */
+    body.hvnly-property-single .hvnly-property-single__video-overlay {
+        padding: var(--hvnly-space-md, 16px);
+        gap: var(--hvnly-space-sm, 8px);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__video-play-btn {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+        min-height: 52px;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__video-play-btn .hvnly-icon {
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        min-height: 18px;
+        margin-left: 2px;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__video-title {
+        font-size: var(--hvnly-font-size-sm, 0.875rem);
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-table-wrap {
+        overflow: visible;
+        border: 0;
+        background: none;
+        border-radius: 0;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-table,
+    body.hvnly-property-single .hvnly-property-single__repeater-table tbody {
+        display: block;
+        width: 100%;
+        min-width: 0;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-table thead {
+        display: none;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-row,
+    body.hvnly-property-single .hvnly-property-single__repeater-table tr {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        margin: 0;
+        padding: 14px 2px;
+        min-height: 52px;
+        box-sizing: border-box;
+        border-bottom: 1px solid var(--hvnly-border-color);
+        background: none;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-row:last-child,
+    body.hvnly-property-single .hvnly-property-single__repeater-table tr:last-child {
+        border-bottom: 0;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-row + .hvnly-property-single__repeater-row td {
+        border-top: 0;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-table td,
+    body.hvnly-property-single .hvnly-property-single__repeater-cell-title,
+    body.hvnly-property-single .hvnly-property-single__repeater-cell-value {
+        display: block;
+        width: auto;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        border-bottom: 0;
+        background: none;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    /* Kill legacy stacked-card “Title / Value” labels */
+    body.hvnly-property-single .hvnly-property-single__repeater-table td::before {
+        content: none;
+        display: none;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-cell-title {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: auto;
+        max-width: none;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        width: 100%;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-icon i {
+        font-size: 14px;
+        line-height: 1;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-title-text {
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: var(--hvnly-font-size-md, 1rem);
+        font-weight: var(--hvnly-font-weight-medium, 500);
+        line-height: 1.35;
+        color: var(--hvnly-text-primary);
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    body.hvnly-property-single .hvnly-property-single__repeater-cell-value {
+        flex: 0 1 auto;
+        max-width: 46%;
+        margin-left: auto;
+        padding-left: 10px;
+        text-align: right;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        font-size: var(--hvnly-font-size-md, 1rem);
+        font-weight: var(--hvnly-font-weight-semibold, 600);
+        line-height: 1.35;
+        color: var(--hvnly-text-primary);
+    }
 }
 
 /* ======================================================================

@@ -27,6 +27,7 @@ function hvnly_get_default_field_template_mapping() {
 		'location'       => 'location',
 		'badge'          => 'badge',
 		'favorite'       => 'favorite',
+		'compare'        => 'compare',
 		'views'          => 'views',
 		'status'         => 'status',
 		'time'           => 'time',
@@ -67,6 +68,73 @@ function hvnly_get_default_field_template_mapping() {
  */
 function hvnly_get_field_template_mapping() {
 	return apply_filters( 'hvnly_field_template_mapping', hvnly_get_default_field_template_mapping() );
+}
+
+/**
+ * Ensure every Card Builder section that renders Favorite also includes Compare beside it.
+ *
+ * Runtime-only (does not write options). Fixes legacy layouts saved before Compare existed.
+ *
+ * @param array<string,mixed>|list<array<string,mixed>> $sections Card sections.
+ * @return array<string,mixed>|list<array<string,mixed>>
+ */
+function hvnly_ensure_compare_beside_favorite( $sections ) {
+	if ( empty( $sections ) || ! is_array( $sections ) ) {
+		return $sections;
+	}
+
+	foreach ( $sections as $section_key => $section ) {
+		if ( ! is_array( $section ) || empty( $section['fields'] ) || ! is_array( $section['fields'] ) ) {
+			continue;
+		}
+
+		$fields = $section['fields'];
+		$has_favorite = false;
+		$has_compare  = false;
+
+		foreach ( $fields as $field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+			$type = isset( $field['type'] ) ? (string) $field['type'] : '';
+			if ( 'favorite' === $type ) {
+				$has_favorite = true;
+			}
+			if ( 'compare' === $type ) {
+				$has_compare = true;
+			}
+		}
+
+		if ( ! $has_favorite || $has_compare ) {
+			continue;
+		}
+
+		$new_fields = array();
+		$inserted   = false;
+		foreach ( $fields as $index => $field ) {
+			$new_fields[] = $field;
+			if ( $inserted || ! is_array( $field ) ) {
+				continue;
+			}
+			if ( 'favorite' !== (string) ( $field['type'] ?? '' ) ) {
+				continue;
+			}
+			$fav_order    = isset( $field['order'] ) ? (int) $field['order'] : (int) $index;
+			$new_fields[] = array(
+				'id'    => 'compare-button-auto',
+				'type'  => 'compare',
+				'label' => __( 'Compare Button', 'havenlytics' ),
+				'mode'  => isset( $field['mode'] ) ? (string) $field['mode'] : 'preset',
+				'value' => array(),
+				'order' => $fav_order + 1,
+			);
+			$inserted = true;
+		}
+
+		$sections[ $section_key ]['fields'] = $new_fields;
+	}
+
+	return $sections;
 }
 
 /**
@@ -1129,5 +1197,96 @@ function hvnly_resolve_property_price( $property_id = null ) {
  */
 function hvnly_format_numeric_price( $price ) {
     return HVNLY_NAB()->Helper->format_numeric_price_for_filter( $price );
+}
+
+/**
+ * Similar properties for compare / related strips.
+ *
+ * @param int $property_id Source property ID.
+ * @param int $limit       Max results.
+ * @return list<array{id:int,title:string,permalink:string,thumbnail:string}>
+ */
+function hvnly_get_similar_properties( $property_id, $limit = 6 ) {
+	$property_id = absint( $property_id );
+	$limit       = max( 1, min( 12, absint( $limit ) ) );
+	if ( $property_id <= 0 ) {
+		return array();
+	}
+
+	$args = array(
+		'post_type'              => 'hvnly_property',
+		'post_status'            => 'publish',
+		'posts_per_page'         => $limit,
+		'post__not_in'           => array( $property_id ),
+		'orderby'                => 'rand',
+		'ignore_sticky_posts'    => true,
+		'no_found_rows'          => true,
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => true,
+	);
+
+	$tax_query = array( 'relation' => 'OR' );
+	foreach ( array( 'hvnly_prop_locations', 'hvnly_prop_types' ) as $taxonomy ) {
+		if ( ! taxonomy_exists( $taxonomy ) ) {
+			continue;
+		}
+		$terms = get_the_terms( $property_id, $taxonomy );
+		if ( ! $terms || is_wp_error( $terms ) ) {
+			continue;
+		}
+		$ids = wp_list_pluck( $terms, 'term_id' );
+		if ( array() === $ids ) {
+			continue;
+		}
+		$tax_query[] = array(
+			'taxonomy' => $taxonomy,
+			'field'    => 'term_id',
+			'terms'    => $ids,
+		);
+	}
+	if ( count( $tax_query ) > 1 ) {
+		$args['tax_query'] = $tax_query;
+	}
+
+	$query = new WP_Query( $args );
+	if ( ! $query->have_posts() ) {
+		$query = new WP_Query(
+			array(
+				'post_type'           => 'hvnly_property',
+				'post_status'         => 'publish',
+				'posts_per_page'      => $limit,
+				'post__not_in'        => array( $property_id ),
+				'orderby'             => 'date',
+				'order'               => 'DESC',
+				'ignore_sticky_posts' => true,
+				'no_found_rows'       => true,
+			)
+		);
+	}
+
+	$out = array();
+	foreach ( $query->posts as $post ) {
+		if ( ! $post instanceof WP_Post ) {
+			continue;
+		}
+		$thumb = get_the_post_thumbnail_url( $post, 'medium' );
+		$out[] = array(
+			'id'        => (int) $post->ID,
+			'title'     => get_the_title( $post ),
+			'permalink' => get_permalink( $post ),
+			'thumbnail' => is_string( $thumb ) ? $thumb : '',
+		);
+	}
+	wp_reset_postdata();
+
+	/**
+	 * Filter similar properties list.
+	 *
+	 * @param list<array{id:int,title:string,permalink:string,thumbnail:string}> $out         Results.
+	 * @param int                                                                  $property_id Source ID.
+	 * @param int                                                                  $limit       Limit.
+	 */
+	$filtered = apply_filters( 'hvnly_get_similar_properties', $out, $property_id, $limit );
+	return is_array( $filtered ) ? $filtered : $out;
 }
 

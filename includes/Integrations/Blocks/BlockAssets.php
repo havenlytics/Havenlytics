@@ -387,6 +387,7 @@ final class BlockAssets {
         }
 
         add_filter('hvnly_favorites_should_enqueue', '__return_true');
+        add_filter('hvnly_compare_should_enqueue', '__return_true');
     }
 
     /**

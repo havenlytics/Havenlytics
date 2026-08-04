@@ -280,23 +280,33 @@
 	align-items: center;
 	justify-content: center;
 	gap: 8px;
-	transition: transform 0.05s ease, filter 0.15s ease, background 0.15s ease;
+	transition:
+		background-color var(--hvnly-transition-time, 0.3s ease),
+		border-color var(--hvnly-transition-time, 0.3s ease),
+		filter 0.15s ease,
+		box-shadow 0.25s ease,
+		transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .hvnly-auth__btn--primary {
 	background: var( --_auth-primary );
 	color: var( --_auth-primary-fg );
 }
-.hvnly-auth__btn--primary:hover { filter: brightness( 1.05 ); }
-.hvnly-auth__btn--primary:active { transform: translateY( 1px ); }
+.hvnly-auth__btn--primary:hover:not(:disabled) {
+	filter: brightness( 1.05 );
+	transform: translateY(-2px);
+	box-shadow: 0 10px 24px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.28);
+}
+.hvnly-auth__btn--primary:active:not(:disabled) { transform: translateY(0); }
 .hvnly-auth__btn--ghost {
 	background: transparent;
 	border-color: var( --_auth-border );
 	color: var( --_auth-fg );
 }
 .hvnly-auth__btn--ghost:hover { background: var( --_auth-field-bg ); }
-.hvnly-auth__btn:disabled { opacity: 0.7; cursor: default; }
+.hvnly-auth__btn:disabled { opacity: 0.7; cursor: default; transform: none; }
 .hvnly-auth__btn:focus-visible {
-	outline: none;
+	outline: 2px solid var(--hvnly-brand-primary, var( --_auth-primary ));
+	outline-offset: 2px;
 	box-shadow: 0 0 0 3px color-mix( in srgb, var( --_auth-primary ) 30%, transparent );
 }
 

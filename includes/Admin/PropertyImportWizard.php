@@ -3817,12 +3817,12 @@ private function create_demo_property( $data, $options = [] ) {
     }
 
     if ( '' === $video_url ) {
-        $video_url = 'https://www.youtube.com/watch?v=M-j_LvEK2ZA';
+        $video_url = 'https://youtu.be/JU6UX3jCrhg?si=xKerm32_EoUDykUk';
         if ( '' === $video_title || __( 'Property Tour', 'havenlytics' ) === $video_title ) {
             $video_title = __( 'Property Tour', 'havenlytics' );
         }
         if ( '' === $video_thumbnail ) {
-            $video_thumbnail = 'https://img.youtube.com/vi/M-j_LvEK2ZA/maxresdefault.jpg';
+            $video_thumbnail = 'https://img.youtube.com/vi/JU6UX3jCrhg/maxresdefault.jpg';
         }
     }
 

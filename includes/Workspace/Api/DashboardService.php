@@ -85,7 +85,7 @@ final class DashboardService {
 			);
 		}
 
-		return array(
+		$payload = array(
 			'profile'           => array(
 				'name'               => (string) ( $agent['title'] ?? ( $user['display_name'] ?? '' ) ),
 				'avatarUrl'          => '' !== (string) ( $agent['avatar_url'] ?? '' )
@@ -129,6 +129,14 @@ final class DashboardService {
 				'canEditProfile'    => $this->auth->can_edit_own_profile( $user_id ),
 			),
 		);
+
+		/**
+		 * Filter Workspace dashboard home payload (Pro widgets, etc.).
+		 *
+		 * @param array<string, mixed> $payload Dashboard home.
+		 * @param int                  $user_id User ID.
+		 */
+		return (array) apply_filters( 'hvnly_workspace_dashboard_home', $payload, $user_id );
 	}
 
 	/**

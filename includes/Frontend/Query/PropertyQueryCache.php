@@ -31,7 +31,7 @@ class PropertyQueryCache {
      * @return string[]
      */
     private static function hvnly_relevant_filter_keys(): array {
-        return [
+        $keys = [
             'address_keyword',
             'department',
             'min_price',
@@ -65,6 +65,24 @@ class PropertyQueryCache {
             'in_feature',
             'in_review',
         ];
+
+        /**
+         * Filter canonical property search filter keys (Saved Searches, cache, etc.).
+         *
+         * @param string[] $keys Filter keys understood by PropertyQueryExecutor.
+         */
+        $filtered = apply_filters( 'hvnly_property_search_filter_keys', $keys );
+
+        return is_array( $filtered ) ? array_values( array_unique( array_map( 'strval', $filtered ) ) ) : $keys;
+    }
+
+    /**
+     * Public list of filter keys that affect property search results.
+     *
+     * @return string[]
+     */
+    public static function relevant_filter_keys(): array {
+        return self::hvnly_relevant_filter_keys();
     }
 
     /**
@@ -139,10 +157,14 @@ class PropertyQueryCache {
         }
 
         $hvnly_storage_key = self::hvnly_sanitize_storage_key($hvnly_cache_key);
+        $engine            = function_exists('HVNLY_NAB') ? HVNLY_NAB()->engine() : null;
 
         if (wp_using_ext_object_cache()) {
             $hvnly_cached = wp_cache_get($hvnly_storage_key, self::CACHE_GROUP);
             if (false !== $hvnly_cached && is_array($hvnly_cached)) {
+                if ($engine && method_exists($engine, 'track_cache_hit')) {
+                    $engine->track_cache_hit();
+                }
                 return apply_filters('hvnly_property_query_cache_hit', $hvnly_cached, $hvnly_cache_key);
             }
         }
@@ -151,7 +173,14 @@ class PropertyQueryCache {
         $hvnly_cached         = get_transient($hvnly_transient_name);
 
         if (false === $hvnly_cached || !is_array($hvnly_cached)) {
+            if ($engine && method_exists($engine, 'track_cache_miss')) {
+                $engine->track_cache_miss();
+            }
             return false;
+        }
+
+        if ($engine && method_exists($engine, 'track_cache_hit')) {
+            $engine->track_cache_hit();
         }
 
         if (wp_using_ext_object_cache()) {

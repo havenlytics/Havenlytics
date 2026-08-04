@@ -67,6 +67,19 @@
                 $pagedInput.val(this.main.currentPage);
             }
 
+            // Live snapshot for Saved Searches / Pro — same payload Search Builder uses.
+            try {
+                const snapshot = Object.assign({}, data);
+                delete snapshot.action;
+                delete snapshot.nonce;
+                window.hvnlyCurrentSearchFilters = snapshot;
+                document.dispatchEvent(
+                    new CustomEvent('hvnly:search:filters', { detail: snapshot })
+                );
+            } catch (e) {
+                /* ignore */
+            }
+
             return data;
         }
         

@@ -30,10 +30,10 @@ $hvnly_section_title = isset($hvnly_a['section_title']) ? (string) $hvnly_a['sec
  * Small header helper — title + optional description, shown for both states.
  */
 $hvnly_render_header = static function () use ($hvnly_show_title, $hvnly_section_title, $hvnly_a) {
-    $show_desc    = !empty($hvnly_a['show_description']);
-    $section_desc = isset($hvnly_a['section_description']) ? (string) $hvnly_a['section_description'] : '';
+    $hvnly_show_desc    = !empty($hvnly_a['show_description']);
+    $hvnly_section_desc = isset($hvnly_a['section_description']) ? (string) $hvnly_a['section_description'] : '';
 
-    if (!$hvnly_show_title && !($show_desc && '' !== $section_desc)) {
+    if (!$hvnly_show_title && !($hvnly_show_desc && '' !== $hvnly_section_desc)) {
         return;
     }
 
@@ -41,8 +41,8 @@ $hvnly_render_header = static function () use ($hvnly_show_title, $hvnly_section
     if ($hvnly_show_title && '' !== $hvnly_section_title) {
         echo '<h2 class="hvnly-block-saved__title">' . esc_html($hvnly_section_title) . '</h2>';
     }
-    if ($show_desc && '' !== $section_desc) {
-        echo '<p class="hvnly-block-saved__description">' . esc_html($section_desc) . '</p>';
+    if ($hvnly_show_desc && '' !== $hvnly_section_desc) {
+        echo '<p class="hvnly-block-saved__description">' . esc_html($hvnly_section_desc) . '</p>';
     }
     echo '</header>';
 };
@@ -94,9 +94,122 @@ $hvnly_query       = (isset($hvnly_a['query']) && $hvnly_a['query'] instanceof W
 $hvnly_is_sample   = !empty($hvnly_a['is_sample']);
 $hvnly_browse_url  = isset($hvnly_a['browse_url']) ? (string) $hvnly_a['browse_url'] : '';
 $hvnly_empty_btn   = isset($hvnly_a['empty_button_text']) ? (string) $hvnly_a['empty_button_text'] : __('Browse Properties', 'havenlytics');
+$hvnly_found       = ($hvnly_query instanceof WP_Query) ? (int) $hvnly_query->found_posts : 0;
+$hvnly_compare_url = '';
+if (function_exists('get_option')) {
+	$hvnly_cid = absint(get_option('hvnly_module_compare_page_id', 0));
+	if ($hvnly_cid > 0) {
+		$hvnly_plink = get_permalink($hvnly_cid);
+		$hvnly_compare_url = is_string($hvnly_plink) ? $hvnly_plink : '';
+	}
+}
 ?>
 <div <?php echo $hvnly_wrapper; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-    <?php $hvnly_render_header(); ?>
+    <?php
+    /*
+     * On the dedicated Favorites page (/favorites/), the theme already prints
+     * the page title / breadcrumb. Skip the block hero so it is not duplicated.
+     * Any other placement of this block keeps the hero.
+     */
+    $hvnly_favorites_page_id = 0;
+    if ( class_exists( '\HvnlyNab\Setup\PageInstaller' ) ) {
+        $hvnly_favorites_page_id = (int) \HvnlyNab\Setup\PageInstaller::get_page_id( 'favorites' );
+    }
+    $hvnly_omit_hero = ( $hvnly_favorites_page_id > 0 && function_exists( 'is_page' ) && is_page( $hvnly_favorites_page_id ) );
+
+    if ( ! $hvnly_omit_hero ) :
+        ?>
+    <header class="hvnly-block-saved__hero hvnly-block-saved__hero--compact">
+        <nav class="hvnly-block-saved__breadcrumb" aria-label="<?php esc_attr_e('Breadcrumb', 'havenlytics'); ?>">
+            <a href="<?php echo esc_url(home_url('/')); ?>"><?php esc_html_e('Home', 'havenlytics'); ?></a>
+            <span class="hvnly-block-saved__breadcrumb-sep" aria-hidden="true">/</span>
+            <span aria-current="page"><?php esc_html_e('Saved Properties', 'havenlytics'); ?></span>
+        </nav>
+        <div class="hvnly-block-saved__hero-copy">
+            <?php if ($hvnly_show_title && '' !== $hvnly_section_title) : ?>
+                <h2 class="hvnly-block-saved__title"><?php echo esc_html($hvnly_section_title); ?></h2>
+            <?php else : ?>
+                <h2 class="hvnly-block-saved__title"><?php
+					echo wp_kses(
+						sprintf(
+							/* translators: 1: opening emphasis tag, 2: closing emphasis tag. */
+							__('Your saved %1$shomes%2$s', 'havenlytics'),
+							'<em>',
+							'</em>'
+						),
+						array('em' => array())
+					);
+					?></h2>
+            <?php endif; ?>
+            <?php
+            $hvnly_show_desc    = !empty($hvnly_a['show_description']);
+            $hvnly_section_desc = isset($hvnly_a['section_description']) ? (string) $hvnly_a['section_description'] : '';
+            if ($hvnly_show_desc && '' !== $hvnly_section_desc) :
+                ?>
+                <p class="hvnly-block-saved__description"><?php echo esc_html($hvnly_section_desc); ?></p>
+            <?php elseif ($hvnly_found > 0) : ?>
+                <p class="hvnly-block-saved__description">
+					<?php
+					echo esc_html(
+						sprintf(
+							/* translators: %d: saved count */
+							_n(
+								'%d home you’ve saved. Compare, clear, or keep browsing.',
+								'%d homes you’ve saved. Compare, clear, or keep browsing.',
+								$hvnly_found,
+								'havenlytics'
+							),
+							$hvnly_found
+						)
+					);
+					?>
+				</p>
+            <?php else : ?>
+                <p class="hvnly-block-saved__description"><?php esc_html_e('Your shortlist — compare, contact, or schedule a tour when you are ready.', 'havenlytics'); ?></p>
+            <?php endif; ?>
+        </div>
+        <?php if ($hvnly_found > 0) : ?>
+            <ul class="hvnly-block-saved__stats" aria-label="<?php esc_attr_e('Saved properties statistics', 'havenlytics'); ?>">
+                <li class="hvnly-block-saved__stat">
+                    <span class="hvnly-block-saved__stat-value"><?php echo esc_html((string) $hvnly_found); ?></span>
+                    <span class="hvnly-block-saved__stat-label"><?php echo esc_html(_n('Saved home', 'Saved homes', $hvnly_found, 'havenlytics')); ?></span>
+                </li>
+            </ul>
+        <?php endif; ?>
+    </header>
+        <?php
+    endif;
+    ?>
+
+    <?php if ($hvnly_found > 0) : ?>
+        <div class="hvnly-block-saved__toolbar" role="toolbar" aria-label="<?php esc_attr_e('Saved list tools', 'havenlytics'); ?>">
+            <p class="hvnly-block-saved__toolbar-count" data-hvnly-saved-count>
+				<strong><?php echo esc_html((string) $hvnly_found); ?></strong>
+				<?php echo esc_html(_n('saved home', 'saved homes', $hvnly_found, 'havenlytics')); ?>
+			</p>
+            <div class="hvnly-block-saved__toolbar-actions">
+				<div class="hvnly-block-saved__view-toggle" data-hvnly-saved-view-toggle>
+					<button type="button" class="hvnly-block-saved__view-btn<?php echo 'list' !== $hvnly_layout ? ' is-active' : ''; ?>" data-view="grid" aria-pressed="<?php echo 'list' !== $hvnly_layout ? 'true' : 'false'; ?>">
+						<?php esc_html_e('Grid', 'havenlytics'); ?>
+					</button>
+					<button type="button" class="hvnly-block-saved__view-btn<?php echo 'list' === $hvnly_layout ? ' is-active' : ''; ?>" data-view="list" aria-pressed="<?php echo 'list' === $hvnly_layout ? 'true' : 'false'; ?>">
+						<?php esc_html_e('List', 'havenlytics'); ?>
+					</button>
+				</div>
+				<?php if ('' !== $hvnly_compare_url) : ?>
+					<a class="hvnly-block-saved__compare-chip" href="<?php echo esc_url($hvnly_compare_url); ?>" data-hvnly-saved-compare>
+						<?php esc_html_e('Compare', 'havenlytics'); ?>
+					</a>
+				<?php endif; ?>
+				<button type="button" class="hvnly-block-saved__btn hvnly-block-saved__btn--ghost hvnly-block-saved__btn--sm" data-hvnly-saved-clear>
+					<?php esc_html_e('Clear All', 'havenlytics'); ?>
+				</button>
+				<?php if ('' !== $hvnly_browse_url) : ?>
+					<a class="hvnly-block-saved__btn hvnly-block-saved__btn--primary hvnly-block-saved__btn--sm" href="<?php echo esc_url($hvnly_browse_url); ?>"><?php esc_html_e('Find More Homes', 'havenlytics'); ?></a>
+				<?php endif; ?>
+			</div>
+        </div>
+    <?php endif; ?>
 
     <?php if (!$hvnly_query instanceof WP_Query || !$hvnly_query->have_posts()) : ?>
 

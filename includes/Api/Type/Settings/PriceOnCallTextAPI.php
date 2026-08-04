@@ -455,9 +455,13 @@ class PriceOnCallTextAPI
             }
         }
         
-        // Clear cache for these properties
-        if (function_exists('HVN') && HVNLY_NAB()->engine()) {
-            HVNLY_NAB()->engine()->clear_all_cache();
+        // Targeted invalidation — price-label text affects listing presentation, not every cache layer.
+        if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine()) {
+            HVNLY_NAB()->engine()->clear_transients_by_pattern('search_');
+            HVNLY_NAB()->engine()->clear_transients_by_pattern('sidebar_');
+        }
+        if (class_exists('\HvnlyNab\Frontend\Query\PropertyQueryCache')) {
+            \HvnlyNab\Frontend\Query\PropertyQueryCache::invalidate_all();
         }
     }
 }

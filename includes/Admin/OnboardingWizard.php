@@ -209,6 +209,19 @@ class OnboardingWizard {
 		// Leaflet powers the interactive Map step preview (reuses the bundled
 		// front-end library — no CDN, no new dependency). Loaded before the app
 		// so window.L is available when the React Map step mounts.
+		// Self-hosted Inter — the same bundled stylesheet the other Havenlytics
+		// admin screens use, so onboarding typography matches the rest of the
+		// plugin instead of falling back to each OS's system UI font.
+		$fonts_css = HVNLYNAB_ASSETS_PATH . '/admin/css/fonts.css';
+		if ( file_exists( $fonts_css ) ) {
+			wp_enqueue_style(
+				'hvnly-admin-fonts',
+				HVNLYNAB_ASSETS_URL . '/admin/css/fonts.css',
+				array(),
+				defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '1.0.0'
+			);
+		}
+
 		$leaflet_js = HVNLYNAB_ASSETS_PATH . '/frontend/lib/leaflet/js/leaflet.js';
 		if ( file_exists( $leaflet_js ) ) {
 			wp_enqueue_style(
@@ -356,7 +369,30 @@ class OnboardingWizard {
 			'viewPropertiesUrl'     => esc_url_raw( $this->get_view_properties_url() ),
 			'builderUrl'            => esc_url_raw( admin_url( 'edit.php?post_type=' . $this->post_type . '&page=hvnly_property_builder' ) ),
 			'settingsUrl'           => esc_url_raw( admin_url( 'edit.php?post_type=' . $this->post_type . '&page=hvnly_property_settings' ) ),
+			// In-plugin documentation (existing admin page) — surfaced as
+			// contextual help throughout the wizard. Read-only link, no new page.
+			'docsUrl'               => esc_url_raw( $this->get_documentation_url() ),
 			'logo'                  => esc_url_raw( HVNLYNAB_ASSETS_URL . '/admin/img/havenlytics-icon20x20.svg' ),
+		);
+	}
+
+	/**
+	 * Admin URL of the bundled Documentation screen.
+	 *
+	 * Uses the existing page slug when the class is present so the link never
+	 * points at a screen this install does not register.
+	 *
+	 * @since 3.7.2
+	 *
+	 * @return string Absolute admin URL, or '' when Documentation is unavailable.
+	 */
+	private function get_documentation_url(): string {
+		if ( ! class_exists( DocumentationPage::class ) ) {
+			return '';
+		}
+
+		return admin_url(
+			'edit.php?post_type=' . $this->post_type . '&page=' . DocumentationPage::PAGE_SLUG
 		);
 	}
 

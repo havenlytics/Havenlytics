@@ -11,6 +11,8 @@
 
 namespace HvnlyNab\Core;
 
+use HvnlyNab\Api\Type\Settings\DefaultSettingsData;
+
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
     exit;
@@ -49,23 +51,31 @@ class DynamicStyleGenerator
     {
         return $this->settings_manager->get_design_settings();
     }
+
+    /**
+     * Factory property defaults (container widths included).
+     * Sole numeric SOT: DefaultSettingsData — DSG does not invent width literals.
+     *
+     * @return array<string, mixed>
+     */
+    private function get_factory_properties_defaults()
+    {
+        if ( class_exists( DefaultSettingsData::class ) ) {
+            return DefaultSettingsData::get_default_properties_settings();
+        }
+
+        return array();
+    }
     
     private function get_properties_settings()
     {
         $settings = $this->settings_manager->load_settings();
-        $defaults = [
-            'hvnly_container_width_xs' => '100%',
-            'hvnly_container_width_sm' => '540px',
-            'hvnly_container_width_md' => '720px',
-            'hvnly_container_width_lg' => '960px',
-            'hvnly_container_width_xl' => '1220px',
-            'hvnly_container_width_xxl' => '1320px',
-            'hvnly_container_width_xxxl' => '1320px',
-            'hvnly_container_width_4k' => '1400px',
-            'hvnly_archive_container_width' => 'default',
-            'hvnly_archive_container_width_custom' => 0,
-        ];
-        $properties_settings = isset($settings['properties']) ? $settings['properties'] : [];
+        $defaults = $this->get_factory_properties_defaults();
+        $properties_settings = isset($settings['properties']) && is_array($settings['properties'])
+            ? $settings['properties']
+            : array();
+
+        // Database wins; factory fills missing keys only.
         return wp_parse_args($properties_settings, $defaults);
     }
     
@@ -78,6 +88,7 @@ class DynamicStyleGenerator
         
         $design = $this->get_design_settings();
         $properties = $this->get_properties_settings();
+        $factory = $this->get_factory_properties_defaults();
         
         // Design values
         $brand_color = $design['hvnly_brandColor'] ?? '#6C60FE';
@@ -92,15 +103,15 @@ class DynamicStyleGenerator
         $body_font_weights = $design['hvnly_bodyFontWeights'] ?? '400';
         $title_font_weights = $design['hvnly_titleFontWeights'] ?? '600';
         
-        // Container width values
-        $container_xs = $properties['hvnly_container_width_xs'] ?? '100%';
-        $container_sm = $properties['hvnly_container_width_sm'] ?? '540px';
-        $container_md = $properties['hvnly_container_width_md'] ?? '720px';
-        $container_lg = $properties['hvnly_container_width_lg'] ?? '960px';
-        $container_xl = $properties['hvnly_container_width_xl'] ?? '1220px';
-        $container_xxl = $properties['hvnly_container_width_xxl'] ?? '1320px';
-        $container_xxxl = $properties['hvnly_container_width_xxxl'] ?? '1320px';
-        $container_4k = $properties['hvnly_container_width_4k'] ?? '1400px';
+        // Container widths from DB-merged properties; missing keys use factory only.
+        $container_xs   = $properties['hvnly_container_width_xs'] ?? ( $factory['hvnly_container_width_xs'] ?? '' );
+        $container_sm   = $properties['hvnly_container_width_sm'] ?? ( $factory['hvnly_container_width_sm'] ?? '' );
+        $container_md   = $properties['hvnly_container_width_md'] ?? ( $factory['hvnly_container_width_md'] ?? '' );
+        $container_lg   = $properties['hvnly_container_width_lg'] ?? ( $factory['hvnly_container_width_lg'] ?? '' );
+        $container_xl   = $properties['hvnly_container_width_xl'] ?? ( $factory['hvnly_container_width_xl'] ?? '' );
+        $container_xxl  = $properties['hvnly_container_width_xxl'] ?? ( $factory['hvnly_container_width_xxl'] ?? '' );
+        $container_xxxl = $properties['hvnly_container_width_xxxl'] ?? ( $factory['hvnly_container_width_xxxl'] ?? '' );
+        $container_4k   = $properties['hvnly_container_width_4k'] ?? ( $factory['hvnly_container_width_4k'] ?? '' );
         
         // Build CSS
         $css = $this->generate_root_variables(
@@ -420,9 +431,9 @@ class DynamicStyleGenerator
         $brand_color, $secondary_color, $link_color, $link_hover_color,
         $title_color, $primary_text_color, $secondary_text_color,
         $body_color, $body_font_size,
-        $container_xs = '100%', $container_sm = '540px', $container_md = '720px',
-        $container_lg = '960px', $container_xl = '1220px', $container_xxl = '1320px',
-        $container_xxxl = '1320px', $container_4k = '1400px'
+        $container_xs, $container_sm, $container_md,
+        $container_lg, $container_xl, $container_xxl,
+        $container_xxxl, $container_4k
     ) {
         $primary_rgb   = $this->hex_to_rgb_components($brand_color);
         $secondary_rgb = $this->hex_to_rgb_components($secondary_color);

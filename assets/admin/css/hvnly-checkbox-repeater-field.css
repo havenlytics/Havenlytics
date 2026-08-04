@@ -1,0 +1,355 @@
+/**
+ * Havenlytics Admin Checkbox / Features repeater — presentation styles only.
+ * Functional hooks (.hvnly-checkbox-repeater-*, hidden JSON input, arrow reorder) unchanged.
+ *
+ * @package Havenlytics
+ * @since 3.1.0
+ */
+
+.hvnly-checkbox-repeater-field {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin: 0;
+	padding: 0;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.hvnly-checkbox-repeater-header {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 0.75rem 1rem;
+}
+
+.hvnly-checkbox-repeater-label {
+	flex: 1 1 220px;
+	margin: 0;
+	min-width: 0;
+}
+
+.hvnly-checkbox-repeater-label label {
+	display: block;
+	margin: 0 0 0.35rem;
+	font-weight: 600;
+	font-size: 13px;
+	color: var(--hvnly-text-primary, #1e1e2f);
+}
+
+.hvnly-checkbox-repeater-label .description {
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--hvnly-text-secondary, #646970);
+	font-style: normal;
+}
+
+.hvnly-checkbox-repeater-toolbar {
+	flex: 0 1 260px;
+	min-width: 180px;
+}
+
+.hvnly-checkbox-repeater-search-wrap {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.hvnly-checkbox-repeater-search-wrap .dashicons {
+	position: absolute;
+	left: 10px;
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 1;
+	color: var(--hvnly-text-secondary, #646970);
+	pointer-events: none;
+}
+
+.hvnly-checkbox-repeater-search {
+	width: 100%;
+	min-height: 40px;
+	margin: 0;
+	padding: 8px 12px 8px 34px;
+	border: 1px solid var(--hvnly-border-color, #dcdcde);
+	border-radius: 8px;
+	background: var(--hvnly-color-bg-white, #fff);
+	box-shadow: none;
+	font-size: 13px;
+	box-sizing: border-box;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hvnly-checkbox-repeater-search:focus {
+	border-color: var(--hvnly-brand-primary, #6c60fe);
+	box-shadow: 0 0 0 1px var(--hvnly-brand-primary, #6c60fe);
+	outline: none;
+}
+
+/* Empty state */
+.hvnly-checkbox-repeater-empty {
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.35rem;
+	padding: 1.5rem 1.25rem;
+	text-align: center;
+	border: 1px dashed rgba(108, 96, 254, 0.35);
+	border-radius: 12px;
+	background:
+		linear-gradient(180deg, rgba(108, 96, 254, 0.04), rgba(108, 96, 254, 0.02)),
+		var(--hvnly-color-bg-light, #f6f7f9);
+}
+
+.hvnly-checkbox-repeater-field.is-empty .hvnly-checkbox-repeater-empty:not([hidden]),
+.hvnly-checkbox-repeater-empty:not([hidden]) {
+	display: flex;
+}
+
+.hvnly-checkbox-repeater-empty .dashicons {
+	width: 28px;
+	height: 28px;
+	font-size: 28px;
+	margin-bottom: 0.25rem;
+	color: var(--hvnly-brand-primary, #6c60fe);
+}
+
+.hvnly-checkbox-repeater-empty-title {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--hvnly-text-primary, #1e1e2f);
+}
+
+.hvnly-checkbox-repeater-empty-subtitle {
+	margin: 0;
+	max-width: 28rem;
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--hvnly-text-secondary, #646970);
+}
+
+/* Items */
+.hvnly-checkbox-repeater-items {
+	display: flex;
+	flex-direction: column;
+	gap: 0.65rem;
+	margin: 0;
+	padding: 0;
+}
+
+.hvnly-checkbox-repeater-item {
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+	margin: 0;
+	padding: 0.65rem 0.75rem;
+	border: 1px solid rgba(30, 30, 47, 0.08);
+	border-radius: 10px;
+	background: var(--hvnly-color-bg-white, #fff);
+	box-shadow: 0 1px 2px rgba(30, 30, 47, 0.04);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+	box-sizing: border-box;
+}
+
+.hvnly-checkbox-repeater-item:hover,
+.hvnly-checkbox-repeater-item:focus-within {
+	border-color: rgba(108, 96, 254, 0.35);
+	box-shadow: 0 4px 14px -8px rgba(30, 30, 47, 0.18);
+}
+
+.hvnly-checkbox-repeater-item.hvnly-checkbox-repeater-item--filtered {
+	display: none !important;
+}
+
+.hvnly-checkbox-repeater-item-content {
+	flex: 1 1 auto;
+	min-width: 0;
+	margin: 0;
+}
+
+.hvnly-checkbox-repeater-item-content .widefat {
+	width: 100%;
+	margin: 0;
+	padding: 10px 12px;
+	border: 1px solid var(--hvnly-border-color, #dcdcde);
+	border-radius: 8px;
+	box-shadow: none;
+	background: var(--hvnly-color-bg-light, #f6f7f9);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+	box-sizing: border-box;
+}
+
+.hvnly-checkbox-repeater-item-content .widefat:focus {
+	background: var(--hvnly-color-bg-white, #fff);
+	border-color: var(--hvnly-brand-primary, #6c60fe);
+	box-shadow: 0 0 0 1px var(--hvnly-brand-primary, #6c60fe);
+	outline: none;
+}
+
+.hvnly-checkbox-repeater-item-actions {
+	display: inline-flex;
+	flex-shrink: 0;
+	align-items: center;
+	gap: 0.35rem;
+}
+
+.hvnly-checkbox-repeater-item-actions .button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	min-width: 32px;
+	height: 32px;
+	padding: 0;
+	line-height: 1;
+	border-radius: 8px;
+	border: 1px solid var(--hvnly-border-color, #dcdcde);
+	background: var(--hvnly-color-bg-light, #f6f7f9);
+	color: var(--hvnly-text-secondary, #646970);
+	box-shadow: none;
+	transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.hvnly-checkbox-repeater-item-actions .button .dashicons {
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 1;
+	margin: 0;
+}
+
+.hvnly-checkbox-repeater-move-up:hover:not(:disabled),
+.hvnly-checkbox-repeater-move-down:hover:not(:disabled),
+.hvnly-checkbox-repeater-move-up:focus:not(:disabled),
+.hvnly-checkbox-repeater-move-down:focus:not(:disabled) {
+	background: var(--hvnly-brand-primary, #6c60fe);
+	border-color: var(--hvnly-brand-primary, #6c60fe);
+	color: #fff;
+}
+
+.hvnly-checkbox-repeater-remove-item:hover,
+.hvnly-checkbox-repeater-remove-item:focus {
+	background: #fff5f5;
+	border-color: var(--hvnly-brand-error, #ff4d4f);
+	color: var(--hvnly-brand-error, #ff4d4f);
+}
+
+.hvnly-checkbox-repeater-item-actions .button:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(108, 96, 254, 0.28);
+}
+
+.hvnly-checkbox-repeater-move-up:disabled,
+.hvnly-checkbox-repeater-move-down:disabled {
+	background: #f1f1f1;
+	border-color: #e2e4e7;
+	color: #a0a5aa;
+	cursor: not-allowed;
+	opacity: 1;
+}
+
+.hvnly-checkbox-repeater-no-results {
+	margin: 0;
+	padding: 0.85rem 1rem;
+	border-radius: 10px;
+	background: var(--hvnly-color-bg-light, #f6f7f9);
+	color: var(--hvnly-text-secondary, #646970);
+	font-size: 13px;
+}
+
+.hvnly-checkbox-repeater-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem;
+	margin: 0;
+	text-align: left;
+}
+
+.hvnly-checkbox-repeater-add-item.button,
+.wp-core-ui .hvnly-checkbox-repeater-add-item.button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.4rem;
+	min-height: 40px;
+	height: auto;
+	padding: 0 16px;
+	border-radius: 8px;
+	border-color: var(--hvnly-brand-primary, #6c60fe);
+	background: var(--hvnly-brand-primary, #6c60fe);
+	color: #fff;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.2;
+	box-shadow: 0 1px 2px rgba(30, 30, 47, 0.08);
+	vertical-align: middle;
+}
+
+.hvnly-checkbox-repeater-add-item.button:hover,
+.hvnly-checkbox-repeater-add-item.button:focus,
+.wp-core-ui .hvnly-checkbox-repeater-add-item.button:hover,
+.wp-core-ui .hvnly-checkbox-repeater-add-item.button:focus {
+	background: var(--hvnly-button-bg-hover, #5b4ef0);
+	border-color: var(--hvnly-button-bg-hover, #5b4ef0);
+	color: #fff;
+}
+
+.hvnly-checkbox-repeater-add-item.button:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(108, 96, 254, 0.28);
+}
+
+.hvnly-checkbox-repeater-add-item .dashicons,
+.wp-core-ui .hvnly-checkbox-repeater-add-item span.dashicons {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+	line-height: 1;
+	margin: 0;
+	color: #fff;
+	vertical-align: middle;
+}
+
+@media screen and (max-width: 600px) {
+	.hvnly-checkbox-repeater-header {
+		flex-direction: column;
+	}
+
+	.hvnly-checkbox-repeater-toolbar {
+		flex: 1 1 auto;
+		width: 100%;
+		min-width: 0;
+	}
+
+	.hvnly-checkbox-repeater-item {
+		flex-wrap: wrap;
+	}
+
+	.hvnly-checkbox-repeater-item-actions {
+		width: 100%;
+		justify-content: flex-end;
+	}
+
+	.hvnly-checkbox-repeater-add-item.button {
+		width: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hvnly-checkbox-repeater-item,
+	.hvnly-checkbox-repeater-search,
+	.hvnly-checkbox-repeater-item-content .widefat,
+	.hvnly-checkbox-repeater-item-actions .button,
+	.hvnly-checkbox-repeater-add-item.button {
+		transition: none;
+	}
+}

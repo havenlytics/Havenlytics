@@ -137,6 +137,10 @@ class PropertyCardRenderer {
 			return false;
 		}
 
+		if ( function_exists( 'hvnly_ensure_compare_beside_favorite' ) ) {
+			$saved_sections = hvnly_ensure_compare_beside_favorite( $saved_sections );
+		}
+
 		uasort(
 			$saved_sections,
 			function ( $a, $b ) {

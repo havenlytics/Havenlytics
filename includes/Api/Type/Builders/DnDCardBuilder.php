@@ -223,6 +223,7 @@ class DnDCardBuilder
         'status',
         'time',
         'favorite',
+        'compare',
         'views',
         'title',
         'rating',
@@ -278,7 +279,25 @@ class DnDCardBuilder
      */
     private static function get_allowed_card_field_types()
     {
-        return self::$allowed_card_field_types;
+        /**
+         * Filter allowed Property Card Builder field types (additive for Pro).
+         *
+         * @param array<int, string> $types Field type slugs.
+         */
+        $types = apply_filters( 'hvnly_card_builder_field_types', self::$allowed_card_field_types );
+
+        if ( ! is_array( $types ) ) {
+            return self::$allowed_card_field_types;
+        }
+
+        $clean = array();
+        foreach ( $types as $type ) {
+            if ( is_string( $type ) && '' !== $type ) {
+                $clean[] = sanitize_key( $type );
+            }
+        }
+
+        return array_values( array_unique( $clean ) );
     }
 
     /**
@@ -362,6 +381,14 @@ class DnDCardBuilder
                         'mode' => 'preset',
                         'value' => ['isFavorite' => false],
                         'order' => 0
+                    ],
+                    [
+                        'id' => 'compare-button',
+                        'type' => 'compare',
+                        'label' => __('Compare Button', 'havenlytics'),
+                        'mode' => 'preset',
+                        'value' => [],
+                        'order' => 1
                     ]
                 ]
             ],
@@ -715,6 +742,10 @@ class DnDCardBuilder
         usort($sections_data, function ($a, $b) {
             return ($a['order'] ?? 0) - ($b['order'] ?? 0);
         });
+
+        if (function_exists('hvnly_ensure_compare_beside_favorite')) {
+            $sections_data = array_values(hvnly_ensure_compare_beside_favorite($sections_data));
+        }
 
         return $sections_data;
     }

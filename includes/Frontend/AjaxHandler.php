@@ -505,10 +505,14 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             }
 
             // No cache found or top search - perform fresh query
+            $query_started = microtime(true);
             $properties_query = PropertyQueryExecutor::query($post_data, $page, $per_page, [
                 'filter_context' => 'ajax',
                 'bypass_cache'   => $is_top_search,
             ]);
+            if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine() && method_exists(HVNLY_NAB()->engine(), 'track_query_executed')) {
+                HVNLY_NAB()->engine()->track_query_executed(microtime(true) - $query_started);
+            }
 
             if (is_wp_error($properties_query->posts)) {
                 wp_send_json_error(__( 'Query error occurred', 'havenlytics' ));
@@ -673,6 +677,15 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
         }
 
         $cached = get_transient($cache_key);
+        $engine = function_exists('HVNLY_NAB') ? HVNLY_NAB()->engine() : null;
+
+        if (false !== $cached && null !== $cached) {
+            if ($engine && method_exists($engine, 'track_cache_hit')) {
+                $engine->track_cache_hit();
+            }
+        } elseif ($engine && method_exists($engine, 'track_cache_miss')) {
+            $engine->track_cache_miss();
+        }
 
         return apply_filters('hvnly_get_cached_search_results', $cached, $cache_key);
     }

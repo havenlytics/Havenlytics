@@ -301,7 +301,7 @@ abstract class AbstractShortcode {
      * Track cache hit if HvnlyEngine is available
      */
     protected function maybe_track_cache_hit() {
-        if (function_exists('HVN') && HVNLY_NAB()->engine() && method_exists(HVNLY_NAB()->engine(), 'track_cache_hit')) {
+        if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine() && method_exists(HVNLY_NAB()->engine(), 'track_cache_hit')) {
             HVNLY_NAB()->engine()->track_cache_hit();
         }
     }
@@ -310,7 +310,7 @@ abstract class AbstractShortcode {
      * Track cache miss if HvnlyEngine is available
      */
     protected function maybe_track_cache_miss() {
-        if (function_exists('HVN') && HVNLY_NAB()->engine() && method_exists(HVNLY_NAB()->engine(), 'track_cache_miss')) {
+        if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine() && method_exists(HVNLY_NAB()->engine(), 'track_cache_miss')) {
             HVNLY_NAB()->engine()->track_cache_miss();
         }
     }

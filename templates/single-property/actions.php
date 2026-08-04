@@ -61,6 +61,15 @@ $hvnly_toast_data = function_exists('hvnly_get_favorite_toast_data')
         </button>
         <?php endif; ?>
 
+        <?php
+        /**
+         * Extra single-property actions (Compare, Share, etc.) beside Favorite/Print.
+         *
+         * @param int $hvnly_property_id Property ID.
+         */
+        do_action( 'hvnly_single_property_actions', $hvnly_property_id );
+        ?>
+
         <?php if ($hvnly_print_enabled) : ?>
         <button type="button" class="hvnly-property-single__action-btn hvnly-property-single__print-btn"
             onclick="window.print();" aria-label="<?php esc_attr_e('Print this property', 'havenlytics'); ?>">

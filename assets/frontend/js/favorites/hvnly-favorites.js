@@ -806,6 +806,152 @@
 
 		document.addEventListener( 'hvnly:favorites:refresh', hydrate, false );
 
+		document.addEventListener(
+			'click',
+			function ( e ) {
+				const clearBtn = e.target.closest( '[data-hvnly-saved-clear]' );
+				if ( clearBtn ) {
+					e.preventDefault();
+					const root = clearBtn.closest( '.hvnly-block-saved' );
+					const ids = currentIds().slice();
+					if ( ! ids.length ) {
+						return;
+					}
+					if (
+						! window.confirm(
+							( i18n && i18n.clearConfirm ) ||
+								'Remove all saved properties?'
+						)
+					) {
+						return;
+					}
+					clearBtn.disabled = true;
+
+					const finishUi = function () {
+						clearBtn.disabled = false;
+						ids.forEach( function ( id ) {
+							removeState( id );
+							syncButtonsFor( id, false );
+						} );
+						if ( ! isLoggedIn ) {
+							writeGuest( [] );
+						}
+						if ( root ) {
+							const listings = root.querySelector(
+								'.hvnly-block-saved__listings'
+							);
+							const toolbar = root.querySelector(
+								'.hvnly-block-saved__toolbar'
+							);
+							const stats = root.querySelector(
+								'.hvnly-block-saved__stats'
+							);
+							if ( listings ) {
+								listings.remove();
+							}
+							if ( toolbar ) {
+								toolbar.remove();
+							}
+							if ( stats ) {
+								stats.remove();
+							}
+							if ( ! root.querySelector( '.hvnly-block-saved__empty' ) ) {
+								const panel = document.createElement( 'div' );
+								panel.className = 'hvnly-block-saved__empty';
+								panel.setAttribute( 'role', 'status' );
+								panel.innerHTML =
+									'<h3 class="hvnly-block-saved__empty-title">' +
+									( ( i18n && i18n.emptyTitle ) ||
+										'No saved properties yet' ) +
+									'</h3>';
+								root.appendChild( panel );
+							}
+						}
+						document.dispatchEvent(
+							new CustomEvent( 'hvnly:favorites:changed', {
+								detail: { cleared: true, total: 0 },
+							} )
+						);
+					};
+
+					if ( ! isLoggedIn ) {
+						finishUi();
+						return;
+					}
+
+					ids
+						.reduce( function ( promise, id ) {
+							return promise.then( function () {
+								return request( 'DELETE', '/' + id ).catch(
+									function () {
+										return null;
+									}
+								);
+							} );
+						}, Promise.resolve() )
+						.finally( finishUi );
+					return;
+				}
+
+				const compareChip = e.target.closest(
+					'[data-hvnly-saved-compare]'
+				);
+				if ( compareChip ) {
+					const ids = currentIds().slice();
+					if ( ! ids.length ) {
+						return;
+					}
+					try {
+						const u = new URL(
+							compareChip.href,
+							window.location.origin
+						);
+						u.searchParams.set( 'compare', ids.join( ',' ) );
+						compareChip.href = u.toString();
+					} catch ( err ) {
+						/* keep default href */
+					}
+				}
+
+				const btn = e.target.closest(
+					'[data-hvnly-saved-view-toggle] [data-view]'
+				);
+				if ( ! btn ) {
+					return;
+				}
+				const root = btn.closest( '.hvnly-block-saved' );
+				const listings = root
+					? root.querySelector( '.hvnly-block-saved__listings' )
+					: null;
+				const grid = root
+					? root.querySelector( '.hvnly-property-grid-view' )
+					: null;
+				const view = btn.getAttribute( 'data-view' ) || 'grid';
+				const toggle = btn.closest( '[data-hvnly-saved-view-toggle]' );
+				if ( toggle ) {
+					toggle.querySelectorAll( '[data-view]' ).forEach( function ( el ) {
+						const on = el === btn;
+						el.classList.toggle( 'is-active', on );
+						el.setAttribute( 'aria-pressed', on ? 'true' : 'false' );
+					} );
+				}
+				if ( listings ) {
+					listings.classList.toggle( 'is-list-view', view === 'list' );
+				}
+				if ( grid ) {
+					grid.setAttribute(
+						'data-view-type',
+						view === 'list' ? 'list' : 'grid'
+					);
+					grid.classList.toggle( 'hvnly-list-view', view === 'list' );
+					grid.classList.toggle( 'list-view', view === 'list' );
+					grid.classList.toggle( 'hvnly-grid-view', view !== 'list' );
+					grid.classList.toggle( 'grid-view', view !== 'list' );
+				}
+			},
+			false
+		);
+
 		if ( isLoggedIn ) {
 			mergeGuestFavorites();
 		}

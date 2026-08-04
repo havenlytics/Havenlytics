@@ -373,6 +373,36 @@ class FieldRegistry {
                 $this->get_file_version($assets_dir . 'css/hvnly-repeater-field.css')
             );
         }
+
+        // Gallery field — compact thumbnail manager (must load; removed from metabox.css).
+        if (isset($this->js_assets['hvnly-gallery-field'])) {
+            wp_enqueue_style(
+                'hvnly-gallery-field',
+                $assets_dir . 'css/hvnly-gallery-field.css',
+                array( 'hvnly-admin-metabox' ),
+                $this->get_file_version($assets_dir . 'css/hvnly-gallery-field.css')
+            );
+        }
+
+        // Video field presentation (must load; removed from metabox.css).
+        if (isset($this->js_assets['hvnly-video-field'])) {
+            wp_enqueue_style(
+                'hvnly-video-field',
+                $assets_dir . 'css/hvnly-video-field.css',
+                array( 'hvnly-admin-metabox' ),
+                $this->get_file_version($assets_dir . 'css/hvnly-video-field.css')
+            );
+        }
+
+        // Features / checkbox repeater presentation (must load; removed from metabox.css).
+        if (isset($this->js_assets['hvnly-checkbox-repeater-field'])) {
+            wp_enqueue_style(
+                'hvnly-checkbox-repeater-field',
+                $assets_dir . 'css/hvnly-checkbox-repeater-field.css',
+                array( 'hvnly-admin-metabox' ),
+                $this->get_file_version($assets_dir . 'css/hvnly-checkbox-repeater-field.css')
+            );
+        }
         
         // Additional field CSS can be added here.
     }
@@ -461,9 +491,14 @@ class FieldRegistry {
                         'manageTitle'      => __('Manage Gallery Images', 'havenlytics'),
                         'updateGallery'    => __('Update Gallery', 'havenlytics'),
                         'editImage'        => __('Edit Image', 'havenlytics'),
+                        'removeImage'      => __('Remove Image', 'havenlytics'),
                         'updateImage'      => __('Update Image', 'havenlytics'),
                         'editRemoveImage'  => __('Edit/Remove Image', 'havenlytics'),
                         'confirmClearAll'  => __('Are you sure you want to remove all images from the gallery?', 'havenlytics'),
+                        'edit'             => __('Edit', 'havenlytics'),
+                        'remove'           => __('Remove', 'havenlytics'),
+                        'imageSingular'    => __('Image', 'havenlytics'),
+                        'imagePlural'      => __('Images', 'havenlytics'),
                     ],
                 ]
             );
@@ -497,6 +532,14 @@ class FieldRegistry {
                         'useThisImage'     => __('Use this image', 'havenlytics'),
                         'selectButton'     => __('Select File', 'havenlytics'),
                         'invalidImage'     => __('Please select a valid image file (JPG, PNG, GIF, WEBP, BMP).', 'havenlytics'),
+                        'removeThumbnail'  => __('Remove Thumbnail', 'havenlytics'),
+                        'replaceThumbnail' => __('Replace Thumbnail', 'havenlytics'),
+                        'uploadThumbnail'  => __('Upload Thumbnail', 'havenlytics'),
+                        'noThumbnail'      => __('No thumbnail yet', 'havenlytics'),
+                        'noThumbnailHelp'  => __('Upload a poster image, or paste a YouTube URL to use its default frame.', 'havenlytics'),
+                        'videoThumbnail'   => __('Video thumbnail', 'havenlytics'),
+                        'propertyVideo'    => __('Property Video', 'havenlytics'),
+                        'preview'          => __('Preview', 'havenlytics'),
                     ],
                 ]
             );

@@ -180,7 +180,18 @@ if (!empty($hvnly_gallery_image_ids) && $hvnly_gallery_order === 'DESC') {
                     !empty($hvnly_overlay_sections['image-overlay-top-right']['fields'])) {
                     
                     // Preset mode: Render configured fields WITH field data
-                    foreach ($hvnly_overlay_sections['image-overlay-top-right']['fields'] as $hvnly_field) {
+                    $hvnly_right_fields = $hvnly_overlay_sections['image-overlay-top-right']['fields'];
+                    if (function_exists('hvnly_ensure_compare_beside_favorite')) {
+                        $hvnly_right_wrapped = hvnly_ensure_compare_beside_favorite(
+                            array(
+                                'image-overlay-top-right' => array(
+                                    'fields' => $hvnly_right_fields,
+                                ),
+                            )
+                        );
+                        $hvnly_right_fields = $hvnly_right_wrapped['image-overlay-top-right']['fields'] ?? $hvnly_right_fields;
+                    }
+                    foreach ($hvnly_right_fields as $hvnly_field) {
                         $hvnly_field_type = $hvnly_field['type'] ?? '';
                         hvnly_render_field($hvnly_field_type, $hvnly_property_id, $hvnly_property_data, 'preset', $hvnly_field);
                     }
@@ -190,6 +201,8 @@ if (!empty($hvnly_gallery_image_ids) && $hvnly_gallery_order === 'DESC') {
                         // In preset mode, only show if configured
                         if (hvnly_is_field_configured($hvnly_all_sections, 'favorite')) {
                             hvnly_render_field('favorite', $hvnly_property_id, $hvnly_property_data, 'preset');
+                            // Favorite without Compare is invalid — always pair.
+                            hvnly_render_field('compare', $hvnly_property_id, $hvnly_property_data, 'preset');
                         }
                         
                         if (hvnly_is_field_configured($hvnly_all_sections, 'share')) {
@@ -198,6 +211,7 @@ if (!empty($hvnly_gallery_image_ids) && $hvnly_gallery_order === 'DESC') {
                     } else {
                         // In default mode, show all WITHOUT field data
                         hvnly_render_field('favorite', $hvnly_property_id, $hvnly_property_data, 'default');
+                        hvnly_render_field('compare', $hvnly_property_id, $hvnly_property_data, 'default');
                         hvnly_render_field('share', $hvnly_property_id, $hvnly_property_data, 'default');
                     }
                 }

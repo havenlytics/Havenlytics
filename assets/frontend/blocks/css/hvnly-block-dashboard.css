@@ -91,11 +91,20 @@
 	background: var( --_db-primary );
 	border-radius: calc( var( --_db-radius ) * 0.5 );
 	padding: 12px 26px;
-	transition: filter 0.15s ease;
+	transition:
+		filter 0.15s ease,
+		box-shadow 0.25s ease,
+		transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.hvnly-dashboard-block__gate-btn:hover { filter: brightness( 1.05 ); }
+.hvnly-dashboard-block__gate-btn:hover {
+	filter: brightness( 1.05 );
+	transform: translateY(-2px);
+	box-shadow: 0 10px 24px rgba(var(--hvnly-primary-rgb, 108, 96, 254), 0.28);
+}
+.hvnly-dashboard-block__gate-btn:active { transform: translateY(0); }
 .hvnly-dashboard-block__gate-btn:focus-visible {
-	outline: none;
+	outline: 2px solid var(--hvnly-brand-primary, var( --_db-primary ));
+	outline-offset: 2px;
 	box-shadow: 0 0 0 3px color-mix( in srgb, var( --_db-primary ) 30%, transparent );
 }
 

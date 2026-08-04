@@ -1042,7 +1042,22 @@ class Havenlytics_Type extends Custom_Metabox {
             <h3><?php echo esc_html( hvnly_translate_ui( (string) $tab['title'] ) ); ?></h3>
 
             <?php if ( ! empty( $tab['fields'] ) ) : ?>
-            <div class="hvnly__dyamic_metabox_tab__fields">
+            <?php
+                /**
+                 * Filter desktop column count for standalone metabox fields.
+                 *
+                 * Developers only — no admin UI. Tablet uses the same value;
+                 * mobile always collapses to one column via CSS.
+                 *
+                 * @since 3.1.0
+                 * @param int $columns Desktop/tablet column count. Default 2.
+                 */
+                $metabox_columns = absint( apply_filters( 'hvnly_admin_metabox_columns', 2 ) );
+                if ( $metabox_columns < 1 ) {
+                    $metabox_columns = 1;
+                }
+            ?>
+            <div class="hvnly__dyamic_metabox_tab__fields" style="--hvnly-metabox-columns: <?php echo esc_attr( (string) $metabox_columns ); ?>;">
                 <?php foreach ( $tab['fields'] as $field ) : ?>
                 <?php if ( ! $this->should_display_field( $field ) ) continue; ?>
                 <?php echo $this->render_field( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Renders trusted field HTML from registered handlers. ?>
@@ -1123,10 +1138,11 @@ class Havenlytics_Type extends Custom_Metabox {
 
         $field_content = $handler->render( $field, $value, $this->post_id );
         $is_required   = isset( $field['is_required'] ) && $field['is_required'];
+        $layout_class  = $this->get_field_layout_class( $field );
 
         ob_start();
         ?>
-<div class="hvnly__dyamic_metabox_tab__field <?php echo esc_attr( $this->get_wrapper_class( $field_type ) ); ?> <?php echo $is_required ? 'hvnly-field-required' : ''; ?>"
+<div class="hvnly__dyamic_metabox_tab__field <?php echo esc_attr( $this->get_wrapper_class( $field_type ) ); ?> <?php echo esc_attr( $layout_class ); ?> <?php echo $is_required ? 'hvnly-field-required' : ''; ?>"
     data-field-id="<?php echo esc_attr( $field['id'] ?? $field['fieldid'] ?? '' ); ?>"
     data-field-type="<?php echo esc_attr( $field_type ); ?>"
     data-group-id="<?php echo esc_attr( $field['group_id'] ?? '' ); ?>"
@@ -1170,6 +1186,67 @@ class Havenlytics_Type extends Custom_Metabox {
         }
         
         return null;
+    }
+
+    /**
+     * Presentation-only layout class for metabox field wrappers.
+     *
+     * Does not affect save, meta keys, validation, or Builder JSON.
+     * Classification uses existing group_id / group_type / type metadata only.
+     *
+     * @since 3.1.0
+     * @param array $field Field config.
+     * @return string hvnly-field--wide|hvnly-field--compact
+     */
+    private function get_field_layout_class( $field ) {
+        if ( ! is_array( $field ) ) {
+            return 'hvnly-field--wide';
+        }
+
+        $group_id   = $field['group_id'] ?? '';
+        $group_type = $field['group_type'] ?? '';
+        $field_type = (string) ( $field['type'] ?? '' );
+
+        // Any group widget collapses to one full-width cell.
+        if ( ! empty( $group_id ) && ! empty( $group_type ) ) {
+            return 'hvnly-field--wide';
+        }
+
+        /**
+         * Field types that always span the full metabox grid (presentation only).
+         *
+         * @since 3.1.0
+         * @param string[] $wide_types Field type slugs.
+         * @param array    $field      Current field config.
+         */
+        $wide_types = apply_filters(
+            'hvnly_admin_metabox_wide_field_types',
+            array(
+                'textarea',
+                'checkbox',
+                'file',
+                'image',
+                'gallery',
+                'map',
+                'video',
+                'property_docs',
+                'agents',
+                'price_label',
+                'faq',
+                'repeater',
+            ),
+            $field
+        );
+
+        if ( ! is_array( $wide_types ) ) {
+            $wide_types = array();
+        }
+
+        if ( in_array( $field_type, $wide_types, true ) ) {
+            return 'hvnly-field--wide';
+        }
+
+        return 'hvnly-field--compact';
     }
 
     /**

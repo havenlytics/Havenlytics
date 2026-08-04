@@ -213,11 +213,12 @@ body.wp-admin {
 
 /* 
     * GLOBAL BUTTON STYLES for Havenlytics
-    * Applies to all buttons within the specified wrapper
+    * Applies to buttons within field inputs — except isolated field components
+    * (e.g. .hvnly-video-field-container) which own their own button chrome.
     */
 #hvnly_dynamic_metabox_tabs__main__wrapper 
 .hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input button {
+.hvnly__dyamic_metabox_tab__field-input:not(:has(.hvnly-video-field-container, .hvnly-gallery-container)) button {
     /* Basic button styling */
     background-color: var(--hvnly-brand-primary);
     color: white;
@@ -240,20 +241,20 @@ body.wp-admin {
 }
 
 /* Hover effect - slightly darker background with lift effect */
-#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input button:hover {
+#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input:not(:has(.hvnly-video-field-container, .hvnly-gallery-container)) button:hover {
     background-color: color-mix(in srgb, var(--hvnly-brand-primary) 90%, black);
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Active/Click effect - return to normal position */
-#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input button:active {
+#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input:not(:has(.hvnly-video-field-container, .hvnly-gallery-container)) button:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Ripple effect container - hidden by default */
-#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input button::before {
+#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input:not(:has(.hvnly-video-field-container, .hvnly-gallery-container)) button::before {
     content: '';
     position: absolute;
     top: 50%;
@@ -267,7 +268,7 @@ body.wp-admin {
 }
 
 /* Ripple effect animation on click */
-#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input button:active::before {
+#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input:not(:has(.hvnly-video-field-container, .hvnly-gallery-container)) button:active::before {
     width: 300px;
     height: 300px;
     opacity: 0;
@@ -275,13 +276,13 @@ body.wp-admin {
 }
 
 /* Focus state for accessibility - subtle outline */
-#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input button:focus {
+#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input:not(:has(.hvnly-video-field-container, .hvnly-gallery-container)) button:focus {
     outline: 2px solid color-mix(in srgb, var(--hvnly-brand-primary) 50%, white);
     outline-offset: 2px;
 }
 
 /* Disabled state styling */
-#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input button:disabled {
+#hvnly_dynamic_metabox_tabs__main__wrapper .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field-input:not(:has(.hvnly-video-field-container, .hvnly-gallery-container)) button:disabled {
     background-color: color-mix(in srgb, var(--hvnly-brand-primary) 40%, white);
     cursor: not-allowed;
     transform: none;
@@ -291,14 +292,14 @@ body.wp-admin {
 /* Loading animation (add 'loading' class to button to use) */
 #hvnly_dynamic_metabox_tabs__main__wrapper 
 .hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input button.loading {
+.hvnly__dyamic_metabox_tab__field-input:not(:has(.hvnly-video-field-container, .hvnly-gallery-container)) button.loading {
     position: relative;
     color: transparent;
 }
 
 #hvnly_dynamic_metabox_tabs__main__wrapper 
 .hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input button.loading::after {
+.hvnly__dyamic_metabox_tab__field-input:not(:has(.hvnly-video-field-container, .hvnly-gallery-container)) button.loading::after {
     content: '';
     position: absolute;
     top: 50%;
@@ -376,506 +377,11 @@ input[type=checkbox]:checked::before {
 
 
 
-/* ======================
-   Gallery Field Enhancements
-======================= */
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-container {
-    padding: var(--hvnly-space-md) 0;
-    position: relative;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-instructions {
-    color: var(--hvnly-text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
-    padding: 0.75rem 1rem;
-    background: var(--hvnly-color-bg-light);
-    border-radius: var(--hvnly-input-radius);
-    border-left: 3px solid var(--hvnly-brand-primary);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
+/* Gallery field styles live in assets/admin/css/hvnly-gallery-field.css */
 
-.hvnly-gallery-images {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 1rem;
-    padding: 0;
-    margin: 0 0 1.5rem;
-    min-height: 150px;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
+/* Property Video group styles live in assets/admin/css/hvnly-video-field.css */
 
-.hvnly-gallery-item {
-    position: relative;
-    aspect-ratio: 1;
-    border: 2px solid var(--hvnly-border-color);
-    border-radius: var(--hvnly-card-radius);
-    background: var(--hvnly-color-bg-light);
-    overflow: hidden;
-    transition: all var(--hvnly-transition-time);
-    cursor: move;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-
-.hvnly-gallery-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(var(--hvnly-text-primary-rgb), 0.1);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-
-.hvnly-gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform var(--hvnly-transition-time);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-
-.hvnly-gallery-item:hover img {
-    transform: scale(1.05);
-}
-
-/* Gallery Item Actions */
-
-.hvnly-gallery-item-actions {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    display: flex;
-    gap: 0.5rem;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: all var(--hvnly-transition-time);
-}
-
-.hvnly-gallery-item:hover .hvnly-gallery-item-actions {
-    opacity: 1;
-    transform: translateY(0);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-edit,
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-remove {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: rgba(var(--hvnly-bg-white-rgb), 0.9);
-    border-radius: 50%;
-    color: var(--hvnly-text-primary);
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-edit:hover {
-    background: var(--hvnly-brand-primary);
-    color: var(--hvnly-color-bg-white);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-remove:hover {
-    background: var(--hvnly-brand-error);
-    color: var(--hvnly-color-bg-white);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-item-actions .dashicons {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
-}
-
-/* Empty State */
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-images:empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 200px;
-    border: 2px dashed var(--hvnly-border-color);
-    border-radius: var(--hvnly-card-radius);
-    background: var(--hvnly-color-bg-light);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-images:empty::before {
-    content: "No images in gallery. Click 'Add Images' below.";
-    color: var(--hvnly-text-secondary);
-    font-size: 0.9rem;
-}
-
-/* Gallery Actions */
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly-gallery-actions {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-}
-
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly-gallery-actions button.hvnly-add-gallery,
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly-gallery-actions button.hvnly-clear-gallery
-{
-    display: flex;
-
-}
-
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly-add-gallery,
-.hvnly-clear-gallery {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border-radius: var(--hvnly-button-radius);
-    transition: all var(--hvnly-transition-time);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly-add-gallery {
-    background: var(--hvnly-brand-primary);
-    color: var(--hvnly-color-bg-white);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly-add-gallery:hover {
-    background: var(--hvnly-button-bg-hover);
-    transform: translateY(-1px);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly-clear-gallery {
-    background: var(--hvnly-color-bg-light);
-    color: var(--hvnly-text-primary);
-    border: 1px solid var(--hvnly-border-color);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly-clear-gallery:hover {
-    background: var(--hvnly-brand-error);
-    color: var(--hvnly-color-bg-white);
-    border-color: var(--hvnly-brand-error);
-}
-
-/* Sortable State */
-.ui-sortable-helper {
-    transform: rotate(2deg);
-    box-shadow: 0 8px 20px rgba(var(--hvnly-text-primary-rgb), 0.15);
-}
-
-.ui-sortable-placeholder {
-    border: 2px dashed var(--hvnly-brand-primary);
-    background: rgba(var(--hvnly-primary-rgb), 0.05);
-    visibility: visible !important;
-}
-
-/* Responsive Adjustments */
-@media screen and (max-width: 782px) {
-    #hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-    .hvnly-gallery-images {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    #hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-    .hvnly-gallery-actions {
-        flex-direction: column;
-    }
-    #hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-    .hvnly-add-gallery,
-    .hvnly-clear-gallery {
-        justify-content: center;
-        width: 100%;
-    }
-}
-
-/* Dark Mode Adjustments */
-@media (prefers-color-scheme: dark) {
-    #hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-    .hvnly-gallery-item-actions a {
-        background: rgba(var(--hvnly-text-primary-rgb), 0.8);
-        color: var(--hvnly-color-bg-white);
-    }
-    #hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-    .hvnly-gallery-images:empty {
-        background: rgba(var(--hvnly-bg-white-rgb), 0.05);
-    }
-    #hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-    .hvnly-clear-gallery {
-        background: var(--hvnly-color-bg-light);
-    }
-}
-/* ======================
-   Gallery Action Buttons
-======================= */
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-add-gallery,
-.hvnly-clear-gallery {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.875rem 1.5rem;
-    border-radius: var(--hvnly-button-radius);
-    border: none;
-    font-family: var(--hvnly-headingFont);
-    font-size: 0.925rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all var(--hvnly-transition-time);
-    line-height: 1;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Add Images Button */
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-add-gallery {
-    background: var(--hvnly-brand-primary);
-    color: var(--hvnly-color-bg-white);
-    box-shadow: 0 2px 6px rgba(var(--hvnly-primary-rgb), 0.15);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-add-gallery:hover {
-    background: var(--hvnly-button-bg-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(var(--hvnly-primary-rgb), 0.2);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-add-gallery:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(var(--hvnly-primary-rgb), 0.15);
-}
-
-/* Clear Gallery Button */
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-clear-gallery {
-    background: var(--hvnly-color-bg-light);
-    color: var(--hvnly-text-secondary);
-    border: 1px solid var(--hvnly-border-color);
-    padding: 0px 25px
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-clear-gallery:hover {
-    background: var(--hvnly-brand-error);
-    color: var(--hvnly-color-bg-white);
-    border-color: var(--hvnly-brand-error);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(var(--hvnly-brand-error-rgb), 0.15);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-clear-gallery:active {
-    transform: translateY(0);
-    box-shadow: none;
-}
-
-/* Button Icons */
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-add-gallery .dashicons,
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-clear-gallery .dashicons {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
-    transition: transform 0.2s ease;
-}
-
-/* Hover Effects */
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-add-gallery:hover .dashicons {
-    transform: scale(1.1);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-clear-gallery:hover .dashicons {
-    transform: rotate(-10deg);
-}
-
-/* Focus States */
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-add-gallery:focus,
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-clear-gallery:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.2);
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-clear-gallery:focus {
-    box-shadow: 0 0 0 3px rgba(var(--hvnly-brand-error-rgb), 0.2);
-}
-
-/* Responsive Design */
-@media screen and (max-width: 782px) {
-    #hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-    .hvnly-gallery-actions {
-        flex-direction: column;
-    }
-    #hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-    .hvnly-add-gallery,
-    .hvnly-clear-gallery {
-        justify-content: center;
-        width: 100%;
-    }
-}
-
-/* Loading State */
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-add-gallery.loading,
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-clear-gallery.loading {
-    pointer-events: none;
-    opacity: 0.8;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-add-gallery.loading .dashicons,
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-clear-gallery.loading .dashicons {
-    animation: buttonSpin 0.8s linear infinite;
-}
-
-@keyframes buttonSpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-#hvnly_dynamic_metabox_tabs__main__wrapper 
-.hvnly__dyamic_metabox_tab__wrapper 
-.hvnly__dyamic_metabox_tab__field-input 
-.hvnly-gallery-actions .button-primary {
-    background: var(--hvnly-brand-primary);
-    border-color: var(--hvnly-brand-primary);
-    color: #fff;
-    text-decoration: none;
-    text-shadow: none;
-    padding: 10px 25px;border-radius: 8px;
-}
-
-
-/* Gallery: "X images selected" status bar */
-.hvnly-gallery-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.82rem;
-    color: var(--hvnly-text-secondary);
-    background: var(--hvnly-color-bg-light);
-    border: 1px solid var(--hvnly-border-color);
-    border-radius: 20px;
-    padding: 3px 10px;
-    margin-left: auto;
-    white-space: nowrap;
-}
-
-.hvnly-gallery-status .dashicons {
-    font-size: 14px;
-    width: 14px;
-    height: 14px;
-    line-height: 1;
-}
-
-/* Drag-handle cursor on list items */
-.hvnly-gallery-item {
-    cursor: move;
-}
-
-/* Placeholder shown while dragging */
-.hvnly-gallery-placeholder {
-    background: var(--hvnly-color-bg-light);
-    border: 2px dashed var(--hvnly-brand-primary);
-    border-radius: var(--hvnly-card-radius);
-}
-
-/*Property video fields css*/
-
-/* Preview styling */
+/* Shared media preview (FileField and other non-video uploaders). */
 #hvnly_dynamic_metabox_tabs__main__wrapper 
 .hvnly__dyamic_metabox_tab__wrapper 
 .hvnly__dyamic_metabox_tab__field-input 
@@ -1451,14 +957,39 @@ button.hvnly-popup-remove-preview {
 
 /* Form fields */
 #hvnly_dynamic_metabox_tabs__main__wrapper 
+.hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    align-items: stretch;
+}
+
+/* Desktop + tablet: developer-filterable column count (default 2). */
+@media (min-width: 601px) {
+    #hvnly_dynamic_metabox_tabs__main__wrapper 
+    .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__fields {
+        grid-template-columns: repeat(var(--hvnly-metabox-columns, 2), minmax(0, 1fr));
+    }
+}
+
+#hvnly_dynamic_metabox_tabs__main__wrapper 
 .hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field {
-    margin-bottom: 25px;
+    margin-bottom: 0;
     background: var(--hvnly-color-bg-white);
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     transition: all var(--hvnly-transition-time);
     border-left: 4px solid transparent;
+    min-width: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* Complex / group / wide widgets always span the full row. */
+#hvnly_dynamic_metabox_tabs__main__wrapper 
+.hvnly__dyamic_metabox_tab__wrapper .hvnly__dyamic_metabox_tab__field.hvnly-field--wide {
+    grid-column: 1 / -1;
 }
 
 #hvnly_dynamic_metabox_tabs__main__wrapper 
@@ -2083,129 +1614,7 @@ Property Features Taxonomy Image Upload Styles */
 }
 
 
-/* Checkbox Feature List Repeater Field Styles */
-/* Checkbox Repeater Field Styles - Simple List Version */
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-
-.hvnly-checkbox-repeater-field {
-    margin-bottom: 20px;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-label {
-    margin-bottom: 15px;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-label label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-items {
-    margin-bottom: 15px;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-item {
-    display: flex;
-    align-items: center;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    padding: 10px;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-item-content {
-    flex: 1;
-    margin-right: 10px;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-item-actions {
-    display: flex;
-    gap: 5px;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-item-actions .button {
-    padding: 5px 8px;
-    line-height: 1;
-    height: auto;
-    font-size: 13px;
-    min-width: 30px;
-    text-align: center;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-move-up, 
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-move-down {
-    background: #e7e7e7;
-    border: 1px solid #ccc;
-    color: #666;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-move-up:hover,
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-move-down:hover {
-    background: color-mix(in srgb, var(--hvnly-brand-primary) 90%, black);
-    border-color: color-mix(in srgb, var(--hvnly-brand-primary) 90%, black);
-    color: #fff;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-move-up:disabled, 
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-move-down:disabled {
-    background: #f1f1f1;
-    border-color: #ddd;
-    color: #a0a5aa;
-    cursor: not-allowed;
-}
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-move-up:disabled:hover, 
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-move-down:disabled:hover {
-    background: #f1f1f1;
-    border-color: #ddd;
-    color: #a0a5aa;
-}
-
-
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-actions {
-    text-align: left;
-}
+/* Checkbox / Features repeater styles live in assets/admin/css/hvnly-checkbox-repeater-field.css */
 
 .wp-core-ui select {
    
@@ -2213,91 +1622,6 @@ Property Features Taxonomy Image Upload Styles */
  
 }
 
-.wp-core-ui
-.hvnly-checkbox-repeater-actions button.hvnly-checkbox-repeater-add-item span.dashicons{
-    color: #fff;
-    vertical-align: middle;
-    line-height: 1;
-    margin-top: 0;
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
-}
-
-/* Property Features — compact WP-admin style Add / Move / Remove controls */
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-add-item.button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    min-height: 32px;
-    height: auto;
-    padding: 4px 12px;
-    line-height: 1.4;
-    font-size: 13px;
-    vertical-align: middle;
-}
-
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-add-item.button .dashicons {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
-    line-height: 1;
-    margin: 0;
-    vertical-align: middle;
-}
-
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-item-actions .button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    min-width: 30px;
-    height: 30px;
-    padding: 0;
-    line-height: 1;
-}
-
-#hvnly_dynamic_metabox_tabs__main__wrapper
-.hvnly__dyamic_metabox_tab__checkbox
-.hvnly__dyamic_metabox_tab__field-input
-.hvnly-checkbox-repeater-item-actions .button .dashicons {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
-    line-height: 1;
-    margin: 0;
-}
-
-@media screen and (max-width: 600px) {
-    #hvnly_dynamic_metabox_tabs__main__wrapper
-    .hvnly__dyamic_metabox_tab__checkbox
-    .hvnly__dyamic_metabox_tab__field-input
-    .hvnly-checkbox-repeater-item {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    #hvnly_dynamic_metabox_tabs__main__wrapper
-    .hvnly__dyamic_metabox_tab__checkbox
-    .hvnly__dyamic_metabox_tab__field-input
-    .hvnly-checkbox-repeater-item-content {
-        flex: 1 1 100%;
-        margin-right: 0;
-    }
-}
 /* ======================
    Required Field Border - Red Border ONLY on Empty Fields
    ======================= */
@@ -2438,24 +1762,4 @@ Property Features Taxonomy Image Upload Styles */
 
 }
 
-/* Property Video group — sub-fields inside outer metabox wrapper */
-.hvnly-video-field-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--hvnly-space-md, 1rem);
-}
-
-.hvnly-video-subfield {
-    margin: 0;
-}
-
-.hvnly-video-subfield-input label {
-    display: block;
-    font-weight: var(--hvnly-font-weight-semibold, 600);
-    margin-bottom: 0.35rem;
-    color: var(--hvnly-text-primary, #1e1e2f);
-}
-
-.hvnly-video-subfield-input .hvnly-meta-field {
-    margin-top: 0.25rem;
-}
+/* Property Video group styles live in assets/admin/css/hvnly-video-field.css */

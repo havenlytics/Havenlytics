@@ -167,7 +167,8 @@ final class Assets
         }
 
         if ($hook_suffix === 'hvnly_property_page_hvnly_property_cache') {
-            $this->enqueue_cache_assets($default_version);
+            // Design tokens for the Cache dashboard; page assets come from CacheAdmin.
+            $this->enqueue_admin_boot_styles($default_version);
             return;
         }
 

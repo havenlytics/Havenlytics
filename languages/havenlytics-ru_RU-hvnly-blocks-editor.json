@@ -1,5 +1,5 @@
 {
-    "translation-revision-date": "2026-07-28 16:15:36+0000",
+    "translation-revision-date": "2026-07-29 14:22:22+0000",
     "generator": "Havenlytics hvnly-blocks-editor ru_RU package",
     "domain": "messages",
     "locale_data": {
@@ -373,7 +373,7 @@
                 "Унаследовать"
             ],
             "Initial sidebar state on wide screens. The app stays fully responsive on tablet and mobile.": [
-                "Исходное состояние боковой панели на широких экранах. Приложение остается полностью адаптивным на планшетах и ​​мобильных устройствах."
+                "Исходное состояние боковой панели на широких экранах. Приложение остается полностью адаптивным на планшетах и мобильных устройствах."
             ],
             "Inquiries": [
                 "Запросы"

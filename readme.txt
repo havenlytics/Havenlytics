@@ -5,7 +5,7 @@ Tags: real estate, listings, agency, property, agents
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 3.7.1
+Stable tag: 3.7.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Real estate plugin with AJAX search, Migration Engine, CSV import/export, Gutenberg, Elementor, Agent Workspace, and Analytics.
@@ -46,9 +46,13 @@ Havenlytics works with **any WordPress theme**. The free [Havenlytics Realty](ht
 6. (Optional) Install the free **Havenlytics Realty** companion theme for a complete demo-ready experience.
 7. Visit **Havenlytics → Documentation** or **https://havenlytics.com/documentation/** for detailed guides, tutorials, and videos.
 
-🎥 Watch: How to Install Havenlytics
+🎥 **Video Tutorial: How to Install Havenlytics**
 
 [youtube https://www.youtube.com/watch?v=JU6UX3jCrhg]
+
+🎥 **Video Tutorial: Easily Move Your Website to a New Domain (Migration Engine)**
+
+[youtube https://www.youtube.com/watch?v=KQW61krcAi4]
 
 = Who It's For =
 
@@ -324,6 +328,61 @@ No additional configuration or migration is required.
 
 == Changelog ==
 
+= 3.7.3 - 2026-08-04 =
+
+**New**
+
+* Added secure frontend Agent Workspace for property management without wp-admin.
+* Added email identity verification for Agent Workspace accounts.
+* Added Taxonomy Request & Approval workflow for property departments, types, features, locations, tags, statuses, and badges.
+* Added a new Documentation Center with onboarding guides and video tutorials.
+* Added Migration Engine and installation video tutorials to improve onboarding.
+
+**Improved**
+
+* Standardized responsive container width defaults for a more consistent frontend layout.
+* Simplified the frontend container width system with a single runtime source.
+* Redesigned the Dynamic Property Metabox with a responsive two-column layout for improved editing.
+* Modernized the Property Gallery media manager with a cleaner and more intuitive interface.
+* Improved the Property Video editor with a modern layout and better media management.
+* Refined the Property Builder editing experience and responsive layout.
+* Enhanced Agent Workspace interface, property management workflow, favorites reliability, and overall usability.
+* Updated plugin branding, documentation, and onboarding resources.
+* Improved overall performance, compatibility, accessibility, and code quality.
+
+**Fixed**
+
+* Fixed favorites synchronization issues between the Agent Workspace, guest sessions, and saved properties.
+* Fixed various UI, styling, spacing, responsive layout, and compatibility issues.
+* Fixed minor bugs and improved overall stability.
+
+= 3.7.2 - 2026-07-29 =
+
+**Improved**
+
+* **Onboarding Wizard — premium first-run experience.** Complete presentation redesign of the "Get Started" setup wizard (Properties → Get Started). Every step, control, and state was refined for a professional first impression. The onboarding flow, step order, settings, REST endpoints, import engine, nonces, and capability checks are unchanged.
+* **Custom icon set** — every emoji in the wizard was replaced with an inline SVG icon set that renders identically on Windows, macOS, and Linux.
+* **Typography & design tokens** — the wizard now uses the self-hosted Inter typeface already bundled with Havenlytics, plus a consistent spacing, type, radius, and elevation scale in place of ad-hoc values.
+* **Progress navigation** — a sticky top bar with a "Step N of 5" counter and completion rail; completed steps in the stepper are now clickable for going back.
+* **Welcome screen** — new hero with estimated completion time, a "what you'll set up" card grid, and a factual strip of the capabilities already included in your install (Agent Workspace, Migration Engine, CSV Import & Export, Property Builder, Search Builder, Gutenberg Blocks, Elementor Widgets, Analytics, Identity Verification, multilingual support).
+* **Feature spotlights & contextual help** — the Location, Currency, Workspace, and Content steps explain which Havenlytics capability they feed and link straight to the bundled Documentation screen; inline tips were added where a choice needs context.
+* **Loading state** — the demo import now shows a determinate progress ring, a live "X of Y properties created" counter, a check-marked stage list, and rotating guidance instead of a plain spinner.
+* **Error state** — a failed import now reports how many properties were created and kept, with a clearer "Resume import" action.
+* **Completion screen** — the finish step opens with a summary of everything you configured, followed by four recommended next actions including Documentation.
+* **Layout & copywriting** — per-step panel widths, sticky preview columns on the Location and Currency steps, a redesigned footer, and rewritten headings, hints, and button labels throughout.
+
+**Fixed**
+
+* Added a **Back** button to the demo-content step, which previously had no way to return to the Workspace step.
+* Settings that fail to save now surface a dismissible warning instead of failing silently.
+* Collapsed option panels (Google Maps API key, decimal separator, agent registration mode) are no longer reachable by keyboard while hidden.
+* Checkbox and radio option cards are now explicitly associated with their inputs, giving each an accessible name.
+
+**Localization**
+
+* All new onboarding strings use the existing `havenlytics` text domain and translation pipeline.
+* The Russian language pack was regenerated. The setup wizard is fully translated (204/204 strings).
+
 = 3.7.1 - 2026-07-28 =
 
 **Fixed**
@@ -474,6 +533,12 @@ No additional configuration or migration is required.
 
 For earlier versions, see the full history in CHANGELOG.md in the plugin package.
 == Upgrade Notice ==
+
+= 3.7.3 =
+Improves cache system reliability, statistics accuracy, and the Cache Management dashboard UI. No breaking changes to builders, search, REST, AJAX, Elementor, Gutenberg, or the database.
+
+= 3.7.2 =
+Premium redesign of the onboarding wizard, plus a Back button, save-failure feedback, and keyboard fixes. Presentation only — no changes to the setup flow, settings, REST endpoints, import engine, database, or capability checks. Russian language pack regenerated.
 
 = 3.7.1 =
 Maintenance release that improves WordPress.org readme compatibility by shortening the plugin short description. No functional changes.

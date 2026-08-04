@@ -273,7 +273,23 @@ jQuery(document).ready(function($) {
         let hitRate = parseFloat(stats.cache_hit_rate) || 0;
         hitRate = Math.max(0, Math.min(100, hitRate));
 
+        const statusLabels = {
+            active: 'Active',
+            disabled: 'Disabled'
+        };
+        const healthLabels = {
+            healthy: 'Healthy',
+            warming: 'Warming',
+            idle: 'Idle',
+            disabled: 'Disabled'
+        };
+
+        const statusKey = stats.cache_status || (stats.cache_enabled ? 'active' : 'disabled');
+        const healthKey = stats.cache_health || 'idle';
+
         const statMap = {
+            cache_status: statusLabels[statusKey] || statusKey,
+            cache_health: healthLabels[healthKey] || healthKey,
             cache_size_human: stats.cache_size_human || '0 Bytes',
             search_cache_count: formatNumber(stats.search_cache_count || 0),
             term_cache_count: formatNumber(stats.term_cache_count || 0),
@@ -286,11 +302,19 @@ jQuery(document).ready(function($) {
             $('.stat-card[data-stat="' + key + '"] .stat-value').text(value);
         });
 
+        $('[data-stat-badge="cache_status"]').text(statMap.cache_status)
+            .attr('class', 'hvnly-cache-badge hvnly-cache-badge--' + statusKey);
+        $('[data-stat-badge="cache_health"]').text(statMap.cache_health)
+            .attr('class', 'hvnly-cache-badge hvnly-cache-badge--' + healthKey);
+
+        const avgQuery = parseFloat(perf.average_query_time) || 0;
+        const avgQueryDisplay = avgQuery > 0 ? avgQuery.toFixed(4) + 's' : '—';
+
         const perfMap = {
             cache_hits: formatNumber(perf.cache_hits || 0),
             cache_misses: formatNumber(perf.cache_misses || 0),
             queries_executed: formatNumber(perf.queries_executed || 0),
-            average_query_time: (parseFloat(perf.average_query_time) || 0).toFixed(4) + 's',
+            average_query_time: avgQueryDisplay,
             cache_efficiency: (parseFloat(perf.cache_efficiency) || 0) + '%',
             memory_usage: formatBytes(perf.memory_usage || 0),
             total_queries_saved: formatNumber(perf.total_queries_saved || 0)

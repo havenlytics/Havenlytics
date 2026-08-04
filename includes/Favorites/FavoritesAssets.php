@@ -129,6 +129,10 @@ final class FavoritesAssets {
 			$should = true;
 		}
 
+		if ( ! $should && is_tax( get_object_taxonomies( FavoritesService::POST_TYPE ) ) ) {
+			$should = true;
+		}
+
 		/**
 		 * Filter whether the favorites script loads on this request.
 		 *

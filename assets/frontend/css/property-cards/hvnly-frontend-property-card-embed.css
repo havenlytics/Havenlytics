@@ -300,7 +300,7 @@
 .hvnly-property--grid-list--favorite:hover 
 {
     /* background: var(--hvnly-color-white); */
-    color: var(--hvnly-color-white);
+    color: var(--hvnly-brand-primary);
     transform: scale(1.1);
 }
 

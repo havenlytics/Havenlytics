@@ -1,121 +1,265 @@
-/**
- * Havenlytics Cache Management - Clean Modern UI
- * No accordions, just clean and simple
+﻿/**
+ * Havenlytics Cache Management â€” modern admin dashboard
+ * Reuses Havenlytics design tokens from hvnly-admin-boot.css
  */
 
-/* =========================================
-   MAIN CONTAINER
-========================================= */
 .hvnly-cache-admin {
-    font-family: var(--hvnly-bodyFont);
-    color: var(--hvnly-text-primary);
-    max-width: 1200px;
-    margin: 20px 20px 20px 0;
+    font-family: var(--hvnly-bodyFont, Inter, sans-serif);
+    color: var(--hvnly-text-primary, #1e1e2f);
+    max-width: 1180px;
+    margin: 16px 20px 40px 0;
     padding: 0;
 }
 
-/* Page Header */
-.hvnly-cache-admin h1 {
-    font-family: var(--hvnly-headingFont);
-    font-size: 28px;
+.hvnly-cache-hero {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 28px 32px;
+    margin: 0 0 28px;
+    border-radius: 16px;
+    border: 1px solid var(--hvnly-border-color, #e4e4ed);
+    background:
+        linear-gradient(135deg, rgba(108, 96, 254, 0.08) 0%, rgba(255, 255, 255, 0.95) 42%, #fff 100%);
+    box-shadow: 0 8px 28px rgba(30, 30, 47, 0.04);
+}
+
+.hvnly-cache-hero__eyebrow {
+    margin: 0 0 8px;
+    font-size: 12px;
     font-weight: 600;
-    color: var(--hvnly-text-primary);
-    margin: 0 0 30px 0;
-    padding: 0 0 15px 0;
-    border-bottom: 2px solid var(--hvnly-border-color);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--hvnly-brand-primary, #6c60fe);
+}
+
+.hvnly-cache-hero h1 {
+    margin: 0 0 10px;
+    padding: 0;
+    border: 0;
+    font-family: var(--hvnly-headingFont, Inter, sans-serif);
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--hvnly-text-primary, #1e1e2f);
+}
+
+.hvnly-cache-hero h1::before {
+    display: none;
+}
+
+.hvnly-cache-hero__desc {
+    margin: 0 0 8px;
+    max-width: 46rem;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--hvnly-text-secondary, #555);
+}
+
+.hvnly-cache-hero__meta {
+    margin: 0;
+    font-size: 12px;
+    color: var(--hvnly-text-secondary, #555);
+}
+
+.hvnly-cache-hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.hvnly-cache-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    background: #f3f4f6;
+    color: #555;
+}
+
+.hvnly-cache-badge--active,
+.hvnly-cache-badge--healthy {
+    background: rgba(0, 180, 106, 0.12);
+    color: var(--hvnly-brand-success, #00b46a);
+    border-color: rgba(0, 180, 106, 0.22);
+}
+
+.hvnly-cache-badge--warming {
+    background: rgba(255, 181, 7, 0.14);
+    color: #9a6b00;
+    border-color: rgba(255, 181, 7, 0.28);
+}
+
+.hvnly-cache-badge--idle,
+.hvnly-cache-badge--disabled {
+    background: rgba(145, 146, 163, 0.14);
+    color: #5f6175;
+    border-color: rgba(145, 146, 163, 0.25);
+}
+
+.hvnly-cache-section-head {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 0 16px;
+}
+
+.hvnly-cache-section-head h2 {
+    margin: 0;
+    font-family: var(--hvnly-headingFont, Inter, sans-serif);
+    font-size: 18px;
+    font-weight: 650;
+}
+
+.hvnly-cache-section-note {
+    margin: 0;
+    font-size: 13px;
+    color: var(--hvnly-text-secondary, #555);
 }
 
 .hvnly-cache-admin h1::before {
-    content: '';
-    width: 4px;
-    height: 28px;
-    background: var(--hvnly-brand-primary);
-    border-radius: 4px;
+    content: none;
 }
 
-/* Section Headers */
-.hvnly-cache-admin h2 {
-    font-family: var(--hvnly-headingFont);
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--hvnly-text-primary);
-    margin: 0 0 20px 0;
-    padding: 0;
+.hvnly-cache-stats,
+.hvnly-cache-actions,
+.hvnly-cache-settings,
+.hvnly-cache-performance {
+    margin-bottom: 28px;
 }
 
-/* =========================================
-   STATISTICS CARDS
-========================================= */
-.hvnly-cache-stats {
-    margin-bottom: 30px;
-}
-
-.hvnly-cache-stats .stats-grid {
+.hvnly-cache-stats .stats-grid,
+.hvnly-cache-performance .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
 }
 
-.hvnly-cache-stats .stat-card {
+.hvnly-cache-stats .stat-card,
+.hvnly-cache-performance .stat-card {
     background: #fff;
-    border: 1px solid var(--hvnly-border-color);
-    border-radius: 12px;
-    padding: 20px 15px;
-    text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    transition: all 0.2s ease;
+    border: 1px solid var(--hvnly-border-color, #e4e4ed);
+    border-radius: 14px;
+    padding: 18px 16px;
+    text-align: left;
+    box-shadow: 0 2px 10px rgba(30, 30, 47, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.hvnly-cache-stats .stat-card:hover {
+.hvnly-cache-stats .stat-card:hover,
+.hvnly-cache-performance .stat-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(108, 96, 254, 0.1);
-    border-color: var(--hvnly-brand-primary);
+    box-shadow: 0 10px 24px rgba(108, 96, 254, 0.1);
+    border-color: rgba(108, 96, 254, 0.35);
 }
 
-.hvnly-cache-stats .stat-card h3 {
-    margin: 0 0 10px 0;
-    font-size: 13px;
-    color: var(--hvnly-text-secondary);
-    font-weight: 500;
+.hvnly-cache-stats .stat-card h3,
+.hvnly-cache-performance .stat-card h3 {
+    margin: 0 0 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
+    color: var(--hvnly-text-secondary, #555);
 }
 
-.hvnly-cache-stats .stat-value {
-    font-size: 28px;
+.hvnly-cache-stats .stat-value,
+.hvnly-cache-performance .stat-value {
+    font-size: 26px;
     font-weight: 700;
-    color: var(--hvnly-brand-primary);
-    line-height: 1.2;
+    line-height: 1.15;
+    color: var(--hvnly-text-primary, #1e1e2f);
+    word-break: break-word;
 }
 
-/* Card Colors */
-.hvnly-cache-stats .stat-card:nth-child(1) .stat-value { color: var(--hvnly-brand-primary); }
-.hvnly-cache-stats .stat-card:nth-child(2) .stat-value { color: var(--hvnly-brand-secondary); }
-.hvnly-cache-stats .stat-card:nth-child(3) .stat-value { color: var(--hvnly-brand-accent); }
-.hvnly-cache-stats .stat-card:nth-child(4) .stat-value { color: var(--hvnly-brand-success); }
-.hvnly-cache-stats .stat-card:nth-child(5) .stat-value { color: var(--hvnly-status-sale); }
-.hvnly-cache-stats .stat-card:nth-child(6) .stat-value { color: var(--hvnly-status-rent); }
+.stat-card--status-active .stat-value,
+.stat-card--health-healthy .stat-value { color: var(--hvnly-brand-success, #00b46a); }
+.stat-card--hitrate .stat-value,
+.stat-card--size .stat-value { color: var(--hvnly-brand-primary, #6c60fe); }
 
-/* =========================================
-   ACTION BUTTONS
-========================================= */
-.hvnly-cache-actions {
+.hvnly-cache-action-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.hvnly-cache-action-card {
     background: #fff;
-    border: 1px solid var(--hvnly-border-color);
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    border: 1px solid var(--hvnly-border-color, #e4e4ed);
+    border-radius: 14px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: 0 2px 10px rgba(30, 30, 47, 0.03);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.hvnly-cache-actions .action-buttons {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+.hvnly-cache-action-card:hover {
+    border-color: rgba(108, 96, 254, 0.28);
+    box-shadow: 0 10px 24px rgba(108, 96, 254, 0.08);
+}
+
+.hvnly-cache-action-card--system {
+    background: linear-gradient(160deg, rgba(108, 96, 254, 0.06), #fff 55%);
+}
+
+.hvnly-cache-action-card .card-icon {
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background: rgba(108, 96, 254, 0.1);
+    color: var(--hvnly-brand-primary, #6c60fe);
+}
+
+.hvnly-cache-action-card .card-icon .dashicons {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.hvnly-cache-action-card .card-header h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 650;
+}
+
+.hvnly-cache-action-card .card-desc {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--hvnly-text-secondary, #555);
+}
+
+.hvnly-cache-action-card .card-meta {
+    margin: 8px 0 0;
+    font-size: 12px;
+    color: var(--hvnly-text-secondary, #555);
+    font-style: italic;
+}
+
+.hvnly-cache-action-card .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.hvnly-cache-action-card .card-actions .button {
+    min-width: 0;
+    flex: 1 1 auto;
+    border-radius: 8px;
+    justify-content: center;
 }
 
 .hvnly-cache-actions .button {
@@ -123,382 +267,213 @@
     color: #2c3e50;
     border: 1px solid #dee2e6;
     border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 14px;
+    padding: 8px 14px;
+    font-size: 13px;
     font-weight: 500;
-    font-family: var(--hvnly-bodyFont);
+    font-family: var(--hvnly-bodyFont, Inter, sans-serif);
     cursor: pointer;
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    min-width: 140px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    min-height: 36px;
+    line-height: 1.2;
+    box-shadow: none;
 }
 
 .hvnly-cache-actions .button:hover {
     background: #fff;
-    border-color: var(--hvnly-brand-primary);
-    color: var(--hvnly-brand-primary);
+    border-color: var(--hvnly-brand-primary, #6c60fe);
+    color: var(--hvnly-brand-primary, #6c60fe);
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(108, 96, 254, 0.15);
 }
 
-.hvnly-cache-actions .button:active {
-    transform: translateY(0);
-}
-
-/* Primary Button */
-.hvnly-cache-actions .button-primary {
-    background: var(--hvnly-brand-primary);
+.hvnly-cache-actions .button-primary,
+.hvnly-cache-actions .button.button-primary {
+    background: var(--hvnly-brand-primary, #6c60fe);
     color: #fff;
-    border: none;
+    border-color: var(--hvnly-brand-primary, #6c60fe);
 }
 
-.hvnly-cache-actions .button-primary:hover {
+.hvnly-cache-actions .button-primary:hover,
+.hvnly-cache-actions .button.button-primary:hover {
     background: #5a4ee0;
     color: #fff;
-    border: none;
-    box-shadow: 0 4px 15px rgba(108, 96, 254, 0.3);
+    border-color: #5a4ee0;
 }
 
-/* Sidebar Cache Button */
-.hvnly-cache-actions #hvnly-clear-sidebar-cache {
-    background: var(--hvnly-brand-accent);
+.hvnly-cache-actions .button.button-danger,
+.hvnly-cache-actions #hvnly-clear-cache {
+    background: var(--hvnly-brand-error, #ff4d4f);
+    border-color: var(--hvnly-brand-error, #ff4d4f);
     color: #fff;
-    border: none;
 }
 
-.hvnly-cache-actions #hvnly-clear-sidebar-cache:hover {
-    background: #e55a00;
+.hvnly-cache-actions .button.button-danger:hover,
+.hvnly-cache-actions #hvnly-clear-cache:hover {
+    background: #e04345;
+    border-color: #e04345;
+    color: #fff;
 }
 
-/* Divider */
-.hvnly-cache-actions hr {
-    margin: 20px 0;
-    border: none;
-    border-top: 1px solid var(--hvnly-border-color);
-    width: 100%;
+.hvnly-cache-action-card .card-actions .button.is-disabled,
+.hvnly-cache-action-card .card-actions .button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
 }
 
-/* Shortcode Section Title */
-.hvnly-cache-actions h3 {
-    margin: 10px 0 15px 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--hvnly-text-primary);
-    width: 100%;
-}
-
-/* =========================================
-   SETTINGS FORM
-========================================= */
-.hvnly-cache-settings {
+.hvnly-cache-settings-form {
     background: #fff;
-    border: 1px solid var(--hvnly-border-color);
+    border: 1px solid var(--hvnly-border-color, #e4e4ed);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 2px 10px rgba(30, 30, 47, 0.03);
+}
+
+.hvnly-cache-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.hvnly-cache-setting-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border: 1px solid var(--hvnly-border-color, #e4e4ed);
     border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    background: #fafafa;
 }
 
-.hvnly-cache-settings .form-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.hvnly-cache-settings .form-table tr {
-    border-bottom: 1px solid var(--hvnly-border-color);
-}
-
-.hvnly-cache-settings .form-table tr:last-child {
-    border-bottom: none;
-}
-
-.hvnly-cache-settings .form-table th {
-    font-weight: 600;
-    color: var(--hvnly-text-primary);
-    padding: 20px 20px 20px 0;
-    width: 220px;
-    text-align: left;
+.hvnly-cache-setting-card .setting-copy h3 {
+    margin: 0 0 6px;
     font-size: 14px;
+    font-weight: 650;
 }
 
-.hvnly-cache-settings .form-table td {
-    padding: 20px 0;
+.hvnly-cache-setting-card .description {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--hvnly-text-secondary, #555);
 }
 
-/* Checkbox */
-.hvnly-cache-settings input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--hvnly-brand-primary);
-    margin-right: 10px;
-    cursor: pointer;
+.hvnly-cache-select {
+    min-width: 140px;
+    border-radius: 8px !important;
 }
 
-.hvnly-cache-settings label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-/* Select Dropdown */
-.hvnly-cache-settings select {
-    padding: 8px 30px 8px 12px;
-    border: 1px solid var(--hvnly-border-color);
-    border-radius: 6px;
-    font-family: var(--hvnly-bodyFont);
-    font-size: 14px;
-    min-width: 200px;
-    background: #fff;
-    color: #2c3e50;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c60fe' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-}
-
-.hvnly-cache-settings select:focus {
-    border-color: var(--hvnly-brand-primary);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(108, 96, 254, 0.1);
-}
-
-/* Description */
-.hvnly-cache-settings .description {
-    font-size: 13px;
-    color: var(--hvnly-text-secondary);
-    margin-top: 6px;
-    font-style: italic;
-}
-
-/* Submit Button */
-.hvnly-cache-settings .submit {
-    margin: 20px 0 0 0;
-    padding: 0;
-}
-
-.hvnly-cache-settings .submit .button {
-    background: var(--hvnly-brand-primary);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 30px;
-    font-size: 15px;
-    font-weight: 500;
-    font-family: var(--hvnly-bodyFont);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(108, 96, 254, 0.2);    line-height: 20px;
-}
-
-.hvnly-cache-settings .submit .button:hover {
-    background: #5a4ee0;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(108, 96, 254, 0.3);
-}
-
-/* =========================================
-   PERFORMANCE METRICS
-========================================= */
-.hvnly-cache-performance {
-    background: #fff;
-    border: 1px solid var(--hvnly-border-color);
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-}
-
-.hvnly-cache-performance table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid var(--hvnly-border-color);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.hvnly-cache-performance table thead th {
-    background: #f8f9fa;
-    padding: 12px 15px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--hvnly-text-primary);
-    border-bottom: 2px solid var(--hvnly-border-color);
-}
-
-.hvnly-cache-performance table tbody td {
-    padding: 12px 15px;
-    border-bottom: 1px solid var(--hvnly-border-color);
-    color: var(--hvnly-text-secondary);
-    font-size: 14px;
-}
-
-.hvnly-cache-performance table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.hvnly-cache-performance table tbody tr:hover td {
-    background: #f8f9fa;
-}
-
-.hvnly-cache-performance table tbody td:first-child {
-    font-weight: 500;
-    color: var(--hvnly-text-primary);
-}
-
-.hvnly-cache-performance table tbody td:last-child {
-    font-weight: 600;
-    color: var(--hvnly-brand-primary);
-}
-
-/* =========================================
-   PROGRESS BAR & INDICATOR
-========================================= */
-.hvnly-progress-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.hvnly-progress-overlay.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.hvnly-progress-card {
-    background: #fff;
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    transform: scale(0.95);
-    transition: transform 0.3s ease;
-}
-
-.hvnly-progress-overlay.show .hvnly-progress-card {
-    transform: scale(1);
-}
-
-.hvnly-progress-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px;
-    background: linear-gradient(135deg, var(--hvnly-brand-primary), var(--hvnly-brand-secondary));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: pulse 1.5s ease infinite;
-}
-
-.hvnly-progress-icon i {
-    font-size: 40px;
-    color: #fff;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
-}
-
-.hvnly-progress-title {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--hvnly-text-primary);
-    margin: 0 0 10px 0;
-    font-family: var(--hvnly-headingFont);
-}
-
-.hvnly-progress-message {
-    color: var(--hvnly-text-secondary);
-    margin: 0 0 20px 0;
-    font-size: 14px;
-}
-
-.hvnly-progress-bar-container {
-    margin: 20px 0;
-}
-
-.hvnly-progress-bar-bg {
-    width: 100%;
-    height: 8px;
-    background: #e9ecef;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.hvnly-progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--hvnly-brand-primary), var(--hvnly-brand-secondary));
-    border-radius: 4px;
-    width: 0%;
-    transition: width 0.3s ease;
+.hvnly-cache-switch {
     position: relative;
-    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
 }
 
-.hvnly-progress-bar-fill::after {
+.hvnly-cache-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.hvnly-cache-switch__ui {
+    width: 44px;
+    height: 26px;
+    border-radius: 999px;
+    background: #c9cbd6;
+    position: relative;
+    transition: background 0.2s ease;
+}
+
+.hvnly-cache-switch__ui::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    animation: shimmer 1s infinite;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+    transition: transform 0.2s ease;
 }
 
-@keyframes shimmer {
-    0% {
-        transform: translateX(-100%);
+.hvnly-cache-switch input:checked + .hvnly-cache-switch__ui {
+    background: var(--hvnly-brand-primary, #6c60fe);
+}
+
+.hvnly-cache-switch input:checked + .hvnly-cache-switch__ui::after {
+    transform: translateX(18px);
+}
+
+.hvnly-cache-switch input:focus-visible + .hvnly-cache-switch__ui {
+    outline: 2px solid var(--hvnly-brand-primary, #6c60fe);
+    outline-offset: 2px;
+}
+
+.hvnly-cache-save {
+    border-radius: 8px !important;
+}
+
+@media (max-width: 1100px) {
+    .hvnly-cache-stats .stats-grid,
+    .hvnly-cache-performance .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    100% {
-        transform: translateX(100%);
+}
+
+@media (max-width: 960px) {
+    .hvnly-cache-hero {
+        flex-direction: column;
+    }
+
+    .hvnly-cache-action-cards,
+    .hvnly-cache-settings-grid {
+        grid-template-columns: 1fr;
     }
 }
 
-.hvnly-progress-percentage {
-    text-align: center;
-    margin-top: 12px;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--hvnly-brand-primary);
-    font-family: var(--hvnly-headingFont);
+@media (max-width: 600px) {
+    .hvnly-cache-stats .stats-grid,
+    .hvnly-cache-performance .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hvnly-cache-section-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
-.hvnly-progress-stats {
-    margin-top: 15px;
-    font-size: 13px;
-    color: var(--hvnly-text-secondary);
+/* =========================================
+   LEGACY / SHARED (toasts, modals)
+========================================= */
+.hvnly-cache-admin .button.is-loading .spinner {
+    float: none;
+    margin: 0 6px 0 0;
 }
 
-.hvnly-progress-stats span {
-    font-weight: 600;
-    color: var(--hvnly-brand-primary);
+/* =========================================
+   ACTION BUTTONS (shared)
+========================================= */
+.hvnly-cache-actions {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 28px;
+    box-shadow: none;
+}
+
+.hvnly-cache-actions .action-buttons {
+    display: grid;
 }
 
 /* =========================================

@@ -386,3 +386,97 @@ button.hvnly-retry-map-btn:is(:hover, :focus, :active) {
 		transition: none;
 	}
 }
+
+/* ----------------------------------------------------------------------
+ * Primary CTAs — restore Havenlytics design-system hover lift
+ * Theme neutralization above must not flatten Gutenberg / block primary
+ * buttons (View Property, auth/inquiry submit, header/map/saved CTAs).
+ * Scoped to block wrappers so Elementor / shortcodes / classic archives
+ * keep their existing button motion unchanged.
+ * -------------------------------------------------------------------- */
+.hvnly-content-wrapper :is(
+	a.hvnly-btn-primary,
+	a.hvnly-btn--primary,
+	a.hvnly-btn.hvnly-btn-primary,
+	a.hvnly-btn.hvnly-btn--primary,
+	a.hvnly-block-section-header__button,
+	a.hvnly-block-map__popup-cta,
+	a.hvnly-block-saved__btn--primary,
+	a.hvnly-dashboard-block__gate-btn,
+	button.hvnly-auth__btn--primary,
+	button.hvnly-contact-agent__btn--primary
+),
+.hvnly-block-inquiry button.hvnly-contact-agent__btn--primary,
+.hvnly-block-saved a.hvnly-block-saved__btn--primary,
+.hvnly-auth button.hvnly-auth__btn--primary,
+.hvnly-dashboard-block a.hvnly-dashboard-block__gate-btn {
+	/* Include transform so translateY can animate (base rule omits it). */
+	transition-property: background-color, background, border-color, color, box-shadow, opacity, filter, transform;
+	transition-duration: 0.25s;
+	transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.hvnly-content-wrapper :is(
+	a.hvnly-btn-primary,
+	a.hvnly-btn--primary,
+	a.hvnly-btn.hvnly-btn-primary,
+	a.hvnly-btn.hvnly-btn--primary,
+	a.hvnly-block-section-header__button,
+	a.hvnly-block-map__popup-cta,
+	a.hvnly-block-saved__btn--primary,
+	a.hvnly-dashboard-block__gate-btn,
+	button.hvnly-auth__btn--primary,
+	button.hvnly-contact-agent__btn--primary
+):is(:hover, :focus-visible),
+.hvnly-block-inquiry :is(
+	button.hvnly-contact-agent__btn--primary
+):is(:hover, :focus-visible),
+.hvnly-block-saved :is(
+	a.hvnly-block-saved__btn--primary
+):is(:hover, :focus-visible),
+.hvnly-auth :is(
+	button.hvnly-auth__btn--primary
+):is(:hover, :focus-visible),
+.hvnly-dashboard-block a.hvnly-dashboard-block__gate-btn:is(:hover, :focus-visible) {
+	/* Allow block CSS transform (translateY) to apply after theme neutralize. */
+	transform: translateY(-2px);
+}
+
+.hvnly-content-wrapper :is(
+	a.hvnly-btn-primary,
+	a.hvnly-btn--primary,
+	a.hvnly-btn.hvnly-btn-primary,
+	a.hvnly-btn.hvnly-btn--primary,
+	a.hvnly-block-section-header__button,
+	a.hvnly-block-map__popup-cta,
+	a.hvnly-block-saved__btn--primary,
+	a.hvnly-dashboard-block__gate-btn,
+	button.hvnly-auth__btn--primary,
+	button.hvnly-contact-agent__btn--primary
+):active,
+.hvnly-block-inquiry button.hvnly-contact-agent__btn--primary:active,
+.hvnly-block-saved a.hvnly-block-saved__btn--primary:active,
+.hvnly-auth button.hvnly-auth__btn--primary:active,
+.hvnly-dashboard-block a.hvnly-dashboard-block__gate-btn:active {
+	transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hvnly-content-wrapper :is(
+		a.hvnly-btn-primary,
+		a.hvnly-btn--primary,
+		a.hvnly-btn.hvnly-btn-primary,
+		a.hvnly-block-section-header__button,
+		a.hvnly-block-map__popup-cta,
+		a.hvnly-block-saved__btn--primary,
+		a.hvnly-dashboard-block__gate-btn,
+		button.hvnly-auth__btn--primary,
+		button.hvnly-contact-agent__btn--primary
+	):is(:hover, :focus-visible, :active),
+	.hvnly-block-inquiry button.hvnly-contact-agent__btn--primary:is(:hover, :focus-visible, :active),
+	.hvnly-block-saved a.hvnly-block-saved__btn--primary:is(:hover, :focus-visible, :active),
+	.hvnly-auth button.hvnly-auth__btn--primary:is(:hover, :focus-visible, :active),
+	.hvnly-dashboard-block a.hvnly-dashboard-block__gate-btn:is(:hover, :focus-visible, :active) {
+		transform: none;
+	}
+}

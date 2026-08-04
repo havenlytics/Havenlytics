@@ -23,6 +23,7 @@
             this.$imagesList = $(`#hvnly-gallery-list-${galleryId}`);
             this.$hiddenInput = $(`#hvnly_gallery_${galleryId}`);
             this.$addButton = $container.find('.hvnly-add-gallery');
+            this.$clearButton = $container.find('.hvnly-clear-gallery');
             
             this.initialized = false;
             this.init();
@@ -189,27 +190,38 @@
         }
 
         addImageToGallery(attachment) {
-            const thumbnailUrl = attachment.sizes?.thumbnail?.url || attachment.url;
-            
-            // CRITICAL FIX: Use this.galleryId (which is group_base_id), not this.galleryId + '_images'
-            const galleryIdForFields = this.galleryId;  // This should be the group_base_id
-            
+            const thumbnailUrl = attachment.sizes?.medium?.url
+                || attachment.sizes?.thumbnail?.url
+                || attachment.url;
+            const galleryIdForFields = this.galleryId;
+            const filename = attachment.filename || attachment.name || attachment.title || String(attachment.id);
+            const safeTitle = (attachment.title || '').replace(/"/g, '&quot;');
+            const safeFilename = String(filename)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+
             const $item = $(`
                 <li class="hvnly-gallery-item" 
                     data-id="${attachment.id}" 
                     data-gallery-id="${this.galleryId}">
-                    
-                    <img src="${thumbnailUrl}" alt="${attachment.title || ''}" />
-                    
-                    <div class="hvnly-gallery-item-actions">
-                        <a href="#" class="hvnly-gallery-edit" title="${t('editRemoveImage', 'Edit/Remove Image')}">
-                            <span class="dashicons dashicons-edit"></span>
-                        </a>
-                        <a href="#" class="hvnly-gallery-remove" title="${t('editRemoveImage', 'Edit/Remove Image')}">
-                            <span class="dashicons dashicons-no"></span>
-                        </a>
+                    <div class="hvnly-gallery-item-media">
+                        <img src="${thumbnailUrl}" alt="${safeTitle}" />
+                        <div class="hvnly-gallery-item-overlay">
+                            <div class="hvnly-gallery-item-actions">
+                                <a href="#" class="hvnly-gallery-edit" title="${t('editImage', 'Edit Image')}" aria-label="${t('editImage', 'Edit Image')}">
+                                    <span class="dashicons dashicons-edit" aria-hidden="true"></span>
+                                </a>
+                                <a href="#" class="hvnly-gallery-remove" title="${t('removeImage', 'Remove Image')}" aria-label="${t('removeImage', 'Remove Image')}">
+                                    <span class="dashicons dashicons-trash" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                            <div class="hvnly-gallery-item-meta">
+                                <span class="hvnly-gallery-item-filename">${safeFilename}</span>
+                            </div>
+                        </div>
                     </div>
-                    
                     <input type="hidden" name="hvnly_gallery_title_${galleryIdForFields}[]" value="${attachment.title || ''}" />
                     <input type="hidden" name="hvnly_gallery_caption_${galleryIdForFields}[]" value="${attachment.caption || ''}" />
                     <input type="hidden" name="hvnly_gallery_ids_${galleryIdForFields}[]" value="${attachment.id}" />
@@ -256,9 +268,13 @@
                 const attachment = frame.state().get('selection').first().toJSON();
                 
                 if (this.isImageAttachment(attachment)) {
-                    $item.find('img').attr('src', attachment.sizes?.thumbnail?.url || attachment.url);
+                    $item.find('img').attr('src', attachment.sizes?.medium?.url || attachment.sizes?.thumbnail?.url || attachment.url);
                     $item.find(`input[name="${this.titleInputName}[]"]`).val(attachment.title || '');
                     $item.find(`input[name="${this.captionInputName}[]"]`).val(attachment.caption || '');
+                    const nextName = attachment.filename || attachment.name || attachment.title || '';
+                    if (nextName) {
+                        $item.find('.hvnly-gallery-item-filename').text(nextName);
+                    }
                 }
             });
 
@@ -297,7 +313,12 @@
          */
         updateImageCount() {
             const count = this.$imagesList.find('li.hvnly-gallery-item').length;
-            $(`#hvnly-gallery-status-${this.galleryId} .hvnly-gallery-status-count`).text(count);
+            const $status = $(`#hvnly-gallery-status-${this.galleryId}`);
+            $status.find('.hvnly-gallery-status-count').text(count);
+            $status.find('.hvnly-gallery-status-label').text(
+                count === 1 ? t('imageSingular', 'Image') : t('imagePlural', 'Images')
+            );
+            this.$container.toggleClass('hvnly-gallery-is-empty', count === 0);
         }
     }
 

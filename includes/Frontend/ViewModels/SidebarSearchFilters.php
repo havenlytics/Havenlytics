@@ -422,7 +422,18 @@ class SidebarSearchFilters
     public function get_cached_sidebar_results($args, $page, $per_page)
     {
         $cache_key = $this->generate_sidebar_cache_key($args, $page, $per_page);
-        return get_transient($cache_key);
+        $cached    = get_transient($cache_key);
+        $engine    = function_exists('HVNLY_NAB') ? HVNLY_NAB()->engine() : null;
+
+        if (false !== $cached && null !== $cached) {
+            if ($engine && method_exists($engine, 'track_cache_hit')) {
+                $engine->track_cache_hit();
+            }
+        } elseif ($engine && method_exists($engine, 'track_cache_miss')) {
+            $engine->track_cache_miss();
+        }
+
+        return $cached;
     }
 
     /**

@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Havenlytics 3.7.1\n"
+"Project-Id-Version: Havenlytics 3.7.2\n"
 "Report-Msgid-Bugs-To: https://havenlytics.com/support/\n"
-"POT-Creation-Date: 2026-07-28 16:10:36+0000\n"
+"POT-Creation-Date: 2026-07-29 05:12:21+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -45,6 +45,10 @@ msgstr ""
 
 #: includes/Workspace/Auth/RegistrationAdminActions.php:572
 msgid "%1$d agents updated to %2$s."
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:59
+msgid "%1$d of %2$d properties created"
 msgstr ""
 
 #: src/workspace/Forms/Property/builderRepeaterKit.js:231 src/workspace/Forms/Property/builderRepeaterKit.js:256
@@ -155,8 +159,12 @@ msgstr ""
 msgid "%d days ago"
 msgstr ""
 
-#: src/setup/steps/FinishStep.jsx:23
+#: src/setup/steps/FinishStep.jsx:68
 msgid "%d demo properties were created. Explore your site or start adding your own listings."
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:76
+msgid "%d guided steps"
 msgstr ""
 
 #: includes/Workspace/Identity/EmailVerificationNotifier.php:158
@@ -263,7 +271,7 @@ msgstr ""
 msgid "%d months ago"
 msgstr ""
 
-#: templates/single-property/similar-carousel-dots.php:49
+#: src/setup/steps/FinishStep.jsx:119 templates/single-property/similar-carousel-dots.php:49
 msgid "%d properties"
 msgstr ""
 
@@ -273,6 +281,10 @@ msgstr ""
 
 #: templates/single-agency/partials/listings-carousel.php:29 templates/single-agency/partials/properties.php:101
 msgid "%d properties listed"
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:113
+msgid "%d properties were created and kept."
 msgstr ""
 
 #: templates/single-agent/partials/properties.php:51
@@ -719,11 +731,11 @@ msgstr ""
 msgid "3 acres"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:174
+#: src/setup/steps/CurrencyStep.jsx:212
 msgid "3 baths"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:175
+#: src/setup/steps/CurrencyStep.jsx:216
 msgid "3,200 sq ft"
 msgstr ""
 
@@ -755,7 +767,7 @@ msgstr ""
 msgid "4 Columns"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:173
+#: src/setup/steps/CurrencyStep.jsx:208
 msgid "4 beds"
 msgstr ""
 
@@ -951,11 +963,7 @@ msgstr ""
 msgid "A contemporary two-bedroom apartment with floor-to-ceiling windows, an open kitchen with stone worktops, in-unit laundry, and secure parking. Steps from restaurants, transit, and nightlife."
 msgstr ""
 
-#: src/setup/steps/WelcomeStep.jsx:33
-msgid "A few quick steps to configure your locale, workspace, and starter content. You can change any of this later in Settings. This takes about two minutes."
-msgstr ""
-
-#: src/setup/steps/WorkspaceStep.jsx:22
+#: src/setup/steps/WorkspaceStep.jsx:31
 msgid "A front-end portal where your agents sign in and manage their own listings, inquiries, and profile — no wp-admin access needed."
 msgstr ""
 
@@ -1131,6 +1139,10 @@ msgstr ""
 msgid "About %s"
 msgstr ""
 
+#: src/setup/steps/WelcomeStep.jsx:75
+msgid "About 2 minutes"
+msgstr ""
+
 #: includes/Workspace/Auth/RegistrationEmailNotifier.php:277 templates/emails/workspace-registration-rejected.php:7
 msgid "About your registration"
 msgstr ""
@@ -1259,7 +1271,7 @@ msgstr ""
 msgid "Activate Theme"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:531 includes/Admin/DocumentationPage.php:535 includes/Admin/DocumentationPage.php:539 includes/Admin/DocumentationPage.php:542 includes/Admin/DocumentationPage.php:544 includes/Admin/DocumentationPage.php:553 includes/Admin/DocumentationPage.php:557 includes/Admin/DocumentationPage.php:563 includes/Admin/DocumentationPage.php:594 includes/Agent/Admin/AgentManagementAdminList.php:395 includes/Agent/Admin/AgentManagementAdminList.php:463 includes/Workspace/Auth/WorkspaceRegistrationStatus.php:178
+#: includes/Admin/DocumentationPage.php:521 includes/Admin/DocumentationPage.php:527 includes/Admin/DocumentationPage.php:530 includes/Admin/DocumentationPage.php:534 includes/Admin/DocumentationPage.php:537 includes/Admin/DocumentationPage.php:542 includes/Admin/DocumentationPage.php:548 includes/Admin/DocumentationPage.php:554 includes/Agent/Admin/AgentManagementAdminList.php:395 includes/Agent/Admin/AgentManagementAdminList.php:463 includes/Workspace/Auth/WorkspaceRegistrationStatus.php:178 src/builder/components/TabContent/PropertyCard/constants/fieldTypes.js:77
 msgid "Active"
 msgstr ""
 
@@ -1271,7 +1283,7 @@ msgstr ""
 msgid "Active Listings"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:525
+#: includes/Admin/DocumentationPage.php:506
 msgid "Active Modules"
 msgstr ""
 
@@ -1619,7 +1631,7 @@ msgstr ""
 msgid "Address Line 2"
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:137
+#: src/setup/steps/MapStep.jsx:139
 msgid "Address lookup is unavailable right now. Drag the marker instead."
 msgstr ""
 
@@ -1651,8 +1663,8 @@ msgstr ""
 msgid "Admin Only"
 msgstr ""
 
-#: src/setup/steps/WorkspaceStep.jsx:62
-msgid "Admin approval — you approve each agent"
+#: src/setup/steps/WorkspaceStep.jsx:16
+msgid "Admin approval"
 msgstr ""
 
 #: templates/contact-agent/emails/admin-notification.php:96
@@ -1867,7 +1879,7 @@ msgstr ""
 msgid "Agent Username"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:307 src/settings/components/Content/TabSections/ContactAgentSettings.js:293 src/settings/components/utils/constants.js:15 src/setup/steps/WelcomeStep.jsx:58
+#: includes/Admin/DocumentationPage.php:307 src/settings/components/Content/TabSections/ContactAgentSettings.js:293 src/settings/components/utils/constants.js:15 src/setup/steps/FinishStep.jsx:109 src/setup/steps/WelcomeStep.jsx:33 src/setup/steps/WorkspaceStep.jsx:47
 msgid "Agent Workspace"
 msgstr ""
 
@@ -1875,20 +1887,12 @@ msgstr ""
 msgid "Agent Workspace Quick Start"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:502 includes/Admin/DocumentationPage.php:540
+#: includes/Admin/DocumentationPage.php:485 includes/Admin/DocumentationPage.php:533
 msgid "Agent Workspace System"
 msgstr ""
 
 #: includes/Workspace/Auth/SessionAuthController.php:162 includes/Workspace/WorkspaceAvailability.php:93 templates/agent-portal/unavailable.php:7
 msgid "Agent Workspace is currently unavailable"
-msgstr ""
-
-#: src/setup/steps/WorkspaceStep.jsx:48
-msgid "Agent Workspace is off"
-msgstr ""
-
-#: src/setup/steps/WorkspaceStep.jsx:47
-msgid "Agent Workspace is on"
 msgstr ""
 
 #: src/settings/components/Content/TabSections/ContactAgentSettings.js:393
@@ -1955,7 +1959,7 @@ msgstr ""
 msgid "Agent published without a Workspace account. Add a valid Agent email, then use “Create Workspace Account”."
 msgstr ""
 
-#: src/setup/steps/WorkspaceStep.jsx:57
+#: src/setup/steps/WorkspaceStep.jsx:85
 msgid "Agent registration"
 msgstr ""
 
@@ -1967,8 +1971,12 @@ msgstr ""
 msgid "Agent:"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:369 includes/Admin/DocumentationPage.php:483 includes/Agent/AgentAdminMenu.php:32 includes/Agent/AgentPostType.php:60 includes/Agent/AgentPostType.php:62 includes/Agent/AgentPostType.php:81 includes/Core/Installer.php:114 includes/CsvTransfer/Mapping/FieldCatalog.php:23 includes/CsvTransfer/Mapping/FieldCatalog.php:36 includes/Database/Custom_Taxonomy/Property_Agents.php:28 includes/Frontend/PropertySingleRenderer.php:959 src/blocks/property-inquiry/edit.js:234
+#: includes/Admin/DocumentationPage.php:369 includes/Admin/DocumentationPage.php:468 includes/Agent/AgentAdminMenu.php:32 includes/Agent/AgentPostType.php:60 includes/Agent/AgentPostType.php:62 includes/Agent/AgentPostType.php:81 includes/Core/Installer.php:114 includes/CsvTransfer/Mapping/FieldCatalog.php:23 includes/CsvTransfer/Mapping/FieldCatalog.php:36 includes/Database/Custom_Taxonomy/Property_Agents.php:28 includes/Frontend/PropertySingleRenderer.php:959 src/blocks/property-inquiry/edit.js:234
 msgid "Agents"
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:24
+msgid "Agents & content"
 msgstr ""
 
 #: src/settings/components/Content/TabSections/PermalinkSettings.js:95
@@ -2001,6 +2009,10 @@ msgstr ""
 
 #: includes/Agent/Admin/AgentDeleteExecutor.php:51
 msgid "Agents cannot be trashed directly. Use the Delete Wizard to transfer ownership first."
+msgstr ""
+
+#: src/setup/steps/WorkspaceStep.jsx:11
+msgid "Agents create an account and can start working immediately."
 msgstr ""
 
 #: src/settings/components/Content/TabSections/ContactAgentSettings.js:82
@@ -2115,10 +2127,6 @@ msgstr ""
 msgid "All management filters"
 msgstr ""
 
-#: src/setup/steps/FinishStep.jsx:16
-msgid "All set"
-msgstr ""
-
 #: includes/Api/Type/Settings/PluginSettingsAPI.php:670
 msgid "All settings reset to defaults"
 msgstr ""
@@ -2191,8 +2199,16 @@ msgstr ""
 msgid "Already have an account?"
 msgstr ""
 
+#: src/setup/steps/DemoImportStep.jsx:17
+msgid "Already have listings elsewhere? The Migration Engine and CSV Import bring them in later."
+msgstr ""
+
 #: src/builder/components/TabContent/AddPropertyFormTab/Modal/Modal.js:561
 msgid "Already in use"
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:142
+msgid "Already included in your install"
 msgstr ""
 
 #: includes/Agent/AgentMetabox.php:459
@@ -2267,15 +2283,19 @@ msgstr ""
 msgid "An unexpected error occurred."
 msgstr ""
 
-#: includes/Admin/AdminPreloader.php:23 includes/Admin/DocumentationPage.php:294 includes/Admin/DocumentationPage.php:363 includes/Admin/DocumentationPage.php:502 includes/Admin/Menu.php:51 includes/Admin/Menu.php:54 includes/Admin/Menu.php:138 includes/Workspace/WorkspaceAssets.php:255 src/blocks/dashboard/edit.js:24 src/blocks/dashboard/edit.js:178 src/workspace/Pages/Analytics/AnalyticsHome.js:247 src/workspace/Pages/Analytics/AnalyticsHome.js:291
+#: includes/Admin/AdminPreloader.php:23 includes/Admin/DocumentationPage.php:294 includes/Admin/DocumentationPage.php:363 includes/Admin/DocumentationPage.php:481 includes/Admin/Menu.php:51 includes/Admin/Menu.php:54 includes/Admin/Menu.php:138 includes/Workspace/WorkspaceAssets.php:255 src/blocks/dashboard/edit.js:24 src/blocks/dashboard/edit.js:178 src/workspace/Pages/Analytics/AnalyticsHome.js:247 src/workspace/Pages/Analytics/AnalyticsHome.js:291
 msgid "Analytics"
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:48 src/setup/steps/WorkspaceStep.jsx:154
+msgid "Analytics Dashboard"
 msgstr ""
 
 #: src/workspace/Services/Analytics/RestAnalyticsRepository.js:14
 msgid "Analytics REST URL is not configured."
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:534
+#: includes/Admin/DocumentationPage.php:525
 msgid "Analytics Status"
 msgstr ""
 
@@ -2387,7 +2407,7 @@ msgstr ""
 msgid "Apply builder policy"
 msgstr ""
 
-#: src/setup/steps/WorkspaceStep.jsx:86
+#: src/setup/steps/WorkspaceStep.jsx:145
 msgid "Approval workflow for new listings"
 msgstr ""
 
@@ -2707,7 +2727,7 @@ msgstr ""
 msgid "Availability Status"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:527 includes/Functions/agent-functions.php:446 templates/partials/cards/agent-card.php:55
+#: includes/Admin/DocumentationPage.php:511 includes/Functions/agent-functions.php:446 templates/partials/cards/agent-card.php:55
 msgid "Available"
 msgstr ""
 
@@ -2715,7 +2735,7 @@ msgstr ""
 msgid "Available Field Types"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:585
+#: includes/Admin/DocumentationPage.php:569
 msgid "Available Languages"
 msgstr ""
 
@@ -2755,7 +2775,7 @@ msgstr ""
 msgid "Azerbaijan"
 msgstr ""
 
-#: includes/Agent/Admin/AgentDeleteWizardPage.php:433 includes/Agent/Admin/AgentDeleteWizardPage.php:493 src/settings/components/Content/TabSections/CsvImportExport/MappingStep.js:230 src/settings/components/Content/TabSections/CsvImportExport/ValidateStep.js:113 src/setup/SetupApp.jsx:151 src/workspace/Forms/Property/PropertyForm.js:101 src/workspace/Forms/Property/PropertyForm.js:131 src/workspace/Pages/Notifications/NotificationsCenter.js:173
+#: includes/Agent/Admin/AgentDeleteWizardPage.php:433 includes/Agent/Admin/AgentDeleteWizardPage.php:493 src/settings/components/Content/TabSections/CsvImportExport/MappingStep.js:230 src/settings/components/Content/TabSections/CsvImportExport/ValidateStep.js:113 src/setup/SetupApp.jsx:251 src/workspace/Forms/Property/PropertyForm.js:101 src/workspace/Forms/Property/PropertyForm.js:131 src/workspace/Pages/Notifications/NotificationsCenter.js:173
 msgid "Back"
 msgstr ""
 
@@ -3023,6 +3043,10 @@ msgstr ""
 msgid "Bring properties in from a CSV file, or export your properties to CSV. Map columns your way and save the mapping as a reusable profile."
 msgstr ""
 
+#: src/setup/steps/DemoImportStep.jsx:242
+msgid "Bringing your own listings?"
+msgstr ""
+
 #: includes/Admin/PropertyImportWizard.php:3031
 msgid "Brochure"
 msgstr ""
@@ -3045,6 +3069,10 @@ msgstr ""
 
 #: includes/Integrations/Blocks/SavedPropertiesBlockRenderer.php:55 templates/blocks/saved-properties.php:76
 msgid "Browse Properties"
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:104
+msgid "Browse documentation"
 msgstr ""
 
 #: includes/Integrations/Elementor/Widgets/HvnlyPropertyAgentsWidget.php:92 templates/property-archive/partials/agents-archive.php:31
@@ -3071,7 +3099,7 @@ msgstr ""
 msgid "Build assets are missing. Please reinstall the plugin or upload the official release ZIP."
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:530
+#: includes/Admin/DocumentationPage.php:519
 msgid "Builder Status"
 msgstr ""
 
@@ -3095,8 +3123,12 @@ msgstr ""
 msgid "Building Number"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:8
+#: src/setup/steps/DemoImportStep.jsx:10
 msgid "Building sections"
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:54
+msgid "Building your demo site…"
 msgstr ""
 
 #: templates/single-property/meta.php:115
@@ -3135,8 +3167,12 @@ msgstr ""
 msgid "Burundi"
 msgstr ""
 
-#: src/setup/SetupApp.jsx:15
+#: src/setup/SetupApp.jsx:16 src/setup/steps/BusinessStep.jsx:16
 msgid "Business"
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:6
+msgid "Business & location"
 msgstr ""
 
 #: includes/Functions/agent-functions.php:457
@@ -3227,7 +3263,7 @@ msgstr ""
 msgid "CSV Column"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:550
+#: includes/Admin/DocumentationPage.php:541 src/setup/steps/WelcomeStep.jsx:40
 msgid "CSV Import & Export"
 msgstr ""
 
@@ -3267,7 +3303,7 @@ msgstr ""
 msgid "Cabin"
 msgstr ""
 
-#: includes/Admin/CacheAdmin.php:40 includes/Admin/DocumentationPage.php:495
+#: includes/Admin/CacheAdmin.php:40 includes/Admin/DocumentationPage.php:475
 msgid "Cache"
 msgstr ""
 
@@ -3561,6 +3597,10 @@ msgstr ""
 
 #: includes/Database/Custom_Widgets/All_Widgets/Hvnly_Agent_Listings_Carousel_Widget.php:55
 msgid "Carousel of properties assigned to a selected agent on single property pages."
+msgstr ""
+
+#: src/setup/steps/BusinessStep.jsx:97
+msgid "Carry these over to the next step"
 msgstr ""
 
 #: includes/Database/Custom_Taxonomy/Property_Category.php:37 src/settings/components/FormElements/MainSearchFields/MainFieldConfigModal.jsx:48 src/settings/components/FormElements/SearchDragDropFields/FieldConfigModal.jsx:305
@@ -3975,11 +4015,11 @@ msgstr ""
 msgid "Coming soon"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:13
+#: src/setup/steps/CurrencyStep.jsx:15
 msgid "Comma (,)"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:6
+#: src/setup/steps/CurrencyStep.jsx:8
 msgid "Comma (1,250,000)"
 msgstr ""
 
@@ -4051,7 +4091,7 @@ msgstr ""
 msgid "Complete"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:9
+#: src/setup/steps/DemoImportStep.jsx:11
 msgid "Completed"
 msgstr ""
 
@@ -4319,7 +4359,7 @@ msgstr ""
 msgid "Contemporary City Townhouse"
 msgstr ""
 
-#: src/blocks/property-inquiry/edit.js:127 src/setup/SetupApp.jsx:19
+#: src/blocks/property-inquiry/edit.js:127 src/setup/SetupApp.jsx:21 src/setup/steps/DemoImportStep.jsx:136
 msgid "Content"
 msgstr ""
 
@@ -4327,7 +4367,7 @@ msgstr ""
 msgid "Content Area"
 msgstr ""
 
-#: src/setup/SetupApp.jsx:160
+#: src/setup/SetupApp.jsx:273
 msgid "Continue"
 msgstr ""
 
@@ -4591,10 +4631,6 @@ msgstr ""
 msgid "Country"
 msgstr ""
 
-#: src/setup/steps/WelcomeStep.jsx:54
-msgid "Country & currency for your listings."
-msgstr ""
-
 #: includes/CsvTransfer/Mapping/SchemaTargets.php:77 includes/CsvTransfer/Mapping/SchemaTargets.php:127
 msgid "Country / State"
 msgstr ""
@@ -4711,7 +4747,7 @@ msgstr ""
 msgid "Creating demo agents and agencies…"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:6
+#: src/setup/steps/DemoImportStep.jsx:8
 msgid "Creating properties"
 msgstr ""
 
@@ -4723,7 +4759,7 @@ msgstr ""
 msgid "Cuba"
 msgstr ""
 
-#: includes/Database/Custom_Widgets/All_Widgets/Hvnly_Mortgage_Calculator_Widget.php:166 src/settings/components/Content/TabSections/TabDropdown/CurrencySettings.js:268 src/settings/components/Tabs/Tabs.js:6 src/setup/SetupApp.jsx:17 src/setup/steps/CurrencyStep.jsx:53
+#: includes/Database/Custom_Widgets/All_Widgets/Hvnly_Mortgage_Calculator_Widget.php:166 src/settings/components/Content/TabSections/TabDropdown/CurrencySettings.js:268 src/settings/components/Tabs/Tabs.js:6 src/setup/SetupApp.jsx:19 src/setup/steps/CurrencyStep.jsx:42 src/setup/steps/CurrencyStep.jsx:52 src/setup/steps/CurrencyStep.jsx:56
 msgid "Currency"
 msgstr ""
 
@@ -4851,6 +4887,10 @@ msgstr ""
 msgid "Custom Width"
 msgstr ""
 
+#: src/setup/steps/CurrencyStep.jsx:247
+msgid "Custom fields and badges"
+msgstr ""
+
 #: src/workspace/Pages/Settings/SettingsEditor.js:502
 msgid "Custom footer text…"
 msgstr ""
@@ -4951,10 +4991,6 @@ msgstr ""
 msgid "Database Cleanup Complete"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:600
-msgid "Database Version"
-msgstr ""
-
 #: includes/Agent/AgentPostType.php:104 includes/ContactAgent/Admin/InquiryListTable.php:32 includes/Database/Custom_Widgets/All_Widgets/Hvnly_Agent_Listings_Carousel_Widget.php:268 src/builder/components/TabContent/AddPropertyFormTab/ComponentPanel/ComponentPanel.js:11 src/builder/components/TabContent/AddPropertyFormTab/utils/fieldTypes.js:8 src/settings/components/FormElements/SearchDragDropFields/SearchDragDropFields.jsx:410 src/settings/components/FormElements/TopSearchFields/TopSearchFieldsDragDrop.jsx:321 src/workspace/Pages/Inquiries/InquiriesInbox.js:192
 msgid "Date"
 msgstr ""
@@ -5019,11 +5055,11 @@ msgstr ""
 msgid "Decimal Separator"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:139
+#: src/setup/steps/CurrencyStep.jsx:158
 msgid "Decimal separator"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:114
+#: src/setup/steps/CurrencyStep.jsx:131
 msgid "Decimals"
 msgstr ""
 
@@ -5123,8 +5159,12 @@ msgstr ""
 msgid "Default center longitude when no properties are loaded."
 msgstr ""
 
-#: src/setup/steps/BusinessStep.jsx:54
+#: src/setup/steps/BusinessStep.jsx:56
 msgid "Default city"
+msgstr ""
+
+#: src/setup/steps/FinishStep.jsx:94 src/setup/steps/MapStep.jsx:213
+msgid "Default location"
 msgstr ""
 
 #: includes/Api/Type/Settings/PriceOnCallTextAPI.php:281 src/settings/components/Content/TabSections/TabDropdown/CurrencySettings.js:192
@@ -5135,7 +5175,7 @@ msgstr ""
 msgid "Default options cannot be modified"
 msgstr ""
 
-#: src/setup/steps/BusinessStep.jsx:69
+#: src/setup/steps/BusinessStep.jsx:73
 msgid "Default region / state"
 msgstr ""
 
@@ -5239,11 +5279,23 @@ msgstr ""
 msgid "Deletion requires confirm=true. Use scan/inventory endpoints first."
 msgstr ""
 
+#: src/setup/steps/FinishStep.jsx:114
+msgid "Demo content"
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:247
+msgid "Demo content is only a starting point. When you are ready to move real data in, Havenlytics already includes the tools for it."
+msgstr ""
+
 #: includes/Admin/PropertyImportWizard.php:1483 includes/Admin/PropertyImportWizard.php:1519
 msgid "Demo import is already complete or properties already exist. Starting a new import is blocked to prevent duplicates."
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:108
+#: src/setup/steps/DemoImportStep.jsx:14
+msgid "Demo listings are spread across Sale, Rent, Commercial, and Letting so every view has content."
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:156
 msgid "Demo properties to create"
 msgstr ""
 
@@ -5295,8 +5347,8 @@ msgstr ""
 msgid "Design"
 msgstr ""
 
-#: src/setup/steps/FinishStep.jsx:46
-msgid "Design your listing fields"
+#: src/setup/steps/FinishStep.jsx:150
+msgid "Design your listing fields and cards."
 msgstr ""
 
 #: src/blocks/property-carousel/edit.js:96 src/workspace/Services/Preview/PreviewService.js:76
@@ -5371,7 +5423,7 @@ msgstr ""
 msgid "Discussion"
 msgstr ""
 
-#: includes/Admin/CacheAdmin.php:126 includes/Admin/ThemeRecommendationNotice.php:95 src/settings/components/Content/TabSections/Migration/ReportCard.js:176
+#: includes/Admin/CacheAdmin.php:126 includes/Admin/ThemeRecommendationNotice.php:95 src/settings/components/Content/TabSections/Migration/ReportCard.js:176 src/setup/SetupApp.jsx:233
 msgid "Dismiss"
 msgstr ""
 
@@ -5463,7 +5515,7 @@ msgstr ""
 msgid "Document URL"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:258 includes/Admin/DocumentationPage.php:391 includes/Admin/DocumentationPage.php:424 includes/Admin/Menu.php:116 includes/Admin/Menu.php:117 includes/Workspace/WorkspaceAssets.php:283 src/settings/components/Footer/Footer.js:68 templates/emails/partials/layout-foot.php:46
+#: includes/Admin/DocumentationPage.php:258 includes/Admin/DocumentationPage.php:391 includes/Admin/DocumentationPage.php:424 includes/Admin/Menu.php:116 includes/Admin/Menu.php:117 includes/Workspace/WorkspaceAssets.php:283 src/settings/components/Footer/Footer.js:68 src/setup/SetupApp.jsx:145 src/setup/steps/FinishStep.jsx:162 templates/emails/partials/layout-foot.php:46
 msgid "Documentation"
 msgstr ""
 
@@ -5499,11 +5551,11 @@ msgstr ""
 msgid "Dot"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:12
+#: src/setup/steps/CurrencyStep.jsx:14
 msgid "Dot (.)"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:7
+#: src/setup/steps/CurrencyStep.jsx:9
 msgid "Dot (1.250.000)"
 msgstr ""
 
@@ -5555,6 +5607,10 @@ msgstr ""
 msgid "Download not authorized for this user."
 msgstr ""
 
+#: src/setup/steps/DemoImportStep.jsx:195
+msgid "Downloads gallery photos for each listing. Needs an internet connection and is skipped automatically when offline."
+msgstr ""
+
 #: includes/Admin/Data/DemoData.php:63
 msgid "Downtown Luxury Apartment"
 msgstr ""
@@ -5583,6 +5639,10 @@ msgstr ""
 msgid "Drag gallery tiles to reorder. Changes save immediately."
 msgstr ""
 
+#: src/setup/steps/MapStep.jsx:313
+msgid "Drag the pin or click the map to move it. This becomes the default centre for property maps — each listing can override it later."
+msgstr ""
+
 #: src/builder/components/TabContent/AddPropertyFormTab/Field/Field.js:231 src/builder/components/TabContent/AddPropertyFormTab/Tab/Tab.js:156
 msgid "Drag to reorder"
 msgstr ""
@@ -5595,8 +5655,12 @@ msgstr ""
 msgid "Drag to reorder | Click Edit to rename | Click Configure to set options"
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:62
+#: src/setup/steps/MapStep.jsx:64
 msgid "Drag to set your default map location"
+msgstr ""
+
+#: src/setup/steps/CurrencyStep.jsx:245
+msgid "Drag-and-drop property card sections"
 msgstr ""
 
 #: src/builder/components/TabContent/AddPropertyFormTab/Tab/Tab.js:288
@@ -5649,6 +5713,10 @@ msgstr ""
 
 #: includes/Admin/CacheAdmin.php:314
 msgid "Dynamic CSS, global transients, and all Havenlytics cache layers."
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:16
+msgid "Each demo property arrives with an agent, an agency, and a gallery you can safely edit or delete."
 msgstr ""
 
 #: includes/Core/PermalinkSettings.php:303
@@ -5739,8 +5807,12 @@ msgstr ""
 msgid "Elementor"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:560
+#: includes/Admin/DocumentationPage.php:551
 msgid "Elementor Integration"
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:47
+msgid "Elementor Widgets"
 msgstr ""
 
 #: includes/Integrations/Elementor/ElementorIntegration.php:140
@@ -5811,7 +5883,7 @@ msgstr ""
 msgid "Email delivery failed for this reply."
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:141
+#: src/setup/steps/DemoImportStep.jsx:209
 msgid "Email me when the import finishes"
 msgstr ""
 
@@ -5959,11 +6031,15 @@ msgstr ""
 msgid "Enable property search and term caching"
 msgstr ""
 
-#: src/setup/steps/WorkspaceStep.jsx:19
+#: src/setup/steps/WorkspaceStep.jsx:74
+msgid "Enable the Agent Workspace"
+msgstr ""
+
+#: src/setup/steps/WorkspaceStep.jsx:30
 msgid "Enable the Agent Workspace?"
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:204
+#: src/setup/steps/MapStep.jsx:211
 msgid "Enable the Maps JavaScript API and Geocoding API for this key in Google Cloud Console."
 msgstr ""
 
@@ -5971,11 +6047,15 @@ msgstr ""
 msgid "Enable the workspace and choose registration and permissions."
 msgstr ""
 
+#: src/setup/steps/FinishStep.jsx:50
+msgid "Enabled · %s"
+msgstr ""
+
 #: includes/Admin/PropertyImportWizard.php:3036
 msgid "Energy Certificate"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:619
+#: includes/Admin/DocumentationPage.php:596
 msgid "English"
 msgstr ""
 
@@ -6375,6 +6455,14 @@ msgstr ""
 msgid "Ethiopia"
 msgstr ""
 
+#: src/setup/steps/FinishStep.jsx:127
+msgid "Every one of these stays editable under Havenlytics → Settings."
+msgstr ""
+
+#: src/setup/SetupApp.jsx:259
+msgid "Everything here can be changed later in Settings."
+msgstr ""
+
 #: src/settings/components/Content/TabSections/PropertiesSettings.js:161
 msgid "Examples: 1220, 1240, 1280, 1360, 1500"
 msgstr ""
@@ -6407,10 +6495,6 @@ msgstr ""
 msgid "Existing term selected"
 msgstr ""
 
-#: src/setup/SetupApp.jsx:105
-msgid "Exit"
-msgstr ""
-
 #: includes/Frontend/Assets.php:1226
 msgid "Exit Full Screen"
 msgstr ""
@@ -6425,6 +6509,10 @@ msgstr ""
 
 #: includes/Workspace/Api/GuestController.php:80 src/workspace/Guest/GuestBanner.js:89
 msgid "Exit guest mode"
+msgstr ""
+
+#: src/setup/SetupApp.jsx:148
+msgid "Exit setup"
 msgstr ""
 
 #: src/builder/components/TabContent/AddPropertyFormTab/Group/Group.js:246 src/builder/components/TabContent/AddPropertyFormTab/Tab/Tab.js:164 src/workspace/Forms/Property/builderRepeaterKit.js:162 src/workspace/Forms/Property/builderRepeaterKit.js:168
@@ -6815,7 +6903,7 @@ msgstr ""
 msgid "Feature Request"
 msgstr ""
 
-#: includes/Admin/PropertyImportWizard.php:2540 includes/Analytics/AnalyticsService.php:392 includes/Api/Type/Builders/DnDCardBuilder.php:279 src/builder/components/TabContent/PropertyCard/constants/fieldTypes.js:65 src/builder/components/TabContent/PropertyCard/constants/initialSections.js:16 src/builder/components/TabContent/PropertyCard/constants/initialSections.js:254 src/builder/components/TabContent/PropertyCard/constants/modalOptions.js:10 src/builder/components/TabContent/PropertyCard/constants/modalOptions.js:18 src/builder/components/TabContent/PropertyCard/constants/modalOptions.js:93 src/setup/steps/CurrencyStep.jsx:162 src/workspace/Forms/Property/FeaturedImageField.js:62 src/workspace/Forms/Property/MediaTab.js:297
+#: includes/Admin/PropertyImportWizard.php:2540 includes/Analytics/AnalyticsService.php:392 includes/Api/Type/Builders/DnDCardBuilder.php:279 src/builder/components/TabContent/PropertyCard/constants/fieldTypes.js:65 src/builder/components/TabContent/PropertyCard/constants/initialSections.js:16 src/builder/components/TabContent/PropertyCard/constants/initialSections.js:254 src/builder/components/TabContent/PropertyCard/constants/modalOptions.js:10 src/builder/components/TabContent/PropertyCard/constants/modalOptions.js:18 src/builder/components/TabContent/PropertyCard/constants/modalOptions.js:93 src/setup/steps/CurrencyStep.jsx:190 src/workspace/Forms/Property/FeaturedImageField.js:62 src/workspace/Forms/Property/MediaTab.js:297
 msgid "Featured"
 msgstr ""
 
@@ -7047,16 +7135,12 @@ msgstr ""
 msgid "Find related by:"
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:210
+#: src/setup/steps/MapStep.jsx:221
 msgid "Find your area"
 msgstr ""
 
 #: templates/map/map-container.php:64
 msgid "Finding the perfect locations for you..."
-msgstr ""
-
-#: src/setup/steps/FinishStep.jsx:52
-msgid "Fine-tune everything"
 msgstr ""
 
 #: includes/Admin/Data/TabData.php:491
@@ -7203,7 +7287,7 @@ msgstr ""
 msgid "From:"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:573
+#: includes/Admin/DocumentationPage.php:557
 msgid "Frontend Language"
 msgstr ""
 
@@ -7387,7 +7471,7 @@ msgstr ""
 msgid "Get help, report issues, or share ideas with the Havenlytics team."
 msgstr ""
 
-#: src/setup/steps/WelcomeStep.jsx:44
+#: src/setup/steps/WelcomeStep.jsx:90
 msgid "Get started"
 msgstr ""
 
@@ -7427,6 +7511,10 @@ msgstr ""
 msgid "Global search is not available in this release"
 msgstr ""
 
+#: src/setup/SetupApp.jsx:193
+msgid "Go back to %s"
+msgstr ""
+
 #: templates/content-none.php:99
 msgid "Go to Homepage"
 msgstr ""
@@ -7439,7 +7527,7 @@ msgstr ""
 msgid "Go to homepage"
 msgstr ""
 
-#: src/setup/steps/FinishStep.jsx:58
+#: src/setup/steps/FinishStep.jsx:175
 msgid "Go to my dashboard"
 msgstr ""
 
@@ -7499,7 +7587,7 @@ msgstr ""
 msgid "Google Maps"
 msgstr ""
 
-#: includes/Admin/OnboardingWizard.php:284
+#: includes/Admin/OnboardingWizard.php:289
 msgid "Google Maps (API key required)"
 msgstr ""
 
@@ -7511,7 +7599,7 @@ msgstr ""
 msgid "Google Maps API Key"
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:192
+#: src/setup/steps/MapStep.jsx:196
 msgid "Google Maps API key"
 msgstr ""
 
@@ -7523,7 +7611,7 @@ msgstr ""
 msgid "Google Maps library not loaded. Please refresh the page."
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:179
+#: src/setup/steps/MapStep.jsx:183
 msgid "Google Maps needs an API key with billing enabled. The preview below uses OpenStreetMap and works without a key."
 msgstr ""
 
@@ -7699,6 +7787,10 @@ msgstr ""
 msgid "Guide Price"
 msgstr ""
 
+#: src/setup/steps/FinishStep.jsx:163
+msgid "Guides for blocks, widgets, and imports."
+msgstr ""
+
 #: includes/Admin/Data/TabData.php:502
 msgid "Guinea"
 msgstr ""
@@ -7707,7 +7799,7 @@ msgstr ""
 msgid "Guinea-Bissau"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:556
+#: includes/Admin/DocumentationPage.php:547 src/setup/steps/WelcomeStep.jsx:46
 msgid "Gutenberg Blocks"
 msgstr ""
 
@@ -7807,7 +7899,7 @@ msgstr ""
 msgid "Haven Realty Group"
 msgstr ""
 
-#: includes/Admin/AdminPreloader.php:31 includes/Core/Installer.php:343 includes/Database/Custom_Posts/HavenlyticsNab.php:79 includes/Integrations/Blocks/BlockRegistrar.php:107 includes/Integrations/Elementor/Bootstrap.php:79 includes/Integrations/Elementor/ElementorIntegration.php:81 includes/Workspace/WorkspaceAssets.php:241 includes/Workspace/WorkspaceShortcode.php:93 src/blocks/dashboard/edit.js:63 src/settings/components/Footer/Footer.js:63 src/setup/steps/WelcomeStep.jsx:23 templates/agent-portal/unavailable.php:23
+#: includes/Admin/AdminPreloader.php:31 includes/Core/Installer.php:343 includes/Database/Custom_Posts/HavenlyticsNab.php:79 includes/Integrations/Blocks/BlockRegistrar.php:107 includes/Integrations/Elementor/Bootstrap.php:79 includes/Integrations/Elementor/ElementorIntegration.php:81 includes/Workspace/WorkspaceAssets.php:241 includes/Workspace/WorkspaceShortcode.php:93 src/blocks/dashboard/edit.js:63 src/settings/components/Footer/Footer.js:63 src/setup/SetupApp.jsx:126 templates/agent-portal/unavailable.php:23
 msgid "Havenlytics"
 msgstr ""
 
@@ -7855,7 +7947,7 @@ msgstr ""
 msgid "Havenlytics Property Sections"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:181
+#: src/setup/steps/CurrencyStep.jsx:225
 msgid "Havenlytics Realty"
 msgstr ""
 
@@ -7883,16 +7975,16 @@ msgstr ""
 msgid "Havenlytics includes a complete Property Onboarding Wizard that imports fully configured demo properties with galleries, maps, documents, videos, agents, taxonomies, and custom fields."
 msgstr ""
 
+#: src/setup/steps/BusinessStep.jsx:109
+msgid "Havenlytics is fully translation-ready and ships with a complete Russian language pack, so your admin and front-end text follow your WordPress site language."
+msgstr ""
+
 #: src/workspace/Layouts/Footer.js:26
 msgid "Havenlytics links"
 msgstr ""
 
 #: includes/Core/DataPreservation/MigrationAdminNotices.php:77
 msgid "Havenlytics restored your Property Builder configuration from a pre-update backup."
-msgstr ""
-
-#: src/setup/SetupApp.jsx:102
-msgid "Havenlytics setup"
 msgstr ""
 
 #: src/settings/components/ThemeRecommendation/ThemeRecommendationCard.js:34
@@ -8071,7 +8163,11 @@ msgstr ""
 msgid "How long should cached data be stored?"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:40
+#: src/setup/steps/DemoImportStep.jsx:152
+msgid "How much content"
+msgstr ""
+
+#: src/setup/steps/CurrencyStep.jsx:43
 msgid "How should prices look?"
 msgstr ""
 
@@ -8123,6 +8219,10 @@ msgstr ""
 msgid "Identity Health Score"
 msgstr ""
 
+#: src/setup/steps/WelcomeStep.jsx:49
+msgid "Identity Verification"
+msgstr ""
+
 #: src/settings/components/Content/TabSections/EmailSettings.js:24
 msgid "Identity Verification Approved"
 msgstr ""
@@ -8141,6 +8241,10 @@ msgstr ""
 
 #: includes/Agent/Admin/AgentDeleteWizardPage.php:461
 msgid "Identity to remove"
+msgstr ""
+
+#: src/setup/steps/WorkspaceStep.jsx:144
+msgid "Identity verification"
 msgstr ""
 
 #: includes/Workspace/Auth/SessionAuthController.php:202
@@ -8231,8 +8335,12 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:155
+#: src/setup/steps/DemoImportStep.jsx:229
 msgid "Import %d properties"
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:266
+msgid "Import & migration documentation"
 msgstr ""
 
 #: src/settings/components/utils/constants.js:20
@@ -8273,6 +8381,10 @@ msgstr ""
 
 #: includes/Admin/PropertyImportWizard.php:1188
 msgid "Import already in progress."
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:256
+msgid "Import and export listings as CSV"
 msgstr ""
 
 #: src/settings/components/Content/TabSections/Migration/ProgressCard.js:28
@@ -8335,7 +8447,7 @@ msgstr ""
 msgid "Import media"
 msgstr ""
 
-#: src/settings/components/Content/TabSections/CsvImportExport/ValidateStep.js:87 src/settings/components/Content/TabSections/Migration/ImportCard.js:204
+#: src/settings/components/Content/TabSections/CsvImportExport/ValidateStep.js:87 src/settings/components/Content/TabSections/Migration/ImportCard.js:204 src/setup/steps/DemoImportStep.jsx:179
 msgid "Import options"
 msgstr ""
 
@@ -8379,10 +8491,6 @@ msgstr ""
 msgid "Imported rows %1$d / %2$d."
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:29
-msgid "Importing your demo content…"
-msgstr ""
-
 #: src/settings/components/Content/TabSections/CsvImportExport/ImportStep.js:16 src/settings/components/Content/TabSections/Migration/ImportCard.js:267
 msgid "Importing…"
 msgstr ""
@@ -8393,10 +8501,6 @@ msgstr ""
 
 #: src/workspace/Pages/Settings/SettingsEditor.js:380
 msgid "In-app notifications"
-msgstr ""
-
-#: includes/Admin/DocumentationPage.php:564
-msgid "Inactive"
 msgstr ""
 
 #: src/workspace/Pages/Notifications/NotificationsCenter.js:272
@@ -8411,15 +8515,15 @@ msgstr ""
 msgid "Include Specific Properties"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:133
-msgid "Include demo images (needs internet; skipped automatically offline)"
+#: src/setup/steps/DemoImportStep.jsx:189
+msgid "Include demo images"
 msgstr ""
 
 #: src/settings/components/Content/TabSections/Migration/ImportCard.js:68
 msgid "Included"
 msgstr ""
 
-#: src/settings/components/Content/TabSections/ContactAgentSettings.js:330
+#: src/settings/components/Content/TabSections/ContactAgentSettings.js:330 src/setup/steps/WelcomeStep.jsx:136
 msgid "Included with Havenlytics"
 msgstr ""
 
@@ -8543,7 +8647,7 @@ msgstr ""
 msgid "Inquiry form is disabled. No frontend inquiry UI or submissions will run."
 msgstr ""
 
-#: src/setup/steps/WorkspaceStep.jsx:84
+#: src/setup/steps/WorkspaceStep.jsx:142
 msgid "Inquiry inbox per agent"
 msgstr ""
 
@@ -8619,12 +8723,12 @@ msgstr ""
 msgid "Integration Settings"
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:278
+#: src/setup/steps/MapStep.jsx:298
 msgid "Interactive map. Use the latitude and longitude fields for precise placement."
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:269
-msgid "Interactive preview — drag the pin or click the map"
+#: src/setup/steps/MapStep.jsx:289
+msgid "Interactive preview"
 msgstr ""
 
 #: includes/Database/Custom_Widgets/All_Widgets/Hvnly_Mortgage_Calculator_Widget.php:429
@@ -8923,6 +9027,10 @@ msgstr ""
 msgid "Keep running"
 msgstr ""
 
+#: src/setup/steps/DemoImportStep.jsx:83
+msgid "Keep this tab open until the import finishes. Everything already created is kept if it stops early."
+msgstr ""
+
 #: src/workspace/Pages/Profile/ProfileEditor.js:120
 msgid "Keep your public agent details accurate for clients and co-workers."
 msgstr ""
@@ -9047,7 +9155,7 @@ msgstr ""
 msgid "Lat:"
 msgstr ""
 
-#: includes/Agent/AgencyFields.php:59 includes/CsvTransfer/Mapping/SchemaTargets.php:133 includes/Database/FieldTypes/MapField.php:121 includes/Database/Utilities/FieldProcessor.php:186 src/setup/steps/MapStep.jsx:241 src/workspace/Forms/Property/BuilderGroups.js:105
+#: includes/Agent/AgencyFields.php:59 includes/CsvTransfer/Mapping/SchemaTargets.php:133 includes/Database/FieldTypes/MapField.php:121 includes/Database/Utilities/FieldProcessor.php:186 src/setup/steps/MapStep.jsx:259 src/workspace/Forms/Property/BuilderGroups.js:105
 msgid "Latitude"
 msgstr ""
 
@@ -9079,7 +9187,7 @@ msgstr ""
 msgid "Leaflet (OpenStreetMap) - Free, No API Key"
 msgstr ""
 
-#: includes/Admin/OnboardingWizard.php:276
+#: includes/Admin/OnboardingWizard.php:284
 msgid "Leaflet — OpenStreetMap (free, no API key)"
 msgstr ""
 
@@ -9109,6 +9217,10 @@ msgstr ""
 
 #: src/settings/components/Content/TabSections/EmailSettings.js:251
 msgid "Leave empty to use your site name"
+msgstr ""
+
+#: src/setup/steps/WorkspaceStep.jsx:126
+msgid "Leave it off for now — you can enable the Agent Workspace at any time under Settings → Agent Workspace without losing anything you set up here."
 msgstr ""
 
 #: includes/Admin/Data/TabData.php:528
@@ -9143,11 +9255,7 @@ msgstr ""
 msgid "Let"
 msgstr ""
 
-#: src/setup/steps/WelcomeStep.jsx:59
-msgid "Let agents manage their own listings."
-msgstr ""
-
-#: src/setup/steps/WelcomeStep.jsx:30
+#: src/setup/steps/WelcomeStep.jsx:62
 msgid "Let’s set up your property website"
 msgstr ""
 
@@ -9287,7 +9395,7 @@ msgstr ""
 msgid "Listing Views"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:184
+#: src/setup/steps/CurrencyStep.jsx:228
 msgid "Listing agent"
 msgstr ""
 
@@ -9309,6 +9417,10 @@ msgstr ""
 
 #: includes/Email/Notifiers/PropertyWorkflowNotifier.php:243
 msgid "Listing update"
+msgstr ""
+
+#: src/setup/steps/WorkspaceStep.jsx:155
+msgid "Listing views and inquiries are tracked automatically, so you can see how each agent’s portfolio performs."
 msgstr ""
 
 #: src/workspace/Pages/Dashboard/DashboardHome.js:513
@@ -9351,7 +9463,11 @@ msgstr ""
 msgid "Lithuania"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:157
+#: src/setup/steps/MapStep.jsx:331
+msgid "Live map search results"
+msgstr ""
+
+#: src/setup/steps/CurrencyStep.jsx:184
 msgid "Live preview"
 msgstr ""
 
@@ -9387,7 +9503,7 @@ msgstr ""
 msgid "Loaded %d sections with %d enabled fields"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:581
+#: includes/Admin/DocumentationPage.php:562
 msgid "Loaded Successfully"
 msgstr ""
 
@@ -9515,12 +9631,8 @@ msgstr ""
 msgid "Loan term"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:589
+#: includes/Admin/DocumentationPage.php:573
 msgid "Localization Engine"
-msgstr ""
-
-#: src/setup/steps/WelcomeStep.jsx:53
-msgid "Localize"
 msgstr ""
 
 #: includes/Agent/AgentAgencyTaxonomy.php:215 includes/Api/Type/Builders/DnDCardBuilder.php:380 includes/Api/Type/Builders/DnDCardBuilder.php:485 includes/Api/Type/Builders/DnDCardBuilder.php:496 includes/Api/Type/Settings/DefaultSettingsData.php:310 includes/CsvTransfer/Mapping/FieldCatalog.php:18 includes/Database/Base/FieldRegistry.php:364 includes/Database/Custom_Posts/HavenlyticsNab.php:230 includes/Database/FieldTypes/MapField.php:371 includes/Helpers.php:1783 src/builder/components/TabContent/AddPropertyFormTab/utils/presetFields.js:108 src/builder/components/TabContent/PropertyCard/components/preview/BasicPreviewCard.js:9
@@ -9619,7 +9731,7 @@ msgstr ""
 msgid "London, United Kingdom"
 msgstr ""
 
-#: includes/Agent/AgencyFields.php:64 includes/CsvTransfer/Mapping/SchemaTargets.php:135 includes/Database/FieldTypes/MapField.php:135 includes/Database/Utilities/FieldProcessor.php:196 src/setup/steps/MapStep.jsx:258 src/workspace/Forms/Property/BuilderGroups.js:129
+#: includes/Agent/AgencyFields.php:64 includes/CsvTransfer/Mapping/SchemaTargets.php:135 includes/Database/FieldTypes/MapField.php:135 includes/Database/Utilities/FieldProcessor.php:196 src/setup/steps/MapStep.jsx:274 src/workspace/Forms/Property/BuilderGroups.js:129
 msgid "Longitude"
 msgstr ""
 
@@ -9663,7 +9775,7 @@ msgstr ""
 msgid "Luxury Suburban Advisor"
 msgstr ""
 
-#: includes/Api/Type/Builders/DnDCardBuilder.php:373 src/builder/components/TabContent/PropertyCard/constants/fieldTypes.js:105 src/builder/components/TabContent/PropertyCard/constants/initialSections.js:98 src/builder/components/TabContent/PropertyCard/constants/modalOptions.js:38 src/setup/steps/CurrencyStep.jsx:170
+#: includes/Api/Type/Builders/DnDCardBuilder.php:373 src/builder/components/TabContent/PropertyCard/constants/fieldTypes.js:105 src/builder/components/TabContent/PropertyCard/constants/initialSections.js:98 src/builder/components/TabContent/PropertyCard/constants/modalOptions.js:38 src/setup/steps/CurrencyStep.jsx:203
 msgid "Luxury Villa with Ocean View"
 msgstr ""
 
@@ -9923,12 +10035,24 @@ msgstr ""
 msgid "Map View"
 msgstr ""
 
+#: src/setup/steps/MapStep.jsx:331
+msgid "Map blocks, widgets, and shortcodes"
+msgstr ""
+
 #: includes/Frontend/Assets.php:1201
 msgid "Map container not found during initialization."
 msgstr ""
 
 #: includes/Frontend/Assets.php:1199
 msgid "Map container not found. Please try again."
+msgstr ""
+
+#: src/setup/steps/MapStep.jsx:335
+msgid "Map documentation"
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:259
+msgid "Map fields, images, and taxonomies before importing"
 msgstr ""
 
 #: includes/Frontend/Assets.php:1205
@@ -9947,16 +10071,20 @@ msgstr ""
 msgid "Map placeholder not found on this page."
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:283
+#: src/setup/steps/MapStep.jsx:304
 msgid "Map preview could not load. You can still set the default location using the latitude and longitude fields."
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:159
+#: src/setup/steps/FinishStep.jsx:100 src/setup/steps/MapStep.jsx:161
 msgid "Map provider"
 msgstr ""
 
 #: includes/Admin/PropertyImportWizard.php:318
 msgid "Map provider saved."
+msgstr ""
+
+#: src/setup/steps/MapStep.jsx:323
+msgid "Map search & Search Builder"
 msgstr ""
 
 #: src/blocks/property-map/edit.js:108
@@ -9985,6 +10113,10 @@ msgstr ""
 
 #: src/settings/components/Content/TabSections/CsvImportExport/ProfilesPanel.js:82
 msgid "Mapping profiles remember how CSV columns map to Havenlytics fields, so repeat imports from the same source are one click."
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:15
+msgid "Maps & prices"
 msgstr ""
 
 #: src/settings/components/Content/TabSections/CsvImportExport/MappingStep.js:152
@@ -10055,7 +10187,7 @@ msgstr ""
 msgid "Marketing"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:491
+#: includes/Admin/DocumentationPage.php:471
 msgid "Marketing / Inquiries"
 msgstr ""
 
@@ -10259,12 +10391,20 @@ msgstr ""
 msgid "Mid-Century Modern Gem"
 msgstr ""
 
+#: src/setup/steps/DemoImportStep.jsx:255
+msgid "Migrate listings from another real-estate plugin"
+msgstr ""
+
 #: src/settings/components/Content/TabSections/MigrationSettings.js:58 src/settings/components/Content/TabSections/MigrationSettings.js:67 src/settings/components/utils/constants.js:19
 msgid "Migration"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:543 src/settings/components/Content/TabSections/MigrationSettings.js:354
+#: includes/Admin/DocumentationPage.php:535 src/settings/components/Content/TabSections/MigrationSettings.js:354 src/setup/steps/WelcomeStep.jsx:39
 msgid "Migration Engine"
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:244
+msgid "Migration Engine & CSV Import"
 msgstr ""
 
 #: src/settings/components/Content/TabSections/Migration/MigrationLimitNotice.js:27
@@ -10319,7 +10459,7 @@ msgstr ""
 msgid "Misc Settings"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:532 includes/Admin/DocumentationPage.php:535 includes/Admin/DocumentationPage.php:539 includes/Admin/DocumentationPage.php:545 includes/Admin/DocumentationPage.php:553 includes/Admin/DocumentationPage.php:559 includes/Admin/DocumentationPage.php:595
+#: includes/Admin/DocumentationPage.php:522 includes/Admin/DocumentationPage.php:527 includes/Admin/DocumentationPage.php:531 includes/Admin/DocumentationPage.php:537 includes/Admin/DocumentationPage.php:544 includes/Admin/DocumentationPage.php:549 includes/Admin/DocumentationPage.php:555
 msgid "Missing"
 msgstr ""
 
@@ -10485,6 +10625,10 @@ msgstr ""
 
 #: includes/Admin/Data/DemoAgentAgencyData.php:74
 msgid "Multi-market team covering rentals, commercial conversions, and mixed-use investments in major metro areas."
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:50
+msgid "Multilingual Ready"
 msgstr ""
 
 #: src/blocks/property-inquiry/edit.js:30
@@ -11051,7 +11195,7 @@ msgstr ""
 msgid "No main search fields found."
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:131
+#: src/setup/steps/MapStep.jsx:133
 msgid "No match found. Drag the marker to set the location manually."
 msgstr ""
 
@@ -11251,7 +11395,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:9
+#: src/setup/steps/CurrencyStep.jsx:11
 msgid "None (1250000)"
 msgstr ""
 
@@ -11275,7 +11419,7 @@ msgstr ""
 msgid "Not Linked"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:582
+#: includes/Admin/DocumentationPage.php:565
 msgid "Not Loaded"
 msgstr ""
 
@@ -11291,8 +11435,16 @@ msgstr ""
 msgid "Not available"
 msgstr ""
 
-#: includes/Database/FieldTypes/PriceLabelField.php:247 includes/Database/FieldTypes/PriceLabelField.php:322
+#: src/setup/steps/FinishStep.jsx:54
+msgid "Not enabled"
+msgstr ""
+
+#: includes/Database/FieldTypes/PriceLabelField.php:247 includes/Database/FieldTypes/PriceLabelField.php:322 src/setup/steps/FinishStep.jsx:97
 msgid "Not set"
+msgstr ""
+
+#: src/setup/steps/WorkspaceStep.jsx:125
+msgid "Not sure yet?"
 msgstr ""
 
 #: includes/Database/Custom_Posts/HavenlyticsNab.php:314
@@ -11313,6 +11465,10 @@ msgstr ""
 
 #: src/workspace/Components/EmptyState.js:6
 msgid "Nothing here yet"
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:81
+msgid "Nothing is locked in"
 msgstr ""
 
 #: templates/property-archive/partials/empty-state.php:14
@@ -11361,6 +11517,10 @@ msgstr ""
 
 #: src/settings/components/FormElements/SearchDragDropFields/FieldConfigModal.jsx:683 src/settings/components/FormElements/TopSearchFields/TopFieldConfigModal.jsx:155
 msgid "Number Field Settings"
+msgstr ""
+
+#: src/setup/steps/CurrencyStep.jsx:105
+msgid "Number format"
 msgstr ""
 
 #: src/settings/components/Content/TabSections/TabDropdown/SearchPropertySettings.js:286 templates/archive/view-controls.php:64
@@ -11511,6 +11671,10 @@ msgstr ""
 msgid "Open Documentation"
 msgstr ""
 
+#: src/setup/steps/CurrencyStep.jsx:250
+msgid "Open Property Builder"
+msgstr ""
+
 #: src/settings/components/Content/TabSections/ContactAgentSettings.js:607
 msgid "Open Registration"
 msgstr ""
@@ -11555,6 +11719,10 @@ msgstr ""
 msgid "Open on hover"
 msgstr ""
 
+#: src/setup/steps/WorkspaceStep.jsx:10
+msgid "Open registration"
+msgstr ""
+
 #: src/workspace/Forms/Property/PropertyPreviewPanel.js:125
 msgid "Open tab"
 msgstr ""
@@ -11567,10 +11735,6 @@ msgstr ""
 msgid "Open your workspace"
 msgstr ""
 
-#: src/setup/steps/WorkspaceStep.jsx:61
-msgid "Open — agents can register immediately"
-msgstr ""
-
 #: includes/Database/FieldTypes/MapField.php:161
 msgid "OpenStreetMap (Direct)"
 msgstr ""
@@ -11579,11 +11743,11 @@ msgstr ""
 msgid "OpenStreetMap (Direct) - Free, No API Key"
 msgstr ""
 
-#: includes/Admin/OnboardingWizard.php:282
+#: includes/Admin/OnboardingWizard.php:287
 msgid "OpenStreetMap (free, no API key)"
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:183
+#: src/setup/steps/MapStep.jsx:184
 msgid "OpenStreetMap is free and needs no API key."
 msgstr ""
 
@@ -11619,16 +11783,12 @@ msgstr ""
 msgid "Option value is required"
 msgstr ""
 
-#: src/setup/steps/BusinessStep.jsx:55 src/setup/steps/BusinessStep.jsx:70
+#: src/setup/steps/BusinessStep.jsx:58 src/setup/steps/BusinessStep.jsx:75
 msgid "Optional"
 msgstr ""
 
 #: src/blocks/property-inquiry/edit.js:435
 msgid "Optional URL after the success notice appears."
-msgstr ""
-
-#: src/setup/steps/WelcomeStep.jsx:64
-msgid "Optional demo properties to explore."
 msgstr ""
 
 #: src/blocks/shared/SectionHeaderPanel.js:61
@@ -11651,8 +11811,8 @@ msgstr ""
 msgid "Optional path or URL after logout (blank = Workspace login)."
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:97
-msgid "Optional sample properties, agents, and agencies so you can explore a working site immediately. You can delete them anytime."
+#: src/setup/steps/DemoImportStep.jsx:139
+msgid "Optional sample properties, agents, and agencies so you can explore a working site immediately. You can delete them at any time."
 msgstr ""
 
 #: src/settings/components/FormElements/SearchDragDropFields/FieldConfigModal.jsx:562 src/settings/components/FormElements/SearchDragDropFields/FieldConfigModal.jsx:771 src/settings/components/FormElements/TopSearchFields/TopFieldConfigModal.jsx:102 src/workspace/Components/SearchableSelect.js:126
@@ -11739,7 +11899,7 @@ msgstr ""
 msgid "PDF Document"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:517
+#: includes/Admin/DocumentationPage.php:498
 msgid "PHP Version"
 msgstr ""
 
@@ -11851,6 +12011,10 @@ msgstr ""
 msgid "Parking availability varies by property."
 msgstr ""
 
+#: src/setup/steps/WelcomeStep.jsx:129
+msgid "Part %d"
+msgstr ""
+
 #: includes/Workspace/Auth/SessionAuthController.php:144 templates/blocks/authentication.php:239 templates/blocks/authentication.php:310
 msgid "Password"
 msgstr ""
@@ -11925,6 +12089,10 @@ msgstr ""
 
 #: includes/Admin/Data/DemoData.php:803
 msgid "Penthouse Apartment Rental"
+msgstr ""
+
+#: src/setup/steps/MapStep.jsx:332
+msgid "Per-listing coordinate overrides"
 msgstr ""
 
 #: src/settings/components/Content/TabSections/PerformanceSettings.js:55 src/settings/components/utils/constants.js:16
@@ -12027,8 +12195,12 @@ msgstr ""
 msgid "Photo"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:43
-msgid "Pick your currency and number format. The live preview updates as you go."
+#: src/setup/steps/WelcomeStep.jsx:15
+msgid "Pick a map provider, drop your default map pin, and choose exactly how prices are formatted."
+msgstr ""
+
+#: src/setup/steps/CurrencyStep.jsx:44
+msgid "Pick your currency and number format. The sample listing on the right updates as you go."
 msgstr ""
 
 #: src/blocks/property-map/edit.js:29
@@ -12179,7 +12351,7 @@ msgstr ""
 msgid "Plugin Activation"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:506 src/settings/components/Content/TabSections/Migration/ImportCard.js:167
+#: includes/Admin/DocumentationPage.php:487 src/settings/components/Content/TabSections/Migration/ImportCard.js:167
 msgid "Plugin Version"
 msgstr ""
 
@@ -12259,8 +12431,12 @@ msgstr ""
 msgid "Powered by Havenlytics"
 msgstr ""
 
-#: src/setup/steps/BusinessStep.jsx:84
-msgid "Pre-fills the location on new listings so you type less. Change it per property anytime."
+#: src/setup/steps/CurrencyStep.jsx:238 src/setup/steps/MapStep.jsx:322
+msgid "Powered by this step"
+msgstr ""
+
+#: src/setup/steps/BusinessStep.jsx:90
+msgid "Pre-fills the location on new listings. You can still change it per property."
 msgstr ""
 
 #: src/workspace/Pages/Settings/SettingsEditor.js:356
@@ -12275,11 +12451,7 @@ msgstr ""
 msgid "Premium"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:570
-msgid "Premium Layout (v%s)"
-msgstr ""
-
-#: src/setup/steps/DemoImportStep.jsx:5
+#: src/setup/steps/DemoImportStep.jsx:7
 msgid "Preparing import"
 msgstr ""
 
@@ -12403,6 +12575,10 @@ msgstr ""
 msgid "Price Range Settings"
 msgstr ""
 
+#: src/setup/steps/FinishStep.jsx:104
+msgid "Price format"
+msgstr ""
+
 #: includes/Core/Migration/Handlers/Version222Handler.php:598 includes/Database/FieldTypes/PriceLabelField.php:76 includes/Helpers.php:992 includes/Helpers.php:1180
 msgid "Price on Call"
 msgstr ""
@@ -12463,7 +12639,7 @@ msgstr ""
 msgid "Primary agent"
 msgstr ""
 
-#: src/setup/steps/BusinessStep.jsx:27
+#: src/setup/steps/BusinessStep.jsx:27 src/setup/steps/FinishStep.jsx:90
 msgid "Primary country"
 msgstr ""
 
@@ -12519,7 +12695,7 @@ msgstr ""
 msgid "Processing"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:7
+#: src/setup/steps/DemoImportStep.jsx:9
 msgid "Processing images"
 msgstr ""
 
@@ -12539,7 +12715,7 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
-#: src/setup/steps/WorkspaceStep.jsx:85
+#: src/setup/steps/WorkspaceStep.jsx:143
 msgid "Profile & avatar control"
 msgstr ""
 
@@ -12587,7 +12763,7 @@ msgstr ""
 msgid "Progress"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:476 includes/Database/Custom_Posts/HavenlyticsNab.php:77 includes/Workspace/WorkspaceAssets.php:248 src/blocks/dashboard/edit.js:13 src/blocks/dashboard/edit.js:169 src/blocks/property-inquiry/edit.js:164 src/blocks/property-map/edit.js:311 src/settings/components/Content/TabSections/PermalinkSettings.js:74 src/settings/components/utils/constants.js:7 src/workspace/Pages/Guest/GuestPages.js:168 src/workspace/Pages/Guest/GuestPages.js:181 templates/single-property/breadcrumb.php:40
+#: includes/Admin/DocumentationPage.php:464 includes/Database/Custom_Posts/HavenlyticsNab.php:77 includes/Workspace/WorkspaceAssets.php:248 src/blocks/dashboard/edit.js:13 src/blocks/dashboard/edit.js:169 src/blocks/property-inquiry/edit.js:164 src/blocks/property-map/edit.js:311 src/settings/components/Content/TabSections/PermalinkSettings.js:74 src/settings/components/utils/constants.js:7 src/workspace/Pages/Guest/GuestPages.js:168 src/workspace/Pages/Guest/GuestPages.js:181 templates/single-property/breadcrumb.php:40
 msgid "Properties"
 msgstr ""
 
@@ -12711,7 +12887,7 @@ msgstr ""
 msgid "Property Bedrooms"
 msgstr ""
 
-#: includes/Admin/AdminPreloader.php:20 includes/Admin/DocumentationPage.php:269 includes/Admin/DocumentationPage.php:349 includes/Admin/DocumentationPage.php:499 includes/Admin/Menu.php:47 includes/Admin/Menu.php:123 src/builder/components/TabNavigation/TabNavigation.js:199 src/builder/components/TabNavigation/TabNavigation.js:239 src/setup/steps/FinishStep.jsx:44
+#: includes/Admin/AdminPreloader.php:20 includes/Admin/DocumentationPage.php:269 includes/Admin/DocumentationPage.php:349 includes/Admin/DocumentationPage.php:476 includes/Admin/Menu.php:47 includes/Admin/Menu.php:123 src/builder/components/TabNavigation/TabNavigation.js:199 src/builder/components/TabNavigation/TabNavigation.js:239 src/setup/steps/CurrencyStep.jsx:239 src/setup/steps/FinishStep.jsx:150 src/setup/steps/WelcomeStep.jsx:41
 msgid "Property Builder"
 msgstr ""
 
@@ -13283,6 +13459,10 @@ msgstr ""
 msgid "Providence"
 msgstr ""
 
+#: src/setup/steps/MapStep.jsx:157
+msgid "Provider"
+msgstr ""
+
 #: src/settings/components/Content/TabSections/MapSettings.js:228
 msgid "Provides address autocomplete suggestions while typing for better user experience."
 msgstr ""
@@ -13391,7 +13571,7 @@ msgstr ""
 msgid "Quick contact actions"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:596
+#: includes/Admin/DocumentationPage.php:577
 msgid "REST API Version"
 msgstr ""
 
@@ -13399,7 +13579,7 @@ msgstr ""
 msgid "REST Debug"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:527
+#: includes/Admin/DocumentationPage.php:509
 msgid "REST Status"
 msgstr ""
 
@@ -13455,16 +13635,16 @@ msgstr ""
 msgid "Re: Your inquiry about %1$s — %2$s"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:591
-msgid "React Admin"
-msgstr ""
-
 #: includes/ContactAgent/Admin/InquiryListTable.php:89 includes/ContactAgent/Admin/InquiryListTable.php:356 src/workspace/Pages/Inquiries/InquiriesInbox.js:274 src/workspace/Pages/Notifications/NotificationsCenter.js:326
 msgid "Read"
 msgstr ""
 
 #: includes/Workspace/Api/GuestController.php:82 src/workspace/Pages/Profile/ProfileEditor.js:108
 msgid "Read only"
+msgstr ""
+
+#: src/setup/components/Ui.jsx:54
+msgid "Read the docs"
 msgstr ""
 
 #: includes/Admin/DocumentationPage.php:364
@@ -13569,6 +13749,10 @@ msgstr ""
 
 #: src/settings/components/ThemeRecommendation/ThemeRecommendationCard.js:29
 msgid "Recommended Theme"
+msgstr ""
+
+#: src/setup/steps/FinishStep.jsx:133 src/setup/steps/FinishStep.jsx:140
+msgid "Recommended next steps"
 msgstr ""
 
 #: src/settings/components/ThemeRecommendation/ThemeRecommendationCard.js:23
@@ -14311,6 +14495,10 @@ msgstr ""
 msgid "Results Bar Position"
 msgstr ""
 
+#: src/setup/steps/DemoImportStep.jsx:123
+msgid "Resume import"
+msgstr ""
+
 #: includes/Admin/PropertyImportWizard.php:2458 includes/Admin/PropertyImportWizard.php:2565
 msgid "Retail"
 msgstr ""
@@ -14325,10 +14513,6 @@ msgstr ""
 
 #: includes/Frontend/Assets.php:1243 includes/Integrations/Blocks/PropertyMapBlockRenderer.php:112 templates/map/map-error.php:20
 msgid "Retry"
-msgstr ""
-
-#: src/setup/steps/DemoImportStep.jsx:75
-msgid "Retry (keeps progress)"
 msgstr ""
 
 #: includes/Core/DataPreservation/MigrationAdminNotices.php:140
@@ -14451,7 +14635,7 @@ msgstr ""
 msgid "Rural"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:628
+#: includes/Admin/DocumentationPage.php:607
 msgid "Russian"
 msgstr ""
 
@@ -14525,6 +14709,10 @@ msgstr ""
 
 #: src/blocks/property-archive/edit.js:58
 msgid "Same archive experience as the Elementor Property Archive widget."
+msgstr ""
+
+#: src/setup/steps/CurrencyStep.jsx:246
+msgid "Same card across grids, blocks, and widgets"
 msgstr ""
 
 #: src/blocks/shared/SectionHeaderPanel.js:19
@@ -14775,7 +14963,7 @@ msgstr ""
 msgid "Saving..."
 msgstr ""
 
-#: src/setup/SetupApp.jsx:158 src/workspace/Forms/Property/PropertyFormFields.js:105 src/workspace/Pages/Settings/SettingsEditor.js:438
+#: src/setup/SetupApp.jsx:272 src/workspace/Forms/Property/PropertyFormFields.js:105 src/workspace/Pages/Settings/SettingsEditor.js:438
 msgid "Saving…"
 msgstr ""
 
@@ -14827,7 +15015,7 @@ msgstr ""
 msgid "Scroll-wheel zoom"
 msgstr ""
 
-#: includes/Api/Type/Settings/DefaultSettingsData.php:253 includes/Core/SettingsManager.php:212 src/settings/components/Content/TabSections/TabDropdown/SearchPropertySettings.js:20 src/settings/components/Content/TabSections/TabDropdown/SearchPropertySettings.js:236 src/settings/components/utils/constants.js:6 src/setup/steps/MapStep.jsx:232 src/workspace/Components/SearchInput.js:6 templates/property-archive/partials/view-controls.php:54
+#: includes/Api/Type/Settings/DefaultSettingsData.php:253 includes/Core/SettingsManager.php:212 src/settings/components/Content/TabSections/TabDropdown/SearchPropertySettings.js:20 src/settings/components/Content/TabSections/TabDropdown/SearchPropertySettings.js:236 src/settings/components/utils/constants.js:6 src/setup/steps/MapStep.jsx:246 src/workspace/Components/SearchInput.js:6 templates/property-archive/partials/view-controls.php:54
 msgid "Search"
 msgstr ""
 
@@ -14851,7 +15039,7 @@ msgstr ""
 msgid "Search Agents"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:276 includes/Admin/DocumentationPage.php:353
+#: includes/Admin/DocumentationPage.php:276 includes/Admin/DocumentationPage.php:353 src/setup/steps/WelcomeStep.jsx:45
 msgid "Search Builder"
 msgstr ""
 
@@ -14987,6 +15175,10 @@ msgstr ""
 msgid "Search unavailable"
 msgstr ""
 
+#: src/setup/steps/FinishStep.jsx:156
+msgid "Search, maps, email, permalinks, and more."
+msgstr ""
+
 #: src/blocks/property-search/edit.js:67
 msgid "Search-first archive. Same filters and cards as Property Archive."
 msgstr ""
@@ -14995,7 +15187,7 @@ msgstr ""
 msgid "Searching existing terms…"
 msgstr ""
 
-#: includes/Database/Base/FieldRegistry.php:373 includes/Database/FieldTypes/MapField.php:379 src/blocks/shared/EntitySearchControl.js:262 src/setup/steps/MapStep.jsx:231
+#: includes/Database/Base/FieldRegistry.php:373 includes/Database/FieldTypes/MapField.php:379 src/blocks/shared/EntitySearchControl.js:262 src/setup/steps/MapStep.jsx:245
 msgid "Searching…"
 msgstr ""
 
@@ -15087,8 +15279,8 @@ msgstr ""
 msgid "Security verification failed"
 msgstr ""
 
-#: src/setup/steps/FinishStep.jsx:40
-msgid "See your listings"
+#: src/setup/steps/FinishStep.jsx:146
+msgid "See how properties look on your live site."
 msgstr ""
 
 #: includes/Database/Traits/Taxonomy_Fields/Hvnly_Advanced_Icon_Manager.php:446
@@ -15287,7 +15479,7 @@ msgstr ""
 msgid "Select…"
 msgstr ""
 
-#: src/setup/steps/WorkspaceStep.jsx:83
+#: src/setup/steps/WorkspaceStep.jsx:141
 msgid "Self-service listing management"
 msgstr ""
 
@@ -15375,6 +15567,10 @@ msgstr ""
 msgid "Sends a WordPress password-setup email (no plain-text password)."
 msgstr ""
 
+#: src/setup/steps/DemoImportStep.jsx:211
+msgid "Sends a short confirmation to your administrator address."
+msgstr ""
+
 #: includes/Admin/Data/TabData.php:587
 msgid "Senegal"
 msgstr ""
@@ -15435,7 +15631,7 @@ msgstr ""
 msgid "Set up in eight simple steps"
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:147
+#: src/setup/steps/MapStep.jsx:149
 msgid "Set up your maps"
 msgstr ""
 
@@ -15443,7 +15639,7 @@ msgstr ""
 msgid "Set your password"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:315 includes/Admin/DocumentationPage.php:498 includes/Admin/Menu.php:106 includes/Admin/Menu.php:108 includes/Workspace/WorkspaceAssets.php:260 src/blocks/dashboard/edit.js:26 src/blocks/dashboard/edit.js:182 src/pages/Settings.tsx:7 src/setup/steps/FinishStep.jsx:50 src/workspace/Layouts/Header.js:318 src/workspace/Pages/Settings/SettingsEditor.js:94
+#: includes/Admin/DocumentationPage.php:315 includes/Admin/DocumentationPage.php:476 includes/Admin/Menu.php:106 includes/Admin/Menu.php:108 includes/Workspace/WorkspaceAssets.php:260 src/blocks/dashboard/edit.js:26 src/blocks/dashboard/edit.js:182 src/pages/Settings.tsx:7 src/setup/steps/FinishStep.jsx:156 src/workspace/Layouts/Header.js:318 src/workspace/Pages/Settings/SettingsEditor.js:94
 msgid "Settings"
 msgstr ""
 
@@ -15459,7 +15655,7 @@ msgstr ""
 msgid "Settings Saved"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:537
+#: includes/Admin/DocumentationPage.php:529
 msgid "Settings Status"
 msgstr ""
 
@@ -15483,11 +15679,19 @@ msgstr ""
 msgid "Settings updated successfully"
 msgstr ""
 
-#: src/setup/SetupApp.jsx:111
+#: src/setup/SetupApp.jsx:128
+msgid "Setup"
+msgstr ""
+
+#: src/setup/steps/FinishStep.jsx:62
+msgid "Setup complete"
+msgstr ""
+
+#: src/setup/SetupApp.jsx:163
 msgid "Setup steps"
 msgstr ""
 
-#: src/setup/SetupApp.jsx:136
+#: src/setup/SetupApp.jsx:239
 msgid "Setup wizard step"
 msgstr ""
 
@@ -16035,10 +16239,6 @@ msgstr ""
 msgid "Single Location"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:568
-msgid "Single Property Experience"
-msgstr ""
-
 #: src/settings/components/Content/TabSections/PropertyDetailsSettings.js:72
 msgid "Single Property Page"
 msgstr ""
@@ -16071,7 +16271,7 @@ msgstr ""
 msgid "Skip duplicates"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:82
+#: src/setup/steps/DemoImportStep.jsx:130
 msgid "Skip for now"
 msgstr ""
 
@@ -16079,7 +16279,7 @@ msgstr ""
 msgid "Skip setup"
 msgstr ""
 
-#: src/setup/SetupApp.jsx:90
+#: src/setup/SetupApp.jsx:108
 msgid "Skip to content"
 msgstr ""
 
@@ -16087,11 +16287,11 @@ msgstr ""
 msgid "Skip to main content"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:162
+#: src/setup/steps/DemoImportStep.jsx:239
 msgid "Skip — start empty"
 msgstr ""
 
-#: src/settings/components/Content/TabSections/CsvImportExport/CompleteStep.js:45 src/settings/components/Content/TabSections/CsvImportExport/ImportStep.js:56 src/settings/components/Content/TabSections/Migration/ReportCard.js:107
+#: src/settings/components/Content/TabSections/CsvImportExport/CompleteStep.js:45 src/settings/components/Content/TabSections/CsvImportExport/ImportStep.js:56 src/settings/components/Content/TabSections/Migration/ReportCard.js:107 src/setup/steps/FinishStep.jsx:122
 msgid "Skipped"
 msgstr ""
 
@@ -16143,6 +16343,10 @@ msgstr ""
 msgid "Some sampled rows are missing required fields. Those rows will be skipped automatically; everything else will import normally."
 msgstr ""
 
+#: src/setup/SetupApp.jsx:215
+msgid "Some settings could not be saved automatically. Your setup continues — you can re-apply them any time under Havenlytics → Settings."
+msgstr ""
+
 #: includes/Workspace/Auth/WorkspaceAccountNotifier.php:57
 msgid "Someone asked to reset the password for your account. Choose a new one using the button below — the link is single-use and expires in 24 hours."
 msgstr ""
@@ -16183,7 +16387,7 @@ msgstr ""
 msgid "South Yorkshire"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:8
+#: src/setup/steps/CurrencyStep.jsx:10
 msgid "Space (1 250 000)"
 msgstr ""
 
@@ -16247,12 +16451,8 @@ msgstr ""
 msgid "Start New Export"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:95
+#: src/setup/steps/DemoImportStep.jsx:137
 msgid "Start with demo content?"
-msgstr ""
-
-#: src/setup/steps/WelcomeStep.jsx:63
-msgid "Starter content"
 msgstr ""
 
 #: src/settings/components/Content/TabSections/CsvImportExport/ExportPanel.js:61 src/settings/components/Content/TabSections/CsvImportExport/ValidateStep.js:121
@@ -16313,6 +16513,10 @@ msgstr ""
 
 #: src/settings/components/Content/TabSections/PerformanceSettings.js:73
 msgid "Status: ON — listings (grid, list, map, sidebar) use cached AJAX responses."
+msgstr ""
+
+#: src/setup/SetupApp.jsx:135
+msgid "Step %1$d of %2$d"
 msgstr ""
 
 #: includes/Agent/Admin/AgentDeleteWizardPage.php:467
@@ -16527,7 +16731,7 @@ msgstr ""
 msgid "Sydney"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:71 src/setup/steps/CurrencyStep.jsx:73
+#: src/setup/steps/CurrencyStep.jsx:76 src/setup/steps/CurrencyStep.jsx:81
 msgid "Symbol position"
 msgstr ""
 
@@ -16691,6 +16895,10 @@ msgstr ""
 msgid "Taxonomy request updated."
 msgstr ""
 
+#: src/setup/steps/WorkspaceStep.jsx:146
+msgid "Taxonomy requests for admin review"
+msgstr ""
+
 #: templates/single-agency/partials/stats.php:28
 msgid "Team performance at a glance"
 msgstr ""
@@ -16831,6 +17039,10 @@ msgstr ""
 msgid "The Workspace view shown first when the dashboard loads."
 msgstr ""
 
+#: src/setup/steps/BusinessStep.jsx:98
+msgid "The city and region you enter here are reused to search for your default map location on the next step."
+msgstr ""
+
 #: templates/blocks/dashboard.php:64
 msgid "The dashboard is unavailable right now."
 msgstr ""
@@ -16855,7 +17067,7 @@ msgstr ""
 msgid "The following required fields need attention:"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:67
+#: src/setup/steps/DemoImportStep.jsx:107
 msgid "The import didn’t finish"
 msgstr ""
 
@@ -16919,7 +17131,7 @@ msgstr ""
 msgid "The video URL for \"%s\" is required."
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:431 includes/Admin/DocumentationPage.php:521
+#: includes/Admin/DocumentationPage.php:431 includes/Admin/DocumentationPage.php:500
 msgid "Theme"
 msgstr ""
 
@@ -17107,6 +17319,10 @@ msgstr ""
 msgid "This password reset link is invalid or has expired. Request a new one."
 msgstr ""
 
+#: src/setup/steps/CurrencyStep.jsx:240
+msgid "This price format is applied wherever a listing price appears — and the card itself is fully configurable."
+msgstr ""
+
 #: includes/ContactAgent/InquiryValidator.php:50
 msgid "This property is not available for inquiries."
 msgstr ""
@@ -17140,11 +17356,7 @@ msgid "This section is disabled because \"Hide Top Search Bar\" is enabled."
 msgstr ""
 
 #: src/setup/steps/BusinessStep.jsx:18
-msgid "This sets sensible defaults for currency, location fields, and maps. You can refine everything later."
-msgstr ""
-
-#: src/setup/steps/MapStep.jsx:290
-msgid "This sets the default centre for property maps. Each listing can override it later."
+msgid "This sets sensible defaults for currency, location fields, and maps so you type less on every new listing."
 msgstr ""
 
 #: src/builder/components/TabContent/AddPropertyFormTab/Tab/Tab.js:117 src/builder/components/TabContent/AddPropertyFormTab/hooks/usePropertyBuilder.js:869
@@ -17207,8 +17419,12 @@ msgstr ""
 msgid "Thousand Text - K or Thousand"
 msgstr ""
 
-#: src/setup/steps/CurrencyStep.jsx:97
+#: src/setup/steps/CurrencyStep.jsx:110
 msgid "Thousands"
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:65
+msgid "Three short sections cover your locale, your maps and prices, and how your agents and listings get started. Nothing here is permanent — every choice stays editable in Settings."
 msgstr ""
 
 #: includes/Admin/Data/DemoData.php:181
@@ -17487,7 +17703,7 @@ msgstr ""
 msgid "Transfer to another Agent"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:577
+#: includes/Admin/DocumentationPage.php:561
 msgid "Translation Status"
 msgstr ""
 
@@ -17535,12 +17751,24 @@ msgstr ""
 msgid "Turn each transactional email on or off. These switches control the live registration, approval, password, and property notifications. Custom HTML template editing is planned for a later release."
 msgstr ""
 
+#: src/setup/steps/WelcomeStep.jsx:24
+msgid "Turn on the Agent Workspace and, if you like, load demo listings to explore a working site."
+msgstr ""
+
 #: src/settings/components/Content/TabSections/ContactAgentSettings.js:49
 msgid "Turn on the property inquiry form."
 msgstr ""
 
 #: includes/Admin/Data/DemoData.php:107
 msgid "Turn-key office suite in a Class A downtown tower."
+msgstr ""
+
+#: src/setup/steps/WorkspaceStep.jsx:55
+msgid "Turned off. You can switch it on here or later in Settings."
+msgstr ""
+
+#: src/setup/steps/WorkspaceStep.jsx:51
+msgid "Turned on. Your agent portal routes are active on the front end."
 msgstr ""
 
 #: src/settings/components/Content/TabSections/ContactAgentSettings.js:435
@@ -17779,7 +18007,7 @@ msgstr ""
 msgid "Unarchive this inquiry to reply."
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:529
+#: includes/Admin/DocumentationPage.php:511
 msgid "Unavailable"
 msgstr ""
 
@@ -17891,8 +18119,8 @@ msgstr ""
 msgid "Untitled property"
 msgstr ""
 
-#: src/setup/steps/DemoImportStep.jsx:121
-msgid "Up to %d demo properties."
+#: src/setup/steps/DemoImportStep.jsx:170
+msgid "Up to %d curated demo properties, spread evenly across departments."
 msgstr ""
 
 #: src/builder/components/TabContent/AddPropertyFormTab/Modal/Modal.js:732 src/settings/components/Content/TabSections/TabDropdown/CurrencySettings.js:343
@@ -18579,10 +18807,6 @@ msgstr ""
 msgid "View profile for %s"
 msgstr ""
 
-#: src/setup/steps/FinishStep.jsx:38
-msgid "View properties"
-msgstr ""
-
 #: src/workspace/Pages/Notifications/NotificationsCenter.js:166
 msgid "View related"
 msgstr ""
@@ -18597,6 +18821,10 @@ msgstr ""
 
 #: includes/Email/Notifiers/PropertyWorkflowNotifier.php:190
 msgid "View your listing"
+msgstr ""
+
+#: src/setup/steps/FinishStep.jsx:144
+msgid "View your listings"
 msgstr ""
 
 #: templates/emails/property-import-success.php:22
@@ -18763,7 +18991,7 @@ msgstr ""
 msgid "Welcome to %s"
 msgstr ""
 
-#: includes/Admin/SetupWizardNotice.php:104 src/setup/steps/WelcomeStep.jsx:27
+#: includes/Admin/SetupWizardNotice.php:104 src/setup/steps/WelcomeStep.jsx:58
 msgid "Welcome to Havenlytics"
 msgstr ""
 
@@ -18793,6 +19021,22 @@ msgstr ""
 
 #: includes/Admin/DemoImportContentSeeder.php:267
 msgid "What documents are required?"
+msgstr ""
+
+#: src/setup/steps/FinishStep.jsx:86
+msgid "What you configured"
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:110
+msgid "What you will set up"
+msgstr ""
+
+#: src/setup/steps/WorkspaceStep.jsx:137
+msgid "What your agents get"
+msgstr ""
+
+#: src/setup/steps/WelcomeStep.jsx:116
+msgid "What you’ll set up"
 msgstr ""
 
 #: includes/Agent/AgentFields.php:75 includes/Frontend/MobileContactDock.php:145 src/workspace/Pages/Profile/ProfileEditor.js:261 templates/partials/cards/agent-card.php:238 templates/single-property/partials/property-agent-section-card.php:93 templates/single-property/partials/property-agent-section-card.php:212 templates/single-property/partials/property-agent-sidebar-footer.php:43
@@ -18843,7 +19087,7 @@ msgstr ""
 msgid "When visitors contact you about a property, their messages appear here."
 msgstr ""
 
-#: src/setup/steps/BusinessStep.jsx:15
+#: src/setup/steps/BusinessStep.jsx:17
 msgid "Where do you do business?"
 msgstr ""
 
@@ -18899,11 +19143,11 @@ msgstr ""
 msgid "WordPress Role"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:510
+#: includes/Admin/DocumentationPage.php:494
 msgid "WordPress Version"
 msgstr ""
 
-#: includes/Admin/DocumentationPage.php:590
+#: includes/Admin/DocumentationPage.php:574
 msgid "WordPress gettext + @wordpress/i18n"
 msgstr ""
 
@@ -18931,11 +19175,15 @@ msgstr ""
 msgid "Working…"
 msgstr ""
 
+#: src/setup/steps/WorkspaceStep.jsx:153
+msgid "Works alongside"
+msgstr ""
+
 #: src/settings/components/Content/TabSections/MapSettings.js:268
 msgid "Works out of the box"
 msgstr ""
 
-#: includes/Agent/Admin/AgentManagementAdminList.php:356 includes/Workspace/WorkspaceAssets.php:242 includes/Workspace/WorkspaceShortcode.php:95 src/setup/SetupApp.jsx:18 src/workspace/Pages/Settings/SettingsEditor.js:92 src/workspace/Pages/Settings/SettingsEditor.js:226 templates/agent-portal/unavailable.php:24
+#: includes/Agent/Admin/AgentManagementAdminList.php:356 includes/Workspace/WorkspaceAssets.php:242 includes/Workspace/WorkspaceShortcode.php:95 src/setup/SetupApp.jsx:20 src/setup/steps/WorkspaceStep.jsx:29 src/workspace/Pages/Settings/SettingsEditor.js:92 src/workspace/Pages/Settings/SettingsEditor.js:226 templates/agent-portal/unavailable.php:24
 msgid "Workspace"
 msgstr ""
 
@@ -19001,6 +19249,10 @@ msgstr ""
 
 #: includes/Workspace/Auth/AgentIdentityAdminBridge.php:98
 msgid "Workspace account was not created: missing create_users capability or non-admin save context."
+msgstr ""
+
+#: src/setup/steps/WorkspaceStep.jsx:160
+msgid "Workspace documentation"
 msgstr ""
 
 #: includes/Workspace/Api/AnalyticsController.php:83 includes/Workspace/Api/DashboardController.php:73 includes/Workspace/Api/GuestController.php:161 includes/Workspace/Api/InquiriesController.php:125 includes/Workspace/Api/NotificationsController.php:103 includes/Workspace/Api/ProfileController.php:88 includes/Workspace/Api/PropertiesController.php:844 includes/Workspace/Api/PropertyMediaController.php:316 includes/Workspace/Api/SettingsController.php:78 includes/Workspace/Auth/SessionAuthController.php:726 includes/Workspace/TaxonomyRequests/Api/TaxonomyRequestsController.php:99
@@ -19327,6 +19579,10 @@ msgstr ""
 msgid "You received a new inquiry from your property listing."
 msgstr ""
 
+#: src/setup/steps/WorkspaceStep.jsx:17
+msgid "You review and approve every agent before they get access."
+msgstr ""
+
 #: includes/Admin/SetupWizardNotice.php:107
 msgid "You're almost ready to start your property directory!"
 msgstr ""
@@ -19451,6 +19707,14 @@ msgstr ""
 msgid "Your agent profile was saved successfully."
 msgstr ""
 
+#: src/setup/steps/FinishStep.jsx:79
+msgid "Your configuration"
+msgstr ""
+
+#: src/setup/steps/MapStep.jsx:324
+msgid "Your default coordinates seed the AJAX map search and every map embed across the site."
+msgstr ""
+
 #: includes/Workspace/Auth/SessionAuthController.php:651
 msgid "Your email address has been verified. You can now access the Agent Workspace."
 msgstr ""
@@ -19495,8 +19759,8 @@ msgstr ""
 msgid "Your listing was submitted for review."
 msgstr ""
 
-#: src/setup/steps/FinishStep.jsx:26
-msgid "Your locale and workspace are configured. Add your first listing whenever you’re ready."
+#: src/setup/steps/FinishStep.jsx:72
+msgid "Your locale, maps, and workspace are configured. Add your first listing whenever you’re ready."
 msgstr ""
 
 #: includes/ContactAgent/InquiryValidator.php:135 includes/Functions/contact-agent-functions.php:408
@@ -19531,6 +19795,10 @@ msgstr ""
 msgid "Your phone number is too long."
 msgstr ""
 
+#: src/setup/steps/WelcomeStep.jsx:8
+msgid "Your primary country plus the default city and region used to pre-fill new listings."
+msgstr ""
+
 #: src/workspace/Pages/Profile/ProfileEditor.js:119
 msgid "Your profile"
 msgstr ""
@@ -19541,6 +19809,10 @@ msgstr ""
 
 #: includes/Workspace/Auth/WorkspaceAccountNotifier.php:155
 msgid "Your profile was updated — %s"
+msgstr ""
+
+#: src/setup/steps/DemoImportStep.jsx:18
+msgid "Your property cards, fields, and search filters are all configurable after setup."
 msgstr ""
 
 #: includes/Core/DataPreservation/MigrationAdminNotices.php:99
@@ -19563,7 +19835,7 @@ msgstr ""
 msgid "Your property setup on {{site_name}} is complete. {{import_count}} listings are ready to review."
 msgstr ""
 
-#: src/setup/steps/FinishStep.jsx:18
+#: src/setup/steps/FinishStep.jsx:63
 msgid "Your property site is ready"
 msgstr ""
 
@@ -19683,6 +19955,10 @@ msgstr ""
 msgid "added to"
 msgstr ""
 
+#: src/setup/steps/FinishStep.jsx:52
+msgid "admin approval"
+msgstr ""
+
 #: templates/content-archive-agency.php:95 templates/content-archive-agency.php:163 templates/property-archive/partials/agencies-archive.php:92 templates/property-archive/partials/agencies-archive.php:134
 msgid "agencies"
 msgstr ""
@@ -19727,15 +20003,15 @@ msgstr ""
 msgid "e.g. America/New_York (leave blank for site default)"
 msgstr ""
 
-#: src/setup/steps/BusinessStep.jsx:78
+#: src/setup/steps/BusinessStep.jsx:84
 msgid "e.g. Greater London"
 msgstr ""
 
-#: src/setup/steps/BusinessStep.jsx:63
+#: src/setup/steps/BusinessStep.jsx:67
 msgid "e.g. London"
 msgstr ""
 
-#: src/setup/steps/MapStep.jsx:223
+#: src/setup/steps/MapStep.jsx:232
 msgid "e.g. London, United Kingdom"
 msgstr ""
 
@@ -19865,6 +20141,10 @@ msgstr ""
 
 #: src/builder/components/TabContent/AddPropertyFormTab/Field/Field.js:284 templates/search/ajaxload-more.php:99
 msgid "of"
+msgstr ""
+
+#: src/setup/steps/FinishStep.jsx:53
+msgid "open registration"
 msgstr ""
 
 #: src/workspace/Forms/Property/BuilderField.js:74

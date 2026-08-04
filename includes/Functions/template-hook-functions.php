@@ -283,11 +283,10 @@ if (!function_exists('hvnly_single_property_actions')) {
 
         $print_enabled = hvnly_is_print_button_enabled();
 
-        // Only render if at least one action is enabled
-        if (!$save_enabled && !$print_enabled) {
-            return;
-        }
-
+        /**
+         * Always load the actions shell so Pro Compare (and other modules)
+         * can inject beside Favorite/Print via hvnly_single_property_actions.
+         */
         hvnly_get_template_part('single-property/actions', '', array(
             'save_enabled' => $save_enabled,
             'print_enabled' => $print_enabled

@@ -356,11 +356,9 @@ class HookManager {
 	 */
 	private function register_ajax_hooks() {
 		/**
-		 * Cache management AJAX endpoints
+		 * Cache clear/stats/settings AJAX is owned by CacheAdmin (single source of truth).
+		 * Handlers below remain for backward compatibility if called directly.
 		 */
-		add_action( 'wp_ajax_hvnly_clear_cache', array( $this, 'handle_cache_ajax' ) );
-		add_action( 'wp_ajax_hvnly_get_cache_stats', array( $this, 'handle_cache_ajax' ) );
-		add_action( 'wp_ajax_hvnly_update_cache_settings', array( $this, 'handle_cache_settings_ajax' ) );
 
 		if ( class_exists( '\HvnlyNab\ContactAgent\ContactAgentAjaxRegistrar' ) ) {
 			\HvnlyNab\ContactAgent\ContactAgentAjaxRegistrar::register();

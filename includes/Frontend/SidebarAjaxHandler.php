@@ -90,7 +90,11 @@ class SidebarAjaxHandler
             }
 
             // No cache found - perform fresh query
+            $query_started = microtime(true);
             $properties_query = new \WP_Query($args);
+            if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine() && method_exists(HVNLY_NAB()->engine(), 'track_query_executed')) {
+                HVNLY_NAB()->engine()->track_query_executed(microtime(true) - $query_started);
+            }
 
             if (is_wp_error($properties_query->posts)) {
                 wp_send_json_error(__( 'Query error occurred', 'havenlytics' ));

@@ -45,6 +45,23 @@ class HvnlyEngine
     private $cache_stats = [];
 
     /**
+     * Pending hit/miss increments flushed once per request.
+     *
+     * @var int
+     */
+    private $pending_hits = 0;
+
+    /**
+     * @var int
+     */
+    private $pending_misses = 0;
+
+    /**
+     * @var bool
+     */
+    private $stats_flush_hooked = false;
+
+    /**
      * Minimum size to apply compression (1KB)
      */
     const COMPRESSION_THRESHOLD = 1024;
@@ -167,7 +184,20 @@ class HvnlyEngine
             add_option('hvnly_cache_misses', 0, '', 'no');
             add_option('hvnly_queries_executed', 0, '', 'no');
             add_option('hvnly_cache_requests', 0, '', 'no');
-            add_option('hvnly_compression_savings', 0, '', 'no'); // Track compression savings
+            add_option('hvnly_compression_savings', 0, '', 'no');
+            add_option('hvnly_query_time_total', 0, '', 'no');
+        }
+
+        // One-time reset of historically seeded fake dashboards (85/100).
+        if (!get_option('hvnly_cache_stats_honest', false)) {
+            $hits     = (int) get_option('hvnly_cache_hits', 0);
+            $requests = (int) get_option('hvnly_cache_requests', 0);
+            $misses   = (int) get_option('hvnly_cache_misses', 0);
+            if (85 === $hits && 100 === $requests && 0 === $misses) {
+                update_option('hvnly_cache_hits', 0, false);
+                update_option('hvnly_cache_requests', 0, false);
+            }
+            update_option('hvnly_cache_stats_honest', 1, false);
         }
     }
 
@@ -287,20 +317,33 @@ class HvnlyEngine
                     }
                 }
 
-                if (strpos($item->option_name, 'search') !== false) {
+                $name = (string) $item->option_name;
+                if (false !== strpos($name, 'hvnly_search') || false !== strpos($name, '_search_')) {
                     $search_count++;
-                } elseif (strpos($item->option_name, 'sidebar') !== false) {
+                } elseif (false !== strpos($name, 'hvnly_sidebar') || false !== strpos($name, '_sidebar_')) {
                     $sidebar_count++;
-                } elseif (strpos($item->option_name, 'terms') !== false) {
+                } elseif (false !== strpos($name, 'hvnly_terms') || false !== strpos($name, '_terms_')) {
                     $term_count++;
                 }
             }
 
             $hit_rate = $this->calculate_hit_rate();
-            
+            $cache_enabled = function_exists('hvnly_is_cache_enabled')
+                ? (bool) \hvnly_is_cache_enabled()
+                : (bool) get_option('hvnly_cache_enabled', 0);
+
             // Calculate compression savings
             $savings = $compressed_size > 0 ? $compressed_size - $total_size : 0;
             $savings_percent = $compressed_size > 0 ? round(($savings / $compressed_size) * 100, 1) : 0;
+
+            $health = 'idle';
+            if (!$cache_enabled) {
+                $health = 'disabled';
+            } elseif ($total_items > 0 && $hit_rate >= 50) {
+                $health = 'healthy';
+            } elseif ($total_items > 0 || $hit_rate > 0) {
+                $health = 'warming';
+            }
 
             $this->cache_stats = [
                 'total_cache_size'     => $total_size,
@@ -314,10 +357,14 @@ class HvnlyEngine
                 'compression_ratio'    => $savings_percent . '%',
                 'compression_savings'  => $this->format_bytes($savings),
                 'avg_item_size'        => $total_items > 0 ? $this->format_bytes($total_size / $total_items) : '0 Bytes',
+                'cache_enabled'        => $cache_enabled,
+                'cache_status'         => $cache_enabled ? 'active' : 'disabled',
+                'cache_health'         => $health,
+                'object_cache'         => wp_using_ext_object_cache(),
             ];
             
             // Update compression savings statistic
-            update_option('hvnly_compression_savings', $savings);
+            update_option('hvnly_compression_savings', $savings, false);
             
         } catch (Exception $e) {
             // Error logging removed for production
@@ -417,8 +464,8 @@ class HvnlyEngine
      */
     private function calculate_hit_rate()
     {
-        $hits   = (int) get_option('hvnly_cache_hits', 0);
-        $misses = (int) get_option('hvnly_cache_misses', 0);
+        $hits   = (int) get_option('hvnly_cache_hits', 0) + $this->pending_hits;
+        $misses = (int) get_option('hvnly_cache_misses', 0) + $this->pending_misses;
 
         $total_requests = $hits + $misses;
 
@@ -438,9 +485,8 @@ class HvnlyEngine
      */
     public function track_cache_hit()
     {
-        $hits = (int) get_option('hvnly_cache_hits', 0);
-        update_option('hvnly_cache_hits', $hits + 1);
-        $this->increment_cache_requests();
+        $this->pending_hits++;
+        $this->ensure_stats_flush_hook();
     }
 
     /**
@@ -451,9 +497,46 @@ class HvnlyEngine
      */
     public function track_cache_miss()
     {
-        $misses = (int) get_option('hvnly_cache_misses', 0);
-        update_option('hvnly_cache_misses', $misses + 1);
-        $this->increment_cache_requests();
+        $this->pending_misses++;
+        $this->ensure_stats_flush_hook();
+    }
+
+    /**
+     * Ensure pending counters flush once at shutdown.
+     *
+     * @return void
+     */
+    private function ensure_stats_flush_hook()
+    {
+        if ($this->stats_flush_hooked) {
+            return;
+        }
+
+        $this->stats_flush_hooked = true;
+        add_action('shutdown', [$this, 'flush_pending_stats'], 5);
+    }
+
+    /**
+     * Persist deferred hit/miss counters (one options write pair per request).
+     *
+     * @return void
+     */
+    public function flush_pending_stats()
+    {
+        if ($this->pending_hits <= 0 && $this->pending_misses <= 0) {
+            return;
+        }
+
+        $hits     = (int) get_option('hvnly_cache_hits', 0) + $this->pending_hits;
+        $misses   = (int) get_option('hvnly_cache_misses', 0) + $this->pending_misses;
+        $requests = (int) get_option('hvnly_cache_requests', 0) + $this->pending_hits + $this->pending_misses;
+
+        update_option('hvnly_cache_hits', $hits, false);
+        update_option('hvnly_cache_misses', $misses, false);
+        update_option('hvnly_cache_requests', $requests, false);
+
+        $this->pending_hits   = 0;
+        $this->pending_misses = 0;
     }
 
     /**
@@ -463,20 +546,27 @@ class HvnlyEngine
      */
     private function increment_cache_requests()
     {
+        // Kept for BC; request totals are updated in flush_pending_stats().
         $requests = (int) get_option('hvnly_cache_requests', 0);
-        update_option('hvnly_cache_requests', $requests + 1);
+        update_option('hvnly_cache_requests', $requests + 1, false);
     }
 
     /**
      * Track a database query execution
      *
+     * @param float $elapsed_seconds Optional measured query duration.
      * @return void
      * @since 2.0.0
      */
-    public function track_query_executed()
+    public function track_query_executed($elapsed_seconds = null)
     {
         $queries = (int) get_option('hvnly_queries_executed', 0);
-        update_option('hvnly_queries_executed', $queries + 1);
+        update_option('hvnly_queries_executed', $queries + 1, false);
+
+        if (null !== $elapsed_seconds && is_numeric($elapsed_seconds) && (float) $elapsed_seconds >= 0) {
+            $total = (float) get_option('hvnly_query_time_total', 0) + (float) $elapsed_seconds;
+            update_option('hvnly_query_time_total', $total, false);
+        }
     }
 
     /**
@@ -509,21 +599,29 @@ class HvnlyEngine
      */
     public function get_performance_metrics()
     {
-        $hits             = (int) get_option('hvnly_cache_hits', 0);
-        $misses           = (int) get_option('hvnly_cache_misses', 0);
+        // Include in-request pending counters so admin refresh is accurate.
+        $hits             = (int) get_option('hvnly_cache_hits', 0) + $this->pending_hits;
+        $misses           = (int) get_option('hvnly_cache_misses', 0) + $this->pending_misses;
         $queries_executed = (int) get_option('hvnly_queries_executed', 0);
-        $requests         = (int) get_option('hvnly_cache_requests', 0);
+        $query_time_total = (float) get_option('hvnly_query_time_total', 0);
         $compression_savings = (int) get_option('hvnly_compression_savings', 0);
+        $hit_rate         = $this->calculate_hit_rate();
+
+        $average_query_time = 0.0;
+        if ($queries_executed > 0 && $query_time_total > 0) {
+            $average_query_time = round($query_time_total / $queries_executed, 4);
+        }
 
         return [
             'cache_hits'          => $hits,
             'cache_misses'        => $misses,
             'queries_executed'    => $queries_executed,
-            'average_query_time'  => 0.15, // Placeholder
-            'cache_efficiency'    => $this->calculate_hit_rate(),
+            'average_query_time'  => $average_query_time,
+            'cache_efficiency'    => $hit_rate,
             'memory_usage'        => memory_get_usage(true),
-            'total_queries_saved' => $requests > 0 ? $requests - $queries_executed : 0,
-            'cache_hit_rate'      => $this->calculate_hit_rate(),
+            // Each cache hit avoids a rebuild / query path.
+            'total_queries_saved' => $hits,
+            'cache_hit_rate'      => $hit_rate,
             'compression_savings' => $this->format_bytes($compression_savings),
         ];
     }
@@ -568,6 +666,10 @@ class HvnlyEngine
 
         // Clear cached statistics to force recalculation
         $this->cache_stats = [];
+
+        if (class_exists('\HvnlyNab\Frontend\Query\PropertyQueryCache')) {
+            \HvnlyNab\Frontend\Query\PropertyQueryCache::invalidate_all();
+        }
 
         // Debug logging removed for production
 
@@ -705,6 +807,10 @@ class HvnlyEngine
             'compression_ratio'    => '0%',
             'compression_savings'  => '0 Bytes',
             'avg_item_size'        => '0 Bytes',
+            'cache_enabled'        => false,
+            'cache_status'         => 'disabled',
+            'cache_health'         => 'disabled',
+            'object_cache'         => false,
         ];
     }
 

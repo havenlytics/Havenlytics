@@ -817,17 +817,17 @@ class SettingsSchema
                 ],
                 'hvnly_container_width_xxl' => [
                     'type' => 'string',
-                    'default' => '1320px',
+                    'default' => '1220px',
                     'sanitize' => 'sanitize_text_field',
                 ],
                 'hvnly_container_width_xxxl' => [
                     'type' => 'string',
-                    'default' => '1320px',
+                    'default' => '1220px',
                     'sanitize' => 'sanitize_text_field',
                 ],
                 'hvnly_container_width_4k' => [
                     'type' => 'string',
-                    'default' => '1400px',
+                    'default' => '1220px',
                     'sanitize' => 'sanitize_text_field',
                 ],
 
@@ -1487,6 +1487,12 @@ class SettingsSchema
         if ('search' === $group && class_exists('HvnlyNab\Api\Type\Settings\DefaultSettingsData')) {
             $search_defaults = DefaultSettingsData::get_default_search_settings();
             $defaults = array_merge($defaults, $search_defaults);
+        }
+
+        // Properties: DefaultSettingsData is the factory SOT (wins over schema field defaults).
+        if ('properties' === $group && class_exists('HvnlyNab\Api\Type\Settings\DefaultSettingsData')) {
+            $properties_defaults = DefaultSettingsData::get_default_properties_settings();
+            $defaults = array_merge($defaults, $properties_defaults);
         }
         
         return $defaults;

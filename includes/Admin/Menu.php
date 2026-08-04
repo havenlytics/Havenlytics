@@ -394,7 +394,8 @@ final class Menu
         $screens[] = 'hvnly_agent';
         $screens[] = 'edit-hvnly_agent_agency';
         $screens[] = 'hvnly_agent_agency';
-        // Cache screen removed - now handled by CacheAdmin.php
+        $screens[] = 'hvnly_property_page_hvnly_property_cache';
+        // Cache screen: suppress clutter notices (Appsero, promos) — CacheAdmin owns the page.
         return $screens;
     }
 

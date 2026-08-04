@@ -104,8 +104,9 @@ class CacheInvalidator
             CacheManager::clear_transients_by_pattern('sidebar_');
             PropertyQueryCache::invalidate_all();
 
-            if (function_exists('HVN') && HVNLY_NAB()->engine()) {
-                HVNLY_NAB()->engine()->clear_all_cache();
+            // Targeted invalidation only — never clear_all_cache() on a single listing save.
+            if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine()) {
+                HVNLY_NAB()->engine()->clear_transients_by_pattern('terms_');
             }
         } catch (Throwable $e) {
             // Silent fail in production
