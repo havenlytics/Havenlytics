@@ -23,7 +23,7 @@ defined( 'ABSPATH' ) || exit;
  */
 final class PropertyWorkflowService {
 
-	public const META_HISTORY = '_hvnly_ws_status_history';
+	public const META_HISTORY       = '_hvnly_ws_status_history';
 	public const META_REJECT_REASON = '_hvnly_ws_reject_reason';
 
 	/** Workflow keys (UI + REST). */

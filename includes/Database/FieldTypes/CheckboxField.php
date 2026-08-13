@@ -1,7 +1,7 @@
 <?php
 /**
  * Checkbox Field Handler - Enhanced with Simple List Repeater
- * 
+ *
  * @package HvnlyNab\Database\FieldTypes
  * @since 2.0.0
  */
@@ -16,22 +16,22 @@ class CheckboxField extends BaseFieldType {
         parent::__construct('checkbox');
         $this->requires_assets = true;
     }
-    
-    public function render($field, $value, $post_id) {
+
+    public function render( $field, $value, $post_id ) {
         // Get saved list items
-        $list_items = !empty($value) ? json_decode($value, true) : [];
-        
+        $list_items = ! empty($value) ? json_decode($value, true) : array();
+
         // If no items, create a default empty item
         if (empty($list_items)) {
-            $list_items = [''];
+            $list_items = array( '' );
         }
-        
-        $field_id = $field['id'];
-        $field_name = $field['name'];
+
+        $field_id    = $field['id'];
+        $field_name  = $field['name'];
         $field_label = isset( $field['label'] ) ? (string) $field['label'] : '';
-        $search_id = 'hvnly-checkbox-repeater-search-' . sanitize_html_class( (string) $field_id );
-        $has_values = (bool) array_filter( array_map( 'strval', $list_items ) );
-        
+        $search_id   = 'hvnly-checkbox-repeater-search-' . sanitize_html_class( (string) $field_id );
+        $has_values  = (bool) array_filter( array_map( 'strval', $list_items ) );
+
         ob_start();
         ?>
 <div class="hvnly-checkbox-repeater-field<?php echo $has_values ? '' : ' is-empty'; ?>" data-field-id="<?php echo esc_attr($field_id); ?>">
@@ -61,7 +61,7 @@ class CheckboxField extends BaseFieldType {
     </div>
 
     <div class="hvnly-checkbox-repeater-items" role="list">
-        <?php foreach ($list_items as $item_index => $item_value): ?>
+        <?php foreach ($list_items as $item_index => $item_value) : ?>
         <div class="hvnly-checkbox-repeater-item" data-item-index="<?php echo esc_attr($item_index); ?>" role="listitem">
             <div class="hvnly-checkbox-repeater-item-content">
                 <input type="text" name="<?php echo esc_attr($field_name); ?>[<?php echo esc_attr($item_index); ?>]"
@@ -104,36 +104,36 @@ class CheckboxField extends BaseFieldType {
     <input type="hidden" name="<?php echo esc_attr($field_name); ?>" value="<?php echo esc_attr($value); ?>"
         class="hvnly-checkbox-repeater-hidden" />
 </div>
-<?php
-        
+		<?php
+
         return ob_get_clean();
     }
-    
-    public function save($post_id, $field_name, $value, $extra = null) {
+
+    public function save( $post_id, $field_name, $value, $extra = null ) {
         if (empty($value)) {
             hvnly_safe_delete_post_meta($post_id, $field_name, 'user_save_empty');
         } else {
             update_post_meta($post_id, $field_name, $value);
         }
     }
-    
-    public function sanitize($value) {
+
+    public function sanitize( $value ) {
         if (is_array($value)) {
             // Sanitize the array data
-            $sanitized = [];
+            $sanitized = array();
             foreach ($value as $item_index => $item_value) {
                 $sanitized[] = sanitize_text_field($item_value);
             }
-            return json_encode(array_filter($sanitized)); 
+            return json_encode(array_filter($sanitized));
         }
         return sanitize_text_field($value);
     }
-    
-    public function validate($value, $field) {
+
+    public function validate( $value, $field ) {
         // Checkbox repeater fields can be optional
         return true;
     }
-    
+
     public function enqueue_assets() {
         wp_enqueue_style(
             'hvnly-checkbox-repeater-field',
@@ -146,7 +146,7 @@ class CheckboxField extends BaseFieldType {
         wp_enqueue_script(
             'hvnly-checkbox-repeater-field',
             HVNLYNAB_ASSETS_URL . '/admin/js/hvnly-checkbox-repeater-field.js',
-            ['jquery'],
+            array( 'jquery' ),
             defined('HVNLYNAB_VERSION') ? HVNLYNAB_VERSION : '1.0.0',
             true
         );

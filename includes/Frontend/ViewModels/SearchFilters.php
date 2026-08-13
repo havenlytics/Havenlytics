@@ -13,7 +13,7 @@
 namespace HvnlyNab\Frontend\ViewModels;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -22,8 +22,8 @@ if (!defined('ABSPATH')) {
  *
  * @since 2.0.0
  */
-class SearchFilters
-{
+class SearchFilters {
+
     /**
      * Cache duration in seconds
      *
@@ -38,25 +38,24 @@ class SearchFilters
      * @param array  $args     Get terms arguments
      * @return array|WP_Error
      */
-    public function get_cached_terms($taxonomy, $args = [])
-    {
-        $default_args = [
+    public function get_cached_terms( $taxonomy, $args = array() ) {
+        $default_args = array(
             'taxonomy'   => $taxonomy,
             'hide_empty' => true,
             'orderby'    => 'name',
             'order'      => 'ASC',
-        ];
+        );
 
         $args = wp_parse_args($args, $default_args);
 
         // Generate cache key based on taxonomy and args
         $cache_key = 'hvnly_terms_' . $taxonomy . '_' . md5(serialize($args));
-        $terms = get_transient($cache_key);
+        $terms     = get_transient($cache_key);
 
         if (false === $terms) {
             $terms = get_terms($args);
 
-            if (!is_wp_error($terms) && !empty($terms)) {
+            if ( ! is_wp_error($terms) && ! empty($terms)) {
                 set_transient($cache_key, $terms, $this->cache_duration);
             }
         }
@@ -69,34 +68,33 @@ class SearchFilters
      *
      * @return array
      */
-    public function get_filter_data()
-    {
-        $data = [];
+    public function get_filter_data() {
+        $data = array();
 
         // Get dynamic taxonomies with caching
-        $data['prop_types'] = $this->get_cached_terms('hvnly_prop_types');
+        $data['prop_types']  = $this->get_cached_terms('hvnly_prop_types');
         $data['departments'] = $this->get_cached_terms('hvnly_prop_depts');
-        $data['locations'] = $this->get_cached_terms('hvnly_prop_locations');
+        $data['locations']   = $this->get_cached_terms('hvnly_prop_locations');
 
         // Get current search values
-        $data['current_filters'] = hvnly_get_current_filters();
-        $data['current_search'] = $data['current_filters']['address_keyword'] ?? '';
-        $data['current_types'] = $data['current_filters']['hvnly_prop_types'] ?? [];
-        $data['current_locations'] = $data['current_filters']['hvnly_prop_locations'] ?? [];
+        $data['current_filters']    = hvnly_get_current_filters();
+        $data['current_search']     = $data['current_filters']['address_keyword'] ?? '';
+        $data['current_types']      = $data['current_filters']['hvnly_prop_types'] ?? array();
+        $data['current_locations']  = $data['current_filters']['hvnly_prop_locations'] ?? array();
         $data['current_department'] = $data['current_filters']['department'] ?? '';
 
         // Get current URL
         $data['current_url'] = get_post_type_archive_link('hvnly_property');
 
         // Sanitize GET parameters
-        $data['url_params'] = [];
+        $data['url_params'] = array();
         foreach ($_GET as $key => $value) {
             $key   = sanitize_key($key);
             $value = is_array($value)
                 ? array_map('sanitize_text_field', $value)
                 : sanitize_text_field($value);
 
-            $data['url_params'][$key] = $value;
+            $data['url_params'][ $key ] = $value;
         }
 
         return apply_filters('hvnly_search_filter_data', $data);
@@ -107,8 +105,7 @@ class SearchFilters
      *
      * @param string $taxonomy Taxonomy name
      */
-    public function clear_terms_cache($taxonomy)
-    {
+    public function clear_terms_cache( $taxonomy ) {
         global $wpdb;
 
         // Delete all term transients for this taxonomy
@@ -126,8 +123,7 @@ class SearchFilters
     /**
      * Clear all search-related transients
      */
-    public function clear_all_search_cache()
-    {
+    public function clear_all_search_cache() {
         global $wpdb;
 
         // Clear term caches

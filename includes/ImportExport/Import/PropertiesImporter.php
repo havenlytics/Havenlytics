@@ -44,11 +44,11 @@ final class PropertiesImporter {
 		string $policy,
 		array $batch = array()
 	): PackageResult {
-		$policy   = DuplicateDetector::normalize_policy( $policy );
-		$rows     = $reader->read_section( 'properties' );
-		$offset   = isset( $batch['offset'] ) ? max( 0, (int) $batch['offset'] ) : 0;
-		$limit    = isset( $batch['limit'] ) ? max( 0, (int) $batch['limit'] ) : 0;
-		$total    = count( $rows );
+		$policy = DuplicateDetector::normalize_policy( $policy );
+		$rows   = $reader->read_section( 'properties' );
+		$offset = isset( $batch['offset'] ) ? max( 0, (int) $batch['offset'] ) : 0;
+		$limit  = isset( $batch['limit'] ) ? max( 0, (int) $batch['limit'] ) : 0;
+		$total  = count( $rows );
 
 		if ( $limit > 0 ) {
 			$rows = array_slice( $rows, $offset, $limit );
@@ -71,7 +71,7 @@ final class PropertiesImporter {
 		}
 
 		foreach ( $rows as $row ) {
-			$result = self::upsert( $row, $detector, $remapper, $policy );
+			$result   = self::upsert( $row, $detector, $remapper, $policy );
 			$created += $result['created'];
 			$updated += $result['updated'];
 			$skipped += $result['skipped'];
@@ -90,7 +90,7 @@ final class PropertiesImporter {
 				'skipped'  => $skipped,
 				'failed'   => $failed,
 				'offset'   => $offset,
-				'processed'=> count( $rows ),
+				'processed' => count( $rows ),
 				'next'     => $next,
 				'total'    => $total,
 				'done'     => $next >= $total,
@@ -120,8 +120,8 @@ final class PropertiesImporter {
 			'warnings' => array(),
 		);
 
-		$slug  = sanitize_title( (string) ( $row['slug'] ?? '' ) );
-		$title = sanitize_text_field( (string) ( $row['title'] ?? '' ) );
+		$slug   = sanitize_title( (string) ( $row['slug'] ?? '' ) );
+		$title  = sanitize_text_field( (string) ( $row['title'] ?? '' ) );
 		$unique = trim( (string) ( $row['unique_property_id'] ?? '' ) );
 
 		if ( '' === $title ) {
@@ -189,7 +189,10 @@ final class PropertiesImporter {
 			$out['warnings'][] = array(
 				'code'    => 'hvnly_ie_property_insert_failed',
 				'message' => $post_id->get_error_message(),
-				'context' => array( 'slug' => $slug, 'unique_property_id' => $unique ),
+				'context' => array(
+					'slug' => $slug,
+					'unique_property_id' => $unique,
+				),
 			);
 			return $out;
 		}
@@ -410,13 +413,34 @@ final class PropertiesImporter {
 	 */
 	private static function append_taxonomy_values( array &$values, array $terms ): void {
 		$map = array(
-			'hvnly_prop_types'     => array( 'key' => 'propertyType', 'multiple' => false ),
-			'hvnly_prop_depts'     => array( 'key' => 'propertyDepartment', 'multiple' => false ),
-			'hvnly_prop_status'    => array( 'key' => 'propertyStatus', 'multiple' => true ),
-			'hvnly_prop_features'  => array( 'key' => 'propertyFeaturesTax', 'multiple' => true ),
-			'hvnly_prop_locations' => array( 'key' => 'propertyLocations', 'multiple' => true ),
-			'hvnly_prop_tags'      => array( 'key' => 'propertyTags', 'multiple' => true ),
-			'hvnly_prop_badges'    => array( 'key' => 'propertyBadges', 'multiple' => true ),
+			'hvnly_prop_types'     => array(
+				'key' => 'propertyType',
+				'multiple' => false,
+			),
+			'hvnly_prop_depts'     => array(
+				'key' => 'propertyDepartment',
+				'multiple' => false,
+			),
+			'hvnly_prop_status'    => array(
+				'key' => 'propertyStatus',
+				'multiple' => true,
+			),
+			'hvnly_prop_features'  => array(
+				'key' => 'propertyFeaturesTax',
+				'multiple' => true,
+			),
+			'hvnly_prop_locations' => array(
+				'key' => 'propertyLocations',
+				'multiple' => true,
+			),
+			'hvnly_prop_tags'      => array(
+				'key' => 'propertyTags',
+				'multiple' => true,
+			),
+			'hvnly_prop_badges'    => array(
+				'key' => 'propertyBadges',
+				'multiple' => true,
+			),
 		);
 
 		foreach ( $map as $taxonomy => $cfg ) {
@@ -516,15 +540,15 @@ final class PropertiesImporter {
 		$patched = false;
 		if ( class_exists( PropertyBuilderSchemaService::class ) ) {
 			foreach ( PropertyBuilderSchemaService::collect_storage_fields() as $row ) {
-				$meta = (string) ( $row['metaKey'] ?? '' );
-				$comp = (string) ( $row['component'] ?? '' );
-				$name = (string) ( $row['name'] ?? '' );
+				$meta      = (string) ( $row['metaKey'] ?? '' );
+				$comp      = (string) ( $row['component'] ?? '' );
+				$name      = (string) ( $row['name'] ?? '' );
 				$is_agents = ( 'agents' === $meta )
 					|| ( 'agents' === $comp && ( 'agents' === $meta || substr( $name, -7 ) === '_agents' ) );
 				if ( ! $is_agents || '' === $name ) {
 					continue;
 				}
-				$current = isset( $fields[ $name ] ) && is_array( $fields[ $name ] ) ? $fields[ $name ] : array();
+				$current     = isset( $fields[ $name ] ) && is_array( $fields[ $name ] ) ? $fields[ $name ] : array();
 				$current_ids = array();
 				foreach ( $current as $id ) {
 					$id = absint( $id );

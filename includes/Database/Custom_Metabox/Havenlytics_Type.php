@@ -14,7 +14,7 @@ use HvnlyNab\Admin\Data\TabData;
 use HvnlyNab\Api\Type\Builders\DnDSections;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -51,21 +51,21 @@ class Havenlytics_Type extends Custom_Metabox {
      *
      * @var array
      */
-    private $master_base_ids = [];
+    private $master_base_ids = array();
 
     /**
      * Cache for existing meta keys for current post
      *
      * @var array
      */
-    private $existing_meta_keys_cache = [];
+    private $existing_meta_keys_cache = array();
 
     /**
      * MAPPING CACHE: Stores the actual stored base ID for each group type
      *
      * @var array
      */
-    private $meta_key_mappings = [];
+    private $meta_key_mappings = array();
 
     /**
      * PER-RENDER FALLBACK GATE.
@@ -88,7 +88,7 @@ class Havenlytics_Type extends Custom_Metabox {
      *
      * @var array
      */
-    private $type_fallback_claimed = [];
+    private $type_fallback_claimed = array();
 
     /**
      * Constructor.
@@ -96,41 +96,41 @@ class Havenlytics_Type extends Custom_Metabox {
     public function __construct() {
         parent::__construct();
         $this->field_registry = Database::get_field_registry();
-        
+
         // Load master base IDs
         $this->load_master_base_ids();
-        
+
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
         add_action( 'add_meta_boxes', array( $this, 'hvnly_register_dynamic_tabs_metabox' ) );
         add_action( 'add_meta_boxes', array( $this, 'hvnly_register_featured_property_metabox' ) );
         add_action( 'save_post', array( $this, 'hvnly_save_dynamic_tabs_data' ) );
         add_action( 'save_post', array( $this, 'hvnly_save_featured_property_data' ) );
-        
+
         // Add admin notice for validation errors
         add_action( 'admin_notices', array( $this, 'display_validation_errors' ) );
     }
-    
+
     /**
      * Load master base IDs from unified generator
      */
     private function load_master_base_ids() {
         if (class_exists('\HvnlyNab\Core\UnifiedFieldGenerator')) {
-            $unified_generator = \HvnlyNab\Core\UnifiedFieldGenerator::get_instance();
+            $unified_generator     = \HvnlyNab\Core\UnifiedFieldGenerator::get_instance();
             $this->master_base_ids = $unified_generator->get_or_create_master_base_ids();
         } else {
-            $this->master_base_ids = get_option('hvnly_master_base_ids', []);
+            $this->master_base_ids = get_option('hvnly_master_base_ids', array());
         }
     }
-    
+
     /**
      * Get existing meta keys for a post (cached)
      */
-    private function get_existing_meta_keys($post_id) {
-        if (!isset($this->existing_meta_keys_cache[$post_id])) {
-            $all_meta = get_post_meta($post_id);
-            $this->existing_meta_keys_cache[$post_id] = array_keys($all_meta);
+    private function get_existing_meta_keys( $post_id ) {
+        if ( ! isset($this->existing_meta_keys_cache[ $post_id ])) {
+            $all_meta                                   = get_post_meta($post_id);
+            $this->existing_meta_keys_cache[ $post_id ] = array_keys($all_meta);
         }
-        return $this->existing_meta_keys_cache[$post_id];
+        return $this->existing_meta_keys_cache[ $post_id ];
     }
 
     /**
@@ -157,16 +157,16 @@ class Havenlytics_Type extends Custom_Metabox {
             $field_map = \HvnlyNab\Core\GroupFieldIdentity::get_field_map( $post_id );
 
             if ( ! empty( $field_map['legacy'][ $group_type ] ) ) {
-                $stored_base = $field_map['legacy'][ $group_type ];
+                $stored_base                           = $field_map['legacy'][ $group_type ];
                 $this->meta_key_mappings[ $cache_key ] = $stored_base;
                 return $stored_base;
             }
         } else {
             $field_map_raw = get_post_meta( $post_id, '_hvnly_field_map', true );
-            if ( !empty( $field_map_raw ) ) {
+            if ( ! empty( $field_map_raw ) ) {
                 $field_map = json_decode( $field_map_raw, true );
-                if ( is_array( $field_map ) && !empty( $field_map[ $group_type ] ) ) {
-                    $stored_base = $field_map[ $group_type ];
+                if ( is_array( $field_map ) && ! empty( $field_map[ $group_type ] ) ) {
+                    $stored_base                           = $field_map[ $group_type ];
                     $this->meta_key_mappings[ $cache_key ] = $stored_base;
                     return $stored_base;
                 }
@@ -190,9 +190,9 @@ class Havenlytics_Type extends Custom_Metabox {
                     }
                 } else {
                     $field_map_raw = get_post_meta( $post_id, '_hvnly_field_map', true );
-                    $existing_map  = ! empty( $field_map_raw ) ? json_decode( $field_map_raw, true ) : [];
+                    $existing_map  = ! empty( $field_map_raw ) ? json_decode( $field_map_raw, true ) : array();
                     if ( ! is_array( $existing_map ) ) {
-                        $existing_map = [];
+                        $existing_map = array();
                     }
                     if ( empty( $existing_map[ $group_type ] ) ) {
                         $existing_map[ $group_type ] = $stored_base;
@@ -240,10 +240,10 @@ class Havenlytics_Type extends Custom_Metabox {
             }
         }
 
-        $group_type      = $field['group_type']      ?? '';
-        $meta_key        = $field['metaKey']         ?? '';
-        $configured_name = $field['name']            ?? $field['id'] ?? '';
-        $group_base_id   = $field['group_base_id']   ?? '';
+        $group_type      = $field['group_type'] ?? '';
+        $meta_key        = $field['metaKey'] ?? '';
+        $configured_name = $field['name'] ?? $field['id'] ?? '';
+        $group_base_id   = $field['group_base_id'] ?? '';
 
         // ── Non-group fields: one direct lookup, done. ────────────────────────
         if ( empty( $group_type ) || empty( $meta_key ) ) {
@@ -251,16 +251,16 @@ class Havenlytics_Type extends Custom_Metabox {
         }
 
         // ── Step 1: builder-config field name (= {group_base_id}_{metaKey}) ──
-        if ( !empty( $configured_name ) ) {
+        if ( ! empty( $configured_name ) ) {
             $value = get_post_meta( $post_id, $configured_name, true );
             if ( $value !== '' && $value !== false && $value !== null ) {
-                if ( !isset( $this->type_fallback_claimed[ $group_type ] ) ) {
+                if ( ! isset( $this->type_fallback_claimed[ $group_type ] ) ) {
                     // First group with direct data — claim the gate and record the value.
-                    $this->type_fallback_claimed[ $group_type ] = [
+                    $this->type_fallback_claimed[ $group_type ] = array(
                         'base'     => $group_base_id,
                         'value'    => $value,
                         'group_id' => $field['group_id'] ?? '',
-                    ];
+                    );
                 } else {
                     // Gate already claimed by a different base.
                     $claimed = $this->type_fallback_claimed[ $group_type ];
@@ -338,11 +338,11 @@ class Havenlytics_Type extends Custom_Metabox {
             if ( $legacy_key !== $configured_name ) {
                 $value = get_post_meta( $post_id, $legacy_key, true );
                 if ( $value !== '' && $value !== false && $value !== null ) {
-                    $this->type_fallback_claimed[ $group_type ] = [
+                    $this->type_fallback_claimed[ $group_type ] = array(
                         'base'     => $legacy_base,
                         'value'    => $value,
                         'group_id' => $field['group_id'] ?? '',
-                    ];
+                    );
                     return $value;
                 }
             }
@@ -353,15 +353,17 @@ class Havenlytics_Type extends Custom_Metabox {
         $meta_keys = $this->get_existing_meta_keys( $post_id );
         foreach ( $meta_keys as $key ) {
             if ( substr( $key, -strlen( $suffix ) ) === $suffix && strpos( $key, $group_type ) === 0 ) {
-                if ( $key === $configured_name ) continue;
+                if ( $key === $configured_name ) {
+					continue;
+                }
                 $value = get_post_meta( $post_id, $key, true );
                 if ( $value !== '' && $value !== false && $value !== null ) {
-                    $legacy_base = substr( $key, 0, -strlen( $suffix ) );
-                    $this->type_fallback_claimed[ $group_type ] = [
+                    $legacy_base                                = substr( $key, 0, -strlen( $suffix ) );
+                    $this->type_fallback_claimed[ $group_type ] = array(
                         'base'     => $legacy_base,
                         'value'    => $value,
                         'group_id' => $field['group_id'] ?? '',
-                    ];
+                    );
                     return $value;
                 }
             }
@@ -413,7 +415,7 @@ class Havenlytics_Type extends Custom_Metabox {
         <span class="hvnly-toggle-text"><?php esc_html_e( 'Featured Property', 'havenlytics' ); ?></span>
     </label>
 </div>
-<?php
+		<?php
     }
 
     /**
@@ -422,7 +424,7 @@ class Havenlytics_Type extends Custom_Metabox {
     public function hvnly_save_featured_property_data( $post_id ) {
         $nonce = filter_input( INPUT_POST, 'hvnly_featured_property_nonce', FILTER_UNSAFE_RAW );
         $nonce = is_string( $nonce ) ? sanitize_text_field( $nonce ) : '';
-        
+
         if ( ! $nonce || ! wp_verify_nonce( $nonce, 'hvnly_featured_property_save' ) ) {
             return;
         }
@@ -445,13 +447,13 @@ class Havenlytics_Type extends Custom_Metabox {
     public function hvnly_render_dynamic_tabs_metabox( $post ) {
         wp_nonce_field( 'hvnly_dynamic_metabox_tabs_save', 'hvnly_dynamic_metabox_tabs_nonce' );
         $this->post_id = $post->ID;
-        
+
         // Reset per-render caches for this post.
-        $this->meta_key_mappings     = [];
-        $this->type_fallback_claimed = [];
-        
+        $this->meta_key_mappings     = array();
+        $this->type_fallback_claimed = array();
+
         $tabs = $this->get_tabs_data();
-        
+
         echo $this->generate_dynamic_tabs_html( $tabs ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Renders trusted admin metabox HTML from internal generator.
     }
 
@@ -463,12 +465,12 @@ class Havenlytics_Type extends Custom_Metabox {
         if ( ! $screen || $screen->post_type !== 'hvnly_property' ) {
             return;
         }
-        
+
         $post_id = get_the_ID();
         if ( ! $post_id ) {
             return;
         }
-        
+
         $errors = get_transient( 'hvnly_validation_errors_' . $post_id );
         if ( ! empty( $errors ) && is_array( $errors ) ) {
             delete_transient( 'hvnly_validation_errors_' . $post_id );
@@ -476,13 +478,13 @@ class Havenlytics_Type extends Custom_Metabox {
 <div class="notice notice-error is-dismissible">
     <p><strong><?php esc_html_e( 'Validation Error:', 'havenlytics' ); ?></strong></p>
     <ul>
-        <?php foreach ( $errors as $error ) : ?>
+			<?php foreach ( $errors as $error ) : ?>
         <li><?php echo esc_html( $error ); ?></li>
         <?php endforeach; ?>
     </ul>
     <p><?php esc_html_e( 'Please fill in all required fields before saving.', 'havenlytics' ); ?></p>
 </div>
-<?php
+			<?php
         }
     }
 
@@ -490,12 +492,12 @@ class Havenlytics_Type extends Custom_Metabox {
      * Get tabs data from storage with fallback to default
      */
     private function get_tabs_data() {
-        $stored_tabs = get_option( $this->storage_key, [] );
-        
+        $stored_tabs = get_option( $this->storage_key, array() );
+
         if ( empty( $stored_tabs ) || ! is_array( $stored_tabs ) ) {
             return $this->get_default_tabs();
         }
-        
+
         return $this->normalize_tabs_data( $stored_tabs );
     }
 
@@ -503,19 +505,19 @@ class Havenlytics_Type extends Custom_Metabox {
      * Normalize and validate tabs data from the property builder
      */
     private function normalize_tabs_data( $stored_tabs ) {
-        $tabs = [];
-        
+        $tabs = array();
+
         foreach ( $stored_tabs as $tab_id => $tab ) {
             if ( ! is_array( $tab ) ) {
                 continue;
             }
 
-            $tab_fields = $tab['fields'] ?? [];
+            $tab_fields = $tab['fields'] ?? array();
             if ( DnDSections::is_basic_info_tab( $tab ) ) {
                 $tab_fields = DnDSections::ensure_basic_info_fields( $tab_fields );
             }
-            
-            $tabs[] = [
+
+            $tabs[] = array(
                 'id'        => $tab['id'] ?? $tab_id,
                 'title'     => $tab['title'] ?? __( 'Untitled Section', 'havenlytics' ),
                 'icon'      => $this->normalize_icon( $tab['icon'] ?? 'fas fa-cog' ),
@@ -523,14 +525,14 @@ class Havenlytics_Type extends Custom_Metabox {
                 'order'     => $tab['order'] ?? 0,
                 'collapsed' => $tab['collapsed'] ?? false,
                 'required'  => DnDSections::is_basic_info_tab( $tab ) ? true : ( $tab['required'] ?? false ),
-            ];
+            );
         }
-        
+
         // Sort by order
-        usort( $tabs, function( $a, $b ) {
+        usort( $tabs, function ( $a, $b ) {
             return $a['order'] <=> $b['order'];
         } );
-        
+
         return $tabs;
     }
 
@@ -541,19 +543,19 @@ class Havenlytics_Type extends Custom_Metabox {
         if ( empty( $icon ) ) {
             return 'fas fa-cog';
         }
-        
+
         if ( strpos( $icon, 'fas ' ) === 0 || strpos( $icon, 'far ' ) === 0 || strpos( $icon, 'fab ' ) === 0 ) {
             return $icon;
         }
-        
+
         if ( strpos( $icon, 'fa-' ) === 0 ) {
             return 'fas ' . $icon;
         }
-        
+
         if ( strpos( $icon, 'fa-' ) === false && strpos( $icon, ' ' ) === false ) {
             return 'fas fa-' . $icon;
         }
-        
+
         return 'fas fa-cog';
     }
 
@@ -614,21 +616,21 @@ class Havenlytics_Type extends Custom_Metabox {
 
                     $processed_fields[] = $this->attach_section_id(
                         array(
-                        'id'              => $documents_field_name,
-                        'fieldid'         => $documents_field_name,
-                        'name'            => $documents_field_name,
-                        'type'            => 'property_docs',
-                        'label'           => $field['label'] ?? __( 'Property Documents', 'havenlytics' ),
-                        'placeholder'     => '',
-                        'is_required'     => $docs_required,
-                        'admin_only'      => false,
-                        'enabled'         => true,
-                        'order'           => $field['order'] ?? count( $processed_fields ),
-                        'group_id'        => $group_id,
-                        'group_type'      => 'property_docs',
-                        'group_name'      => $field['group_name'] ?? __( 'Property Documents', 'havenlytics' ),
-                        'group_base_id'   => $group_base_id,
-                        'show_in_sidebar' => $field['show_in_sidebar'] ?? true,
+							'id'              => $documents_field_name,
+							'fieldid'         => $documents_field_name,
+							'name'            => $documents_field_name,
+							'type'            => 'property_docs',
+							'label'           => $field['label'] ?? __( 'Property Documents', 'havenlytics' ),
+							'placeholder'     => '',
+							'is_required'     => $docs_required,
+							'admin_only'      => false,
+							'enabled'         => true,
+							'order'           => $field['order'] ?? count( $processed_fields ),
+							'group_id'        => $group_id,
+							'group_type'      => 'property_docs',
+							'group_name'      => $field['group_name'] ?? __( 'Property Documents', 'havenlytics' ),
+							'group_base_id'   => $group_base_id,
+							'show_in_sidebar' => $field['show_in_sidebar'] ?? true,
                         ),
                         $section_id
                     );
@@ -655,20 +657,20 @@ class Havenlytics_Type extends Custom_Metabox {
 
                     $processed_fields[] = $this->attach_section_id(
                         array(
-                        'id'            => $faq_field_name,
-                        'fieldid'       => $faq_field_name,
-                        'name'          => $faq_field_name,
-                        'type'          => 'faq',
-                        'label'         => $field['group_name'] ?? $field['label'] ?? __( 'FAQ', 'havenlytics' ),
-                        'placeholder'   => '',
-                        'is_required'   => $faq_required,
-                        'admin_only'    => false,
-                        'enabled'       => true,
-                        'order'         => $field['order'] ?? count( $processed_fields ),
-                        'group_id'      => $group_id,
-                        'group_type'    => 'faq',
-                        'group_name'    => $field['group_name'] ?? __( 'FAQ', 'havenlytics' ),
-                        'group_base_id' => $group_base_id,
+							'id'            => $faq_field_name,
+							'fieldid'       => $faq_field_name,
+							'name'          => $faq_field_name,
+							'type'          => 'faq',
+							'label'         => $field['group_name'] ?? $field['label'] ?? __( 'FAQ', 'havenlytics' ),
+							'placeholder'   => '',
+							'is_required'   => $faq_required,
+							'admin_only'    => false,
+							'enabled'       => true,
+							'order'         => $field['order'] ?? count( $processed_fields ),
+							'group_id'      => $group_id,
+							'group_type'    => 'faq',
+							'group_name'    => $field['group_name'] ?? __( 'FAQ', 'havenlytics' ),
+							'group_base_id' => $group_base_id,
                         ),
                         $section_id
                     );
@@ -695,20 +697,20 @@ class Havenlytics_Type extends Custom_Metabox {
 
                     $processed_fields[] = $this->attach_section_id(
                         array(
-                        'id'            => $repeater_field_name,
-                        'fieldid'       => $repeater_field_name,
-                        'name'          => $repeater_field_name,
-                        'type'          => 'repeater',
-                        'label'         => $field['group_name'] ?? $field['label'] ?? __( 'Repeater', 'havenlytics' ),
-                        'placeholder'   => '',
-                        'is_required'   => $repeater_required,
-                        'admin_only'    => false,
-                        'enabled'       => true,
-                        'order'         => $field['order'] ?? count( $processed_fields ),
-                        'group_id'      => $group_id,
-                        'group_type'    => 'repeater',
-                        'group_name'    => $field['group_name'] ?? __( 'Repeater', 'havenlytics' ),
-                        'group_base_id' => $group_base_id,
+							'id'            => $repeater_field_name,
+							'fieldid'       => $repeater_field_name,
+							'name'          => $repeater_field_name,
+							'type'          => 'repeater',
+							'label'         => $field['group_name'] ?? $field['label'] ?? __( 'Repeater', 'havenlytics' ),
+							'placeholder'   => '',
+							'is_required'   => $repeater_required,
+							'admin_only'    => false,
+							'enabled'       => true,
+							'order'         => $field['order'] ?? count( $processed_fields ),
+							'group_id'      => $group_id,
+							'group_type'    => 'repeater',
+							'group_name'    => $field['group_name'] ?? __( 'Repeater', 'havenlytics' ),
+							'group_base_id' => $group_base_id,
                         ),
                         $section_id
                     );
@@ -989,20 +991,20 @@ class Havenlytics_Type extends Custom_Metabox {
      */
     private function get_default_tabs() {
         $default_tabs = TabData::hvnly_metabox_tabs_builder();
-        $tabs = [];
-        
+        $tabs         = array();
+
         foreach ( $default_tabs as $index => $tab ) {
-            $tabs[] = [
+            $tabs[] = array(
                 'id'        => $tab['id'] ?? 'tab_' . $index,
                 'title'     => $tab['hvnly__sectiontitle'] ?? __( 'Untitled Section', 'havenlytics' ),
                 'icon'      => $this->normalize_icon( $tab['icon'] ?? 'fas fa-cog' ),
-                'fields'    => $this->process_group_fields( $tab['fields'] ?? [], (string) ( $tab['id'] ?? 'tab_' . $index ) ),
+                'fields'    => $this->process_group_fields( $tab['fields'] ?? array(), (string) ( $tab['id'] ?? 'tab_' . $index ) ),
                 'order'     => $index,
                 'collapsed' => false,
                 'required'  => false,
-            ];
+            );
         }
-        
+
         return $tabs;
     }
 
@@ -1013,14 +1015,14 @@ class Havenlytics_Type extends Custom_Metabox {
         if (empty($tabs)) {
             return '<p>' . esc_html__('No sections configured. Please use the Property Builder to add sections.', 'havenlytics') . '</p>';
         }
-        
+
         ob_start();
         ?>
 <div class="hvnly__dyamic_metabox_tab__wrapper">
     <div class="hvnly__dyamic_metabox_tab__nav">
         <ul>
             <?php foreach ( $tabs as $index => $tab ) : ?>
-            <?php $nav_active_class = ( 0 === $index ) ? 'hvnly__dyamic_metabox_tab__active' : ''; ?>
+				<?php $nav_active_class = ( 0 === $index ) ? 'hvnly__dyamic_metabox_tab__active' : ''; ?>
             <li class="<?php echo esc_attr( $nav_active_class ); ?>">
                 <a href="javascript:void(0)" data-target=".hvnly-tab-<?php echo esc_attr( $tab['id'] ); ?>"
                     class="<?php echo esc_attr( $nav_active_class ); ?>">
@@ -1034,15 +1036,15 @@ class Havenlytics_Type extends Custom_Metabox {
 
     <div class="hvnly__dyamic_metabox_tab__content">
         <?php foreach ( $tabs as $index => $tab ) : ?>
-        <?php 
-            $panel_active_class = ( 0 === $index ) ? 'hvnly__dyamic_metabox_tab__active' : ''; 
+			<?php
+            $panel_active_class = ( 0 === $index ) ? 'hvnly__dyamic_metabox_tab__active' : '';
             ?>
         <div
             class="hvnly__dyamic_metabox_tab__tab-content hvnly-tab-<?php echo esc_attr( $tab['id'] ); ?> <?php echo esc_attr( $panel_active_class ); ?>">
             <h3><?php echo esc_html( hvnly_translate_ui( (string) $tab['title'] ) ); ?></h3>
 
             <?php if ( ! empty( $tab['fields'] ) ) : ?>
-            <?php
+				<?php
                 /**
                  * Filter desktop column count for standalone metabox fields.
                  *
@@ -1056,21 +1058,24 @@ class Havenlytics_Type extends Custom_Metabox {
                 if ( $metabox_columns < 1 ) {
                     $metabox_columns = 1;
                 }
-            ?>
+				?>
             <div class="hvnly__dyamic_metabox_tab__fields" style="--hvnly-metabox-columns: <?php echo esc_attr( (string) $metabox_columns ); ?>;">
                 <?php foreach ( $tab['fields'] as $field ) : ?>
-                <?php if ( ! $this->should_display_field( $field ) ) continue; ?>
-                <?php echo $this->render_field( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Renders trusted field HTML from registered handlers. ?>
+					<?php
+                    if ( ! $this->should_display_field( $field ) ) {
+						continue;}
+					?>
+					<?php echo $this->render_field( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Renders trusted field HTML from registered handlers. ?>
                 <?php endforeach; ?>
             </div>
-            <?php else: ?>
+            <?php else : ?>
             <p class="description"><?php esc_html_e('No fields configured for this section.', 'havenlytics'); ?></p>
             <?php endif; ?>
         </div>
         <?php endforeach; ?>
     </div>
 </div>
-<?php
+		<?php
         return ob_get_clean();
     }
 
@@ -1081,11 +1086,11 @@ class Havenlytics_Type extends Custom_Metabox {
         if ( isset( $field['enabled'] ) && ! $field['enabled'] ) {
             return false;
         }
-        
+
         if ( isset( $field['admin_only'] ) && $field['admin_only'] && ! current_user_can( 'manage_options' ) ) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -1106,11 +1111,11 @@ class Havenlytics_Type extends Custom_Metabox {
      */
     private function render_field( $field ) {
         // Ensure fieldid exists for field handlers that rely on it.
-        if ( !isset( $field['fieldid'] ) ) {
+        if ( ! isset( $field['fieldid'] ) ) {
             $field['fieldid'] = $field['id'] ?? $field['name'] ?? '';
         }
 
-        $field_type    = $field['type']       ?? '';
+        $field_type    = $field['type'] ?? '';
         $group_type    = $field['group_type'] ?? '';
         $group_base_id = $field['group_base_id'] ?? '';
 
@@ -1127,10 +1132,10 @@ class Havenlytics_Type extends Custom_Metabox {
 
         // ── Resolve handler ──────────────────────────────────────────────────
         $handler = Database::get_field_handler( $field_type );
-        if ( !$handler ) {
+        if ( ! $handler ) {
             $handler = $this->get_fallback_handler( $field_type );
         }
-        if ( !$handler ) {
+        if ( ! $handler ) {
             /* translators: %s: field type slug. */
             $message = sprintf( __( 'Error: Field type "%s" not found.', 'havenlytics' ), $field_type );
             return '<p class="hvnly-field-error-message">' . esc_html( $message ) . '</p>';
@@ -1149,20 +1154,20 @@ class Havenlytics_Type extends Custom_Metabox {
     data-group-type="<?php echo esc_attr( $group_type ); ?>"
     data-group-base-id="<?php echo esc_attr( $group_base_id ); ?>"
     data-is-required="<?php echo $is_required ? 'true' : 'false'; ?>"
-    <?php echo $is_required ? 'data-required="true"' : ''; ?>>
+		<?php echo $is_required ? 'data-required="true"' : ''; ?>>
     <div class="hvnly__dyamic_metabox_tab__field-input">
         <?php echo $field_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- HTML from registered field type renderers. ?>
     </div>
 </div>
-<?php
+		<?php
         return ob_get_clean();
     }
-    
+
     /**
      * Get fallback handler if registry fails
      */
     private function get_fallback_handler( $type ) {
-        $handlers = [
+        $handlers = array(
             'text' => '\HvnlyNab\Database\FieldTypes\TextField',
             'textarea' => '\HvnlyNab\Database\FieldTypes\TextareaField',
             'number' => '\HvnlyNab\Database\FieldTypes\NumberField',
@@ -1179,12 +1184,12 @@ class Havenlytics_Type extends Custom_Metabox {
             'date' => '\HvnlyNab\Database\FieldTypes\DateField',
             'faq' => '\HvnlyNab\Database\FieldTypes\FAQField',
             'repeater' => '\HvnlyNab\Database\FieldTypes\RepeaterField',
-        ];
-        
+        );
+
         if ( isset( $handlers[ $type ] ) && class_exists( $handlers[ $type ] ) ) {
             return new $handlers[ $type ]();
         }
-        
+
         return null;
     }
 
@@ -1261,21 +1266,21 @@ class Havenlytics_Type extends Custom_Metabox {
      */
     public function hvnly_save_dynamic_tabs_data( $post_id ) {
         // Skip during programmatic bulk imports — the importer sets its own meta directly.
-        if ( !empty( $GLOBALS['hvnly_bulk_importing'] ) ) {
+        if ( ! empty( $GLOBALS['hvnly_bulk_importing'] ) ) {
             return;
         }
 
         $nonce = filter_input( INPUT_POST, 'hvnly_dynamic_metabox_tabs_nonce', FILTER_UNSAFE_RAW );
         $nonce = is_string( $nonce ) ? sanitize_text_field( $nonce ) : '';
-        
+
         if ( ! $nonce || ! wp_verify_nonce( $nonce, 'hvnly_dynamic_metabox_tabs_save' ) ) {
             return;
         }
-        
+
         if ( ! current_user_can( 'edit_post', $post_id ) ) {
             return;
         }
-        
+
         if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
             return;
         }
@@ -1285,9 +1290,9 @@ class Havenlytics_Type extends Custom_Metabox {
             $this->abort_save_with_validation_errors( (int) $post_id, $validation_errors );
             return;
         }
-        
+
         $tabs = $this->get_tabs_data();
-        
+
         // Save fields
         foreach ( $tabs as $tab ) {
             if ( ! empty( $tab['fields'] ) ) {
@@ -1295,24 +1300,24 @@ class Havenlytics_Type extends Custom_Metabox {
                     if ( ! $this->should_display_field( $field ) ) {
                         continue;
                     }
-                    
+
                     $field_name = $field['name'] ?? $field['id'] ?? '';
                     $field_type = $field['type'] ?? 'text';
                     $handler    = Database::get_field_handler( $field_type );
-                    
+
                     if ( ! $handler ) {
                         $handler = $this->get_fallback_handler( $field_type );
                     }
-                    
+
                     if ( empty( $field_name ) || ! $handler ) {
                         continue;
                     }
-                    
+
                     // Skip map preview fields (they don't store data)
                     if ( $field_type === 'map' && isset( $field['is_map_preview'] ) && $field['is_map_preview'] ) {
                         continue;
                     }
-                    
+
                     // ── Property Documents (repeater) ────────────────────────────────
                     // DocumentField::render() outputs individual array inputs:
                     //   {field_name}_icons[], _labels[], _urls[], _url_types[]
@@ -1324,9 +1329,9 @@ class Havenlytics_Type extends Custom_Metabox {
                         $handler->save( $post_id, $field_name );
 
                         // Lazy migration: keep _hvnly_field_map up to date (group_id keyed).
-                        $group_type_d    = $field['group_type']    ?? '';
+                        $group_type_d    = $field['group_type'] ?? '';
                         $group_base_id_d = $field['group_base_id'] ?? '';
-                        $group_id_d      = $field['group_id']      ?? '';
+                        $group_id_d      = $field['group_id'] ?? '';
                         if ( ! empty( $group_type_d ) && ! empty( $group_base_id_d ) ) {
                             if ( class_exists( '\HvnlyNab\Core\GroupFieldIdentity' ) ) {
                                 \HvnlyNab\Core\GroupFieldIdentity::record_group_in_field_map(
@@ -1337,9 +1342,9 @@ class Havenlytics_Type extends Custom_Metabox {
                                 );
                             } else {
                                 $fm_raw = get_post_meta( $post_id, '_hvnly_field_map', true );
-                                $fm     = ! empty( $fm_raw ) ? json_decode( $fm_raw, true ) : [];
+                                $fm     = ! empty( $fm_raw ) ? json_decode( $fm_raw, true ) : array();
                                 if ( ! is_array( $fm ) ) {
-                                    $fm = [];
+                                    $fm = array();
                                 }
                                 if ( ( $fm[ $group_type_d ] ?? '' ) !== $group_base_id_d ) {
                                     $fm[ $group_type_d ] = $group_base_id_d;
@@ -1353,9 +1358,9 @@ class Havenlytics_Type extends Custom_Metabox {
                     if ( $field_type === 'faq' || $field_type === 'repeater' ) {
                         $handler->save( $post_id, $field_name );
 
-                        $group_type_d    = $field['group_type']    ?? '';
+                        $group_type_d    = $field['group_type'] ?? '';
                         $group_base_id_d = $field['group_base_id'] ?? '';
-                        $group_id_d      = $field['group_id']      ?? '';
+                        $group_id_d      = $field['group_id'] ?? '';
                         if ( ! empty( $group_type_d ) && ! empty( $group_base_id_d ) && class_exists( '\HvnlyNab\Core\GroupFieldIdentity' ) ) {
                             \HvnlyNab\Core\GroupFieldIdentity::record_group_in_field_map(
                                 $post_id,
@@ -1370,9 +1375,9 @@ class Havenlytics_Type extends Custom_Metabox {
                     if ( $field_type === 'agents' ) {
                         $handler->save( $post_id, $field_name );
 
-                        $group_type_d    = $field['group_type']    ?? '';
+                        $group_type_d    = $field['group_type'] ?? '';
                         $group_base_id_d = $field['group_base_id'] ?? '';
-                        $group_id_d      = $field['group_id']      ?? '';
+                        $group_id_d      = $field['group_id'] ?? '';
                         if ( ! empty( $group_type_d ) && ! empty( $group_base_id_d ) && class_exists( '\HvnlyNab\Core\GroupFieldIdentity' ) ) {
                             \HvnlyNab\Core\GroupFieldIdentity::record_group_in_field_map(
                                 $post_id,
@@ -1393,9 +1398,9 @@ class Havenlytics_Type extends Custom_Metabox {
                             $sanitized_value = $handler->sanitize( $raw_value );
                             $handler->save( $post_id, $field_name, $sanitized_value );
 
-                            $group_type    = $field['group_type']    ?? '';
+                            $group_type    = $field['group_type'] ?? '';
                             $group_base_id = $field['group_base_id'] ?? '';
-                            $group_id      = $field['group_id']      ?? '';
+                            $group_id      = $field['group_id'] ?? '';
                             if ( ! empty( $group_type ) && ! empty( $group_base_id ) ) {
                                 if ( class_exists( '\HvnlyNab\Core\GroupFieldIdentity' ) ) {
                                     \HvnlyNab\Core\GroupFieldIdentity::record_group_in_field_map(
@@ -1406,9 +1411,9 @@ class Havenlytics_Type extends Custom_Metabox {
                                     );
                                 } else {
                                     $field_map_raw = get_post_meta( $post_id, '_hvnly_field_map', true );
-                                    $field_map     = ! empty( $field_map_raw ) ? json_decode( $field_map_raw, true ) : [];
+                                    $field_map     = ! empty( $field_map_raw ) ? json_decode( $field_map_raw, true ) : array();
                                     if ( ! is_array( $field_map ) ) {
-                                        $field_map = [];
+                                        $field_map = array();
                                     }
                                     if ( ( $field_map[ $group_type ] ?? '' ) !== $group_base_id ) {
                                         $field_map[ $group_type ] = $group_base_id;
@@ -1421,18 +1426,18 @@ class Havenlytics_Type extends Custom_Metabox {
                         }
                         continue;
                     }
-                    
+
                     // Get raw value from POST
                     $raw_value = filter_input( INPUT_POST, $field_name, FILTER_UNSAFE_RAW );
-                    
+
                     if ( $raw_value !== null && $raw_value !== false ) {
                         $sanitized_value = $handler->sanitize( $raw_value );
                         $handler->save( $post_id, $field_name, $sanitized_value );
 
                         // ── Lazy migration: update _hvnly_field_map (group_id keyed) ──
-                        $group_type    = $field['group_type']    ?? '';
+                        $group_type    = $field['group_type'] ?? '';
                         $group_base_id = $field['group_base_id'] ?? '';
-                        $group_id      = $field['group_id']      ?? '';
+                        $group_id      = $field['group_id'] ?? '';
                         if ( ! empty( $group_type ) && ! empty( $group_base_id ) ) {
                             if ( class_exists( '\HvnlyNab\Core\GroupFieldIdentity' ) ) {
                                 \HvnlyNab\Core\GroupFieldIdentity::record_group_in_field_map(
@@ -1443,9 +1448,9 @@ class Havenlytics_Type extends Custom_Metabox {
                                 );
                             } else {
                                 $field_map_raw = get_post_meta( $post_id, '_hvnly_field_map', true );
-                                $field_map     = ! empty( $field_map_raw ) ? json_decode( $field_map_raw, true ) : [];
+                                $field_map     = ! empty( $field_map_raw ) ? json_decode( $field_map_raw, true ) : array();
                                 if ( ! is_array( $field_map ) ) {
-                                    $field_map = [];
+                                    $field_map = array();
                                 }
                                 if ( ( $field_map[ $group_type ] ?? '' ) !== $group_base_id ) {
                                     $field_map[ $group_type ] = $group_base_id;
@@ -1457,7 +1462,7 @@ class Havenlytics_Type extends Custom_Metabox {
                 }
             }
         }
-        
+
         $this->save_gallery_metadata( $post_id );
         $this->save_map_subfields( $post_id );
     }
@@ -1478,7 +1483,7 @@ class Havenlytics_Type extends Custom_Metabox {
         $posted = wp_unslash( $_POST[ $field_name ] );
 
         if ( is_array( $posted ) ) {
-            $items = [];
+            $items = array();
             foreach ( $posted as $item ) {
                 if ( ! is_string( $item ) ) {
                     continue;
@@ -1514,7 +1519,7 @@ class Havenlytics_Type extends Custom_Metabox {
             return;
         }
 
-        $map_suffixes = [ '_address', '_latitude', '_longitude' ];
+        $map_suffixes = array( '_address', '_latitude', '_longitude' );
 
         foreach ( $post_data as $key => $raw_value ) {
             if ( ! is_string( $key ) || ! is_string( $raw_value ) ) {
@@ -1536,7 +1541,7 @@ class Havenlytics_Type extends Custom_Metabox {
             }
 
             $sanitized = sanitize_text_field( $raw_value );
-            if ( !empty( $sanitized ) ) {
+            if ( ! empty( $sanitized ) ) {
                 update_post_meta( $post_id, $key, $sanitized );
             } else {
                 $suffix = '';
@@ -1589,35 +1594,35 @@ class Havenlytics_Type extends Custom_Metabox {
      */
     private function save_gallery_metadata( $post_id ) {
         $post_data = filter_input_array( INPUT_POST );
-        
+
         if ( empty( $post_data ) || ! is_array( $post_data ) ) {
             return;
         }
-        
+
         foreach ( $post_data as $key => $value ) {
             if ( strpos( $key, 'hvnly_gallery_title_' ) === 0 ) {
-                $gallery_id    = str_replace( 'hvnly_gallery_title_', '', $key );
-                $ids_key       = 'hvnly_gallery_ids_' . $gallery_id;
-                $captions_key  = 'hvnly_gallery_caption_' . $gallery_id;
-                
-                $ids_raw     = filter_input( INPUT_POST, $ids_key, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY ) ?: [];
-                $titles_raw  = filter_input( INPUT_POST, $key, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY ) ?: [];
-                $captions_raw = filter_input( INPUT_POST, $captions_key, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY ) ?: [];
-                
+                $gallery_id   = str_replace( 'hvnly_gallery_title_', '', $key );
+                $ids_key      = 'hvnly_gallery_ids_' . $gallery_id;
+                $captions_key = 'hvnly_gallery_caption_' . $gallery_id;
+
+                $ids_raw      = filter_input( INPUT_POST, $ids_key, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY ) ?: array();
+                $titles_raw   = filter_input( INPUT_POST, $key, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY ) ?: array();
+                $captions_raw = filter_input( INPUT_POST, $captions_key, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY ) ?: array();
+
                 $attachment_ids = array_map( 'intval', (array) $ids_raw );
-                $titles = array_map( 'sanitize_text_field', (array) $titles_raw );
-                $captions = array_map( 'sanitize_textarea_field', (array) $captions_raw );
-                
+                $titles         = array_map( 'sanitize_text_field', (array) $titles_raw );
+                $captions       = array_map( 'sanitize_textarea_field', (array) $captions_raw );
+
                 foreach ( $attachment_ids as $index => $attachment_id ) {
                     if ( ! empty( $attachment_id ) ) {
                         $title   = isset( $titles[ $index ] ) ? $titles[ $index ] : '';
                         $caption = isset( $captions[ $index ] ) ? $captions[ $index ] : '';
-                        
-                        wp_update_post([
+
+                        wp_update_post(array(
                             'ID'           => intval( $attachment_id ),
                             'post_title'   => $title,
                             'post_excerpt' => $caption,
-                        ]);
+                        ));
                     }
                 }
             }
@@ -1631,22 +1636,22 @@ class Havenlytics_Type extends Custom_Metabox {
         if ( ! is_admin() ) {
             return;
         }
-        
+
         $screen = get_current_screen();
         if ( ! $screen ) {
             return;
         }
-        
+
         $allowed_post_types = array( 'hvnly_property' );
-        $default_version = defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '1.0.0';
-        
+        $default_version    = defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '1.0.0';
+
         if ( in_array( $screen->post_type ?? '', $allowed_post_types, true ) ) {
-            $styles = [
+            $styles = array(
                 'hvnly-admin-fontawesome-all' => HVNLYNAB_ASSETS_URL . '/admin/css/fontawesome-all.min.css',
                 'hvnly-admin-leaflet'         => HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-admin-leaflet.css',
                 'hvnly-admin-fonts'           => HVNLYNAB_ASSETS_URL . '/admin/css/fonts.css',
                 'hvnly-admin-metabox'         => HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-admin-metabox.css',
-            ];
+            );
 
             foreach ( $styles as $handle => $src ) {
                 $file_path = HVNLYNAB_PATH . str_replace( HVNLYNAB_ASSETS_URL, '', $src );
@@ -1654,10 +1659,10 @@ class Havenlytics_Type extends Custom_Metabox {
                 wp_enqueue_style( $handle, $src, array(), $version );
             }
         }
-        
+
         if ( in_array( $screen->base, array( 'post', 'post-new' ), true ) &&
-             in_array( $screen->post_type ?? '', $allowed_post_types, true ) ) {
-            
+            in_array( $screen->post_type ?? '', $allowed_post_types, true ) ) {
+
             wp_enqueue_script(
                 'leaflet',
                 HVNLYNAB_ASSETS_URL . '/admin/js/leaflet/core-leaflet.js',

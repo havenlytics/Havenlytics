@@ -83,8 +83,8 @@ final class ExportBatchRunner {
 		$options = isset( $job['options'] ) && is_array( $job['options'] ) ? $job['options'] : array();
 		$allowed = MigrationLimits::assert_export_allowed( $options );
 		if ( is_wp_error( $allowed ) ) {
-			$job['status'] = JobStateStore::STATUS_FAILED;
-			$job           = JobStateStore::push_error(
+			$job['status']       = JobStateStore::STATUS_FAILED;
+			$job                 = JobStateStore::push_error(
 				$job,
 				array(
 					'code'    => (string) $allowed->get_error_code(),
@@ -105,7 +105,7 @@ final class ExportBatchRunner {
 			}
 			return $job;
 		}
-		$dir = (string) $workdir->data()['dir'];
+		$dir            = (string) $workdir->data()['dir'];
 		$job['workdir'] = $dir;
 		JobWorkspace::write_json( $dir, 'entities/builders.json', array() );
 		JobWorkspace::write_json( $dir, 'entities/terms.json', array() );
@@ -113,12 +113,15 @@ final class ExportBatchRunner {
 		JobWorkspace::write_json( $dir, 'entities/agents.json', array() );
 		JobWorkspace::write_json( $dir, 'entities/properties.json', array() );
 		JobWorkspace::write_json( $dir, 'media_catalog.json', array() );
-		$job['phase'] = 'builders';
+		$job['phase']    = 'builders';
 		$job['progress'] = array(
 			'percent' => 5,
 			'message' => 'Export workspace ready.',
 		);
-		$job['cursor'] = array( 'index' => 0, 'total' => 0 );
+		$job['cursor']   = array(
+			'index' => 0,
+			'total' => 0,
+		);
 		return $job;
 	}
 
@@ -128,12 +131,15 @@ final class ExportBatchRunner {
 	 * @return array
 	 */
 	private static function phase_builders( array $job, array $options ): array {
-		$dir = (string) $job['workdir'];
+		$dir      = (string) $job['workdir'];
 		$builders = ! empty( $options['include_builders'] ) ? BuildersExporter::export() : array();
 		JobWorkspace::write_json( $dir, 'entities/builders.json', $builders );
 		$job['counts']['builders'] = ! empty( $builders ) ? 1 : 0;
-		$job['phase'] = 'terms';
-		$job['progress'] = array( 'percent' => 15, 'message' => 'Builders exported.' );
+		$job['phase']              = 'terms';
+		$job['progress']           = array(
+			'percent' => 15,
+			'message' => 'Builders exported.',
+		);
 		return $job;
 	}
 
@@ -149,8 +155,11 @@ final class ExportBatchRunner {
 		JobWorkspace::write_json( $dir, 'entities/terms.json', $terms );
 		self::encoder_to_disk( $dir, $encoder );
 		$job['counts']['terms'] = count( $terms );
-		$job['phase'] = 'agencies';
-		$job['progress'] = array( 'percent' => 25, 'message' => 'Taxonomies exported.' );
+		$job['phase']           = 'agencies';
+		$job['progress']        = array(
+			'percent' => 25,
+			'message' => 'Taxonomies exported.',
+		);
 		return $job;
 	}
 
@@ -160,14 +169,17 @@ final class ExportBatchRunner {
 	 * @return array
 	 */
 	private static function phase_agencies( array $job, array $options ): array {
-		$dir     = (string) $job['workdir'];
-		$encoder = self::encoder_from_disk( $dir );
+		$dir      = (string) $job['workdir'];
+		$encoder  = self::encoder_from_disk( $dir );
 		$agencies = ! empty( $options['include_agencies'] ) ? AgenciesExporter::export( $encoder ) : array();
 		JobWorkspace::write_json( $dir, 'entities/agencies.json', $agencies );
 		self::encoder_to_disk( $dir, $encoder );
 		$job['counts']['agencies'] = count( $agencies );
-		$job['phase'] = 'agents';
-		$job['progress'] = array( 'percent' => 35, 'message' => 'Agencies exported.' );
+		$job['phase']              = 'agents';
+		$job['progress']           = array(
+			'percent' => 35,
+			'message' => 'Agencies exported.',
+		);
 		return $job;
 	}
 
@@ -183,10 +195,16 @@ final class ExportBatchRunner {
 		JobWorkspace::write_json( $dir, 'entities/agents.json', $agents );
 		self::encoder_to_disk( $dir, $encoder );
 		$job['counts']['agents'] = count( $agents );
-		$total = self::count_properties( $options );
-		$job['cursor'] = array( 'index' => 0, 'total' => $total );
-		$job['phase'] = ! empty( $options['include_properties'] ) ? 'properties' : ( ! empty( $options['include_media'] ) ? 'media' : 'finalize' );
-		$job['progress'] = array( 'percent' => 45, 'message' => 'Agents exported.' );
+		$total                   = self::count_properties( $options );
+		$job['cursor']           = array(
+			'index' => 0,
+			'total' => $total,
+		);
+		$job['phase']            = ! empty( $options['include_properties'] ) ? 'properties' : ( ! empty( $options['include_media'] ) ? 'media' : 'finalize' );
+		$job['progress']         = array(
+			'percent' => 45,
+			'message' => 'Agents exported.',
+		);
 		return $job;
 	}
 
@@ -201,14 +219,14 @@ final class ExportBatchRunner {
 		$index   = isset( $job['cursor']['index'] ) ? (int) $job['cursor']['index'] : 0;
 		$total   = isset( $job['cursor']['total'] ) ? (int) $job['cursor']['total'] : 0;
 
-		$opts = array_merge(
+		$opts     = array_merge(
 			$options,
 			array(
 				'offset' => $index,
 				'limit'  => self::BATCH_PROPERTIES,
 			)
 		);
-		$batch = PropertiesExporter::export( $encoder, $opts );
+		$batch    = PropertiesExporter::export( $encoder, $opts );
 		$existing = JobWorkspace::read_json( $dir, 'entities/properties.json', array() );
 		if ( ! is_array( $existing ) ) {
 			$existing = array();
@@ -217,17 +235,17 @@ final class ExportBatchRunner {
 		JobWorkspace::write_json( $dir, 'entities/properties.json', $existing );
 		self::encoder_to_disk( $dir, $encoder );
 
-		$index += count( $batch );
-		$job['cursor']['index'] = $index;
+		$index                      += count( $batch );
+		$job['cursor']['index']      = $index;
 		$job['counts']['properties'] = count( $existing );
-		$pct = $total > 0 ? 45 + (int) floor( 30 * min( 1, $index / $total ) ) : 75;
-		$job['progress'] = array(
+		$pct                         = $total > 0 ? 45 + (int) floor( 30 * min( 1, $index / $total ) ) : 75;
+		$job['progress']             = array(
 			'percent' => $pct,
 			'message' => sprintf( 'Exported properties %d / %d.', $index, $total ),
 		);
 
 		if ( $index >= $total || empty( $batch ) ) {
-			$job['phase'] = ! empty( $options['include_media'] ) ? 'media' : 'finalize';
+			$job['phase']           = ! empty( $options['include_media'] ) ? 'media' : 'finalize';
 			$job['cursor']['index'] = 0;
 		}
 		return $job;
@@ -239,10 +257,10 @@ final class ExportBatchRunner {
 	 * @return array
 	 */
 	private static function phase_media( array $job, array $options ): array {
-		$dir     = (string) $job['workdir'];
-		$encoder = self::encoder_from_disk( $dir );
-		$catalog = $encoder->media_catalog();
-		$warnings = array();
+		$dir         = (string) $job['workdir'];
+		$encoder     = self::encoder_from_disk( $dir );
+		$catalog     = $encoder->media_catalog();
+		$warnings    = array();
 		$media_files = array();
 		$media_index = array( 'files' => array() );
 
@@ -254,9 +272,9 @@ final class ExportBatchRunner {
 				$packed  = MediaPacker::pack( is_array( $entries ) ? $entries : array() );
 				$job     = JobStateStore::merge_warnings( $job, $packed->warnings() );
 				if ( $packed->ok() ) {
-					$pack_data   = $packed->data();
-					$media_files = isset( $pack_data['binaries'] ) ? $pack_data['binaries'] : array();
-					$media_index = isset( $pack_data['index'] ) ? $pack_data['index'] : array( 'files' => array() );
+					$pack_data                    = $packed->data();
+					$media_files                  = isset( $pack_data['binaries'] ) ? $pack_data['binaries'] : array();
+					$media_index                  = isset( $pack_data['index'] ) ? $pack_data['index'] : array( 'files' => array() );
 					$job['counts']['media_files'] = isset( $pack_data['packaged_count'] ) ? (int) $pack_data['packaged_count'] : 0;
 				} else {
 					foreach ( $packed->errors() as $error ) {
@@ -272,8 +290,11 @@ final class ExportBatchRunner {
 
 		JobWorkspace::write_json( $dir, 'media_files.json', $media_files );
 		JobWorkspace::write_json( $dir, 'media_index.json', $media_index );
-		$job['phase'] = 'finalize';
-		$job['progress'] = array( 'percent' => 85, 'message' => 'Media packaged.' );
+		$job['phase']    = 'finalize';
+		$job['progress'] = array(
+			'percent' => 85,
+			'message' => 'Media packaged.',
+		);
 		unset( $warnings );
 		return $job;
 	}
@@ -284,7 +305,7 @@ final class ExportBatchRunner {
 	 * @return array
 	 */
 	private static function phase_finalize( array $job, array $options ): array {
-		$dir = (string) $job['workdir'];
+		$dir      = (string) $job['workdir'];
 		$entities = array(
 			'schema_version' => ManifestSchema::SCHEMA_VERSION,
 			'builders'       => JobWorkspace::read_json( $dir, 'entities/builders.json', array() ),
@@ -298,8 +319,8 @@ final class ExportBatchRunner {
 		$prop_count = is_array( $entities['properties'] ) ? count( $entities['properties'] ) : 0;
 		$allowed    = MigrationLimits::can_export_properties( $prop_count, $options );
 		if ( is_wp_error( $allowed ) ) {
-			$job['status'] = JobStateStore::STATUS_FAILED;
-			$job           = JobStateStore::push_error(
+			$job['status']       = JobStateStore::STATUS_FAILED;
+			$job                 = JobStateStore::push_error(
 				$job,
 				array(
 					'code'    => (string) $allowed->get_error_code(),
@@ -358,15 +379,18 @@ final class ExportBatchRunner {
 			return $job;
 		}
 
-		$data = $write->data();
-		$job['zip_path']      = isset( $data['zip_path'] ) ? (string) $data['zip_path'] : '';
-		$job['zip_filename']  = $job['zip_path'] ? wp_basename( $job['zip_path'] ) : '';
+		$data                   = $write->data();
+		$job['zip_path']        = isset( $data['zip_path'] ) ? (string) $data['zip_path'] : '';
+		$job['zip_filename']    = $job['zip_path'] ? wp_basename( $job['zip_path'] ) : '';
 		$job['package_workdir'] = isset( $data['workdir'] ) ? (string) $data['workdir'] : '';
-		$job['status']        = JobStateStore::STATUS_COMPLETED;
-		$job['phase']         = 'completed';
-		$job['progress']      = array( 'percent' => 100, 'message' => 'Export complete.' );
-		$job['completed_at']  = gmdate( 'c' );
-		$job['report']        = ReportBuilder::from_job( $job );
+		$job['status']          = JobStateStore::STATUS_COMPLETED;
+		$job['phase']           = 'completed';
+		$job['progress']        = array(
+			'percent' => 100,
+			'message' => 'Export complete.',
+		);
+		$job['completed_at']    = gmdate( 'c' );
+		$job['report']          = ReportBuilder::from_job( $job );
 
 		\HvnlyNab\ImportExport\Cache\ImportExportCacheCoordinator::after_export_success();
 		return $job;
@@ -406,7 +430,7 @@ final class ExportBatchRunner {
 		$statuses = isset( $options['statuses'] ) && is_array( $options['statuses'] )
 			? array_map( 'strval', $options['statuses'] )
 			: array( 'publish', 'draft', 'pending', 'private', 'expired' );
-		$query = new \WP_Query(
+		$query    = new \WP_Query(
 			array(
 				'post_type'      => AgentConstants::PROPERTY_POST_TYPE,
 				'post_status'    => $statuses,

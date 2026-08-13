@@ -40,7 +40,7 @@ class AgentPostType extends Custom_Posts {
 	 * {@inheritdoc}
 	 */
 	public function register_custom_post_type(): void {
-		$single_slug = class_exists( '\HvnlyNab\Core\PermalinkSettings' )
+		$single_slug  = class_exists( '\HvnlyNab\Core\PermalinkSettings' )
 			? \HvnlyNab\Core\PermalinkSettings::get_agent_single_slug()
 			: apply_filters( 'hvnly_agent_rewrite_slug', 'agent' );
 		$archive_slug = class_exists( '\HvnlyNab\Core\PermalinkSettings' )
@@ -115,14 +115,14 @@ class AgentPostType extends Custom_Posts {
 			$new['cb'] = $columns['cb'];
 		}
 
-		$new['hvnly_agent_photo']    = esc_html__( 'Photo', 'havenlytics' );
-		$new['title']                = esc_html__( 'Full Name', 'havenlytics' );
-		$new['hvnly_agent_position'] = esc_html__( 'Position', 'havenlytics' );
-		$new['hvnly_agent_company']  = esc_html__( 'Company', 'havenlytics' );
-		$new['hvnly_agent_email']    = esc_html__( 'Email', 'havenlytics' );
-		$new['hvnly_agent_phone']    = esc_html__( 'Phone', 'havenlytics' );
+		$new['hvnly_agent_photo']        = esc_html__( 'Photo', 'havenlytics' );
+		$new['title']                    = esc_html__( 'Full Name', 'havenlytics' );
+		$new['hvnly_agent_position']     = esc_html__( 'Position', 'havenlytics' );
+		$new['hvnly_agent_company']      = esc_html__( 'Company', 'havenlytics' );
+		$new['hvnly_agent_email']        = esc_html__( 'Email', 'havenlytics' );
+		$new['hvnly_agent_phone']        = esc_html__( 'Phone', 'havenlytics' );
 		$new['hvnly_agent_availability'] = esc_html__( 'Availability', 'havenlytics' );
-		$new['date']                 = $columns['date'] ?? esc_html__( 'Date', 'havenlytics' );
+		$new['date']                     = $columns['date'] ?? esc_html__( 'Date', 'havenlytics' );
 
 		return $new;
 	}

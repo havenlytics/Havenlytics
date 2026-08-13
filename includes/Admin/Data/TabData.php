@@ -4,14 +4,14 @@ namespace HvnlyNab\Admin\Data;
 
 use HvnlyNab\Core\SectionIdentity;
 
-if (! defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 /**
  * TabData handlers class
  */
-class TabData
-{
+class TabData {
+
 
     /**
      * Generate a fallback section ID for TabData-only defaults (never rewrites stored builder tabs).
@@ -31,8 +31,7 @@ class TabData
     /**
      * Define the tab structure
      */
-    public static function hvnly_metabox_tabs_builder()
-    {
+    public static function hvnly_metabox_tabs_builder() {
         return array(
             array(
                 'hvnly__sectiontitle' => __('Basic Info', 'havenlytics'),
@@ -126,8 +125,6 @@ class TabData
                         'is_required' => true,
                     ),
 
-
-
                 ),
             ),
             array(
@@ -203,7 +200,6 @@ class TabData
                             'none' => __('None', 'havenlytics'),
                         ),
                     ),
-
 
                 ),
             ),
@@ -339,7 +335,6 @@ class TabData
                         ),
                     ),
 
-
                     // Vimeo Fields
                     // array(
                     //     'fieldid'     => '_hvnly_property_vimeo_video_url',
@@ -365,11 +360,8 @@ class TabData
                     //     ),
                     // ),
 
-
-
                 ),
             ),
-
 
             array(
                 'hvnly__sectiontitle' => __('Property Gallery', 'havenlytics'),
@@ -392,7 +384,6 @@ class TabData
                         // 'description'        => __('Add images to your property gallery. Drag to reorder.'),
                         'wrapper_id'  => 'hvnly_gallery_' . uniqid(), // Unique wrapper
                     ),
-
 
                 ),
             ),
@@ -436,19 +427,14 @@ class TabData
                         'name'        => '_hvnly_property_location_leaflet_map',
                     ),
 
-
-
                 ),
             ),
-
-
 
         );
     }
 
     // Function to fetch taxonomy terms
-    public static function hvnly_get_property_locations()
-    {
+    public static function hvnly_get_property_locations() {
         $locations = array();
 
         $terms = get_terms(array(
@@ -456,9 +442,9 @@ class TabData
             'hide_empty' => false,
         ));
 
-        if (!is_wp_error($terms) && !empty($terms)) {
+        if ( ! is_wp_error($terms) && ! empty($terms)) {
             foreach ($terms as $term) {
-                $locations[$term->slug] = $term->name;
+                $locations[ $term->slug ] = $term->name;
             }
         }
 
@@ -477,8 +463,7 @@ class TabData
     }
 
 
-    public static function hvnly_get_property_countries()
-    {
+    public static function hvnly_get_property_countries() {
         return array(
             'AF' => __('Afghanistan', 'havenlytics'),
             'AL' => __('Albania', 'havenlytics'),
@@ -685,177 +670,175 @@ class TabData
         );
     }
 
-    public static function hvnly_get_property_country_currency()
-    {
+    public static function hvnly_get_property_country_currency() {
         return array(
-            "AED" => "United Arab Emirates dirham (د.إ)",
-            "AFN" => "Afghan afghani (؋)",
-            "ALL" => "Albanian lek (L)",
-            "AMD" => "Armenian dram (AMD)",
-            "ANG" => "Netherlands Antillean guilder (ƒ)",
-            "AOA" => "Angolan kwanza (Kz)",
-            "ARS" => "Argentine peso ($)",
-            "AUD" => "Australian dollar ($)",
-            "AWG" => "Aruban florin (Afl.)",
-            "AZN" => "Azerbaijani manat (AZN)",
-            "BAM" => "Bosnia and Herzegovina convertible mark (KM)",
-            "BBD" => "Barbadian dollar ($)",
-            "BDT" => "Bangladeshi taka (৳)",
-            "BGN" => "Bulgarian lev (лв.)",
-            "BHD" => "Bahraini dinar (.د.ب)",
-            "BIF" => "Burundian franc (Fr)",
-            "BMD" => "Bermudian dollar ($)",
-            "BND" => "Brunei dollar ($)",
-            "BOB" => "Bolivian boliviano (Bs.)",
-            "BRL" => "Brazilian real (R$)",
-            "BSD" => "Bahamian dollar ($)",
-            "BTC" => "Bitcoin (฿)",
-            "BTN" => "Bhutanese ngultrum (Nu.)",
-            "BWP" => "Botswana pula (P)",
-            "BYR" => "Belarusian ruble (old) (Br)",
-            "BYN" => "Belarusian ruble (Br)",
-            "BZD" => "Belize dollar ($)",
-            "CAD" => "Canadian dollar ($)",
-            "CDF" => "Congolese franc (Fr)",
-            "CHF" => "Swiss franc (CHF)",
-            "CLP" => "Chilean peso ($)",
-            "CNY" => "Chinese yuan (¥)",
-            "COP" => "Colombian peso ($)",
-            "CRC" => "Costa Rican colón (₡)",
-            "CUC" => "Cuban convertible peso ($)",
-            "CUP" => "Cuban peso ($)",
-            "CVE" => "Cape Verdean escudo ($)",
-            "CZK" => "Czech koruna (Kč)",
-            "DJF" => "Djiboutian franc (Fr)",
-            "DKK" => "Danish krone (DKK)",
-            "DOP" => "Dominican peso (RD$)",
-            "DZD" => "Algerian dinar (د.ج)",
-            "EGP" => "Egyptian pound (EGP)",
-            "ERN" => "Eritrean nakfa (Nfk)",
-            "ETB" => "Ethiopian birr (Br)",
-            "EUR" => "Euro (€)",
-            "FJD" => "Fijian dollar ($)",
-            "FKP" => "Falkland Islands pound (£)",
-            "GBP" => "Pound sterling (£)",
-            "GEL" => "Georgian lari (ლ)",
-            "GGP" => "Guernsey pound (£)",
-            "GHS" => "Ghana cedi (₵)",
-            "GIP" => "Gibraltar pound (£)",
-            "GMD" => "Gambian dalasi (D)",
-            "GNF" => "Guinean franc (Fr)",
-            "GTQ" => "Guatemalan quetzal (Q)",
-            "GYD" => "Guyanese dollar ($)",
-            "HKD" => "Hong Kong dollar (HK$)",
-            "HNL" => "Honduran lempira (L)",
-            "HRK" => "Croatian kuna (Kn)",
-            "HTG" => "Haitian gourde (G)",
-            "HUF" => "Hungarian forint (Ft)",
-            "IDR" => "Indonesian rupiah (Rp)",
-            "ILS" => "Israeli new shekel (₪)",
-            "IMP" => "Manx pound (£)",
-            "INR" => "Indian rupee (₹)",
-            "IQD" => "Iraqi dinar (ع.د)",
-            "IRR" => "Iranian rial (﷼)",
-            "IRT" => "Iranian toman (تومان)",
-            "ISK" => "Icelandic króna (kr.)",
-            "JEP" => "Jersey pound (£)",
-            "JMD" => "Jamaican dollar ($)",
-            "JOD" => "Jordanian dinar (د.ا)",
-            "JPY" => "Japanese yen (¥)",
-            "KES" => "Kenyan shilling (KSh)",
-            "KGS" => "Kyrgyzstani som (сом)",
-            "KHR" => "Cambodian riel (៛)",
-            "KMF" => "Comorian franc (Fr)",
-            "KPW" => "North Korean won (₩)",
-            "KRW" => "South Korean won (₩)",
-            "KWD" => "Kuwaiti dinar (د.ك)",
-            "KYD" => "Cayman Islands dollar ($)",
-            "KZT" => "Kazakhstani tenge (KZT)",
-            "LAK" => "Lao kip (₭)",
-            "LBP" => "Lebanese pound (ل.ل)",
-            "LKR" => "Sri Lankan rupee (රු)",
-            "LRD" => "Liberian dollar ($)",
-            "LSL" => "Lesotho loti (L)",
-            "LYD" => "Libyan dinar (ل.د)",
-            "MAD" => "Moroccan dirham (د.م.)",
-            "MDL" => "Moldovan leu (MDL)",
-            "MGA" => "Malagasy ariary (Ar)",
-            "MKD" => "Macedonian denar (ден)",
-            "MMK" => "Burmese kyat (Ks)",
-            "MNT" => "Mongolian tögrög (₮)",
-            "MOP" => "Macanese pataca (MOP$)",
-            "MRO" => "Mauritanian ouguiya (UM)",
-            "MUR" => "Mauritian rupee (₨)",
-            "MVR" => "Maldivian rufiyaa (.ރ)",
-            "MWK" => "Malawian kwacha (MK)",
-            "MXN" => "Mexican peso ($)",
-            "MYR" => "Malaysian ringgit (RM)",
-            "MZN" => "Mozambican metical (MT)",
-            "NAD" => "Namibian dollar (N$)",
-            "NGN" => "Nigerian naira (₦)",
-            "NIO" => "Nicaraguan córdoba (C$)",
-            "NOK" => "Norwegian krone (kr)",
-            "NPR" => "Nepalese rupee (₨)",
-            "NZD" => "New Zealand dollar ($)",
-            "OMR" => "Omani rial (ر.ع.)",
-            "PAB" => "Panamanian balboa (B/.)",
-            "PEN" => "Peruvian nuevo sol (S/.)",
-            "PGK" => "Papua New Guinean kina (K)",
-            "PHP" => "Philippine peso (₱)",
-            "PKR" => "Pakistani rupee (₨)",
-            "PLN" => "Polish złoty (zł)",
-            "PRB" => "Transnistrian ruble (р.)",
-            "PYG" => "Paraguayan guaraní (₲)",
-            "QAR" => "Qatari riyal (ر.ق)",
-            "RON" => "Romanian leu (lei)",
-            "RSD" => "Serbian dinar (дин.)",
-            "RUB" => "Russian ruble (₽)",
-            "RWF" => "Rwandan franc (Fr)",
-            "SAR" => "Saudi riyal (ر.س)",
-            "SBD" => "Solomon Islands dollar ($)",
-            "SCR" => "Seychellois rupee (₨)",
-            "SDG" => "Sudanese pound (ج.س.)",
-            "SEK" => "Swedish krona (kr)",
-            "SGD" => "Singapore dollar ($)",
-            "SHP" => "Saint Helena pound (£)",
-            "SLL" => "Sierra Leonean leone (Le)",
-            "SOS" => "Somali shilling (Sh)",
-            "SRD" => "Surinamese dollar ($)",
-            "SSP" => "South Sudanese pound (£)",
-            "STD" => "São Tomé and Príncipe dobra (Db)",
-            "SYP" => "Syrian pound (ل.س)",
-            "SZL" => "Swazi lilangeni (L)",
-            "THB" => "Thai baht (฿)",
-            "TJS" => "Tajikistani somoni (ЅМ)",
-            "TMT" => "Turkmenistan manat (m)",
-            "TND" => "Tunisian dinar (د.ت)",
-            "TOP" => "Tongan paʻanga (T$)",
-            "TRY" => "Turkish lira (₺)",
-            "TTD" => "Trinidad and Tobago dollar ($)",
-            "TWD" => "New Taiwan dollar (NT$)",
-            "TZS" => "Tanzanian shilling (Sh)",
-            "UAH" => "Ukrainian hryvnia (₴)",
-            "UGX" => "Ugandan shilling (UGX)",
-            "USD" => "United States dollar ($)",
-            "UYU" => "Uruguayan peso ($)",
-            "UZS" => "Uzbekistani som (UZS)",
-            "VEF" => "Venezuelan bolívar (Bs F)",
-            "VND" => "Vietnamese đồng (₫)",
-            "VUV" => "Vanuatu vatu (Vt)",
-            "WST" => "Samoan tālā (T)",
-            "XAF" => "Central African CFA franc (CFA)",
-            "XCD" => "East Caribbean dollar ($)",
-            "XOF" => "West African CFA franc (CFA)",
-            "XPF" => "CFP franc (Fr)",
-            "YER" => "Yemeni rial (﷼)",
-            "ZAR" => "South African rand (R)",
-            "ZMW" => "Zambian kwacha (ZK)"
+            'AED' => 'United Arab Emirates dirham (د.إ)',
+            'AFN' => 'Afghan afghani (؋)',
+            'ALL' => 'Albanian lek (L)',
+            'AMD' => 'Armenian dram (AMD)',
+            'ANG' => 'Netherlands Antillean guilder (ƒ)',
+            'AOA' => 'Angolan kwanza (Kz)',
+            'ARS' => 'Argentine peso ($)',
+            'AUD' => 'Australian dollar ($)',
+            'AWG' => 'Aruban florin (Afl.)',
+            'AZN' => 'Azerbaijani manat (AZN)',
+            'BAM' => 'Bosnia and Herzegovina convertible mark (KM)',
+            'BBD' => 'Barbadian dollar ($)',
+            'BDT' => 'Bangladeshi taka (৳)',
+            'BGN' => 'Bulgarian lev (лв.)',
+            'BHD' => 'Bahraini dinar (.د.ب)',
+            'BIF' => 'Burundian franc (Fr)',
+            'BMD' => 'Bermudian dollar ($)',
+            'BND' => 'Brunei dollar ($)',
+            'BOB' => 'Bolivian boliviano (Bs.)',
+            'BRL' => 'Brazilian real (R$)',
+            'BSD' => 'Bahamian dollar ($)',
+            'BTC' => 'Bitcoin (฿)',
+            'BTN' => 'Bhutanese ngultrum (Nu.)',
+            'BWP' => 'Botswana pula (P)',
+            'BYR' => 'Belarusian ruble (old) (Br)',
+            'BYN' => 'Belarusian ruble (Br)',
+            'BZD' => 'Belize dollar ($)',
+            'CAD' => 'Canadian dollar ($)',
+            'CDF' => 'Congolese franc (Fr)',
+            'CHF' => 'Swiss franc (CHF)',
+            'CLP' => 'Chilean peso ($)',
+            'CNY' => 'Chinese yuan (¥)',
+            'COP' => 'Colombian peso ($)',
+            'CRC' => 'Costa Rican colón (₡)',
+            'CUC' => 'Cuban convertible peso ($)',
+            'CUP' => 'Cuban peso ($)',
+            'CVE' => 'Cape Verdean escudo ($)',
+            'CZK' => 'Czech koruna (Kč)',
+            'DJF' => 'Djiboutian franc (Fr)',
+            'DKK' => 'Danish krone (DKK)',
+            'DOP' => 'Dominican peso (RD$)',
+            'DZD' => 'Algerian dinar (د.ج)',
+            'EGP' => 'Egyptian pound (EGP)',
+            'ERN' => 'Eritrean nakfa (Nfk)',
+            'ETB' => 'Ethiopian birr (Br)',
+            'EUR' => 'Euro (€)',
+            'FJD' => 'Fijian dollar ($)',
+            'FKP' => 'Falkland Islands pound (£)',
+            'GBP' => 'Pound sterling (£)',
+            'GEL' => 'Georgian lari (ლ)',
+            'GGP' => 'Guernsey pound (£)',
+            'GHS' => 'Ghana cedi (₵)',
+            'GIP' => 'Gibraltar pound (£)',
+            'GMD' => 'Gambian dalasi (D)',
+            'GNF' => 'Guinean franc (Fr)',
+            'GTQ' => 'Guatemalan quetzal (Q)',
+            'GYD' => 'Guyanese dollar ($)',
+            'HKD' => 'Hong Kong dollar (HK$)',
+            'HNL' => 'Honduran lempira (L)',
+            'HRK' => 'Croatian kuna (Kn)',
+            'HTG' => 'Haitian gourde (G)',
+            'HUF' => 'Hungarian forint (Ft)',
+            'IDR' => 'Indonesian rupiah (Rp)',
+            'ILS' => 'Israeli new shekel (₪)',
+            'IMP' => 'Manx pound (£)',
+            'INR' => 'Indian rupee (₹)',
+            'IQD' => 'Iraqi dinar (ع.د)',
+            'IRR' => 'Iranian rial (﷼)',
+            'IRT' => 'Iranian toman (تومان)',
+            'ISK' => 'Icelandic króna (kr.)',
+            'JEP' => 'Jersey pound (£)',
+            'JMD' => 'Jamaican dollar ($)',
+            'JOD' => 'Jordanian dinar (د.ا)',
+            'JPY' => 'Japanese yen (¥)',
+            'KES' => 'Kenyan shilling (KSh)',
+            'KGS' => 'Kyrgyzstani som (сом)',
+            'KHR' => 'Cambodian riel (៛)',
+            'KMF' => 'Comorian franc (Fr)',
+            'KPW' => 'North Korean won (₩)',
+            'KRW' => 'South Korean won (₩)',
+            'KWD' => 'Kuwaiti dinar (د.ك)',
+            'KYD' => 'Cayman Islands dollar ($)',
+            'KZT' => 'Kazakhstani tenge (KZT)',
+            'LAK' => 'Lao kip (₭)',
+            'LBP' => 'Lebanese pound (ل.ل)',
+            'LKR' => 'Sri Lankan rupee (රු)',
+            'LRD' => 'Liberian dollar ($)',
+            'LSL' => 'Lesotho loti (L)',
+            'LYD' => 'Libyan dinar (ل.د)',
+            'MAD' => 'Moroccan dirham (د.م.)',
+            'MDL' => 'Moldovan leu (MDL)',
+            'MGA' => 'Malagasy ariary (Ar)',
+            'MKD' => 'Macedonian denar (ден)',
+            'MMK' => 'Burmese kyat (Ks)',
+            'MNT' => 'Mongolian tögrög (₮)',
+            'MOP' => 'Macanese pataca (MOP$)',
+            'MRO' => 'Mauritanian ouguiya (UM)',
+            'MUR' => 'Mauritian rupee (₨)',
+            'MVR' => 'Maldivian rufiyaa (.ރ)',
+            'MWK' => 'Malawian kwacha (MK)',
+            'MXN' => 'Mexican peso ($)',
+            'MYR' => 'Malaysian ringgit (RM)',
+            'MZN' => 'Mozambican metical (MT)',
+            'NAD' => 'Namibian dollar (N$)',
+            'NGN' => 'Nigerian naira (₦)',
+            'NIO' => 'Nicaraguan córdoba (C$)',
+            'NOK' => 'Norwegian krone (kr)',
+            'NPR' => 'Nepalese rupee (₨)',
+            'NZD' => 'New Zealand dollar ($)',
+            'OMR' => 'Omani rial (ر.ع.)',
+            'PAB' => 'Panamanian balboa (B/.)',
+            'PEN' => 'Peruvian nuevo sol (S/.)',
+            'PGK' => 'Papua New Guinean kina (K)',
+            'PHP' => 'Philippine peso (₱)',
+            'PKR' => 'Pakistani rupee (₨)',
+            'PLN' => 'Polish złoty (zł)',
+            'PRB' => 'Transnistrian ruble (р.)',
+            'PYG' => 'Paraguayan guaraní (₲)',
+            'QAR' => 'Qatari riyal (ر.ق)',
+            'RON' => 'Romanian leu (lei)',
+            'RSD' => 'Serbian dinar (дин.)',
+            'RUB' => 'Russian ruble (₽)',
+            'RWF' => 'Rwandan franc (Fr)',
+            'SAR' => 'Saudi riyal (ر.س)',
+            'SBD' => 'Solomon Islands dollar ($)',
+            'SCR' => 'Seychellois rupee (₨)',
+            'SDG' => 'Sudanese pound (ج.س.)',
+            'SEK' => 'Swedish krona (kr)',
+            'SGD' => 'Singapore dollar ($)',
+            'SHP' => 'Saint Helena pound (£)',
+            'SLL' => 'Sierra Leonean leone (Le)',
+            'SOS' => 'Somali shilling (Sh)',
+            'SRD' => 'Surinamese dollar ($)',
+            'SSP' => 'South Sudanese pound (£)',
+            'STD' => 'São Tomé and Príncipe dobra (Db)',
+            'SYP' => 'Syrian pound (ل.س)',
+            'SZL' => 'Swazi lilangeni (L)',
+            'THB' => 'Thai baht (฿)',
+            'TJS' => 'Tajikistani somoni (ЅМ)',
+            'TMT' => 'Turkmenistan manat (m)',
+            'TND' => 'Tunisian dinar (د.ت)',
+            'TOP' => 'Tongan paʻanga (T$)',
+            'TRY' => 'Turkish lira (₺)',
+            'TTD' => 'Trinidad and Tobago dollar ($)',
+            'TWD' => 'New Taiwan dollar (NT$)',
+            'TZS' => 'Tanzanian shilling (Sh)',
+            'UAH' => 'Ukrainian hryvnia (₴)',
+            'UGX' => 'Ugandan shilling (UGX)',
+            'USD' => 'United States dollar ($)',
+            'UYU' => 'Uruguayan peso ($)',
+            'UZS' => 'Uzbekistani som (UZS)',
+            'VEF' => 'Venezuelan bolívar (Bs F)',
+            'VND' => 'Vietnamese đồng (₫)',
+            'VUV' => 'Vanuatu vatu (Vt)',
+            'WST' => 'Samoan tālā (T)',
+            'XAF' => 'Central African CFA franc (CFA)',
+            'XCD' => 'East Caribbean dollar ($)',
+            'XOF' => 'West African CFA franc (CFA)',
+            'XPF' => 'CFP franc (Fr)',
+            'YER' => 'Yemeni rial (﷼)',
+            'ZAR' => 'South African rand (R)',
+            'ZMW' => 'Zambian kwacha (ZK)',
         );
     }
 
 
-    public static function get_cf7_forms()
-    {
+    public static function get_cf7_forms() {
         $options = array(
             '' => __('Select a Contact Form…', 'havenlytics'),
         );
@@ -868,8 +851,8 @@ class TabData
 
             if ($forms) {
                 foreach ($forms as $form) {
-                    $shortcode = '[contact-form-7 id="' . esc_attr($form->ID) . '"]';
-                    $options[$shortcode] = $form->post_title;
+                    $shortcode             = '[contact-form-7 id="' . esc_attr($form->ID) . '"]';
+                    $options[ $shortcode ] = $form->post_title;
                 }
             }
         }

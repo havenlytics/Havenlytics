@@ -6,7 +6,7 @@
  * @since 2.1.0
  */
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -23,7 +23,7 @@ function hvnly_get_main_search_fields() {
 /**
  * Get main search field config
  */
-function hvnly_get_main_search_field_config($field_id) {
+function hvnly_get_main_search_field_config( $field_id ) {
     return HvnlyNab\Helpers::get_instance()->hvnly_get_main_search_field_config($field_id);
 }
 
@@ -34,6 +34,6 @@ function hvnly_get_main_search_field_config($field_id) {
  * @param string $default  Fallback label.
  * @return string
  */
-function hvnly_get_search_field_placeholder($field_id, $default = '') {
+function hvnly_get_search_field_placeholder( $field_id, $default = '' ) {
     return HvnlyNab\Helpers::get_instance()->hvnly_get_search_field_placeholder($field_id, $default);
 }

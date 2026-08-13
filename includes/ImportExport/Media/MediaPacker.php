@@ -88,7 +88,10 @@ final class MediaPacker {
 				return PackageResult::failure(
 					'hvnly_ie_media_index_orphan',
 					'media-index references a path with no packaged binary.',
-					array( 'path' => $row['path'], 'export_key' => $row['export_key'] )
+					array(
+						'path' => $row['path'],
+						'export_key' => $row['export_key'],
+					)
 				);
 			}
 		}

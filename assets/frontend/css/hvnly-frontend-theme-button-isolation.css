@@ -318,17 +318,19 @@ body.hvnly-property-archive :is(
 	transform: none;
 }
 
-/* Favorites / compare / card actions */
+/* Favorites / compare / card actions — kill theme transform on legacy
+ * selectors. `.hvnly-action-toggle` owns its own hover transform in
+ * hvnly-frontend-components.css (do not pin to none here). */
 .hvnly-content-wrapper :is(
-	button[class*="hvnly-"][class*="favorite"],
-	button.hvnly-property--grid-list--favorite,
-	button[class*="hvnly-"][class*="compare"],
+	button[class*="hvnly-"][class*="favorite"]:not(.hvnly-action-toggle),
+	button.hvnly-property--grid-list--favorite:not(.hvnly-action-toggle),
+	button[class*="hvnly-"][class*="compare"]:not(.hvnly-action-toggle),
 	button.hvnly-btn
 ):is(:hover, :focus, :active),
 body.hvnly-plugin-active :is(
-	button[class*="hvnly-"][class*="favorite"],
-	button.hvnly-property--grid-list--favorite,
-	button[class*="hvnly-"][class*="compare"]
+	button[class*="hvnly-"][class*="favorite"]:not(.hvnly-action-toggle),
+	button.hvnly-property--grid-list--favorite:not(.hvnly-action-toggle),
+	button[class*="hvnly-"][class*="compare"]:not(.hvnly-action-toggle)
 ):is(:hover, :focus, :active) {
 	transform: none;
 }
@@ -479,4 +481,55 @@ button.hvnly-retry-map-btn:is(:hover, :focus, :active) {
 	.hvnly-dashboard-block a.hvnly-dashboard-block__gate-btn:is(:hover, :focus-visible, :active) {
 		transform: none;
 	}
+}
+
+/* ----------------------------------------------------------------------
+ * View Switch (List/Grid/Map) — late paint seal
+ * Loads at priority 999 so Hello `button:focus/hover` and ui-control
+ * :focus (secondary) cannot override .active Primary.
+ * JS toggles .active only — do not key paint off bare aria-pressed.
+ * -------------------------------------------------------------------- */
+body.hvnly-plugin-active button.hvnly-ui-control.hvnly-property-view-btn.active,
+body.hvnly-property-archive button.hvnly-ui-control.hvnly-property-view-btn.active,
+.hvnly-content-wrapper button.hvnly-ui-control.hvnly-property-view-btn.active,
+.hvnly-property-display-shortcode button.hvnly-ui-control.hvnly-property-view-btn.active,
+.hvnly-all-properties-widget button.hvnly-ui-control.hvnly-property-view-btn.active {
+	background: var(--hvnly-primary-color);
+	background-color: var(--hvnly-primary-color);
+	background-image: none;
+	border-color: var(--hvnly-primary-color);
+	color: var(--hvnly-button-color, var(--hvnly-color-white, #fff));
+}
+
+body.hvnly-plugin-active button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible),
+body.hvnly-property-archive button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible),
+.hvnly-content-wrapper button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible),
+.hvnly-property-display-shortcode button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible),
+.hvnly-all-properties-widget button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible) {
+	background: var(--hvnly-primary-color);
+	background-color: var(--hvnly-primary-color);
+	background-image: none;
+	border-color: var(--hvnly-primary-color);
+	color: var(--hvnly-button-color, var(--hvnly-color-white, #fff));
+}
+
+body.hvnly-plugin-active button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active),
+body.hvnly-property-archive button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active),
+.hvnly-content-wrapper button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active),
+.hvnly-property-display-shortcode button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active),
+.hvnly-all-properties-widget button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active) {
+	background: var(--hvnly-secondary-color);
+	background-color: var(--hvnly-secondary-color);
+	background-image: none;
+	border-color: var(--hvnly-secondary-color);
+	color: var(--hvnly-button-color, var(--hvnly-color-white, #fff));
+}
+
+body.hvnly-plugin-active button.hvnly-ui-control.hvnly-property-view-btn.active :is(i, svg),
+body.hvnly-property-archive button.hvnly-ui-control.hvnly-property-view-btn.active :is(i, svg),
+.hvnly-content-wrapper button.hvnly-ui-control.hvnly-property-view-btn.active :is(i, svg),
+body.hvnly-plugin-active button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible):not(.active) :is(i, svg),
+.hvnly-content-wrapper button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible):not(.active) :is(i, svg) {
+	color: inherit;
+	transform: none;
 }

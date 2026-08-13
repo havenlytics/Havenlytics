@@ -59,7 +59,7 @@ final class AgentProfileCompletenessService {
 			);
 		}
 
-		$post = get_post( $agent_id );
+		$post  = get_post( $agent_id );
 		$email = (string) get_post_meta( $agent_id, AgentConstants::META_EMAIL, true );
 		$phone = (string) get_post_meta( $agent_id, AgentConstants::META_PHONE, true );
 		if ( '' === $phone ) {

@@ -17,7 +17,7 @@ use HvnlyNab\Api\Type\Settings\PriceOnCallTextAPI;
 use HvnlyNab\Api\Type\Analytics\AnalyticsAPI;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -28,8 +28,8 @@ if (!defined('ABSPATH')) {
  *
  * @since 2.0.0
  */
-class Controller
-{
+class Controller {
+
     /**
      * Array of controller classes to register.
      *
@@ -42,19 +42,18 @@ class Controller
      *
      * @var array
      */
-    private array $controllers = [];
+    private array $controllers = array();
 
-    public function __construct()
-    {
+    public function __construct() {
         // Stop if REST API is not available
-        if (!class_exists('WP_REST_Server')) {
+        if ( ! class_exists('WP_REST_Server')) {
             return;
         }
 
         // Map of API classes
         $this->class_map = apply_filters(
             'hvnlynab_rest_api_class_map',
-            [
+            array(
                 DnDSections::class,
                 DnDCardBuilder::class,
                 MetaCleanup::class,
@@ -62,24 +61,23 @@ class Controller
                 PluginInfoAPI::class,
                 PriceOnCallTextAPI::class,
                 AnalyticsAPI::class,
-            ]
+            )
         );
 
         // Register REST API routes
-        add_action('rest_api_init', [$this, 'register_rest_routes'], 10);
+        add_action('rest_api_init', array( $this, 'register_rest_routes' ), 10);
 
         // Support plain permalink API requests
-        add_filter('rest_request_before_callbacks', [$this, 'rest_request_filter'], 10, 3);
+        add_filter('rest_request_before_callbacks', array( $this, 'rest_request_filter' ), 10, 3);
     }
 
     /**
      * Register REST API routes for all mapped controllers.
      */
-    public function register_rest_routes(): void
-    {
+    public function register_rest_routes(): void {
         foreach ($this->class_map as $controller_class) {
-            $controller_instance = new $controller_class();
-            $this->controllers[$controller_class] = $controller_instance;
+            $controller_instance                    = new $controller_class();
+            $this->controllers[ $controller_class ] = $controller_instance;
 
             if (method_exists($controller_instance, 'routes')) {
                 $controller_instance->routes();
@@ -95,8 +93,7 @@ class Controller
      * @param \WP_REST_Request $request
      * @return \WP_REST_Request
      */
-    public function rest_request_filter($response, $handler, $request)
-    {
+    public function rest_request_filter( $response, $handler, $request ) {
         $permalink_structure = get_option('permalink_structure');
         if ($permalink_structure === '') {
             $params = $request->get_params();

@@ -20,20 +20,20 @@ defined( 'ABSPATH' ) || exit;
  */
 final class PortalCapabilities {
 
-	public const PORTAL_ACCESS           = 'hvnly_portal_access';
-	public const VIEW_OWN_PROFILE        = 'hvnly_view_own_profile';
-	public const EDIT_OWN_PROFILE        = 'hvnly_edit_own_profile';
-	public const VIEW_ASSIGNED_PROPERTIES = 'hvnly_view_assigned_properties';
-	public const CREATE_PROPERTIES       = 'hvnly_create_properties';
-	public const EDIT_ASSIGNED_PROPERTIES = 'hvnly_edit_assigned_properties';
+	public const PORTAL_ACCESS             = 'hvnly_portal_access';
+	public const VIEW_OWN_PROFILE          = 'hvnly_view_own_profile';
+	public const EDIT_OWN_PROFILE          = 'hvnly_edit_own_profile';
+	public const VIEW_ASSIGNED_PROPERTIES  = 'hvnly_view_assigned_properties';
+	public const CREATE_PROPERTIES         = 'hvnly_create_properties';
+	public const EDIT_ASSIGNED_PROPERTIES  = 'hvnly_edit_assigned_properties';
 	public const EDIT_PUBLISHED_PROPERTIES = 'hvnly_edit_published_properties';
-	public const SUBMIT_PROPERTIES       = 'hvnly_submit_properties';
-	public const APPROVE_LISTINGS        = 'hvnly_approve_listings';
-	public const VIEW_OWN_INQUIRIES      = 'hvnly_view_own_inquiries';
-	public const REPLY_INQUIRIES         = 'hvnly_reply_inquiries';
-	public const VIEW_AGENCY_INQUIRIES   = 'hvnly_view_agency_inquiries';
-	public const VIEW_AGENCY_PROPERTIES  = 'hvnly_view_agency_properties';
-	public const VIEW_ANALYTICS          = 'hvnly_view_analytics';
+	public const SUBMIT_PROPERTIES         = 'hvnly_submit_properties';
+	public const APPROVE_LISTINGS          = 'hvnly_approve_listings';
+	public const VIEW_OWN_INQUIRIES        = 'hvnly_view_own_inquiries';
+	public const REPLY_INQUIRIES           = 'hvnly_reply_inquiries';
+	public const VIEW_AGENCY_INQUIRIES     = 'hvnly_view_agency_inquiries';
+	public const VIEW_AGENCY_PROPERTIES    = 'hvnly_view_agency_properties';
+	public const VIEW_ANALYTICS            = 'hvnly_view_analytics';
 
 	/** @var string Workspace role slug: administrator */
 	public const ROLE_ADMINISTRATOR = 'administrator';

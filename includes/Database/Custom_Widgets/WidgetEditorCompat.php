@@ -149,7 +149,7 @@ final class WidgetEditorCompat {
 			}
 
 			$variations[ $index ]['category'] = Register_Widgets::WIDGET_CATEGORY_SLUG;
-			$variations[ $index ]['scope']     = array( 'inserter' );
+			$variations[ $index ]['scope']    = array( 'inserter' );
 
 			if ( ! empty( $variation['title'] ) && is_string( $variation['title'] ) ) {
 				$variations[ $index ]['title'] = preg_replace( '/^Havenlytics:\s*/i', '', $variation['title'] );

@@ -17,7 +17,7 @@ namespace HvnlyNab\Integrations\Blocks;
 use HvnlyNab\Integrations\Elementor\Bootstrap;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -26,7 +26,7 @@ if (!defined('ABSPATH')) {
  */
 final class BlockAssets {
 
-    private const PROPERTY_BLOCKS = [
+    private const PROPERTY_BLOCKS = array(
         'havenlytics/property-archive',
         'havenlytics/property-search',
         // Featured reuses archive/property-loop.php — needs the same archive JS
@@ -38,14 +38,14 @@ final class BlockAssets {
         // Saved Properties renders the SAME Card Builder cards (grid/list/compact)
         // and reuses the favorite toggle + in-card gallery + image un-blur JS.
         'havenlytics/saved-properties',
-    ];
+    );
 
     private const AGENTS_BLOCK = 'havenlytics/agents';
     private const AGENCY_BLOCK = 'havenlytics/agency';
 
-    private const FEATURED_BLOCK = 'havenlytics/featured-properties';
-    private const CAROUSEL_BLOCK = 'havenlytics/property-carousel';
-    private const MAP_BLOCK      = 'havenlytics/property-map';
+    private const FEATURED_BLOCK  = 'havenlytics/featured-properties';
+    private const CAROUSEL_BLOCK  = 'havenlytics/property-carousel';
+    private const MAP_BLOCK       = 'havenlytics/property-map';
     private const AUTH_BLOCK      = 'havenlytics/authentication';
     private const DASHBOARD_BLOCK = 'havenlytics/dashboard';
     private const SAVED_BLOCK     = 'havenlytics/saved-properties';
@@ -55,14 +55,14 @@ final class BlockAssets {
      * Canonical Card Builder CSS handles (same as archive / Elementor).
      * Do not register parallel handles for these files.
      */
-    private const CARD_BUILDER_STYLES = [
+    private const CARD_BUILDER_STYLES = array(
         'hvnly-fontawesome-all-frontend',
         'hvnly-frontend-default',
         'hvnly-frontend-components',
         'hvnly-frontend-cards',
         'hvnly-frontend-property-card-embed',
         'hvnly-frontend-property-responsive',
-    ];
+    );
 
     /**
      * @var self|null
@@ -86,8 +86,8 @@ final class BlockAssets {
     }
 
     private function __construct() {
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_frontend'], 20);
-        add_action('enqueue_block_assets', [$this, 'enqueue_editor']);
+        add_action('wp_enqueue_scripts', array( $this, 'enqueue_frontend' ), 20);
+        add_action('enqueue_block_assets', array( $this, 'enqueue_editor' ));
     }
 
     /**
@@ -113,7 +113,7 @@ final class BlockAssets {
         wp_register_style(
             'hvnly-block-premium',
             $front . 'blocks/css/hvnly-blocks.css',
-            [],
+            array(),
             self::file_version('frontend/blocks/css/hvnly-blocks.css', $ver)
         );
 
@@ -124,20 +124,20 @@ final class BlockAssets {
         wp_register_script(
             'hvnly-block-carousel',
             $front . 'blocks/js/hvnly-block-carousel.js',
-            [],
+            array(),
             self::file_version('frontend/blocks/js/hvnly-block-carousel.js', $ver),
             true
         );
         wp_localize_script(
             'hvnly-block-carousel',
             'hvnly_block_carousel',
-            [
-                'i18n' => [
+            array(
+                'i18n' => array(
                     'goToSlide' =>
                         /* translators: %d: Slide number. */
                         __( 'Go to slide %d', 'havenlytics' ),
-                ],
-            ]
+                ),
+            )
         );
 
         // Authentication block — dedicated shell CSS + controller. Reuses the
@@ -145,13 +145,13 @@ final class BlockAssets {
         wp_register_style(
             'hvnly-block-auth',
             $front . 'blocks/css/hvnly-block-auth.css',
-            ['hvnly-frontend-components'],
+            array( 'hvnly-frontend-components' ),
             self::file_version('frontend/blocks/css/hvnly-block-auth.css', $ver)
         );
         wp_register_script(
             'hvnly-block-auth',
             $front . 'blocks/js/hvnly-block-auth.js',
-            [],
+            array(),
             self::file_version('frontend/blocks/js/hvnly-block-auth.js', $ver),
             true
         );
@@ -161,7 +161,7 @@ final class BlockAssets {
         wp_register_style(
             'hvnly-block-dashboard',
             $front . 'blocks/css/hvnly-block-dashboard.css',
-            [],
+            array(),
             self::file_version('frontend/blocks/css/hvnly-block-dashboard.css', $ver)
         );
 
@@ -170,61 +170,61 @@ final class BlockAssets {
         wp_register_style(
             'hvnly-block-saved-properties',
             $front . 'blocks/css/hvnly-block-saved-properties.css',
-            [],
+            array(),
             self::file_version('frontend/blocks/css/hvnly-block-saved-properties.css', $ver)
         );
 
         // Property Inquiry Form block chrome. Form field styles come from the
         // existing hvnly-frontend-contact-agent stylesheet; agent header uses cards.
-        if (!wp_style_is('hvnly-frontend-contact-agent', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-contact-agent', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-contact-agent',
                 HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-contact-agent.css',
-                [],
+                array(),
                 $ver
             );
         }
-        if (!wp_script_is('hvnly-frontend-contact-agent', 'registered')) {
+        if ( ! wp_script_is('hvnly-frontend-contact-agent', 'registered')) {
             wp_register_script(
                 'hvnly-frontend-contact-agent',
                 HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-contact-agent.js',
-                ['jquery'],
+                array( 'jquery' ),
                 $ver,
                 true
             );
         }
-        if (!wp_style_is('hvnly-frontend-cards', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-cards', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-cards',
                 HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-cards.css',
-                [],
+                array(),
                 $ver
             );
         }
         wp_register_style(
             'hvnly-block-inquiry',
             $front . 'blocks/css/hvnly-block-inquiry.css',
-            ['hvnly-frontend-contact-agent', 'hvnly-frontend-cards', 'hvnly-frontend-components'],
+            array( 'hvnly-frontend-contact-agent', 'hvnly-frontend-cards', 'hvnly-frontend-components' ),
             self::file_version('frontend/blocks/css/hvnly-block-inquiry.css', $ver)
         );
         wp_register_script(
             'hvnly-block-inquiry',
             $front . 'blocks/js/hvnly-block-inquiry.js',
-            ['hvnly-frontend-contact-agent'],
+            array( 'hvnly-frontend-contact-agent' ),
             self::file_version('frontend/blocks/js/hvnly-block-inquiry.js', $ver),
             true
         );
 
-        wp_register_style('hvnly-block-leaflet', $front . 'lib/leaflet/css/leaflet.css', [], $ver);
-        wp_register_script('hvnly-block-leaflet', $front . 'lib/leaflet/js/leaflet.js', [], $ver, true);
-        wp_register_style('hvnly-block-leaflet-cluster', $front . 'lib/leaflet/css/MarkerCluster.css', ['hvnly-block-leaflet'], $ver);
-        wp_register_style('hvnly-block-leaflet-cluster-default', $front . 'lib/leaflet/css/MarkerCluster.Default.css', ['hvnly-block-leaflet-cluster'], $ver);
-        wp_register_script('hvnly-block-leaflet-cluster', $front . 'lib/leaflet/js/leaflet.markercluster.js', ['hvnly-block-leaflet'], $ver, true);
+        wp_register_style('hvnly-block-leaflet', $front . 'lib/leaflet/css/leaflet.css', array(), $ver);
+        wp_register_script('hvnly-block-leaflet', $front . 'lib/leaflet/js/leaflet.js', array(), $ver, true);
+        wp_register_style('hvnly-block-leaflet-cluster', $front . 'lib/leaflet/css/MarkerCluster.css', array( 'hvnly-block-leaflet' ), $ver);
+        wp_register_style('hvnly-block-leaflet-cluster-default', $front . 'lib/leaflet/css/MarkerCluster.Default.css', array( 'hvnly-block-leaflet-cluster' ), $ver);
+        wp_register_script('hvnly-block-leaflet-cluster', $front . 'lib/leaflet/js/leaflet.markercluster.js', array( 'hvnly-block-leaflet' ), $ver, true);
 
         // Deps follow the GLOBAL map provider (archive-map SSOT: hvnly_get_map_config).
         $map_deps = 'google' === self::effective_map_provider()
-            ? [self::register_google_maps_handle()]
-            : ['hvnly-block-leaflet', 'hvnly-block-leaflet-cluster'];
+            ? array( self::register_google_maps_handle() )
+            : array( 'hvnly-block-leaflet', 'hvnly-block-leaflet-cluster' );
 
         wp_register_script(
             'hvnly-block-map',
@@ -242,8 +242,8 @@ final class BlockAssets {
      * @param string $base     Base plugin version.
      * @return string
      */
-    private static function file_version(string $relative, string $base): string {
-        $path = trailingslashit(HVNLYNAB_ASSETS_PATH) . $relative;
+    private static function file_version( string $relative, string $base ): string {
+        $path  = trailingslashit(HVNLYNAB_ASSETS_PATH) . $relative;
         $mtime = is_readable($path) ? (int) filemtime($path) : 0;
 
         return $mtime > 0 ? $base . '.' . $mtime : $base;
@@ -257,10 +257,10 @@ final class BlockAssets {
      */
     public static function effective_map_provider(): string {
         if (function_exists('hvnly_get_map_config')) {
-            $config = hvnly_get_map_config();
+            $config   = hvnly_get_map_config();
             $provider = isset($config['provider']) ? (string) $config['provider'] : 'leaflet';
 
-            return in_array($provider, ['leaflet', 'openstreetmap', 'google'], true) ? $provider : 'leaflet';
+            return in_array($provider, array( 'leaflet', 'openstreetmap', 'google' ), true) ? $provider : 'leaflet';
         }
 
         return 'leaflet';
@@ -286,9 +286,9 @@ final class BlockAssets {
         wp_register_script(
             'hvnly-google-maps',
             'https://maps.googleapis.com/maps/api/js?key=' . urlencode($api_key) . '&libraries=places&loading=async&callback=initHvnlyMap',
-            [],
+            array(),
             HVNLYNAB_VERSION,
-            ['strategy' => 'async']
+            array( 'strategy' => 'async' )
         );
 
         // Same ready bridge as the Archive Map (Assets.php) — consumers listen
@@ -319,56 +319,56 @@ final class BlockAssets {
         $front = HVNLYNAB_ASSETS_URL . '/frontend';
         $admin = HVNLYNAB_ASSETS_URL . '/admin';
 
-        if (!wp_style_is('hvnly-fontawesome-all-frontend', 'registered')) {
+        if ( ! wp_style_is('hvnly-fontawesome-all-frontend', 'registered')) {
             wp_register_style(
                 'hvnly-fontawesome-all-frontend',
                 $admin . '/css/fontawesome-all.min.css',
-                [],
+                array(),
                 $ver
             );
         }
 
-        if (!wp_style_is('hvnly-frontend-default', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-default', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-default',
                 $front . '/css/hvnly-frontend-default.css',
-                [],
+                array(),
                 $ver
             );
         }
 
-        if (!wp_style_is('hvnly-frontend-components', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-components', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-components',
                 $front . '/css/hvnly-frontend-components.css',
-                ['hvnly-frontend-default'],
+                array( 'hvnly-frontend-default' ),
                 $ver
             );
         }
 
-        if (!wp_style_is('hvnly-frontend-cards', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-cards', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-cards',
                 $front . '/css/hvnly-frontend-cards.css',
-                ['hvnly-frontend-default', 'hvnly-frontend-components'],
+                array( 'hvnly-frontend-default', 'hvnly-frontend-components' ),
                 $ver
             );
         }
 
-        if (!wp_style_is('hvnly-frontend-property-card-embed', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-property-card-embed', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-property-card-embed',
                 $front . '/css/property-cards/hvnly-frontend-property-card-embed.css',
-                ['hvnly-frontend-default', 'hvnly-frontend-components'],
+                array( 'hvnly-frontend-default', 'hvnly-frontend-components' ),
                 $ver
             );
         }
 
-        if (!wp_style_is('hvnly-frontend-property-responsive', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-property-responsive', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-property-responsive',
                 $front . '/css/hvnly-frontend-property-responsive.css',
-                ['hvnly-frontend-property-card-embed'],
+                array( 'hvnly-frontend-property-card-embed' ),
                 $ver
             );
         }
@@ -388,6 +388,9 @@ final class BlockAssets {
 
         add_filter('hvnly_favorites_should_enqueue', '__return_true');
         add_filter('hvnly_compare_should_enqueue', '__return_true');
+        if (class_exists(\HvnlyNab\Favorites\FavoritesAssets::class)) {
+            \HvnlyNab\Favorites\FavoritesAssets::ensure_enqueued();
+        }
     }
 
     /**
@@ -402,7 +405,7 @@ final class BlockAssets {
 
         $post = get_post();
 
-        if (!$post instanceof \WP_Post) {
+        if ( ! $post instanceof \WP_Post) {
             return;
         }
 
@@ -420,9 +423,9 @@ final class BlockAssets {
             Bootstrap::get_instance()->enqueue_agency_widget_assets_for_render();
         }
 
-        $has_featured = has_block(self::FEATURED_BLOCK, $post);
-        $has_carousel = has_block(self::CAROUSEL_BLOCK, $post);
-        $has_map      = has_block(self::MAP_BLOCK, $post);
+        $has_featured  = has_block(self::FEATURED_BLOCK, $post);
+        $has_carousel  = has_block(self::CAROUSEL_BLOCK, $post);
+        $has_map       = has_block(self::MAP_BLOCK, $post);
         $has_auth      = has_block(self::AUTH_BLOCK, $post);
         $has_dashboard = has_block(self::DASHBOARD_BLOCK, $post);
         $has_saved     = has_block(self::SAVED_BLOCK, $post);
@@ -439,6 +442,9 @@ final class BlockAssets {
             // Provider CSS FIRST so the premium shell wins cascade-order ties
             // against Leaflet's element rules (e.g. .leaflet-container a).
             add_filter('hvnly_favorites_should_enqueue', '__return_true');
+            if (class_exists(\HvnlyNab\Favorites\FavoritesAssets::class)) {
+                \HvnlyNab\Favorites\FavoritesAssets::ensure_enqueued();
+            }
             if ('google' !== self::effective_map_provider()) {
                 wp_enqueue_style('hvnly-block-leaflet');
                 wp_enqueue_style('hvnly-block-leaflet-cluster');
@@ -460,7 +466,7 @@ final class BlockAssets {
 
             // Signed-out visitors get the Authentication block inside the gate, so
             // its controller + styles must be present too.
-            if (!is_user_logged_in()) {
+            if ( ! is_user_logged_in()) {
                 $this->enqueue_auth_assets();
             }
         }
@@ -475,7 +481,7 @@ final class BlockAssets {
             wp_enqueue_script('hvnly-block-carousel');
 
             // Signed-out visitors get the reused Authentication block gate.
-            if (!is_user_logged_in()) {
+            if ( ! is_user_logged_in()) {
                 $this->enqueue_auth_assets();
             }
         }
@@ -493,31 +499,31 @@ final class BlockAssets {
     private function enqueue_inquiry_assets(): void {
         $ver = HVNLYNAB_VERSION;
 
-        if (!wp_style_is('hvnly-frontend-contact-agent', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-contact-agent', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-contact-agent',
                 HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-contact-agent.css',
-                [],
+                array(),
                 $ver
             );
         }
 
-        if (!wp_script_is('hvnly-frontend-contact-agent', 'registered')) {
+        if ( ! wp_script_is('hvnly-frontend-contact-agent', 'registered')) {
             wp_register_script(
                 'hvnly-frontend-contact-agent',
                 HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-contact-agent.js',
-                ['jquery'],
+                array( 'jquery' ),
                 $ver,
                 true
             );
         }
 
         // Agent card partial needs the shared cards stylesheet.
-        if (!wp_style_is('hvnly-frontend-cards', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-cards', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-cards',
                 HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-cards.css',
-                [],
+                array(),
                 $ver
             );
         }
@@ -526,11 +532,11 @@ final class BlockAssets {
         wp_enqueue_style('hvnly-block-inquiry');
         wp_enqueue_script('hvnly-frontend-contact-agent');
 
-        if (!wp_script_is('hvnly-block-inquiry', 'registered')) {
+        if ( ! wp_script_is('hvnly-block-inquiry', 'registered')) {
             wp_register_script(
                 'hvnly-block-inquiry',
                 HVNLYNAB_ASSETS_URL . '/frontend/blocks/js/hvnly-block-inquiry.js',
-                ['hvnly-frontend-contact-agent'],
+                array( 'hvnly-frontend-contact-agent' ),
                 self::file_version('frontend/blocks/js/hvnly-block-inquiry.js', $ver),
                 true
             );
@@ -570,20 +576,20 @@ final class BlockAssets {
      * @return void
      */
     public function enqueue_editor(): void {
-        if (!is_admin()) {
+        if ( ! is_admin()) {
             return;
         }
 
         if (function_exists('get_current_screen')) {
             $screen = get_current_screen();
-            if ($screen && method_exists($screen, 'is_block_editor') && !$screen->is_block_editor()) {
+            if ($screen && method_exists($screen, 'is_block_editor') && ! $screen->is_block_editor()) {
                 return;
             }
         }
 
         $post = get_post();
 
-        if (!$post instanceof \WP_Post) {
+        if ( ! $post instanceof \WP_Post) {
             return;
         }
 
@@ -622,7 +628,7 @@ final class BlockAssets {
      * @param string[] $names Block names.
      * @return bool
      */
-    private function post_has_any_block(\WP_Post $post, array $names): bool {
+    private function post_has_any_block( \WP_Post $post, array $names ): bool {
         foreach ($names as $name) {
             if (has_block($name, $post)) {
                 return true;

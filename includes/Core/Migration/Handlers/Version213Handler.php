@@ -15,7 +15,7 @@ use HvnlyNab\Core\Migration\Interfaces\MigrationInterface;
 use HvnlyNab\Core\Migration\Traits\MigrationTrait;
 
 // Prevent direct access.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -67,12 +67,12 @@ class Version213Handler implements MigrationInterface {
     public function is_needed(): bool {
         $sections = get_option(self::PROPERTY_BUILDER_KEY, array());
 
-        if (empty($sections) || !is_array($sections)) {
+        if (empty($sections) || ! is_array($sections)) {
             return false;
         }
 
         foreach ($sections as $section) {
-            if (!isset($section['fields']) || !is_array($section['fields'])) {
+            if ( ! isset($section['fields']) || ! is_array($section['fields'])) {
                 continue;
             }
 
@@ -104,23 +104,23 @@ class Version213Handler implements MigrationInterface {
 
         $sections = get_option(self::PROPERTY_BUILDER_KEY, array());
 
-        if (empty($sections) || !is_array($sections)) {
+        if (empty($sections) || ! is_array($sections)) {
             $this->log('No sections found to migrate');
             return true;
         }
 
-        $updated = false;
+        $updated          = false;
         $conversion_count = 0;
 
         foreach ($sections as &$section) {
-            if (!isset($section['fields']) || !is_array($section['fields'])) {
+            if ( ! isset($section['fields']) || ! is_array($section['fields'])) {
                 continue;
             }
 
             foreach ($section['fields'] as &$field) {
                 if ($this->is_price_field($field) && $this->is_text_type($field)) {
                     $field['type'] = 'price_label';
-                    $updated = true;
+                    $updated       = true;
                     $conversion_count++;
                     $this->log(sprintf('Converted price field in section: %s', $section['id'] ?? 'unknown'));
                 }
@@ -174,18 +174,18 @@ class Version213Handler implements MigrationInterface {
         // If no backup, try to convert back manually.
         $sections = get_option(self::PROPERTY_BUILDER_KEY, array());
 
-        if (!empty($sections) && is_array($sections)) {
+        if ( ! empty($sections) && is_array($sections)) {
             $updated = false;
 
             foreach ($sections as &$section) {
-                if (!isset($section['fields']) || !is_array($section['fields'])) {
+                if ( ! isset($section['fields']) || ! is_array($section['fields'])) {
                     continue;
                 }
 
                 foreach ($section['fields'] as &$field) {
                     if ($this->is_price_field($field) && isset($field['type']) && $field['type'] === 'price_label') {
                         $field['type'] = 'text';
-                        $updated = true;
+                        $updated       = true;
                     }
                 }
             }
@@ -209,7 +209,7 @@ class Version213Handler implements MigrationInterface {
      */
     private function find_latest_backup() {
         // Try to get cached backup list first.
-        $cache_key = 'hvnly_backup_list_2.1.3';
+        $cache_key   = 'hvnly_backup_list_2.1.3';
         $backup_list = wp_cache_get($cache_key);
 
         if (false === $backup_list) {
@@ -222,9 +222,9 @@ class Version213Handler implements MigrationInterface {
                     if (strpos($option_name, '_hvnly_backup_2.1.3_hvnly_property_builder.sections_') === 0) {
                         $backup_data = maybe_unserialize($option_value);
                         if (is_array($backup_data) && isset($backup_data['timestamp'])) {
-                            $backup_list[$option_name] = strtotime($backup_data['timestamp']);
+                            $backup_list[ $option_name ] = strtotime($backup_data['timestamp']);
                         } else {
-                            $backup_list[$option_name] = 0;
+                            $backup_list[ $option_name ] = 0;
                         }
                     }
                 }
@@ -252,9 +252,9 @@ class Version213Handler implements MigrationInterface {
      * @param array $field Field configuration.
      * @return bool
      */
-    private function is_price_field(array $field): bool {
+    private function is_price_field( array $field ): bool {
         // Check by standard ID.
-        if (isset($field['id']) && in_array($field['id'], array('_hvnly_property_price', 'property_price'), true)) {
+        if (isset($field['id']) && in_array($field['id'], array( '_hvnly_property_price', 'property_price' ), true)) {
             return true;
         }
 
@@ -273,7 +273,7 @@ class Version213Handler implements MigrationInterface {
      * @param array $field Field configuration.
      * @return bool
      */
-    private function is_text_type(array $field): bool {
+    private function is_text_type( array $field ): bool {
         return isset($field['type']) && $field['type'] === 'text';
     }
 }

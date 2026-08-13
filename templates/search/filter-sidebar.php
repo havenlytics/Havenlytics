@@ -216,7 +216,7 @@ $hvnly_property_ids = hvnly_filter_sidebar_get_unique_property_ids();
     <!-- Filter Header -->
     <div class="hvnly-property-filter-header">
         <h3 class="hvnly-property-filter-title"><?php esc_html_e( 'Filters', 'havenlytics' ); ?></h3>
-        <button type="button" class="hvnly-property-reset-filters-btn"
+        <button type="button" class="hvnly-ui-control hvnly-property-reset-filters-btn"
             style="font-size: 0.875rem; color: var(--hvnly-brand-primary);">
             <?php esc_html_e( 'Clear All', 'havenlytics' ); ?>
         </button>

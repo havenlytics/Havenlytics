@@ -15,7 +15,7 @@
 namespace HvnlyNab\Frontend\Shortcodes;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -31,19 +31,19 @@ class CacheInvalidation {
      */
     public function __construct() {
         // Clear caches when properties are saved
-        add_action('save_post_hvnly_property', [$this, 'on_property_save'], 10, 3);
-        add_action('delete_post', [$this, 'on_property_delete']);
-        
+        add_action('save_post_hvnly_property', array( $this, 'on_property_save' ), 10, 3);
+        add_action('delete_post', array( $this, 'on_property_delete' ));
+
         // Clear caches when terms are updated
-        add_action('created_term', [$this, 'on_term_update'], 10, 3);
-        add_action('edited_term', [$this, 'on_term_update'], 10, 3);
-        add_action('delete_term', [$this, 'on_term_update'], 10, 3);
-        
+        add_action('created_term', array( $this, 'on_term_update' ), 10, 3);
+        add_action('edited_term', array( $this, 'on_term_update' ), 10, 3);
+        add_action('delete_term', array( $this, 'on_term_update' ), 10, 3);
+
         // Clear caches when plugin settings change
-        add_action('update_option', [$this, 'on_option_update'], 10, 3);
-        
+        add_action('update_option', array( $this, 'on_option_update' ), 10, 3);
+
         // Add manual cache clearing action
-        add_action('hvnly_clear_shortcode_caches', [$this, 'clear_all_shortcode_caches']);
+        add_action('hvnly_clear_shortcode_caches', array( $this, 'clear_all_shortcode_caches' ));
     }
 
     /**
@@ -53,7 +53,7 @@ class CacheInvalidation {
      * @param \WP_Post $post    Post object
      * @param bool    $update  Whether this is an update
      */
-    public function on_property_save($post_id, $post, $update) {
+    public function on_property_save( $post_id, $post, $update ) {
         // Prevent infinite loops
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
@@ -73,7 +73,7 @@ class CacheInvalidation {
      *
      * @param int $post_id Post ID
      */
-    public function on_property_delete($post_id) {
+    public function on_property_delete( $post_id ) {
         if (get_post_type($post_id) !== 'hvnly_property') {
             return;
         }
@@ -88,9 +88,9 @@ class CacheInvalidation {
      * @param int    $tt_id    Term taxonomy ID
      * @param string $taxonomy Taxonomy name
      */
-    public function on_term_update($term_id, $tt_id, $taxonomy) {
+    public function on_term_update( $term_id, $tt_id, $taxonomy ) {
         // Only care about property taxonomies
-        $property_taxonomies = [
+        $property_taxonomies = array(
             'hvnly_prop_types',
             'hvnly_prop_locations',
             'hvnly_prop_depts',
@@ -98,7 +98,7 @@ class CacheInvalidation {
             'hvnly_prop_features',
             'hvnly_prop_badges',
             'hvnly_prop_tags',
-        ];
+        );
 
         if (in_array($taxonomy, $property_taxonomies, true)) {
             $this->clear_all_shortcode_caches();
@@ -112,15 +112,15 @@ class CacheInvalidation {
      * @param mixed  $old_value Old value
      * @param mixed  $new_value New value
      */
-    public function on_option_update($option, $old_value, $new_value) {
+    public function on_option_update( $option, $old_value, $new_value ) {
         // Options that should trigger cache clearing
-        $relevant_options = [
+        $relevant_options = array(
             'posts_per_page',
             'hvnly_properties_per_page',
             'hvnly_default_orderby',
             'hvnly_currency_symbol',
             'hvnly_currency_position',
-        ];
+        );
 
         if (in_array($option, $relevant_options, true)) {
             $this->clear_all_shortcode_caches();

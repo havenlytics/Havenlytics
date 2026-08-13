@@ -133,7 +133,7 @@ final class UrlRewriter {
 			if ( null !== $stub ) {
 				$url = $this->resolve_url( $stub );
 				if ( '' === $url ) {
-					$key = is_array( $stub ) ? (string) ( $stub['export_key'] ?? '' ) : '';
+					$key       = is_array( $stub ) ? (string) ( $stub['export_key'] ?? '' ) : '';
 					$missing[] = $key;
 				} else {
 					$item['url'] = $url;

@@ -54,6 +54,31 @@ final class WorkspaceAssets {
 		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue' ), 20 );
 		add_action( 'hvnly_workspace_enqueue_assets', array( $this, 'enqueue' ) );
 		add_filter( 'hvnly_workspace_should_enqueue', array( $this, 'filter_should_enqueue' ), 5 );
+		add_action( 'wp_head', array( $this, 'print_branding_favicon' ), 4 );
+	}
+
+	/**
+	 * First-paint Workspace favicon before SPA boot.
+	 *
+	 * @return void
+	 */
+	public function print_branding_favicon(): void {
+		if ( ! $this->should_enqueue() ) {
+			return;
+		}
+
+		$branding = WorkspaceBranding::get_public( is_user_logged_in() ? get_current_user_id() : 0 );
+		$url      = isset( $branding['faviconUrl'] ) ? (string) $branding['faviconUrl'] : '';
+		if ( '' === $url ) {
+			return;
+		}
+
+		$type = false !== stripos( $url, '.ico' ) ? 'image/x-icon' : 'image/png';
+		printf(
+			'<link rel="icon" id="hvnly-ws-favicon" type="%1$s" href="%2$s" />' . "\n",
+			esc_attr( $type ),
+			esc_url( $url )
+		);
 	}
 
 	/**
@@ -174,10 +199,17 @@ final class WorkspaceAssets {
 		}
 
 		if ( $style_rel !== '' ) {
+			/*
+			 * Core design tokens must load before Workspace CSS.
+			 * DynamicStyleGenerator injects Brand Primary onto this handle;
+			 * Workspace must never redefine --hvnly-brand-* itself.
+			 */
+			$this->ensure_core_design_tokens_registered();
+
 			wp_register_style(
 				WorkspaceConstants::STYLE_HANDLE,
 				$build_url . $style_rel,
-				array(),
+				array( 'hvnly-frontend-default' ),
 				$version
 			);
 			wp_style_add_data( WorkspaceConstants::STYLE_HANDLE, 'rtl', 'replace' );
@@ -208,6 +240,32 @@ final class WorkspaceAssets {
 	}
 
 	/**
+	 * Ensure Core frontend design-token stylesheet is registered.
+	 *
+	 * Workspace CSS depends on `hvnly-frontend-default` so Brand Primary from
+	 * Settings (DynamicStyleGenerator inline on that handle) cascades into the SPA.
+	 * Usually Frontend\Assets already registered it; this is a hard guarantee.
+	 *
+	 * @return void
+	 */
+	private function ensure_core_design_tokens_registered(): void {
+		if ( wp_style_is( 'hvnly-frontend-default', 'registered' ) || wp_style_is( 'hvnly-frontend-default', 'enqueued' ) ) {
+			return;
+		}
+
+		if ( ! defined( 'HVNLYNAB_ASSETS_URL' ) || ! defined( 'HVNLYNAB_VERSION' ) ) {
+			return;
+		}
+
+		wp_register_style(
+			'hvnly-frontend-default',
+			HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-default.css',
+			array(),
+			HVNLYNAB_VERSION
+		);
+	}
+
+	/**
 	 * Enqueue registered Workspace assets and localize boot config.
 	 *
 	 * When Workspace is disabled ({@see WorkspaceAvailability}), only CSS is
@@ -231,11 +289,9 @@ final class WorkspaceAssets {
 			wp_enqueue_style( WorkspaceConstants::STYLE_HANDLE );
 		}
 
-		// Toast styles load even on the unavailable page: the SPA is not
-		// mounted there, but the auth surfaces below still raise toasts.
+		// Toast styles + button paint from Core components.
 		if ( class_exists( '\HvnlyNab\Favorites\FavoritesAssets' ) ) {
-			\HvnlyNab\Favorites\FavoritesAssets::register_toast_assets();
-			wp_enqueue_style( \HvnlyNab\Favorites\FavoritesAssets::TOAST_STYLE_HANDLE );
+			\HvnlyNab\Favorites\FavoritesAssets::enqueue_toast_assets();
 		}
 
 		// Hard kill switch: no SPA / media / password meter while offline.
@@ -331,6 +387,10 @@ final class WorkspaceAssets {
 				'developerLabel'   => __( 'Developer', 'havenlytics' ),
 				'comingSoon'       => __( 'Coming Soon', 'havenlytics' ),
 				'comingInPro'      => __( 'Coming in Pro', 'havenlytics' ),
+				'proLicenseRequired' => __( 'Requires an active Pro license', 'havenlytics' ),
+				'brandingProHint'  => __( 'Customize Workspace branding for your brokerage. Changes apply live; click Save settings to persist.', 'havenlytics' ),
+				'brandingLockedHint' => __( 'Customize Workspace branding for your brokerage. These controls unlock with Havenlytics Pro.', 'havenlytics' ),
+				'brandingReadOnlyHint' => __( 'You can view Workspace branding, but you do not have permission to change it.', 'havenlytics' ),
 				'readyTitle'       => __( 'Workspace Ready', 'havenlytics' ),
 				'readySubtitle'    => __( 'Shell foundation is mounted. Feature modules arrive in later sprints.', 'havenlytics' ),
 				'toggleSidebar'    => __( 'Toggle sidebar', 'havenlytics' ),
@@ -350,9 +410,20 @@ final class WorkspaceAssets {
 			'user'          => array(
 				'isLoggedIn' => is_user_logged_in(),
 			),
+			'pro'           => WorkspaceProCapabilities::localize_payload(),
+			'branding'      => WorkspaceBranding::get_public( is_user_logged_in() ? get_current_user_id() : 0 ),
 		);
 
-		$unavailable = WorkspaceAvailability::unavailable_copy();
+		// Prefer custom dashboard name for shell boot i18n.
+		$custom_name = trim( (string) ( $data['branding']['dashboardName'] ?? '' ) );
+		if ( '' !== $custom_name ) {
+			$data['i18n']['brandName'] = $custom_name;
+		}
+		if ( ! empty( $data['branding']['dashboardLogoUrl'] ) ) {
+			$data['assets']['iconUrl'] = (string) $data['branding']['dashboardLogoUrl'];
+		}
+
+		$unavailable                                      = WorkspaceAvailability::unavailable_copy();
 		$data['i18n']['authWorkspaceUnavailableTitle']    = $unavailable['title'];
 		$data['i18n']['authWorkspaceUnavailableSubtitle'] = $unavailable['description'];
 		$data['i18n']['authLinkHome']                     = $unavailable['home_label'];

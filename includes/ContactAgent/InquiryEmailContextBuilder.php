@@ -97,10 +97,10 @@ final class InquiryEmailContextBuilder {
 	public static function build_for_reply( int $inquiry_id, array $inquiry, array $agent, string $reply_message, \WP_User $admin_user ): array {
 		$context = self::build( $inquiry_id, $inquiry, $agent );
 
-		$context['reply_message']     = sanitize_textarea_field( $reply_message );
-		$context['admin_name']        = sanitize_text_field( $admin_user->display_name );
-		$context['admin_email']       = sanitize_email( $admin_user->user_email );
-		$context['original_message']  = (string) ( $context['message'] ?? '' );
+		$context['reply_message']    = sanitize_textarea_field( $reply_message );
+		$context['admin_name']       = sanitize_text_field( $admin_user->display_name );
+		$context['admin_email']      = sanitize_email( $admin_user->user_email );
+		$context['original_message'] = (string) ( $context['message'] ?? '' );
 
 		/**
 		 * Filter Contact Agent admin reply email context.
@@ -232,13 +232,13 @@ final class InquiryEmailContextBuilder {
 			$location = implode( ', ', wp_list_pluck( $terms, 'name' ) );
 		}
 
-		$status = '';
+		$status       = '';
 		$status_terms = get_the_terms( $property_id, 'hvnly_prop_status' );
 		if ( $status_terms && ! is_wp_error( $status_terms ) ) {
 			$status = implode( ', ', wp_list_pluck( $status_terms, 'name' ) );
 		}
 
-		$type = '';
+		$type       = '';
 		$type_terms = get_the_terms( $property_id, 'hvnly_prop_types' );
 		if ( $type_terms && ! is_wp_error( $type_terms ) ) {
 			$type = implode( ', ', wp_list_pluck( $type_terms, 'name' ) );

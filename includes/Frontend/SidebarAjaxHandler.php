@@ -12,7 +12,7 @@
 namespace HvnlyNab\Frontend;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -21,8 +21,8 @@ if (!defined('ABSPATH')) {
  *
  * @since 2.0.0
  */
-class SidebarAjaxHandler
-{
+class SidebarAjaxHandler {
+
     /**
      * Sidebar search filters ViewModel
      *
@@ -33,22 +33,21 @@ class SidebarAjaxHandler
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->sidebar_filters = new ViewModels\SidebarSearchFilters();
 
-        add_action('wp_ajax_hvnly_sidebar_filter_search', array($this, 'sidebar_filter_search'));
-        add_action('wp_ajax_nopriv_hvnly_sidebar_filter_search', array($this, 'sidebar_filter_search'));
+        add_action('wp_ajax_hvnly_sidebar_filter_search', array( $this, 'sidebar_filter_search' ));
+        add_action('wp_ajax_nopriv_hvnly_sidebar_filter_search', array( $this, 'sidebar_filter_search' ));
 
         // Cache invalidation hooks for sidebar
-        add_action('save_post_hvnly_property', array($this, 'clear_sidebar_cache'));
-        add_action('delete_post', array($this, 'clear_sidebar_cache'), 10, 2);
-        add_action('before_delete_post', array($this, 'clear_sidebar_cache'), 10, 2);
-        add_action('hvnly_cleared_property_cache', array($this, 'clear_sidebar_cache_on_event'));
-        add_action('set_object_terms', array($this, 'clear_sidebar_cache_on_term_assignment'), 10, 6);
-        add_action('created_term', array($this, 'clear_sidebar_terms_cache'));
-        add_action('edited_term', array($this, 'clear_sidebar_terms_cache'));
-        add_action('delete_term', array($this, 'clear_sidebar_terms_cache'));
+        add_action('save_post_hvnly_property', array( $this, 'clear_sidebar_cache' ));
+        add_action('delete_post', array( $this, 'clear_sidebar_cache' ), 10, 2);
+        add_action('before_delete_post', array( $this, 'clear_sidebar_cache' ), 10, 2);
+        add_action('hvnly_cleared_property_cache', array( $this, 'clear_sidebar_cache_on_event' ));
+        add_action('set_object_terms', array( $this, 'clear_sidebar_cache_on_term_assignment' ), 10, 6);
+        add_action('created_term', array( $this, 'clear_sidebar_terms_cache' ));
+        add_action('edited_term', array( $this, 'clear_sidebar_terms_cache' ));
+        add_action('delete_term', array( $this, 'clear_sidebar_terms_cache' ));
     }
 
     /**
@@ -59,20 +58,20 @@ class SidebarAjaxHandler
     public function sidebar_filter_search() {
         // Unslash and sanitize nonce
         $nonce_raw = filter_input(INPUT_POST, 'nonce', FILTER_UNSAFE_RAW);
-        $nonce = $nonce_raw ? sanitize_text_field($nonce_raw) : '';
+        $nonce     = $nonce_raw ? sanitize_text_field($nonce_raw) : '';
 
-        if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {  
+        if ( ! wp_verify_nonce($nonce, 'hvnly_ajax_request')) {
             wp_send_json_error(__( 'Security check failed', 'havenlytics' ));
         }
 
         try {
             // Sanitize page and per_page inputs
-            $page = absint(filter_input(INPUT_POST, 'page', FILTER_VALIDATE_INT) ?: 1);
+            $page     = absint(filter_input(INPUT_POST, 'page', FILTER_VALIDATE_INT) ?: 1);
             $per_page = absint(filter_input(INPUT_POST, 'per_page', FILTER_VALIDATE_INT) ?: get_option('posts_per_page', 12));
 
             // Build query args specifically for sidebar filters
             $post_data_raw = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW) ?: array();
-            $post_data = array_map('sanitize_text_field', $post_data_raw); // sanitize all POST fields
+            $post_data     = array_map('sanitize_text_field', $post_data_raw); // sanitize all POST fields
 
             $args = $this->sidebar_filters->build_sidebar_query_args($post_data, $page, $per_page);
 
@@ -90,7 +89,7 @@ class SidebarAjaxHandler
             }
 
             // No cache found - perform fresh query
-            $query_started = microtime(true);
+            $query_started    = microtime(true);
             $properties_query = new \WP_Query($args);
             if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine() && method_exists(HVNLY_NAB()->engine(), 'track_query_executed')) {
                 HVNLY_NAB()->engine()->track_query_executed(microtime(true) - $query_started);
@@ -126,13 +125,12 @@ class SidebarAjaxHandler
      * @param array     $filters Current filters
      * @return array
      */
-    private function generate_sidebar_search_response($query, $page, $per_page, $filters)
-    {
+    private function generate_sidebar_search_response( $query, $page, $per_page, $filters ) {
         global $wp_query;
 
         // Set up global query for template compatibility
         $original_query = $wp_query;
-        $wp_query = $query;
+        $wp_query       = $query;
 
         ob_start();
 
@@ -162,10 +160,10 @@ class SidebarAjaxHandler
         $results_count_html = ob_get_clean();
 
         // Calculate start and end for display
-        $start = (($page - 1) * $per_page) + 1;
-        $end = min($page * $per_page, $query->found_posts);
+        $start = ( ( $page - 1 ) * $per_page ) + 1;
+        $end   = min($page * $per_page, $query->found_posts);
 
-        return [
+        return array(
             'html' => $html,
             'pagination_html' => $pagination_html,
             'results_count_html' => $results_count_html,
@@ -176,7 +174,7 @@ class SidebarAjaxHandler
             'start' => $start,
             'end' => $end,
             'loaded_count' => min($page * $per_page, $query->found_posts),
-        ];
+        );
     }
 
     /**
@@ -186,8 +184,7 @@ class SidebarAjaxHandler
      * @param int       $current_page Current page number
      * @return void
      */
-    private function generate_pagination_template($query, $current_page)
-    {
+    private function generate_pagination_template( $query, $current_page ) {
         if (function_exists('hvnly_render_ajax_pagination_fragment')) {
             hvnly_render_ajax_pagination_fragment($query, $current_page, array(
                 'pass_pagination_type' => true,
@@ -220,8 +217,7 @@ class SidebarAjaxHandler
      * @param array     $filters Current filters
      * @return void
      */
-    private function generate_results_count_template($query, $current_page, $per_page, $filters)
-    {
+    private function generate_results_count_template( $query, $current_page, $per_page, $filters ) {
         if (function_exists('hvnly_render_ajax_results_count_fragment')) {
             hvnly_render_ajax_results_count_fragment($query, $current_page, $per_page, $filters);
             return;
@@ -232,8 +228,8 @@ class SidebarAjaxHandler
         $original_query   = $wp_query;
         $wp_query         = $query;
         $total_properties = (int) $query->found_posts;
-        $start            = (( (int) $current_page - 1 ) * (int) $per_page) + 1;
-        $end              = min((int) $current_page * (int) $per_page, $total_properties);
+        $start            = ( ( (int) $current_page - 1 ) * (int) $per_page ) + 1;
+        $end              = min( (int) $current_page * (int) $per_page, $total_properties);
         $current_filters  = function_exists('hvnly_build_ajax_result_count_filters')
             ? hvnly_build_ajax_result_count_filters($filters)
             : array();
@@ -261,13 +257,12 @@ class SidebarAjaxHandler
      * @param \WP_Post|null $post    Post object (required for delete hooks).
      * @return void
      */
-    public function clear_sidebar_cache($post_id, $post = null)
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    public function clear_sidebar_cache( $post_id, $post = null ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
-        if (!$this->is_hvnly_property($post_id, $post)) {
+        if ( ! $this->is_hvnly_property($post_id, $post)) {
             return;
         }
 
@@ -281,13 +276,12 @@ class SidebarAjaxHandler
      * @param int $post_id Post ID.
      * @return void
      */
-    public function clear_sidebar_cache_on_event($post_id)
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    public function clear_sidebar_cache_on_event( $post_id ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
-        if (!$this->is_hvnly_property($post_id)) {
+        if ( ! $this->is_hvnly_property($post_id)) {
             return;
         }
 
@@ -305,11 +299,10 @@ class SidebarAjaxHandler
      * @param bool   $append     Whether terms were appended.
      * @param array  $old_tt_ids Previous term taxonomy IDs.
      */
-    public function clear_sidebar_cache_on_term_assignment($object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids)
-    {
+    public function clear_sidebar_cache_on_term_assignment( $object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids ) {
         unset($terms, $tt_ids, $append, $old_tt_ids);
 
-        if (!$this->is_property_listing_taxonomy($taxonomy) || !$this->is_hvnly_property($object_id)) {
+        if ( ! $this->is_property_listing_taxonomy($taxonomy) || ! $this->is_hvnly_property($object_id)) {
             return;
         }
 
@@ -320,8 +313,7 @@ class SidebarAjaxHandler
      * @param string $taxonomy Taxonomy slug.
      * @return bool
      */
-    private function is_property_listing_taxonomy($taxonomy)
-    {
+    private function is_property_listing_taxonomy( $taxonomy ) {
         static $taxonomies = array(
             'hvnly_prop_types',
             'hvnly_prop_depts',
@@ -334,7 +326,7 @@ class SidebarAjaxHandler
             'amenities',
         );
 
-        return in_array((string) $taxonomy, $taxonomies, true);
+        return in_array( (string) $taxonomy, $taxonomies, true);
     }
 
     /**
@@ -342,8 +334,7 @@ class SidebarAjaxHandler
      * @param \WP_Post|null $post    Optional post object.
      * @return bool
      */
-    private function is_hvnly_property($post_id, $post = null)
-    {
+    private function is_hvnly_property( $post_id, $post = null ) {
         if ($post instanceof \WP_Post) {
             return $post->post_type === 'hvnly_property';
         }
@@ -357,14 +348,13 @@ class SidebarAjaxHandler
      * @param int $term_id Term ID
      * @return void
      */
-    public function clear_sidebar_terms_cache($term_id)
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    public function clear_sidebar_terms_cache( $term_id ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
         $term = get_term($term_id);
-        if (!$term || is_wp_error($term)) {
+        if ( ! $term || is_wp_error($term)) {
             return;
         }
 

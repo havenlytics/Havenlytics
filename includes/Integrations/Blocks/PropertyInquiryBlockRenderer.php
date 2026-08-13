@@ -16,7 +16,7 @@
 namespace HvnlyNab\Integrations\Blocks;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -40,43 +40,43 @@ final class PropertyInquiryBlockRenderer {
      * @param object $block      Block instance (unused).
      * @return string
      */
-    public static function render($attributes = [], string $content = '', $block = null): string {
+    public static function render( $attributes = array(), string $content = '', $block = null ): string {
         unset($content, $block);
 
-        if (!function_exists('hvnly_get_template_part')) {
+        if ( ! function_exists('hvnly_get_template_part')) {
             return '';
         }
 
-        $attributes = is_array($attributes) ? $attributes : [];
+        $attributes = is_array($attributes) ? $attributes : array();
 
         $is_editor = defined('REST_REQUEST') && REST_REQUEST;
 
-        $enabled = !function_exists('hvnly_is_contact_agent_enabled') || hvnly_is_contact_agent_enabled();
-        if (!$enabled) {
+        $enabled = ! function_exists('hvnly_is_contact_agent_enabled') || hvnly_is_contact_agent_enabled();
+        if ( ! $enabled) {
             return $is_editor ? self::notice(__('The Contact Agent system is disabled in Havenlytics settings, so this inquiry form will not appear on the frontend.', 'havenlytics')) : '';
         }
 
         $property_source = self::choice(
-            (string) ($attributes['propertySource'] ?? 'current'),
-            ['current', 'selected', 'multiple', 'manual', 'none'],
+            (string) ( $attributes['propertySource'] ?? 'current' ),
+            array( 'current', 'selected', 'multiple', 'manual', 'none' ),
             'current'
         );
-        $agent_source = self::choice(
-            (string) ($attributes['agentSource'] ?? 'auto'),
-            ['auto', 'selected', 'multiple', 'current', 'manual', 'none'],
+        $agent_source    = self::choice(
+            (string) ( $attributes['agentSource'] ?? 'auto' ),
+            array( 'auto', 'selected', 'multiple', 'current', 'manual', 'none' ),
             'auto'
         );
-        $layout = self::choice(
-            (string) ($attributes['layout'] ?? 'vertical'),
-            ['vertical', 'horizontal', 'two-column', 'compact', 'card', 'minimal', 'floating'],
+        $layout          = self::choice(
+            (string) ( $attributes['layout'] ?? 'vertical' ),
+            array( 'vertical', 'horizontal', 'two-column', 'compact', 'card', 'minimal', 'floating' ),
             'vertical'
         );
 
         $property_choices = self::resolve_property_choices($attributes, $property_source, $is_editor);
-        $property_id      = !empty($property_choices) ? (int) $property_choices[0]['id'] : 0;
+        $property_id      = ! empty($property_choices) ? (int) $property_choices[0]['id'] : 0;
 
         if ($property_id <= 0) {
-            if ($is_editor || (function_exists('current_user_can') && current_user_can('edit_posts'))) {
+            if ($is_editor || ( function_exists('current_user_can') && current_user_can('edit_posts') )) {
                 return self::notice(__('Select or set a property for this inquiry form (the Havenlytics inquiry system routes every message to a property’s agent).', 'havenlytics'));
             }
             return '';
@@ -85,77 +85,77 @@ final class PropertyInquiryBlockRenderer {
         $agents = self::resolve_agents(
             $property_id,
             $agent_source,
-            (int) ($attributes['agentId'] ?? 0),
-            self::int_list($attributes['agentIds'] ?? [])
+            (int) ( $attributes['agentId'] ?? 0 ),
+            self::int_list($attributes['agentIds'] ?? array())
         );
 
-        $property_title = in_array($property_source, ['none'], true)
+        $property_title = in_array($property_source, array( 'none' ), true)
             ? ''
             : (string) get_the_title($property_id);
 
-        $show_title   = !isset($attributes['showTitle']) || !empty($attributes['showTitle']);
-        $form_title   = sanitize_text_field((string) ($attributes['formTitle'] ?? __('Send an Inquiry', 'havenlytics')));
-        $show_desc    = !empty($attributes['showDescription']);
-        $form_desc    = sanitize_text_field((string) ($attributes['formDescription'] ?? ''));
-        $form_width   = max(0, (int) ($attributes['formWidth'] ?? 0));
-        $show_consent = !empty($attributes['showConsent']);
-        $consent_text = sanitize_text_field((string) ($attributes['consentText'] ?? ''));
+        $show_title   = ! isset($attributes['showTitle']) || ! empty($attributes['showTitle']);
+        $form_title   = sanitize_text_field( (string) ( $attributes['formTitle'] ?? __('Send an Inquiry', 'havenlytics') ));
+        $show_desc    = ! empty($attributes['showDescription']);
+        $form_desc    = sanitize_text_field( (string) ( $attributes['formDescription'] ?? '' ));
+        $form_width   = max(0, (int) ( $attributes['formWidth'] ?? 0 ));
+        $show_consent = ! empty($attributes['showConsent']);
+        $consent_text = sanitize_text_field( (string) ( $attributes['consentText'] ?? '' ));
 
-        $show_image   = !empty($attributes['showPropertyImage']);
-        $show_price   = !empty($attributes['showPropertyPrice']);
-        $show_address = !empty($attributes['showPropertyAddress']);
-        $show_agent   = !empty($attributes['showAgentCard']);
+        $show_image   = ! empty($attributes['showPropertyImage']);
+        $show_price   = ! empty($attributes['showPropertyPrice']);
+        $show_address = ! empty($attributes['showPropertyAddress']);
+        $show_agent   = ! empty($attributes['showAgentCard']);
 
-        $show_name    = !isset($attributes['showName']) || !empty($attributes['showName']);
-        $show_email   = !isset($attributes['showEmail']) || !empty($attributes['showEmail']);
-        $show_phone   = !isset($attributes['showPhone']) || !empty($attributes['showPhone']);
-        $show_message = !isset($attributes['showMessage']) || !empty($attributes['showMessage']);
+        $show_name    = ! isset($attributes['showName']) || ! empty($attributes['showName']);
+        $show_email   = ! isset($attributes['showEmail']) || ! empty($attributes['showEmail']);
+        $show_phone   = ! isset($attributes['showPhone']) || ! empty($attributes['showPhone']);
+        $show_message = ! isset($attributes['showMessage']) || ! empty($attributes['showMessage']);
 
-        $button_text  = sanitize_text_field((string) ($attributes['buttonText'] ?? ''));
-        $button_width = self::choice((string) ($attributes['buttonWidth'] ?? 'auto'), ['auto', 'full'], 'auto');
-        $button_align = self::choice((string) ($attributes['buttonAlign'] ?? 'left'), ['left', 'center', 'right'], 'left');
-        $button_icon  = self::choice((string) ($attributes['buttonIcon'] ?? 'none'), ['none', 'send', 'envelope', 'check'], 'none');
+        $button_text  = sanitize_text_field( (string) ( $attributes['buttonText'] ?? '' ));
+        $button_width = self::choice( (string) ( $attributes['buttonWidth'] ?? 'auto' ), array( 'auto', 'full' ), 'auto');
+        $button_align = self::choice( (string) ( $attributes['buttonAlign'] ?? 'left' ), array( 'left', 'center', 'right' ), 'left');
+        $button_icon  = self::choice( (string) ( $attributes['buttonIcon'] ?? 'none' ), array( 'none', 'send', 'envelope', 'check' ), 'none');
 
-        $show_loading = !isset($attributes['showLoadingState']) || !empty($attributes['showLoadingState']);
-        $show_success = !isset($attributes['showSuccessState']) || !empty($attributes['showSuccessState']);
-        $success_msg  = sanitize_text_field((string) ($attributes['successMessage'] ?? ''));
+        $show_loading = ! isset($attributes['showLoadingState']) || ! empty($attributes['showLoadingState']);
+        $show_success = ! isset($attributes['showSuccessState']) || ! empty($attributes['showSuccessState']);
+        $success_msg  = sanitize_text_field( (string) ( $attributes['successMessage'] ?? '' ));
         // Match Authentication block: allow only validated (typically same-host) redirects.
-        $success_url  = wp_validate_redirect(
-            esc_url_raw(trim((string) ($attributes['successRedirectUrl'] ?? ''))),
+        $success_url = wp_validate_redirect(
+            esc_url_raw(trim( (string) ( $attributes['successRedirectUrl'] ?? '' ))),
             ''
         );
 
         self::enqueue_contact_agent_assets($property_id);
 
-        $wrapper_classes = [
+        $wrapper_classes = array(
             'hvnly-block-inquiry',
             'hvnly-block-inquiry--' . $layout,
             'hvnly-block-inquiry--btn-' . $button_width,
             'hvnly-block-inquiry--btn-align-' . $button_align,
-        ];
+        );
 
-        if (!$show_name) {
+        if ( ! $show_name) {
             $wrapper_classes[] = 'hvnly-block-inquiry--hide-name';
         }
-        if (!$show_email) {
+        if ( ! $show_email) {
             $wrapper_classes[] = 'hvnly-block-inquiry--hide-email';
         }
-        if (!$show_phone) {
+        if ( ! $show_phone) {
             $wrapper_classes[] = 'hvnly-block-inquiry--hide-phone';
         }
-        if (!$show_message) {
+        if ( ! $show_message) {
             $wrapper_classes[] = 'hvnly-block-inquiry--hide-message';
         }
-        if (!$show_loading) {
+        if ( ! $show_loading) {
             $wrapper_classes[] = 'hvnly-block-inquiry--no-loading';
         }
-        if (!$show_success) {
+        if ( ! $show_success) {
             $wrapper_classes[] = 'hvnly-block-inquiry--no-success';
         }
 
         $wrapper_style = $form_width > 0 ? 'max-width:' . $form_width . 'px;' : '';
 
-        $extra_attrs = [];
+        $extra_attrs = array();
         if ('' !== $success_msg) {
             $extra_attrs['data-hvnly-success-message'] = $success_msg;
         }
@@ -165,17 +165,17 @@ final class PropertyInquiryBlockRenderer {
 
         $wrapper = function_exists('get_block_wrapper_attributes')
             ? get_block_wrapper_attributes(array_merge(
-                array_filter([
+                array_filter(array(
                     'class' => implode(' ', $wrapper_classes),
                     'style' => $wrapper_style,
-                ]),
+                )),
                 $extra_attrs
             ))
             : 'class="' . esc_attr(implode(' ', $wrapper_classes)) . '"';
 
         $header = self::build_property_header($property_id, $show_image, $show_price, $show_address);
 
-        $template_args = [
+        $template_args = array(
             'wrapper'            => $wrapper,
             'layout'             => $layout,
             'show_title'         => $show_title,
@@ -190,13 +190,13 @@ final class PropertyInquiryBlockRenderer {
             'show_agent_card'    => $show_agent,
             'button_text'        => $button_text,
             'button_icon'        => $button_icon,
-            'form_args'          => [
+            'form_args'          => array(
                 'property_id'    => $property_id,
                 'property_title' => $property_title,
                 'agents'         => $agents,
-                'agent'          => !empty($agents) ? $agents[0] : [],
-            ],
-        ];
+                'agent'          => ! empty($agents) ? $agents[0] : array(),
+            ),
+        );
 
         ob_start();
         hvnly_get_template_part('blocks/property-inquiry', null, $template_args);
@@ -213,15 +213,15 @@ final class PropertyInquiryBlockRenderer {
      * @param bool $show_address Show address.
      * @return array<string, mixed>
      */
-    private static function build_property_header(int $property_id, bool $show_image, bool $show_price, bool $show_address): array {
-        $header = [
+    private static function build_property_header( int $property_id, bool $show_image, bool $show_price, bool $show_address ): array {
+        $header = array(
             'show'    => false,
             'image'   => '',
             'title'   => (string) get_the_title($property_id),
             'price'   => '',
             'address' => '',
             'url'     => (string) get_permalink($property_id),
-        ];
+        );
 
         if ($show_image) {
             $thumb = get_the_post_thumbnail_url($property_id, 'medium_large');
@@ -245,8 +245,8 @@ final class PropertyInquiryBlockRenderer {
         if ($show_address) {
             $line1 = (string) get_post_meta($property_id, '_hvnly_property_address_line_1', true);
             $city  = (string) get_post_meta($property_id, '_hvnly_property_town_city', true);
-            $parts = array_filter([$line1, $city]);
-            if (!empty($parts)) {
+            $parts = array_filter(array( $line1, $city ));
+            if ( ! empty($parts)) {
                 $header['address'] = implode(', ', $parts);
                 $header['show']    = true;
             }
@@ -261,23 +261,23 @@ final class PropertyInquiryBlockRenderer {
      * @param int $property_id Resolved property id.
      * @return void
      */
-    private static function enqueue_contact_agent_assets(int $property_id): void {
+    private static function enqueue_contact_agent_assets( int $property_id ): void {
         $ver = defined('HVNLYNAB_VERSION') ? HVNLYNAB_VERSION : '3.5.0';
 
-        if (!wp_style_is('hvnly-frontend-contact-agent', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-contact-agent', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-contact-agent',
                 HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-contact-agent.css',
-                [],
+                array(),
                 $ver
             );
         }
 
-        if (!wp_script_is('hvnly-frontend-contact-agent', 'registered')) {
+        if ( ! wp_script_is('hvnly-frontend-contact-agent', 'registered')) {
             wp_register_script(
                 'hvnly-frontend-contact-agent',
                 HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-contact-agent.js',
-                ['jquery'],
+                array( 'jquery' ),
                 $ver,
                 true
             );
@@ -285,26 +285,26 @@ final class PropertyInquiryBlockRenderer {
 
         wp_enqueue_style('hvnly-frontend-contact-agent');
 
-        if (!wp_style_is('hvnly-block-inquiry', 'registered')) {
+        if ( ! wp_style_is('hvnly-block-inquiry', 'registered')) {
             wp_register_style(
                 'hvnly-block-inquiry',
                 HVNLYNAB_ASSETS_URL . '/frontend/blocks/css/hvnly-block-inquiry.css',
-                ['hvnly-frontend-contact-agent'],
+                array( 'hvnly-frontend-contact-agent' ),
                 $ver
             );
         }
         wp_enqueue_style('hvnly-block-inquiry');
         wp_enqueue_script('hvnly-frontend-contact-agent');
 
-        if (!wp_script_is('hvnly-block-inquiry', 'registered')) {
-            $path = 'frontend/blocks/js/hvnly-block-inquiry.js';
+        if ( ! wp_script_is('hvnly-block-inquiry', 'registered')) {
+            $path  = 'frontend/blocks/js/hvnly-block-inquiry.js';
             $mtime = is_readable(trailingslashit(HVNLYNAB_ASSETS_PATH) . $path)
                 ? (int) filemtime(trailingslashit(HVNLYNAB_ASSETS_PATH) . $path)
                 : 0;
             wp_register_script(
                 'hvnly-block-inquiry',
                 HVNLYNAB_ASSETS_URL . '/frontend/blocks/js/hvnly-block-inquiry.js',
-                ['hvnly-frontend-contact-agent'],
+                array( 'hvnly-frontend-contact-agent' ),
                 $mtime > 0 ? $ver . '.' . $mtime : $ver,
                 true
             );
@@ -324,30 +324,30 @@ final class PropertyInquiryBlockRenderer {
      * @param bool   $is_editor  Editor preview.
      * @return array<int, array{id:int,title:string}>
      */
-    private static function resolve_property_choices(array $attributes, string $source, bool $is_editor): array {
-        $ids = [];
+    private static function resolve_property_choices( array $attributes, string $source, bool $is_editor ): array {
+        $ids = array();
 
         switch ($source) {
             case 'selected':
             case 'manual':
-                $ids = [self::valid_property((int) ($attributes['propertyId'] ?? 0))];
+                $ids = array( self::valid_property( (int) ( $attributes['propertyId'] ?? 0 )) );
                 break;
 
             case 'multiple':
-                $ids = array_map([self::class, 'valid_property'], self::int_list($attributes['propertyIds'] ?? []));
+                $ids = array_map(array( self::class, 'valid_property' ), self::int_list($attributes['propertyIds'] ?? array()));
                 break;
 
             case 'none':
-                $ids = [self::valid_property((int) ($attributes['fallbackPropertyId'] ?? 0))];
+                $ids = array( self::valid_property( (int) ( $attributes['fallbackPropertyId'] ?? 0 )) );
                 break;
 
             case 'current':
             default:
                 $current = self::current_property_id();
                 if ($current <= 0) {
-                    $current = self::valid_property((int) ($attributes['fallbackPropertyId'] ?? 0));
+                    $current = self::valid_property( (int) ( $attributes['fallbackPropertyId'] ?? 0 ));
                 }
-                $ids = [$current];
+                $ids = array( $current );
                 break;
         }
 
@@ -356,16 +356,16 @@ final class PropertyInquiryBlockRenderer {
         if (empty($ids) && $is_editor) {
             $sample = self::sample_property_id();
             if ($sample > 0) {
-                $ids = [$sample];
+                $ids = array( $sample );
             }
         }
 
-        $out = [];
+        $out = array();
         foreach ($ids as $id) {
-            $out[] = [
+            $out[] = array(
                 'id'    => $id,
                 'title' => (string) get_the_title($id),
-            ];
+            );
         }
 
         return $out;
@@ -388,7 +388,7 @@ final class PropertyInquiryBlockRenderer {
             }
         }
 
-        $current = (int) (function_exists('get_the_ID') ? get_the_ID() : 0);
+        $current = (int) ( function_exists('get_the_ID') ? get_the_ID() : 0 );
         if ($current > 0 && get_post_type($current) === self::POST_TYPE) {
             return $current;
         }
@@ -405,28 +405,28 @@ final class PropertyInquiryBlockRenderer {
      * @param int[]  $agent_ids   Multiple agent ids.
      * @return array<int, array<string, mixed>>
      */
-    private static function resolve_agents(int $property_id, string $agent_source, int $agent_id, array $agent_ids): array {
+    private static function resolve_agents( int $property_id, string $agent_source, int $agent_id, array $agent_ids ): array {
         if ('none' === $agent_source) {
-            return [];
+            return array();
         }
 
         if ('multiple' === $agent_source) {
-            $agents = [];
+            $agents = array();
             foreach ($agent_ids as $id) {
                 $profile = self::agent_profile($id);
-                if (!empty($profile)) {
+                if ( ! empty($profile)) {
                     $agents[] = $profile;
                 }
             }
             return array_values($agents);
         }
 
-        if (in_array($agent_source, ['selected', 'manual'], true) && $agent_id > 0) {
+        if (in_array($agent_source, array( 'selected', 'manual' ), true) && $agent_id > 0) {
             $profile = self::agent_profile($agent_id);
-            if (!empty($profile)) {
+            if ( ! empty($profile)) {
                 // Prefer property agents with the chosen agent promoted first.
                 $property_agents = self::property_agents($property_id);
-                return self::promote_agent($property_agents ?: [$profile], $agent_id);
+                return self::promote_agent($property_agents ?: array( $profile ), $agent_id);
             }
         }
 
@@ -438,8 +438,8 @@ final class PropertyInquiryBlockRenderer {
                 $agents = self::promote_agent($agents, $current);
                 if (empty($agents)) {
                     $profile = self::agent_profile($current);
-                    if (!empty($profile)) {
-                        $agents = [$profile];
+                    if ( ! empty($profile)) {
+                        $agents = array( $profile );
                     }
                 }
             }
@@ -454,15 +454,15 @@ final class PropertyInquiryBlockRenderer {
      * @param int $property_id Property id.
      * @return array<int, array<string, mixed>>
      */
-    private static function property_agents(int $property_id): array {
+    private static function property_agents( int $property_id ): array {
         $agents = function_exists('hvnly_get_property_agents')
             ? (array) hvnly_get_property_agents($property_id)
-            : [];
+            : array();
 
         if (empty($agents) && function_exists('hvnly_get_property_agent')) {
             $primary = hvnly_get_property_agent($property_id);
-            if (is_array($primary) && !empty($primary)) {
-                $agents = [$primary];
+            if (is_array($primary) && ! empty($primary)) {
+                $agents = array( $primary );
             }
         }
 
@@ -475,21 +475,21 @@ final class PropertyInquiryBlockRenderer {
      * @param int $agent_id Agent CPT id.
      * @return array<string, mixed>
      */
-    private static function agent_profile(int $agent_id): array {
+    private static function agent_profile( int $agent_id ): array {
         if ($agent_id <= 0) {
-            return [];
+            return array();
         }
 
-        if (function_exists('hvnly_is_valid_agent') && !hvnly_is_valid_agent($agent_id)) {
-            return [];
+        if (function_exists('hvnly_is_valid_agent') && ! hvnly_is_valid_agent($agent_id)) {
+            return array();
         }
 
         if (function_exists('hvnly_get_agent')) {
             $profile = hvnly_get_agent($agent_id);
-            return is_array($profile) ? $profile : [];
+            return is_array($profile) ? $profile : array();
         }
 
-        return [];
+        return array();
     }
 
     /**
@@ -499,22 +499,22 @@ final class PropertyInquiryBlockRenderer {
      * @param int                              $agent_id Id to promote.
      * @return array<int, array<string, mixed>>
      */
-    private static function promote_agent(array $agents, int $agent_id): array {
+    private static function promote_agent( array $agents, int $agent_id ): array {
         if ($agent_id <= 0 || empty($agents)) {
             return $agents;
         }
 
-        $front = [];
-        $rest  = [];
+        $front = array();
+        $rest  = array();
         foreach ($agents as $agent) {
-            if ((int) ($agent['id'] ?? 0) === $agent_id) {
+            if ( (int) ( $agent['id'] ?? 0 ) === $agent_id) {
                 $front[] = $agent;
             } else {
                 $rest[] = $agent;
             }
         }
 
-        return !empty($front) ? array_merge($front, $rest) : $agents;
+        return ! empty($front) ? array_merge($front, $rest) : $agents;
     }
 
     /**
@@ -548,9 +548,9 @@ final class PropertyInquiryBlockRenderer {
      * @param mixed $value Attribute value.
      * @return int[]
      */
-    private static function int_list($value): array {
-        if (!is_array($value)) {
-            return [];
+    private static function int_list( $value ): array {
+        if ( ! is_array($value)) {
+            return array();
         }
 
         return array_values(array_unique(array_filter(array_map('intval', $value))));
@@ -562,7 +562,7 @@ final class PropertyInquiryBlockRenderer {
      * @param int $id Candidate id.
      * @return int
      */
-    private static function valid_property(int $id): int {
+    private static function valid_property( int $id ): int {
         if ($id <= 0) {
             return 0;
         }
@@ -571,7 +571,7 @@ final class PropertyInquiryBlockRenderer {
             return 0;
         }
 
-        return (get_post_status($id) === 'publish') ? $id : 0;
+        return ( get_post_status($id) === 'publish' ) ? $id : 0;
     }
 
     /**
@@ -580,7 +580,7 @@ final class PropertyInquiryBlockRenderer {
      * @return int
      */
     private static function sample_property_id(): int {
-        $query = new \WP_Query([
+        $query = new \WP_Query(array(
             'post_type'              => self::POST_TYPE,
             'post_status'            => 'publish',
             'posts_per_page'         => 1,
@@ -590,11 +590,11 @@ final class PropertyInquiryBlockRenderer {
             'no_found_rows'          => true,
             'update_post_meta_cache' => false,
             'update_post_term_cache' => false,
-        ]);
+        ));
 
         $ids = array_map('intval', (array) $query->posts);
 
-        return !empty($ids) ? $ids[0] : 0;
+        return ! empty($ids) ? $ids[0] : 0;
     }
 
     /**
@@ -603,9 +603,9 @@ final class PropertyInquiryBlockRenderer {
      * @param string $message Notice text.
      * @return string
      */
-    private static function notice(string $message): string {
+    private static function notice( string $message ): string {
         $wrapper = function_exists('get_block_wrapper_attributes')
-            ? get_block_wrapper_attributes(['class' => 'hvnly-block-inquiry hvnly-block-inquiry--notice'])
+            ? get_block_wrapper_attributes(array( 'class' => 'hvnly-block-inquiry hvnly-block-inquiry--notice' ))
             : 'class="hvnly-block-inquiry hvnly-block-inquiry--notice"';
 
         return '<div ' . $wrapper . '><p class="hvnly-block-inquiry__notice">' . esc_html($message) . '</p></div>';
@@ -619,7 +619,7 @@ final class PropertyInquiryBlockRenderer {
      * @param string   $default Fallback.
      * @return string
      */
-    private static function choice(string $value, array $allowed, string $default): string {
+    private static function choice( string $value, array $allowed, string $default ): string {
         return in_array($value, $allowed, true) ? $value : $default;
     }
 }

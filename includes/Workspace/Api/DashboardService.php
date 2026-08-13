@@ -60,16 +60,16 @@ final class DashboardService {
 	 * @return array<string, mixed>
 	 */
 	public function get_home( int $user_id ): array {
-		$user_id = absint( $user_id );
+		$user_id  = absint( $user_id );
 		$resolved = $this->identity->resolve( $user_id );
 		$agent    = isset( $resolved['agent'] ) && is_array( $resolved['agent'] ) ? $resolved['agent'] : null;
 		$user     = isset( $resolved['user'] ) && is_array( $resolved['user'] ) ? $resolved['user'] : array();
 		$role     = isset( $resolved['role'] ) ? (string) $resolved['role'] : '';
 
-		$counts   = $this->property_counts( $user_id );
-		$recent   = $this->recent_properties( $user_id, 5 );
-		$activity = $this->recent_activity( $user_id, 8 );
-		$views    = $this->listing_views_series( $user_id, 7 );
+		$counts    = $this->property_counts( $user_id );
+		$recent    = $this->recent_properties( $user_id, 5 );
+		$activity  = $this->recent_activity( $user_id, 8 );
+		$views     = $this->listing_views_series( $user_id, 7 );
 		$inquiries = $this->inquiry_summary( $user_id );
 
 		$registration = '';
@@ -267,7 +267,7 @@ final class DashboardService {
 			if ( ! $post instanceof \WP_Post ) {
 				continue;
 			}
-			$item = PropertyFormMapper::list_item_from_post( $post );
+			$item    = PropertyFormMapper::list_item_from_post( $post );
 			$items[] = array(
 				'id'           => (int) $item['id'],
 				'title'        => (string) $item['title'],
@@ -301,8 +301,8 @@ final class DashboardService {
 
 		$buckets = array();
 		for ( $i = $days - 1; $i >= 0; $i-- ) {
-			$ts   = strtotime( '-' . $i . ' days', current_time( 'timestamp' ) );
-			$date = wp_date( 'Y-m-d', $ts );
+			$ts               = strtotime( '-' . $i . ' days', current_time( 'timestamp' ) );
+			$date             = wp_date( 'Y-m-d', $ts );
 			$buckets[ $date ] = 0;
 		}
 
@@ -475,8 +475,8 @@ final class DashboardService {
 	private function map_history_entry( array $entry, int $property_id, string $title, int $index ): ?array {
 		$to     = isset( $entry['to'] ) ? (string) $entry['to'] : '';
 		$action = isset( $entry['action'] ) ? (string) $entry['action'] : '';
-		$at = isset( $entry['at'] ) ? (string) $entry['at'] : '';
-		$ts = WorkspaceDateTime::parse_datetime( $at );
+		$at     = isset( $entry['at'] ) ? (string) $entry['at'] : '';
+		$ts     = WorkspaceDateTime::parse_datetime( $at );
 		if ( $ts <= 0 ) {
 			return null;
 		}

@@ -189,11 +189,11 @@ function hvnly_render_ajax_pagination_fragment( $query, $current_page = 1, $opti
 function hvnly_render_ajax_results_count_fragment( $query, $current_page, $per_page, $filters = array() ) {
 	global $wp_query;
 
-	$original_query   = $wp_query;
-	$wp_query         = $query;
-	$total_properties = (int) $query->found_posts;
-	$start            = ( ( (int) $current_page - 1 ) * (int) $per_page ) + 1;
-	$end              = min( (int) $current_page * (int) $per_page, $total_properties );
+	$original_query       = $wp_query;
+	$wp_query             = $query;
+	$total_properties     = (int) $query->found_posts;
+	$start                = ( ( (int) $current_page - 1 ) * (int) $per_page ) + 1;
+	$end                  = min( (int) $current_page * (int) $per_page, $total_properties );
 	$current_filters      = hvnly_build_ajax_result_count_filters( $filters );
 	$active_filter_labels = isset( $current_filters['active_labels'] ) ? (array) $current_filters['active_labels'] : array();
 

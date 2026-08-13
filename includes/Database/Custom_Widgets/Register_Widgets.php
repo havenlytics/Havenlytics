@@ -93,8 +93,8 @@ class Register_Widgets {
 				'after_widget'  => '</div>',
 				'before_title'  => '<h4 class="hvnly-property-single__widget-title">',
 				'after_title'   => '</h4>',
-			)
-			
+			),
+
 		);
 	}
 

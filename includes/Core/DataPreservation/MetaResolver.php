@@ -121,7 +121,10 @@ class MetaResolver {
 		// 4. Full meta scan — first key matching type suffix for this group instance.
 		$map           = class_exists( GroupFieldIdentity::class )
 			? GroupFieldIdentity::get_field_map( $post_id )
-			: array( 'groups' => array(), 'legacy' => array() );
+			: array(
+				'groups' => array(),
+				'legacy' => array(),
+			);
 		$allowed_bases = array();
 
 		if ( ! empty( $field['group_id'] ) && ! empty( $map['groups'][ $field['group_id'] ] ) ) {

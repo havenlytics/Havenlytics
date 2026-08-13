@@ -43,7 +43,7 @@ final class TermsImporter {
 
 		// Pass 1: create/update without parents.
 		foreach ( $terms as $row ) {
-			$result = self::upsert_term( $row, $detector, $remapper, $policy );
+			$result   = self::upsert_term( $row, $detector, $remapper, $policy );
 			$created += $result['created'];
 			$updated += $result['updated'];
 			$skipped += $result['skipped'];
@@ -109,7 +109,10 @@ final class TermsImporter {
 			$out['warnings'][] = array(
 				'code'    => 'hvnly_ie_term_taxonomy_missing',
 				'message' => 'Taxonomy is not registered on this site.',
-				'context' => array( 'taxonomy' => $taxonomy, 'slug' => $slug ),
+				'context' => array(
+					'taxonomy' => $taxonomy,
+					'slug' => $slug,
+				),
 			);
 			return $out;
 		}
@@ -119,7 +122,10 @@ final class TermsImporter {
 			$out['warnings'][] = array(
 				'code'    => 'hvnly_ie_term_taxonomy_unsupported',
 				'message' => 'Term taxonomy is outside the approved property set and was skipped.',
-				'context' => array( 'taxonomy' => $taxonomy, 'slug' => $slug ),
+				'context' => array(
+					'taxonomy' => $taxonomy,
+					'slug' => $slug,
+				),
 			);
 			return $out;
 		}
@@ -168,7 +174,10 @@ final class TermsImporter {
 			$out['warnings'][] = array(
 				'code'    => 'hvnly_ie_term_insert_failed',
 				'message' => $result->get_error_message(),
-				'context' => array( 'taxonomy' => $taxonomy, 'slug' => $slug ),
+				'context' => array(
+					'taxonomy' => $taxonomy,
+					'slug' => $slug,
+				),
 			);
 			return $out;
 		}
@@ -282,7 +291,10 @@ final class TermsImporter {
 			$warnings[] = array(
 				'code'    => 'hvnly_ie_term_parent_failed',
 				'message' => $result->get_error_message(),
-				'context' => array( 'taxonomy' => $taxonomy, 'slug' => $slug ),
+				'context' => array(
+					'taxonomy' => $taxonomy,
+					'slug' => $slug,
+				),
 			);
 		}
 	}

@@ -129,7 +129,7 @@
 				: '';
 
 		var fav = show( cfg, 'showFavorite' )
-			? '<button type="button" class="hvnly-property--grid-list--favorite hvnly-block-map__popup-fav"' +
+			? '<button type="button" class="hvnly-action-toggle hvnly-property--grid-list--favorite hvnly-block-map__popup-fav"' +
 			  ' data-hvnly-favorite="1" data-property-id="' +
 			  esc( p.id ) +
 			  '"' +
@@ -147,7 +147,7 @@
 
 		// Compare must sit beside Favorite whenever Favorite is shown.
 		var cmp = fav
-			? '<button type="button" class="hvnly-compare-toggle hvnly-compare-toggle--card hvnly-property--grid-list--compare hvnly-block-map__popup-cmp"' +
+			? '<button type="button" class="hvnly-action-toggle hvnly-compare-toggle hvnly-compare-toggle--card hvnly-property--grid-list--compare hvnly-block-map__popup-cmp"' +
 			  ' data-hvnly-compare="1" data-hvnly-compare-native="1" data-property-id="' +
 			  esc( p.id ) +
 			  '"' +

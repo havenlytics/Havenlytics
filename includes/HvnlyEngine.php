@@ -16,13 +16,13 @@
  */
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
 
-class HvnlyEngine
-{
+class HvnlyEngine {
+
     /**
      * Singleton instance for global access
      *
@@ -35,14 +35,14 @@ class HvnlyEngine
      *
      * @var array
      */
-    private $config = [];
+    private $config = array();
 
     /**
      * Cached statistics to avoid repeated calculations
      *
      * @var array
      */
-    private $cache_stats = [];
+    private $cache_stats = array();
 
     /**
      * Pending hit/miss increments flushed once per request.
@@ -76,8 +76,7 @@ class HvnlyEngine
      * @return self Singleton instance of Havenlytics_Engine
      * @since 2.0.0
      */
-    public static function get_instance()
-    {
+    public static function get_instance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -92,8 +91,7 @@ class HvnlyEngine
      *
      * @since 2.0.0
      */
-    private function __construct()
-    {
+    private function __construct() {
         $this->load_config();
         $this->setup_hooks();
         $this->initialize_stats();
@@ -109,16 +107,15 @@ class HvnlyEngine
      * @return void
      * @since 2.0.0
      */
-    private function load_config()
-    {
-        $this->config = [
+    private function load_config() {
+        $this->config = array(
             'cache_ttl'          => (int) get_option('hvnly_cache_ttl', HOUR_IN_SECONDS * 6),
             'cache_compression'  => (bool) get_option('hvnly_cache_compression', true), // Default to true now
             'enable_performance' => (bool) get_option('hvnly_cache_debug', false),
             'cache_enabled'      => (bool) get_option('hvnly_cache_enabled', true),
             'cache_prefix'       => 'hvnly_',
             'auto_compress'      => true, // Always auto-compress large items
-        ];
+        );
     }
 
     /**
@@ -131,8 +128,7 @@ class HvnlyEngine
      * @return array Current engine configuration
      * @since 2.0.0
      */
-    public function get_config()
-    {
+    public function get_config() {
         return $this->config;
     }
 
@@ -145,14 +141,13 @@ class HvnlyEngine
      * @return void
      * @since 2.0.0
      */
-    private function setup_hooks()
-    {
-        add_action('hvnly_daily_cache_cleanup', [$this, 'cleanup_expired_cache']);
-        add_action('hvnly_weekly_optimization', [$this, 'run_optimization']);
-        
+    private function setup_hooks() {
+        add_action('hvnly_daily_cache_cleanup', array( $this, 'cleanup_expired_cache' ));
+        add_action('hvnly_weekly_optimization', array( $this, 'run_optimization' ));
+
         // Add action for when settings are updated
-        add_action('update_option_hvnly_cache_ttl', [$this, 'on_settings_update'], 10, 2);
-        add_action('update_option_hvnly_cache_compression', [$this, 'on_settings_update'], 10, 2);
+        add_action('update_option_hvnly_cache_ttl', array( $this, 'on_settings_update' ), 10, 2);
+        add_action('update_option_hvnly_cache_compression', array( $this, 'on_settings_update' ), 10, 2);
     }
 
     /**
@@ -162,8 +157,7 @@ class HvnlyEngine
      * @param mixed $new_value New setting value
      * @return void
      */
-    public function on_settings_update($old_value, $new_value)
-    {
+    public function on_settings_update( $old_value, $new_value ) {
         $this->load_config();
     }
 
@@ -177,8 +171,7 @@ class HvnlyEngine
      * @return void
      * @since 2.0.0
      */
-    private function initialize_stats()
-    {
+    private function initialize_stats() {
         if (false === get_option('hvnly_cache_hits', false)) {
             add_option('hvnly_cache_hits', 0, '', 'no');
             add_option('hvnly_cache_misses', 0, '', 'no');
@@ -189,7 +182,7 @@ class HvnlyEngine
         }
 
         // One-time reset of historically seeded fake dashboards (85/100).
-        if (!get_option('hvnly_cache_stats_honest', false)) {
+        if ( ! get_option('hvnly_cache_stats_honest', false)) {
             $hits     = (int) get_option('hvnly_cache_hits', 0);
             $requests = (int) get_option('hvnly_cache_requests', 0);
             $misses   = (int) get_option('hvnly_cache_misses', 0);
@@ -209,10 +202,9 @@ class HvnlyEngine
      * @param int    $ttl   Time to live in seconds (null = use setting)
      * @return bool True if value was set, false otherwise
      */
-    public function set_cache($key, $value, $ttl = null)
-    {
+    public function set_cache( $key, $value, $ttl = null ) {
         // Check if caching is enabled
-        if (!$this->config['cache_enabled']) {
+        if ( ! $this->config['cache_enabled']) {
             return false;
         }
 
@@ -247,15 +239,14 @@ class HvnlyEngine
      * @param string $key The cache key
      * @return mixed The cached value, or false if not found
      */
-    public function get_cache($key)
-    {
+    public function get_cache( $key ) {
         $cache_key = $this->config['cache_prefix'] . sanitize_key($key);
-        $value = get_transient($cache_key);
+        $value     = get_transient($cache_key);
 
         // Track hit/miss
         if (false !== $value) {
             $this->track_cache_hit();
-            
+
             // Auto-decompress if needed
             $value = $this->maybe_auto_decompress($value);
         } else {
@@ -275,12 +266,11 @@ class HvnlyEngine
      * @return array
      * @since 2.0.0
      */
-    public function get_cache_stats()
-    {
+    public function get_cache_stats() {
         global $wpdb;
 
         // Return cached stats if already calculated in this request
-        if (!empty($this->cache_stats)) {
+        if ( ! empty($this->cache_stats)) {
             return $this->cache_stats;
         }
 
@@ -295,16 +285,16 @@ class HvnlyEngine
                 )
             );
 
-            $total_size      = 0;
-            $compressed_size = 0;
-            $search_count    = 0;
-            $sidebar_count   = 0;
-            $term_count      = 0;
+            $total_size       = 0;
+            $compressed_size  = 0;
+            $search_count     = 0;
+            $sidebar_count    = 0;
+            $term_count       = 0;
             $compressed_count = 0;
-            $total_items     = 0;
+            $total_items      = 0;
 
             foreach ($cache_data as $item) {
-                $item_size = (int) $item->size;
+                $item_size   = (int) $item->size;
                 $total_size += $item_size;
                 $total_items++;
 
@@ -327,17 +317,17 @@ class HvnlyEngine
                 }
             }
 
-            $hit_rate = $this->calculate_hit_rate();
+            $hit_rate      = $this->calculate_hit_rate();
             $cache_enabled = function_exists('hvnly_is_cache_enabled')
                 ? (bool) \hvnly_is_cache_enabled()
                 : (bool) get_option('hvnly_cache_enabled', 0);
 
             // Calculate compression savings
-            $savings = $compressed_size > 0 ? $compressed_size - $total_size : 0;
-            $savings_percent = $compressed_size > 0 ? round(($savings / $compressed_size) * 100, 1) : 0;
+            $savings         = $compressed_size > 0 ? $compressed_size - $total_size : 0;
+            $savings_percent = $compressed_size > 0 ? round(( $savings / $compressed_size ) * 100, 1) : 0;
 
             $health = 'idle';
-            if (!$cache_enabled) {
+            if ( ! $cache_enabled) {
                 $health = 'disabled';
             } elseif ($total_items > 0 && $hit_rate >= 50) {
                 $health = 'healthy';
@@ -345,7 +335,7 @@ class HvnlyEngine
                 $health = 'warming';
             }
 
-            $this->cache_stats = [
+            $this->cache_stats = array(
                 'total_cache_size'     => $total_size,
                 'search_cache_count'   => $search_count,
                 'sidebar_cache_count'  => $sidebar_count,
@@ -361,11 +351,11 @@ class HvnlyEngine
                 'cache_status'         => $cache_enabled ? 'active' : 'disabled',
                 'cache_health'         => $health,
                 'object_cache'         => wp_using_ext_object_cache(),
-            ];
-            
+            );
+
             // Update compression savings statistic
             update_option('hvnly_compression_savings', $savings, false);
-            
+
         } catch (Exception $e) {
             // Error logging removed for production
             $this->cache_stats = $this->get_default_stats();
@@ -380,15 +370,14 @@ class HvnlyEngine
      * @param string $data Data to check
      * @return bool True if data appears compressed
      */
-    private function is_compressed_data($data)
-    {
-        if (!is_string($data) || strlen($data) < 10) {
+    private function is_compressed_data( $data ) {
+        if ( ! is_string($data) || strlen($data) < 10) {
             return false;
         }
-        
+
         // Check for gzip magic numbers
         $first_two = substr($data, 0, 2);
-        return in_array($first_two, ["\x1f\x8b", "\x78\x9c"]);
+        return in_array($first_two, array( "\x1f\x8b", "\x78\x9c" ));
     }
 
     /**
@@ -398,16 +387,15 @@ class HvnlyEngine
      * @param string $cache_key Cache key for logging
      * @return mixed Compressed or original value
      */
-    private function maybe_auto_compress($value, $cache_key)
-    {
+    private function maybe_auto_compress( $value, $cache_key ) {
         // Check if compression functions exist
-        if (!function_exists('gzcompress')) {
+        if ( ! function_exists('gzcompress')) {
             return $value;
         }
 
         // Serialize first to check size
         $serialized = maybe_serialize($value);
-        $size = strlen($serialized);
+        $size       = strlen($serialized);
 
         // Always compress if item is large (over 1KB) regardless of setting
         if ($size > self::COMPRESSION_THRESHOLD) {
@@ -434,9 +422,8 @@ class HvnlyEngine
      * @param mixed $value Value to potentially decompress
      * @return mixed Decompressed or original value
      */
-    private function maybe_auto_decompress($value)
-    {
-        if (!function_exists('gzuncompress') || !is_string($value)) {
+    private function maybe_auto_decompress( $value ) {
+        if ( ! function_exists('gzuncompress') || ! is_string($value)) {
             return $value;
         }
 
@@ -449,7 +436,7 @@ class HvnlyEngine
                     return $unserialized;
                 }
             }
-            
+
             // Decompression failure logging removed for production
         }
 
@@ -462,15 +449,14 @@ class HvnlyEngine
      * @return float Cache hit rate as percentage (0.0 - 100.0)
      * @since 2.0.0
      */
-    private function calculate_hit_rate()
-    {
+    private function calculate_hit_rate() {
         $hits   = (int) get_option('hvnly_cache_hits', 0) + $this->pending_hits;
         $misses = (int) get_option('hvnly_cache_misses', 0) + $this->pending_misses;
 
         $total_requests = $hits + $misses;
 
         if ($total_requests > 0) {
-            $hit_rate = ($hits / $total_requests) * 100;
+            $hit_rate = ( $hits / $total_requests ) * 100;
             return round($hit_rate, 1);
         }
 
@@ -483,8 +469,7 @@ class HvnlyEngine
      * @return void
      * @since 2.0.0
      */
-    public function track_cache_hit()
-    {
+    public function track_cache_hit() {
         $this->pending_hits++;
         $this->ensure_stats_flush_hook();
     }
@@ -495,8 +480,7 @@ class HvnlyEngine
      * @return void
      * @since 2.0.0
      */
-    public function track_cache_miss()
-    {
+    public function track_cache_miss() {
         $this->pending_misses++;
         $this->ensure_stats_flush_hook();
     }
@@ -506,14 +490,13 @@ class HvnlyEngine
      *
      * @return void
      */
-    private function ensure_stats_flush_hook()
-    {
+    private function ensure_stats_flush_hook() {
         if ($this->stats_flush_hooked) {
             return;
         }
 
         $this->stats_flush_hooked = true;
-        add_action('shutdown', [$this, 'flush_pending_stats'], 5);
+        add_action('shutdown', array( $this, 'flush_pending_stats' ), 5);
     }
 
     /**
@@ -521,8 +504,7 @@ class HvnlyEngine
      *
      * @return void
      */
-    public function flush_pending_stats()
-    {
+    public function flush_pending_stats() {
         if ($this->pending_hits <= 0 && $this->pending_misses <= 0) {
             return;
         }
@@ -544,8 +526,7 @@ class HvnlyEngine
      *
      * @return void
      */
-    private function increment_cache_requests()
-    {
+    private function increment_cache_requests() {
         // Kept for BC; request totals are updated in flush_pending_stats().
         $requests = (int) get_option('hvnly_cache_requests', 0);
         update_option('hvnly_cache_requests', $requests + 1, false);
@@ -558,8 +539,7 @@ class HvnlyEngine
      * @return void
      * @since 2.0.0
      */
-    public function track_query_executed($elapsed_seconds = null)
-    {
+    public function track_query_executed( $elapsed_seconds = null ) {
         $queries = (int) get_option('hvnly_queries_executed', 0);
         update_option('hvnly_queries_executed', $queries + 1, false);
 
@@ -577,18 +557,17 @@ class HvnlyEngine
      * @return string
      * @since 2.0.0
      */
-    private function format_bytes($bytes, $decimals = 2)
-    {
+    private function format_bytes( $bytes, $decimals = 2 ) {
         if ($bytes === 0) {
             return '0 Bytes';
         }
 
-        $k      = 1024;
-        $dm     = $decimals < 0 ? 0 : $decimals;
-        $sizes  = ['Bytes', 'KB', 'MB', 'GB'];
-        $i      = floor(log($bytes) / log($k));
+        $k     = 1024;
+        $dm    = $decimals < 0 ? 0 : $decimals;
+        $sizes = array( 'Bytes', 'KB', 'MB', 'GB' );
+        $i     = floor(log($bytes) / log($k));
 
-        return number_format($bytes / pow($k, $i), $dm) . ' ' . $sizes[$i];
+        return number_format($bytes / pow($k, $i), $dm) . ' ' . $sizes[ $i ];
     }
 
     /**
@@ -597,22 +576,21 @@ class HvnlyEngine
      * @return array
      * @since 2.0.0
      */
-    public function get_performance_metrics()
-    {
+    public function get_performance_metrics() {
         // Include in-request pending counters so admin refresh is accurate.
-        $hits             = (int) get_option('hvnly_cache_hits', 0) + $this->pending_hits;
-        $misses           = (int) get_option('hvnly_cache_misses', 0) + $this->pending_misses;
-        $queries_executed = (int) get_option('hvnly_queries_executed', 0);
-        $query_time_total = (float) get_option('hvnly_query_time_total', 0);
+        $hits                = (int) get_option('hvnly_cache_hits', 0) + $this->pending_hits;
+        $misses              = (int) get_option('hvnly_cache_misses', 0) + $this->pending_misses;
+        $queries_executed    = (int) get_option('hvnly_queries_executed', 0);
+        $query_time_total    = (float) get_option('hvnly_query_time_total', 0);
         $compression_savings = (int) get_option('hvnly_compression_savings', 0);
-        $hit_rate         = $this->calculate_hit_rate();
+        $hit_rate            = $this->calculate_hit_rate();
 
         $average_query_time = 0.0;
         if ($queries_executed > 0 && $query_time_total > 0) {
             $average_query_time = round($query_time_total / $queries_executed, 4);
         }
 
-        return [
+        return array(
             'cache_hits'          => $hits,
             'cache_misses'        => $misses,
             'queries_executed'    => $queries_executed,
@@ -623,7 +601,7 @@ class HvnlyEngine
             'total_queries_saved' => $hits,
             'cache_hit_rate'      => $hit_rate,
             'compression_savings' => $this->format_bytes($compression_savings),
-        ];
+        );
     }
 
     /**
@@ -635,8 +613,7 @@ class HvnlyEngine
      * @return int Number of cache entries cleared
      * @since 2.0.0
      */
-    public function clear_all_cache()
-    {
+    public function clear_all_cache() {
         global $wpdb;
 
         // Find all transient value rows for our prefix
@@ -653,7 +630,7 @@ class HvnlyEngine
 
         $deleted_count = 0;
 
-        if (!empty($option_names)) {
+        if ( ! empty($option_names)) {
             foreach ($option_names as $option_name) {
                 // "_transient_hvnly_something" → "hvnly_something"
                 $transient_name = str_replace('_transient_', '', $option_name);
@@ -665,7 +642,7 @@ class HvnlyEngine
         }
 
         // Clear cached statistics to force recalculation
-        $this->cache_stats = [];
+        $this->cache_stats = array();
 
         if (class_exists('\HvnlyNab\Frontend\Query\PropertyQueryCache')) {
             \HvnlyNab\Frontend\Query\PropertyQueryCache::invalidate_all();
@@ -683,8 +660,7 @@ class HvnlyEngine
      * @return int Number of cache entries cleared
      * @since 2.0.0
      */
-    public function clear_transients_by_pattern($pattern)
-    {
+    public function clear_transients_by_pattern( $pattern ) {
         global $wpdb;
 
         // Sanitize pattern
@@ -704,7 +680,7 @@ class HvnlyEngine
 
         $deleted_count = 0;
 
-        if (!empty($option_names)) {
+        if ( ! empty($option_names)) {
             foreach ($option_names as $option_name) {
                 $transient_name = str_replace('_transient_', '', $option_name);
 
@@ -715,7 +691,7 @@ class HvnlyEngine
         }
 
         // Force stats recalculation
-        $this->cache_stats = [];
+        $this->cache_stats = array();
 
         // Debug logging removed for production
 
@@ -729,10 +705,9 @@ class HvnlyEngine
      * @return void
      * @since 2.0.0
      */
-    public function update_config($new_config)
-    {
+    public function update_config( $new_config ) {
         foreach ($new_config as $key => $value) {
-            $this->config[$key] = $value;
+            $this->config[ $key ] = $value;
             update_option('hvnly_' . $key, $value);
         }
     }
@@ -746,8 +721,7 @@ class HvnlyEngine
      * @return int Number of expired entries cleared
      * @since 2.0.0
      */
-    public function cleanup_expired_cache()
-    {
+    public function cleanup_expired_cache() {
         global $wpdb;
 
         $time = time();
@@ -778,8 +752,7 @@ class HvnlyEngine
      * @return void
      * @since 2.0.0
      */
-    public function run_optimization()
-    {
+    public function run_optimization() {
         global $wpdb;
 
         $wpdb->query("OPTIMIZE TABLE {$wpdb->options}");
@@ -793,9 +766,8 @@ class HvnlyEngine
      * @return array Default cache statistics
      * @since 2.0.0
      */
-    private function get_default_stats()
-    {
-        return [
+    private function get_default_stats() {
+        return array(
             'total_cache_size'     => 0,
             'search_cache_count'   => 0,
             'sidebar_cache_count'  => 0,
@@ -811,7 +783,7 @@ class HvnlyEngine
             'cache_status'         => 'disabled',
             'cache_health'         => 'disabled',
             'object_cache'         => false,
-        ];
+        );
     }
 
     /**

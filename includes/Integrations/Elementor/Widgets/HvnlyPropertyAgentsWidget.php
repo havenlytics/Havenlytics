@@ -359,7 +359,7 @@ class HvnlyPropertyAgentsWidget extends Widget_Base {
 		global $wp_query, $post;
 
 		$this->original_wp_query = $wp_query;
-		$this->original_post   = $post instanceof \WP_Post ? $post : null;
+		$this->original_post     = $post instanceof \WP_Post ? $post : null;
 	}
 
 	private function restore_original_query_state(): void {

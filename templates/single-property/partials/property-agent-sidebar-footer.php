@@ -34,13 +34,13 @@ $hvnly_all_platforms = class_exists( '\HvnlyNab\Agent\PropertyAgentWidgetRendere
 	<?php if ( $hvnly_has_actions ) : ?>
 		<div class="hvnly-agent-sidebar__quick-actions hvnly-agent-sidebar__quick-actions--footer">
 			<?php if ( $hvnly_show_phone ) : ?>
-				<a class="hvnly-agent-sidebar__btn hvnly-agent-sidebar__btn--call js-hvnly-sidebar-call-btn" href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $hvnly_phone ) ); ?>">
+				<a class="hvnly-btn hvnly-btn--primary hvnly-agent-sidebar__btn hvnly-agent-sidebar__btn--call js-hvnly-sidebar-call-btn" href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $hvnly_phone ) ); ?>">
 					<i class="fas fa-phone-alt" aria-hidden="true"></i>
 					<?php esc_html_e( 'Call Us', 'havenlytics' ); ?>
 				</a>
 			<?php endif; ?>
 			<?php if ( $hvnly_show_whatsapp ) : ?>
-				<a class="hvnly-agent-sidebar__btn hvnly-agent-sidebar__btn--whatsapp js-hvnly-sidebar-whatsapp-btn" href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', $hvnly_whatsapp ) ); ?>" target="_blank" rel="noopener noreferrer">
+				<a class="hvnly-btn hvnly-btn--outline hvnly-agent-sidebar__btn hvnly-agent-sidebar__btn--whatsapp js-hvnly-sidebar-whatsapp-btn" href="https://wa.me/<?php echo esc_attr( preg_replace( '/[^0-9]/', '', $hvnly_whatsapp ) ); ?>" target="_blank" rel="noopener noreferrer">
 					<i class="fab fa-whatsapp" aria-hidden="true"></i>
 					<?php esc_html_e( 'WhatsApp', 'havenlytics' ); ?>
 				</a>

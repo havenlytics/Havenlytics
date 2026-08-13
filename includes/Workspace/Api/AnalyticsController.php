@@ -68,7 +68,7 @@ final class AnalyticsController {
 	 * @return array<string, mixed>
 	 */
 	public function filter_localize( array $data ): array {
-		$rest = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
+		$rest              = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
 		$rest['analytics'] = esc_url_raw( rest_url( WorkspaceConstants::REST_NAMESPACE . '/analytics' ) );
 		$data['rest']      = $rest;
 		return $data;

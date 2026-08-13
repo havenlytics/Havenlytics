@@ -42,8 +42,8 @@ final class PackageReader {
 
 		$payload = $opened->data();
 		/** @var ZipArchive $zip */
-		$zip     = $payload['zip'];
-		$entries = $payload['entries'];
+		$zip      = $payload['zip'];
+		$entries  = $payload['entries'];
 		$warnings = $opened->warnings();
 
 		$structure = self::assert_required_structure( $entries );
@@ -167,7 +167,7 @@ final class PackageReader {
 			$media_expected = isset( $checksums[ ManifestSchema::FILE_MEDIA_INDEX ] )
 				? (string) $checksums[ ManifestSchema::FILE_MEDIA_INDEX ]
 				: '';
-			$media_verify = Checksum::verify_string( $media_raw, $media_expected );
+			$media_verify   = Checksum::verify_string( $media_raw, $media_expected );
 			if ( ! $media_verify->ok() ) {
 				TempStorage::delete_workdir( $dir );
 				return $media_verify;

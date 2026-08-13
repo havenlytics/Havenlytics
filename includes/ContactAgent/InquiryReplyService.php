@@ -87,7 +87,7 @@ class InquiryReplyService {
 			);
 		}
 
-		$message = $this->sanitize_message( $message );
+		$message    = $this->sanitize_message( $message );
 		$validation = $this->validate_message( $message );
 		if ( is_wp_error( $validation ) ) {
 			return $validation;

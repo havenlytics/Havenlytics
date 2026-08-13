@@ -2,14 +2,14 @@
 
 namespace HvnlyNab\Admin;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
-final class Menu
-{
+final class Menu {
+
     private const PARENT_SLUG = 'edit.php?post_type=hvnly_property';
-    private const CAPABILITY = 'manage_options';
+    private const CAPABILITY  = 'manage_options';
 
     /**
      * Standalone module page slugs (canonical admin.php?page=...).
@@ -29,7 +29,7 @@ final class Menu
     private static $analytics_overview_hook = '';
 
     /** Menu positions — grouped before WordPress Posts (5). */
-    private const MENU_POSITION_BUILDER  = 4.1;
+    private const MENU_POSITION_BUILDER   = 4.1;
     private const MENU_POSITION_ANALYTICS = 4.2;
 
     /**
@@ -38,17 +38,16 @@ final class Menu
     private const LEGACY_URL_PROPERTY_BUILDER = 'edit.php?post_type=hvnly_property&page=hvnly_property_builder';
     private const LEGACY_URL_ANALYTICS        = 'edit.php?post_type=hvnly_property&page=hvnly_property_reports_analytics';
 
-    public function __construct()
-    {
+    public function __construct() {
         // Standalone module menus/pages (canonical; no redirects).
-        add_action( 'admin_menu', [ $this, 'register_module_menus' ], 8 );
+        add_action( 'admin_menu', array( $this, 'register_module_menus' ), 8 );
 
-        add_action('admin_menu', [$this, 'register_submenus']);
-        add_action( 'admin_menu', [ $this, 'cleanup_legacy_submenu_entries' ], 999 );
-        add_action('current_screen', [$this, 'suppress_other_notices']);
-        add_filter('admin_body_class', [$this, 'builder_admin_body_class']);
-        add_filter( 'parent_file', [ $this, 'highlight_analytics_parent' ], 10 );
-        add_filter( 'submenu_file', [ $this, 'highlight_analytics_submenu' ], 10, 2 );
+        add_action('admin_menu', array( $this, 'register_submenus' ));
+        add_action( 'admin_menu', array( $this, 'cleanup_legacy_submenu_entries' ), 999 );
+        add_action('current_screen', array( $this, 'suppress_other_notices' ));
+        add_filter('admin_body_class', array( $this, 'builder_admin_body_class' ));
+        add_filter( 'parent_file', array( $this, 'highlight_analytics_parent' ), 10 );
+        add_filter( 'submenu_file', array( $this, 'highlight_analytics_submenu' ), 10, 2 );
     }
 
     /**
@@ -64,7 +63,7 @@ final class Menu
             esc_html__( 'Property Builder', 'havenlytics' ),
             $capability,
             self::PAGE_SLUG_PROPERTY_BUILDER,
-            [ $this, 'render_builder' ],
+            array( $this, 'render_builder' ),
             'dashicons-layout',
             self::MENU_POSITION_BUILDER
         );
@@ -74,7 +73,7 @@ final class Menu
             esc_html__( 'Analytics', 'havenlytics' ),
             $capability,
             self::PAGE_SLUG_ANALYTICS,
-            [ $this, 'render_reports' ],
+            array( $this, 'render_reports' ),
             'dashicons-chart-area',
             self::MENU_POSITION_ANALYTICS
         );
@@ -85,7 +84,7 @@ final class Menu
             esc_html__( 'Overview', 'havenlytics' ),
             $capability,
             self::SUBMENU_SLUG_ANALYTICS,
-            [ $this, 'render_reports' ]
+            array( $this, 'render_reports' )
         );
 
         if ( is_string( $overview_hook ) && '' !== $overview_hook ) {
@@ -133,8 +132,7 @@ final class Menu
         return false;
     }
 
-    public function register_submenus(): void
-    {
+    public function register_submenus(): void {
         $capability = apply_filters('hvnly_admin_capability', self::CAPABILITY);
 
         add_submenu_page(
@@ -143,7 +141,7 @@ final class Menu
             esc_html__('Settings', 'havenlytics'),
             $capability,
             'hvnly_property_settings',
-            [$this, 'render_settings']
+            array( $this, 'render_settings' )
         );
 
         add_submenu_page(
@@ -152,7 +150,7 @@ final class Menu
             esc_html__('Documentation', 'havenlytics'),
             $capability,
             DocumentationPage::PAGE_SLUG,
-            [DocumentationPage::class, 'render']
+            array( DocumentationPage::class, 'render' )
         );
 
         $legacy_builder_hook = add_submenu_page(
@@ -161,10 +159,10 @@ final class Menu
             esc_html__('Property Builder', 'havenlytics'),
             $capability,
             'hvnly_property_builder',
-            [ $this, 'render_legacy_redirect_placeholder' ]
+            array( $this, 'render_legacy_redirect_placeholder' )
         );
         if ( is_string( $legacy_builder_hook ) && $legacy_builder_hook !== '' ) {
-            add_action( 'load-' . $legacy_builder_hook, [ $this, 'redirect_legacy_builder' ] );
+            add_action( 'load-' . $legacy_builder_hook, array( $this, 'redirect_legacy_builder' ) );
         }
 
         $legacy_analytics_hook = add_submenu_page(
@@ -173,13 +171,12 @@ final class Menu
             esc_html__('Analytics', 'havenlytics'),
             $capability,
             'hvnly_property_reports_analytics',
-            [ $this, 'render_legacy_redirect_placeholder' ]
+            array( $this, 'render_legacy_redirect_placeholder' )
         );
         if ( is_string( $legacy_analytics_hook ) && $legacy_analytics_hook !== '' ) {
-            add_action( 'load-' . $legacy_analytics_hook, [ $this, 'redirect_legacy_analytics' ] );
+            add_action( 'load-' . $legacy_analytics_hook, array( $this, 'redirect_legacy_analytics' ) );
         }
 
-        
         // Cache menu item removed - now handled by CacheAdmin.php
     }
 
@@ -215,7 +212,7 @@ final class Menu
     public function highlight_analytics_parent( string $parent_file ): string {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only menu routing.
         $page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( (string) $_GET['page'] ) ) : '';
-        if ( in_array( $page, [ self::PAGE_SLUG_ANALYTICS, self::SUBMENU_SLUG_ANALYTICS ], true ) ) {
+        if ( in_array( $page, array( self::PAGE_SLUG_ANALYTICS, self::SUBMENU_SLUG_ANALYTICS ), true ) ) {
             return self::PAGE_SLUG_ANALYTICS;
         }
 
@@ -232,7 +229,7 @@ final class Menu
     public function highlight_analytics_submenu( $submenu_file, string $parent_file ) {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only menu routing.
         $page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( (string) $_GET['page'] ) ) : '';
-        if ( self::PAGE_SLUG_ANALYTICS === $parent_file && in_array( $page, [ self::PAGE_SLUG_ANALYTICS, self::SUBMENU_SLUG_ANALYTICS ], true ) ) {
+        if ( self::PAGE_SLUG_ANALYTICS === $parent_file && in_array( $page, array( self::PAGE_SLUG_ANALYTICS, self::SUBMENU_SLUG_ANALYTICS ), true ) ) {
             return self::SUBMENU_SLUG_ANALYTICS;
         }
 
@@ -292,8 +289,7 @@ final class Menu
         exit;
     }
 
-    public function render_settings(): void
-    {
+    public function render_settings(): void {
         ?>
         <div id="HvnlyNab_admin_dashboard_wrap" class="HvnlyNab_admin_dashboard_wrap hvnly-admin-is-loading">
             <?php AdminPreloader::render( 'settings' ); ?>
@@ -302,8 +298,7 @@ final class Menu
         <?php
     }
 
-    public function render_builder(): void
-    {
+    public function render_builder(): void {
         ?>
         <div id="HvnlyNab_property_builder_render" class="HvnlyNab_property_builder_render hvnly-admin-is-loading">
             <?php AdminPreloader::render( 'builder' ); ?>
@@ -312,8 +307,7 @@ final class Menu
         <?php
     }
 
-    public function render_reports(): void
-    {
+    public function render_reports(): void {
         ?>
         <div id="HvnlyNab_reports_analytics_wrap" class="HvnlyNab_reports_analytics_wrap hvnly-admin-is-loading">
             <?php AdminPreloader::render( 'analytics' ); ?>
@@ -322,15 +316,14 @@ final class Menu
         <?php
     }
 
-    public function builder_admin_body_class(string $classes): string
-    {
+    public function builder_admin_body_class( string $classes ): string {
         $screen = function_exists('get_current_screen') ? get_current_screen() : null;
 
         $analytics_overview_ids = array_values(
             array_filter(
-                [
+                array(
                     self::$analytics_overview_hook,
-                ]
+                )
             )
         );
 
@@ -341,13 +334,13 @@ final class Menu
                 && in_array(
                     $screen->id,
                     array_merge(
-                        [
+                        array(
                             'hvnly_property_page_hvnly_property_builder',
                             'hvnly_property_page_hvnly_property_settings',
                             'hvnly_property_page_hvnly_property_reports_analytics',
                             'toplevel_page_' . self::PAGE_SLUG_PROPERTY_BUILDER,
                             'toplevel_page_' . self::PAGE_SLUG_ANALYTICS,
-                        ],
+                        ),
                         $analytics_overview_ids
                     ),
                     true
@@ -360,20 +353,20 @@ final class Menu
         return $classes;
     }
 
-    public function suppress_other_notices(\WP_Screen $screen): void
-    {
-        if (!$screen) return;
+    public function suppress_other_notices( \WP_Screen $screen ): void {
+        if ( ! $screen) {
+			return;
+        }
 
         if (in_array($screen->id, $this->get_plugin_screens(), true)) {
             remove_all_actions('admin_notices');
             remove_all_actions('all_admin_notices');
-            add_action('admin_notices', [$this, 'plugin_admin_notices']);
+            add_action('admin_notices', array( $this, 'plugin_admin_notices' ));
         }
     }
 
-    private function get_plugin_screens(): array
-    {
-        $screens = ['edit-hvnly_property', 'hvnly_property'];
+    private function get_plugin_screens(): array {
+        $screens = array( 'edit-hvnly_property', 'hvnly_property' );
         foreach (get_object_taxonomies('hvnly_property', 'names') as $tax) {
             $screens[] = "edit-{$tax}";
             $screens[] = $tax;
@@ -399,8 +392,7 @@ final class Menu
         return $screens;
     }
 
-    public function plugin_admin_notices(): void
-    {
+    public function plugin_admin_notices(): void {
         Assets::render_missing_build_asset_notice();
     }
 }

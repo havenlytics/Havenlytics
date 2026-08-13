@@ -11,7 +11,7 @@ namespace HvnlyNab\Frontend\Query;
 
 use HvnlyNab\Core\CacheManager;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -31,7 +31,7 @@ class PropertyQueryCache {
      * @return string[]
      */
     private static function hvnly_relevant_filter_keys(): array {
-        $keys = [
+        $keys = array(
             'address_keyword',
             'department',
             'min_price',
@@ -64,7 +64,7 @@ class PropertyQueryCache {
             'in_location',
             'in_feature',
             'in_review',
-        ];
+        );
 
         /**
          * Filter canonical property search filter keys (Saved Searches, cache, etc.).
@@ -94,16 +94,16 @@ class PropertyQueryCache {
      * @param array $hvnly_options  Executor options (widget_id, filter_context, etc.).
      * @return string
      */
-    public static function generate_key(array $hvnly_data, int $hvnly_page, int $hvnly_per_page, array $hvnly_options = []): string {
-        $hvnly_payload = [
+    public static function generate_key( array $hvnly_data, int $hvnly_page, int $hvnly_per_page, array $hvnly_options = array() ): string {
+        $hvnly_payload = array(
             'gen'       => self::get_generation(),
             'page'      => max(1, $hvnly_page),
             'per_page'  => max(1, $hvnly_per_page),
-            'widget_id' => (string) ($hvnly_options['widget_id'] ?? ($hvnly_data['widget_id'] ?? '')),
-            'context'   => (string) ($hvnly_options['filter_context'] ?? 'default'),
+            'widget_id' => (string) ( $hvnly_options['widget_id'] ?? ( $hvnly_data['widget_id'] ?? '' ) ),
+            'context'   => (string) ( $hvnly_options['filter_context'] ?? 'default' ),
             'lang'      => function_exists('pll_current_language') ? pll_current_language() : get_locale(),
             'filters'   => self::hvnly_normalize_filters($hvnly_data),
-        ];
+        );
 
         $hvnly_hash = md5(wp_json_encode($hvnly_payload));
 
@@ -114,23 +114,23 @@ class PropertyQueryCache {
      * @param array $hvnly_data Raw filter payload.
      * @return array
      */
-    private static function hvnly_normalize_filters(array $hvnly_data): array {
-        $hvnly_normalized = [];
+    private static function hvnly_normalize_filters( array $hvnly_data ): array {
+        $hvnly_normalized = array();
 
         foreach (self::hvnly_relevant_filter_keys() as $hvnly_key) {
-            if (!isset($hvnly_data[$hvnly_key]) || $hvnly_data[$hvnly_key] === '' || $hvnly_data[$hvnly_key] === []) {
+            if ( ! isset($hvnly_data[ $hvnly_key ]) || $hvnly_data[ $hvnly_key ] === '' || $hvnly_data[ $hvnly_key ] === array()) {
                 continue;
             }
 
-            $hvnly_value = $hvnly_data[$hvnly_key];
+            $hvnly_value = $hvnly_data[ $hvnly_key ];
             if (is_array($hvnly_value)) {
                 $hvnly_value = array_values(array_filter(array_map('strval', $hvnly_value)));
                 sort($hvnly_value);
             } else {
-                $hvnly_value = sanitize_text_field((string) $hvnly_value);
+                $hvnly_value = sanitize_text_field( (string) $hvnly_value);
             }
 
-            $hvnly_normalized[$hvnly_key] = $hvnly_value;
+            $hvnly_normalized[ $hvnly_key ] = $hvnly_value;
         }
 
         ksort($hvnly_normalized);
@@ -151,8 +151,8 @@ class PropertyQueryCache {
      * @param string $hvnly_cache_key Cache key from generate_key().
      * @return array|false
      */
-    public static function get(string $hvnly_cache_key) {
-        if (!\hvnly_is_cache_enabled()) {
+    public static function get( string $hvnly_cache_key ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return false;
         }
 
@@ -172,7 +172,7 @@ class PropertyQueryCache {
         $hvnly_transient_name = self::hvnly_transient_name($hvnly_storage_key);
         $hvnly_cached         = get_transient($hvnly_transient_name);
 
-        if (false === $hvnly_cached || !is_array($hvnly_cached)) {
+        if (false === $hvnly_cached || ! is_array($hvnly_cached)) {
             if ($engine && method_exists($engine, 'track_cache_miss')) {
                 $engine->track_cache_miss();
             }
@@ -188,7 +188,7 @@ class PropertyQueryCache {
                 $hvnly_storage_key,
                 $hvnly_cached,
                 self::CACHE_GROUP,
-                self::hvnly_resolve_ttl([], $hvnly_cached)
+                self::hvnly_resolve_ttl(array(), $hvnly_cached)
             );
         }
 
@@ -203,8 +203,8 @@ class PropertyQueryCache {
      * @param array     $hvnly_options   Executor options.
      * @return void
      */
-    public static function set(string $hvnly_cache_key, \WP_Query $hvnly_query, array $hvnly_options = []): void {
-        if (!\hvnly_is_cache_enabled()) {
+    public static function set( string $hvnly_cache_key, \WP_Query $hvnly_query, array $hvnly_options = array() ): void {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
@@ -225,13 +225,13 @@ class PropertyQueryCache {
      * @param \WP_Query $hvnly_query Query instance.
      * @return array{post_ids:int[],found_posts:int,max_num_pages:int,post_count:int}
      */
-    public static function extract_payload(\WP_Query $hvnly_query): array {
-        return [
+    public static function extract_payload( \WP_Query $hvnly_query ): array {
+        return array(
             'post_ids'      => array_map('intval', wp_list_pluck($hvnly_query->posts, 'ID')),
             'found_posts'   => (int) $hvnly_query->found_posts,
             'max_num_pages' => (int) $hvnly_query->max_num_pages,
             'post_count'    => (int) $hvnly_query->post_count,
-        ];
+        );
     }
 
     /**
@@ -241,19 +241,19 @@ class PropertyQueryCache {
      * @param array $hvnly_original_args Original query args (for parity / debugging).
      * @return \WP_Query
      */
-    public static function hydrate_query(array $hvnly_cached, array $hvnly_original_args = []): \WP_Query {
+    public static function hydrate_query( array $hvnly_cached, array $hvnly_original_args = array() ): \WP_Query {
         unset($hvnly_original_args);
 
-        $hvnly_post_ids = array_filter(array_map('intval', $hvnly_cached['post_ids'] ?? []));
+        $hvnly_post_ids = array_filter(array_map('intval', $hvnly_cached['post_ids'] ?? array()));
 
         if (empty($hvnly_post_ids)) {
-            $hvnly_query = new \WP_Query([
+            $hvnly_query                = new \WP_Query(array(
                 'post_type'      => 'hvnly_property',
                 'post_status'    => 'publish',
-                'post__in'       => [0],
+                'post__in'       => array( 0 ),
                 'posts_per_page' => 1,
                 'no_found_rows'  => true,
-            ]);
+            ));
             $hvnly_query->found_posts   = 0;
             $hvnly_query->max_num_pages = 0;
             $hvnly_query->post_count    = 0;
@@ -261,7 +261,7 @@ class PropertyQueryCache {
             return $hvnly_query;
         }
 
-        $hvnly_query = new \WP_Query([
+        $hvnly_query = new \WP_Query(array(
             'post_type'              => 'hvnly_property',
             'post_status'            => 'publish',
             'post__in'               => $hvnly_post_ids,
@@ -272,11 +272,11 @@ class PropertyQueryCache {
             'update_post_meta_cache' => true,
             'update_post_term_cache' => true,
             'lazy_load_term_meta'    => true,
-        ]);
+        ));
 
-        $hvnly_query->found_posts   = (int) ($hvnly_cached['found_posts'] ?? count($hvnly_post_ids));
-        $hvnly_query->max_num_pages = (int) ($hvnly_cached['max_num_pages'] ?? 1);
-        $hvnly_query->post_count    = (int) ($hvnly_cached['post_count'] ?? count($hvnly_post_ids));
+        $hvnly_query->found_posts   = (int) ( $hvnly_cached['found_posts'] ?? count($hvnly_post_ids) );
+        $hvnly_query->max_num_pages = (int) ( $hvnly_cached['max_num_pages'] ?? 1 );
+        $hvnly_query->post_count    = (int) ( $hvnly_cached['post_count'] ?? count($hvnly_post_ids) );
 
         return $hvnly_query;
     }
@@ -287,7 +287,7 @@ class PropertyQueryCache {
      * @return void
      */
     public static function invalidate_all(): void {
-        if (!\hvnly_is_cache_enabled()) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
@@ -308,16 +308,16 @@ class PropertyQueryCache {
      * @param array $hvnly_payload Cached payload.
      * @return int
      */
-    private static function hvnly_resolve_ttl(array $hvnly_options, array $hvnly_payload): int {
+    private static function hvnly_resolve_ttl( array $hvnly_options, array $hvnly_payload ): int {
         $hvnly_default_ttl = (int) apply_filters('hvnly_property_query_cache_ttl', 10 * MINUTE_IN_SECONDS, $hvnly_options, $hvnly_payload);
         $hvnly_default_ttl = max(MINUTE_IN_SECONDS, min(15 * MINUTE_IN_SECONDS, $hvnly_default_ttl));
 
-        $hvnly_context = (string) ($hvnly_options['filter_context'] ?? 'default');
-        if (in_array($hvnly_context, ['ajax', 'elementor_load_more', 'map'], true)) {
+        $hvnly_context = (string) ( $hvnly_options['filter_context'] ?? 'default' );
+        if (in_array($hvnly_context, array( 'ajax', 'elementor_load_more', 'map' ), true)) {
             $hvnly_default_ttl = min($hvnly_default_ttl, 5 * MINUTE_IN_SECONDS);
         }
 
-        if (empty($hvnly_payload['post_ids']) || (int) ($hvnly_payload['found_posts'] ?? 0) === 0) {
+        if (empty($hvnly_payload['post_ids']) || (int) ( $hvnly_payload['found_posts'] ?? 0 ) === 0) {
             return min($hvnly_default_ttl, self::EMPTY_RESULT_TTL);
         }
 
@@ -328,7 +328,7 @@ class PropertyQueryCache {
      * @param string $hvnly_cache_key Raw cache key.
      * @return string
      */
-    private static function hvnly_sanitize_storage_key(string $hvnly_cache_key): string {
+    private static function hvnly_sanitize_storage_key( string $hvnly_cache_key ): string {
         return preg_replace('/[^a-z0-9_]/', '', strtolower($hvnly_cache_key));
     }
 
@@ -336,7 +336,7 @@ class PropertyQueryCache {
      * @param string $hvnly_storage_key Sanitized storage key.
      * @return string
      */
-    private static function hvnly_transient_name(string $hvnly_storage_key): string {
+    private static function hvnly_transient_name( string $hvnly_storage_key ): string {
         return self::TRANSIENT_PREFIX . md5($hvnly_storage_key);
     }
 }

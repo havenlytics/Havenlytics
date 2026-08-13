@@ -21,10 +21,10 @@ if (!defined('ABSPATH')) {
 <!-- Video Popup - Single unified popup for all videos -->
 <div class="hvnly-property-single__fancybox-popup" id="hvnlyPropertySingleFancyboxVideo">
     <?php // Sprint 31D: controls were <span>s — no keyboard access, no accessible name. ?>
-    <button type="button" class="hvnly-property-single__fancybox-close" aria-label="<?php esc_attr_e('Close video', 'havenlytics'); ?>">
+    <button type="button" class="hvnly-ui-control hvnly-property-single__fancybox-close" aria-label="<?php esc_attr_e('Close video', 'havenlytics'); ?>">
         <svg class="hvnly-icon hvnly-icon-thin" aria-hidden="true"><use xlink:href="#hvnly-times"></use></svg>
     </button>
-    <button type="button" class="hvnly-property-single__fancybox-fullscreen" aria-label="<?php esc_attr_e('Toggle fullscreen', 'havenlytics'); ?>">
+    <button type="button" class="hvnly-ui-control hvnly-property-single__fancybox-fullscreen" aria-label="<?php esc_attr_e('Toggle fullscreen', 'havenlytics'); ?>">
         <svg class="hvnly-icon hvnly-expand" aria-hidden="true"><use xlink:href="#hvnly-expand"></use></svg>
         <svg class="hvnly-icon hvnly-compress" aria-hidden="true"><use xlink:href="#hvnly-compress"></use></svg>
     </button>

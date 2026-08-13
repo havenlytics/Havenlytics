@@ -36,7 +36,7 @@ class DateField extends BaseFieldType {
 		$is_required = ! empty( $field['is_required'] );
 		$stored      = $this->normalize_date_value( $value );
 
-		$html = $this->render_label( $field );
+		$html  = $this->render_label( $field );
 		$html .= sprintf(
 			'<input type="date" id="%1$s" name="%2$s" value="%3$s" class="hvnly__dyamic_metabox_tab__input widefat" data-field-type="date" %4$s />',
 			esc_attr( $field_id ),

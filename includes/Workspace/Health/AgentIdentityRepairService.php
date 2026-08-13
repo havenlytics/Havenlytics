@@ -98,7 +98,7 @@ final class AgentIdentityRepairService {
 	 * @return bool
 	 */
 	public static function is_auto_repairable( $issue ): bool {
-		$row = $issue instanceof AgentIdentityIssue ? $issue->to_array() : (array) $issue;
+		$row  = $issue instanceof AgentIdentityIssue ? $issue->to_array() : (array) $issue;
 		$type = self::repair_type_for_rule( (string) ( $row['rule_id'] ?? '' ) );
 		if ( null === $type ) {
 			return false;

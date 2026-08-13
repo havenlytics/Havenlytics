@@ -30,7 +30,7 @@ use HvnlyNab\Core\DataPreservation\BackupManager;
 
 // Prevent direct access.
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
 
     exit;
 
@@ -72,11 +72,11 @@ class Migrator {
 
 
 
-    const FAILED_KEY     = 'hvnly_migration_failed';
+    const FAILED_KEY = 'hvnly_migration_failed';
 
-    const ERROR_KEY      = 'hvnly_migration_error';
+    const ERROR_KEY = 'hvnly_migration_error';
 
-    const LAST_STEP_KEY  = 'hvnly_migration_last_step';
+    const LAST_STEP_KEY = 'hvnly_migration_last_step';
 
 
 
@@ -116,7 +116,7 @@ class Migrator {
 
         self::register('2.1.3', Handlers\Version213Handler::class);
 
-        self::register('2.2.1', Handlers\Version221Handler::class);  
+        self::register('2.2.1', Handlers\Version221Handler::class);
 
         self::register('2.2.2', Handlers\Version222Handler::class);
 
@@ -151,7 +151,6 @@ class Migrator {
         self::register('3.3.0-taxonomy-requests', Handlers\Version330TaxonomyRequestsHandler::class);
 
         self::register('3.4.0-favorites', Handlers\Version340FavoritesHandler::class);
-
     }
 
 
@@ -172,10 +171,9 @@ class Migrator {
 
      */
 
-    public static function register(string $version, string $class) {
+    public static function register( string $version, string $class ) {
 
-        self::$migrations[$version] = $class;
-
+        self::$migrations[ $version ] = $class;
     }
 
 
@@ -211,7 +209,6 @@ class Migrator {
         }
 
         return false;
-
     }
 
 
@@ -236,7 +233,7 @@ class Migrator {
 
         $completed = get_option( self::COMPLETED_KEY, array() );
 
-        $current   = HVNLYNAB_VERSION;
+        $current = HVNLYNAB_VERSION;
 
         ksort( self::$migrations );
 
@@ -257,7 +254,6 @@ class Migrator {
         }
 
         return false;
-
     }
 
 
@@ -279,7 +275,6 @@ class Migrator {
         delete_option( self::ERROR_KEY );
 
         delete_option( self::LAST_STEP_KEY );
-
     }
 
 
@@ -305,7 +300,6 @@ class Migrator {
         update_option( self::ERROR_KEY, $message, false );
 
         update_option( self::LAST_STEP_KEY, $version, false );
-
     }
 
 
@@ -332,15 +326,11 @@ class Migrator {
 
         }
 
-
-
         if (empty(self::$migrations)) {
 
             self::init();
 
         }
-
-
 
         if ( self::needs_run() ) {
 
@@ -348,19 +338,13 @@ class Migrator {
 
         }
 
-
-
         $completed = get_option(self::COMPLETED_KEY, array());
 
         $all_success = true;
 
         $current_version = HVNLYNAB_VERSION;
 
-
-
         ksort(self::$migrations);
-
-
 
         foreach (self::$migrations as $version => $handler_class) {
 
@@ -370,23 +354,17 @@ class Migrator {
 
             }
 
-
-
-            if (isset($completed[$version]) && $completed[$version] === true) {
+            if (isset($completed[ $version ]) && $completed[ $version ] === true) {
 
                 continue;
 
             }
 
-
-
             $success = self::run_migration($version, $handler_class);
-
-
 
             if ($success) {
 
-                $completed[$version] = true;
+                $completed[ $version ] = true;
 
                 update_option(self::COMPLETED_KEY, $completed);
 
@@ -400,18 +378,13 @@ class Migrator {
 
         }
 
-
-
         if ( $all_success ) {
 
             self::clear_failure_state();
 
         }
 
-
-
         return $all_success;
-
     }
 
 
@@ -432,9 +405,9 @@ class Migrator {
 
      */
 
-    private static function run_migration(string $version, string $handler_class): bool {
+    private static function run_migration( string $version, string $handler_class ): bool {
 
-        if (!class_exists($handler_class)) {
+        if ( ! class_exists($handler_class)) {
 
             $msg = 'Handler class not found: ' . $handler_class;
 
@@ -450,13 +423,9 @@ class Migrator {
 
         }
 
-
-
         $handler = new $handler_class();
 
-
-
-        if (!($handler instanceof Interfaces\MigrationInterface)) {
+        if ( ! ( $handler instanceof Interfaces\MigrationInterface )) {
 
             $msg = 'Invalid handler for version ' . $version;
 
@@ -472,13 +441,9 @@ class Migrator {
 
         }
 
-
-
         $description = method_exists($handler, 'get_description') ? $handler->get_description() : '';
 
-
-
-        if (!$handler->is_needed()) {
+        if ( ! $handler->is_needed()) {
 
             if ( function_exists( 'hvnly_debug_log' ) ) {
 
@@ -496,8 +461,6 @@ class Migrator {
 
         }
 
-
-
         if ( function_exists( 'hvnly_debug_log' ) ) {
 
             hvnly_debug_log(
@@ -509,8 +472,6 @@ class Migrator {
             );
 
         }
-
-
 
         try {
 
@@ -532,8 +493,6 @@ class Migrator {
 
         }
 
-
-
         if ( function_exists( 'hvnly_debug_log' ) ) {
 
             hvnly_debug_log(
@@ -546,18 +505,13 @@ class Migrator {
 
         }
 
-
-
         if ( ! $result ) {
 
             self::record_failure( $version, sprintf( 'Migration %s returned false (may resume on next admin load).', $version ) );
 
         }
 
-
-
         return (bool) $result;
-
     }
 
 
@@ -582,11 +536,7 @@ class Migrator {
 
         }
 
-
-
         $completed = get_option(self::COMPLETED_KEY, array());
-
-
 
         $status = array(
 
@@ -606,13 +556,11 @@ class Migrator {
 
         );
 
-
-
         foreach (self::$migrations as $version => $handler_class) {
 
-            $is_completed = isset($completed[$version]) && $completed[$version] === true;
+            $is_completed = isset($completed[ $version ]) && $completed[ $version ] === true;
 
-            $status['migrations'][$version] = array(
+            $status['migrations'][ $version ] = array(
 
                 'version'   => $version,
 
@@ -621,8 +569,6 @@ class Migrator {
                 'handler'   => $handler_class,
 
             );
-
-
 
             if ($is_completed) {
 
@@ -636,10 +582,7 @@ class Migrator {
 
         }
 
-
-
         return $status;
-
     }
 
 
@@ -661,9 +604,5 @@ class Migrator {
         delete_option(self::COMPLETED_KEY);
 
         self::clear_failure_state();
-
     }
-
 }
-
-

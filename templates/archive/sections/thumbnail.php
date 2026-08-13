@@ -109,12 +109,12 @@ if (!empty($hvnly_gallery_image_ids) && $hvnly_gallery_order === 'DESC') {
 
                 <?php if (count($hvnly_display_images) > 1): ?>
                 <div class="hvnly-property-carousel-nav">
-                    <button class="hvnly-property-carousel-nav-btn hvnly-property-carousel-prev-btn"
+                    <button type="button" class="hvnly-ui-control hvnly-property-carousel-nav-btn hvnly-property-carousel-prev-btn"
                         onclick="event.preventDefault();"
                         aria-label="<?php esc_attr_e('Previous image', 'havenlytics'); ?>">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <button class="hvnly-property-carousel-nav-btn hvnly-property-carousel-next-btn"
+                    <button type="button" class="hvnly-ui-control hvnly-property-carousel-nav-btn hvnly-property-carousel-next-btn"
                         onclick="event.preventDefault();"
                         aria-label="<?php esc_attr_e('Next image', 'havenlytics'); ?>">
                         <i class="fas fa-chevron-right"></i>

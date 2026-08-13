@@ -9,8 +9,8 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 2.0.0
  */
-class Keys
-{
+class Keys {
+
 
     /**
      * Havenlytics installed option key.

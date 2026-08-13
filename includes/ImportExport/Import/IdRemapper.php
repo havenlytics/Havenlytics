@@ -222,8 +222,8 @@ final class IdRemapper {
 				$mapper->set_agency( (string) $slug, (int) $term_id );
 			}
 		}
-		$by_slug  = isset( $data['agents_by_slug'] ) && is_array( $data['agents_by_slug'] ) ? $data['agents_by_slug'] : array();
-		$by_email = isset( $data['agents_by_email'] ) && is_array( $data['agents_by_email'] ) ? $data['agents_by_email'] : array();
+		$by_slug   = isset( $data['agents_by_slug'] ) && is_array( $data['agents_by_slug'] ) ? $data['agents_by_slug'] : array();
+		$by_email  = isset( $data['agents_by_email'] ) && is_array( $data['agents_by_email'] ) ? $data['agents_by_email'] : array();
 		$agent_ids = array();
 		foreach ( $by_slug as $slug => $post_id ) {
 			$agent_ids[ (int) $post_id ]['slug'] = (string) $slug;
@@ -238,8 +238,8 @@ final class IdRemapper {
 				(int) $post_id
 			);
 		}
-		$props_u = isset( $data['properties_by_unique'] ) && is_array( $data['properties_by_unique'] ) ? $data['properties_by_unique'] : array();
-		$props_s = isset( $data['properties_by_slug'] ) && is_array( $data['properties_by_slug'] ) ? $data['properties_by_slug'] : array();
+		$props_u  = isset( $data['properties_by_unique'] ) && is_array( $data['properties_by_unique'] ) ? $data['properties_by_unique'] : array();
+		$props_s  = isset( $data['properties_by_slug'] ) && is_array( $data['properties_by_slug'] ) ? $data['properties_by_slug'] : array();
 		$prop_ids = array();
 		foreach ( $props_u as $unique => $post_id ) {
 			$prop_ids[ (int) $post_id ]['unique'] = (string) $unique;

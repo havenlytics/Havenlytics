@@ -486,7 +486,7 @@ class InquiryAdminPage {
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$notice = sanitize_text_field( wp_unslash( rawurldecode( (string) $_GET['hvnly_notice'] ) ) );
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$notice_type = isset( $_GET['hvnly_notice_type'] ) ? sanitize_key( wp_unslash( $_GET['hvnly_notice_type'] ) ) : 'success';
+			$notice_type  = isset( $_GET['hvnly_notice_type'] ) ? sanitize_key( wp_unslash( $_GET['hvnly_notice_type'] ) ) : 'success';
 			$notice_class = 'notice-success';
 
 			if ( 'error' === $notice_type ) {
@@ -527,7 +527,7 @@ class InquiryAdminPage {
         </p>
     </div>
 </div>
-<?php
+		<?php
 	}
 
 	/**
@@ -554,12 +554,12 @@ class InquiryAdminPage {
     <h1 class="wp-heading-inline"><?php esc_html_e( 'Property Inquiries', 'havenlytics' ); ?></h1>
     <hr class="wp-header-end" />
 
-	<?php if ( $agent_id > 0 ) : ?>
-		<?php
-		$agent_title = get_the_title( $agent_id );
-		$agent_name  = is_string( $agent_title ) && '' !== $agent_title ? $agent_title : sprintf( '#%d', $agent_id );
-		$clear_url   = remove_query_arg( 'agent_id' );
-		?>
+		<?php if ( $agent_id > 0 ) : ?>
+			<?php
+			$agent_title = get_the_title( $agent_id );
+			$agent_name  = is_string( $agent_title ) && '' !== $agent_title ? $agent_title : sprintf( '#%d', $agent_id );
+			$clear_url   = remove_query_arg( 'agent_id' );
+			?>
     <div class="notice notice-info">
         <p>
 			<?php
@@ -582,7 +582,7 @@ class InquiryAdminPage {
 						esc_html__( 'Total: %d', 'havenlytics' ),
 						(int) $total
 					);
-					?>
+			?>
         </span>
         <span class="hvnly-inquiries-admin__stat hvnly-inquiries-admin__stat--new">
             <?php
@@ -591,7 +591,7 @@ class InquiryAdminPage {
 						esc_html__( 'New: %d', 'havenlytics' ),
 						(int) $new
 					);
-					?>
+			?>
         </span>
     </div>
 
@@ -603,10 +603,10 @@ class InquiryAdminPage {
         <?php
 				wp_nonce_field( 'bulk-' . self::MENU_SLUG );
 				$list_table->display();
-				?>
+		?>
     </form>
 </div>
-<?php
+		<?php
 	}
 
 	/**
@@ -634,11 +634,11 @@ class InquiryAdminPage {
 			admin_url( 'edit.php' )
 		);
 
-		$property_id   = (int) ( $inquiry['property_id'] ?? 0 );
-		$replies       = $this->reply_repository->list_for_inquiry( $inquiry_id );
-		$max_length    = (int) apply_filters( 'hvnly_inquiry_reply_max_length', ContactAgentConstants::REPLY_MESSAGE_MAX_LENGTH );
-		$min_length    = (int) apply_filters( 'hvnly_inquiry_reply_min_length', ContactAgentConstants::REPLY_MESSAGE_MIN_LENGTH );
-		$can_reply     = is_email( (string) ( $inquiry['sender_email'] ?? '' ) ) && ContactAgentConstants::STATUS_ARCHIVED !== ( $inquiry['status'] ?? '' );
+		$property_id = (int) ( $inquiry['property_id'] ?? 0 );
+		$replies     = $this->reply_repository->list_for_inquiry( $inquiry_id );
+		$max_length  = (int) apply_filters( 'hvnly_inquiry_reply_max_length', ContactAgentConstants::REPLY_MESSAGE_MAX_LENGTH );
+		$min_length  = (int) apply_filters( 'hvnly_inquiry_reply_min_length', ContactAgentConstants::REPLY_MESSAGE_MIN_LENGTH );
+		$can_reply   = is_email( (string) ( $inquiry['sender_email'] ?? '' ) ) && ContactAgentConstants::STATUS_ARCHIVED !== ( $inquiry['status'] ?? '' );
 		?>
 <div class="wrap hvnly-inquiries-admin hvnly-inquiries-admin--detail">
     <h1>
@@ -648,7 +648,7 @@ class InquiryAdminPage {
 					esc_html__( 'Inquiry #%d', 'havenlytics' ),
 					(int) $inquiry_id
 				);
-				?>
+		?>
     </h1>
     <p><a href="<?php echo esc_url( $back_url ); ?>">&larr;
             <?php esc_html_e( 'Back to inquiries', 'havenlytics' ); ?></a></p>
@@ -663,12 +663,12 @@ class InquiryAdminPage {
                 <dd>
                     <?php
 							$email = (string) ( $inquiry['sender_email'] ?? '' );
-							if ( is_email( $email ) ) {
-								echo '<a href="mailto:' . esc_attr( $email ) . '">' . esc_html( $email ) . '</a>';
-							} else {
-								echo esc_html( $email );
-							}
-							?>
+					if ( is_email( $email ) ) {
+						echo '<a href="mailto:' . esc_attr( $email ) . '">' . esc_html( $email ) . '</a>';
+					} else {
+						echo esc_html( $email );
+					}
+					?>
                 </dd>
                 <?php if ( ! empty( $inquiry['sender_phone'] ) ) : ?>
                 <dt><?php esc_html_e( 'Phone', 'havenlytics' ); ?></dt>
@@ -685,28 +685,28 @@ class InquiryAdminPage {
                 <dt><?php esc_html_e( 'Property', 'havenlytics' ); ?></dt>
                 <dd>
                     <?php
-							if ( $property_id > 0 ) {
-								$title = get_the_title( $property_id );
-								$edit  = get_edit_post_link( $property_id );
-								$view  = get_permalink( $property_id );
-								if ( $edit ) {
-									echo '<a href="' . esc_url( $edit ) . '">' . esc_html( $title ?: '#' . $property_id ) . '</a>';
-								} else {
-									echo esc_html( $title ?: '#' . $property_id );
-								}
-								if ( $view ) {
-									echo ' <a href="' . esc_url( $view ) . '" target="_blank" rel="noopener noreferrer">(' . esc_html__( 'view', 'havenlytics' ) . ')</a>';
-								}
-							} else {
-								echo '&mdash;';
-							}
-							?>
+					if ( $property_id > 0 ) {
+						$title = get_the_title( $property_id );
+						$edit  = get_edit_post_link( $property_id );
+						$view  = get_permalink( $property_id );
+						if ( $edit ) {
+							echo '<a href="' . esc_url( $edit ) . '">' . esc_html( $title ?: '#' . $property_id ) . '</a>';
+						} else {
+							echo esc_html( $title ?: '#' . $property_id );
+						}
+						if ( $view ) {
+							echo ' <a href="' . esc_url( $view ) . '" target="_blank" rel="noopener noreferrer">(' . esc_html__( 'view', 'havenlytics' ) . ')</a>';
+						}
+					} else {
+						echo '&mdash;';
+					}
+					?>
                 </dd>
                 <dt><?php esc_html_e( 'Agent', 'havenlytics' ); ?></dt>
                 <dd>
                     <?php
 							echo wp_kses_post( $this->render_inquiry_agent_cell( $inquiry, $agent ) );
-							?>
+					?>
                 </dd>
                 <dt><?php esc_html_e( 'Status', 'havenlytics' ); ?></dt>
                 <dd><?php echo esc_html( ucfirst( (string) ( $inquiry['status'] ?? '' ) ) ); ?></dd>
@@ -715,7 +715,7 @@ class InquiryAdminPage {
                     <?php
 							$timestamp = ! empty( $inquiry['created_at'] ) ? strtotime( (string) $inquiry['created_at'] . ' UTC' ) : false;
 							echo esc_html( $timestamp ? wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $timestamp ) : (string) ( $inquiry['created_at'] ?? '' ) );
-							?>
+					?>
                 </dd>
                 <dt><?php esc_html_e( 'Source', 'havenlytics' ); ?></dt>
                 <dd><?php echo esc_html( $this->format_inquiry_source( (string) ( $inquiry['source'] ?? '' ) ) ); ?></dd>
@@ -758,7 +758,7 @@ class InquiryAdminPage {
         </div>
     </div>
 
-    <?php if ( $can_reply ) : ?>
+		<?php if ( $can_reply ) : ?>
     <div class="hvnly-inquiries-admin__panel hvnly-inquiries-admin__panel--reply">
         <h2><?php esc_html_e( 'Reply to Visitor', 'havenlytics' ); ?></h2>
         <p class="hvnly-inquiries-admin__reply-help">
@@ -768,7 +768,7 @@ class InquiryAdminPage {
 							esc_html__( 'Your reply will be emailed securely to %s and stored in this conversation thread.', 'havenlytics' ),
 							esc_html( (string) $inquiry['sender_email'] )
 						);
-						?>
+			?>
         </p>
         <form method="post" class="hvnly-inquiries-admin__reply-form"
             data-max-length="<?php echo esc_attr( (string) $max_length ); ?>">
@@ -797,26 +797,48 @@ class InquiryAdminPage {
     <p class="hvnly-inquiries-admin__detail-actions">
         <?php if ( ContactAgentConstants::STATUS_ARCHIVED !== ( $inquiry['status'] ?? '' ) ) : ?>
         <a class="button"
-            href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'post_type' => 'hvnly_property', 'page' => self::MENU_SLUG, 'hvnly_action' => 'archive', 'inquiry_id' => $inquiry_id ), admin_url( 'edit.php' ) ), 'hvnly_inquiry_action_' . $inquiry_id, '_hvnly_inquiry_nonce' ) ); ?>">
+            href="
+            <?php
+            echo esc_url( wp_nonce_url( add_query_arg( array(
+				'post_type' => 'hvnly_property',
+				'page' => self::MENU_SLUG,
+				'hvnly_action' => 'archive',
+				'inquiry_id' => $inquiry_id,
+			), admin_url( 'edit.php' ) ), 'hvnly_inquiry_action_' . $inquiry_id, '_hvnly_inquiry_nonce' ) );
+			?>
+                    ">
             <?php esc_html_e( 'Archive', 'havenlytics' ); ?>
         </a>
         <?php endif; ?>
         <a class="button button-link-delete"
-            href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'post_type' => 'hvnly_property', 'page' => self::MENU_SLUG, 'hvnly_action' => 'delete', 'inquiry_id' => $inquiry_id ), admin_url( 'edit.php' ) ), 'hvnly_inquiry_action_' . $inquiry_id, '_hvnly_inquiry_nonce' ) ); ?>"
+            href="
+            <?php
+            echo esc_url( wp_nonce_url( add_query_arg( array(
+				'post_type' => 'hvnly_property',
+				'page' => self::MENU_SLUG,
+				'hvnly_action' => 'delete',
+				'inquiry_id' => $inquiry_id,
+			), admin_url( 'edit.php' ) ), 'hvnly_inquiry_action_' . $inquiry_id, '_hvnly_inquiry_nonce' ) );
+			?>
+                    "
             onclick="return confirm('<?php echo esc_js( __( 'Delete this inquiry permanently?', 'havenlytics' ) ); ?>');">
             <?php esc_html_e( 'Delete', 'havenlytics' ); ?>
         </a>
         <?php if ( is_email( (string) ( $inquiry['sender_email'] ?? '' ) ) ) : ?>
         <a class="button"
-            href="mailto:<?php echo esc_attr( (string) $inquiry['sender_email'] ); ?>?subject=<?php echo esc_attr( rawurlencode( sprintf( 
+            href="mailto:<?php echo esc_attr( (string) $inquiry['sender_email'] ); ?>?subject=
+            <?php
+            echo esc_attr( rawurlencode( sprintf(
 				/* translators: %s: property title or "property" if title not available */
-				__( 'Re: Inquiry about %s', 'havenlytics' ), get_the_title( $property_id ) ?: __( 'property', 'havenlytics' ) ) ) ); ?>">
+				__( 'Re: Inquiry about %s', 'havenlytics' ), get_the_title( $property_id ) ?: __( 'property', 'havenlytics' ) ) ) );
+			?>
+                ">
             <?php esc_html_e( 'Open in Email Client', 'havenlytics' ); ?>
         </a>
         <?php endif; ?>
     </p>
 </div>
-<?php
+		<?php
 	}
 
 	/**

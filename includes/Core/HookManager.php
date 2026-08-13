@@ -270,7 +270,7 @@ class HookManager {
 	 * The redirect ONLY happens when:
 	 * 1. The activation flag is set (set during plugin activation)
 	 * 2. AND we haven't redirected before (hvnly_activation_redirect_done is false)
-	 * 
+	 *
 	 * This ensures users can navigate away from the redirect page normally afterward.
 	 *
 	 * @return void
@@ -332,7 +332,7 @@ class HookManager {
 		$this->clear_activation_redirect_flag();
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			$context = $this->is_tgmpa_activation_context() ? 'tgmpa' : 'standard';
+			$context     = $this->is_tgmpa_activation_context() ? 'tgmpa' : 'standard';
 			$log_message = sprintf(
 				'Havenlytics: ONE-TIME activation redirect (%s) - Destination: %s',
 				sanitize_text_field( $context ),
@@ -567,7 +567,7 @@ class HookManager {
 		 * This is the WordPress.org recommended pattern for handling POST arrays
 		 */
 		$raw_settings = filter_input( INPUT_POST, 'settings', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY ) ?: array();
-		$settings = $this->sanitize_settings_array( $raw_settings );
+		$settings     = $this->sanitize_settings_array( $raw_settings );
 
 		/**
 		 * Update each setting in WordPress options
@@ -658,9 +658,9 @@ class HookManager {
 		 * Add settings link
 		 */
 		// $settings_link = sprintf(
-		// 	'<a href="%s">%s</a>',
-		// 	esc_url( admin_url( 'edit.php?post_type=hvnly_property&page=hvnly_property_settings' ) ),
-		// 	esc_html__( 'Settings', 'havenlytics' )
+		//  '<a href="%s">%s</a>',
+		//  esc_url( admin_url( 'edit.php?post_type=hvnly_property&page=hvnly_property_settings' ) ),
+		//  esc_html__( 'Settings', 'havenlytics' )
 		// );
 		// array_unshift( $links, $settings_link );
 
@@ -672,7 +672,7 @@ class HookManager {
 			esc_url( 'https://havenlytics.com/documentation/' ),
 			esc_html__( 'Docs', 'havenlytics' )
 		);
-		$links[] = $docs_link;
+		$links[]   = $docs_link;
 
 		/**
 		 * Add import wizard link for quick setup (only if no properties exist)
@@ -687,7 +687,7 @@ class HookManager {
 				esc_url( admin_url( 'edit.php?post_type=hvnly_property&page=hvnly-property-onboarding' ) ),
 				esc_html__( 'Get Started', 'havenlytics' )
 			);
-			$links[] = $import_link;
+			$links[]     = $import_link;
 		}
 
 		/**
@@ -699,7 +699,7 @@ class HookManager {
 				esc_url( wp_nonce_url( admin_url( 'edit.php?post_type=hvnly_property&page=hvnly_property_cache' ), 'hvnly_clear_cache' ) ),
 				esc_html__( 'Clear Cache', 'havenlytics' )
 			);
-			$links[] = $cache_link;
+			$links[]    = $cache_link;
 		}
 
 		return $links;

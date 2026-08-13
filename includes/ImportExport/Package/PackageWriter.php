@@ -49,9 +49,9 @@ final class PackageWriter {
 			return $workdir;
 		}
 
-		$work      = $workdir->data();
-		$dir       = (string) $work['dir'];
-		$warnings  = array();
+		$work            = $workdir->data();
+		$dir             = (string) $work['dir'];
+		$warnings        = array();
 		$media_checksums = array();
 		$validated_media = array();
 		$built_index     = array(
@@ -115,7 +115,7 @@ final class PackageWriter {
 				return $file_hash;
 			}
 
-			$checksum = (string) $file_hash->data();
+			$checksum                         = (string) $file_hash->data();
 			$media_checksums[ $archive_path ] = $checksum;
 
 			$built_index['files'][] = array(
@@ -261,20 +261,20 @@ final class PackageWriter {
 		array $media_checksums,
 		bool $include_media
 	): array {
-		$manifest['format']          = ManifestSchema::FORMAT;
-		$manifest['schema_version']  = isset( $manifest['schema_version'] )
+		$manifest['format']         = ManifestSchema::FORMAT;
+		$manifest['schema_version'] = isset( $manifest['schema_version'] )
 			? (string) $manifest['schema_version']
 			: ManifestSchema::SCHEMA_VERSION;
-		$manifest['exported_at']     = isset( $manifest['exported_at'] )
+		$manifest['exported_at']    = isset( $manifest['exported_at'] )
 			? (string) $manifest['exported_at']
 			: gmdate( 'c' );
-		$manifest['package_name']    = isset( $manifest['package_name'] )
+		$manifest['package_name']   = isset( $manifest['package_name'] )
 			? (string) $manifest['package_name']
 			: 'havenlytics-export-' . gmdate( 'Y-m-d-Hi' );
-		$manifest['contents']        = isset( $manifest['contents'] ) && is_array( $manifest['contents'] )
+		$manifest['contents']       = isset( $manifest['contents'] ) && is_array( $manifest['contents'] )
 			? $manifest['contents']
 			: array();
-		$manifest['counts']          = isset( $manifest['counts'] ) && is_array( $manifest['counts'] )
+		$manifest['counts']         = isset( $manifest['counts'] ) && is_array( $manifest['counts'] )
 			? $manifest['counts']
 			: array();
 

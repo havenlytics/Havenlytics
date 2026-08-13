@@ -442,11 +442,11 @@ final class FieldCatalog {
 				$ids[ $field['id'] ] = true;
 			}
 			// Preset ids that reuse existing catalog fields (never expose as separate targets).
-			$ids['preset_hvnly_property_field_number_bedrooms']  = true;
-			$ids['preset_hvnly_property_field_number_bathrooms'] = true;
+			$ids['preset_hvnly_property_field_number_bedrooms']   = true;
+			$ids['preset_hvnly_property_field_number_bathrooms']  = true;
 			$ids['preset_hvnly_property_field_number_squarefeet'] = true;
-			$ids['preset_hvnly_property_field_text_city']        = true;
-			$ids['preset_hvnly_property_field_text_zipcode']     = true;
+			$ids['preset_hvnly_property_field_text_city']         = true;
+			$ids['preset_hvnly_property_field_text_zipcode']      = true;
 		}
 		return $ids;
 	}

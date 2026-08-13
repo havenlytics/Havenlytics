@@ -41,19 +41,22 @@ class AgentsField extends BaseFieldType {
 			$group_base_id = str_replace( '_agents', '', (string) $field['name'] );
 		}
 
-		$field_name            = $group_base_id . '_agents';
-		$title_field_name      = $group_base_id . '_title';
-		$sidebar_toggle_name   = AgentConstants::META_HIDE_SIDEBAR_AGENT_WIDGET;
-		$assigned_ids          = $this->get_assigned_agent_ids( $post_id, $field_name, $field );
-		$available             = $this->get_available_agents( $assigned_ids );
-		$saved_title           = (string) $this->resolve_group_meta(
+		$field_name          = $group_base_id . '_agents';
+		$title_field_name    = $group_base_id . '_title';
+		$sidebar_toggle_name = AgentConstants::META_HIDE_SIDEBAR_AGENT_WIDGET;
+		$assigned_ids        = $this->get_assigned_agent_ids( $post_id, $field_name, $field );
+		$available           = $this->get_available_agents( $assigned_ids );
+		$saved_title         = (string) $this->resolve_group_meta(
 			(int) $post_id,
-			array_merge( $field, array( 'metaKey' => 'title', 'name' => $title_field_name ) ),
+			array_merge( $field, array(
+				'metaKey' => 'title',
+				'name' => $title_field_name,
+			) ),
 			$title_field_name,
 			'title'
 		);
-		$hide_sidebar_widget   = '1' === (string) get_post_meta( $post_id, $sidebar_toggle_name, true );
-		$container_id          = 'hvnlyAgentsSection_' . preg_replace( '/[^a-zA-Z0-9_-]/', '_', $group_base_id );
+		$hide_sidebar_widget = '1' === (string) get_post_meta( $post_id, $sidebar_toggle_name, true );
+		$container_id        = 'hvnlyAgentsSection_' . preg_replace( '/[^a-zA-Z0-9_-]/', '_', $group_base_id );
 
 		ob_start();
 		?>
@@ -168,7 +171,7 @@ class AgentsField extends BaseFieldType {
 		$group_base_id = str_replace( '_agents', '', $field_name );
 		$input_name    = $group_base_id . '_agents';
 
-		$raw_ids = filter_input( INPUT_POST, $input_name, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+		$raw_ids   = filter_input( INPUT_POST, $input_name, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 		$agent_ids = array();
 
 		if ( is_array( $raw_ids ) ) {
@@ -244,14 +247,14 @@ class AgentsField extends BaseFieldType {
 			$input_name = $field['group_base_id'] . '_agents';
 		}
 
-		$raw_ids = filter_input( INPUT_POST, $input_name, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
+		$raw_ids    = filter_input( INPUT_POST, $input_name, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY );
 		$has_agents = is_array( $raw_ids ) && ! empty( array_filter( array_map( 'absint', $raw_ids ) ) );
 
 		if ( ! $has_agents && ! empty( $value ) ) {
 			if ( is_array( $value ) ) {
 				$has_agents = ! empty( array_filter( array_map( 'absint', $value ) ) );
 			} elseif ( is_string( $value ) ) {
-				$decoded = json_decode( $value, true );
+				$decoded    = json_decode( $value, true );
 				$has_agents = is_array( $decoded ) && ! empty( array_filter( array_map( 'absint', $decoded ) ) );
 			}
 		}

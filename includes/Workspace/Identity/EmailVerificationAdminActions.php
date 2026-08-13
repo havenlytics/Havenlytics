@@ -20,9 +20,9 @@ defined( 'ABSPATH' ) || exit;
  */
 final class EmailVerificationAdminActions {
 
-	private const ACTION_VERIFY  = 'hvnly_admin_verify_email';
-	private const ACTION_RESEND  = 'hvnly_admin_resend_verification';
-	private const ACTION_TOGGLE  = 'hvnly_admin_toggle_verification_enforcement';
+	private const ACTION_VERIFY = 'hvnly_admin_verify_email';
+	private const ACTION_RESEND = 'hvnly_admin_resend_verification';
+	private const ACTION_TOGGLE = 'hvnly_admin_toggle_verification_enforcement';
 
 	/**
 	 * @return void

@@ -155,7 +155,10 @@ class Hvnly_Legacy_Preserved_Widget extends \WP_Widget {
 					>
 						<?php
 						$source = isset( $instance['agent_source'] ) ? (string) $instance['agent_source'] : 'property';
-						foreach ( array( 'property' => __( 'Property assigned agents', 'havenlytics' ), 'custom' => __( 'Custom selection', 'havenlytics' ) ) as $value => $label ) :
+						foreach ( array(
+							'property' => __( 'Property assigned agents', 'havenlytics' ),
+							'custom' => __( 'Custom selection', 'havenlytics' ),
+						) as $value => $label ) :
 							?>
 							<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $source, $value ); ?>>
 								<?php echo esc_html( $label ); ?>
@@ -174,7 +177,10 @@ class Hvnly_Legacy_Preserved_Widget extends \WP_Widget {
 					>
 						<?php
 						$layout = isset( $instance['widget_layout'] ) ? (string) $instance['widget_layout'] : 'classic';
-						foreach ( array( 'classic' => __( 'Classic', 'havenlytics' ), 'compact' => __( 'Compact', 'havenlytics' ) ) as $value => $label ) :
+						foreach ( array(
+							'classic' => __( 'Classic', 'havenlytics' ),
+							'compact' => __( 'Compact', 'havenlytics' ),
+						) as $value => $label ) :
 							?>
 							<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $layout, $value ); ?>>
 								<?php echo esc_html( $label ); ?>
@@ -189,15 +195,17 @@ class Hvnly_Legacy_Preserved_Widget extends \WP_Widget {
 					foreach ( $selected as $property_id ) :
 						?>
 						<div class="hvnly-selected-property" data-id="<?php echo esc_attr( (string) $property_id ); ?>">
-							<span><?php
+							<span>
+                            <?php
 							echo esc_html(
 								get_the_title( $property_id ) ?: sprintf(
 									/* translators: %d: Property post ID. */
 									__( 'Property #%d', 'havenlytics' ),
 									$property_id
 								)
-							);
-							?></span>
+									);
+							?>
+                                    </span>
 							<input type="hidden" name="<?php echo esc_attr( $target ); ?>[]" value="<?php echo esc_attr( (string) $property_id ); ?>" />
 						</div>
 					<?php endforeach; ?>
@@ -224,12 +232,12 @@ class Hvnly_Legacy_Preserved_Widget extends \WP_Widget {
 
 		if ( 'hvnly_agent' === $this->id_base ) {
 			if ( isset( $new_instance['agent_source'] ) ) {
-				$source = sanitize_key( (string) $new_instance['agent_source'] );
+				$source                    = sanitize_key( (string) $new_instance['agent_source'] );
 				$sanitized['agent_source'] = in_array( $source, array( 'property', 'custom' ), true ) ? $source : 'property';
 			}
 
 			if ( isset( $new_instance['widget_layout'] ) ) {
-				$layout = sanitize_key( (string) $new_instance['widget_layout'] );
+				$layout                     = sanitize_key( (string) $new_instance['widget_layout'] );
 				$sanitized['widget_layout'] = in_array( $layout, array( 'classic', 'compact' ), true ) ? $layout : 'classic';
 			}
 

@@ -114,7 +114,7 @@ class InquiryRepository implements InquiryRepositoryInterface {
 		if ( $agent_id <= 0 && $property_id > 0 ) {
 			$resolution = InquiryAgentResolver::resolve_for_submission( $property_id, 0 );
 			if ( ! is_wp_error( $resolution ) ) {
-				$agent_id = isset( $resolution['agent_id'] ) ? absint( $resolution['agent_id'] ) : 0;
+				$agent_id   = isset( $resolution['agent_id'] ) ? absint( $resolution['agent_id'] ) : 0;
 				$agent_type = isset( $resolution['agent_type'] ) ? sanitize_key( (string) $resolution['agent_type'] ) : $agent_type;
 			} elseif ( function_exists( 'hvnly_get_property_agent' ) ) {
 				$agent = hvnly_get_property_agent( $property_id );

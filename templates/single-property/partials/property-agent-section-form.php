@@ -119,7 +119,7 @@ if ( ! $hvnly_property_id ) {
         <div class="hvnly-agents-section__feedback js-hvnly-contact-agent-feedback" role="status" aria-live="polite"
             hidden></div>
 
-        <button type="submit" class="hvnly-agents-section__submit js-hvnly-contact-agent-submit">
+        <button type="submit" class="hvnly-btn hvnly-btn--primary hvnly-agents-section__submit js-hvnly-contact-agent-submit">
             <i class="fas fa-paper-plane" aria-hidden="true"></i>
             <?php esc_html_e( 'Send Message', 'havenlytics' ); ?>
         </button>

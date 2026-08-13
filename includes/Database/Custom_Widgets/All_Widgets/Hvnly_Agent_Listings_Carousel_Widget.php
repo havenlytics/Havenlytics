@@ -67,7 +67,6 @@ class Hvnly_Agent_Listings_Carousel_Widget extends \WP_Widget {
 			)
 
 		);
-
 	}
 
 
@@ -94,8 +93,6 @@ class Hvnly_Agent_Listings_Carousel_Widget extends \WP_Widget {
 
 		}
 
-
-
 		$property_id = (int) get_the_ID();
 
 		if ( $property_id <= 0 ) {
@@ -104,19 +101,13 @@ class Hvnly_Agent_Listings_Carousel_Widget extends \WP_Widget {
 
 		}
 
-
-
 		$instance = wp_parse_args( (array) $instance, AgentListingsCarouselWidgetRenderer::get_defaults() );
-
-
 
 		ob_start();
 
 		$rendered = AgentListingsCarouselWidgetRenderer::render( $property_id, $instance, (string) $args['widget_id'] );
 
-		$output   = ob_get_clean();
-
-
+		$output = ob_get_clean();
 
 		if ( ! $rendered || '' === trim( $output ) ) {
 
@@ -124,14 +115,11 @@ class Hvnly_Agent_Listings_Carousel_Widget extends \WP_Widget {
 
 		}
 
-
-
 		echo wp_kses_post( $args['before_widget'] );
 
 		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Template uses escaped output helpers.
 
 		echo wp_kses_post( $args['after_widget'] );
-
 	}
 
 
@@ -156,25 +144,23 @@ class Hvnly_Agent_Listings_Carousel_Widget extends \WP_Widget {
 
 		);
 
+		$agent_id = absint( $instance['agent_id'] );
 
+		$title = (string) $instance['title'];
 
-		$agent_id      = absint( $instance['agent_id'] );
+		$number = absint( $instance['number'] );
 
-		$title         = (string) $instance['title'];
+		$orderby = (string) $instance['orderby'];
 
-		$number        = absint( $instance['number'] );
-
-		$orderby       = (string) $instance['orderby'];
-
-		$show_price    = (string) $instance['show_price'];
+		$show_price = (string) $instance['show_price'];
 
 		$show_location = (string) $instance['show_location'];
 
-		$show_status   = (string) $instance['show_status'];
+		$show_status = (string) $instance['show_status'];
 
-		$autoplay      = (string) $instance['autoplay'];
+		$autoplay = (string) $instance['autoplay'];
 
-		$show_nav      = (string) $instance['show_nav'];
+		$show_nav = (string) $instance['show_nav'];
 
 		$agent_choices = AgentListingsCarouselWidgetRenderer::get_agent_choices();
 
@@ -399,7 +385,6 @@ class Hvnly_Agent_Listings_Carousel_Widget extends \WP_Widget {
 		</p>
 
 		<?php
-
 	}
 
 
@@ -424,8 +409,6 @@ class Hvnly_Agent_Listings_Carousel_Widget extends \WP_Widget {
 
 		$new_instance = is_array( $new_instance ) ? $new_instance : array();
 
-
-
 		$orderby = sanitize_key( (string) ( $new_instance['orderby'] ?? $old_instance['orderby'] ?? 'assigned' ) );
 
 		if ( ! in_array( $orderby, array( 'assigned', 'date', 'title', 'price', 'rand' ), true ) ) {
@@ -434,8 +417,6 @@ class Hvnly_Agent_Listings_Carousel_Widget extends \WP_Widget {
 
 		}
 
-
-
 		$agent_id = absint( $new_instance['agent_id'] ?? $old_instance['agent_id'] ?? 0 );
 
 		if ( $agent_id > 0 && function_exists( 'hvnly_is_valid_agent' ) && ! hvnly_is_valid_agent( $agent_id ) ) {
@@ -443,8 +424,6 @@ class Hvnly_Agent_Listings_Carousel_Widget extends \WP_Widget {
 			$agent_id = 0;
 
 		}
-
-
 
 		$sanitized = array(
 
@@ -468,20 +447,14 @@ class Hvnly_Agent_Listings_Carousel_Widget extends \WP_Widget {
 
 		);
 
-
-
 		if ( $sanitized['number'] < 1 ) {
 
 			$sanitized['number'] = 1;
 
 		}
 
-
-
 		return WidgetInstanceHelpers::merge_instance( $old_instance, $sanitized );
-
 	}
-
 }
 
 

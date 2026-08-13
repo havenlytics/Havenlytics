@@ -120,11 +120,11 @@ $hvnly_total_images = count($hvnly_display_images);
 
         <?php if ($hvnly_total_images > 1): ?>
         <div class="hvnly-property-single__gallery-controls">
-            <button class="hvnly-property-single__gallery-btn hvnly-property-single__gallery-btn--prev"
+            <button type="button" class="hvnly-ui-control hvnly-property-single__gallery-btn hvnly-property-single__gallery-btn--prev"
                 aria-label="<?php esc_attr_e('Previous image', 'havenlytics'); ?>">
                 <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-chevron-left"></use></svg>
             </button>
-            <button class="hvnly-property-single__gallery-btn hvnly-property-single__gallery-btn--next"
+            <button type="button" class="hvnly-ui-control hvnly-property-single__gallery-btn hvnly-property-single__gallery-btn--next"
                 aria-label="<?php esc_attr_e('Next image', 'havenlytics'); ?>">
                 <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-chevron-right"></use></svg>
             </button>

@@ -28,7 +28,7 @@ use HvnlyNab\Workspace\WorkspaceConstants;
 use HvnlyNab\Workspace\WorkspaceSettings;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -45,14 +45,14 @@ final class DashboardBlockRenderer {
      * @param object $block      Block instance (unused).
      * @return string
      */
-    public static function render($attributes = [], string $content = '', $block = null): string {
+    public static function render( $attributes = array(), string $content = '', $block = null ): string {
         unset($content, $block);
 
-        if (!function_exists('hvnly_get_template_part')) {
+        if ( ! function_exists('hvnly_get_template_part')) {
             return '';
         }
 
-        $attributes = is_array($attributes) ? $attributes : [];
+        $attributes = is_array($attributes) ? $attributes : array();
 
         // Same render path on frontend AND in the editor (ServerSideRender/REST):
         // logged-in → the real SPA mount (the editor boots it via the reusable
@@ -63,10 +63,10 @@ final class DashboardBlockRenderer {
 
         $wrapper_id = wp_unique_id('hvnly-dash-');
 
-        $layout          = self::choice((string) ($attributes['dashboardLayout'] ?? 'default'), ['default', 'contained', 'full'], 'default');
-        $container_style = self::choice((string) ($attributes['containerStyle'] ?? 'default'), ['default', 'flat', 'bordered'], 'default');
-        $container_width = max(0, (int) ($attributes['containerWidth'] ?? 0));
-        $min_height      = max(0, (int) ($attributes['minHeight'] ?? 600));
+        $layout          = self::choice( (string) ( $attributes['dashboardLayout'] ?? 'default' ), array( 'default', 'contained', 'full' ), 'default');
+        $container_style = self::choice( (string) ( $attributes['containerStyle'] ?? 'default' ), array( 'default', 'flat', 'bordered' ), 'default');
+        $container_width = max(0, (int) ( $attributes['containerWidth'] ?? 0 ));
+        $min_height      = max(0, (int) ( $attributes['minHeight'] ?? 600 ));
 
         $scoped_css = self::build_scoped_css($wrapper_id, $attributes, $container_style, $container_width, $min_height);
 
@@ -78,17 +78,17 @@ final class DashboardBlockRenderer {
         }
 
         // Sign-in gate — reuse the existing Authentication block for real login.
-        $gate = ('gate' === $context) ? self::build_gate($attributes) : [];
+        $gate = ( 'gate' === $context ) ? self::build_gate($attributes) : array();
 
         $wrapper_class = 'hvnly-dashboard-block hvnly-dashboard-block--layout-' . $layout
             . ' hvnly-dashboard-block--style-' . $container_style
             . ' hvnly-dashboard-block--context-' . $context;
 
         $wrapper = function_exists('get_block_wrapper_attributes')
-            ? get_block_wrapper_attributes(['class' => $wrapper_class])
+            ? get_block_wrapper_attributes(array( 'class' => $wrapper_class ))
             : 'class="' . esc_attr($wrapper_class) . '"';
 
-        $template_args = [
+        $template_args = array(
             'attributes'   => $attributes,
             'context'      => $context,
             'wrapper'      => $wrapper,
@@ -97,7 +97,7 @@ final class DashboardBlockRenderer {
             'mount_html'   => $mount_html,
             'gate'         => $gate,
             'min_height'   => $min_height,
-        ];
+        );
 
         ob_start();
         hvnly_get_template_part('blocks/dashboard', null, $template_args);
@@ -111,21 +111,21 @@ final class DashboardBlockRenderer {
      * @param array<string, mixed> $attributes Block attributes.
      * @return array<string, mixed>
      */
-    private static function build_gate(array $attributes): array {
-        $mode = self::choice((string) ($attributes['loggedOutMode'] ?? 'form'), ['form', 'button'], 'form');
+    private static function build_gate( array $attributes ): array {
+        $mode = self::choice( (string) ( $attributes['loggedOutMode'] ?? 'form' ), array( 'form', 'button' ), 'form');
 
-        $heading = (string) ($attributes['loggedOutHeading'] ?? '');
+        $heading = (string) ( $attributes['loggedOutHeading'] ?? '' );
         if ('' === $heading) {
             $heading = __('Sign in to your dashboard', 'havenlytics');
         }
-        $message = (string) ($attributes['loggedOutMessage'] ?? '');
+        $message = (string) ( $attributes['loggedOutMessage'] ?? '' );
         if ('' === $message) {
             $message = __('You must sign in to access your dashboard.', 'havenlytics');
         }
 
-        $auth_html = '';
-        $button_url = '';
-        $button_label = (string) ($attributes['authButtonLabel'] ?? '');
+        $auth_html    = '';
+        $button_url   = '';
+        $button_label = (string) ( $attributes['authButtonLabel'] ?? '' );
         if ('' === $button_label) {
             $button_label = __('Sign in', 'havenlytics');
         }
@@ -133,16 +133,16 @@ final class DashboardBlockRenderer {
         if ('form' === $mode && class_exists(AuthenticationBlockRenderer::class)) {
             // Reuse the Authentication block; after login, reload so the dashboard
             // renders in place (redirect-after-login support).
-            $auth_html = AuthenticationBlockRenderer::render([
+            $auth_html = AuthenticationBlockRenderer::render(array(
                 'authMode'         => 'login',
                 'afterLogin'       => 'current',
                 'showRegisterLink' => true,
                 'layout'           => 'card',
                 'cardAlign'        => 'center',
-            ]);
+            ));
         } else {
-            $mode = 'button';
-            $custom = (string) ($attributes['authUrl'] ?? '');
+            $mode   = 'button';
+            $custom = (string) ( $attributes['authUrl'] ?? '' );
             if ('' !== trim($custom)) {
                 $button_url = esc_url_raw(trim($custom));
             } elseif (class_exists(WorkspaceSettings::class)) {
@@ -152,14 +152,14 @@ final class DashboardBlockRenderer {
             }
         }
 
-        return [
+        return array(
             'mode'         => $mode,
             'heading'      => $heading,
             'message'      => $message,
             'auth_html'    => $auth_html,
             'button_url'   => $button_url,
             'button_label' => $button_label,
-        ];
+        );
     }
 
     /**
@@ -176,39 +176,39 @@ final class DashboardBlockRenderer {
      * @param int                  $min_h  Min height (px).
      * @return string
      */
-    private static function build_scoped_css(string $id, array $a, string $style, int $width, int $min_h): string {
+    private static function build_scoped_css( string $id, array $a, string $style, int $width, int $min_h ): string {
         $sel  = '#' . $id;
-        $vars = [];
+        $vars = array();
 
-        $radius = (int) ($a['cardRadius'] ?? 0);
+        $radius = (int) ( $a['cardRadius'] ?? 0 );
         if ($radius > 0) {
             $vars['--hvnly-border-radius-lg'] = $radius . 'px';
         }
 
-        $spacing = (int) ($a['spacing'] ?? 0);
+        $spacing = (int) ( $a['spacing'] ?? 0 );
         if ($spacing > 0) {
             $vars['--hvnly-space-lg'] = $spacing . 'px';
         }
 
-        $shadow = self::choice((string) ($a['shadow'] ?? 'default'), ['default', 'none', 'sm', 'md', 'lg'], 'default');
-        $shadow_map = [
+        $shadow     = self::choice( (string) ( $a['shadow'] ?? 'default' ), array( 'default', 'none', 'sm', 'md', 'lg' ), 'default');
+        $shadow_map = array(
             'none' => 'none',
             'sm'   => '0 1px 2px rgba(16,24,40,0.06)',
             'md'   => '0 4px 12px rgba(16,24,40,0.10)',
             'lg'   => '0 16px 40px rgba(16,24,40,0.16)',
-        ];
+        );
         if ('bordered' === $style) {
             $vars['--hvnly-card-shadow'] = 'none';
-        } elseif (isset($shadow_map[$shadow])) {
-            $vars['--hvnly-card-shadow']  = $shadow_map[$shadow];
-            $vars['--hvnly-shadow-card']  = $shadow_map[$shadow];
+        } elseif (isset($shadow_map[ $shadow ])) {
+            $vars['--hvnly-card-shadow'] = $shadow_map[ $shadow ];
+            $vars['--hvnly-shadow-card'] = $shadow_map[ $shadow ];
         }
 
         $css = '';
 
         // Token overrides target the SPA roots directly so they beat the SPA's own
         // `.hvnly-ws` re-declarations (higher specificity via the instance id).
-        if (!empty($vars)) {
+        if ( ! empty($vars)) {
             $decls = '';
             foreach ($vars as $prop => $value) {
                 $decls .= $prop . ':' . $value . ';';
@@ -226,7 +226,7 @@ final class DashboardBlockRenderer {
         // Section visibility (dashboard-home scope). Maps each toggle to the SPA's
         // existing stable class name; hides via display:none (presentation only).
         $dash = $sel . ' [data-hvnly-ws-view="dashboard"] ';
-        $hide = [];
+        $hide = array();
         if (empty($a['showWelcome']) && isset($a['showWelcome'])) {
             $hide[] = $dash . '.hvnly-agent-dashboard__welcome';
         }
@@ -258,7 +258,7 @@ final class DashboardBlockRenderer {
             $hide[] = $sel . ' .hvnly-ws__sidebar-overlay';
         }
 
-        if (!empty($hide)) {
+        if ( ! empty($hide)) {
             // Instance-id + view scoping already outranks the SPA's own class
             // rules, so no !important is needed to hide a section.
             $css .= implode(',', $hide) . '{display:none;}';
@@ -275,7 +275,7 @@ final class DashboardBlockRenderer {
      * @param string   $default Fallback.
      * @return string
      */
-    private static function choice(string $value, array $allowed, string $default): string {
+    private static function choice( string $value, array $allowed, string $default ): string {
         return in_array($value, $allowed, true) ? $value : $default;
     }
 }

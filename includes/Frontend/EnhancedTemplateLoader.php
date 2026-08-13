@@ -29,20 +29,20 @@ class EnhancedTemplateLoader extends TemplateLoader {
      *
      * @var array
      */
-    private $field_categories = [
-        'default' => [ 'text', 'number', 'textarea', 'select', 'checkbox', 'file', 'image', 'url', 'email', 'date' ],
-        'preset'  => [ 'fullname', 'email', 'phone', 'company', 'website', 'bedrooms', 'bathrooms', 'squarefeet', 'garage', 'address', 'city', 'zipcode', 'pool', 'garden', 'garage-checkbox' ],
-        'group'   => [ 'video', 'gallery', 'map' ]
-    ];
+    private $field_categories = array(
+        'default' => array( 'text', 'number', 'textarea', 'select', 'checkbox', 'file', 'image', 'url', 'email', 'date' ),
+        'preset'  => array( 'fullname', 'email', 'phone', 'company', 'website', 'bedrooms', 'bathrooms', 'squarefeet', 'garage', 'address', 'city', 'zipcode', 'pool', 'garden', 'garage-checkbox' ),
+        'group'   => array( 'video', 'gallery', 'map' ),
+    );
 
     /**
      * Constructor
      */
     public function __construct() {
         parent::__construct();
-        
+
         // Hook into template location
-        add_filter( 'hvnly_locate_template', [ $this, 'locate_field_template' ], 10, 3 );
+        add_filter( 'hvnly_locate_template', array( $this, 'locate_field_template' ), 10, 3 );
     }
 
     /**
@@ -64,7 +64,7 @@ class EnhancedTemplateLoader extends TemplateLoader {
 
         // Check if field type is in preset list
         $field_type = $field['type'] ?? '';
-        if ( in_array( $field_type, [ 'fullname', 'email', 'phone', 'company', 'website', 'bedrooms', 'bathrooms', 'squarefeet', 'garage', 'address', 'city', 'zipcode', 'pool', 'garden', 'garage-checkbox' ] ) ) {
+        if ( in_array( $field_type, array( 'fullname', 'email', 'phone', 'company', 'website', 'bedrooms', 'bathrooms', 'squarefeet', 'garage', 'address', 'city', 'zipcode', 'pool', 'garden', 'garage-checkbox' ) ) ) {
             return 'preset';
         }
 
@@ -80,8 +80,8 @@ class EnhancedTemplateLoader extends TemplateLoader {
      */
     public function get_template_name( $field ) {
         $field_type = $field['type'] ?? 'text';
-        $field_id = $field['id'] ?? '';
-        $category = $this->get_field_category( $field );
+        $field_id   = $field['id'] ?? '';
+        $category   = $this->get_field_category( $field );
 
         // Group fields use their group_type as template name
         if ( $category === 'group' ) {
@@ -93,9 +93,9 @@ class EnhancedTemplateLoader extends TemplateLoader {
             // Extract the part after 'preset_hvnly_property_field_'
             $template = str_replace( 'preset_hvnly_property_field_', '', $field_id );
             $template = str_replace( '_', '-', $template );
-            
+
             // Map common preset names
-            $preset_map = [
+            $preset_map = array(
                 'fullname' => 'fullname',
                 'email' => 'email',
                 'phone' => 'phone',
@@ -110,9 +110,9 @@ class EnhancedTemplateLoader extends TemplateLoader {
                 'text-zipcode' => 'zipcode',
                 'checkbox-pool' => 'pool',
                 'checkbox-garden' => 'garden',
-                'checkbox-garage' => 'garage-checkbox'
-            ];
-            
+                'checkbox-garage' => 'garage-checkbox',
+            );
+
             return $preset_map[ $template ] ?? $template;
         }
 
@@ -131,11 +131,11 @@ class EnhancedTemplateLoader extends TemplateLoader {
     public function locate_field_template( $template, $template_name, $template_path ) {
         // Only intercept single property field templates
         if ( ! is_array( $template_name ) ) {
-            $template_name = [ $template_name ];
+            $template_name = array( $template_name );
         }
 
         $first_template = reset( $template_name );
-        
+
         // Check if this is a field template
         if ( strpos( $first_template, 'single-property/fields/' ) !== 0 ) {
             return $template;
@@ -160,9 +160,9 @@ class EnhancedTemplateLoader extends TemplateLoader {
      * @param array  $args       Template args
      * @return void
      */
-    public function get_field_template( $field_type, $category, $args = [] ) {
+    public function get_field_template( $field_type, $category, $args = array() ) {
         $template_name = 'single-property/fields/' . $category . '/' . $field_type . '.php';
-        
+
         // Try category-specific template first
         if ( file_exists( $this->get_default_path() . $template_name ) ) {
             hvnly_get_template( $template_name, $args );

@@ -209,11 +209,11 @@ final class PermalinkSettings {
 	 * @return array<string, string>|\WP_Error
 	 */
 	public static function save_group( array $input ) {
-		$previous = self::get_all();
+		$previous  = self::get_all();
 		$sanitized = array();
 
 		foreach ( self::DEFAULTS as $key => $default ) {
-			$raw = isset( $input[ $key ] ) ? (string) $input[ $key ] : (string) ( $previous[ $key ] ?? $default );
+			$raw  = isset( $input[ $key ] ) ? (string) $input[ $key ] : (string) ( $previous[ $key ] ?? $default );
 			$slug = self::sanitize_slug( $raw, (string) $default );
 
 			if ( is_wp_error( $slug ) ) {

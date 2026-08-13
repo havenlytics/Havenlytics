@@ -15,7 +15,7 @@
 namespace HvnlyNab\Integrations\Blocks;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -34,19 +34,19 @@ final class PropertySearchBlockRenderer {
      * @param object $block      Block instance (unused).
      * @return string
      */
-    public static function render($attributes = [], string $content = '', $block = null): string {
+    public static function render( $attributes = array(), string $content = '', $block = null ): string {
         unset($content, $block);
 
-        if (!class_exists(PropertyArchiveBlockRenderer::class)) {
+        if ( ! class_exists(PropertyArchiveBlockRenderer::class)) {
             return '';
         }
 
-        $attributes = is_array($attributes) ? $attributes : [];
+        $attributes = is_array($attributes) ? $attributes : array();
 
         // Search-first defaults: always show the search bar; keep the sidebar on
         // unless the editor explicitly disabled it.
         $attributes['showTopSearch'] = true;
-        if (!isset($attributes['showFilterSidebar'])) {
+        if ( ! isset($attributes['showFilterSidebar'])) {
             $attributes['showFilterSidebar'] = true;
         }
 

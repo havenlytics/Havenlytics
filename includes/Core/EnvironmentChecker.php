@@ -35,8 +35,8 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.0
  */
-class EnvironmentChecker
-{
+class EnvironmentChecker {
+
     /**
      * Perform environment compatibility check
      *
@@ -46,24 +46,23 @@ class EnvironmentChecker
      *
      * @return bool True if environment meets all requirements, false otherwise
      */
-    public static function check(): bool
-    {
+    public static function check(): bool {
         global $wp_version;
 
         /**
          * Define minimum requirements and perform version checks
          * Uses version_compare for safe version comparison
          */
-        $checks = [
+        $checks = array(
             'php' => version_compare(PHP_VERSION, '7.4', '>='),
             'wp'  => version_compare($wp_version, '6.3', '>='),
-        ];
+        );
 
         /**
          * Return true only if ALL checks pass (no false values in array)
          * Uses strict comparison to ensure only boolean false fails
          */
-        if (!in_array(false, $checks, true)) {
+        if ( ! in_array(false, $checks, true)) {
             return true;
         }
 
@@ -86,21 +85,20 @@ class EnvironmentChecker
      * @param array $checks Array of check results with keys 'php' and 'wp'
      * @return void
      */
-    private static function handle_environment_failure(array $checks)
-    {
-        $messages = [];
+    private static function handle_environment_failure( array $checks ) {
+        $messages = array();
 
         /**
          * Generate PHP version requirement message if check failed
          */
-        if (!$checks['php']) {
+        if ( ! $checks['php']) {
             $messages[] = sprintf('Requires PHP 7.4 or higher. Current: %s.', PHP_VERSION);
         }
 
         /**
          * Generate WordPress version requirement message if check failed
          */
-        if (!$checks['wp']) {
+        if ( ! $checks['wp']) {
             global $wp_version;
             $messages[] = sprintf('Requires WordPress 6.3 or higher. Current: %s.', $wp_version);
         }
@@ -109,7 +107,7 @@ class EnvironmentChecker
          * Display admin notice with all failure messages
          * Hooked to admin_notices to show in WordPress admin area
          */
-        add_action('admin_notices', function () use ($messages) {
+        add_action('admin_notices', function () use ( $messages ) {
             echo '<div class="notice notice-error"><p><strong>Havenlytics:</strong> ' . esc_html(implode(' ', $messages)) . '</p></div>';
         });
 

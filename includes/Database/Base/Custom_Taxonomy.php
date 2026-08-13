@@ -14,7 +14,7 @@
 namespace HvnlyNab\Database\Base;
 
 // Security check to prevent direct access
-if (! defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -23,8 +23,8 @@ if (! defined('ABSPATH')) {
  *
  * Extend this class to create and register new custom taxonomies.
  */
-abstract class Custom_Taxonomy
-{
+abstract class Custom_Taxonomy {
+
 
     /**
      * @var string $post_types The default post type(s) this taxonomy applies to.
@@ -37,10 +37,9 @@ abstract class Custom_Taxonomy
      *
      * Hooks into WordPress `init` to register the custom taxonomy.
      */
-    public function __construct()
-    {
+    public function __construct() {
         // Register taxonomy during WordPress initialization
-        add_action('init', [$this, 'register_custom_taxonomy'], 1);
+        add_action('init', array( $this, 'register_custom_taxonomy' ), 1);
     }
 
     /**
@@ -64,11 +63,10 @@ abstract class Custom_Taxonomy
      *
      * @return void
      */
-    public function init($type, $singular_label, $plural_label, $post_types, $settings = [], $labels = [])
-    {
+    public function init( $type, $singular_label, $plural_label, $post_types, $settings = array(), $labels = array() ) {
 
         // Default taxonomy labels
-        $default_labels = [
+        $default_labels = array(
             'name'                  => esc_html($plural_label),
             'singular_name'         => esc_html($singular_label),
             /* translators: %s: Add New post type label */
@@ -96,10 +94,10 @@ abstract class Custom_Taxonomy
             /* translators: %s: Parent post type label */
             'parent_item_colon'     => sprintf(__('Parent %s:', 'havenlytics'), esc_html($singular_label)),
             'menu_name'             => esc_html($plural_label),
-        ];
+        );
 
         // Default taxonomy settings
-        $default_settings = [
+        $default_settings = array(
             'labels'            => array_merge($default_labels, $labels),
             'public'            => true,
             'show_in_nav_menus' => true,
@@ -107,17 +105,17 @@ abstract class Custom_Taxonomy
             'hierarchical'      => true,
             'show_tagcloud'     => false,
             'show_ui'           => true,
-            'rewrite'           => [
+            'rewrite'           => array(
                 'slug'       => sanitize_title($plural_label),
                 'with_front' => false,
-            ],
-            'capabilities'      => [
+            ),
+            'capabilities'      => array(
                 'manage_terms' => 'manage_categories',
                 'edit_terms'   => 'manage_categories',
                 'delete_terms' => 'manage_categories',
                 'assign_terms' => 'read',
-            ],
-        ];
+            ),
+        );
 
         // Register taxonomy with WordPress
         register_taxonomy($type, $post_types, array_merge($default_settings, $settings));

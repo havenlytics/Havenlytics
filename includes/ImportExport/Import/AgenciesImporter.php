@@ -77,7 +77,7 @@ final class AgenciesImporter {
 		}
 
 		foreach ( $rows as $row ) {
-			$result = self::upsert( $row, $detector, $remapper, $policy );
+			$result   = self::upsert( $row, $detector, $remapper, $policy );
 			$created += $result['created'];
 			$updated += $result['updated'];
 			$skipped += $result['skipped'];
@@ -262,7 +262,10 @@ final class AgenciesImporter {
 			$warnings[] = array(
 				'code'    => 'hvnly_ie_agency_parent_missing',
 				'message' => 'Parent agency could not be resolved.',
-				'context' => array( 'slug' => $slug, 'parent_slug' => $parent_slug ),
+				'context' => array(
+					'slug' => $slug,
+					'parent_slug' => $parent_slug,
+				),
 			);
 			return;
 		}

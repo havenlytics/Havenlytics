@@ -37,8 +37,8 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.0
  */
-class CacheManager
-{
+class CacheManager {
+
     /**
      * Initialize default cache options
      *
@@ -48,8 +48,7 @@ class CacheManager
      *
      * @return void
      */
-    public static function initialize_cache_options()
-    {
+    public static function initialize_cache_options() {
         /**
          * Set default counters to zero — never seed fake hit rates.
          */
@@ -75,8 +74,7 @@ class CacheManager
      *
      * @return int|false Number of database rows affected, or false on error
      */
-    public static function clear_all_cache()
-    {
+    public static function clear_all_cache() {
         global $wpdb;
 
         /**
@@ -120,8 +118,7 @@ class CacheManager
      *
      * @return bool
      */
-    public static function is_enabled()
-    {
+    public static function is_enabled() {
         return \hvnly_is_cache_enabled();
     }
 
@@ -134,8 +131,7 @@ class CacheManager
      * @param string $pattern The pattern to match in cache keys
      * @return int|false Number of database rows affected, or false on error
      */
-    public static function clear_transients_by_pattern($pattern)
-    {
+    public static function clear_transients_by_pattern( $pattern ) {
         global $wpdb;
 
         $pattern = (string) $pattern;
@@ -149,7 +145,7 @@ class CacheManager
         );
 
         $deleted = 0;
-        if (!empty($option_names)) {
+        if ( ! empty($option_names)) {
             foreach ($option_names as $option_name) {
                 $transient_name = str_replace('_transient_', '', $option_name);
                 if (delete_transient($transient_name)) {
@@ -174,8 +170,7 @@ class CacheManager
      *
      * @return void
      */
-    public static function clear_expired_cache()
-    {
+    public static function clear_expired_cache() {
         global $wpdb;
         $time = time();
 
@@ -207,8 +202,7 @@ class CacheManager
      * @param string $key Raw cache key.
      * @return string Key starting with hvnly_
      */
-    private static function normalize_transient_key($key)
-    {
+    private static function normalize_transient_key( $key ) {
         $key = (string) $key;
 
         if (strpos($key, '_transient_timeout_') === 0) {
@@ -239,9 +233,8 @@ class CacheManager
      * @param int $ttl Time to live in seconds (default: 1 hour)
      * @return bool True if value was set, false otherwise
      */
-    public static function set_transient($key, $value, $ttl = HOUR_IN_SECONDS)
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    public static function set_transient( $key, $value, $ttl = HOUR_IN_SECONDS ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return false;
         }
 
@@ -271,13 +264,12 @@ class CacheManager
      * @param string $key The cache key to retrieve
      * @return mixed The cached value, or false if not found
      */
-    public static function get_transient($key)
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    public static function get_transient( $key ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return false;
         }
 
-        $key = self::normalize_transient_key($key);
+        $key   = self::normalize_transient_key($key);
         $value = get_transient($key);
 
         /**
@@ -308,8 +300,7 @@ class CacheManager
      * @param string $key The cache key to delete
      * @return bool True if the key was deleted, false otherwise
      */
-    public static function delete_transient($key)
-    {
+    public static function delete_transient( $key ) {
         $key = self::normalize_transient_key($key);
         return delete_transient($key);
     }
@@ -325,8 +316,7 @@ class CacheManager
      *
      * @return array Comprehensive cache statistics
      */
-    public static function get_cache_stats(): array
-    {
+    public static function get_cache_stats(): array {
         global $wpdb;
 
         try {
@@ -368,18 +358,17 @@ class CacheManager
      * @param array $cache_data Raw cache data from database
      * @return array Processed cache statistics
      */
-    private static function calculate_cache_stats(array $cache_data): array
-    {
+    private static function calculate_cache_stats( array $cache_data ): array {
         /**
          * Initialize statistics array with default values
          */
-        $stats = [
+        $stats = array(
             'total_cache_size'    => 0,
             'search_cache_count'  => 0,
             'sidebar_cache_count' => 0,
             'term_cache_count'    => 0,
             'total_cached_items'  => count($cache_data),
-        ];
+        );
 
         /**
          * Process each cache entry to calculate totals and categories
@@ -417,8 +406,7 @@ class CacheManager
      *
      * @return float Cache hit rate as a percentage (0.0 - 100.0)
      */
-    private static function calculate_hit_rate(): float
-    {
+    private static function calculate_hit_rate(): float {
         $hits   = (int) get_option('hvnly_cache_hits', 0);
         $misses = (int) get_option('hvnly_cache_misses', 0);
         $total  = $hits + $misses;
@@ -427,7 +415,7 @@ class CacheManager
             return 0.0;
         }
 
-        return round(($hits / $total) * 100, 1);
+        return round(( $hits / $total ) * 100, 1);
     }
 
     /**
@@ -440,16 +428,17 @@ class CacheManager
      * @param int $decimals Number of decimal places to show
      * @return string Formatted byte string with unit
      */
-    private static function format_bytes($bytes, $decimals = 2): string
-    {
-        if ($bytes === 0) return '0 Bytes';
+    private static function format_bytes( $bytes, $decimals = 2 ): string {
+        if ($bytes === 0) {
+			return '0 Bytes';
+        }
 
-        $k = 1024;
-        $dm = $decimals < 0 ? 0 : $decimals;
-        $sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        $i = floor(log($bytes) / log($k));
+        $k     = 1024;
+        $dm    = $decimals < 0 ? 0 : $decimals;
+        $sizes = array( 'Bytes', 'KB', 'MB', 'GB' );
+        $i     = floor(log($bytes) / log($k));
 
-        return number_format($bytes / pow($k, $i), $dm) . ' ' . $sizes[$i];
+        return number_format($bytes / pow($k, $i), $dm) . ' ' . $sizes[ $i ];
     }
 
     /**
@@ -460,25 +449,21 @@ class CacheManager
      *
      * @return array Default cache statistics
      */
-    private static function get_default_cache_stats(): array
-    {
-        return [
+    private static function get_default_cache_stats(): array {
+        return array(
             'total_cache_size'    => 0,
             'search_cache_count'  => 0,
             'sidebar_cache_count' => 0,
             'term_cache_count'    => 0,
             'cache_hit_rate'      => 0.0,
             'total_cached_items'  => 0,
-            'cache_size_human'    => '0 Bytes'
-        ];
+            'cache_size_human'    => '0 Bytes',
+        );
     }
-
-
-    
 }
 
 /**
  * Initialize cache options when plugin is activated
  * This ensures cache statistics have proper baseline values
  */
-register_activation_hook(__FILE__, [CacheManager::class, 'initialize_cache_options']);
+register_activation_hook(__FILE__, array( CacheManager::class, 'initialize_cache_options' ));

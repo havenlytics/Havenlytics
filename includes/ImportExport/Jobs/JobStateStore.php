@@ -20,11 +20,11 @@ defined( 'ABSPATH' ) || exit;
  */
 final class JobStateStore implements JobStoreInterface {
 
-	public const STATUS_QUEUED     = 'queued';
-	public const STATUS_RUNNING    = 'running';
-	public const STATUS_COMPLETED  = 'completed';
-	public const STATUS_FAILED     = 'failed';
-	public const STATUS_CANCELLED  = 'cancelled';
+	public const STATUS_QUEUED    = 'queued';
+	public const STATUS_RUNNING   = 'running';
+	public const STATUS_COMPLETED = 'completed';
+	public const STATUS_FAILED    = 'failed';
+	public const STATUS_CANCELLED = 'cancelled';
 
 	public const TYPE_EXPORT = 'export';
 	public const TYPE_IMPORT = 'import';

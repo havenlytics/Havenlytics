@@ -500,7 +500,7 @@ class PropertyWorkflowNotifier {
 		$review_url  = admin_url( 'post.php?post=' . $object_id . '&action=edit' );
 		$queue_url   = admin_url( 'edit.php?post_type=' . PropertyFormMapper::POST_TYPE . '&post_status=pending' );
 
-		$admin_context = array_merge(
+		$admin_context              = array_merge(
 			EmailBranding::context(),
 			array(
 				'email_type'  => EmailConstants::TYPE_PROPERTY_ADMIN_ALERT,

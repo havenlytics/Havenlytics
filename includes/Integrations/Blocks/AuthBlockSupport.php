@@ -24,7 +24,7 @@ use HvnlyNab\Workspace\Auth\SessionAuthController;
 use HvnlyNab\Workspace\WorkspaceSettings;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -45,7 +45,7 @@ final class AuthBlockSupport {
         }
         $done = true;
 
-        add_action('user_register', [self::class, 'persist_optional_names']);
+        add_action('user_register', array( self::class, 'persist_optional_names' ));
     }
 
     /**
@@ -58,14 +58,14 @@ final class AuthBlockSupport {
      * @param int $user_id Newly created user ID.
      * @return void
      */
-    public static function persist_optional_names($user_id): void {
+    public static function persist_optional_names( $user_id ): void {
         $user_id = (int) $user_id;
         if ($user_id <= 0) {
             return;
         }
 
         // phpcs:disable WordPress.Security.NonceVerification.Missing -- endpoint verified the nonce.
-        if (!isset($_POST['hvnly_auth_block']) || '1' !== (string) wp_unslash($_POST['hvnly_auth_block'])) {
+        if ( ! isset($_POST['hvnly_auth_block']) || '1' !== (string) wp_unslash($_POST['hvnly_auth_block'])) {
             return;
         }
 
@@ -87,26 +87,26 @@ final class AuthBlockSupport {
      * @return array<string, mixed>
      */
     public static function localize_data(): array {
-        $nonces  = [];
-        $actions = [];
+        $nonces  = array();
+        $actions = array();
 
         if (class_exists(SessionAuthController::class)) {
             $controller = new SessionAuthController();
             $nonces     = $controller->create_nonces();
-            $actions    = [
+            $actions    = array(
                 'login'         => SessionAuthController::ACTION_LOGIN,
                 'register'      => SessionAuthController::ACTION_REGISTER,
                 'lostPassword'  => SessionAuthController::ACTION_LOST_PASSWORD,
                 'logout'        => SessionAuthController::ACTION_LOGOUT,
                 'refreshNonces' => SessionAuthController::ACTION_REFRESH_NONCES,
-            ];
+            );
         }
 
         $registration_enabled = class_exists(WorkspaceSettings::class) && WorkspaceSettings::is_registration_enabled();
         $registration_mode    = class_exists(WorkspaceSettings::class) ? WorkspaceSettings::get_registration_mode() : 'disabled';
         $logout_redirect      = class_exists(WorkspaceSettings::class) ? WorkspaceSettings::get_logout_redirect_url() : '';
 
-        return [
+        return array(
             'ajaxUrl'             => admin_url('admin-ajax.php'),
             'nonces'              => $nonces,
             'actions'             => $actions,
@@ -114,7 +114,7 @@ final class AuthBlockSupport {
             'registrationMode'    => $registration_mode,
             'logoutRedirect'      => $logout_redirect,
             'i18n'                => self::i18n(),
-        ];
+        );
     }
 
     /**
@@ -124,7 +124,7 @@ final class AuthBlockSupport {
      * @return array<string, string>
      */
     private static function i18n(): array {
-        return [
+        return array(
             'genericError'     => __('Something went wrong. Please try again.', 'havenlytics'),
             'networkError'     => __('Network error. Please check your connection and try again.', 'havenlytics'),
             'required'         => __('This field is required.', 'havenlytics'),
@@ -148,6 +148,6 @@ final class AuthBlockSupport {
             'strengthFair'     => __('Fair', 'havenlytics'),
             'strengthGood'     => __('Good', 'havenlytics'),
             'strengthStrong'   => __('Strong', 'havenlytics'),
-        ];
+        );
     }
 }

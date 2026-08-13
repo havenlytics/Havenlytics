@@ -107,7 +107,7 @@ function hvnly_ui_translation_reverse_map() {
 			if ( ! is_object( $entry ) ) {
 				continue;
 			}
-			$msgid = isset( $entry->singular ) ? (string) $entry->singular : '';
+			$msgid  = isset( $entry->singular ) ? (string) $entry->singular : '';
 			$msgstr = '';
 			if ( ! empty( $entry->translations ) && is_array( $entry->translations ) ) {
 				$msgstr = (string) $entry->translations[0];

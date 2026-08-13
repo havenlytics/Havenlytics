@@ -4,18 +4,17 @@ namespace HvnlyNab\Admin;
 
 defined('ABSPATH') || exit;
 
-class CacheAdmin
-{
-    public function __construct()
-    {
-        add_action('admin_menu', [$this, 'add_admin_menu']);
-        add_action('admin_init', [$this, 'register_settings']);
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
-        add_action('wp_ajax_hvnly_clear_cache', [$this, 'ajax_clear_cache']);
-        add_action('wp_ajax_hvnly_get_cache_stats', [$this, 'ajax_get_cache_stats']);
-        add_action('wp_ajax_hvnly_update_cache_settings', [$this, 'ajax_update_cache_settings']);
-        add_action('wp_ajax_hvnly_clear_shortcode_cache', [$this, 'ajax_clear_shortcode_cache']);
-        add_action('wp_ajax_hvnly_clear_dynamic_css', [$this, 'ajax_clear_dynamic_css']);
+class CacheAdmin {
+
+    public function __construct() {
+        add_action('admin_menu', array( $this, 'add_admin_menu' ));
+        add_action('admin_init', array( $this, 'register_settings' ));
+        add_action('admin_enqueue_scripts', array( $this, 'enqueue_scripts' ));
+        add_action('wp_ajax_hvnly_clear_cache', array( $this, 'ajax_clear_cache' ));
+        add_action('wp_ajax_hvnly_get_cache_stats', array( $this, 'ajax_get_cache_stats' ));
+        add_action('wp_ajax_hvnly_update_cache_settings', array( $this, 'ajax_update_cache_settings' ));
+        add_action('wp_ajax_hvnly_clear_shortcode_cache', array( $this, 'ajax_clear_shortcode_cache' ));
+        add_action('wp_ajax_hvnly_clear_dynamic_css', array( $this, 'ajax_clear_dynamic_css' ));
     }
 
     /**
@@ -23,16 +22,14 @@ class CacheAdmin
      *
      * @return bool
      */
-    private function is_cache_system_enabled()
-    {
+    private function is_cache_system_enabled() {
         return function_exists('hvnly_is_cache_enabled')
             ? \hvnly_is_cache_enabled()
             : (bool) get_option('hvnly_cache_enabled', 0);
     }
 
-    public function add_admin_menu()
-    {
-        if (!$this->is_cache_system_enabled()) {
+    public function add_admin_menu() {
+        if ( ! $this->is_cache_system_enabled()) {
             return;
         }
 
@@ -42,43 +39,41 @@ class CacheAdmin
             __('Cache', 'havenlytics'),
             'manage_options',
             'hvnly_property_cache',
-            [$this, 'cache_admin_page']
+            array( $this, 'cache_admin_page' )
         );
     }
 
-    public function register_settings()
-    {
-        if (!$this->is_cache_system_enabled()) {
+    public function register_settings() {
+        if ( ! $this->is_cache_system_enabled()) {
             return;
         }
 
-        register_setting('hvnly_cache_settings', 'hvnly_cache_enabled', [
+        register_setting('hvnly_cache_settings', 'hvnly_cache_enabled', array(
             'type' => 'boolean',
             'default' => 0,
-            'sanitize_callback' => 'absint'
-        ]);
+            'sanitize_callback' => 'absint',
+        ));
 
-        register_setting('hvnly_cache_settings', 'hvnly_cache_ttl', [
+        register_setting('hvnly_cache_settings', 'hvnly_cache_ttl', array(
             'type' => 'integer',
             'default' => HOUR_IN_SECONDS * 6,
-            'sanitize_callback' => 'absint'
-        ]);
+            'sanitize_callback' => 'absint',
+        ));
 
-        register_setting('hvnly_cache_settings', 'hvnly_cache_compression', [
+        register_setting('hvnly_cache_settings', 'hvnly_cache_compression', array(
             'type' => 'boolean',
             'default' => 0,
-            'sanitize_callback' => 'absint'
-        ]);
+            'sanitize_callback' => 'absint',
+        ));
 
-        register_setting('hvnly_cache_settings', 'hvnly_cache_debug', [
+        register_setting('hvnly_cache_settings', 'hvnly_cache_debug', array(
             'type' => 'boolean',
             'default' => 0,
-            'sanitize_callback' => 'absint'
-        ]);
+            'sanitize_callback' => 'absint',
+        ));
     }
 
-    public function enqueue_scripts($hook)
-    {
+    public function enqueue_scripts( $hook ) {
         if ('hvnly_property_page_hvnly_property_cache' !== $hook) {
             return;
         }
@@ -89,7 +84,7 @@ class CacheAdmin
             wp_enqueue_style(
                 'hvnly-admin-boot',
                 HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-admin-boot.css',
-                [],
+                array(),
                 HVNLYNAB_VERSION
             );
         }
@@ -97,12 +92,12 @@ class CacheAdmin
         wp_enqueue_script(
             'hvnly-admin-cache',
             HVNLYNAB_ASSETS_URL . '/admin/js/hvnly-admin-cache.js',
-            ['jquery'],
+            array( 'jquery' ),
             HVNLYNAB_VERSION,
             true
         );
 
-        wp_localize_script('hvnly-admin-cache', 'hvnlyCacheAdmin', [
+        wp_localize_script('hvnly-admin-cache', 'hvnlyCacheAdmin', array(
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hvnly_cache_nonce'),
             'clearingText' => __('Clearing...', 'havenlytics'),
@@ -110,7 +105,7 @@ class CacheAdmin
             'errorText' => __('Error clearing cache', 'havenlytics'),
             'timeoutText' => __('Request timed out. Please try again.', 'havenlytics'),
             'networkErrorText' => __('Network error. Please try again.', 'havenlytics'),
-            'i18n' => [
+            'i18n' => array(
                 'success' => __('Success', 'havenlytics'),
                 'failed' => __('Failed', 'havenlytics'),
                 'statsUpdated' => __('Stats Updated', 'havenlytics'),
@@ -140,137 +135,136 @@ class CacheAdmin
                 'cacheCleared' => __('Cache Cleared', 'havenlytics'),
                 'shortcodeCacheCleared' => __('Shortcode Cache Cleared', 'havenlytics'),
                 'cssCacheCleared' => __('CSS Cache Cleared', 'havenlytics'),
-            ],
-            'confirmRequired' => [
+            ),
+            'confirmRequired' => array(
                 'hvnly-clear-cache',
                 'hvnly-clear-shortcode-cache',
                 'hvnly-clear-dynamic-css',
-            ],
-        ]);
+            ),
+        ));
 
         wp_enqueue_style(
             'hvnly-admin-cache',
             HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-admin-cache.css',
-            ['hvnly-admin-boot'],
+            array( 'hvnly-admin-boot' ),
             HVNLYNAB_VERSION
         );
     }
 
-    public function cache_admin_page()
-    {
-        if (!current_user_can('manage_options')) {
+    public function cache_admin_page() {
+        if ( ! current_user_can('manage_options')) {
             wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'havenlytics'));
         }
 
-        if (!$this->is_cache_system_enabled()) {
+        if ( ! $this->is_cache_system_enabled()) {
             wp_safe_redirect(admin_url('edit.php?post_type=hvnly_property&page=hvnly_property_settings'));
             exit;
         }
 
-        $cache_stats = HVNLY_NAB()->engine()->get_cache_stats();
+        $cache_stats         = HVNLY_NAB()->engine()->get_cache_stats();
         $performance_metrics = HVNLY_NAB()->engine()->get_performance_metrics();
 
-        $cache_enabled = function_exists('hvnly_is_cache_enabled') ? \hvnly_is_cache_enabled() : (bool) get_option('hvnly_cache_enabled', 0);
-        $cache_ttl = (int) get_option('hvnly_cache_ttl', HOUR_IN_SECONDS * 6);
+        $cache_enabled     = function_exists('hvnly_is_cache_enabled') ? \hvnly_is_cache_enabled() : (bool) get_option('hvnly_cache_enabled', 0);
+        $cache_ttl         = (int) get_option('hvnly_cache_ttl', HOUR_IN_SECONDS * 6);
         $cache_compression = (bool) get_option('hvnly_cache_compression', 0);
-        $cache_debug = (bool) get_option('hvnly_cache_debug', 0);
+        $cache_debug       = (bool) get_option('hvnly_cache_debug', 0);
 
         $health_key = isset($cache_stats['cache_health']) ? (string) $cache_stats['cache_health'] : 'idle';
-        $status_key = isset($cache_stats['cache_status']) ? (string) $cache_stats['cache_status'] : ($cache_enabled ? 'active' : 'disabled');
+        $status_key = isset($cache_stats['cache_status']) ? (string) $cache_stats['cache_status'] : ( $cache_enabled ? 'active' : 'disabled' );
 
-        $health_labels = [
+        $health_labels = array(
             'healthy'  => __('Healthy', 'havenlytics'),
             'warming'  => __('Warming', 'havenlytics'),
             'idle'     => __('Idle', 'havenlytics'),
             'disabled' => __('Disabled', 'havenlytics'),
-        ];
-        $status_labels = [
+        );
+        $status_labels = array(
             'active'   => __('Active', 'havenlytics'),
             'disabled' => __('Disabled', 'havenlytics'),
-        ];
+        );
 
-        $avg_query = (float) ($performance_metrics['average_query_time'] ?? 0);
-        $avg_query_display = $avg_query > 0 ? (round($avg_query, 4) . 's') : '—';
+        $avg_query         = (float) ( $performance_metrics['average_query_time'] ?? 0 );
+        $avg_query_display = $avg_query > 0 ? ( round($avg_query, 4) . 's' ) : '—';
 
-        $stat_items = [
-            'cache_status' => [
+        $stat_items = array(
+            'cache_status' => array(
                 'label' => __('Cache Status', 'havenlytics'),
-                'value' => $status_labels[$status_key] ?? $status_labels['active'],
+                'value' => $status_labels[ $status_key ] ?? $status_labels['active'],
                 'mod'   => 'status-' . $status_key,
-            ],
-            'cache_health' => [
+            ),
+            'cache_health' => array(
                 'label' => __('Cache Health', 'havenlytics'),
-                'value' => $health_labels[$health_key] ?? $health_labels['idle'],
+                'value' => $health_labels[ $health_key ] ?? $health_labels['idle'],
                 'mod'   => 'health-' . $health_key,
-            ],
-            'cache_size_human' => [
+            ),
+            'cache_size_human' => array(
                 'label' => __('Cache Size', 'havenlytics'),
                 'value' => $cache_stats['cache_size_human'],
                 'mod'   => 'size',
-            ],
-            'total_cached_items' => [
+            ),
+            'total_cached_items' => array(
                 'label' => __('Total Cached Items', 'havenlytics'),
                 'value' => number_format($cache_stats['total_cached_items']),
                 'mod'   => 'items',
-            ],
-            'cache_hit_rate' => [
+            ),
+            'cache_hit_rate' => array(
                 'label' => __('Cache Hit Rate', 'havenlytics'),
                 'value' => esc_html($cache_stats['cache_hit_rate']) . '%',
                 'mod'   => 'hitrate',
-            ],
-            'search_cache_count' => [
+            ),
+            'search_cache_count' => array(
                 'label' => __('Search Cache', 'havenlytics'),
                 'value' => number_format($cache_stats['search_cache_count']),
                 'mod'   => 'search',
-            ],
-            'sidebar_cache_count' => [
+            ),
+            'sidebar_cache_count' => array(
                 'label' => __('Sidebar Cache', 'havenlytics'),
                 'value' => number_format($cache_stats['sidebar_cache_count']),
                 'mod'   => 'sidebar',
-            ],
-            'term_cache_count' => [
+            ),
+            'term_cache_count' => array(
                 'label' => __('Term Cache', 'havenlytics'),
                 'value' => number_format($cache_stats['term_cache_count']),
                 'mod'   => 'terms',
-            ],
-        ];
+            ),
+        );
 
-        $performance_items = [
-            'cache_hits' => [
+        $performance_items = array(
+            'cache_hits' => array(
                 'label' => __('Cache Hits', 'havenlytics'),
                 'value' => number_format($performance_metrics['cache_hits']),
-            ],
-            'cache_misses' => [
+            ),
+            'cache_misses' => array(
                 'label' => __('Cache Misses', 'havenlytics'),
                 'value' => number_format($performance_metrics['cache_misses']),
-            ],
-            'total_queries_saved' => [
+            ),
+            'total_queries_saved' => array(
                 'label' => __('Queries Saved', 'havenlytics'),
                 'value' => number_format($performance_metrics['total_queries_saved']),
-            ],
-            'average_query_time' => [
+            ),
+            'average_query_time' => array(
                 'label' => __('Average Query Time', 'havenlytics'),
                 'value' => $avg_query_display,
-            ],
-            'cache_efficiency' => [
+            ),
+            'cache_efficiency' => array(
                 'label' => __('Cache Efficiency', 'havenlytics'),
                 'value' => esc_html($performance_metrics['cache_efficiency']) . '%',
-            ],
-            'memory_usage' => [
+            ),
+            'memory_usage' => array(
                 'label' => __('Memory Usage', 'havenlytics'),
                 'value' => size_format($performance_metrics['memory_usage']),
-            ],
-            'queries_executed' => [
+            ),
+            'queries_executed' => array(
                 'label' => __('Queries Executed', 'havenlytics'),
                 'value' => number_format($performance_metrics['queries_executed']),
-            ],
-        ];
+            ),
+        );
 
-        $object_cache_label = !empty($cache_stats['object_cache'])
+        $object_cache_label = ! empty($cache_stats['object_cache'])
             ? __('External object cache detected (Redis / Memcached compatible).', 'havenlytics')
             : __('Using WordPress transients (database / default object cache).', 'havenlytics');
 
-?>
+		?>
         <div class="wrap hvnly-cache-admin">
             <header class="hvnly-cache-hero">
                 <div class="hvnly-cache-hero__copy">
@@ -280,8 +274,8 @@ class CacheAdmin
                     <p class="hvnly-cache-hero__meta"><?php echo esc_html($object_cache_label); ?></p>
                 </div>
                 <div class="hvnly-cache-hero__badges">
-                    <span class="hvnly-cache-badge hvnly-cache-badge--<?php echo esc_attr($status_key); ?>" data-stat-badge="cache_status"><?php echo esc_html($status_labels[$status_key] ?? ''); ?></span>
-                    <span class="hvnly-cache-badge hvnly-cache-badge--<?php echo esc_attr($health_key); ?>" data-stat-badge="cache_health"><?php echo esc_html($health_labels[$health_key] ?? ''); ?></span>
+                    <span class="hvnly-cache-badge hvnly-cache-badge--<?php echo esc_attr($status_key); ?>" data-stat-badge="cache_status"><?php echo esc_html($status_labels[ $status_key ] ?? ''); ?></span>
+                    <span class="hvnly-cache-badge hvnly-cache-badge--<?php echo esc_attr($health_key); ?>" data-stat-badge="cache_health"><?php echo esc_html($health_labels[ $health_key ] ?? ''); ?></span>
                 </div>
             </header>
 
@@ -294,7 +288,7 @@ class CacheAdmin
                 </div>
                 <div class="stats-grid" id="hvnly-cache-stats-grid">
                     <?php foreach ($stat_items as $stat_key => $stat_item) : ?>
-                        <div class="stat-card <?php echo esc_attr('stat-card--' . ($stat_item['mod'] ?? 'default')); ?>" data-stat="<?php echo esc_attr($stat_key); ?>">
+                        <div class="stat-card <?php echo esc_attr('stat-card--' . ( $stat_item['mod'] ?? 'default' )); ?>" data-stat="<?php echo esc_attr($stat_key); ?>">
                             <h3><?php echo esc_html($stat_item['label']); ?></h3>
                             <div class="stat-value"><?php echo esc_html($stat_item['value']); ?></div>
                         </div>
@@ -412,15 +406,16 @@ class CacheAdmin
                             </div>
                             <select name="hvnly_cache_ttl" class="hvnly-cache-select">
                                 <?php
-                                $ttl_options = [
+                                $ttl_options = array(
                                     3600 => __('1 Hour', 'havenlytics'),
                                     7200 => __('2 Hours', 'havenlytics'),
                                     21600 => __('6 Hours', 'havenlytics'),
                                     43200 => __('12 Hours', 'havenlytics'),
-                                    86400 => __('24 Hours', 'havenlytics')
-                                ];
+                                    86400 => __('24 Hours', 'havenlytics'),
+                                );
 
-                                foreach ($ttl_options as $value => $label) : ?>
+                                foreach ($ttl_options as $value => $label) :
+									?>
                                     <option value="<?php echo esc_attr($value); ?>" <?php echo selected($cache_ttl, $value, false); ?>>
                                         <?php echo esc_html($label); ?>
                                     </option>
@@ -452,7 +447,7 @@ class CacheAdmin
                             </label>
                         </div>
                     </div>
-                    <?php submit_button(__('Save Settings', 'havenlytics'), 'primary', 'submit', false, ['class' => 'button button-primary hvnly-cache-save']); ?>
+                    <?php submit_button(__('Save Settings', 'havenlytics'), 'primary', 'submit', false, array( 'class' => 'button button-primary hvnly-cache-save' )); ?>
                 </form>
             </section>
 
@@ -471,22 +466,21 @@ class CacheAdmin
                 </div>
             </section>
         </div>
-<?php
+		<?php
     }
 
-    public function ajax_clear_cache()
-    {
+    public function ajax_clear_cache() {
         check_ajax_referer('hvnly_cache_nonce', 'nonce');
 
-        if (!$this->is_cache_system_enabled()) {
+        if ( ! $this->is_cache_system_enabled()) {
             wp_send_json_error(esc_html__('Cache system is disabled.', 'havenlytics'), 403);
         }
 
-        if (!current_user_can('manage_options')) {
+        if ( ! current_user_can('manage_options')) {
             wp_send_json_error( __( 'Insufficient permissions', 'havenlytics' ) );
         }
 
-        $cache_type = sanitize_key($_POST['cache_type'] ?? 'all');
+        $cache_type  = sanitize_key($_POST['cache_type'] ?? 'all');
         $cleared_all = false;
 
         switch ($cache_type) {
@@ -507,71 +501,70 @@ class CacheAdmin
                 break;
         }
 
-        $response = [
+        $response = array(
             'message' => esc_html__('Cache cleared successfully', 'havenlytics'),
-        ];
+        );
 
         if ($cleared_all) {
-            $response['last_cleared'] = [
+            $response['last_cleared'] = array(
                 'all' => $this->get_last_cleared_label('hvnly_cache_last_cleared_all'),
-            ];
+            );
         }
 
         wp_send_json_success($response);
     }
 
-    public function ajax_get_cache_stats()
-    {
+    public function ajax_get_cache_stats() {
         check_ajax_referer('hvnly_cache_nonce', 'nonce');
 
-        if (!$this->is_cache_system_enabled()) {
+        if ( ! $this->is_cache_system_enabled()) {
             wp_send_json_error(esc_html__('Cache system is disabled.', 'havenlytics'), 403);
         }
 
-        if (!current_user_can('manage_options')) {
+        if ( ! current_user_can('manage_options')) {
             wp_send_json_error( __( 'Insufficient permissions', 'havenlytics' ) );
         }
 
-        $stats = HVNLY_NAB()->engine()->get_cache_stats();
+        $stats       = HVNLY_NAB()->engine()->get_cache_stats();
         $performance = HVNLY_NAB()->engine()->get_performance_metrics();
 
-        wp_send_json_success([
+        wp_send_json_success(array(
             'stats' => $stats,
             'performance' => $performance,
-            'last_cleared' => [
+            'last_cleared' => array(
                 'all' => $this->get_last_cleared_label('hvnly_cache_last_cleared_all'),
                 'shortcode' => $this->get_last_cleared_label('hvnly_cache_last_cleared_shortcode'),
                 'css' => $this->get_last_cleared_label('hvnly_cache_last_cleared_css'),
-            ],
-        ]);
+            ),
+        ));
     }
 
     public function ajax_update_cache_settings() {
         check_ajax_referer('hvnly_cache_nonce', 'nonce');
 
-        if (!$this->is_cache_system_enabled()) {
+        if ( ! $this->is_cache_system_enabled()) {
             wp_send_json_error(esc_html__('Cache system is disabled.', 'havenlytics'), 403);
         }
 
-        if (! current_user_can('manage_options')) {
+        if ( ! current_user_can('manage_options')) {
             wp_send_json_error( __( 'Insufficient permissions', 'havenlytics' ) );
         }
 
-        $settings_raw = filter_input(INPUT_POST, 'settings', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?: [];
+        $settings_raw = filter_input(INPUT_POST, 'settings', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY) ?: array();
 
-        $settings = [];
+        $settings = array();
         foreach ($settings_raw as $key => $value) {
-            $safe_key = sanitize_key($key);
-            $safe_value = $this->sanitize_setting($safe_key, $value);
-            $settings[$safe_key] = $safe_value;
+            $safe_key              = sanitize_key($key);
+            $safe_value            = $this->sanitize_setting($safe_key, $value);
+            $settings[ $safe_key ] = $safe_value;
             update_option('hvnly_' . $safe_key, $safe_value);
         }
 
-        $new_config = [
+        $new_config = array(
             'cache_ttl' => absint($settings['cache_ttl'] ?? HOUR_IN_SECONDS * 6),
-            'cache_compression' => !empty($settings['cache_compression']),
-            'enable_performance' => !empty($settings['cache_debug']),
-        ];
+            'cache_compression' => ! empty($settings['cache_compression']),
+            'enable_performance' => ! empty($settings['cache_debug']),
+        );
 
         HVNLY_NAB()->engine()->update_config($new_config);
 
@@ -581,11 +574,11 @@ class CacheAdmin
     public function ajax_clear_shortcode_cache() {
         check_ajax_referer('hvnly_cache_nonce', 'nonce');
 
-        if (!$this->is_cache_system_enabled()) {
+        if ( ! $this->is_cache_system_enabled()) {
             wp_send_json_error(esc_html__('Cache system is disabled.', 'havenlytics'), 403);
         }
 
-        if (!current_user_can('manage_options')) {
+        if ( ! current_user_can('manage_options')) {
             wp_send_json_error( __( 'Insufficient permissions', 'havenlytics' ) );
         }
 
@@ -595,12 +588,12 @@ class CacheAdmin
             if ($shortcode_type === 'all') {
                 \HvnlyNab\Frontend\Shortcodes\Registry::clear_all_caches();
                 update_option('hvnly_cache_last_cleared_shortcode', time(), false);
-                wp_send_json_success([
+                wp_send_json_success(array(
                     'message' => esc_html__('All shortcode caches cleared successfully', 'havenlytics'),
-                    'last_cleared' => [
+                    'last_cleared' => array(
                         'shortcode' => $this->get_last_cleared_label('hvnly_cache_last_cleared_shortcode'),
-                    ],
-                ]);
+                    ),
+                ));
             } else {
                 \HvnlyNab\Frontend\Shortcodes\Registry::clear_cache($shortcode_type);
                 $message = sprintf(
@@ -608,7 +601,7 @@ class CacheAdmin
                     esc_html__('%s shortcode cache cleared successfully', 'havenlytics'),
                     esc_html($shortcode_type)
                 );
-                wp_send_json_success(['message' => $message]);
+                wp_send_json_success(array( 'message' => $message ));
             }
         } else {
             HVNLY_NAB()->engine()->clear_transients_by_pattern('hvnly_property_grid_%');
@@ -618,58 +611,57 @@ class CacheAdmin
             if ($shortcode_type === 'all') {
                 update_option('hvnly_cache_last_cleared_shortcode', time(), false);
             }
-            wp_send_json_success([
+            wp_send_json_success(array(
                 'message' => esc_html__('Shortcode caches cleared via pattern', 'havenlytics'),
-                'last_cleared' => $shortcode_type === 'all' ? [
+                'last_cleared' => $shortcode_type === 'all' ? array(
                     'shortcode' => $this->get_last_cleared_label('hvnly_cache_last_cleared_shortcode'),
-                ] : [],
-            ]);
+                ) : array(),
+            ));
         }
     }
 
     /**
      * AJAX handler for clearing dynamic CSS cache
      */
-    public function ajax_clear_dynamic_css()
-    {
+    public function ajax_clear_dynamic_css() {
         check_ajax_referer('hvnly_cache_nonce', 'nonce');
 
-        if (!$this->is_cache_system_enabled()) {
+        if ( ! $this->is_cache_system_enabled()) {
             wp_send_json_error(esc_html__('Cache system is disabled.', 'havenlytics'), 403);
         }
-        
-        if (!current_user_can('manage_options')) {
+
+        if ( ! current_user_can('manage_options')) {
             wp_send_json_error( __( 'Insufficient permissions', 'havenlytics' ) );
         }
-        
+
         // Clear the dynamic CSS cache
         delete_transient('hvnly_dynamic_css');
-        
+
         // Clear using CacheManager if available
         if (class_exists('HvnlyNab\Core\CacheManager')) {
             \HvnlyNab\Core\CacheManager::delete_transient('hvnly_dynamic_css');
         }
-        
+
         // Clear style generator cache
         if (class_exists('HvnlyNab\Core\DynamicStyleGenerator')) {
             $generator = \HvnlyNab\Core\DynamicStyleGenerator::get_instance();
             $generator->clear_css_cache();
         }
-        
+
         // Clear via engine if available
         if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine()) {
             HVNLY_NAB()->engine()->clear_transients_by_pattern('dynamic_css');
             delete_transient('hvnly_dynamic_css');
         }
-        
+
         update_option('hvnly_cache_last_cleared_css', time(), false);
 
-        wp_send_json_success([
+        wp_send_json_success(array(
             'message' => esc_html__('Dynamic CSS cache cleared successfully', 'havenlytics'),
-            'last_cleared' => [
+            'last_cleared' => array(
                 'css' => $this->get_last_cleared_label('hvnly_cache_last_cleared_css'),
-            ],
-        ]);
+            ),
+        ));
     }
 
     /**
@@ -678,8 +670,7 @@ class CacheAdmin
      * @param string $option_key
      * @return string
      */
-    private function get_last_cleared_label($option_key)
-    {
+    private function get_last_cleared_label( $option_key ) {
         $timestamp = (int) get_option($option_key, 0);
 
         if ($timestamp <= 0) {
@@ -693,15 +684,14 @@ class CacheAdmin
         );
     }
 
-    private function sanitize_setting($key, $value)
-    {
+    private function sanitize_setting( $key, $value ) {
         switch ($key) {
             case 'cache_ttl':
                 return absint($value);
             case 'cache_enabled':
             case 'cache_compression':
             case 'cache_debug':
-                return !empty($value) ? 1 : 0;
+                return ! empty($value) ? 1 : 0;
             default:
                 return sanitize_text_field($value);
         }

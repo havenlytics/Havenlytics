@@ -12,17 +12,17 @@ defined( 'ABSPATH' ) || exit;
 
 class SectionIdentity {
 
-	public const SEC_PROPERTY_OVERVIEW      = 'sec_property_overview';
-	public const SEC_PROPERTY_DETAILS       = 'sec_property_details';
-	public const SEC_ADDRESS_NEIGHBORHOOD   = 'sec_address_neighborhood';
-	public const SEC_PROPERTY_VIDEO         = 'sec_property_video';
-	public const SEC_PROPERTY_GALLERY       = 'sec_property_gallery';
-	public const SEC_PROPERTY_LOCATION      = 'sec_property_location';
-	public const SEC_PROPERTY_DOCUMENTS     = 'sec_property_documents';
-	public const SEC_PROPERTY_FAQ           = 'sec_property_faq';
-	public const SEC_PROPERTY_REPEATER      = 'sec_property_repeater';
-	public const SEC_PROPERTY_FEATURES      = 'sec_property_features';
-	public const SEC_PROPERTY_AGENTS        = 'sec_property_agents';
+	public const SEC_PROPERTY_OVERVIEW    = 'sec_property_overview';
+	public const SEC_PROPERTY_DETAILS     = 'sec_property_details';
+	public const SEC_ADDRESS_NEIGHBORHOOD = 'sec_address_neighborhood';
+	public const SEC_PROPERTY_VIDEO       = 'sec_property_video';
+	public const SEC_PROPERTY_GALLERY     = 'sec_property_gallery';
+	public const SEC_PROPERTY_LOCATION    = 'sec_property_location';
+	public const SEC_PROPERTY_DOCUMENTS   = 'sec_property_documents';
+	public const SEC_PROPERTY_FAQ         = 'sec_property_faq';
+	public const SEC_PROPERTY_REPEATER    = 'sec_property_repeater';
+	public const SEC_PROPERTY_FEATURES    = 'sec_property_features';
+	public const SEC_PROPERTY_AGENTS      = 'sec_property_agents';
 
 	/**
 	 * Read-time aliases: legacy stored ID => canonical semantic ID (no option rewrite).

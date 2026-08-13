@@ -17,7 +17,7 @@ namespace HvnlyNab\Integrations\Blocks;
 use HvnlyNab\Agent\AgencyArchiveQuery;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -36,10 +36,10 @@ final class AgencyBlockRenderer {
      * @param object $block      Block instance (unused).
      * @return string
      */
-    public static function render($attributes = [], string $content = '', $block = null): string {
+    public static function render( $attributes = array(), string $content = '', $block = null ): string {
         unset($content, $block);
 
-        if (!class_exists(AgencyArchiveQuery::class) || !function_exists('hvnly_get_template_part')) {
+        if ( ! class_exists(AgencyArchiveQuery::class) || ! function_exists('hvnly_get_template_part')) {
             return '';
         }
 
@@ -47,49 +47,49 @@ final class AgencyBlockRenderer {
             hvnly_load_template_functions();
         }
 
-        $attributes = is_array($attributes) ? $attributes : [];
+        $attributes = is_array($attributes) ? $attributes : array();
 
-        $columns  = self::clamp((int) ($attributes['columns'] ?? 4), 1, 4, 4);
-        $per_page = self::clamp((int) ($attributes['postsPerPage'] ?? 12), 1, 48, 12);
+        $columns  = self::clamp( (int) ( $attributes['columns'] ?? 4 ), 1, 4, 4);
+        $per_page = self::clamp( (int) ( $attributes['postsPerPage'] ?? 12 ), 1, 48, 12);
 
-        $orderby = (string) ($attributes['orderby'] ?? 'name');
-        $orderby = in_array($orderby, ['name', 'date'], true) ? $orderby : 'name';
+        $orderby = (string) ( $attributes['orderby'] ?? 'name' );
+        $orderby = in_array($orderby, array( 'name', 'date' ), true) ? $orderby : 'name';
 
-        $order = strtoupper((string) ($attributes['order'] ?? 'ASC')) === 'DESC' ? 'DESC' : 'ASC';
+        $order = strtoupper( (string) ( $attributes['order'] ?? 'ASC' )) === 'DESC' ? 'DESC' : 'ASC';
 
-        $show_header   = !empty($attributes['showHeader']);
-        $show_search   = !empty($attributes['showSearch']);
-        $show_controls = !empty($attributes['showViewControls']);
+        $show_header   = ! empty($attributes['showHeader']);
+        $show_search   = ! empty($attributes['showSearch']);
+        $show_controls = ! empty($attributes['showViewControls']);
 
-        $default_view = (string) ($attributes['defaultView'] ?? 'grid');
-        $default_view = in_array($default_view, ['grid', 'list'], true) ? $default_view : 'grid';
+        $default_view = (string) ( $attributes['defaultView'] ?? 'grid' );
+        $default_view = in_array($default_view, array( 'grid', 'list' ), true) ? $default_view : 'grid';
 
         $block_id = 'hvnly-block-agencies-' . substr(md5(wp_json_encode($attributes)), 0, 8);
 
-        $query = AgencyArchiveQuery::query_agencies([
+        $query = AgencyArchiveQuery::query_agencies(array(
             'per_page' => $per_page,
             'orderby'  => $orderby,
             'order'    => $order,
-        ]);
+        ));
 
-        $wrapper_classes = [
+        $wrapper_classes = array(
             'hvnly-content-wrapper',
             'hvnly-property-agencies-block',
             'hvnly-block-' . $block_id,
-        ];
+        );
 
         $wrapper_attributes = function_exists('get_block_wrapper_attributes')
-            ? get_block_wrapper_attributes([
+            ? get_block_wrapper_attributes(array(
                 'class'               => implode(' ', $wrapper_classes),
                 'data-widget-id'      => $block_id,
                 'data-columns'        => (string) $columns,
                 'data-posts-per-page' => (string) $per_page,
                 'data-default-view'   => $default_view,
-            ])
+            ))
             : 'class="' . esc_attr(implode(' ', $wrapper_classes)) . '"';
 
-        $view_filter = static function ($view) use ($default_view) {
-            if (!empty($_GET['view'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $view_filter = static function ( $view ) use ( $default_view ) {
+            if ( ! empty($_GET['view'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 return $view;
             }
 
@@ -102,11 +102,11 @@ final class AgencyBlockRenderer {
         echo '<div ' . $wrapper_attributes . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         do_action('hvnly_before_archive_agency');
 
-        hvnly_get_template_part('property-archive/partials/agencies-archive', null, [
+        hvnly_get_template_part('property-archive/partials/agencies-archive', null, array(
             'query'              => $query,
             'show_header'        => $show_header,
-            'title'              => (string) ($attributes['title'] ?? ''),
-            'subtitle'           => (string) ($attributes['subtitle'] ?? ''),
+            'title'              => (string) ( $attributes['title'] ?? '' ),
+            'subtitle'           => (string) ( $attributes['subtitle'] ?? '' ),
             'show_search'        => $show_search,
             'show_view_controls' => $show_controls,
             'columns'            => $columns,
@@ -115,7 +115,7 @@ final class AgencyBlockRenderer {
             'search_action'      => self::search_action_url(),
             'wrapper_class'      => '',
             'card_context'       => 'agencies_archive',
-        ]);
+        ));
 
         do_action('hvnly_after_archive_agency');
         echo '</div>';
@@ -153,7 +153,7 @@ final class AgencyBlockRenderer {
      * @param int $default Fallback when out of range.
      * @return int
      */
-    private static function clamp(int $value, int $min, int $max, int $default): int {
+    private static function clamp( int $value, int $min, int $max, int $default ): int {
         if ($value < $min || $value > $max) {
             return $default;
         }

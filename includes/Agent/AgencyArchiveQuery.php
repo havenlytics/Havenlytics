@@ -123,7 +123,7 @@ final class AgencyArchiveQuery {
 			return array();
 		}
 
-		$link = get_term_link( $term_id, AgentConstants::TAXONOMY_AGENCY );
+		$link                      = get_term_link( $term_id, AgentConstants::TAXONOMY_AGENCY );
 		$profile['profile_url']    = is_wp_error( $link ) ? '' : (string) $link;
 		$profile['agent_count']    = self::count_agents( $term_id );
 		$profile['property_count'] = self::count_properties( $term_id );

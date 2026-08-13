@@ -89,13 +89,13 @@ class PropertyImportWizard {
      *
      * @var array
      */
-    private $allowed_mime_types = [
+    private $allowed_mime_types = array(
         'image/jpeg',
         'image/jpg',
         'image/png',
         'image/gif',
         'image/webp',
-    ];
+    );
 
     /**
      * Demo data instance
@@ -109,12 +109,12 @@ class PropertyImportWizard {
      *
      * @var array
      */
-    private $allowed_image_domains = [
+    private $allowed_image_domains = array(
         'img.youtube.com',
         'demo.havenlytics.com',
         'localhost',
         '127.0.0.1',
-    ];
+    );
 
     /**
      * Consistent timeout (seconds) for every remote image download during import.
@@ -172,40 +172,49 @@ class PropertyImportWizard {
      *
      * @var array
      */
-    private $heavy_themes = [
-        'Porto', 'Divi', 'Avada', 'Extra', 'Jupiter', 'The7', 'Enfold', 'Salient', 'Bridge', 'X Theme',
-    ];
+    private $heavy_themes = array(
+        'Porto',
+		'Divi',
+		'Avada',
+		'Extra',
+		'Jupiter',
+		'The7',
+		'Enfold',
+		'Salient',
+		'Bridge',
+		'X Theme',
+    );
 
     /**
      * Property builder storage keys
      *
      * @var array
      */
-    private $property_builder_keys = [
+    private $property_builder_keys = array(
         'hvnly_property_builder.sections',
         'hvnly_pb_dnd_sections',
         'hvnly_property_builder_sections',
         'hvnly_property_builder_tabs',
-    ];
+    );
 
     /**
      * Card builder storage keys
      *
      * @var array
      */
-    private $card_builder_keys = [
+    private $card_builder_keys = array(
         'hvnly_property_card.sections',
         'hvnly_pb_card_builder_sections',
         'hvnly_property_card_layout',
         'hvnly_card_builder_config',
-    ];
+    );
 
     /**
      * All departments for import distribution
      *
      * @var array
      */
-    private $all_departments = ['sale', 'rent', 'commercial', 'let'];
+    private $all_departments = array( 'sale', 'rent', 'commercial', 'let' );
 
     /**
      * Demo agent slug => post ID map for the current import run.
@@ -225,18 +234,18 @@ class PropertyImportWizard {
      * Constructor
      */
     public function __construct() {
-        $this->demo_data = new DemoData();
-        $this->debug_mode = function_exists( 'hvnly_is_debug_logging_enabled' ) && hvnly_is_debug_logging_enabled();
+        $this->demo_data    = new DemoData();
+        $this->debug_mode   = function_exists( 'hvnly_is_debug_logging_enabled' ) && hvnly_is_debug_logging_enabled();
         $this->active_theme = wp_get_theme()->get( 'Name' );
 
         // Legacy Setup Wizard UI retired (Sprint 26D). The React onboarding
         // (OnboardingWizard.php) is now the sole setup experience. Only the
         // shared import ENGINE and its AJAX/term-seeding hooks remain here.
-        add_action( 'wp_ajax_hvnly_import_properties', [ $this, 'ajax_import_properties' ] );
-        add_action( 'wp_ajax_hvnly_cancel_import', [ $this, 'ajax_cancel_import' ] );
-        add_action( 'wp_ajax_hvnly_save_google_api_key', [ $this, 'ajax_save_google_api_key' ] );
-        add_action( 'wp_ajax_hvnly_save_map_provider', [ $this, 'ajax_save_map_provider' ] );
-        add_action( 'load-edit-tags.php', [ $this, 'maybe_backfill_location_term_images_admin' ] );
+        add_action( 'wp_ajax_hvnly_import_properties', array( $this, 'ajax_import_properties' ) );
+        add_action( 'wp_ajax_hvnly_cancel_import', array( $this, 'ajax_cancel_import' ) );
+        add_action( 'wp_ajax_hvnly_save_google_api_key', array( $this, 'ajax_save_google_api_key' ) );
+        add_action( 'wp_ajax_hvnly_save_map_provider', array( $this, 'ajax_save_map_provider' ) );
+        add_action( 'load-edit-tags.php', array( $this, 'maybe_backfill_location_term_images_admin' ) );
     }
 
     /**
@@ -246,20 +255,20 @@ class PropertyImportWizard {
      * @param string $group_type Type of group (video, gallery, map, property_docs)
      * @return string Unique base ID
      */
-    private function generate_unique_base_id($group_type) {
+    private function generate_unique_base_id( $group_type ) {
         // Use UnifiedFieldGenerator as the single source of truth
         if (class_exists('\HvnlyNab\Core\UnifiedFieldGenerator')) {
             $unified = \HvnlyNab\Core\UnifiedFieldGenerator::get_instance();
             return $unified->generate_unique_base_id($group_type);
         }
-        
+
         // Fallback generation (should never happen)
-        $microtime = microtime(true);
-        $timestamp = (int)$microtime;
-        $micro_suffix = substr(str_replace('.', '', (string)$microtime), -6);
-        $random = wp_rand(10000, 99999);
-        $unique_id = uniqid();
-        
+        $microtime    = microtime(true);
+        $timestamp    = (int) $microtime;
+        $micro_suffix = substr(str_replace('.', '', (string) $microtime), -6);
+        $random       = wp_rand(10000, 99999);
+        $unique_id    = uniqid();
+
         switch ($group_type) {
             case 'video':
                 return "video_{$timestamp}_{$micro_suffix}_{$unique_id}_{$random}";
@@ -344,7 +353,7 @@ class PropertyImportWizard {
             return;
         }
 
-        $api_key = isset( $_POST['google_api_key'] ) ? sanitize_text_field( wp_unslash( $_POST['google_api_key'] ) ) : '';
+        $api_key  = isset( $_POST['google_api_key'] ) ? sanitize_text_field( wp_unslash( $_POST['google_api_key'] ) ) : '';
         $provider = isset( $_POST['map_provider'] ) ? sanitize_text_field( wp_unslash( $_POST['map_provider'] ) ) : '';
 
         if ( '' !== $provider && 'google' !== $provider ) {
@@ -430,7 +439,7 @@ class PropertyImportWizard {
             )
         );
     }
-    
+
     private function reset_add_property_form(): bool {
         if ( class_exists( '\HvnlyNab\Core\DataPreservation\BatchProcessor' ) ) {
             $property_count = \HvnlyNab\Core\DataPreservation\BatchProcessor::count_properties();
@@ -621,14 +630,14 @@ class PropertyImportWizard {
      * @return void
      */
     private function cache_sideload_attachment( string $image_url, int $attachment_id ): void {
-        $image_url = esc_url_raw( $image_url );
+        $image_url     = esc_url_raw( $image_url );
         $attachment_id = absint( $attachment_id );
         if ( '' === $image_url || $attachment_id <= 0 ) {
             return;
         }
 
-        $state = $this->load_import_run_state_raw();
-        $cache = is_array( $state['media_cache'] ?? null ) ? $state['media_cache'] : array();
+        $state                      = $this->load_import_run_state_raw();
+        $cache                      = is_array( $state['media_cache'] ?? null ) ? $state['media_cache'] : array();
         $cache[ md5( $image_url ) ] = $attachment_id;
         $this->update_import_run_state( array( 'media_cache' => $cache ) );
     }
@@ -851,7 +860,7 @@ class PropertyImportWizard {
                     'collapsed' => false,
                     'fields'    => $this->apply_import_default_section_labels( $generator->$method( $base ), $type ),
                 );
-                $changed = true;
+                $changed                 = true;
             }
         }
 
@@ -1456,8 +1465,8 @@ class PropertyImportWizard {
             $this->import_running = true;
             $this->optimize_for_bulk_import();
 
-            $batch           = absint( filter_input( INPUT_POST, 'batch', FILTER_VALIDATE_INT ) ?: 0 );
-            $imported        = absint( filter_input( INPUT_POST, 'imported', FILTER_VALIDATE_INT ) ?: 0 );
+            $batch             = absint( filter_input( INPUT_POST, 'batch', FILTER_VALIDATE_INT ) ?: 0 );
+            $imported          = absint( filter_input( INPUT_POST, 'imported', FILTER_VALIDATE_INT ) ?: 0 );
             $demo_import_limit = $this->get_demo_import_limit();
             $total_to_import   = min( absint( filter_input( INPUT_POST, 'total_to_import', FILTER_VALIDATE_INT ) ?: $demo_import_limit ), $demo_import_limit );
 
@@ -1506,13 +1515,16 @@ class PropertyImportWizard {
             $this->restore_wordpress_state();
             $this->import_running = false;
             $this->log_error( 'Import AJAX error: ' . $e->getMessage() );
-            wp_send_json_error( [ 'message' => $e->getMessage(), 'can_retry' => true ] );
+            wp_send_json_error( array(
+				'message' => $e->getMessage(),
+				'can_retry' => true,
+			) );
         }
     }
 
     private function optimize_for_bulk_import() {
-        $this->original_cache_state  = wp_suspend_cache_invalidation( false );
-        $this->original_term_state   = wp_defer_term_counting( false );
+        $this->original_cache_state   = wp_suspend_cache_invalidation( false );
+        $this->original_term_state    = wp_defer_term_counting( false );
         $this->original_comment_state = wp_defer_comment_counting( false );
         wp_suspend_cache_invalidation( true );
         wp_defer_term_counting( true );
@@ -1592,7 +1604,7 @@ class PropertyImportWizard {
             }
 
             $this->log_error( 'Import cancelled by user at ' . current_time( 'mysql' ) );
-            wp_send_json_success( [ 'message' => __( 'Import cancelled successfully.', 'havenlytics' ) ] );
+            wp_send_json_success( array( 'message' => __( 'Import cancelled successfully.', 'havenlytics' ) ) );
         } catch ( \Exception $e ) {
             $this->log_error( 'Cancel import error: ' . $e->getMessage() );
             wp_send_json_error( $e->getMessage() );
@@ -1639,7 +1651,7 @@ class PropertyImportWizard {
     }
 
     private function sanitize_import_options( $options ) {
-        $sanitized = [];
+        $sanitized = array();
         if ( ! is_array( $options ) ) {
             return $sanitized;
         }
@@ -1819,7 +1831,7 @@ class PropertyImportWizard {
             return;
         }
 
-        $state = array_merge( $state, $partial );
+        $state               = array_merge( $state, $partial );
         $state['updated_at'] = time();
 
         update_option( $this->import_run_option, $state, false );
@@ -2113,7 +2125,7 @@ class PropertyImportWizard {
      * @param string               $session_id      Import session UUID.
      * @return array<string, mixed>
      */
-    private function process_import_batch( $batch = 0, $imported = 0, $total_to_import = 25, $options = [], $session_id = '' ) {
+    private function process_import_batch( $batch = 0, $imported = 0, $total_to_import = 25, $options = array(), $session_id = '' ) {
         try {
             $run_state = $this->load_import_run_state_raw();
             $prep_step = absint( $run_state['prep_step'] ?? 0 );
@@ -2136,11 +2148,11 @@ class PropertyImportWizard {
             $this->maybe_backfill_demo_agent_images_batch( $options, 2 );
             $this->check_rate_limit();
 
-            $batch_size = $this->get_import_batch_size( $options, (int) $batch, (int) $imported );
-            $demo_properties = DemoData::get_demo_properties_data();
+            $batch_size                 = $this->get_import_batch_size( $options, (int) $batch, (int) $imported );
+            $demo_properties            = DemoData::get_demo_properties_data();
             $total_properties_available = count( $demo_properties );
-            $total_to_import = min( (int) $total_to_import, $total_properties_available );
-            $remaining = $total_to_import - $imported;
+            $total_to_import            = min( (int) $total_to_import, $total_properties_available );
+            $remaining                  = $total_to_import - $imported;
 
             if ( $remaining <= 0 ) {
                 update_option( $this->import_option, true );
@@ -2158,7 +2170,7 @@ class PropertyImportWizard {
                     )
                 );
 
-                return [
+                return array(
                     'batch'      => $batch,
                     'next_batch' => $batch,
                     'imported'   => $total_to_import,
@@ -2171,17 +2183,17 @@ class PropertyImportWizard {
 						$total_to_import
 					),
                     'errors'     => null,
-                ];
+                );
             }
 
             $start = max( 0, (int) $imported );
             $end   = min( $start + $batch_size, $total_to_import );
 
-            $departments     = isset( $options['departments'] ) && is_array( $options['departments'] ) ? $options['departments'] : [];
-            $department_keys = ! empty( $departments ) ? array_keys( $departments ) : [ 'sale' ];
+            $departments     = isset( $options['departments'] ) && is_array( $options['departments'] ) ? $options['departments'] : array();
+            $department_keys = ! empty( $departments ) ? array_keys( $departments ) : array( 'sale' );
 
             $imported_count = 0;
-            $errors = [];
+            $errors         = array();
 
             for ( $i = $start; $i < $end; $i++ ) {
                 if ( $this->is_import_run_cancelled() ) {
@@ -2193,7 +2205,7 @@ class PropertyImportWizard {
                         )
                     );
 
-                    return [
+                    return array(
                         'batch'      => $imported + $imported_count,
                         'next_batch' => $imported + $imported_count,
                         'imported'   => $imported + $imported_count,
@@ -2208,7 +2220,7 @@ class PropertyImportWizard {
 							$total_to_import
 						),
                         'errors'     => ! empty( $errors ) ? $errors : null,
-                    ];
+                    );
                 }
 
                 try {
@@ -2220,16 +2232,16 @@ class PropertyImportWizard {
 
                     $property_index = $i % $total_properties_available;
                     $dept_key       = $department_keys[ $i % count( $department_keys ) ];
-                    $dept_data      = isset( $departments[ $dept_key ] ) && is_array( $departments[ $dept_key ] ) ? $departments[ $dept_key ] : [];
+                    $dept_data      = isset( $departments[ $dept_key ] ) && is_array( $departments[ $dept_key ] ) ? $departments[ $dept_key ] : array();
 
                     $property_data = $demo_properties[ $property_index ];
 
-                    $property_data['department'] = sanitize_key( $dept_key );
+                    $property_data['department']          = sanitize_key( $dept_key );
                     $property_data['demo_property_index'] = $property_index;
-                    $property_data['import_session_id'] = $session_id;
-                    $property_data['import_index'] = $i;
-                    $property_data = $this->merge_taxonomy_data( $property_data, $dept_data, $demo_properties, $property_index );
-                    $property_data = $this->merge_common_options( $property_data, $options );
+                    $property_data['import_session_id']   = $session_id;
+                    $property_data['import_index']        = $i;
+                    $property_data                        = $this->merge_taxonomy_data( $property_data, $dept_data, $demo_properties, $property_index );
+                    $property_data                        = $this->merge_common_options( $property_data, $options );
                     if ( ! $this->wizard_provided_custom_location( $options ) ) {
                         // No full custom location: give each property its own diverse
                         // demo location, then overlay only the individual fields the
@@ -2260,7 +2272,7 @@ class PropertyImportWizard {
             }
 
             $new_total_imported = $imported + $imported_count;
-            $complete = ( $new_total_imported >= $total_to_import );
+            $complete           = ( $new_total_imported >= $total_to_import );
 
             if ( $complete ) {
                 if ( $new_total_imported > $total_to_import ) {
@@ -2287,7 +2299,7 @@ class PropertyImportWizard {
                     )
                 );
 
-                return [
+                return array(
                     'batch'      => $new_total_imported,
                     'next_batch' => $new_total_imported,
                     'imported'   => $new_total_imported,
@@ -2300,7 +2312,7 @@ class PropertyImportWizard {
 						$new_total_imported
 					),
                     'errors'     => ! empty( $errors ) ? $errors : null,
-                ];
+                );
             }
 
             $this->update_import_run_state(
@@ -2312,7 +2324,7 @@ class PropertyImportWizard {
                 )
             );
 
-            return [
+            return array(
                 'batch'      => $new_total_imported,
                 'next_batch' => $new_total_imported,
                 'imported'   => $new_total_imported,
@@ -2326,7 +2338,7 @@ class PropertyImportWizard {
 					$total_to_import
 				),
                 'errors'     => ! empty( $errors ) ? $errors : null,
-            ];
+            );
 
         } catch ( \Throwable $e ) {
             // Re-thrown as \Throwable so the AJAX handler's catch converts any fatal
@@ -2350,9 +2362,9 @@ class PropertyImportWizard {
     }
 
     private function check_memory_usage() {
-        $memory_limit = $this->get_memory_limit_bytes();
+        $memory_limit  = $this->get_memory_limit_bytes();
         $current_usage = memory_get_usage( true );
-        $available = $memory_limit - $current_usage;
+        $available     = $memory_limit - $current_usage;
         if ( $available < 10 * 1024 * 1024 && function_exists( 'gc_collect_cycles' ) ) {
             gc_collect_cycles();
         }
@@ -2373,34 +2385,34 @@ class PropertyImportWizard {
     }
 
     private function merge_taxonomy_data( $property_data, $dept_data, $demo_properties, $property_index ) {
-        $taxonomy_map = [
-            'property_types'   => [ 'types', 'property_types' ],
-            'property_status'  => [ 'status', 'property_status' ],
-            'badges'           => [ 'badges' ],
-            'tags'             => [ 'tags' ],
-            'locations'        => [ 'locations' ],
-            'features'         => [ 'features' ],
-        ];
+        $taxonomy_map = array(
+            'property_types'   => array( 'types', 'property_types' ),
+            'property_status'  => array( 'status', 'property_status' ),
+            'badges'           => array( 'badges' ),
+            'tags'             => array( 'tags' ),
+            'locations'        => array( 'locations' ),
+            'features'         => array( 'features' ),
+        );
 
         foreach ( $taxonomy_map as $target => $sources ) {
             $found = false;
             foreach ( $sources as $source ) {
                 if ( ! empty( $dept_data[ $source ] ) ) {
-                    $values = is_array( $dept_data[ $source ] ) ? $dept_data[ $source ] : [ $dept_data[ $source ] ];
+                    $values = is_array( $dept_data[ $source ] ) ? $dept_data[ $source ] : array( $dept_data[ $source ] );
                     $values = array_filter( $values );
                     if ( ! empty( $values ) ) {
                         $property_data[ $target ] = array_map( 'sanitize_text_field', $values );
-                        $found = true;
+                        $found                    = true;
                         break;
                     }
                 }
             }
             if ( ! $found && isset( $demo_properties[ $property_index ][ $target ] ) ) {
-                $values = $demo_properties[ $property_index ][ $target ];
-                $property_data[ $target ] = is_array( $values ) ? array_map( 'sanitize_text_field', $values ) : [ $values ];
+                $values                   = $demo_properties[ $property_index ][ $target ];
+                $property_data[ $target ] = is_array( $values ) ? array_map( 'sanitize_text_field', $values ) : array( $values );
             }
             if ( ! isset( $property_data[ $target ] ) ) {
-                $property_data[ $target ] = [];
+                $property_data[ $target ] = array();
             }
         }
         return $property_data;
@@ -2666,7 +2678,7 @@ class PropertyImportWizard {
                 continue;
             }
 
-            $is_url = ( false !== strpos( $field, 'url' ) );
+            $is_url        = ( false !== strpos( $field, 'url' ) );
             $property_data = $this->apply_setup_string_override( $property_data, $options, $field, $is_url );
         }
 
@@ -2962,12 +2974,16 @@ class PropertyImportWizard {
     }
 
     private function log_error( $message ) {
-        $log_entry = [ 'time' => current_time( 'mysql' ), 'user' => get_current_user_id(), 'message' => $message ];
-        $logs = get_option( 'hvnly_import_logs', [] );
+        $log_entry = array(
+			'time' => current_time( 'mysql' ),
+			'user' => get_current_user_id(),
+			'message' => $message,
+		);
+        $logs      = get_option( 'hvnly_import_logs', array() );
         array_unshift( $logs, $log_entry );
         $logs = array_slice( $logs, 0, 100 );
         update_option( 'hvnly_import_logs', $logs );
-        
+
         if ( $this->debug_mode && function_exists( 'hvnly_debug_log' ) ) {
             hvnly_debug_log( $message, 'Havenlytics Import Error' );
         }
@@ -2983,14 +2999,14 @@ class PropertyImportWizard {
 
         // Term names are wrapped so a fresh install under a translated locale
         // seeds localized demo taxonomy labels (never rewrites user-created terms).
-        $taxonomies = [
-            'hvnly_prop_depts' => [
+        $taxonomies = array(
+            'hvnly_prop_depts' => array(
                 'sale' => __( 'Sale', 'havenlytics' ),
                 'rent' => __( 'Rent', 'havenlytics' ),
                 'commercial' => __( 'Commercial', 'havenlytics' ),
                 'let' => __( 'Let', 'havenlytics' ),
-            ],
-            'hvnly_prop_types' => [
+            ),
+            'hvnly_prop_types' => array(
                 'apartment' => __( 'Apartment', 'havenlytics' ),
                 'bungalow' => __( 'Bungalow', 'havenlytics' ),
                 'cabin' => __( 'Cabin', 'havenlytics' ),
@@ -3012,8 +3028,8 @@ class PropertyImportWizard {
                 'triplex' => __( 'Triplex', 'havenlytics' ),
                 'villa' => __( 'Villa', 'havenlytics' ),
                 'warehouse' => __( 'Warehouse', 'havenlytics' ),
-            ],
-            'hvnly_prop_features' => [
+            ),
+            'hvnly_prop_features' => array(
                 'studio' => __( 'Studio', 'havenlytics' ),
                 'premium' => __( 'Premium', 'havenlytics' ),
                 'privacy' => __( 'Privacy', 'havenlytics' ),
@@ -3028,9 +3044,9 @@ class PropertyImportWizard {
                 'balcony' => __( 'Balcony', 'havenlytics' ),
                 'garden' => __( 'Garden', 'havenlytics' ),
                 'security' => __( 'Security', 'havenlytics' ),
-            ],
+            ),
             'hvnly_prop_locations' => array_merge(
-                [
+                array(
                     'abu-dhabi' => __( 'Abu Dhabi', 'havenlytics' ),
                     'berlin' => __( 'Berlin', 'havenlytics' ),
                     'boston' => __( 'Boston', 'havenlytics' ),
@@ -3051,10 +3067,10 @@ class PropertyImportWizard {
                     'tokyo' => __( 'Tokyo', 'havenlytics' ),
                     'toronto' => __( 'Toronto', 'havenlytics' ),
                     'vancouver' => __( 'Vancouver', 'havenlytics' ),
-                ],
+                ),
                 $uk_location_terms
             ),
-            'hvnly_prop_status' => [
+            'hvnly_prop_status' => array(
                 'for-sale' => __( 'For Sale', 'havenlytics' ),
                 'for-rent' => __( 'For Rent', 'havenlytics' ),
                 'for-lease' => __( 'For Lease', 'havenlytics' ),
@@ -3063,13 +3079,13 @@ class PropertyImportWizard {
                 'under-offer' => __( 'Under Offer', 'havenlytics' ),
                 'exchanged' => __( 'Exchanged', 'havenlytics' ),
                 'seasonal' => __( 'Seasonal', 'havenlytics' ),
-            ],
-            'hvnly_prop_badges' => [
+            ),
+            'hvnly_prop_badges' => array(
                 'featured' => __( 'Featured', 'havenlytics' ),
                 'new' => __( 'New', 'havenlytics' ),
                 'popular' => __( 'Popular', 'havenlytics' ),
-            ],
-            'hvnly_prop_tags' => [
+            ),
+            'hvnly_prop_tags' => array(
                 'apartment' => __( 'Apartment', 'havenlytics' ),
                 'bungalow' => __( 'Bungalow', 'havenlytics' ),
                 'cabin' => __( 'Cabin', 'havenlytics' ),
@@ -3089,8 +3105,8 @@ class PropertyImportWizard {
                 'townhouse' => __( 'Townhouse', 'havenlytics' ),
                 'villa' => __( 'Villa', 'havenlytics' ),
                 'warehouse' => __( 'Warehouse', 'havenlytics' ),
-            ],
-        ];
+            ),
+        );
 
         foreach ( $taxonomies as $taxonomy => $terms ) {
             if ( ! taxonomy_exists( $taxonomy ) ) {
@@ -3100,7 +3116,7 @@ class PropertyImportWizard {
             foreach ( $terms as $term_slug => $term_name ) {
                 $term = term_exists( $term_slug, $taxonomy );
                 if ( ! $term ) {
-                    $result = wp_insert_term( $term_name, $taxonomy, [ 'slug' => $term_slug ] );
+                    $result = wp_insert_term( $term_name, $taxonomy, array( 'slug' => $term_slug ) );
                     if ( is_wp_error( $result ) ) {
                         $this->log_error( sprintf( 'Failed to create term %s in taxonomy %s: %s', $term_slug, $taxonomy, $result->get_error_message() ) );
                     }
@@ -3112,22 +3128,24 @@ class PropertyImportWizard {
     /**
      * Extract YouTube video ID from URL
      */
-    private function extract_youtube_id($url) {
-        if (empty($url)) return null;
-        
-        $patterns = [
+    private function extract_youtube_id( $url ) {
+        if (empty($url)) {
+			return null;
+        }
+
+        $patterns = array(
             '/(?:youtube\.com\/watch\?v=)([^&]+)/',
             '/(?:youtu\.be\/)([^?]+)/',
             '/(?:youtube\.com\/embed\/)([^?]+)/',
-            '/(?:youtube\.com\/v\/)([^?]+)/'
-        ];
-        
+            '/(?:youtube\.com\/v\/)([^?]+)/',
+        );
+
         foreach ($patterns as $pattern) {
             if (preg_match($pattern, $url, $matches)) {
                 return $matches[1];
             }
         }
-        
+
         return null;
     }
 
@@ -3135,23 +3153,23 @@ class PropertyImportWizard {
      * Build Basic Info meta fields (Section 0)
      */
     private function build_basic_meta_fields( $data ) {
-        $meta_input = [];
-        
-        $numeric_fields = [
-            '_hvnly_property_price' => [ 0, 999999999 ],
-            '_hvnly_property_reception_rooms' => [ 0, 20 ],
-            '_hvnly_property_bedrooms' => [ 0, 50 ],
-            '_hvnly_property_bathrooms' => [ 0, 30 ],
-            '_hvnly_property_half_bathrooms' => [ 0, 10 ],
-            '_hvnly_property_kitchens' => [ 0, 10 ],
-            '_hvnly_property_total_rooms' => [ 0, 100 ],
-            '_hvnly_property_floors' => [ 1, 10 ],
-            '_hvnly_property_year_built' => [ 1800, (int) gmdate( 'Y' ) + 1 ],
-            '_hvnly_property_garage_sqft' => [ 0, 10000 ],
-            '_hvnly_property_sqft' => [ 0, 100000 ],
-            '_hvnly_property_hoa_fee' => [ 0, 100000 ],
-            '_hvnly_property_annual_tax_amount' => [ 0, 1000000 ],
-        ];
+        $meta_input = array();
+
+        $numeric_fields = array(
+            '_hvnly_property_price' => array( 0, 999999999 ),
+            '_hvnly_property_reception_rooms' => array( 0, 20 ),
+            '_hvnly_property_bedrooms' => array( 0, 50 ),
+            '_hvnly_property_bathrooms' => array( 0, 30 ),
+            '_hvnly_property_half_bathrooms' => array( 0, 10 ),
+            '_hvnly_property_kitchens' => array( 0, 10 ),
+            '_hvnly_property_total_rooms' => array( 0, 100 ),
+            '_hvnly_property_floors' => array( 1, 10 ),
+            '_hvnly_property_year_built' => array( 1800, (int) gmdate( 'Y' ) + 1 ),
+            '_hvnly_property_garage_sqft' => array( 0, 10000 ),
+            '_hvnly_property_sqft' => array( 0, 100000 ),
+            '_hvnly_property_hoa_fee' => array( 0, 100000 ),
+            '_hvnly_property_annual_tax_amount' => array( 0, 1000000 ),
+        );
 
         foreach ( $numeric_fields as $field => $range ) {
             $key = str_replace( '_hvnly_property_', '', $field );
@@ -3176,10 +3194,10 @@ class PropertyImportWizard {
                 } elseif ( $field === '_hvnly_property_kitchens' ) {
                     $meta_input[ $field ] = 1;
                 } elseif ( $field === '_hvnly_property_total_rooms' ) {
-                    $total = ( $meta_input['_hvnly_property_bedrooms'] ?? 3 ) + 
-                             ( $meta_input['_hvnly_property_reception_rooms'] ?? 2 ) + 
-                             ( $meta_input['_hvnly_property_kitchens'] ?? 1 ) + 
-                             ( $meta_input['_hvnly_property_bathrooms'] ?? 2 );
+                    $total                = ( $meta_input['_hvnly_property_bedrooms'] ?? 3 ) +
+                            ( $meta_input['_hvnly_property_reception_rooms'] ?? 2 ) +
+                            ( $meta_input['_hvnly_property_kitchens'] ?? 1 ) +
+                            ( $meta_input['_hvnly_property_bathrooms'] ?? 2 );
                     $meta_input[ $field ] = $total;
                 } elseif ( $field === '_hvnly_property_floors' ) {
                     $meta_input[ $field ] = wp_rand( 1, 2 );
@@ -3199,12 +3217,12 @@ class PropertyImportWizard {
             }
         }
 
-        $meta_input['_hvnly_property_mls_number'] = isset( $data['mls_number'] ) && !empty( $data['mls_number'] ) 
-            ? sanitize_text_field( $data['mls_number'] ) 
+        $meta_input['_hvnly_property_mls_number'] = isset( $data['mls_number'] ) && ! empty( $data['mls_number'] )
+            ? sanitize_text_field( $data['mls_number'] )
             : 'MLS' . absint( wp_rand( 10000, 99999 ) );
-        
-        $meta_input['_hvnly_property_lot_size'] = isset( $data['lot_size'] ) && !empty( $data['lot_size'] ) 
-            ? sanitize_text_field( $data['lot_size'] ) 
+
+        $meta_input['_hvnly_property_lot_size'] = isset( $data['lot_size'] ) && ! empty( $data['lot_size'] )
+            ? sanitize_text_field( $data['lot_size'] )
             : wp_rand( 4000, 15000 ) . ' ' . __( 'sq ft', 'havenlytics' );
 
         return $meta_input;
@@ -3220,43 +3238,43 @@ class PropertyImportWizard {
         } elseif ( ! isset( $meta_input['_hvnly_property_lot_size'] ) ) {
             $meta_input['_hvnly_property_lot_size'] = wp_rand( 4000, 15000 ) . ' ' . __( 'sq ft', 'havenlytics' );
         }
-        
+
         // HOA Fee
         if ( isset( $data['hoa_fee'] ) && ! empty( $data['hoa_fee'] ) ) {
             $meta_input['_hvnly_property_hoa_fee'] = sanitize_text_field( $data['hoa_fee'] );
         } elseif ( ! isset( $meta_input['_hvnly_property_hoa_fee'] ) ) {
             $meta_input['_hvnly_property_hoa_fee'] = (string) wp_rand( 0, 500 );
         }
-        
+
         // Annual Tax Amount
         if ( isset( $data['tax_amount'] ) && ! empty( $data['tax_amount'] ) ) {
             $meta_input['_hvnly_property_annual_tax_amount'] = floatval( $data['tax_amount'] );
         } elseif ( ! isset( $meta_input['_hvnly_property_annual_tax_amount'] ) ) {
             $meta_input['_hvnly_property_annual_tax_amount'] = floatval( wp_rand( 5000, 15000 ) );
         }
-        
+
         // Heating, Cooling, Water
         if ( isset( $data['heating'] ) && ! empty( $data['heating'] ) ) {
             $meta_input['_hvnly_property_heating'] = sanitize_text_field( $data['heating'] );
         } elseif ( ! isset( $meta_input['_hvnly_property_heating'] ) ) {
-            $heating_options = [ 'forced_air', 'central', 'heat_pump', 'radiator', 'baseboard' ];
+            $heating_options                       = array( 'forced_air', 'central', 'heat_pump', 'radiator', 'baseboard' );
             $meta_input['_hvnly_property_heating'] = $heating_options[ array_rand( $heating_options ) ];
         }
-        
+
         if ( isset( $data['cooling'] ) && ! empty( $data['cooling'] ) ) {
             $meta_input['_hvnly_property_cooling'] = sanitize_text_field( $data['cooling'] );
         } elseif ( ! isset( $meta_input['_hvnly_property_cooling'] ) ) {
-            $cooling_options = [ 'central', 'window', 'heat_pump', 'none' ];
+            $cooling_options                       = array( 'central', 'window', 'heat_pump', 'none' );
             $meta_input['_hvnly_property_cooling'] = $cooling_options[ array_rand( $cooling_options ) ];
         }
-        
+
         if ( isset( $data['water'] ) && ! empty( $data['water'] ) ) {
             $meta_input['_hvnly_property_water'] = sanitize_text_field( $data['water'] );
         } elseif ( ! isset( $meta_input['_hvnly_property_water'] ) ) {
-            $water_options = [ 'city', 'well', 'shared_well' ];
+            $water_options                       = array( 'city', 'well', 'shared_well' );
             $meta_input['_hvnly_property_water'] = $water_options[ array_rand( $water_options ) ];
         }
-        
+
         $this->log_debug( 'Additional Information meta added' );
     }
 
@@ -3266,73 +3284,73 @@ class PropertyImportWizard {
     private function add_address_neighborhood_meta( &$meta_input, $data ) {
         // Reference number
         if ( empty( $meta_input['_hvnly_property_reference_number'] ?? '' ) ) {
-            $meta_input['_hvnly_property_reference_number'] = isset( $data['reference_number'] ) && ! empty( $data['reference_number'] ) 
-                ? sanitize_text_field( $data['reference_number'] ) 
+            $meta_input['_hvnly_property_reference_number'] = isset( $data['reference_number'] ) && ! empty( $data['reference_number'] )
+                ? sanitize_text_field( $data['reference_number'] )
                 : 'REF-' . wp_rand( 10000, 99999 );
         }
-        
+
         // Building number
         if ( empty( $meta_input['_hvnly_property_building_number'] ?? '' ) ) {
-            $meta_input['_hvnly_property_building_number'] = isset( $data['building_number'] ) && ! empty( $data['building_number'] ) 
-                ? sanitize_text_field( $data['building_number'] ) 
+            $meta_input['_hvnly_property_building_number'] = isset( $data['building_number'] ) && ! empty( $data['building_number'] )
+                ? sanitize_text_field( $data['building_number'] )
                 : (string) wp_rand( 1, 999 );
         }
-        
+
         // Street
         if ( empty( $meta_input['_hvnly_property_street'] ?? '' ) ) {
-            $meta_input['_hvnly_property_street'] = isset( $data['street'] ) && ! empty( $data['street'] ) 
-                ? sanitize_text_field( $data['street'] ) 
+            $meta_input['_hvnly_property_street'] = isset( $data['street'] ) && ! empty( $data['street'] )
+                ? sanitize_text_field( $data['street'] )
                 : $this->get_random_street_name();
         }
-        
+
         // Address Line 1
         if ( empty( $meta_input['_hvnly_property_address_line_1'] ?? '' ) ) {
-            $meta_input['_hvnly_property_address_line_1'] = isset( $data['address_line_1'] ) && ! empty( $data['address_line_1'] ) 
-                ? sanitize_text_field( $data['address_line_1'] ) 
+            $meta_input['_hvnly_property_address_line_1'] = isset( $data['address_line_1'] ) && ! empty( $data['address_line_1'] )
+                ? sanitize_text_field( $data['address_line_1'] )
                 : $meta_input['_hvnly_property_building_number'] . ' ' . $meta_input['_hvnly_property_street'];
         }
-        
+
         // Address Line 2
         if ( ! isset( $meta_input['_hvnly_property_address_line_2'] ) ) {
             $meta_input['_hvnly_property_address_line_2'] = isset( $data['address_line_2'] ) ? sanitize_text_field( $data['address_line_2'] ) : '';
         }
-        
+
         // Town/City
         if ( empty( $meta_input['_hvnly_property_town_city'] ?? '' ) ) {
-            $meta_input['_hvnly_property_town_city'] = isset( $data['town_city'] ) && ! empty( $data['town_city'] ) 
-                ? sanitize_text_field( $data['town_city'] ) 
+            $meta_input['_hvnly_property_town_city'] = isset( $data['town_city'] ) && ! empty( $data['town_city'] )
+                ? sanitize_text_field( $data['town_city'] )
                 : $this->get_random_city();
         }
-        
+
         // Country/State
         if ( empty( $meta_input['_hvnly_property_country_state'] ?? '' ) ) {
-            $meta_input['_hvnly_property_country_state'] = isset( $data['country_state'] ) && ! empty( $data['country_state'] ) 
-                ? sanitize_text_field( $data['country_state'] ) 
+            $meta_input['_hvnly_property_country_state'] = isset( $data['country_state'] ) && ! empty( $data['country_state'] )
+                ? sanitize_text_field( $data['country_state'] )
                 : $this->get_random_state();
         }
-        
+
         // Zip Code
         if ( empty( $meta_input['_hvnly_property_zip_code'] ?? '' ) ) {
-            $meta_input['_hvnly_property_zip_code'] = isset( $data['zip_code'] ) && ! empty( $data['zip_code'] ) 
-                ? sanitize_text_field( $data['zip_code'] ) 
+            $meta_input['_hvnly_property_zip_code'] = isset( $data['zip_code'] ) && ! empty( $data['zip_code'] )
+                ? sanitize_text_field( $data['zip_code'] )
                 : (string) wp_rand( 10000, 99999 );
         }
-        
+
         // Location (from taxonomy)
         if ( isset( $data['location'] ) && ! empty( $data['location'] ) ) {
             $meta_input['_hvnly_property_location'] = sanitize_text_field( $data['location'] );
         } elseif ( ! isset( $meta_input['_hvnly_property_location'] ) ) {
-            $locations = [ 'suburban', 'urban', 'rural', 'coastal' ];
+            $locations                              = array( 'suburban', 'urban', 'rural', 'coastal' );
             $meta_input['_hvnly_property_location'] = $locations[ array_rand( $locations ) ];
         }
-        
+
         // Country Location
         if ( isset( $data['country_location'] ) && ! empty( $data['country_location'] ) ) {
             $meta_input['_hvnly_property_country_location'] = sanitize_text_field( $data['country_location'] );
         } elseif ( ! isset( $meta_input['_hvnly_property_country_location'] ) ) {
             $meta_input['_hvnly_property_country_location'] = 'US';
         }
-        
+
         $this->log_debug( 'Address & Neighborhood meta added' );
     }
 
@@ -3385,7 +3403,7 @@ class PropertyImportWizard {
     private function add_video_meta( &$meta_input, $data, $options ) {
         // Generate UNIQUE video base ID for THIS SPECIFIC property
         $video_base = $this->generate_unique_base_id('video');
-        
+
         // Get video URL from options or demo data
         $video_url = '';
         if ( isset( $options['youtube_url'] ) && ! empty( $options['youtube_url'] ) ) {
@@ -3393,15 +3411,15 @@ class PropertyImportWizard {
         } elseif ( isset( $data['youtube_url'] ) && ! empty( $data['youtube_url'] ) ) {
             $video_url = esc_url_raw( $data['youtube_url'] );
         }
-        
-        $video_title = isset( $options['youtube_title'] ) && ! empty( $options['youtube_title'] ) 
-            ? sanitize_text_field( $options['youtube_title'] ) 
+
+        $video_title = isset( $options['youtube_title'] ) && ! empty( $options['youtube_title'] )
+            ? sanitize_text_field( $options['youtube_title'] )
             : ( isset( $data['youtube_title'] ) ? sanitize_text_field( $data['youtube_title'] ) : __( 'Property Tour', 'havenlytics' ) );
-        
-        $video_thumbnail = isset( $options['youtube_thumbnail'] ) && ! empty( $options['youtube_thumbnail'] ) 
-            ? esc_url_raw( $options['youtube_thumbnail'] ) 
+
+        $video_thumbnail = isset( $options['youtube_thumbnail'] ) && ! empty( $options['youtube_thumbnail'] )
+            ? esc_url_raw( $options['youtube_thumbnail'] )
             : ( isset( $data['youtube_thumbnail'] ) ? esc_url_raw( $data['youtube_thumbnail'] ) : '' );
-        
+
         // Extract thumbnail from YouTube URL if needed
         if ( empty( $video_thumbnail ) && ! empty( $video_url ) ) {
             $video_id = $this->extract_youtube_id( $video_url );
@@ -3409,23 +3427,23 @@ class PropertyImportWizard {
                 $video_thumbnail = "https://img.youtube.com/vi/{$video_id}/maxresdefault.jpg";
             }
         }
-        
+
         // Save video data using UNIQUE base ID for THIS property
         if ( ! empty( $video_url ) ) {
-            $meta_input[ $video_base . '_title' ] = $video_title;
-            $meta_input[ $video_base . '_url' ] = $video_url;
+            $meta_input[ $video_base . '_title' ]     = $video_title;
+            $meta_input[ $video_base . '_url' ]       = $video_url;
             $meta_input[ $video_base . '_thumbnail' ] = $video_thumbnail;
             $this->log_debug( 'Saved video: ' . $video_base . '_url = ' . $video_url );
             $this->log_debug( 'Generated unique video base ID: ' . $video_base );
         } else {
             $this->log_debug( 'No video URL provided' );
         }
-        
+
         // Legacy support (kept for backward compatibility)
-        $meta_input['_hvnly_property_youtube_video_title'] = $video_title;
-        $meta_input['_hvnly_property_youtube_video_url'] = $video_url;
+        $meta_input['_hvnly_property_youtube_video_title']     = $video_title;
+        $meta_input['_hvnly_property_youtube_video_url']       = $video_url;
         $meta_input['_hvnly_property_youtube_video_thumbnail'] = $video_thumbnail;
-        
+
         return $video_base;
     }
 
@@ -3435,17 +3453,17 @@ class PropertyImportWizard {
     private function add_gallery_meta( &$meta_input, $options ) {
         // Generate UNIQUE gallery base ID for THIS SPECIFIC property
         $gallery_base = $this->generate_unique_base_id('gallery');
-        
-        $gallery_title = isset( $options['gallery_title'] ) && ! empty( $options['gallery_title'] ) 
-            ? sanitize_text_field( $options['gallery_title'] ) 
+
+        $gallery_title = isset( $options['gallery_title'] ) && ! empty( $options['gallery_title'] )
+            ? sanitize_text_field( $options['gallery_title'] )
             : __( 'Property Gallery', 'havenlytics' );
-        
-        $meta_input[ $gallery_base . '_title' ] = $gallery_title;
+
+        $meta_input[ $gallery_base . '_title' ]      = $gallery_title;
         $meta_input['_hvnly_property_gallery_title'] = $gallery_title;
-        
+
         $this->log_debug( 'Saved gallery title: ' . $gallery_base . '_title' );
         $this->log_debug( 'Generated unique gallery base ID: ' . $gallery_base );
-        
+
         return $gallery_base;
     }
 
@@ -3455,70 +3473,70 @@ class PropertyImportWizard {
     private function add_map_meta( &$meta_input, $options, $data = array() ) {
         // Generate UNIQUE map base ID for THIS SPECIFIC property
         $map_base = $this->generate_unique_base_id('map');
-        
+
         $map_address = ! empty( $data['map_address'] )
             ? sanitize_text_field( $data['map_address'] )
             : ( isset( $options['map_address'] ) && ! empty( $options['map_address'] )
                 ? sanitize_text_field( $options['map_address'] )
                 : 'London, UK' );
-        
+
         $map_latitude = ! empty( $data['map_latitude'] )
             ? sanitize_text_field( $data['map_latitude'] )
             : ( isset( $options['map_latitude'] ) && ! empty( $options['map_latitude'] )
                 ? sanitize_text_field( $options['map_latitude'] )
                 : '51.5074' );
-        
+
         $map_longitude = ! empty( $data['map_longitude'] )
             ? sanitize_text_field( $data['map_longitude'] )
             : ( isset( $options['map_longitude'] ) && ! empty( $options['map_longitude'] )
                 ? sanitize_text_field( $options['map_longitude'] )
                 : '-0.1278' );
-        
-        $meta_input[ $map_base . '_address' ] = $map_address;
-        $meta_input[ $map_base . '_latitude' ] = $map_latitude;
+
+        $meta_input[ $map_base . '_address' ]   = $map_address;
+        $meta_input[ $map_base . '_latitude' ]  = $map_latitude;
         $meta_input[ $map_base . '_longitude' ] = $map_longitude;
-        $meta_input[ $map_base . '_preview' ] = '';
-        
+        $meta_input[ $map_base . '_preview' ]   = '';
+
         $this->log_debug( 'Saved map: ' . $map_base . '_address = ' . $map_address );
         $this->log_debug( 'Generated unique map base ID: ' . $map_base );
-        
+
         // Legacy map fields (kept for backward compatibility)
         $meta_input['_hvnly_property_map_location_address'] = $map_address;
-        $meta_input['_hvnly_property_location_Latitude'] = $map_latitude;
-        $meta_input['_hvnly_property_location_Longitude'] = $map_longitude;
-        
+        $meta_input['_hvnly_property_location_Latitude']    = $map_latitude;
+        $meta_input['_hvnly_property_location_Longitude']   = $map_longitude;
+
         return $map_base;
     }
 
-/**
- * Add documents meta (Section 6) - SINGLE JSON FIELD
- * Uses SINGLE field ({base}_documents) not 3 separate fields
- */
-private function add_documents_meta( &$meta_input, $options = [] ) {
-    // Generate UNIQUE documents base ID for THIS SPECIFIC property
-    $docs_base = $this->generate_unique_base_id('property_docs');
-    
-    // The field name should be {base}_documents (SINGLE JSON field)
-    $documents_field = $docs_base . '_documents';
-    
-    $sample_documents = $this->get_bundled_demo_documents();
-    
-    $documents_json = wp_json_encode( $sample_documents );
-    
-    // Save using SINGLE JSON field - THIS IS WHAT THE DOCUMENT FIELD HANDLER EXPECTS
-    $meta_input[ $documents_field ] = $documents_json;
-    
-    // Sidebar visibility
-    $meta_input[ $docs_base . '_show_in_sidebar' ] = '1';
-    
-    // Legacy support
-    $meta_input['_hvnly_property_documents'] = $documents_json;
-    
-    $this->log_debug( 'Saved documents as JSON: ' . $documents_field );
-    $this->log_debug( 'Generated unique documents base ID: ' . $docs_base );
-    
-    return $docs_base;
-}
+	/**
+	 * Add documents meta (Section 6) - SINGLE JSON FIELD
+	 * Uses SINGLE field ({base}_documents) not 3 separate fields
+	 */
+	private function add_documents_meta( &$meta_input, $options = array() ) {
+		// Generate UNIQUE documents base ID for THIS SPECIFIC property
+		$docs_base = $this->generate_unique_base_id('property_docs');
+
+		// The field name should be {base}_documents (SINGLE JSON field)
+		$documents_field = $docs_base . '_documents';
+
+		$sample_documents = $this->get_bundled_demo_documents();
+
+		$documents_json = wp_json_encode( $sample_documents );
+
+		// Save using SINGLE JSON field - THIS IS WHAT THE DOCUMENT FIELD HANDLER EXPECTS
+		$meta_input[ $documents_field ] = $documents_json;
+
+		// Sidebar visibility
+		$meta_input[ $docs_base . '_show_in_sidebar' ] = '1';
+
+		// Legacy support
+		$meta_input['_hvnly_property_documents'] = $documents_json;
+
+		$this->log_debug( 'Saved documents as JSON: ' . $documents_field );
+		$this->log_debug( 'Generated unique documents base ID: ' . $docs_base );
+
+		return $docs_base;
+	}
 
     /**
      * Demo property document samples (bundled plugin assets).
@@ -3528,33 +3546,33 @@ private function add_documents_meta( &$meta_input, $options = [] ) {
     private function get_bundled_demo_documents() {
         $base_url = trailingslashit( HVNLYNAB_ASSETS_URL ) . 'demo/documents/';
 
-        return [
-            [
+        return array(
+            array(
                 'icon'     => 'file-pdf',
                 'label'    => __( 'Floor Plan', 'havenlytics' ),
                 'url'      => $base_url . 'floor-plan.pdf',
                 'url_type' => 'pdf',
-            ],
-            [
+            ),
+            array(
                 'icon'     => 'file-image',
                 'label'    => __( 'Brochure', 'havenlytics' ),
                 'url'      => $base_url . 'brochure.pdf',
                 'url_type' => 'pdf',
-            ],
-            [
+            ),
+            array(
                 'icon'     => 'file-alt',
                 'label'    => __( 'Energy Certificate', 'havenlytics' ),
                 'url'      => $base_url . 'epc.pdf',
                 'url_type' => 'pdf',
-            ],
-        ];
+            ),
+        );
     }
 
     /**
      * Get random street name
      */
     private function get_random_street_name() {
-        $streets = [ 'Main Street', 'Oak Avenue', 'Maple Drive', 'Cedar Lane', 'Pine Road', 'Elm Street', 'Washington Blvd', 'Park Avenue', 'Broadway', 'Sunset Blvd' ];
+        $streets = array( 'Main Street', 'Oak Avenue', 'Maple Drive', 'Cedar Lane', 'Pine Road', 'Elm Street', 'Washington Blvd', 'Park Avenue', 'Broadway', 'Sunset Blvd' );
         return $streets[ array_rand( $streets ) ];
     }
 
@@ -3562,7 +3580,7 @@ private function add_documents_meta( &$meta_input, $options = [] ) {
      * Get random city
      */
     private function get_random_city() {
-        $cities = [ 'Austin', 'New York', 'Los Angeles', 'Chicago', 'Miami', 'San Francisco', 'Seattle', 'Boston', 'Dallas', 'Denver', 'Portland', 'Atlanta' ];
+        $cities = array( 'Austin', 'New York', 'Los Angeles', 'Chicago', 'Miami', 'San Francisco', 'Seattle', 'Boston', 'Dallas', 'Denver', 'Portland', 'Atlanta' );
         return $cities[ array_rand( $cities ) ];
     }
 
@@ -3570,510 +3588,512 @@ private function add_documents_meta( &$meta_input, $options = [] ) {
      * Get random state
      */
     private function get_random_state() {
-        $states = [ 'TX', 'NY', 'CA', 'IL', 'FL', 'WA', 'MA', 'CO', 'OR', 'GA', 'NC', 'AZ', 'NV', 'TN' ];
+        $states = array( 'TX', 'NY', 'CA', 'IL', 'FL', 'WA', 'MA', 'CO', 'OR', 'GA', 'NC', 'AZ', 'NV', 'TN' );
         return $states[ array_rand( $states ) ];
     }
 
-/**
- * Get standardized field names from builder configuration.
- *
- * Priority order:
- *  1. Live builder config (hvnly_property_builder.sections) – most authoritative.
- *  2. Master base IDs (hvnly_master_base_ids) – stable fallback when config is empty.
- *
- * Returns an associative array keyed by group_type → meta_key → full field name.
- * A key is present ONLY when a non-empty field name is available; callers MUST
- * use isset() / !empty() rather than ?? to avoid writing to empty meta keys.
- *
- * @return array<string, array<string, string>>
- */
-private function get_standardized_field_names() {
-    $cached = wp_cache_get( 'hvnly_standardized_field_names' );
-    if ( false !== $cached ) {
-        return $cached;
-    }
+	/**
+	 * Get standardized field names from builder configuration.
+	 *
+	 * Priority order:
+	 *  1. Live builder config (hvnly_property_builder.sections) – most authoritative.
+	 *  2. Master base IDs (hvnly_master_base_ids) – stable fallback when config is empty.
+	 *
+	 * Returns an associative array keyed by group_type → meta_key → full field name.
+	 * A key is present ONLY when a non-empty field name is available; callers MUST
+	 * use isset() / !empty() rather than ?? to avoid writing to empty meta keys.
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	private function get_standardized_field_names() {
+		$cached = wp_cache_get( 'hvnly_standardized_field_names' );
+		if ( false !== $cached ) {
+			return $cached;
+		}
 
-    $standardized = [];
+		$standardized = array();
 
-    // Priority 1 – live builder configuration.
-    //
-    // CRITICAL: sort sections by their `order` value so the canonical,
-    // lowest-order default section always wins when multiple sections share
-    // the same group_type+metaKey pair.  Without this, a user-added section
-    // (e.g. "Test Section", order=7) would overwrite the canonical base IDs
-    // (e.g. Property Video, order=3) because PHP iterates the option array
-    // in insertion order, not display order.
-    //
-    // We also use an empty-check rather than an assignment so only the FIRST
-    // (canonical) occurrence is kept — subsequent sections with the same
-    // group_type+metaKey are ignored.
-    $builder_config  = get_option( 'hvnly_property_builder.sections', [] );
-    $sorted_sections = is_array( $builder_config ) ? array_values( $builder_config ) : [];
-    usort( $sorted_sections, function ( $a, $b ) {
-        return ( (int) ( $a['order'] ?? 99 ) ) - ( (int) ( $b['order'] ?? 99 ) );
-    } );
+		// Priority 1 – live builder configuration.
+		//
+		// CRITICAL: sort sections by their `order` value so the canonical,
+		// lowest-order default section always wins when multiple sections share
+		// the same group_type+metaKey pair.  Without this, a user-added section
+		// (e.g. "Test Section", order=7) would overwrite the canonical base IDs
+		// (e.g. Property Video, order=3) because PHP iterates the option array
+		// in insertion order, not display order.
+		//
+		// We also use an empty-check rather than an assignment so only the FIRST
+		// (canonical) occurrence is kept — subsequent sections with the same
+		// group_type+metaKey are ignored.
+		$builder_config  = get_option( 'hvnly_property_builder.sections', array() );
+		$sorted_sections = is_array( $builder_config ) ? array_values( $builder_config ) : array();
+		usort( $sorted_sections, function ( $a, $b ) {
+			return ( (int) ( $a['order'] ?? 99 ) ) - ( (int) ( $b['order'] ?? 99 ) );
+		} );
 
-    foreach ( $sorted_sections as $section ) {
-        foreach ( $section['fields'] ?? [] as $field ) {
-            $group_type = $field['group_type'] ?? '';
-            $meta_key   = $field['metaKey']    ?? '';
-            $field_name = $field['name']        ?? '';
+		foreach ( $sorted_sections as $section ) {
+			foreach ( $section['fields'] ?? array() as $field ) {
+				$group_type = $field['group_type'] ?? '';
+				$meta_key   = $field['metaKey'] ?? '';
+				$field_name = $field['name'] ?? '';
 
-            if ( !empty( $group_type ) && !empty( $meta_key ) && !empty( $field_name ) ) {
-                // Only set once — canonical (lowest-order) section wins.
-                if ( empty( $standardized[ $group_type ][ $meta_key ] ) ) {
-                    $standardized[ $group_type ][ $meta_key ] = $field_name;
-                }
-            }
-        }
-    }
+				if ( ! empty( $group_type ) && ! empty( $meta_key ) && ! empty( $field_name ) ) {
+					// Only set once — canonical (lowest-order) section wins.
+					if ( empty( $standardized[ $group_type ][ $meta_key ] ) ) {
+						$standardized[ $group_type ][ $meta_key ] = $field_name;
+					}
+				}
+			}
+		}
 
-    // Priority 1.5 – single-JSON-field groups derive canonical keys from group_base_id.
-    $json_group_suffixes = array(
-        'property_docs' => 'documents',
-        'faq'           => 'faqs',
-        'repeater'      => 'items',
-        'agents'        => 'agents',
-        'features'      => 'features',
-    );
+		// Priority 1.5 – single-JSON-field groups derive canonical keys from group_base_id.
+		$json_group_suffixes = array(
+			'property_docs' => 'documents',
+			'faq'           => 'faqs',
+			'repeater'      => 'items',
+			'agents'        => 'agents',
+			'features'      => 'features',
+		);
 
-    foreach ( $json_group_suffixes as $group_type => $meta_suffix ) {
-        if ( ! empty( $standardized[ $group_type ][ $meta_suffix ] ) ) {
-            continue;
-        }
+		foreach ( $json_group_suffixes as $group_type => $meta_suffix ) {
+			if ( ! empty( $standardized[ $group_type ][ $meta_suffix ] ) ) {
+				continue;
+			}
 
-        foreach ( $sorted_sections as $section ) {
-            foreach ( $section['fields'] ?? [] as $field ) {
-                $field_group_type = $field['group_type'] ?? '';
-                $field_type       = $field['type'] ?? '';
-                if ( $field_group_type !== $group_type && $field_type !== $group_type ) {
-                    continue;
-                }
+			foreach ( $sorted_sections as $section ) {
+				foreach ( $section['fields'] ?? array() as $field ) {
+					$field_group_type = $field['group_type'] ?? '';
+					$field_type       = $field['type'] ?? '';
+					if ( $field_group_type !== $group_type && $field_type !== $group_type ) {
+						continue;
+					}
 
-                $base = $field['group_base_id'] ?? '';
-                if ( ! empty( $base ) ) {
-                    $standardized[ $group_type ][ $meta_suffix ] = $base . '_' . $meta_suffix;
-                    break 2;
-                }
+					$base = $field['group_base_id'] ?? '';
+					if ( ! empty( $base ) ) {
+						$standardized[ $group_type ][ $meta_suffix ] = $base . '_' . $meta_suffix;
+						break 2;
+					}
 
-                $field_name = $field['name'] ?? '';
-                $prefix     = $group_type . '_';
-                if ( ! empty( $field_name ) && preg_match( '/^(' . preg_quote( $prefix, '/' ) . '[a-zA-Z0-9_]+)_/', $field_name, $m ) ) {
-                    $standardized[ $group_type ][ $meta_suffix ] = $m[1] . '_' . $meta_suffix;
-                    break 2;
-                }
-            }
-        }
-    }
+					$field_name = $field['name'] ?? '';
+					$prefix     = $group_type . '_';
+					if ( ! empty( $field_name ) && preg_match( '/^(' . preg_quote( $prefix, '/' ) . '[a-zA-Z0-9_]+)_/', $field_name, $m ) ) {
+						$standardized[ $group_type ][ $meta_suffix ] = $m[1] . '_' . $meta_suffix;
+						break 2;
+					}
+				}
+			}
+		}
 
-    // Priority 2 – master base IDs for import groups (including 3.1 FAQ/repeater/agents).
-    $group_meta_keys = [
-        'video'         => [ 'title', 'url', 'thumbnail' ],
-        'gallery'       => [ 'title', 'images' ],
-        'map'           => [ 'address', 'latitude', 'longitude', 'preview' ],
-        'property_docs' => [ 'documents' ],
-        'faq'           => [ 'faqs' ],
-        'repeater'      => [ 'items' ],
-        'agents'        => [ 'agents' ],
-        'features'      => [ 'features' ],
-    ];
+		// Priority 2 – master base IDs for import groups (including 3.1 FAQ/repeater/agents).
+		$group_meta_keys = array(
+			'video'         => array( 'title', 'url', 'thumbnail' ),
+			'gallery'       => array( 'title', 'images' ),
+			'map'           => array( 'address', 'latitude', 'longitude', 'preview' ),
+			'property_docs' => array( 'documents' ),
+			'faq'           => array( 'faqs' ),
+			'repeater'      => array( 'items' ),
+			'agents'        => array( 'agents' ),
+			'features'      => array( 'features' ),
+		);
 
-    if ( class_exists( '\HvnlyNab\Core\UnifiedFieldGenerator' ) ) {
-        $unified    = \HvnlyNab\Core\UnifiedFieldGenerator::get_instance();
-        $master_ids = $unified->get_or_create_master_base_ids();
+		if ( class_exists( '\HvnlyNab\Core\UnifiedFieldGenerator' ) ) {
+			$unified    = \HvnlyNab\Core\UnifiedFieldGenerator::get_instance();
+			$master_ids = $unified->get_or_create_master_base_ids();
 
-        foreach ( $group_meta_keys as $group_type => $meta_keys ) {
-            // Only fill in what's missing – don't overwrite builder-config values.
-            $base = $master_ids[ $group_type ] ?? null;
-            if ( empty( $base ) ) {
-                continue;
-            }
-            foreach ( $meta_keys as $meta_key ) {
-                if ( empty( $standardized[ $group_type ][ $meta_key ] ) ) {
-                    $standardized[ $group_type ][ $meta_key ] = $base . '_' . $meta_key;
-                }
-            }
-        }
-    }
+			foreach ( $group_meta_keys as $group_type => $meta_keys ) {
+				// Only fill in what's missing – don't overwrite builder-config values.
+				$base = $master_ids[ $group_type ] ?? null;
+				if ( empty( $base ) ) {
+					continue;
+				}
+				foreach ( $meta_keys as $meta_key ) {
+					if ( empty( $standardized[ $group_type ][ $meta_key ] ) ) {
+						$standardized[ $group_type ][ $meta_key ] = $base . '_' . $meta_key;
+					}
+				}
+			}
+		}
 
-    wp_cache_set( 'hvnly_standardized_field_names', $standardized, '', HOUR_IN_SECONDS );
+		wp_cache_set( 'hvnly_standardized_field_names', $standardized, '', HOUR_IN_SECONDS );
 
-    return $standardized;
-}
+		return $standardized;
+	}
 
-/**
- * Create demo property - UPDATED to use standardized field names
- * 
- * @param array $data Property data
- * @param array $options Import options
- * @return int|WP_Error
- */
-private function create_demo_property( $data, $options = [] ) {
-    $this->log_debug( 'Creating property: ' . ( $data['title'] ?? 'N/A' ) );
+	/**
+	 * Create demo property - UPDATED to use standardized field names
+	 *
+	 * @param array $data Property data
+	 * @param array $options Import options
+	 * @return int|WP_Error
+	 */
+	private function create_demo_property( $data, $options = array() ) {
+		$this->log_debug( 'Creating property: ' . ( $data['title'] ?? 'N/A' ) );
 
-    $this->ensure_import_property_builder_sections();
-    $this->ensure_import_property_features_section();
-    $this->ensure_import_contact_preset_fields();
-    $this->ensure_import_tail_section_order();
-    wp_cache_delete( 'hvnly_standardized_field_names' );
+		$this->ensure_import_property_builder_sections();
+		$this->ensure_import_property_features_section();
+		$this->ensure_import_contact_preset_fields();
+		$this->ensure_import_tail_section_order();
+		wp_cache_delete( 'hvnly_standardized_field_names' );
 
-    // Warm standardized field-name cache for legacy callers.
-    $this->get_standardized_field_names();
-    
-    $title = '';
-    if ( $this->import_option_has_value( $options['property_title'] ?? null ) ) {
-        $title = sanitize_text_field( wp_strip_all_tags( (string) $options['property_title'] ) );
-    } elseif ( isset( $data['title'] ) ) {
-        $title = sanitize_text_field( wp_strip_all_tags( $data['title'] ) );
-    }
-    $content = isset( $data['content'] ) ? wp_kses_post( $data['content'] ) : __( 'Beautiful property with great features.', 'havenlytics' );
-    $excerpt = isset( $data['excerpt'] ) ? sanitize_textarea_field( $data['excerpt'] ) : __( 'Amazing property with all amenities.', 'havenlytics' );
+		// Warm standardized field-name cache for legacy callers.
+		$this->get_standardized_field_names();
 
-    // Avoid duplicate titles
-    $existing_query = new \WP_Query( [
-        'post_type' => $this->post_type,
-        'title' => $title,
-        'posts_per_page' => 1,
-        'post_status' => 'any',
-        'fields' => 'ids',
-        'no_found_rows' => true,
-        'update_post_meta_cache' => false,
-        'update_post_term_cache' => false,
-    ] );
+		$title = '';
+		if ( $this->import_option_has_value( $options['property_title'] ?? null ) ) {
+			$title = sanitize_text_field( wp_strip_all_tags( (string) $options['property_title'] ) );
+		} elseif ( isset( $data['title'] ) ) {
+			$title = sanitize_text_field( wp_strip_all_tags( $data['title'] ) );
+		}
+		$content = isset( $data['content'] ) ? wp_kses_post( $data['content'] ) : __( 'Beautiful property with great features.', 'havenlytics' );
+		$excerpt = isset( $data['excerpt'] ) ? sanitize_textarea_field( $data['excerpt'] ) : __( 'Amazing property with all amenities.', 'havenlytics' );
 
-    if ( $existing_query->have_posts() ) {
-        $title .= ' ' . uniqid();
-    }
+		// Avoid duplicate titles
+		$existing_query = new \WP_Query( array(
+			'post_type' => $this->post_type,
+			'title' => $title,
+			'posts_per_page' => 1,
+			'post_status' => 'any',
+			'fields' => 'ids',
+			'no_found_rows' => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		) );
 
-    // Build meta input for ALL sections using standardized field names
-    $meta_input = [];
-    
-    // SECTION 0: Basic Info
-    $meta_input = $this->build_basic_meta_fields( $data );
-    
-    // SECTION 1: Additional Information
-    $this->add_additional_information_meta( $meta_input, $data );
-    
-    // SECTION 2: Address & Neighborhood
-    $this->add_address_neighborhood_meta( $meta_input, $data );
+		if ( $existing_query->have_posts() ) {
+			$title .= ' ' . uniqid();
+		}
 
-    // Preset contact fields (Email, Phone, Website) for card/footer display.
-    $this->add_demo_contact_preset_meta( $meta_input, $data );
-    
-    // System fields
-    $meta_input['_hvnly_property_views'] = $this->validate_numeric( wp_rand( 50, 500 ), 0, 10000 );
-    $meta_input['_hvnly_property_featured'] = ! empty( $data['featured'] ) ? '1' : '0';
-    $meta_input['_hvnly_importing'] = '1';
+		// Build meta input for ALL sections using standardized field names
+		$meta_input = array();
 
-    // Get canonical group bases from live builder configuration (aligned with metabox field names).
-    $import_bases = $this->resolve_import_group_bases();
+		// SECTION 0: Basic Info
+		$meta_input = $this->build_basic_meta_fields( $data );
 
-    $video_base    = $import_bases['video'] ?? null;
-    $gallery_base  = $import_bases['gallery'] ?? null;
-    $map_base      = $import_bases['map'] ?? null;
-    $docs_base     = $import_bases['property_docs'] ?? null;
-    $faq_base      = $import_bases['faq'] ?? null;
-    $repeater_base = $import_bases['repeater'] ?? null;
-    $agents_base   = $import_bases['agents'] ?? null;
-    $features_base = $import_bases['features'] ?? null;
+		// SECTION 1: Additional Information
+		$this->add_additional_information_meta( $meta_input, $data );
 
-    // Last-resort unique bases when builder and master IDs are unavailable.
-    $video_base    = $video_base ?? $this->generate_unique_base_id( 'video' );
-    $gallery_base  = $gallery_base ?? $this->generate_unique_base_id( 'gallery' );
-    $map_base      = $map_base ?? $this->generate_unique_base_id( 'map' );
-    $docs_base     = $docs_base ?? $this->generate_unique_base_id( 'property_docs' );
-    $faq_base      = $faq_base ?? $this->generate_unique_base_id( 'faq' );
-    $repeater_base = $repeater_base ?? $this->generate_unique_base_id( 'repeater' );
-    $agents_base   = $agents_base ?? $this->generate_unique_base_id( 'agents' );
-    $features_base = $features_base ?? $this->generate_unique_base_id( 'features' );
+		// SECTION 2: Address & Neighborhood
+		$this->add_address_neighborhood_meta( $meta_input, $data );
 
-    // ========== SECTION 3: VIDEO DATA ==========
-    $video_url = '';
-    if ( $this->import_option_has_value( $options['youtube_url'] ?? null ) ) {
-        $video_url = esc_url_raw( (string) $options['youtube_url'] );
-    } elseif ( $this->import_option_has_value( $data['youtube_url'] ?? null ) ) {
-        $video_url = esc_url_raw( (string) $data['youtube_url'] );
-    }
+		// Preset contact fields (Email, Phone, Website) for card/footer display.
+		$this->add_demo_contact_preset_meta( $meta_input, $data );
 
-    $video_title = __( 'Property Tour', 'havenlytics' );
-    if ( $this->import_option_has_value( $options['youtube_title'] ?? null ) ) {
-        $video_title = sanitize_text_field( (string) $options['youtube_title'] );
-    } elseif ( $this->import_option_has_value( $data['youtube_title'] ?? null ) ) {
-        $video_title = sanitize_text_field( (string) $data['youtube_title'] );
-    }
+		// System fields
+		$meta_input['_hvnly_property_views']    = $this->validate_numeric( wp_rand( 50, 500 ), 0, 10000 );
+		$meta_input['_hvnly_property_featured'] = ! empty( $data['featured'] ) ? '1' : '0';
+		$meta_input['_hvnly_importing']         = '1';
 
-    $video_thumbnail = '';
-    if ( $this->import_option_has_value( $options['youtube_thumbnail'] ?? null ) ) {
-        $video_thumbnail = esc_url_raw( (string) $options['youtube_thumbnail'] );
-    } elseif ( $this->import_option_has_value( $data['youtube_thumbnail'] ?? null ) ) {
-        $video_thumbnail = esc_url_raw( (string) $data['youtube_thumbnail'] );
-    }
+		// Get canonical group bases from live builder configuration (aligned with metabox field names).
+		$import_bases = $this->resolve_import_group_bases();
 
-    if ( empty( $video_thumbnail ) && !empty( $video_url ) ) {
-        $video_id_extracted = $this->extract_youtube_id( $video_url );
-        if ( $video_id_extracted ) {
-            $video_thumbnail = "https://img.youtube.com/vi/{$video_id_extracted}/maxresdefault.jpg";
-        }
-    }
+		$video_base    = $import_bases['video'] ?? null;
+		$gallery_base  = $import_bases['gallery'] ?? null;
+		$map_base      = $import_bases['map'] ?? null;
+		$docs_base     = $import_bases['property_docs'] ?? null;
+		$faq_base      = $import_bases['faq'] ?? null;
+		$repeater_base = $import_bases['repeater'] ?? null;
+		$agents_base   = $import_bases['agents'] ?? null;
+		$features_base = $import_bases['features'] ?? null;
 
-    if ( '' === $video_url ) {
-        $video_url = 'https://youtu.be/JU6UX3jCrhg?si=xKerm32_EoUDykUk';
-        if ( '' === $video_title || __( 'Property Tour', 'havenlytics' ) === $video_title ) {
-            $video_title = __( 'Property Tour', 'havenlytics' );
-        }
-        if ( '' === $video_thumbnail ) {
-            $video_thumbnail = 'https://img.youtube.com/vi/JU6UX3jCrhg/maxresdefault.jpg';
-        }
-    }
+		// Last-resort unique bases when builder and master IDs are unavailable.
+		$video_base    = $video_base ?? $this->generate_unique_base_id( 'video' );
+		$gallery_base  = $gallery_base ?? $this->generate_unique_base_id( 'gallery' );
+		$map_base      = $map_base ?? $this->generate_unique_base_id( 'map' );
+		$docs_base     = $docs_base ?? $this->generate_unique_base_id( 'property_docs' );
+		$faq_base      = $faq_base ?? $this->generate_unique_base_id( 'faq' );
+		$repeater_base = $repeater_base ?? $this->generate_unique_base_id( 'repeater' );
+		$agents_base   = $agents_base ?? $this->generate_unique_base_id( 'agents' );
+		$features_base = $features_base ?? $this->generate_unique_base_id( 'features' );
 
-    $video_title_field     = $video_base . '_title';
-    $video_url_field       = $video_base . '_url';
-    $video_thumbnail_field = $video_base . '_thumbnail';
+		// ========== SECTION 3: VIDEO DATA ==========
+		$video_url = '';
+		if ( $this->import_option_has_value( $options['youtube_url'] ?? null ) ) {
+			$video_url = esc_url_raw( (string) $options['youtube_url'] );
+		} elseif ( $this->import_option_has_value( $data['youtube_url'] ?? null ) ) {
+			$video_url = esc_url_raw( (string) $data['youtube_url'] );
+		}
 
-    if ( ! empty( $video_url ) ) {
-        $meta_input[ $video_title_field ]     = $video_title;
-        $meta_input[ $video_url_field ]       = $video_url;
-        $meta_input[ $video_thumbnail_field ] = $video_thumbnail;
-        $this->log_debug( 'Saved video using field: ' . $video_url_field );
+		$video_title = __( 'Property Tour', 'havenlytics' );
+		if ( $this->import_option_has_value( $options['youtube_title'] ?? null ) ) {
+			$video_title = sanitize_text_field( (string) $options['youtube_title'] );
+		} elseif ( $this->import_option_has_value( $data['youtube_title'] ?? null ) ) {
+			$video_title = sanitize_text_field( (string) $data['youtube_title'] );
+		}
 
-        // Legacy support
-        $meta_input['_hvnly_property_youtube_video_title']     = $video_title;
-        $meta_input['_hvnly_property_youtube_video_url']       = $video_url;
-        $meta_input['_hvnly_property_youtube_video_thumbnail'] = $video_thumbnail;
-    }
+		$video_thumbnail = '';
+		if ( $this->import_option_has_value( $options['youtube_thumbnail'] ?? null ) ) {
+			$video_thumbnail = esc_url_raw( (string) $options['youtube_thumbnail'] );
+		} elseif ( $this->import_option_has_value( $data['youtube_thumbnail'] ?? null ) ) {
+			$video_thumbnail = esc_url_raw( (string) $data['youtube_thumbnail'] );
+		}
 
-    // ========== SECTION 4: GALLERY DATA ==========
-    $gallery_title_field  = $gallery_base . '_title';
-    $gallery_images_field = $gallery_base . '_images';
+		if ( empty( $video_thumbnail ) && ! empty( $video_url ) ) {
+			$video_id_extracted = $this->extract_youtube_id( $video_url );
+			if ( $video_id_extracted ) {
+				$video_thumbnail = "https://img.youtube.com/vi/{$video_id_extracted}/maxresdefault.jpg";
+			}
+		}
 
-    $gallery_title = __( 'Property Gallery', 'havenlytics' );
-    if ( $this->import_option_has_value( $options['gallery_title'] ?? null ) ) {
-        $gallery_title = sanitize_text_field( (string) $options['gallery_title'] );
-    } elseif ( $this->import_option_has_value( $data['gallery_title'] ?? null ) ) {
-        $gallery_title = sanitize_text_field( (string) $data['gallery_title'] );
-    }
+		if ( '' === $video_url ) {
+			$video_url = 'https://youtu.be/JU6UX3jCrhg?si=xKerm32_EoUDykUk';
+			if ( '' === $video_title || __( 'Property Tour', 'havenlytics' ) === $video_title ) {
+				$video_title = __( 'Property Tour', 'havenlytics' );
+			}
+			if ( '' === $video_thumbnail ) {
+				$video_thumbnail = 'https://img.youtube.com/vi/JU6UX3jCrhg/maxresdefault.jpg';
+			}
+		}
 
-    $meta_input[ $gallery_title_field ]           = $gallery_title;
-    $meta_input['_hvnly_property_gallery_title']  = $gallery_title;
-    $this->log_debug( 'Saved gallery using field: ' . $gallery_title_field );
+		$video_title_field     = $video_base . '_title';
+		$video_url_field       = $video_base . '_url';
+		$video_thumbnail_field = $video_base . '_thumbnail';
 
-    // ========== SECTION 5: MAP DATA ==========
-    $map_address_field   = $map_base . '_address';
-    $map_latitude_field  = $map_base . '_latitude';
-    $map_longitude_field = $map_base . '_longitude';
-    $map_preview_field   = $map_base . '_preview';
+		if ( ! empty( $video_url ) ) {
+			$meta_input[ $video_title_field ]     = $video_title;
+			$meta_input[ $video_url_field ]       = $video_url;
+			$meta_input[ $video_thumbnail_field ] = $video_thumbnail;
+			$this->log_debug( 'Saved video using field: ' . $video_url_field );
 
-    $map_location = $this->resolve_property_map_location( $data, $options );
-    $map_address  = $map_location['map_address'];
-    $map_latitude = $map_location['map_latitude'];
-    $map_longitude = $map_location['map_longitude'];
+			// Legacy support
+			$meta_input['_hvnly_property_youtube_video_title']     = $video_title;
+			$meta_input['_hvnly_property_youtube_video_url']       = $video_url;
+			$meta_input['_hvnly_property_youtube_video_thumbnail'] = $video_thumbnail;
+		}
 
-    $meta_input[ $map_address_field ]   = $map_address;
-    $meta_input[ $map_latitude_field ]  = $map_latitude;
-    $meta_input[ $map_longitude_field ] = $map_longitude;
-    $meta_input[ $map_preview_field ]   = '';
-    $this->log_debug( 'Saved map using field: ' . $map_address_field );
+		// ========== SECTION 4: GALLERY DATA ==========
+		$gallery_title_field  = $gallery_base . '_title';
+		$gallery_images_field = $gallery_base . '_images';
 
-    // Legacy map fields
-    $meta_input['_hvnly_property_map_location_address'] = $map_address;
-    $meta_input['_hvnly_property_location_Latitude']    = $map_latitude;
-    $meta_input['_hvnly_property_location_Longitude']   = $map_longitude;
+		$gallery_title = __( 'Property Gallery', 'havenlytics' );
+		if ( $this->import_option_has_value( $options['gallery_title'] ?? null ) ) {
+			$gallery_title = sanitize_text_field( (string) $options['gallery_title'] );
+		} elseif ( $this->import_option_has_value( $data['gallery_title'] ?? null ) ) {
+			$gallery_title = sanitize_text_field( (string) $data['gallery_title'] );
+		}
 
-    // ========== SECTION 6: PROPERTY DOCUMENTS DATA (single JSON field) ==========
-    $docs_documents_field = $docs_base . '_documents';
-    $docs_sidebar_field   = $docs_base . '_show_in_sidebar';
+		$meta_input[ $gallery_title_field ]          = $gallery_title;
+		$meta_input['_hvnly_property_gallery_title'] = $gallery_title;
+		$this->log_debug( 'Saved gallery using field: ' . $gallery_title_field );
 
-    $sample_documents = $this->get_bundled_demo_documents();
+		// ========== SECTION 5: MAP DATA ==========
+		$map_address_field   = $map_base . '_address';
+		$map_latitude_field  = $map_base . '_latitude';
+		$map_longitude_field = $map_base . '_longitude';
+		$map_preview_field   = $map_base . '_preview';
 
-    $documents_json                        = wp_json_encode( $sample_documents );
-    $meta_input[ $docs_documents_field ]   = $documents_json;
-    $meta_input[ $docs_sidebar_field ]     = '1';
-    $meta_input['_hvnly_property_documents'] = $documents_json;
-    $this->log_debug( 'Saved documents using field: ' . $docs_documents_field );
+		$map_location  = $this->resolve_property_map_location( $data, $options );
+		$map_address   = $map_location['map_address'];
+		$map_latitude  = $map_location['map_latitude'];
+		$map_longitude = $map_location['map_longitude'];
 
-    // ========== Store field-to-base-ID map (group_id keyed + legacy type map) ==========
-    $field_map_groups = array();
-    $field_map_legacy = array(
-        'video'         => $video_base,
-        'gallery'       => $gallery_base,
-        'map'           => $map_base,
-        'property_docs' => $docs_base,
-        'faq'           => $faq_base,
-        'repeater'      => $repeater_base,
-        'agents'        => $agents_base,
-        'features'      => $features_base,
-    );
-    $builder_sections = get_option( 'hvnly_property_builder.sections', array() );
-    if ( is_array( $builder_sections ) ) {
-        foreach ( $builder_sections as $section ) {
-            foreach ( $section['fields'] ?? array() as $field ) {
-                $gid  = $field['group_id'] ?? '';
-                $base = $field['group_base_id'] ?? '';
-                $gt   = sanitize_key( (string) ( $field['group_type'] ?? '' ) );
-                if ( '' === $gt ) {
-                    $ft = sanitize_key( (string) ( $field['type'] ?? '' ) );
-                    if ( in_array( $ft, array( 'faq', 'repeater', 'agents' ), true ) ) {
-                        $gt = $ft;
-                    }
-                }
+		$meta_input[ $map_address_field ]   = $map_address;
+		$meta_input[ $map_latitude_field ]  = $map_latitude;
+		$meta_input[ $map_longitude_field ] = $map_longitude;
+		$meta_input[ $map_preview_field ]   = '';
+		$this->log_debug( 'Saved map using field: ' . $map_address_field );
 
-                if ( $gid !== '' && $base !== '' && ! isset( $field_map_groups[ $gid ] ) ) {
-                    $field_map_groups[ $gid ] = $base;
-                }
-            }
-        }
-    }
+		// Legacy map fields
+		$meta_input['_hvnly_property_map_location_address'] = $map_address;
+		$meta_input['_hvnly_property_location_Latitude']    = $map_latitude;
+		$meta_input['_hvnly_property_location_Longitude']   = $map_longitude;
 
-    if ( class_exists( DemoImportContentSeeder::class ) ) {
-        $demo_content_seeder = new DemoImportContentSeeder();
-        $demo_content_seeder->enrich_meta_input( $meta_input, $field_map_groups, $field_map_legacy, $data );
-    }
+		// ========== SECTION 6: PROPERTY DOCUMENTS DATA (single JSON field) ==========
+		$docs_documents_field = $docs_base . '_documents';
+		$docs_sidebar_field   = $docs_base . '_show_in_sidebar';
 
-    $meta_input['_hvnly_field_map'] = wp_json_encode( array(
-        'groups' => $field_map_groups,
-        'legacy' => $field_map_legacy,
-    ) );
+		$sample_documents = $this->get_bundled_demo_documents();
 
-    // ========== INSERT POST ==========
-    $post_data = [
-        'post_title'     => $title,
-        'post_name'      => sanitize_title( $title ),
-        'post_content'   => $content,
-        'post_excerpt'   => $excerpt,
-        'post_status'    => 'publish',
-        'post_type'      => $this->post_type,
-        'post_author'    => get_current_user_id(),
-        'meta_input'     => $meta_input,
-        'ping_status'    => 'closed',
-        'comment_status' => 'closed',
-    ];
+		$documents_json                          = wp_json_encode( $sample_documents );
+		$meta_input[ $docs_documents_field ]     = $documents_json;
+		$meta_input[ $docs_sidebar_field ]       = '1';
+		$meta_input['_hvnly_property_documents'] = $documents_json;
+		$this->log_debug( 'Saved documents using field: ' . $docs_documents_field );
 
-    // Signal to Havenlytics hooks that this is a bulk import insertion so they
-    // can skip heavy processing.  We do NOT use remove_all_actions() because
-    // that would destroy hooks registered by caching plugins, SEO plugins, etc.
-    $GLOBALS['hvnly_bulk_importing'] = true;
-    $post_id = wp_insert_post( wp_slash( $post_data ), true );
-    unset( $GLOBALS['hvnly_bulk_importing'] );
+		// ========== Store field-to-base-ID map (group_id keyed + legacy type map) ==========
+		$field_map_groups = array();
+		$field_map_legacy = array(
+			'video'         => $video_base,
+			'gallery'       => $gallery_base,
+			'map'           => $map_base,
+			'property_docs' => $docs_base,
+			'faq'           => $faq_base,
+			'repeater'      => $repeater_base,
+			'agents'        => $agents_base,
+			'features'      => $features_base,
+		);
+		$builder_sections = get_option( 'hvnly_property_builder.sections', array() );
+		if ( is_array( $builder_sections ) ) {
+			foreach ( $builder_sections as $section ) {
+				foreach ( $section['fields'] ?? array() as $field ) {
+					$gid  = $field['group_id'] ?? '';
+					$base = $field['group_base_id'] ?? '';
+					$gt   = sanitize_key( (string) ( $field['group_type'] ?? '' ) );
+					if ( '' === $gt ) {
+						$ft = sanitize_key( (string) ( $field['type'] ?? '' ) );
+						if ( in_array( $ft, array( 'faq', 'repeater', 'agents' ), true ) ) {
+							$gt = $ft;
+						}
+					}
 
-    if ( is_wp_error( $post_id ) ) {
-        throw new \Exception( esc_html( $post_id->get_error_message() ) );
-    }
+					if ( $gid !== '' && $base !== '' && ! isset( $field_map_groups[ $gid ] ) ) {
+						$field_map_groups[ $gid ] = $base;
+					}
+				}
+			}
+		}
 
-    if ( class_exists( '\HvnlyNab\Admin\Data\DemoContentLocalizer' ) ) {
-        \HvnlyNab\Admin\Data\DemoContentLocalizer::mark_demo_post( (int) $post_id );
-    } else {
-        update_post_meta( (int) $post_id, '_hvnly_is_demo', '1' );
-    }
+		if ( class_exists( DemoImportContentSeeder::class ) ) {
+			$demo_content_seeder = new DemoImportContentSeeder();
+			$demo_content_seeder->enrich_meta_input( $meta_input, $field_map_groups, $field_map_legacy, $data );
+		}
 
-    // Persist contact presets after insert (editor + card footer). meta_input
-    // already includes them; this guarantees the keys exist if anything in the
-    // insert path skipped unregistered meta.
-    $contact_meta = array();
-    $this->add_demo_contact_preset_meta( $contact_meta, is_array( $data ) ? $data : array() );
-    foreach ( $contact_meta as $contact_key => $contact_value ) {
-        update_post_meta( (int) $post_id, $contact_key, $contact_value );
-    }
+		$meta_input['_hvnly_field_map'] = wp_json_encode( array(
+			'groups' => $field_map_groups,
+			'legacy' => $field_map_legacy,
+		) );
 
-    hvnly_safe_delete_post_meta( (int) $post_id, '_hvnly_importing', 'import_transient' );
+		// ========== INSERT POST ==========
+		$post_data = array(
+			'post_title'     => $title,
+			'post_name'      => sanitize_title( $title ),
+			'post_content'   => $content,
+			'post_excerpt'   => $excerpt,
+			'post_status'    => 'publish',
+			'post_type'      => $this->post_type,
+			'post_author'    => get_current_user_id(),
+			'meta_input'     => $meta_input,
+			'ping_status'    => 'closed',
+			'comment_status' => 'closed',
+		);
 
-    if ( ! empty( $data['import_session_id'] ) && isset( $data['import_index'] ) ) {
-        update_post_meta( (int) $post_id, self::IMPORT_SESSION_META, sanitize_text_field( (string) $data['import_session_id'] ) );
-        update_post_meta( (int) $post_id, self::IMPORT_INDEX_META, (string) absint( $data['import_index'] ) );
-    }
+		// Signal to Havenlytics hooks that this is a bulk import insertion so they
+		// can skip heavy processing.  We do NOT use remove_all_actions() because
+		// that would destroy hooks registered by caching plugins, SEO plugins, etc.
+		$GLOBALS['hvnly_bulk_importing'] = true;
+		$post_id                         = wp_insert_post( wp_slash( $post_data ), true );
+		unset( $GLOBALS['hvnly_bulk_importing'] );
 
-    // Set featured image and gallery images
-    if ( !empty( $data['include_images'] ) ) {
-        $this->set_featured_image( $post_id, $data );
+		if ( is_wp_error( $post_id ) ) {
+			throw new \Exception( esc_html( $post_id->get_error_message() ) );
+		}
 
-        $gallery_ids = $this->add_gallery_images( $post_id, 1 );
+		if ( class_exists( '\HvnlyNab\Admin\Data\DemoContentLocalizer' ) ) {
+			\HvnlyNab\Admin\Data\DemoContentLocalizer::mark_demo_post( (int) $post_id );
+		} else {
+			update_post_meta( (int) $post_id, '_hvnly_is_demo', '1' );
+		}
 
-        if ( !empty( $gallery_ids ) ) {
-            $gallery_ids_string = implode( ',', $gallery_ids );
-            update_post_meta( $post_id, $gallery_images_field, $gallery_ids_string );
-            update_post_meta( $post_id, '_hvnly_property_gallery_images', $gallery_ids_string );
-            $this->log_debug( 'Gallery images saved using field: ' . $gallery_images_field );
-        }
-    }
+		// Persist contact presets after insert (editor + card footer). meta_input
+		// already includes them; this guarantees the keys exist if anything in the
+		// insert path skipped unregistered meta.
+		$contact_meta = array();
+		$this->add_demo_contact_preset_meta( $contact_meta, is_array( $data ) ? $data : array() );
+		foreach ( $contact_meta as $contact_key => $contact_value ) {
+			update_post_meta( (int) $post_id, $contact_key, $contact_value );
+		}
 
-    // Assign taxonomies
-    $this->assign_property_taxonomies( $post_id, $data );
+		hvnly_safe_delete_post_meta( (int) $post_id, '_hvnly_importing', 'import_transient' );
 
-    // Assign demo agents (Agent CPT + agency taxonomy ecosystem).
-    $this->maybe_assign_demo_agents( (int) $post_id, $data );
+		if ( ! empty( $data['import_session_id'] ) && isset( $data['import_index'] ) ) {
+			update_post_meta( (int) $post_id, self::IMPORT_SESSION_META, sanitize_text_field( (string) $data['import_session_id'] ) );
+			update_post_meta( (int) $post_id, self::IMPORT_INDEX_META, (string) absint( $data['import_index'] ) );
+		}
 
-    if ( class_exists( DemoImportContentSeeder::class ) ) {
-        $demo_content_seeder = new DemoImportContentSeeder();
-        $demo_content_seeder->seed_agents_group( (int) $post_id, $data, $agents_base );
-    }
+		// Set featured image and gallery images
+		if ( ! empty( $data['include_images'] ) ) {
+			$this->set_featured_image( $post_id, $data );
 
-    // Generate property ID
-    if ( function_exists( 'hvnlyMain' ) && method_exists( hvnlyMain(), 'Helper' ) && method_exists( hvnlyMain()->Helper, 'generate_property_id' ) ) {
-        hvnlyMain()->Helper->generate_property_id( $post_id );
-    }
+			$gallery_ids = $this->add_gallery_images( $post_id, 1 );
 
-    // Debug after creation (only in debug mode)
-    if ($this->debug_mode) {
-        $this->debug_property_meta( $post_id );
-    }
+			if ( ! empty( $gallery_ids ) ) {
+				$gallery_ids_string = implode( ',', $gallery_ids );
+				update_post_meta( $post_id, $gallery_images_field, $gallery_ids_string );
+				update_post_meta( $post_id, '_hvnly_property_gallery_images', $gallery_ids_string );
+				$this->log_debug( 'Gallery images saved using field: ' . $gallery_images_field );
+			}
+		}
 
-    $this->log_debug( 'Property created successfully: ID=' . $post_id . ', Title=' . $title );
-    
-    return $post_id;
-}
+		// Assign taxonomies
+		$this->assign_property_taxonomies( $post_id, $data );
+
+		// Assign demo agents (Agent CPT + agency taxonomy ecosystem).
+		$this->maybe_assign_demo_agents( (int) $post_id, $data );
+
+		if ( class_exists( DemoImportContentSeeder::class ) ) {
+			$demo_content_seeder = new DemoImportContentSeeder();
+			$demo_content_seeder->seed_agents_group( (int) $post_id, $data, $agents_base );
+		}
+
+		// Generate property ID
+		if ( function_exists( 'hvnlyMain' ) && method_exists( hvnlyMain(), 'Helper' ) && method_exists( hvnlyMain()->Helper, 'generate_property_id' ) ) {
+			hvnlyMain()->Helper->generate_property_id( $post_id );
+		}
+
+		// Debug after creation (only in debug mode)
+		if ($this->debug_mode) {
+			$this->debug_property_meta( $post_id );
+		}
+
+		$this->log_debug( 'Property created successfully: ID=' . $post_id . ', Title=' . $title );
+
+		return $post_id;
+	}
 
     /**
      * Debug all meta after property creation
      */
     private function debug_property_meta( $post_id ) {
-        if ( ! $this->debug_mode ) return;
-        
+        if ( ! $this->debug_mode ) {
+			return;
+        }
+
         $all_meta = get_post_meta( $post_id );
         $this->log_debug( '========== PROPERTY META (ID: ' . $post_id . ') ==========' );
-        
-        $sections = [
-            'basic_info' => [],
-            'additional_info' => [],
-            'address_neighborhood' => [],
-            'video' => [],
-            'gallery' => [],
-            'map' => [],
-            'documents' => []
-        ];
-        
+
+        $sections = array(
+            'basic_info' => array(),
+            'additional_info' => array(),
+            'address_neighborhood' => array(),
+            'video' => array(),
+            'gallery' => array(),
+            'map' => array(),
+            'documents' => array(),
+        );
+
         foreach ( $all_meta as $key => $value ) {
             $val = is_array( $value ) ? ( is_array( $value[0] ) ? wp_json_encode( $value[0] ) : $value[0] ) : $value;
             $val = substr( $val, 0, 100 );
-            
-            if ( strpos( $key, '_hvnly_property_price' ) !== false || strpos( $key, '_hvnly_property_bedrooms' ) !== false || 
-                 strpos( $key, '_hvnly_property_bathrooms' ) !== false || strpos( $key, '_hvnly_property_reception_rooms' ) !== false ||
-                 strpos( $key, '_hvnly_property_half_bathrooms' ) !== false || strpos( $key, '_hvnly_property_kitchens' ) !== false ||
-                 strpos( $key, '_hvnly_property_total_rooms' ) !== false || strpos( $key, '_hvnly_property_floors' ) !== false ||
-                 strpos( $key, '_hvnly_property_year_built' ) !== false || strpos( $key, '_hvnly_property_garage_sqft' ) !== false ||
-                 strpos( $key, '_hvnly_property_mls_number' ) !== false ) {
+
+            if ( strpos( $key, '_hvnly_property_price' ) !== false || strpos( $key, '_hvnly_property_bedrooms' ) !== false ||
+                strpos( $key, '_hvnly_property_bathrooms' ) !== false || strpos( $key, '_hvnly_property_reception_rooms' ) !== false ||
+                strpos( $key, '_hvnly_property_half_bathrooms' ) !== false || strpos( $key, '_hvnly_property_kitchens' ) !== false ||
+                strpos( $key, '_hvnly_property_total_rooms' ) !== false || strpos( $key, '_hvnly_property_floors' ) !== false ||
+                strpos( $key, '_hvnly_property_year_built' ) !== false || strpos( $key, '_hvnly_property_garage_sqft' ) !== false ||
+                strpos( $key, '_hvnly_property_mls_number' ) !== false ) {
                 $sections['basic_info'][] = $key . ' = ' . $val;
             } elseif ( strpos( $key, '_hvnly_property_sqft' ) !== false || strpos( $key, '_hvnly_property_lot_size' ) !== false ||
-                       strpos( $key, '_hvnly_property_hoa_fee' ) !== false || strpos( $key, '_hvnly_property_annual_tax_amount' ) !== false ||
-                       strpos( $key, '_hvnly_property_heating' ) !== false || strpos( $key, '_hvnly_property_cooling' ) !== false ||
-                       strpos( $key, '_hvnly_property_water' ) !== false ) {
+                        strpos( $key, '_hvnly_property_hoa_fee' ) !== false || strpos( $key, '_hvnly_property_annual_tax_amount' ) !== false ||
+                        strpos( $key, '_hvnly_property_heating' ) !== false || strpos( $key, '_hvnly_property_cooling' ) !== false ||
+                        strpos( $key, '_hvnly_property_water' ) !== false ) {
                 $sections['additional_info'][] = $key . ' = ' . $val;
             } elseif ( strpos( $key, '_hvnly_property_reference_number' ) !== false || strpos( $key, '_hvnly_property_building_number' ) !== false ||
-                       strpos( $key, '_hvnly_property_street' ) !== false || strpos( $key, '_hvnly_property_address_line_1' ) !== false ||
-                       strpos( $key, '_hvnly_property_address_line_2' ) !== false || strpos( $key, '_hvnly_property_town_city' ) !== false ||
-                       strpos( $key, '_hvnly_property_country_state' ) !== false || strpos( $key, '_hvnly_property_zip_code' ) !== false ||
-                       strpos( $key, '_hvnly_property_location' ) !== false || strpos( $key, '_hvnly_property_country_location' ) !== false ) {
+                        strpos( $key, '_hvnly_property_street' ) !== false || strpos( $key, '_hvnly_property_address_line_1' ) !== false ||
+                        strpos( $key, '_hvnly_property_address_line_2' ) !== false || strpos( $key, '_hvnly_property_town_city' ) !== false ||
+                        strpos( $key, '_hvnly_property_country_state' ) !== false || strpos( $key, '_hvnly_property_zip_code' ) !== false ||
+                        strpos( $key, '_hvnly_property_location' ) !== false || strpos( $key, '_hvnly_property_country_location' ) !== false ) {
                 $sections['address_neighborhood'][] = $key . ' = ' . $val;
             } elseif ( strpos( $key, 'video_' ) === 0 || strpos( $key, '_hvnly_property_youtube' ) !== false ) {
                 $sections['video'][] = $key . ' = ' . $val;
             } elseif ( strpos( $key, 'gallery_' ) === 0 || strpos( $key, '_hvnly_property_gallery' ) !== false ) {
                 $sections['gallery'][] = $key . ' = ' . $val;
-            } elseif ( strpos( $key, 'map_' ) === 0 || strpos( $key, '_hvnly_property_map' ) !== false || 
-                       strpos( $key, '_hvnly_property_location_Latitude' ) !== false || strpos( $key, '_hvnly_property_location_Longitude' ) !== false ) {
+            } elseif ( strpos( $key, 'map_' ) === 0 || strpos( $key, '_hvnly_property_map' ) !== false ||
+                        strpos( $key, '_hvnly_property_location_Latitude' ) !== false || strpos( $key, '_hvnly_property_location_Longitude' ) !== false ) {
                 $sections['map'][] = $key . ' = ' . $val;
             } elseif ( strpos( $key, 'property_docs' ) === 0 || strpos( $key, '_hvnly_property_documents' ) !== false ) {
                 $sections['documents'][] = $key . ' = ' . $val;
             }
         }
-        
+
         $this->log_debug( 'Basic Info fields: ' . ( empty( $sections['basic_info'] ) ? 'NONE' : implode(' | ', $sections['basic_info']) ) );
         $this->log_debug( 'Additional Info fields: ' . ( empty( $sections['additional_info'] ) ? 'NONE' : implode(' | ', $sections['additional_info']) ) );
         $this->log_debug( 'Address & Neighborhood fields: ' . ( empty( $sections['address_neighborhood'] ) ? 'NONE' : implode(' | ', $sections['address_neighborhood']) ) );
@@ -4086,8 +4106,8 @@ private function create_demo_property( $data, $options = [] ) {
 
     private function set_featured_image( $post_id, $data ) {
         $property_images = DemoData::get_property_images();
-        $image_index = $post_id % count( $property_images );
-        $image_url = esc_url_raw( $property_images[ $image_index ] );
+        $image_index     = $post_id % count( $property_images );
+        $image_url       = esc_url_raw( $property_images[ $image_index ] );
 
         if ( ! $this->validate_image_url( $image_url ) ) {
             return;
@@ -4103,13 +4123,13 @@ private function create_demo_property( $data, $options = [] ) {
      * Add gallery images
      */
     private function add_gallery_images( $post_id, $group_index = 1 ) {
-        $gallery_ids = [];
+        $gallery_ids    = array();
         $gallery_images = DemoData::get_property_images();
-        $total_images = count( $gallery_images );
+        $total_images   = count( $gallery_images );
 
         for ( $i = 1; $i <= 3; $i++ ) {
             $image_index = ( $post_id + $i * 7 + $group_index ) % $total_images;
-            $image_url = esc_url_raw( $gallery_images[ $image_index ] );
+            $image_url   = esc_url_raw( $gallery_images[ $image_index ] );
 
             if ( ! $this->validate_image_url( $image_url ) ) {
                 continue;
@@ -4124,7 +4144,7 @@ private function create_demo_property( $data, $options = [] ) {
         if ( ! empty( $gallery_ids ) ) {
             update_post_meta( $post_id, '_hvnly_property_gallery_images', implode( ',', $gallery_ids ) );
         }
-        
+
         return $gallery_ids;
     }
 
@@ -4194,7 +4214,7 @@ private function create_demo_property( $data, $options = [] ) {
         }
 
         if ( function_exists( 'finfo_open' ) ) {
-            $finfo = finfo_open( FILEINFO_MIME_TYPE );
+            $finfo       = finfo_open( FILEINFO_MIME_TYPE );
             $actual_mime = finfo_file( $finfo, $temp_file );
             finfo_close( $finfo );
             if ( ! in_array( $actual_mime, $this->allowed_mime_types, true ) ) {
@@ -4204,10 +4224,10 @@ private function create_demo_property( $data, $options = [] ) {
             }
         }
 
-        $file_array = [
+        $file_array = array(
             'name' => sanitize_file_name( 'property-' . $post_id . ( $suffix ? '-' . $suffix : '' ) . '-' . uniqid() . '.jpg' ),
             'tmp_name' => $temp_file,
-        ];
+        );
 
         $attachment_id = media_handle_sideload( $file_array, $post_id );
 
@@ -4255,7 +4275,7 @@ private function create_demo_property( $data, $options = [] ) {
     }
 
     private function assign_property_taxonomies( $post_id, $data ) {
-        $taxonomy_map = [
+        $taxonomy_map = array(
             'department' => 'hvnly_prop_depts',
             'property_types' => 'hvnly_prop_types',
             'property_status' => 'hvnly_prop_status',
@@ -4263,20 +4283,20 @@ private function create_demo_property( $data, $options = [] ) {
             'tags' => 'hvnly_prop_tags',
             'locations' => 'hvnly_prop_locations',
             'features' => 'hvnly_prop_features',
-        ];
+        );
 
         foreach ( $taxonomy_map as $data_key => $taxonomy ) {
             if ( ! empty( $data[ $data_key ] ) ) {
-                $terms = is_array( $data[ $data_key ] ) ? $data[ $data_key ] : [ $data[ $data_key ] ];
-                $valid_terms = [];
+                $terms       = is_array( $data[ $data_key ] ) ? $data[ $data_key ] : array( $data[ $data_key ] );
+                $valid_terms = array();
                 foreach ( $terms as $term ) {
                     $term = sanitize_text_field( trim( $term ) );
                     if ( ! empty( $term ) ) {
                         if ( ! term_exists( $term, $taxonomy ) ) {
-                            $term_name = ucwords( str_replace( [ '-', '_' ], ' ', $term ) );
+                            $term_name = ucwords( str_replace( array( '-', '_' ), ' ', $term ) );
                             // Translate bundled demo term labels at seed time only.
                             $term_name = __( $term_name, 'havenlytics' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
-                            wp_insert_term( $term_name, $taxonomy, [ 'slug' => $term ] );
+                            wp_insert_term( $term_name, $taxonomy, array( 'slug' => $term ) );
                         }
                         if ( term_exists( $term, $taxonomy ) ) {
                             $valid_terms[] = $term;

@@ -17,25 +17,25 @@ defined( 'ABSPATH' ) || exit;
  */
 final class AgencyFields {
 
-	public const META_LOGO_ID       = 'hvnly_agency_logo_id';
-	public const META_ADDRESS       = 'hvnly_agency_address';
-	public const META_LICENSE       = 'hvnly_agency_license';
-	public const META_MAP_PROVIDER  = 'hvnly_agency_map_provider';
-	public const META_MAP_LAT       = 'hvnly_agency_map_lat';
-	public const META_MAP_LNG       = 'hvnly_agency_map_lng';
-	public const META_EMAIL         = 'hvnly_agency_email';
-	public const META_MOBILE        = 'hvnly_agency_mobile';
-	public const META_FAX           = 'hvnly_agency_fax';
-	public const META_OFFICE        = 'hvnly_agency_office';
-	public const META_WEBSITE       = 'hvnly_agency_website';
-	public const META_VIMEO         = 'hvnly_agency_vimeo';
-	public const META_FACEBOOK      = 'hvnly_agency_facebook';
-	public const META_TWITTER       = 'hvnly_agency_twitter';
-	public const META_PINTEREST     = 'hvnly_agency_pinterest';
-	public const META_INSTAGRAM     = 'hvnly_agency_instagram';
-	public const META_YOUTUBE       = 'hvnly_agency_youtube';
-	public const META_LINKEDIN      = 'hvnly_agency_linkedin';
-	public const META_TIKTOK        = 'hvnly_agency_tiktok';
+	public const META_LOGO_ID      = 'hvnly_agency_logo_id';
+	public const META_ADDRESS      = 'hvnly_agency_address';
+	public const META_LICENSE      = 'hvnly_agency_license';
+	public const META_MAP_PROVIDER = 'hvnly_agency_map_provider';
+	public const META_MAP_LAT      = 'hvnly_agency_map_lat';
+	public const META_MAP_LNG      = 'hvnly_agency_map_lng';
+	public const META_EMAIL        = 'hvnly_agency_email';
+	public const META_MOBILE       = 'hvnly_agency_mobile';
+	public const META_FAX          = 'hvnly_agency_fax';
+	public const META_OFFICE       = 'hvnly_agency_office';
+	public const META_WEBSITE      = 'hvnly_agency_website';
+	public const META_VIMEO        = 'hvnly_agency_vimeo';
+	public const META_FACEBOOK     = 'hvnly_agency_facebook';
+	public const META_TWITTER      = 'hvnly_agency_twitter';
+	public const META_PINTEREST    = 'hvnly_agency_pinterest';
+	public const META_INSTAGRAM    = 'hvnly_agency_instagram';
+	public const META_YOUTUBE      = 'hvnly_agency_youtube';
+	public const META_LINKEDIN     = 'hvnly_agency_linkedin';
+	public const META_TIKTOK       = 'hvnly_agency_tiktok';
 
 	/** @var string Use site map settings automatically. */
 	public const MAP_PROVIDER_AUTO = 'auto';
@@ -80,21 +80,73 @@ final class AgencyFields {
 				),
 			),
 			'contact' => array(
-				array( 'key' => self::META_EMAIL, 'label' => __( 'Email', 'havenlytics' ), 'type' => 'email' ),
-				array( 'key' => self::META_MOBILE, 'label' => __( 'Mobile Number', 'havenlytics' ), 'type' => 'tel' ),
-				array( 'key' => self::META_FAX, 'label' => __( 'Fax Number', 'havenlytics' ), 'type' => 'tel' ),
-				array( 'key' => self::META_OFFICE, 'label' => __( 'Office Number', 'havenlytics' ), 'type' => 'tel' ),
-				array( 'key' => self::META_WEBSITE, 'label' => __( 'Website', 'havenlytics' ), 'type' => 'url' ),
+				array(
+					'key' => self::META_EMAIL,
+					'label' => __( 'Email', 'havenlytics' ),
+					'type' => 'email',
+				),
+				array(
+					'key' => self::META_MOBILE,
+					'label' => __( 'Mobile Number', 'havenlytics' ),
+					'type' => 'tel',
+				),
+				array(
+					'key' => self::META_FAX,
+					'label' => __( 'Fax Number', 'havenlytics' ),
+					'type' => 'tel',
+				),
+				array(
+					'key' => self::META_OFFICE,
+					'label' => __( 'Office Number', 'havenlytics' ),
+					'type' => 'tel',
+				),
+				array(
+					'key' => self::META_WEBSITE,
+					'label' => __( 'Website', 'havenlytics' ),
+					'type' => 'url',
+				),
 			),
 			'social'  => array(
-				array( 'key' => self::META_VIMEO, 'label' => __( 'Vimeo URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => self::META_FACEBOOK, 'label' => __( 'Facebook URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => self::META_TWITTER, 'label' => __( 'Twitter / X URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => self::META_PINTEREST, 'label' => __( 'Pinterest URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => self::META_INSTAGRAM, 'label' => __( 'Instagram URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => self::META_YOUTUBE, 'label' => __( 'YouTube URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => self::META_LINKEDIN, 'label' => __( 'LinkedIn URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => self::META_TIKTOK, 'label' => __( 'TikTok URL', 'havenlytics' ), 'type' => 'url' ),
+				array(
+					'key' => self::META_VIMEO,
+					'label' => __( 'Vimeo URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => self::META_FACEBOOK,
+					'label' => __( 'Facebook URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => self::META_TWITTER,
+					'label' => __( 'Twitter / X URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => self::META_PINTEREST,
+					'label' => __( 'Pinterest URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => self::META_INSTAGRAM,
+					'label' => __( 'Instagram URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => self::META_YOUTUBE,
+					'label' => __( 'YouTube URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => self::META_LINKEDIN,
+					'label' => __( 'LinkedIn URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => self::META_TIKTOK,
+					'label' => __( 'TikTok URL', 'havenlytics' ),
+					'type' => 'url',
+				),
 			),
 		);
 	}
@@ -268,9 +320,9 @@ final class AgencyFields {
 			'phone'         => '',
 		);
 
-		$profile['phone']       = $profile['mobile'] ?: $profile['office'];
-		$profile['profile_url'] = self::resolve_profile_url( $term_id );
-		$profile['website']     = self::sanitize_external_website( $profile['website'], $profile['profile_url'], (string) $profile['slug'] );
+		$profile['phone']                 = $profile['mobile'] ?: $profile['office'];
+		$profile['profile_url']           = self::resolve_profile_url( $term_id );
+		$profile['website']               = self::sanitize_external_website( $profile['website'], $profile['profile_url'], (string) $profile['slug'] );
 		$profile['resolved_map_provider'] = self::resolve_map_provider();
 		$profile['has_map']               = self::has_map_coordinates( $profile );
 

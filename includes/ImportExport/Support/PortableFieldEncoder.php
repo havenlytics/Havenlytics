@@ -136,7 +136,7 @@ final class PortableFieldEncoder {
 				}
 
 				if ( ! isset( $seen_groups[ $group_id ] ) ) {
-					$group_base_id = (string) ( $field['group_base_id'] ?? '' );
+					$group_base_id            = (string) ( $field['group_base_id'] ?? '' );
 					$seen_groups[ $group_id ] = array(
 						'group_id'      => $group_id,
 						'group_type'    => $group_type,
@@ -223,7 +223,7 @@ final class PortableFieldEncoder {
 		}
 
 		++$this->media_seq;
-		$export_key = sprintf( 'm_%05d', $this->media_seq );
+		$export_key                              = sprintf( 'm_%05d', $this->media_seq );
 		$this->attachment_keys[ $attachment_id ] = $export_key;
 
 		$stub = array(

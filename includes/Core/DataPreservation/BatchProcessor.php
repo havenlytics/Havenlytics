@@ -45,7 +45,7 @@ class BatchProcessor {
 			++$processed;
 		}
 
-		$total     = (int) $query->found_posts;
+		$total      = (int) $query->found_posts;
 		$new_offset = $offset + $processed;
 		$complete   = $new_offset >= $total || $processed === 0;
 

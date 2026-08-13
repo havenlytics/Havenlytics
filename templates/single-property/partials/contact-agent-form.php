@@ -200,10 +200,10 @@ if ( ! $hvnly_accepts_inquiries ) {
 	<div class="hvnly-contact-agent__feedback js-hvnly-contact-agent-feedback" role="status" aria-live="polite" hidden></div>
 
 	<div class="hvnly-contact-agent__actions">
-		<button type="button" class="hvnly-contact-agent__btn hvnly-contact-agent__btn--secondary js-hvnly-contact-agent-close">
+		<button type="button" class="hvnly-btn hvnly-btn--secondary hvnly-contact-agent__btn hvnly-contact-agent__btn--secondary js-hvnly-contact-agent-close">
 			<?php esc_html_e( 'Cancel', 'havenlytics' ); ?>
 		</button>
-		<button type="submit" class="hvnly-contact-agent__btn hvnly-contact-agent__btn--primary js-hvnly-contact-agent-submit"<?php echo ! $hvnly_accepts_inquiries ? ' disabled' : ''; ?>>
+		<button type="submit" class="hvnly-btn hvnly-btn--primary hvnly-contact-agent__btn hvnly-contact-agent__btn--primary js-hvnly-contact-agent-submit"<?php echo ! $hvnly_accepts_inquiries ? ' disabled' : ''; ?>>
 			<?php
 			echo esc_html(
 				$hvnly_agent_name

@@ -48,7 +48,7 @@ $hvnly_toast_data = function_exists( 'hvnly_get_favorite_toast_data' )
 	: array( 'title' => '', 'thumb' => '' );
 ?>
 <button type="button"
-	class="hvnly-property--grid-list--favorite<?php echo $hvnly_is_favorited ? ' is-favorited' : ''; ?>"
+	class="hvnly-action-toggle hvnly-property--grid-list--favorite<?php echo $hvnly_is_favorited ? ' is-favorited' : ''; ?>"
 	data-hvnly-favorite="1"
 	data-property-id="<?php echo esc_attr( $hvnly_property_id ); ?>"
 	data-property-title="<?php echo esc_attr( $hvnly_toast_data['title'] ); ?>"

@@ -16,7 +16,7 @@ use HvnlyNab\Core\Migration\Interfaces\MigrationInterface;
 use HvnlyNab\Core\Migration\Traits\MigrationTrait;
 
 // Prevent direct access.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -53,13 +53,13 @@ class Version225Handler implements MigrationInterface {
     /**
      * Generate a UNIQUE base ID matching the new pattern
      */
-    private function generate_unique_base_id($group_type) {
-        $microtime = microtime(true);
-        $timestamp = (int)$microtime;
-        $micro_suffix = substr(str_replace('.', '', (string)$microtime), -6);
-        $random = wp_rand(10000, 99999);
-        $unique_id = uniqid();
-        
+    private function generate_unique_base_id( $group_type ) {
+        $microtime    = microtime(true);
+        $timestamp    = (int) $microtime;
+        $micro_suffix = substr(str_replace('.', '', (string) $microtime), -6);
+        $random       = wp_rand(10000, 99999);
+        $unique_id    = uniqid();
+
         switch ($group_type) {
             case 'video':
                 return "video_{$timestamp}_{$micro_suffix}_{$unique_id}_{$random}";
@@ -77,24 +77,24 @@ class Version225Handler implements MigrationInterface {
     /**
      * Generate a UNIQUE group ID
      */
-    private function generate_unique_group_id($group_type) {
+    private function generate_unique_group_id( $group_type ) {
         $timestamp = time();
-        $short_id = substr(uniqid(), -8);
-        $random = wp_rand(1000, 9999);
+        $short_id  = substr(uniqid(), -8);
+        $random    = wp_rand(1000, 9999);
         return "grp_{$group_type}_{$timestamp}_{$short_id}_{$random}";
     }
 
     /**
      * Check if a base ID is already using the new unique pattern
      */
-    private function is_new_unique_pattern($base_id): bool {
-        $patterns = [
+    private function is_new_unique_pattern( $base_id ): bool {
+        $patterns = array(
             '/^video_\d+_\d+_[a-zA-Z0-9]{13}_\d{5}$/',
             '/^gallery_\d+_\d+_[a-zA-Z0-9]{13}_\d{5}$/',
             '/^map_\d+_\d+_[a-zA-Z0-9]{13}_\d{5}$/',
             '/^property_docs_\d+_\d+_[a-zA-Z0-9]{13}_\d{5}$/',
-        ];
-        
+        );
+
         foreach ($patterns as $pattern) {
             if (preg_match($pattern, $base_id)) {
                 return true;
@@ -110,7 +110,7 @@ class Version225Handler implements MigrationInterface {
      * Legacy ID patterns are preserved when data is already stored under them.
      */
     public function is_needed(): bool {
-        $sections = get_option(self::PROPERTY_BUILDER_KEY, []);
+        $sections = get_option(self::PROPERTY_BUILDER_KEY, array());
 
         if ( $this->builder_config_is_empty( $sections ) ) {
             if ( $this->site_has_published_properties() ) {
@@ -141,10 +141,10 @@ class Version225Handler implements MigrationInterface {
             $this->log('Backup created: ' . $backup_id, 'info', '2.2.5');
         }
 
-        $sections = get_option(self::PROPERTY_BUILDER_KEY, []);
+        $sections = get_option(self::PROPERTY_BUILDER_KEY, array());
 
         if (empty($sections)) {
-            $unified = $this->get_unified_builder_config();
+            $unified      = $this->get_unified_builder_config();
             $new_sections = $unified ?? $this->build_fresh_configuration();
             $this->log('Seeded empty builder from unified defaults', 'info', '2.2.5');
         } else {
@@ -170,7 +170,7 @@ class Version225Handler implements MigrationInterface {
 
         uasort(
             $new_sections,
-            static function ($a, $b) {
+            static function ( $a, $b ) {
                 return ( $a['order'] ?? 999 ) - ( $b['order'] ?? 999 );
             }
         );
@@ -183,7 +183,7 @@ class Version225Handler implements MigrationInterface {
         $this->log('Migration completed successfully', 'info', '2.2.5');
         return true;
     }
-    
+
     /**
      * Build fresh configuration with UNIQUE IDs for standard sections
      */
@@ -193,21 +193,21 @@ class Version225Handler implements MigrationInterface {
             return $unified;
         }
 
-        $video_base = $this->generate_unique_base_id('video');
+        $video_base   = $this->generate_unique_base_id('video');
         $gallery_base = $this->generate_unique_base_id('gallery');
-        $map_base = $this->generate_unique_base_id('map');
-        $docs_base = $this->generate_unique_base_id('property_docs');
-        
-        $basic_info_id = 'sec_basic_info';
-        $additional_info_id = 'hvnly__dyamic_metabox_tab__' . uniqid();
+        $map_base     = $this->generate_unique_base_id('map');
+        $docs_base    = $this->generate_unique_base_id('property_docs');
+
+        $basic_info_id           = 'sec_basic_info';
+        $additional_info_id      = 'hvnly__dyamic_metabox_tab__' . uniqid();
         $address_neighborhood_id = 'hvnly__dyamic_metabox_tab__' . uniqid();
-        $video_section_id = 'hvnly__dyamic_metabox_tab__' . uniqid();
-        $gallery_section_id = 'hvnly__dyamic_metabox_tab__' . uniqid();
-        $location_section_id = 'hvnly__dyamic_metabox_tab__' . uniqid();
-        $documents_section_id = 'hvnly__dyamic_metabox_tab__' . uniqid();
-        
-        return [
-            $basic_info_id => [
+        $video_section_id        = 'hvnly__dyamic_metabox_tab__' . uniqid();
+        $gallery_section_id      = 'hvnly__dyamic_metabox_tab__' . uniqid();
+        $location_section_id     = 'hvnly__dyamic_metabox_tab__' . uniqid();
+        $documents_section_id    = 'hvnly__dyamic_metabox_tab__' . uniqid();
+
+        return array(
+            $basic_info_id => array(
                 'id' => $basic_info_id,
                 'title' => 'Basic Info',
                 'icon' => 'fas fa-home',
@@ -215,8 +215,8 @@ class Version225Handler implements MigrationInterface {
                 'order' => 0,
                 'collapsed' => false,
                 'fields' => $this->get_basic_info_fields(),
-            ],
-            $additional_info_id => [
+            ),
+            $additional_info_id => array(
                 'id' => $additional_info_id,
                 'title' => 'Additional Information',
                 'icon' => 'fas fa-info-circle',
@@ -224,8 +224,8 @@ class Version225Handler implements MigrationInterface {
                 'order' => 1,
                 'collapsed' => false,
                 'fields' => $this->get_additional_info_fields(),
-            ],
-            $address_neighborhood_id => [
+            ),
+            $address_neighborhood_id => array(
                 'id' => $address_neighborhood_id,
                 'title' => 'Address & Neighborhood',
                 'icon' => 'fas fa-building',
@@ -233,8 +233,8 @@ class Version225Handler implements MigrationInterface {
                 'order' => 2,
                 'collapsed' => false,
                 'fields' => $this->get_address_neighborhood_fields(),
-            ],
-            $video_section_id => [
+            ),
+            $video_section_id => array(
                 'id' => $video_section_id,
                 'title' => 'Property Video',
                 'icon' => 'fas fa-video',
@@ -242,8 +242,8 @@ class Version225Handler implements MigrationInterface {
                 'order' => 3,
                 'collapsed' => false,
                 'fields' => $this->create_video_group_fields($video_base),
-            ],
-            $gallery_section_id => [
+            ),
+            $gallery_section_id => array(
                 'id' => $gallery_section_id,
                 'title' => 'Property Gallery',
                 'icon' => 'fas fa-images',
@@ -251,8 +251,8 @@ class Version225Handler implements MigrationInterface {
                 'order' => 4,
                 'collapsed' => false,
                 'fields' => $this->create_gallery_group_fields($gallery_base),
-            ],
-            $location_section_id => [
+            ),
+            $location_section_id => array(
                 'id' => $location_section_id,
                 'title' => 'Property Location',
                 'icon' => 'fas fa-map-marker-alt',
@@ -260,8 +260,8 @@ class Version225Handler implements MigrationInterface {
                 'order' => 5,
                 'collapsed' => false,
                 'fields' => $this->create_map_group_fields($map_base),
-            ],
-            $documents_section_id => [
+            ),
+            $documents_section_id => array(
                 'id' => $documents_section_id,
                 'title' => 'Property Documents',
                 'icon' => 'fas fa-file-pdf',
@@ -269,46 +269,46 @@ class Version225Handler implements MigrationInterface {
                 'order' => 6,
                 'collapsed' => false,
                 'fields' => $this->create_documents_group_fields($docs_base),
-            ],
-        ];
+            ),
+        );
     }
-    
+
     /**
      * Regenerate a custom section with UNIQUE IDs for all its groups
      */
-    private function regenerate_section_with_unique_ids($section): array {
+    private function regenerate_section_with_unique_ids( $section ): array {
         if (empty($section['fields'])) {
             return $section;
         }
-        
-        $new_fields = [];
-        $group_mapping = [];
-        
+
+        $new_fields    = array();
+        $group_mapping = array();
+
         foreach ($section['fields'] as $field) {
-            $group_type = $field['group_type'] ?? '';
+            $group_type        = $field['group_type'] ?? '';
             $original_group_id = $field['group_id'] ?? '';
-            $meta_key = $field['metaKey'] ?? '';
-            
-            if (!empty($group_type) && !empty($original_group_id)) {
+            $meta_key          = $field['metaKey'] ?? '';
+
+            if ( ! empty($group_type) && ! empty($original_group_id)) {
                 // Check if we already created a mapping for this group
-                if (!isset($group_mapping[$original_group_id])) {
-                    $new_group_id = $this->generate_unique_group_id($group_type);
-                    $new_group_base_id = $this->generate_unique_base_id($group_type);
-                    $group_mapping[$original_group_id] = [
+                if ( ! isset($group_mapping[ $original_group_id ])) {
+                    $new_group_id                        = $this->generate_unique_group_id($group_type);
+                    $new_group_base_id                   = $this->generate_unique_base_id($group_type);
+                    $group_mapping[ $original_group_id ] = array(
                         'group_id' => $new_group_id,
-                        'group_base_id' => $new_group_base_id
-                    ];
+                        'group_base_id' => $new_group_base_id,
+                    );
                 }
-                
-                $mapping = $group_mapping[$original_group_id];
-                
+
+                $mapping = $group_mapping[ $original_group_id ];
+
                 // Create updated field with new IDs
-                $new_field = $field;
-                $new_field['group_id'] = $mapping['group_id'];
+                $new_field                  = $field;
+                $new_field['group_id']      = $mapping['group_id'];
                 $new_field['group_base_id'] = $mapping['group_base_id'];
-                $new_field['id'] = $mapping['group_base_id'] . '_' . $meta_key;
-                $new_field['name'] = $mapping['group_base_id'] . '_' . $meta_key;
-                
+                $new_field['id']            = $mapping['group_base_id'] . '_' . $meta_key;
+                $new_field['name']          = $mapping['group_base_id'] . '_' . $meta_key;
+
                 // Update map relationship fields
                 if ($group_type === 'map') {
                     if (isset($new_field['address_field_name'])) {
@@ -324,118 +324,549 @@ class Version225Handler implements MigrationInterface {
                         $new_field['map_field_name'] = $mapping['group_base_id'] . '_preview';
                     }
                 }
-                
+
                 $new_fields[] = $new_field;
             } else {
                 // Non-group field, keep as is
                 $new_fields[] = $field;
             }
         }
-        
+
         $section['fields'] = $new_fields;
         return $section;
     }
-    
+
     /**
      * Get basic info fields
      */
     private function get_basic_info_fields(): array {
-        return [
-            ['id' => '_hvnly_property_price', 'name' => '_hvnly_property_price', 'type' => 'price_label', 'label' => 'Property Price', 'placeholder' => 'Enter property price', 'required' => true, 'locked' => true, 'order' => 0],
-            ['id' => '_hvnly_property_reception_rooms', 'name' => '_hvnly_property_reception_rooms', 'type' => 'number', 'label' => 'Property Reception Rooms', 'placeholder' => 'Enter reception rooms', 'required' => true, 'locked' => true, 'order' => 1],
-            ['id' => '_hvnly_property_bedrooms', 'name' => '_hvnly_property_bedrooms', 'type' => 'number', 'label' => 'Property Bedrooms', 'placeholder' => 'Enter property bedrooms', 'required' => true, 'locked' => true, 'order' => 2],
-            ['id' => '_hvnly_property_bathrooms', 'name' => '_hvnly_property_bathrooms', 'type' => 'number', 'label' => 'Property Bathrooms', 'placeholder' => 'Enter property bathrooms', 'required' => true, 'locked' => true, 'order' => 3],
-            ['id' => '_hvnly_property_half_bathrooms', 'name' => '_hvnly_property_half_bathrooms', 'type' => 'number', 'label' => 'Property Half Baths', 'placeholder' => 'Enter property half baths', 'required' => true, 'locked' => true, 'order' => 4],
-            ['id' => '_hvnly_property_kitchens', 'name' => '_hvnly_property_kitchens', 'type' => 'number', 'label' => 'Property Kitchen', 'placeholder' => 'Enter property kitchen', 'required' => false, 'locked' => false, 'order' => 5],
-            ['id' => '_hvnly_property_total_rooms', 'name' => '_hvnly_property_total_rooms', 'type' => 'number', 'label' => 'Property Total Rooms', 'placeholder' => 'Enter property total rooms', 'required' => true, 'locked' => true, 'order' => 6],
-            ['id' => '_hvnly_property_floors', 'name' => '_hvnly_property_floors', 'type' => 'number', 'label' => 'Property Floors', 'placeholder' => 'Enter property floors', 'required' => false, 'locked' => false, 'order' => 7],
-            ['id' => '_hvnly_property_year_built', 'name' => '_hvnly_property_year_built', 'type' => 'number', 'label' => 'Property Year Built', 'placeholder' => 'Enter property year built', 'required' => false, 'locked' => false, 'order' => 8],
-            ['id' => '_hvnly_property_mls_number', 'name' => '_hvnly_property_mls_number', 'type' => 'text', 'label' => 'Property MLS Number', 'placeholder' => 'Enter property MLS number', 'required' => false, 'locked' => false, 'order' => 9],
-            ['id' => '_hvnly_property_garage_sqft', 'name' => '_hvnly_property_garage_sqft', 'type' => 'number', 'label' => 'Property Garage Square Footage', 'placeholder' => 'Enter property garage square footage', 'required' => true, 'locked' => true, 'order' => 10],
-        ];
+        return array(
+            array(
+				'id' => '_hvnly_property_price',
+				'name' => '_hvnly_property_price',
+				'type' => 'price_label',
+				'label' => 'Property Price',
+				'placeholder' => 'Enter property price',
+				'required' => true,
+				'locked' => true,
+				'order' => 0,
+			),
+            array(
+				'id' => '_hvnly_property_reception_rooms',
+				'name' => '_hvnly_property_reception_rooms',
+				'type' => 'number',
+				'label' => 'Property Reception Rooms',
+				'placeholder' => 'Enter reception rooms',
+				'required' => true,
+				'locked' => true,
+				'order' => 1,
+			),
+            array(
+				'id' => '_hvnly_property_bedrooms',
+				'name' => '_hvnly_property_bedrooms',
+				'type' => 'number',
+				'label' => 'Property Bedrooms',
+				'placeholder' => 'Enter property bedrooms',
+				'required' => true,
+				'locked' => true,
+				'order' => 2,
+			),
+            array(
+				'id' => '_hvnly_property_bathrooms',
+				'name' => '_hvnly_property_bathrooms',
+				'type' => 'number',
+				'label' => 'Property Bathrooms',
+				'placeholder' => 'Enter property bathrooms',
+				'required' => true,
+				'locked' => true,
+				'order' => 3,
+			),
+            array(
+				'id' => '_hvnly_property_half_bathrooms',
+				'name' => '_hvnly_property_half_bathrooms',
+				'type' => 'number',
+				'label' => 'Property Half Baths',
+				'placeholder' => 'Enter property half baths',
+				'required' => true,
+				'locked' => true,
+				'order' => 4,
+			),
+            array(
+				'id' => '_hvnly_property_kitchens',
+				'name' => '_hvnly_property_kitchens',
+				'type' => 'number',
+				'label' => 'Property Kitchen',
+				'placeholder' => 'Enter property kitchen',
+				'required' => false,
+				'locked' => false,
+				'order' => 5,
+			),
+            array(
+				'id' => '_hvnly_property_total_rooms',
+				'name' => '_hvnly_property_total_rooms',
+				'type' => 'number',
+				'label' => 'Property Total Rooms',
+				'placeholder' => 'Enter property total rooms',
+				'required' => true,
+				'locked' => true,
+				'order' => 6,
+			),
+            array(
+				'id' => '_hvnly_property_floors',
+				'name' => '_hvnly_property_floors',
+				'type' => 'number',
+				'label' => 'Property Floors',
+				'placeholder' => 'Enter property floors',
+				'required' => false,
+				'locked' => false,
+				'order' => 7,
+			),
+            array(
+				'id' => '_hvnly_property_year_built',
+				'name' => '_hvnly_property_year_built',
+				'type' => 'number',
+				'label' => 'Property Year Built',
+				'placeholder' => 'Enter property year built',
+				'required' => false,
+				'locked' => false,
+				'order' => 8,
+			),
+            array(
+				'id' => '_hvnly_property_mls_number',
+				'name' => '_hvnly_property_mls_number',
+				'type' => 'text',
+				'label' => 'Property MLS Number',
+				'placeholder' => 'Enter property MLS number',
+				'required' => false,
+				'locked' => false,
+				'order' => 9,
+			),
+            array(
+				'id' => '_hvnly_property_garage_sqft',
+				'name' => '_hvnly_property_garage_sqft',
+				'type' => 'number',
+				'label' => 'Property Garage Square Footage',
+				'placeholder' => 'Enter property garage square footage',
+				'required' => true,
+				'locked' => true,
+				'order' => 10,
+			),
+        );
     }
-    
+
     /**
      * Get additional info fields
      */
     private function get_additional_info_fields(): array {
-        return [
-            ['id' => '_hvnly_property_sqft', 'name' => '_hvnly_property_sqft', 'type' => 'number', 'label' => 'Property Area, sq ft', 'placeholder' => 'Enter property area in square feet', 'required' => true, 'locked' => false, 'order' => 0],
-            ['id' => '_hvnly_property_lot_size', 'name' => '_hvnly_property_lot_size', 'type' => 'text', 'label' => 'Property Lot size, sq ft', 'placeholder' => 'Enter property lot size', 'required' => true, 'locked' => false, 'order' => 1],
-            ['id' => '_hvnly_property_hoa_fee', 'name' => '_hvnly_property_hoa_fee', 'type' => 'text', 'label' => 'Property HOA Fee', 'placeholder' => 'Enter property HOA fee', 'required' => false, 'locked' => false, 'order' => 2],
-            ['id' => '_hvnly_property_annual_tax_amount', 'name' => '_hvnly_property_annual_tax_amount', 'type' => 'number', 'label' => 'Property Annual Tax Amount', 'placeholder' => 'Enter property annual tax amount', 'required' => false, 'locked' => false, 'order' => 3],
-            ['id' => '_hvnly_property_heating', 'name' => '_hvnly_property_heating', 'type' => 'select', 'label' => 'Heating', 'required' => false, 'locked' => false, 'order' => 4, 'options' => ['forced_air' => 'Forced Air', 'radiator' => 'Radiator', 'heat_pump' => 'Heat Pump', 'baseboard' => 'Baseboard', 'none' => 'None']],
-            ['id' => '_hvnly_property_cooling', 'name' => '_hvnly_property_cooling', 'type' => 'select', 'label' => 'Cooling', 'required' => false, 'locked' => false, 'order' => 5, 'options' => ['central' => 'Central Air', 'window' => 'Window Units', 'heat_pump' => 'Heat Pump', 'baseboard' => 'Baseboard', 'none' => 'None']],
-            ['id' => '_hvnly_property_water', 'name' => '_hvnly_property_water', 'type' => 'select', 'label' => 'Water Source', 'required' => false, 'locked' => false, 'order' => 6, 'options' => ['city' => 'City', 'well' => 'Well', 'shared_well' => 'Shared Well', 'none' => 'None']],
-        ];
+        return array(
+            array(
+				'id' => '_hvnly_property_sqft',
+				'name' => '_hvnly_property_sqft',
+				'type' => 'number',
+				'label' => 'Property Area, sq ft',
+				'placeholder' => 'Enter property area in square feet',
+				'required' => true,
+				'locked' => false,
+				'order' => 0,
+			),
+            array(
+				'id' => '_hvnly_property_lot_size',
+				'name' => '_hvnly_property_lot_size',
+				'type' => 'text',
+				'label' => 'Property Lot size, sq ft',
+				'placeholder' => 'Enter property lot size',
+				'required' => true,
+				'locked' => false,
+				'order' => 1,
+			),
+            array(
+				'id' => '_hvnly_property_hoa_fee',
+				'name' => '_hvnly_property_hoa_fee',
+				'type' => 'text',
+				'label' => 'Property HOA Fee',
+				'placeholder' => 'Enter property HOA fee',
+				'required' => false,
+				'locked' => false,
+				'order' => 2,
+			),
+            array(
+				'id' => '_hvnly_property_annual_tax_amount',
+				'name' => '_hvnly_property_annual_tax_amount',
+				'type' => 'number',
+				'label' => 'Property Annual Tax Amount',
+				'placeholder' => 'Enter property annual tax amount',
+				'required' => false,
+				'locked' => false,
+				'order' => 3,
+			),
+            array(
+				'id' => '_hvnly_property_heating',
+				'name' => '_hvnly_property_heating',
+				'type' => 'select',
+				'label' => 'Heating',
+				'required' => false,
+				'locked' => false,
+				'order' => 4,
+				'options' => array(
+					'forced_air' => 'Forced Air',
+					'radiator' => 'Radiator',
+					'heat_pump' => 'Heat Pump',
+					'baseboard' => 'Baseboard',
+					'none' => 'None',
+				),
+			),
+            array(
+				'id' => '_hvnly_property_cooling',
+				'name' => '_hvnly_property_cooling',
+				'type' => 'select',
+				'label' => 'Cooling',
+				'required' => false,
+				'locked' => false,
+				'order' => 5,
+				'options' => array(
+					'central' => 'Central Air',
+					'window' => 'Window Units',
+					'heat_pump' => 'Heat Pump',
+					'baseboard' => 'Baseboard',
+					'none' => 'None',
+				),
+			),
+            array(
+				'id' => '_hvnly_property_water',
+				'name' => '_hvnly_property_water',
+				'type' => 'select',
+				'label' => 'Water Source',
+				'required' => false,
+				'locked' => false,
+				'order' => 6,
+				'options' => array(
+					'city' => 'City',
+					'well' => 'Well',
+					'shared_well' => 'Shared Well',
+					'none' => 'None',
+				),
+			),
+        );
     }
-    
+
     /**
      * Get address & neighborhood fields
      */
     private function get_address_neighborhood_fields(): array {
-        return [
-            ['id' => '_hvnly_property_reference_number', 'name' => '_hvnly_property_reference_number', 'type' => 'text', 'label' => 'Property Reference Number', 'placeholder' => 'Enter property reference number', 'required' => false, 'locked' => false, 'order' => 0],
-            ['id' => '_hvnly_property_building_number', 'name' => '_hvnly_property_building_number', 'type' => 'text', 'label' => 'Property Building Number', 'placeholder' => 'Enter property building number', 'required' => false, 'locked' => false, 'order' => 1],
-            ['id' => '_hvnly_property_street', 'name' => '_hvnly_property_street', 'type' => 'text', 'label' => 'Property Street', 'placeholder' => 'Enter property street', 'required' => false, 'locked' => false, 'order' => 2],
-            ['id' => '_hvnly_property_address_line_1', 'name' => '_hvnly_property_address_line_1', 'type' => 'text', 'label' => 'Property Address Line 1', 'placeholder' => 'Enter property address line 1', 'required' => false, 'locked' => false, 'order' => 3],
-            ['id' => '_hvnly_property_address_line_2', 'name' => '_hvnly_property_address_line_2', 'type' => 'text', 'label' => 'Property Address Line 2', 'placeholder' => 'Enter property address line 2', 'required' => false, 'locked' => false, 'order' => 4],
-            ['id' => '_hvnly_property_town_city', 'name' => '_hvnly_property_town_city', 'type' => 'text', 'label' => 'Property Town/City', 'placeholder' => 'Enter property town/city', 'required' => false, 'locked' => false, 'order' => 5],
-            ['id' => '_hvnly_property_country_state', 'name' => '_hvnly_property_country_state', 'type' => 'text', 'label' => 'Property Country/State', 'placeholder' => 'Enter property country/state', 'required' => false, 'locked' => false, 'order' => 6],
-            ['id' => '_hvnly_property_zip_code', 'name' => '_hvnly_property_zip_code', 'type' => 'text', 'label' => 'Property Zip Code', 'placeholder' => 'Enter property zip code', 'required' => false, 'locked' => false, 'order' => 7],
-            ['id' => '_hvnly_property_location', 'name' => '_hvnly_property_location', 'type' => 'select', 'label' => 'Property Location', 'required' => false, 'locked' => false, 'order' => 8, 'options' => ['new-york' => 'New York', 'los-angeles' => 'Los Angeles', 'chicago' => 'Chicago', 'miami' => 'Miami', 'san-francisco' => 'San Francisco', 'austin' => 'Austin']],
-            ['id' => '_hvnly_property_country_location', 'name' => '_hvnly_property_country_location', 'type' => 'select', 'label' => 'Property Country', 'required' => false, 'locked' => false, 'order' => 9, 'options' => ['US' => 'United States', 'GB' => 'United Kingdom', 'CA' => 'Canada', 'AU' => 'Australia']],
-        ];
+        return array(
+            array(
+				'id' => '_hvnly_property_reference_number',
+				'name' => '_hvnly_property_reference_number',
+				'type' => 'text',
+				'label' => 'Property Reference Number',
+				'placeholder' => 'Enter property reference number',
+				'required' => false,
+				'locked' => false,
+				'order' => 0,
+			),
+            array(
+				'id' => '_hvnly_property_building_number',
+				'name' => '_hvnly_property_building_number',
+				'type' => 'text',
+				'label' => 'Property Building Number',
+				'placeholder' => 'Enter property building number',
+				'required' => false,
+				'locked' => false,
+				'order' => 1,
+			),
+            array(
+				'id' => '_hvnly_property_street',
+				'name' => '_hvnly_property_street',
+				'type' => 'text',
+				'label' => 'Property Street',
+				'placeholder' => 'Enter property street',
+				'required' => false,
+				'locked' => false,
+				'order' => 2,
+			),
+            array(
+				'id' => '_hvnly_property_address_line_1',
+				'name' => '_hvnly_property_address_line_1',
+				'type' => 'text',
+				'label' => 'Property Address Line 1',
+				'placeholder' => 'Enter property address line 1',
+				'required' => false,
+				'locked' => false,
+				'order' => 3,
+			),
+            array(
+				'id' => '_hvnly_property_address_line_2',
+				'name' => '_hvnly_property_address_line_2',
+				'type' => 'text',
+				'label' => 'Property Address Line 2',
+				'placeholder' => 'Enter property address line 2',
+				'required' => false,
+				'locked' => false,
+				'order' => 4,
+			),
+            array(
+				'id' => '_hvnly_property_town_city',
+				'name' => '_hvnly_property_town_city',
+				'type' => 'text',
+				'label' => 'Property Town/City',
+				'placeholder' => 'Enter property town/city',
+				'required' => false,
+				'locked' => false,
+				'order' => 5,
+			),
+            array(
+				'id' => '_hvnly_property_country_state',
+				'name' => '_hvnly_property_country_state',
+				'type' => 'text',
+				'label' => 'Property Country/State',
+				'placeholder' => 'Enter property country/state',
+				'required' => false,
+				'locked' => false,
+				'order' => 6,
+			),
+            array(
+				'id' => '_hvnly_property_zip_code',
+				'name' => '_hvnly_property_zip_code',
+				'type' => 'text',
+				'label' => 'Property Zip Code',
+				'placeholder' => 'Enter property zip code',
+				'required' => false,
+				'locked' => false,
+				'order' => 7,
+			),
+            array(
+				'id' => '_hvnly_property_location',
+				'name' => '_hvnly_property_location',
+				'type' => 'select',
+				'label' => 'Property Location',
+				'required' => false,
+				'locked' => false,
+				'order' => 8,
+				'options' => array(
+					'new-york' => 'New York',
+					'los-angeles' => 'Los Angeles',
+					'chicago' => 'Chicago',
+					'miami' => 'Miami',
+					'san-francisco' => 'San Francisco',
+					'austin' => 'Austin',
+				),
+			),
+            array(
+				'id' => '_hvnly_property_country_location',
+				'name' => '_hvnly_property_country_location',
+				'type' => 'select',
+				'label' => 'Property Country',
+				'required' => false,
+				'locked' => false,
+				'order' => 9,
+				'options' => array(
+					'US' => 'United States',
+					'GB' => 'United Kingdom',
+					'CA' => 'Canada',
+					'AU' => 'Australia',
+				),
+			),
+        );
     }
-    
+
     /**
      * Create video group fields with UNIQUE base ID
      */
-    private function create_video_group_fields($group_base_id): array {
+    private function create_video_group_fields( $group_base_id ): array {
         $group_id = $this->generate_unique_group_id('video');
-        
-        return [
-            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => 'Video Title', 'placeholder' => 'Enter video title', 'required' => false, 'locked' => false, 'order' => 0, 'group_id' => $group_id, 'group_type' => 'video', 'group_name' => 'Video Information', 'group_position' => 0, 'group_total' => 3, 'group_base_id' => $group_base_id, 'metaKey' => 'title'],
-            ['id' => $group_base_id . '_url', 'name' => $group_base_id . '_url', 'type' => 'video', 'label' => 'Video URL', 'placeholder' => 'Enter video URL', 'required' => false, 'locked' => false, 'order' => 1, 'group_id' => $group_id, 'group_type' => 'video', 'group_name' => 'Video Information', 'group_position' => 1, 'group_total' => 3, 'group_base_id' => $group_base_id, 'metaKey' => 'url'],
-            ['id' => $group_base_id . '_thumbnail', 'name' => $group_base_id . '_thumbnail', 'type' => 'file', 'label' => 'Video Thumbnail', 'placeholder' => 'Upload video thumbnail', 'required' => false, 'locked' => false, 'order' => 2, 'group_id' => $group_id, 'group_type' => 'video', 'group_name' => 'Video Information', 'group_position' => 2, 'group_total' => 3, 'group_base_id' => $group_base_id, 'metaKey' => 'thumbnail', 'fileType' => 'image'],
-        ];
+
+        return array(
+            array(
+				'id' => $group_base_id . '_title',
+				'name' => $group_base_id . '_title',
+				'type' => 'text',
+				'label' => 'Video Title',
+				'placeholder' => 'Enter video title',
+				'required' => false,
+				'locked' => false,
+				'order' => 0,
+				'group_id' => $group_id,
+				'group_type' => 'video',
+				'group_name' => 'Video Information',
+				'group_position' => 0,
+				'group_total' => 3,
+				'group_base_id' => $group_base_id,
+				'metaKey' => 'title',
+			),
+            array(
+				'id' => $group_base_id . '_url',
+				'name' => $group_base_id . '_url',
+				'type' => 'video',
+				'label' => 'Video URL',
+				'placeholder' => 'Enter video URL',
+				'required' => false,
+				'locked' => false,
+				'order' => 1,
+				'group_id' => $group_id,
+				'group_type' => 'video',
+				'group_name' => 'Video Information',
+				'group_position' => 1,
+				'group_total' => 3,
+				'group_base_id' => $group_base_id,
+				'metaKey' => 'url',
+			),
+            array(
+				'id' => $group_base_id . '_thumbnail',
+				'name' => $group_base_id . '_thumbnail',
+				'type' => 'file',
+				'label' => 'Video Thumbnail',
+				'placeholder' => 'Upload video thumbnail',
+				'required' => false,
+				'locked' => false,
+				'order' => 2,
+				'group_id' => $group_id,
+				'group_type' => 'video',
+				'group_name' => 'Video Information',
+				'group_position' => 2,
+				'group_total' => 3,
+				'group_base_id' => $group_base_id,
+				'metaKey' => 'thumbnail',
+				'fileType' => 'image',
+			),
+        );
     }
-    
+
     /**
      * Create gallery group fields with UNIQUE base ID
      */
-    private function create_gallery_group_fields($group_base_id): array {
+    private function create_gallery_group_fields( $group_base_id ): array {
         $group_id = $this->generate_unique_group_id('gallery');
-        
-        return [
-            ['id' => $group_base_id . '_title', 'name' => $group_base_id . '_title', 'type' => 'text', 'label' => 'Gallery Title', 'placeholder' => 'Enter gallery title', 'required' => false, 'locked' => false, 'order' => 0, 'group_id' => $group_id, 'group_type' => 'gallery', 'group_name' => 'Property Gallery', 'group_position' => 0, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'title'],
-            ['id' => $group_base_id . '_images', 'name' => $group_base_id . '_images', 'type' => 'gallery', 'label' => 'Gallery Images', 'placeholder' => 'Upload gallery images', 'required' => false, 'locked' => false, 'order' => 1, 'group_id' => $group_id, 'group_type' => 'gallery', 'group_name' => 'Property Gallery', 'group_position' => 1, 'group_total' => 2, 'group_base_id' => $group_base_id, 'metaKey' => 'images'],
-        ];
+
+        return array(
+            array(
+				'id' => $group_base_id . '_title',
+				'name' => $group_base_id . '_title',
+				'type' => 'text',
+				'label' => 'Gallery Title',
+				'placeholder' => 'Enter gallery title',
+				'required' => false,
+				'locked' => false,
+				'order' => 0,
+				'group_id' => $group_id,
+				'group_type' => 'gallery',
+				'group_name' => 'Property Gallery',
+				'group_position' => 0,
+				'group_total' => 2,
+				'group_base_id' => $group_base_id,
+				'metaKey' => 'title',
+			),
+            array(
+				'id' => $group_base_id . '_images',
+				'name' => $group_base_id . '_images',
+				'type' => 'gallery',
+				'label' => 'Gallery Images',
+				'placeholder' => 'Upload gallery images',
+				'required' => false,
+				'locked' => false,
+				'order' => 1,
+				'group_id' => $group_id,
+				'group_type' => 'gallery',
+				'group_name' => 'Property Gallery',
+				'group_position' => 1,
+				'group_total' => 2,
+				'group_base_id' => $group_base_id,
+				'metaKey' => 'images',
+			),
+        );
     }
-    
+
     /**
      * Create map group fields with UNIQUE base ID
      */
-    private function create_map_group_fields($group_base_id): array {
+    private function create_map_group_fields( $group_base_id ): array {
         $group_id = $this->generate_unique_group_id('map');
-        
-        return [
-            ['id' => $group_base_id . '_address', 'name' => $group_base_id . '_address', 'type' => 'text', 'label' => 'Property Map Address', 'placeholder' => 'Enter property map address', 'required' => true, 'locked' => false, 'order' => 0, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => 'Map Location', 'group_position' => 0, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'address'],
-            ['id' => $group_base_id . '_latitude', 'name' => $group_base_id . '_latitude', 'type' => 'text', 'label' => 'Property Latitude', 'placeholder' => 'Enter property latitude', 'required' => false, 'locked' => false, 'order' => 1, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => 'Map Location', 'group_position' => 1, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'latitude', 'hidden' => true],
-            ['id' => $group_base_id . '_longitude', 'name' => $group_base_id . '_longitude', 'type' => 'text', 'label' => 'Property Longitude', 'placeholder' => 'Enter property longitude', 'required' => false, 'locked' => false, 'order' => 2, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => 'Map Location', 'group_position' => 2, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'longitude', 'hidden' => true],
-            ['id' => $group_base_id . '_preview', 'name' => $group_base_id . '_preview', 'type' => 'map', 'label' => 'Map Preview', 'placeholder' => '', 'required' => false, 'locked' => false, 'order' => 3, 'group_id' => $group_id, 'group_type' => 'map', 'group_name' => 'Map Location', 'group_position' => 3, 'group_total' => 4, 'group_base_id' => $group_base_id, 'metaKey' => 'preview', 'address_field_name' => $group_base_id . '_address', 'lat_field_name' => $group_base_id . '_latitude', 'lng_field_name' => $group_base_id . '_longitude', 'map_field_name' => $group_base_id . '_preview'],
-        ];
+
+        return array(
+            array(
+				'id' => $group_base_id . '_address',
+				'name' => $group_base_id . '_address',
+				'type' => 'text',
+				'label' => 'Property Map Address',
+				'placeholder' => 'Enter property map address',
+				'required' => true,
+				'locked' => false,
+				'order' => 0,
+				'group_id' => $group_id,
+				'group_type' => 'map',
+				'group_name' => 'Map Location',
+				'group_position' => 0,
+				'group_total' => 4,
+				'group_base_id' => $group_base_id,
+				'metaKey' => 'address',
+			),
+            array(
+				'id' => $group_base_id . '_latitude',
+				'name' => $group_base_id . '_latitude',
+				'type' => 'text',
+				'label' => 'Property Latitude',
+				'placeholder' => 'Enter property latitude',
+				'required' => false,
+				'locked' => false,
+				'order' => 1,
+				'group_id' => $group_id,
+				'group_type' => 'map',
+				'group_name' => 'Map Location',
+				'group_position' => 1,
+				'group_total' => 4,
+				'group_base_id' => $group_base_id,
+				'metaKey' => 'latitude',
+				'hidden' => true,
+			),
+            array(
+				'id' => $group_base_id . '_longitude',
+				'name' => $group_base_id . '_longitude',
+				'type' => 'text',
+				'label' => 'Property Longitude',
+				'placeholder' => 'Enter property longitude',
+				'required' => false,
+				'locked' => false,
+				'order' => 2,
+				'group_id' => $group_id,
+				'group_type' => 'map',
+				'group_name' => 'Map Location',
+				'group_position' => 2,
+				'group_total' => 4,
+				'group_base_id' => $group_base_id,
+				'metaKey' => 'longitude',
+				'hidden' => true,
+			),
+            array(
+				'id' => $group_base_id . '_preview',
+				'name' => $group_base_id . '_preview',
+				'type' => 'map',
+				'label' => 'Map Preview',
+				'placeholder' => '',
+				'required' => false,
+				'locked' => false,
+				'order' => 3,
+				'group_id' => $group_id,
+				'group_type' => 'map',
+				'group_name' => 'Map Location',
+				'group_position' => 3,
+				'group_total' => 4,
+				'group_base_id' => $group_base_id,
+				'metaKey' => 'preview',
+				'address_field_name' => $group_base_id . '_address',
+				'lat_field_name' => $group_base_id . '_latitude',
+				'lng_field_name' => $group_base_id . '_longitude',
+				'map_field_name' => $group_base_id . '_preview',
+			),
+        );
     }
-    
+
     /**
      * Create documents group fields with UNIQUE base ID - SINGLE FIELD
      */
-    private function create_documents_group_fields($group_base_id): array
-    {
+    private function create_documents_group_fields( $group_base_id ): array {
         $group_id = $this->generate_unique_group_id('property_docs');
-        
-        return [
-            [
+
+        return array(
+            array(
                 'id' => $group_base_id . '_documents',
                 'name' => $group_base_id . '_documents',
                 'type' => 'property_docs',
@@ -456,8 +887,8 @@ class Version225Handler implements MigrationInterface {
                 'metaKey' => 'documents',
                 'group_collapsed' => false,
                 'show_in_sidebar' => true,
-            ],
-        ];
+            ),
+        );
     }
 
     /**
@@ -465,9 +896,9 @@ class Version225Handler implements MigrationInterface {
      */
     private function find_latest_backup() {
         global $wpdb;
-        
+
         $backup_pattern = '_hvnly_backup_2.2.5_%';
-        
+
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Migration backup option lookup.
         $backups = $wpdb->get_col(
             $wpdb->prepare(
@@ -477,8 +908,8 @@ class Version225Handler implements MigrationInterface {
                 $backup_pattern
             )
         );
-        
-        return !empty($backups) ? $backups[0] : false;
+
+        return ! empty($backups) ? $backups[0] : false;
     }
 
     /**
@@ -486,9 +917,9 @@ class Version225Handler implements MigrationInterface {
      */
     public function down(): bool {
         $this->log('Rolling back migration to version ' . $this->get_version());
-        
+
         $backup_id = $this->find_latest_backup();
-        
+
         if ($backup_id) {
             $restored = $this->restore_from_backup($backup_id);
             if ($restored) {
@@ -497,7 +928,7 @@ class Version225Handler implements MigrationInterface {
                 return true;
             }
         }
-        
+
         $this->log('No backup found for rollback');
         return false;
     }

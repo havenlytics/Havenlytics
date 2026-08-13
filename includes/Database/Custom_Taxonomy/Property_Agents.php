@@ -1,7 +1,7 @@
 <?php
 /**
  * Property Agents
- * 
+ *
  * @package HvnlyNab\Database\Custom_Taxonomy
  * @since 2.0.0
  */
@@ -11,14 +11,14 @@ namespace HvnlyNab\Database\Custom_Taxonomy;
 use HvnlyNab\Database\Base\Custom_Taxonomy;
 
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 /**
  * Property_Agents class
  */
-class Property_Agents extends Custom_Taxonomy
-{
+class Property_Agents extends Custom_Taxonomy {
+
 
     // Taxonomy slug
     private $slug = 'hvnly_prop_agents';
@@ -30,8 +30,7 @@ class Property_Agents extends Custom_Taxonomy
      *
      * @return void
      */
-    public function register_custom_taxonomy()
-    {
+    public function register_custom_taxonomy() {
 
         // init taxonomy Settings
         $this->init(

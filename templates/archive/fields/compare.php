@@ -30,7 +30,7 @@ $hvnly_toast_data = function_exists( 'hvnly_get_favorite_toast_data' )
 $hvnly_compare_label = __( 'Add to compare', 'havenlytics' );
 ?>
 <button type="button"
-	class="hvnly-compare-toggle hvnly-compare-toggle--card hvnly-property--grid-list--compare"
+	class="hvnly-action-toggle hvnly-compare-toggle hvnly-compare-toggle--card hvnly-property--grid-list--compare"
 	data-hvnly-compare="1"
 	data-hvnly-compare-native="1"
 	data-property-id="<?php echo esc_attr( (string) $hvnly_property_id ); ?>"

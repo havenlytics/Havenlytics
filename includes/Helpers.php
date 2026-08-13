@@ -13,7 +13,7 @@
 namespace HvnlyNab;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -22,8 +22,8 @@ if (!defined('ABSPATH')) {
  *
  * @since 2.0.0
  */
-class Helpers
-{
+class Helpers {
+
 
     /**
      * Hold the class instance
@@ -37,8 +37,7 @@ class Helpers
      *
      * @return Helpers
      */
-    public static function get_instance()
-    {
+    public static function get_instance() {
         if (self::$instance === null) {
             self::$instance = new self();
         }
@@ -50,13 +49,12 @@ class Helpers
      *
      * @since 2.0.0
      */
-    public function __construct()
-    {
+    public function __construct() {
         // Add custom image sizes for property thumbnails
-        add_action('init', array($this, 'add_property_image_sizes'));
-        
+        add_action('init', array( $this, 'add_property_image_sizes' ));
+
         // Add image size options to media settings
-        add_filter('image_size_names_choose', array($this, 'add_custom_image_sizes_to_media'));
+        add_filter('image_size_names_choose', array( $this, 'add_custom_image_sizes_to_media' ));
     }
 
     /**
@@ -64,23 +62,22 @@ class Helpers
      *
      * @since 2.0.0
      */
-    public function add_property_image_sizes()
-    {
+    public function add_property_image_sizes() {
         // Property Grid Size - Optimized for property listing grids
         add_image_size('hvnly_property_grid', 400, 300, true);
-        
+
         // Property Grid Large - For featured properties or larger grid items
         add_image_size('hvnly_property_grid_large', 600, 450, true);
-        
+
         // Property Details Main - Main image on single property page
         add_image_size('hvnly_property_details_main', 800, 600, true);
-        
+
         // Property Details Full - Full width images in property gallery
         add_image_size('hvnly_property_details_full', 1200, 800, true);
-        
+
         // Property Thumbnail - Small thumbnails for widgets, related properties
         add_image_size('hvnly_property_thumb', 200, 150, true);
-        
+
         // Property Gallery - Square format for gallery thumbnails
         add_image_size('hvnly_property_gallery', 300, 300, true);
     }
@@ -92,8 +89,7 @@ class Helpers
      * @return array Modified image sizes
      * @since 2.0.0
      */
-    public function add_custom_image_sizes_to_media($sizes)
-    {
+    public function add_custom_image_sizes_to_media( $sizes ) {
         return array_merge($sizes, array(
             'hvnly_property_grid' => __('Property Grid', 'havenlytics'),
             'hvnly_property_grid_large' => __('Property Grid Large', 'havenlytics'),
@@ -113,18 +109,17 @@ class Helpers
      * @return string HTML image tag
      * @since 2.0.0
      */
-    public function get_property_image($property_id = null, $context = 'grid', $attr = array())
-    {
-        if (!$property_id) {
+    public function get_property_image( $property_id = null, $context = 'grid', $attr = array() ) {
+        if ( ! $property_id) {
             $property_id = get_the_ID();
         }
 
-        if (!$property_id) {
+        if ( ! $property_id) {
             return '';
         }
 
         $image_id = get_post_thumbnail_id($property_id);
-        
+
         if ($image_id) {
             $size  = $this->get_image_size_for_context($context);
             $image = wp_get_attachment_image($image_id, $size, false, $attr);
@@ -144,13 +139,12 @@ class Helpers
      * @return string Image URL
      * @since 2.0.0
      */
-    public function get_property_image_url($property_id = null, $context = 'grid')
-    {
-        if (!$property_id) {
+    public function get_property_image_url( $property_id = null, $context = 'grid' ) {
+        if ( ! $property_id) {
             $property_id = get_the_ID();
         }
 
-        if (!$property_id) {
+        if ( ! $property_id) {
             return '';
         }
 
@@ -161,7 +155,7 @@ class Helpers
         }
 
         $image_id = get_post_thumbnail_id($property_id);
-        
+
         if ($image_id) {
             $size      = $this->get_image_size_for_context($context);
             $image_url = wp_get_attachment_image_url($image_id, $size);
@@ -182,13 +176,12 @@ class Helpers
      * @return array Array of image HTML tags
      * @since 2.0.0
      */
-    public function get_property_gallery_images($property_id = null, $context = 'gallery', $attr = array())
-    {
-        if (!$property_id) {
+    public function get_property_gallery_images( $property_id = null, $context = 'gallery', $attr = array() ) {
+        if ( ! $property_id) {
             $property_id = get_the_ID();
         }
 
-        if (!$property_id) {
+        if ( ! $property_id) {
             return array();
         }
 
@@ -202,13 +195,13 @@ class Helpers
                 $image_ids = array_filter( array_map( 'absint', explode( ',', (string) $legacy ) ) );
             }
         }
-        
+
         if (empty($image_ids)) {
             return array();
         }
 
         $images = array();
-        $size = $this->get_image_size_for_context($context);
+        $size   = $this->get_image_size_for_context($context);
 
         foreach ($image_ids as $image_id) {
             if ($image_id) {
@@ -227,13 +220,12 @@ class Helpers
      * @return array Array of image URLs
      * @since 2.0.0
      */
-    public function get_property_gallery_image_urls($property_id = null, $context = 'gallery')
-    {
-        if (!$property_id) {
+    public function get_property_gallery_image_urls( $property_id = null, $context = 'gallery' ) {
+        if ( ! $property_id) {
             $property_id = get_the_ID();
         }
 
-        if (!$property_id) {
+        if ( ! $property_id) {
             return array();
         }
 
@@ -247,7 +239,7 @@ class Helpers
                 $image_ids = array_filter( array_map( 'absint', explode( ',', (string) $legacy ) ) );
             }
         }
-        
+
         if (empty($image_ids)) {
             return array();
         }
@@ -274,8 +266,7 @@ class Helpers
      * @return string Image size name
      * @since 2.0.0
      */
-    private function get_image_size_for_context($context)
-    {
+    private function get_image_size_for_context( $context ) {
         $sizes = array(
             'grid' => 'hvnly_property_grid',
             'grid_large' => 'hvnly_property_grid_large',
@@ -288,8 +279,8 @@ class Helpers
             'gallery_thumb' => 'hvnly_property_thumb',
         );
 
-        $size = isset($sizes[$context]) ? $sizes[$context] : 'hvnly_property_grid';
-        
+        $size = isset($sizes[ $context ]) ? $sizes[ $context ] : 'hvnly_property_grid';
+
         return apply_filters('hvnly_property_image_size', $size, $context);
     }
 
@@ -302,25 +293,24 @@ class Helpers
      * @return string HTML image tag
      * @since 2.0.0
      */
-    private function get_property_placeholder_image($property_id, $context, $attr)
-    {
+    private function get_property_placeholder_image( $property_id, $context, $attr ) {
         $placeholder_url = $this->get_property_placeholder_url($context);
-        $alt = get_the_title($property_id);
-        
+        $alt             = get_the_title($property_id);
+
         $default_attr = array(
             'src' => $placeholder_url,
             'alt' => $alt,
             'class' => 'hvnly-property-placeholder-image',
         );
-        
+
         $attr = wp_parse_args($attr, $default_attr);
-        
+
         $html = '<img';
         foreach ($attr as $name => $value) {
             $html .= ' ' . $name . '="' . esc_attr($value) . '"';
         }
         $html .= ' />';
-        
+
         return $html;
     }
 
@@ -331,13 +321,12 @@ class Helpers
      * @return string Placeholder image URL
      * @since 2.0.0
      */
-    private function get_property_placeholder_url($context)
-    {
+    private function get_property_placeholder_url( $context ) {
         if (function_exists('hvnly_get_property_placeholder_url')) {
             return hvnly_get_property_placeholder_url($context);
         }
 
-        $placeholder_url = (defined('HVNLYNAB_ASSETS_URL') ? HVNLYNAB_ASSETS_URL : '') . 'images/placeholders/property-placeholder.svg';
+        $placeholder_url = ( defined('HVNLYNAB_ASSETS_URL') ? HVNLYNAB_ASSETS_URL : '' ) . 'images/placeholders/property-placeholder.svg';
 
         return apply_filters('hvnly_property_placeholder_url', $placeholder_url, $context);
     }
@@ -348,10 +337,9 @@ class Helpers
      * @param int $post_id Post ID
      * @return string
      */
-    public function generate_property_id($post_id)
-    {
+    public function generate_property_id( $post_id ) {
         // Validate post ID
-        if (! $post_id || ! is_numeric($post_id)) {
+        if ( ! $post_id || ! is_numeric($post_id)) {
             return '';
         }
 
@@ -359,7 +347,7 @@ class Helpers
 
         // Check if Property ID already exists - NEVER regenerate if exists
         $existing_id = get_post_meta($post_id, '_hvnly_unique_property_id', true);
-        if (! empty($existing_id)) {
+        if ( ! empty($existing_id)) {
             return sanitize_text_field($existing_id);
         }
 
@@ -406,13 +394,12 @@ class Helpers
      * @param int $post_id
      * @return string
      */
-    public function get_property_id($post_id = null)
-    {
-        if (! $post_id) {
+    public function get_property_id( $post_id = null ) {
+        if ( ! $post_id) {
             $post_id = get_the_ID();
         }
 
-        if (! $post_id) {
+        if ( ! $post_id) {
             return '';
         }
 
@@ -436,9 +423,8 @@ class Helpers
      * @param string $key  Key to check.
      * @return bool
      */
-    public function data_exists($data, $key)
-    {
-        return isset($data[$key]) && !empty($data[$key]);
+    public function data_exists( $data, $key ) {
+        return isset($data[ $key ]) && ! empty($data[ $key ]);
     }
 
     /**
@@ -446,8 +432,7 @@ class Helpers
      *
      * @param array $data Field data.
      */
-    public function required_attr($data)
-    {
+    public function required_attr( $data ) {
         if ($this->data_exists($data, 'is_required')) {
             echo 'required="required"';
         }
@@ -458,8 +443,7 @@ class Helpers
      *
      * @param array $data Field data.
      */
-    public function required_mark($data)
-    {
+    public function required_mark( $data ) {
         if ($this->data_exists($data, 'is_required')) {
             echo '<span class="hvnly-required-mark"> *</span>';
         }
@@ -471,8 +455,7 @@ class Helpers
      * @param array $data Field data.
      * @return bool
      */
-    public function is_admin_view($data)
-    {
+    public function is_admin_view( $data ) {
         return $this->data_exists($data, 'admin_view') ? current_user_can('manage_options') : true;
     }
 
@@ -482,8 +465,7 @@ class Helpers
      * @param array $data Field data.
      * @return bool
      */
-    public function is_hidden_field($data)
-    {
+    public function is_hidden_field( $data ) {
         return $this->data_exists($data, 'is_hidden') ? (bool) $data['is_hidden'] : false;
     }
 
@@ -495,9 +477,8 @@ class Helpers
      * @param mixed  $default Default value.
      * @return mixed
      */
-    public function get_array_value($data, $key, $default = '')
-    {
-        return $this->data_exists($data, $key) ? $data[$key] : $default;
+    public function get_array_value( $data, $key, $default = '' ) {
+        return $this->data_exists($data, $key) ? $data[ $key ] : $default;
     }
 
     /**
@@ -508,10 +489,9 @@ class Helpers
      * @param mixed  $default  Default value.
      * @return mixed
      */
-    public function get_meta_value($post_id, $meta_key, $default = '')
-    {
+    public function get_meta_value( $post_id, $meta_key, $default = '' ) {
         $value = get_post_meta($post_id, $meta_key, true);
-        return !empty($value) ? $value : $default;
+        return ! empty($value) ? $value : $default;
     }
 
     /**
@@ -522,9 +502,8 @@ class Helpers
      * @param mixed  $default   Default value.
      * @return mixed
      */
-    public function get_post_value($post_data, $key, $default = '')
-    {
-        return isset($post_data[$key]) ? $post_data[$key] : $default;
+    public function get_post_value( $post_data, $key, $default = '' ) {
+        return isset($post_data[ $key ]) ? $post_data[ $key ] : $default;
     }
 
     /**
@@ -534,16 +513,15 @@ class Helpers
      * @param string $ext  File extension.
      * @return array
      */
-    public function get_folder_files($path, $ext = 'php')
-    {
+    public function get_folder_files( $path, $ext = 'php' ) {
         $filenames = glob($path);
 
-        if (!is_array($filenames)) {
+        if ( ! is_array($filenames)) {
             return array();
         }
 
         return array_map(
-            function ($file_path) use ($ext) {
+            function ( $file_path ) use ( $ext ) {
                 return basename($file_path, ".{$ext}");
             },
             $filenames
@@ -557,8 +535,7 @@ class Helpers
      * @param string $delimiter Delimiter.
      * @return string
      */
-    public function text_to_slug($text, $delimiter = '-')
-    {
+    public function text_to_slug( $text, $delimiter = '-' ) {
         $slug = sanitize_title($text);
         return $slug;
     }
@@ -569,8 +546,7 @@ class Helpers
      * @param string $url Video URL.
      * @return array
      */
-    public function get_video_url_type($url)
-    {
+    public function get_video_url_type( $url ) {
         if (empty($url)) {
             return array(
                 'video_id'   => '',
@@ -645,8 +621,7 @@ class Helpers
      * @param int $author_id Author ID.
      * @return int
      */
-    public function get_author_review_count($author_id = 0)
-    {
+    public function get_author_review_count( $author_id = 0 ) {
         if (empty($author_id)) {
             return 0;
         }
@@ -683,8 +658,7 @@ class Helpers
      *
      * @return float
      */
-    public function get_max_property_price()
-    {
+    public function get_max_property_price() {
         global $wpdb;
 
         $max_price = wp_cache_get('hvnly_max_price', 'havenlytics');
@@ -716,8 +690,7 @@ class Helpers
      * @param string $position Currency position.
      * @return string
      */
-    public function format_property_price($price, $currency = '$', $position = 'left')
-    {
+    public function format_property_price( $price, $currency = '$', $position = 'left' ) {
         if (empty($price)) {
             return apply_filters('hvnly_empty_price_text', __('Price on request', 'havenlytics'));
         }
@@ -738,8 +711,7 @@ class Helpers
      * @param int   $max_stars Maximum stars.
      * @return string
      */
-    public function get_rating_stars($rating, $max_stars = 5)
-    {
+    public function get_rating_stars( $rating, $max_stars = 5 ) {
         $rating    = floatval($rating);
         $max_stars = absint($max_stars);
         $output    = '<div class="hvnly-rating-stars">';
@@ -764,8 +736,7 @@ class Helpers
      * @param int $property_id Property ID.
      * @return int
      */
-    public function get_property_views($property_id)
-    {
+    public function get_property_views( $property_id ) {
         return absint($this->get_meta_value($property_id, '_property_views', 0));
     }
 
@@ -777,8 +748,7 @@ class Helpers
      * @param string $field       Field to pluck.
      * @return array
      */
-    public function get_property_terms($property_id, $taxonomy, $field = 'name')
-    {
+    public function get_property_terms( $property_id, $taxonomy, $field = 'name' ) {
         $terms = get_the_terms($property_id, $taxonomy);
 
         if (is_wp_error($terms) || empty($terms)) {
@@ -795,8 +765,7 @@ class Helpers
      * @param string $suffix Suffix to append.
      * @return string
      */
-    public function format_large_number($number, $suffix = '+')
-    {
+    public function format_large_number( $number, $suffix = '+' ) {
         $number = absint($number);
 
         if ($number < 1000) {
@@ -817,10 +786,9 @@ class Helpers
      * @param mixed  $default Default value.
      * @return mixed
      */
-    public function get_plugin_setting($key, $default = '')
-    {
+    public function get_plugin_setting( $key, $default = '' ) {
         $settings = get_option('hvnly_settings', array());
-        return isset($settings[$key]) ? $settings[$key] : $default;
+        return isset($settings[ $key ]) ? $settings[ $key ] : $default;
     }
 
     /**
@@ -829,17 +797,16 @@ class Helpers
      * @param array $data Data to sanitize.
      * @return array
      */
-    public function sanitize_array($data)
-    {
-        if (!is_array($data)) {
+    public function sanitize_array( $data ) {
+        if ( ! is_array($data)) {
             return array();
         }
 
         foreach ($data as $key => $value) {
             if (is_array($value)) {
-                $data[$key] = $this->sanitize_array($value);
+                $data[ $key ] = $this->sanitize_array($value);
             } else {
-                $data[$key] = sanitize_text_field($value);
+                $data[ $key ] = sanitize_text_field($value);
             }
         }
 
@@ -852,8 +819,7 @@ class Helpers
      * @param string $email Email to validate.
      * @return bool
      */
-    public function is_valid_email($email)
-    {
+    public function is_valid_email( $email ) {
         return is_email($email) !== false;
     }
 
@@ -862,8 +828,7 @@ class Helpers
      *
      * @return bool
      */
-    public function is_property_archive()
-    {
+    public function is_property_archive() {
         return is_post_type_archive('hvnly_property') || is_tax(get_object_taxonomies('hvnly_property'));
     }
 
@@ -873,12 +838,11 @@ class Helpers
      * @param array $args Query arguments.
      * @return string
      */
-    public function get_current_url($args = array())
-    {
+    public function get_current_url( $args = array() ) {
         global $wp;
         $current_url = home_url($wp->request);
 
-        if (!empty($args)) {
+        if ( ! empty($args)) {
             $current_url = add_query_arg($args, $current_url);
         }
 
@@ -894,12 +858,11 @@ class Helpers
      *
      * @return array
      */
-    public function get_currency_settings()
-    {
+    public function get_currency_settings() {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         $general_settings = $settings_manager->get_general_settings();
-        
-        $defaults = [
+
+        $defaults = array(
             'hvnly_currencyType' => 'USD',
             'hvnly_currencyPositionType' => 'LEFT',
             'hvnly_thousandSeparator' => ',',
@@ -911,14 +874,14 @@ class Helpers
             'hvnly_billionText' => 'B',
             'hvnly_priceOnCallText' => 'priceOnCallNone',
             'hvnly_priceFormat' => 'comma',
-        ];
-        
+        );
+
         // Get currency settings from general group
-        $currency_settings = [];
+        $currency_settings = array();
         foreach ($defaults as $key => $default) {
-            $currency_settings[$key] = isset($general_settings[$key]) ? $general_settings[$key] : $default;
+            $currency_settings[ $key ] = isset($general_settings[ $key ]) ? $general_settings[ $key ] : $default;
         }
-        
+
         return $currency_settings;
     }
 
@@ -927,8 +890,7 @@ class Helpers
      *
      * @return array<string, string>
      */
-    public function get_currency_symbols_map()
-    {
+    public function get_currency_symbols_map() {
         return array(
             'AED' => 'د.إ',
             'AFN' => '؋',
@@ -1102,10 +1064,9 @@ class Helpers
      * @param string $currency_code
      * @return string
      */
-    public function get_currency_symbol($currency_code = 'USD')
-    {
+    public function get_currency_symbol( $currency_code = 'USD' ) {
         $currency_symbols = $this->get_currency_symbols_map();
-        return isset($currency_symbols[$currency_code]) ? $currency_symbols[$currency_code] : $currency_code;
+        return isset($currency_symbols[ $currency_code ]) ? $currency_symbols[ $currency_code ] : $currency_code;
     }
 
     /**
@@ -1113,10 +1074,9 @@ class Helpers
      *
      * @return string
      */
-    public function get_current_currency_symbol()
-    {
+    public function get_current_currency_symbol() {
         $currency_settings = $this->get_currency_settings();
-        $currency_code = $currency_settings['hvnly_currencyType'] ?? 'USD';
+        $currency_code     = $currency_settings['hvnly_currencyType'] ?? 'USD';
         return $this->get_currency_symbol($currency_code);
     }
 
@@ -1125,8 +1085,7 @@ class Helpers
      *
      * @return string
      */
-    public function get_current_currency_code()
-    {
+    public function get_current_currency_code() {
         $currency_settings = $this->get_currency_settings();
         return $currency_settings['hvnly_currencyType'] ?? 'USD';
     }
@@ -1140,9 +1099,8 @@ class Helpers
      * @param int $decimals
      * @return string
      */
-    public function format_number_with_separators($number, $thousand_separator = ',', $decimal_separator = '.', $decimals = 0)
-    {
-        $number = floatval($number);
+    public function format_number_with_separators( $number, $thousand_separator = ',', $decimal_separator = '.', $decimals = 0 ) {
+        $number    = floatval($number);
         $formatted = number_format($number, $decimals, $decimal_separator, $thousand_separator);
         return $formatted;
     }
@@ -1157,14 +1115,13 @@ class Helpers
      * @param bool $enabled
      * @return string
      */
-    public function format_large_number_with_suffix($number, $thousand_text = 'K', $million_text = 'M', $billion_text = 'B', $enabled = true)
-    {
-        if (!$enabled) {
+    public function format_large_number_with_suffix( $number, $thousand_text = 'K', $million_text = 'M', $billion_text = 'B', $enabled = true ) {
+        if ( ! $enabled) {
             return number_format_i18n($number, 0);
         }
-        
+
         $number = floatval($number);
-        
+
         if ($number >= 1000000000) {
             return round($number / 1000000000, 1) . $billion_text;
         } elseif ($number >= 1000000) {
@@ -1172,7 +1129,7 @@ class Helpers
         } elseif ($number >= 1000) {
             return round($number / 1000, 1) . $thousand_text;
         }
-        
+
         return number_format_i18n($number, 0);
     }
 
@@ -1182,8 +1139,7 @@ class Helpers
      * @param mixed $price Price value to convert.
      * @return float Cleaned price as float.
      */
-    public function safe_price_to_float($price)
-    {
+    public function safe_price_to_float( $price ) {
         // Handle empty values
         if (empty($price) && $price !== '0' && $price !== 0) {
             return 0.0;
@@ -1204,7 +1160,7 @@ class Helpers
         $float_price = (float) $price_str;
 
         // Verify it's a valid finite number
-        if (!is_finite($float_price)) {
+        if ( ! is_finite($float_price)) {
             return 0.0;
         }
 
@@ -1222,43 +1178,42 @@ class Helpers
      * @param int $property_id Optional property ID for individual custom labels
      * @return string Formatted price string.
      */
-    public function format_price($price, $property_id = null)
-    {
+    public function format_price( $price, $property_id = null ) {
         // If property_id not provided, try to get it from current post
         if (empty($property_id)) {
             $property_id = get_the_ID();
         }
 
         // STEP 1: Check for INDIVIDUAL custom price label (from price_label field)
-        if (!empty($property_id)) {
+        if ( ! empty($property_id)) {
             $stored_value = get_post_meta($property_id, '_hvnly_property_price', true);
-            
-            if (!empty($stored_value) && is_string($stored_value)) {
+
+            if ( ! empty($stored_value) && is_string($stored_value)) {
                 // Check if it's JSON encoded custom label
                 if (strlen($stored_value) > 0 && $stored_value[0] === '{') {
                     $decoded = json_decode($stored_value, true);
                     if (is_array($decoded) && isset($decoded['__type']) && $decoded['__type'] === 'custom_label') {
                         $label_value = isset($decoded['value']) ? $decoded['value'] : '';
-                        $label_text = isset($decoded['label']) ? trim(preg_replace('/\s+/', ' ', $decoded['label'])) : '';
-                        
-                        if (!empty($label_value) && $label_value !== 'priceOnCallNone') {
+                        $label_text  = isset($decoded['label']) ? trim(preg_replace('/\s+/', ' ', $decoded['label'])) : '';
+
+                        if ( ! empty($label_value) && $label_value !== 'priceOnCallNone') {
                             // First try to get updated label from database options
                             $db_label = $this->get_price_on_call_label_by_value($label_value);
-                            if (!empty($db_label)) {
+                            if ( ! empty($db_label)) {
                                 return apply_filters('hvnly_price_on_call_text', $db_label);
                             }
                             // Fallback to stored label
-                            if (!empty($label_text)) {
+                            if ( ! empty($label_text)) {
                                 return apply_filters('hvnly_price_on_call_text', $label_text);
                             }
                         }
                     }
                 }
-                
+
                 // Check if it's a regular string value
-                if (!empty($stored_value) && $stored_value !== 'priceOnCallNone') {
+                if ( ! empty($stored_value) && $stored_value !== 'priceOnCallNone') {
                     $db_label = $this->get_price_on_call_label_by_value($stored_value);
-                    if (!empty($db_label)) {
+                    if ( ! empty($db_label)) {
                         return apply_filters('hvnly_price_on_call_text', $db_label);
                     }
                 }
@@ -1272,31 +1227,31 @@ class Helpers
 
         // STEP 3: Get currency settings
         $currency_settings = $this->get_currency_settings();
-        
+
         // STEP 4: Get global price on call text setting
         $price_on_call_value = isset($currency_settings['hvnly_priceOnCallText']) ? $currency_settings['hvnly_priceOnCallText'] : 'priceOnCallNone';
-        
+
         // STEP 5: Check if global price is "Price on Call"
         if ($price_on_call_value !== 'priceOnCallNone') {
             $custom_label = $this->get_price_on_call_label_by_value($price_on_call_value);
-            
+
             if ($custom_label) {
                 return apply_filters('hvnly_price_on_call_text', $custom_label);
             }
-            
-            $price_on_call_labels = [
+
+            $price_on_call_labels = array(
                 'priceOnCall' => __('Price on Call', 'havenlytics'),
                 'fixedPrice' => __('Fixed Price', 'havenlytics'),
                 'guidePrice' => __('Guide Price', 'havenlytics'),
                 'offersOver' => __('Offers Over', 'havenlytics'),
-            ];
-            
-            if (isset($price_on_call_labels[$price_on_call_value])) {
-                return apply_filters('hvnly_price_on_call_text', $price_on_call_labels[$price_on_call_value]);
+            );
+
+            if (isset($price_on_call_labels[ $price_on_call_value ])) {
+                return apply_filters('hvnly_price_on_call_text', $price_on_call_labels[ $price_on_call_value ]);
             }
-            
-            if (!empty($price_on_call_value) && $price_on_call_value !== 'priceOnCallNone') {
-                $custom_text = ucwords(str_replace(['_', '-'], ' ', $price_on_call_value));
+
+            if ( ! empty($price_on_call_value) && $price_on_call_value !== 'priceOnCallNone') {
+                $custom_text = ucwords(str_replace(array( '_', '-' ), ' ', $price_on_call_value));
                 return apply_filters('hvnly_price_on_call_text', $custom_text);
             }
         }
@@ -1309,19 +1264,19 @@ class Helpers
         }
 
         // STEP 7: Format numeric price
-        $currency_code = isset($currency_settings['hvnly_currencyType']) ? $currency_settings['hvnly_currencyType'] : 'USD';
-        $currency_position = isset($currency_settings['hvnly_currencyPositionType']) ? $currency_settings['hvnly_currencyPositionType'] : 'LEFT';
-        $thousand_separator = isset($currency_settings['hvnly_thousandSeparator']) ? $currency_settings['hvnly_thousandSeparator'] : ',';
-        $decimal_separator = isset($currency_settings['hvnly_decimalSeparator']) ? $currency_settings['hvnly_decimalSeparator'] : '.';
-        $number_of_decimals = intval(isset($currency_settings['hvnly_numberOfDecimals']) ? $currency_settings['hvnly_numberOfDecimals'] : 0);
-        $price_format = isset($currency_settings['hvnly_priceFormat']) ? $currency_settings['hvnly_priceFormat'] : 'comma';
+        $currency_code       = isset($currency_settings['hvnly_currencyType']) ? $currency_settings['hvnly_currencyType'] : 'USD';
+        $currency_position   = isset($currency_settings['hvnly_currencyPositionType']) ? $currency_settings['hvnly_currencyPositionType'] : 'LEFT';
+        $thousand_separator  = isset($currency_settings['hvnly_thousandSeparator']) ? $currency_settings['hvnly_thousandSeparator'] : ',';
+        $decimal_separator   = isset($currency_settings['hvnly_decimalSeparator']) ? $currency_settings['hvnly_decimalSeparator'] : '.';
+        $number_of_decimals  = intval(isset($currency_settings['hvnly_numberOfDecimals']) ? $currency_settings['hvnly_numberOfDecimals'] : 0);
+        $price_format        = isset($currency_settings['hvnly_priceFormat']) ? $currency_settings['hvnly_priceFormat'] : 'comma';
         $enable_large_format = isset($currency_settings['hvnly_EnabledCurrencyFormat']) ? $currency_settings['hvnly_EnabledCurrencyFormat'] : true;
-        $thousand_text = isset($currency_settings['hvnly_thousandText']) ? $currency_settings['hvnly_thousandText'] : 'K';
-        $million_text = isset($currency_settings['hvnly_millionText']) ? $currency_settings['hvnly_millionText'] : 'M';
-        $billion_text = isset($currency_settings['hvnly_billionText']) ? $currency_settings['hvnly_billionText'] : 'B';
-        
+        $thousand_text       = isset($currency_settings['hvnly_thousandText']) ? $currency_settings['hvnly_thousandText'] : 'K';
+        $million_text        = isset($currency_settings['hvnly_millionText']) ? $currency_settings['hvnly_millionText'] : 'M';
+        $billion_text        = isset($currency_settings['hvnly_billionText']) ? $currency_settings['hvnly_billionText'] : 'B';
+
         $currency_symbol = $this->get_currency_symbol($currency_code);
-        
+
         if ($price_format === 'comma') {
             $formatted_number = $this->format_number_with_separators($numeric_price, ',', '.', $number_of_decimals);
         } elseif ($price_format === 'dot') {
@@ -1329,25 +1284,25 @@ class Helpers
         } else {
             $formatted_number = $this->format_number_with_separators($numeric_price, ' ', '.', $number_of_decimals);
         }
-        
+
         $use_large_format = apply_filters('hvnly_use_large_number_format', $enable_large_format);
-        
+
         if ($use_large_format && $numeric_price >= 1000) {
             $large_formatted = $this->format_large_number_with_suffix(
-                $numeric_price, 
-                $thousand_text, 
-                $million_text, 
-                $billion_text, 
+                $numeric_price,
+                $thousand_text,
+                $million_text,
+                $billion_text,
                 $enable_large_format
             );
-            
+
             if ('LEFT' === $currency_position) {
                 return $currency_symbol . $large_formatted;
             } else {
                 return $large_formatted . $currency_symbol;
             }
         }
-        
+
         if ('LEFT' === $currency_position) {
             return $currency_symbol . $formatted_number;
         } else {
@@ -1364,35 +1319,34 @@ class Helpers
      * @param string $value
      * @return string|null
      */
-    public function get_price_on_call_label_by_value($value)
-    {
+    public function get_price_on_call_label_by_value( $value ) {
         global $wpdb;
-        
+
         $table_name = $wpdb->prefix . 'hvnly_price_on_call_texts';
-        
+
         // First, try to get from the options table (custom options)
-        $custom_options = get_option('hvnly_price_on_call_custom_options', []);
-        
-        if (!empty($custom_options) && is_array($custom_options)) {
+        $custom_options = get_option('hvnly_price_on_call_custom_options', array());
+
+        if ( ! empty($custom_options) && is_array($custom_options)) {
             foreach ($custom_options as $option) {
                 if (isset($option['value']) && $option['value'] === $value) {
                     $clean_label = isset($option['label']) ? trim(preg_replace('/\s+/', ' ', $option['label'])) : '';
-                    if (!empty($clean_label)) {
+                    if ( ! empty($clean_label)) {
                         return $clean_label;
                     }
                 }
             }
         }
-        
+
         // Check if table exists
         $table_exists = $wpdb->get_var(
-            $wpdb->prepare("SHOW TABLES LIKE %s", $wpdb->esc_like($table_name))
+            $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table_name))
         );
-        
+
         if ($table_exists === $table_name) {
             $cache_key = 'hvnly_price_on_call_label_' . md5($value);
-            $label = wp_cache_get($cache_key, 'havenlytics');
-            
+            $label     = wp_cache_get($cache_key, 'havenlytics');
+
             if (false === $label) {
                 $label = $wpdb->get_var(
                     $wpdb->prepare(
@@ -1400,7 +1354,7 @@ class Helpers
                         $value
                     )
                 );
-                
+
                 if ($label) {
                     $clean_label = trim(preg_replace('/\s+/', ' ', $label));
                     wp_cache_set($cache_key, $clean_label, 'havenlytics', HOUR_IN_SECONDS);
@@ -1410,16 +1364,16 @@ class Helpers
                 return $label;
             }
         }
-        
+
         // Fallback for default values
-        $default_labels = [
+        $default_labels = array(
             'priceOnCall' => __('Price on Call', 'havenlytics'),
             'fixedPrice' => __('Fixed Price', 'havenlytics'),
             'guidePrice' => __('Guide Price', 'havenlytics'),
             'offersOver' => __('Offers Over', 'havenlytics'),
-        ];
-        
-        return isset($default_labels[$value]) ? $default_labels[$value] : null;
+        );
+
+        return isset($default_labels[ $value ]) ? $default_labels[ $value ] : null;
     }
 
 
@@ -1435,32 +1389,31 @@ class Helpers
      * @param mixed $price Price value
      * @return string Formatted numeric price
      */
-    public function format_numeric_price_for_filter($price)
-    {
+    public function format_numeric_price_for_filter( $price ) {
         // Convert to float safely
         $numeric_price = $this->safe_price_to_float($price);
-        
+
         // Return empty if not a valid number
         if ($numeric_price <= 0) {
             return '';
         }
-        
+
         // Get currency settings
         $currency_settings = $this->get_currency_settings();
-        
-        $currency_code = $currency_settings['hvnly_currencyType'] ?? 'USD';
-        $currency_position = $currency_settings['hvnly_currencyPositionType'] ?? 'LEFT';
-        $thousand_separator = $currency_settings['hvnly_thousandSeparator'] ?? ',';
-        $decimal_separator = $currency_settings['hvnly_decimalSeparator'] ?? '.';
-        $number_of_decimals = intval($currency_settings['hvnly_numberOfDecimals'] ?? 0);
-        $price_format = $currency_settings['hvnly_priceFormat'] ?? 'comma';
+
+        $currency_code       = $currency_settings['hvnly_currencyType'] ?? 'USD';
+        $currency_position   = $currency_settings['hvnly_currencyPositionType'] ?? 'LEFT';
+        $thousand_separator  = $currency_settings['hvnly_thousandSeparator'] ?? ',';
+        $decimal_separator   = $currency_settings['hvnly_decimalSeparator'] ?? '.';
+        $number_of_decimals  = intval($currency_settings['hvnly_numberOfDecimals'] ?? 0);
+        $price_format        = $currency_settings['hvnly_priceFormat'] ?? 'comma';
         $enable_large_format = $currency_settings['hvnly_EnabledCurrencyFormat'] ?? true;
-        $thousand_text = $currency_settings['hvnly_thousandText'] ?? 'K';
-        $million_text = $currency_settings['hvnly_millionText'] ?? 'M';
-        $billion_text = $currency_settings['hvnly_billionText'] ?? 'B';
-        
+        $thousand_text       = $currency_settings['hvnly_thousandText'] ?? 'K';
+        $million_text        = $currency_settings['hvnly_millionText'] ?? 'M';
+        $billion_text        = $currency_settings['hvnly_billionText'] ?? 'B';
+
         $currency_symbol = $this->get_currency_symbol($currency_code);
-        
+
         // Format number with separators
         if ($price_format === 'comma') {
             $formatted_number = $this->format_number_with_separators($numeric_price, ',', '.', $number_of_decimals);
@@ -1469,7 +1422,7 @@ class Helpers
         } else {
             $formatted_number = $this->format_number_with_separators($numeric_price, ' ', '.', $number_of_decimals);
         }
-        
+
         // Use large format if enabled
         if ($enable_large_format && $numeric_price >= 1000) {
             $large_formatted = $this->format_large_number_with_suffix(
@@ -1479,14 +1432,14 @@ class Helpers
                 $billion_text,
                 $enable_large_format
             );
-            
+
             if ('LEFT' === $currency_position) {
                 return $currency_symbol . $large_formatted;
             } else {
                 return $large_formatted . $currency_symbol;
             }
         }
-        
+
         if ('LEFT' === $currency_position) {
             return $currency_symbol . $formatted_number;
         } else {
@@ -1502,14 +1455,13 @@ class Helpers
      * @param bool $is_plus Whether to add "+" suffix
      * @return string Formatted price
      */
-    public function format_filter_price_option($price, $is_plus = false)
-    {
+    public function format_filter_price_option( $price, $is_plus = false ) {
         $formatted = $this->format_numeric_price_for_filter($price);
-        
-        if ($is_plus && !empty($formatted)) {
+
+        if ($is_plus && ! empty($formatted)) {
             return $formatted . '+';
         }
-        
+
         return $formatted;
     }
 
@@ -1525,28 +1477,27 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_filter_sidebar_get_fields()
-    {
-        $settings = get_option('hvnly_plugin_settings', []);
-        $search_settings = isset($settings['search']) ? $settings['search'] : [];
-        
-        $fields = isset($search_settings['hvnly_search_fields']) ? $search_settings['hvnly_search_fields'] : [];
-        
+    public function hvnly_filter_sidebar_get_fields() {
+        $settings        = get_option('hvnly_plugin_settings', array());
+        $search_settings = isset($settings['search']) ? $settings['search'] : array();
+
+        $fields = isset($search_settings['hvnly_search_fields']) ? $search_settings['hvnly_search_fields'] : array();
+
         // If no fields found, return defaults
         if (empty($fields)) {
             return $this->hvnly_get_default_search_filter_fields();
         }
-        
+
         // Filter only enabled fields
-        $enabled_fields = array_filter($fields, function($field) {
+        $enabled_fields = array_filter($fields, function ( $field ) {
             return isset($field['enabled']) && $field['enabled'] === true;
         });
-        
+
         // Sort by order
-        usort($enabled_fields, function($a, $b) {
-            return ($a['order'] ?? 999) - ($b['order'] ?? 999);
+        usort($enabled_fields, function ( $a, $b ) {
+            return ( $a['order'] ?? 999 ) - ( $b['order'] ?? 999 );
         });
-        
+
         return apply_filters('hvnly_filter_sidebar_fields', $enabled_fields);
     }
 
@@ -1557,16 +1508,15 @@ class Helpers
      * @param string $field_id
      * @return array|null
      */
-    public function hvnly_filter_sidebar_get_field_config($field_id)
-    {
+    public function hvnly_filter_sidebar_get_field_config( $field_id ) {
         $fields = $this->hvnly_filter_sidebar_get_fields();
-        
+
         foreach ($fields as $field) {
             if ($field['id'] === $field_id) {
-                return isset($field['config']) ? $field['config'] : [];
+                return isset($field['config']) ? $field['config'] : array();
             }
         }
-        
+
         return null;
     }
 
@@ -1576,23 +1526,22 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_filter_sidebar_get_min_price_options()
-    {
+    public function hvnly_filter_sidebar_get_min_price_options() {
         $config = $this->hvnly_filter_sidebar_get_field_config('price');
-        
-        if ($config && isset($config['minOptions']) && !empty($config['minOptions'])) {
-            $options = [];
+
+        if ($config && isset($config['minOptions']) && ! empty($config['minOptions'])) {
+            $options = array();
             foreach ($config['minOptions'] as $value) {
-                if (!empty($value)) {
+                if ( ! empty($value)) {
                     // ALWAYS use numeric price formatting, NOT the custom label format
-                    $options[$value] = $this->format_numeric_price_for_filter((float) $value);
+                    $options[ $value ] = $this->format_numeric_price_for_filter( (float) $value);
                 }
             }
             return $options;
         }
-        
+
         // Default fallback with numeric formatting
-        return [
+        return array(
             '100000' => $this->format_numeric_price_for_filter(100000),
             '200000' => $this->format_numeric_price_for_filter(200000),
             '300000' => $this->format_numeric_price_for_filter(300000),
@@ -1602,8 +1551,8 @@ class Helpers
             '700000' => $this->format_numeric_price_for_filter(700000),
             '800000' => $this->format_numeric_price_for_filter(800000),
             '900000' => $this->format_numeric_price_for_filter(900000),
-            '1000000' => $this->format_numeric_price_for_filter(1000000)
-        ];
+            '1000000' => $this->format_numeric_price_for_filter(1000000),
+        );
     }
 
     /**
@@ -1612,24 +1561,23 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_filter_sidebar_get_max_price_options()
-    {
+    public function hvnly_filter_sidebar_get_max_price_options() {
         $config = $this->hvnly_filter_sidebar_get_field_config('price');
-        
-        if ($config && isset($config['maxOptions']) && !empty($config['maxOptions'])) {
-            $options = [];
+
+        if ($config && isset($config['maxOptions']) && ! empty($config['maxOptions'])) {
+            $options = array();
             foreach ($config['maxOptions'] as $value) {
-                if (!empty($value)) {
-                    $is_plus = (strpos($value, '+') !== false);
-                    $clean_value = str_replace('+', '', $value);
-                    $options[$value] = $this->format_filter_price_option($clean_value, $is_plus);
+                if ( ! empty($value)) {
+                    $is_plus           = ( strpos($value, '+') !== false );
+                    $clean_value       = str_replace('+', '', $value);
+                    $options[ $value ] = $this->format_filter_price_option($clean_value, $is_plus);
                 }
             }
             return $options;
         }
-        
+
         // Default fallback with numeric formatting
-        return [
+        return array(
             '200000' => $this->format_numeric_price_for_filter(200000),
             '300000' => $this->format_numeric_price_for_filter(300000),
             '400000' => $this->format_numeric_price_for_filter(400000),
@@ -1639,8 +1587,8 @@ class Helpers
             '800000' => $this->format_numeric_price_for_filter(800000),
             '900000' => $this->format_numeric_price_for_filter(900000),
             '1000000' => $this->format_numeric_price_for_filter(1000000),
-            '1500000' => $this->format_numeric_price_for_filter(1500000) . '+'
-        ];
+            '1500000' => $this->format_numeric_price_for_filter(1500000) . '+',
+        );
     }
 
     /**
@@ -1649,10 +1597,9 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_filter_sidebar_get_bedroom_options()
-    {
+    public function hvnly_filter_sidebar_get_bedroom_options() {
         $config = $this->hvnly_filter_sidebar_get_field_config('bedrooms_bathrooms');
-        
+
         if ($config && isset($config['subFields'])) {
             foreach ($config['subFields'] as $subField) {
                 if ($subField['id'] === 'bedrooms' && isset($subField['options'])) {
@@ -1660,9 +1607,9 @@ class Helpers
                 }
             }
         }
-        
+
         // Default fallback
-        return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10+'];
+        return array( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10+' );
     }
 
     /**
@@ -1671,10 +1618,9 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_filter_sidebar_get_bathroom_options()
-    {
+    public function hvnly_filter_sidebar_get_bathroom_options() {
         $config = $this->hvnly_filter_sidebar_get_field_config('bedrooms_bathrooms');
-        
+
         if ($config && isset($config['subFields'])) {
             foreach ($config['subFields'] as $subField) {
                 if ($subField['id'] === 'bathrooms' && isset($subField['options'])) {
@@ -1682,9 +1628,9 @@ class Helpers
                 }
             }
         }
-        
+
         // Default fallback
-        return ['0', '1', '2', '3', '4', '5', '6', '7', '8+'];
+        return array( '0', '1', '2', '3', '4', '5', '6', '7', '8+' );
     }
 
     /**
@@ -1693,16 +1639,15 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_filter_sidebar_get_reception_rooms_options()
-    {
+    public function hvnly_filter_sidebar_get_reception_rooms_options() {
         $config = $this->hvnly_filter_sidebar_get_field_config('reception_rooms');
-        
-        if ($config && isset($config['options']) && !empty($config['options'])) {
+
+        if ($config && isset($config['options']) && ! empty($config['options'])) {
             return $config['options'];
         }
-        
+
         // Default fallback
-        return ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10+'];
+        return array( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10+' );
     }
 
     /**
@@ -1712,15 +1657,14 @@ class Helpers
      * @param string $field_id
      * @return array
      */
-    public function hvnly_filter_sidebar_get_custom_dropdown_options($field_id)
-    {
+    public function hvnly_filter_sidebar_get_custom_dropdown_options( $field_id ) {
         $config = $this->hvnly_filter_sidebar_get_field_config($field_id);
-        
-        if ($config && isset($config['options']) && !empty($config['options'])) {
+
+        if ($config && isset($config['options']) && ! empty($config['options'])) {
             return $config['options'];
         }
-        
-        return [];
+
+        return array();
     }
 
     /**
@@ -1730,15 +1674,14 @@ class Helpers
      * @param string $field_id
      * @return array
      */
-    public function hvnly_filter_sidebar_get_custom_checkbox_options($field_id)
-    {
+    public function hvnly_filter_sidebar_get_custom_checkbox_options( $field_id ) {
         $config = $this->hvnly_filter_sidebar_get_field_config($field_id);
-        
-        if ($config && isset($config['options']) && !empty($config['options'])) {
+
+        if ($config && isset($config['options']) && ! empty($config['options'])) {
             return $config['options'];
         }
-        
-        return [];
+
+        return array();
     }
 
     /**
@@ -1748,10 +1691,9 @@ class Helpers
      * @param string $field_id
      * @return bool
      */
-    public function hvnly_filter_sidebar_field_uses_taxonomy($field_id)
-    {
+    public function hvnly_filter_sidebar_field_uses_taxonomy( $field_id ) {
         $config = $this->hvnly_filter_sidebar_get_field_config($field_id);
-        
+
         return isset($config['useTaxonomy']) && $config['useTaxonomy'] === true;
     }
 
@@ -1762,10 +1704,9 @@ class Helpers
      * @param string $field_id
      * @return string|null
      */
-    public function hvnly_filter_sidebar_get_field_taxonomy($field_id)
-    {
+    public function hvnly_filter_sidebar_get_field_taxonomy( $field_id ) {
         $config = $this->hvnly_filter_sidebar_get_field_config($field_id);
-        
+
         if ($config && isset($config['useTaxonomy']) && $config['useTaxonomy'] === true) {
             $taxonomy = isset($config['taxonomy']) ? $config['taxonomy'] : null;
 
@@ -1775,7 +1716,7 @@ class Helpers
 
             return $taxonomy;
         }
-        
+
         return null;
     }
 
@@ -1786,24 +1727,23 @@ class Helpers
      * @param string $taxonomy
      * @return array
      */
-    public function hvnly_filter_sidebar_get_taxonomy_terms($taxonomy)
-    {
+    public function hvnly_filter_sidebar_get_taxonomy_terms( $taxonomy ) {
         $cache_key = 'hvnly_filter_sidebar_terms_' . $taxonomy;
-        $terms = wp_cache_get($cache_key, 'havenlytics');
-        
+        $terms     = wp_cache_get($cache_key, 'havenlytics');
+
         if (false === $terms) {
-            $terms = get_terms([
+            $terms = get_terms(array(
                 'taxonomy' => $taxonomy,
                 'hide_empty' => true,
-            ]);
-            
-            if (!is_wp_error($terms)) {
+            ));
+
+            if ( ! is_wp_error($terms)) {
                 wp_cache_set($cache_key, $terms, 'havenlytics', HOUR_IN_SECONDS);
             } else {
-                $terms = [];
+                $terms = array();
             }
         }
-        
+
         return $terms;
     }
 
@@ -1813,54 +1753,53 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_filter_sidebar_get_current_values()
-    {
-        $filters = [];
-        
+    public function hvnly_filter_sidebar_get_current_values() {
+        $filters = array();
+
         // Price range
-        if (isset($_GET['min_price']) && !empty($_GET['min_price'])) {
+        if (isset($_GET['min_price']) && ! empty($_GET['min_price'])) {
             $filters['min_price'] = sanitize_text_field($_GET['min_price']);
         }
-        if (isset($_GET['max_price']) && !empty($_GET['max_price'])) {
+        if (isset($_GET['max_price']) && ! empty($_GET['max_price'])) {
             $filters['max_price'] = sanitize_text_field($_GET['max_price']);
         }
-        
+
         // Bedrooms & Bathrooms
-        if (isset($_GET['bedrooms']) && !empty($_GET['bedrooms'])) {
+        if (isset($_GET['bedrooms']) && ! empty($_GET['bedrooms'])) {
             $filters['bedrooms'] = sanitize_text_field($_GET['bedrooms']);
         }
-        if (isset($_GET['bathrooms']) && !empty($_GET['bathrooms'])) {
+        if (isset($_GET['bathrooms']) && ! empty($_GET['bathrooms'])) {
             $filters['bathrooms'] = sanitize_text_field($_GET['bathrooms']);
         }
-        
+
         // Reception rooms
-        if (isset($_GET['reception_rooms']) && !empty($_GET['reception_rooms'])) {
+        if (isset($_GET['reception_rooms']) && ! empty($_GET['reception_rooms'])) {
             $filters['reception_rooms'] = sanitize_text_field($_GET['reception_rooms']);
         }
-        
+
         // Taxonomy filters
-        $taxonomies = ['hvnly_prop_types', 'hvnly_prop_locations', 'hvnly_prop_features', 'hvnly_prop_tags', 'hvnly_prop_badges', 'hvnly_prop_status', 'hvnly_prop_depts'];
+        $taxonomies = array( 'hvnly_prop_types', 'hvnly_prop_locations', 'hvnly_prop_features', 'hvnly_prop_tags', 'hvnly_prop_badges', 'hvnly_prop_status', 'hvnly_prop_depts' );
         foreach ($taxonomies as $tax) {
-            if (isset($_GET[$tax]) && !empty($_GET[$tax])) {
-                $values = $_GET[$tax];
+            if (isset($_GET[ $tax ]) && ! empty($_GET[ $tax ])) {
+                $values = $_GET[ $tax ];
                 if (is_array($values)) {
-                    $filters[$tax] = array_map('sanitize_text_field', $values);
+                    $filters[ $tax ] = array_map('sanitize_text_field', $values);
                 } else {
-                    $filters[$tax] = [sanitize_text_field($values)];
+                    $filters[ $tax ] = array( sanitize_text_field($values) );
                 }
             }
         }
-        
+
         // Property IDs
-        if (isset($_GET['property_ids']) && !empty($_GET['property_ids'])) {
+        if (isset($_GET['property_ids']) && ! empty($_GET['property_ids'])) {
             $values = $_GET['property_ids'];
             if (is_array($values)) {
                 $filters['property_ids'] = array_map('sanitize_text_field', $values);
             } else {
-                $filters['property_ids'] = [sanitize_text_field($values)];
+                $filters['property_ids'] = array( sanitize_text_field($values) );
             }
         }
-        
+
         return apply_filters('hvnly_filter_sidebar_current_values', $filters);
     }
 
@@ -1903,13 +1842,12 @@ class Helpers
      * @param array $field
      * @return bool
      */
-    public function hvnly_filter_sidebar_is_field_locked($field)
-    {
+    public function hvnly_filter_sidebar_is_field_locked( $field ) {
         // Property ID is always locked
         if (isset($field['id']) && $field['id'] === 'property_id') {
             return true;
         }
-        
+
         return isset($field['is_locked']) && $field['is_locked'] === true;
     }
 
@@ -1919,13 +1857,12 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_filter_sidebar_get_unique_property_ids()
-    {
+    public function hvnly_filter_sidebar_get_unique_property_ids() {
         global $wpdb;
-        
-        $cache_key = 'hvnly_filter_sidebar_unique_property_ids';
+
+        $cache_key    = 'hvnly_filter_sidebar_unique_property_ids';
         $property_ids = wp_cache_get($cache_key, 'havenlytics');
-        
+
         if (false === $property_ids) {
             $property_ids = $wpdb->get_col("
                 SELECT DISTINCT meta_value 
@@ -1935,10 +1872,10 @@ class Helpers
                 ORDER BY meta_value ASC
                 LIMIT 500
             ");
-            
+
             wp_cache_set($cache_key, $property_ids, 'havenlytics', HOUR_IN_SECONDS);
         }
-        
+
         return apply_filters('hvnly_filter_sidebar_unique_property_ids', $property_ids);
     }
 
@@ -1950,14 +1887,13 @@ class Helpers
      * @param string $default
      * @return string
      */
-    public function hvnly_filter_sidebar_get_field_placeholder($field_id, $default = '')
-    {
+    public function hvnly_filter_sidebar_get_field_placeholder( $field_id, $default = '' ) {
         $config = $this->hvnly_filter_sidebar_get_field_config($field_id);
-        
-        if ($config && isset($config['placeholder']) && !empty($config['placeholder'])) {
+
+        if ($config && isset($config['placeholder']) && ! empty($config['placeholder'])) {
             return $config['placeholder'];
         }
-        
+
         return $default;
     }
 
@@ -1968,104 +1904,102 @@ class Helpers
      * @param string $field_id
      * @return bool
      */
-    public function hvnly_filter_sidebar_has_select_all_option($field_id)
-    {
+    public function hvnly_filter_sidebar_has_select_all_option( $field_id ) {
         $config = $this->hvnly_filter_sidebar_get_field_config($field_id);
-        
+
         return isset($config['selectAllOption']) && $config['selectAllOption'] === true;
     }
 
-    
+
     /**
      * Get default search filter fields (fallback when no settings exist)
      *
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_get_default_search_filter_fields()
-    {
-        return [
-            [
+    public function hvnly_get_default_search_filter_fields() {
+        return array(
+            array(
                 'id' => 'price',
                 'title' => __('Price', 'havenlytics'),
                 'type' => 'range',
                 'enabled' => true,
                 'order' => 1,
-                'is_default' => true
-            ],
-            [
+                'is_default' => true,
+            ),
+            array(
                 'id' => 'status',
                 'title' => __('Status', 'havenlytics'),
                 'type' => 'dropdown',
                 'enabled' => true,
                 'order' => 2,
-                'is_default' => true
-            ],
-            [
+                'is_default' => true,
+            ),
+            array(
                 'id' => 'bedrooms_bathrooms',
                 'title' => __('Bedrooms & Bathrooms', 'havenlytics'),
                 'type' => 'group',
                 'enabled' => true,
                 'order' => 3,
-                'is_default' => true
-            ],
-            [
+                'is_default' => true,
+            ),
+            array(
                 'id' => 'reception_rooms',
                 'title' => __('Reception Rooms', 'havenlytics'),
                 'type' => 'number',
                 'enabled' => true,
                 'order' => 4,
-                'is_default' => true
-            ],
-            [
+                'is_default' => true,
+            ),
+            array(
                 'id' => 'property_types',
                 'title' => __('Property Types', 'havenlytics'),
                 'type' => 'checkbox',
                 'enabled' => true,
                 'order' => 5,
-                'is_default' => true
-            ],
-            [
+                'is_default' => true,
+            ),
+            array(
                 'id' => 'locations',
                 'title' => __('Locations', 'havenlytics'),
                 'type' => 'dropdown',
                 'enabled' => true,
                 'order' => 6,
-                'is_default' => true
-            ],
-            [
+                'is_default' => true,
+            ),
+            array(
                 'id' => 'features',
                 'title' => __('Features', 'havenlytics'),
                 'type' => 'checkbox',
                 'enabled' => true,
                 'order' => 7,
-                'is_default' => true
-            ],
-            [
+                'is_default' => true,
+            ),
+            array(
                 'id' => 'tags',
                 'title' => __('Tags', 'havenlytics'),
                 'type' => 'dropdown',
                 'enabled' => true,
                 'order' => 8,
-                'is_default' => true
-            ],
-            [
+                'is_default' => true,
+            ),
+            array(
                 'id' => 'badges',
                 'title' => __('Badges', 'havenlytics'),
                 'type' => 'checkbox',
                 'enabled' => true,
                 'order' => 9,
-                'is_default' => true
-            ],
-            [
+                'is_default' => true,
+            ),
+            array(
                 'id' => 'property_id',
                 'title' => __('Property ID', 'havenlytics'),
                 'type' => 'text',
                 'enabled' => true,
                 'order' => 10,
-                'is_default' => true
-            ]
-        ];
+                'is_default' => true,
+            ),
+        );
     }
 
 
@@ -2078,27 +2012,26 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_get_top_search_fields()
-    {
-        $settings = get_option('hvnly_plugin_settings', []);
-        $search_settings = isset($settings['search']) ? $settings['search'] : [];
-        
-        $fields = isset($search_settings['hvnly_top_search_fields']) ? $search_settings['hvnly_top_search_fields'] : [];
-        
+    public function hvnly_get_top_search_fields() {
+        $settings        = get_option('hvnly_plugin_settings', array());
+        $search_settings = isset($settings['search']) ? $settings['search'] : array();
+
+        $fields = isset($search_settings['hvnly_top_search_fields']) ? $search_settings['hvnly_top_search_fields'] : array();
+
         // If no fields, return defaults
         if (empty($fields)) {
             return $this->hvnly_get_default_top_search_fields();
         }
-        
+
         // Filter only enabled fields and sort by order
-        $enabled_fields = array_filter($fields, function($field) {
+        $enabled_fields = array_filter($fields, function ( $field ) {
             return isset($field['enabled']) && $field['enabled'] === true;
         });
-        
-        usort($enabled_fields, function($a, $b) {
-            return ($a['order'] ?? 999) - ($b['order'] ?? 999);
+
+        usort($enabled_fields, function ( $a, $b ) {
+            return ( $a['order'] ?? 999 ) - ( $b['order'] ?? 999 );
         });
-        
+
         return $enabled_fields;
     }
 
@@ -2108,14 +2041,37 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_get_default_top_search_fields()
-    {
-        return [
-            ['id' => 'bedrooms', 'title' => __('Bedrooms', 'havenlytics'), 'type' => 'number', 'enabled' => true, 'order' => 1],
-            ['id' => 'bathrooms', 'title' => __('Bathrooms', 'havenlytics'), 'type' => 'number', 'enabled' => true, 'order' => 2],
-            ['id' => 'min_price', 'title' => __('Min Price', 'havenlytics'), 'type' => 'range', 'enabled' => true, 'order' => 3],
-            ['id' => 'max_price', 'title' => __('Max Price', 'havenlytics'), 'type' => 'range', 'enabled' => true, 'order' => 4],
-        ];
+    public function hvnly_get_default_top_search_fields() {
+        return array(
+            array(
+				'id' => 'bedrooms',
+				'title' => __('Bedrooms', 'havenlytics'),
+				'type' => 'number',
+				'enabled' => true,
+				'order' => 1,
+			),
+            array(
+				'id' => 'bathrooms',
+				'title' => __('Bathrooms', 'havenlytics'),
+				'type' => 'number',
+				'enabled' => true,
+				'order' => 2,
+			),
+            array(
+				'id' => 'min_price',
+				'title' => __('Min Price', 'havenlytics'),
+				'type' => 'range',
+				'enabled' => true,
+				'order' => 3,
+			),
+            array(
+				'id' => 'max_price',
+				'title' => __('Max Price', 'havenlytics'),
+				'type' => 'range',
+				'enabled' => true,
+				'order' => 4,
+			),
+        );
     }
 
     /**
@@ -2125,16 +2081,15 @@ class Helpers
      * @param string $field_id
      * @return array|null
      */
-    public function hvnly_get_top_search_field_config($field_id)
-    {
+    public function hvnly_get_top_search_field_config( $field_id ) {
         $fields = $this->hvnly_get_top_search_fields();
-        
+
         foreach ($fields as $field) {
             if ($field['id'] === $field_id) {
-                return isset($field['config']) ? $field['config'] : [];
+                return isset($field['config']) ? $field['config'] : array();
             }
         }
-        
+
         return null;
     }
 
@@ -2144,15 +2099,14 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_top_search_get_bedroom_options()
-    {
+    public function hvnly_top_search_get_bedroom_options() {
         $config = $this->hvnly_get_top_search_field_config('bedrooms');
-        
-        if ($config && isset($config['options']) && !empty($config['options'])) {
+
+        if ($config && isset($config['options']) && ! empty($config['options'])) {
             return $config['options'];
         }
-        
-        return ['1', '2', '3', '4', '5'];
+
+        return array( '1', '2', '3', '4', '5' );
     }
 
     /**
@@ -2161,15 +2115,14 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_top_search_get_bathroom_options()
-    {
+    public function hvnly_top_search_get_bathroom_options() {
         $config = $this->hvnly_get_top_search_field_config('bathrooms');
-        
-        if ($config && isset($config['options']) && !empty($config['options'])) {
+
+        if ($config && isset($config['options']) && ! empty($config['options'])) {
             return $config['options'];
         }
-        
-        return ['1', '2', '3', '4', '5'];
+
+        return array( '1', '2', '3', '4', '5' );
     }
 
     /**
@@ -2178,23 +2131,22 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_top_search_get_min_price_options()
-    {
+    public function hvnly_top_search_get_min_price_options() {
         $config = $this->hvnly_get_top_search_field_config('min_price');
-        
-        if ($config && isset($config['options']) && !empty($config['options'])) {
-            $options = [];
+
+        if ($config && isset($config['options']) && ! empty($config['options'])) {
+            $options = array();
             foreach ($config['options'] as $value) {
-                if (!empty($value)) {
+                if ( ! empty($value)) {
                     // ALWAYS use numeric price formatting, NOT the custom label format
-                    $options[$value] = $this->format_numeric_price_for_filter($value);
+                    $options[ $value ] = $this->format_numeric_price_for_filter($value);
                 }
             }
             return $options;
         }
-        
+
         // Default fallback with numeric formatting
-        return [
+        return array(
             '50000' => $this->format_numeric_price_for_filter(50000),
             '75000' => $this->format_numeric_price_for_filter(75000),
             '100000' => $this->format_numeric_price_for_filter(100000),
@@ -2202,7 +2154,7 @@ class Helpers
             '300000' => $this->format_numeric_price_for_filter(300000),
             '400000' => $this->format_numeric_price_for_filter(400000),
             '500000' => $this->format_numeric_price_for_filter(500000),
-        ];
+        );
     }
 
     /**
@@ -2211,31 +2163,30 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_top_search_get_max_price_options()
-    {
+    public function hvnly_top_search_get_max_price_options() {
         $config = $this->hvnly_get_top_search_field_config('max_price');
-        
-        if ($config && isset($config['options']) && !empty($config['options'])) {
-            $options = [];
+
+        if ($config && isset($config['options']) && ! empty($config['options'])) {
+            $options = array();
             foreach ($config['options'] as $value) {
-                if (!empty($value)) {
-                    $is_plus = (strpos($value, '+') !== false);
-                    $clean_value = str_replace('+', '', $value);
-                    $options[$value] = $this->format_filter_price_option($clean_value, $is_plus);
+                if ( ! empty($value)) {
+                    $is_plus           = ( strpos($value, '+') !== false );
+                    $clean_value       = str_replace('+', '', $value);
+                    $options[ $value ] = $this->format_filter_price_option($clean_value, $is_plus);
                 }
             }
             return $options;
         }
-        
+
         // Default fallback with numeric formatting
-        return [
+        return array(
             '500000' => $this->format_numeric_price_for_filter(500000),
             '600000' => $this->format_numeric_price_for_filter(600000),
             '700000' => $this->format_numeric_price_for_filter(700000),
             '800000' => $this->format_numeric_price_for_filter(800000),
             '900000' => $this->format_numeric_price_for_filter(900000),
             '1000000' => $this->format_numeric_price_for_filter(1000000) . '+',
-        ];
+        );
     }
 
 
@@ -2248,25 +2199,24 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_get_main_search_fields()
-    {
-        $settings = get_option('hvnly_plugin_settings', []);
-        $search_settings = isset($settings['search']) ? $settings['search'] : [];
-        
-        $fields = isset($search_settings['hvnly_main_search_fields']) ? $search_settings['hvnly_main_search_fields'] : [];
-        
+    public function hvnly_get_main_search_fields() {
+        $settings        = get_option('hvnly_plugin_settings', array());
+        $search_settings = isset($settings['search']) ? $settings['search'] : array();
+
+        $fields = isset($search_settings['hvnly_main_search_fields']) ? $search_settings['hvnly_main_search_fields'] : array();
+
         if (empty($fields)) {
             return $this->hvnly_get_default_main_search_fields();
         }
-        
-        $enabled_fields = array_filter($fields, function($field) {
+
+        $enabled_fields = array_filter($fields, function ( $field ) {
             return isset($field['enabled']) && $field['enabled'] === true;
         });
-        
-        usort($enabled_fields, function($a, $b) {
-            return ($a['order'] ?? 999) - ($b['order'] ?? 999);
+
+        usort($enabled_fields, function ( $a, $b ) {
+            return ( $a['order'] ?? 999 ) - ( $b['order'] ?? 999 );
         });
-        
+
         return $enabled_fields;
     }
 
@@ -2276,13 +2226,30 @@ class Helpers
      * @since 2.1.0
      * @return array
      */
-    public function hvnly_get_default_main_search_fields()
-    {
-        return [
-            ['id' => 'keyword_search', 'title' => __('Keyword Search', 'havenlytics'), 'type' => 'text', 'enabled' => true, 'order' => 1],
-            ['id' => 'property_type', 'title' => __('Property Type', 'havenlytics'), 'type' => 'taxonomy', 'enabled' => true, 'order' => 2],
-            ['id' => 'location', 'title' => __('Location', 'havenlytics'), 'type' => 'taxonomy', 'enabled' => true, 'order' => 3],
-        ];
+    public function hvnly_get_default_main_search_fields() {
+        return array(
+            array(
+				'id' => 'keyword_search',
+				'title' => __('Keyword Search', 'havenlytics'),
+				'type' => 'text',
+				'enabled' => true,
+				'order' => 1,
+			),
+            array(
+				'id' => 'property_type',
+				'title' => __('Property Type', 'havenlytics'),
+				'type' => 'taxonomy',
+				'enabled' => true,
+				'order' => 2,
+			),
+            array(
+				'id' => 'location',
+				'title' => __('Location', 'havenlytics'),
+				'type' => 'taxonomy',
+				'enabled' => true,
+				'order' => 3,
+			),
+        );
     }
 
     /**
@@ -2292,12 +2259,11 @@ class Helpers
      * @param string $field_id
      * @return array|null
      */
-    public function hvnly_get_main_search_field_config($field_id)
-    {
+    public function hvnly_get_main_search_field_config( $field_id ) {
         $fields = $this->hvnly_get_main_search_fields();
         foreach ($fields as $field) {
             if ($field['id'] === $field_id) {
-                return isset($field['config']) ? $field['config'] : [];
+                return isset($field['config']) ? $field['config'] : array();
             }
         }
         return null;
@@ -2311,18 +2277,17 @@ class Helpers
      * @param string $default  Fallback label when no setting exists.
      * @return string
      */
-    public function hvnly_get_search_field_placeholder($field_id, $default = '')
-    {
+    public function hvnly_get_search_field_placeholder( $field_id, $default = '' ) {
         $field_id = (string) $field_id;
 
         $main_config = $this->hvnly_get_main_search_field_config($field_id);
-        if (is_array($main_config) && !empty($main_config['placeholder'])) {
+        if (is_array($main_config) && ! empty($main_config['placeholder'])) {
             $placeholder = (string) $main_config['placeholder'];
             return function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $placeholder ) : $placeholder;
         }
 
         $top_config = $this->hvnly_get_top_search_field_config($field_id);
-        if (is_array($top_config) && !empty($top_config['placeholder'])) {
+        if (is_array($top_config) && ! empty($top_config['placeholder'])) {
             $placeholder = (string) $top_config['placeholder'];
             return function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $placeholder ) : $placeholder;
         }
@@ -2333,14 +2298,14 @@ class Helpers
         }
 
         foreach ($this->hvnly_get_default_main_search_fields() as $field) {
-            if (($field['id'] ?? '') === $field_id && !empty($field['config']['placeholder'])) {
+            if (( $field['id'] ?? '' ) === $field_id && ! empty($field['config']['placeholder'])) {
                 $placeholder = (string) $field['config']['placeholder'];
                 return function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $placeholder ) : $placeholder;
             }
         }
 
         foreach ($this->hvnly_get_default_top_search_fields() as $field) {
-            if (($field['id'] ?? '') === $field_id && !empty($field['config']['placeholder'])) {
+            if (( $field['id'] ?? '' ) === $field_id && ! empty($field['config']['placeholder'])) {
                 $placeholder = (string) $field['config']['placeholder'];
                 return function_exists( 'hvnly_translate_ui' ) ? hvnly_translate_ui( $placeholder ) : $placeholder;
             }
@@ -2352,15 +2317,4 @@ class Helpers
 
         return __('Any', 'havenlytics');
     }
-
-
-
-
-
-
-
-
-
-
-
 }

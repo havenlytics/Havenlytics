@@ -89,7 +89,7 @@ final class RowValidator {
 		$warning_count = 0;
 
 		foreach ( array_values( $rows ) as $index => $row ) {
-			$result = self::validate( $row, $mapping, $start_row_number + $index );
+			$result    = self::validate( $row, $mapping, $start_row_number + $index );
 			$results[] = $result;
 			if ( $result['valid'] ) {
 				++$valid_count;

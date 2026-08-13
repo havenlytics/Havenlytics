@@ -33,7 +33,7 @@ use HvnlyNab\Workspace\WorkspaceConstants;
 use HvnlyNab\Workspace\WorkspaceSettings;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -49,7 +49,7 @@ final class DashboardBlockSupport {
      *
      * @var string[]
      */
-    private const VIEW_SLUGS = [
+    private const VIEW_SLUGS = array(
         'dashboard',
         'properties',
         'saved-properties',
@@ -58,7 +58,7 @@ final class DashboardBlockSupport {
         'analytics',
         'notifications',
         'settings',
-    ];
+    );
 
     /**
      * Whether the SPA is embedded off the canonical Workspace page this request.
@@ -93,15 +93,15 @@ final class DashboardBlockSupport {
         }
         $done = true;
 
-        add_action('wp_enqueue_scripts', [self::class, 'prepare'], 9);
-        add_filter('hvnly_workspace_localize_data', [self::class, 'filter_localize'], 20);
+        add_action('wp_enqueue_scripts', array( self::class, 'prepare' ), 9);
+        add_filter('hvnly_workspace_localize_data', array( self::class, 'filter_localize' ), 20);
 
         // Full-bleed parity with the real Workspace: serve the EXISTING canvas
         // template for a page hosting the Dashboard block. Priority 100 runs after
         // WorkspacePage's own canvas filter (99) and never overrides the real
         // Workspace page (guarded below), so the two pipelines never collide.
-        add_filter('template_include', [self::class, 'filter_template'], 100);
-        add_filter('body_class', [self::class, 'add_body_class']);
+        add_filter('template_include', array( self::class, 'filter_template' ), 100);
+        add_filter('body_class', array( self::class, 'add_body_class' ));
     }
 
     /**
@@ -116,13 +116,13 @@ final class DashboardBlockSupport {
      * @param string $template Resolved template path.
      * @return string
      */
-    public static function filter_template(string $template): string {
-        if (is_admin() || !is_singular()) {
+    public static function filter_template( string $template ): string {
+        if (is_admin() || ! is_singular()) {
             return $template;
         }
 
         $post = get_post();
-        if (!$post instanceof \WP_Post || !has_block(self::BLOCK_NAME, $post)) {
+        if ( ! $post instanceof \WP_Post || ! has_block(self::BLOCK_NAME, $post)) {
             return $template;
         }
 
@@ -131,11 +131,11 @@ final class DashboardBlockSupport {
             return $template;
         }
 
-        if (!self::read_full_screen($post)) {
+        if ( ! self::read_full_screen($post)) {
             return $template;
         }
 
-        if (!class_exists(WorkspaceBootstrap::class)) {
+        if ( ! class_exists(WorkspaceBootstrap::class)) {
             return $template;
         }
         $loader = WorkspaceBootstrap::get_instance()->get_templates();
@@ -160,7 +160,7 @@ final class DashboardBlockSupport {
      * @param string[] $classes Body classes.
      * @return string[]
      */
-    public static function add_body_class(array $classes): array {
+    public static function add_body_class( array $classes ): array {
         if (self::$full_screen) {
             $classes[] = 'hvnly-ws-page';
             $classes[] = 'hvnly-ws-page--block';
@@ -180,16 +180,16 @@ final class DashboardBlockSupport {
         }
 
         $post = get_post();
-        if (!$post instanceof \WP_Post) {
+        if ( ! $post instanceof \WP_Post) {
             return;
         }
-        if (!has_block(self::BLOCK_NAME, $post)) {
+        if ( ! has_block(self::BLOCK_NAME, $post)) {
             return;
         }
 
         // Logged-out visitors get the block's sign-in gate — the SPA never mounts,
         // so there is nothing to enqueue here.
-        if (!is_user_logged_in()) {
+        if ( ! is_user_logged_in()) {
             return;
         }
 
@@ -198,15 +198,15 @@ final class DashboardBlockSupport {
         add_filter('hvnly_workspace_should_enqueue', '__return_true');
 
         $available = class_exists(WorkspaceAvailability::class) && WorkspaceAvailability::is_available();
-        if (!$available) {
+        if ( ! $available) {
             return;
         }
 
         self::$default_section = self::read_default_section($post);
-        self::$embedding       = !self::is_workspace_page($post);
+        self::$embedding       = ! self::is_workspace_page($post);
 
         if (self::$embedding) {
-            add_action('hvnly_workspace_assets_enqueued', [self::class, 'add_embedded_routing_script']);
+            add_action('hvnly_workspace_assets_enqueued', array( self::class, 'add_embedded_routing_script' ));
         }
     }
 
@@ -220,26 +220,26 @@ final class DashboardBlockSupport {
      * @param array<string, mixed> $data Localized boot data.
      * @return array<string, mixed>
      */
-    public static function filter_localize(array $data): array {
-        if (!self::$embedding) {
+    public static function filter_localize( array $data ): array {
+        if ( ! self::$embedding) {
             return $data;
         }
 
-        if (!isset($data['routing']) || !is_array($data['routing'])) {
-            $data['routing'] = [];
+        if ( ! isset($data['routing']) || ! is_array($data['routing'])) {
+            $data['routing'] = array();
         }
         $data['routing']['clean'] = false;
 
-        $path = wp_parse_url(home_url(add_query_arg([])), PHP_URL_PATH);
+        $path = wp_parse_url(home_url(add_query_arg(array())), PHP_URL_PATH);
         if (is_string($path) && $path !== '') {
             $data['routing']['basePath'] = trailingslashit($path);
         }
 
         // Forward-facing config for future SPA support (never required today).
-        $data['dashboardBlock'] = [
+        $data['dashboardBlock'] = array(
             'embedded'       => true,
             'defaultSection' => self::$default_section,
-        ];
+        );
 
         return $data;
     }
@@ -263,10 +263,10 @@ final class DashboardBlockSupport {
      * @return void
      */
     public static function add_embedded_routing_script(): void {
-        if (!self::$embedding) {
+        if ( ! self::$embedding) {
             return;
         }
-        if (!wp_script_is(WorkspaceConstants::SCRIPT_HANDLE, 'enqueued')) {
+        if ( ! wp_script_is(WorkspaceConstants::SCRIPT_HANDLE, 'enqueued')) {
             return;
         }
 
@@ -298,8 +298,8 @@ JS;
      * @param \WP_Post $post Post being rendered.
      * @return string A valid view slug (defaults to 'dashboard').
      */
-    private static function read_default_section(\WP_Post $post): string {
-        if (!function_exists('parse_blocks')) {
+    private static function read_default_section( \WP_Post $post ): string {
+        if ( ! function_exists('parse_blocks')) {
             return 'dashboard';
         }
 
@@ -308,7 +308,7 @@ JS;
             return 'dashboard';
         }
 
-        $attrs   = isset($found['attrs']) && is_array($found['attrs']) ? $found['attrs'] : [];
+        $attrs   = isset($found['attrs']) && is_array($found['attrs']) ? $found['attrs'] : array();
         $section = isset($attrs['defaultSection']) ? (string) $attrs['defaultSection'] : 'dashboard';
 
         return in_array($section, self::VIEW_SLUGS, true) ? $section : 'dashboard';
@@ -320,8 +320,8 @@ JS;
      * @param \WP_Post $post Post being rendered.
      * @return bool
      */
-    private static function read_full_screen(\WP_Post $post): bool {
-        if (!function_exists('parse_blocks')) {
+    private static function read_full_screen( \WP_Post $post ): bool {
+        if ( ! function_exists('parse_blocks')) {
             return true;
         }
 
@@ -330,10 +330,10 @@ JS;
             return true;
         }
 
-        $attrs = isset($found['attrs']) && is_array($found['attrs']) ? $found['attrs'] : [];
+        $attrs = isset($found['attrs']) && is_array($found['attrs']) ? $found['attrs'] : array();
 
         // Absent attribute → block.json default (true).
-        return !array_key_exists('fullScreen', $attrs) || !empty($attrs['fullScreen']);
+        return ! array_key_exists('fullScreen', $attrs) || ! empty($attrs['fullScreen']);
     }
 
     /**
@@ -342,12 +342,12 @@ JS;
      * @param array<int, array<string, mixed>> $blocks Parsed blocks.
      * @return array<string, mixed>|null
      */
-    private static function find_block(array $blocks): ?array {
+    private static function find_block( array $blocks ): ?array {
         foreach ($blocks as $block) {
             if (isset($block['blockName']) && self::BLOCK_NAME === $block['blockName']) {
                 return $block;
             }
-            if (!empty($block['innerBlocks']) && is_array($block['innerBlocks'])) {
+            if ( ! empty($block['innerBlocks']) && is_array($block['innerBlocks'])) {
                 $nested = self::find_block($block['innerBlocks']);
                 if (null !== $nested) {
                     return $nested;
@@ -364,7 +364,7 @@ JS;
      * @param \WP_Post $post Post.
      * @return bool
      */
-    private static function is_workspace_page(\WP_Post $post): bool {
+    private static function is_workspace_page( \WP_Post $post ): bool {
         $page_id = absint(get_option(WorkspaceConstants::PAGE_ID_OPTION, 0));
         if ($page_id > 0 && (int) $post->ID === $page_id) {
             return true;

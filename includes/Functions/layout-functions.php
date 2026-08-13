@@ -7,7 +7,7 @@
  * @since       2.0.0
  */
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -59,7 +59,7 @@ function hvnly_get_breakpoints() {
  * @param string $context Layout context
  * @return bool
  */
-function hvnly_should_display_sidebar($context = 'single') {
+function hvnly_should_display_sidebar( $context = 'single' ) {
     return apply_filters('hvnly_should_display_sidebar', true, $context);
 }
 

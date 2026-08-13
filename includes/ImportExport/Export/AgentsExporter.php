@@ -54,11 +54,11 @@ final class AgentsExporter {
 				if ( '' === $val || false === $val || null === $val ) {
 					continue;
 				}
-				$short           = preg_replace( '/^_hvnly_agent_/', '', $key );
+				$short          = preg_replace( '/^_hvnly_agent_/', '', $key );
 				$meta[ $short ] = $val;
 			}
 
-			$linked_id = (int) get_post_meta( $post->ID, AgentConstants::META_LINKED_USER_ID, true );
+			$linked_id    = (int) get_post_meta( $post->ID, AgentConstants::META_LINKED_USER_ID, true );
 			$linked_email = '';
 			if ( $linked_id > 0 ) {
 				$user = get_userdata( $linked_id );

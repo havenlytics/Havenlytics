@@ -1,5 +1,5 @@
 <?php
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -257,9 +257,9 @@ function hvnly_resolve_field_meta( int $post_id, array $field, string $primary =
 function hvnly_get_search_bar_title() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $search_settings = $settings_manager->get_search_settings();
-        
-        if (isset($search_settings['hvnly_searchBarTitle']) && !empty($search_settings['hvnly_searchBarTitle'])) {
+        $search_settings  = $settings_manager->get_search_settings();
+
+        if (isset($search_settings['hvnly_searchBarTitle']) && ! empty($search_settings['hvnly_searchBarTitle'])) {
             return $search_settings['hvnly_searchBarTitle'];
         }
     }
@@ -275,8 +275,8 @@ function hvnly_get_search_bar_title() {
 function hvnly_is_top_search_title_hidden() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $search_settings = $settings_manager->get_search_settings();
-        
+        $search_settings  = $settings_manager->get_search_settings();
+
         if (isset($search_settings['hvnly_hideTopSearchTitle'])) {
             $is_hidden = $search_settings['hvnly_hideTopSearchTitle'];
             // Convert to boolean properly
@@ -292,9 +292,8 @@ function hvnly_is_top_search_title_hidden() {
  * @return bool
  * @since 2.0.3
  */
-function hvnly_is_ajax_load_more_enabled()
-{
-    if (!class_exists('HvnlyNab\Core\SettingsManager')) {
+function hvnly_is_ajax_load_more_enabled() {
+    if ( ! class_exists('HvnlyNab\Core\SettingsManager')) {
         return true;
     }
 
@@ -313,8 +312,7 @@ function hvnly_is_ajax_load_more_enabled()
  * @return bool
  * @since 2.0.3
  */
-function hvnly_is_breadcrumb_enabled()
-{
+function hvnly_is_breadcrumb_enabled() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->is_breadcrumb_enabled();
@@ -328,8 +326,7 @@ function hvnly_is_breadcrumb_enabled()
  * @return bool
  * @since 2.0.3
  */
-function hvnly_is_back_to_top_enabled()
-{
+function hvnly_is_back_to_top_enabled() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->is_back_to_top_enabled();
@@ -343,8 +340,7 @@ function hvnly_is_back_to_top_enabled()
  * @return bool
  * @since 2.0.3
  */
-function hvnly_is_print_button_enabled()
-{
+function hvnly_is_print_button_enabled() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->is_print_button_enabled();
@@ -357,8 +353,7 @@ function hvnly_is_print_button_enabled()
  * @return bool
  * @since 2.0.3
  */
-function hvnly_is_save_property_enabled()
-{
+function hvnly_is_save_property_enabled() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->is_save_property_enabled();
@@ -373,8 +368,7 @@ function hvnly_is_save_property_enabled()
  * @param mixed  $default Default value
  * @return mixed
  */
-function hvnly_get_design_setting($key, $default = null)
-{
+function hvnly_get_design_setting( $key, $default = null ) {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->get_design_setting($key, $default);
@@ -387,13 +381,12 @@ function hvnly_get_design_setting($key, $default = null)
  *
  * @return array
  */
-function hvnly_get_design_settings()
-{
+function hvnly_get_design_settings() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->get_design_settings();
     }
-    return [];
+    return array();
 }
 
 /**
@@ -401,8 +394,7 @@ function hvnly_get_design_settings()
  *
  * @return string
  */
-function hvnly_get_brand_color()
-{
+function hvnly_get_brand_color() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->get_brand_color();
@@ -415,8 +407,7 @@ function hvnly_get_brand_color()
  *
  * @return string
  */
-function hvnly_get_default_badge_color()
-{
+function hvnly_get_default_badge_color() {
     return hvnly_get_brand_color();
 }
 
@@ -505,15 +496,14 @@ function hvnly_get_term_advanced_image_url( $term_id, $size = 'thumbnail' ) {
  *
  * @return bool
  */
-function hvnly_marker_color_is_custom()
-{
+function hvnly_marker_color_is_custom() {
     static $is_custom = null;
 
     if ($is_custom !== null) {
         return $is_custom;
     }
 
-    if (!class_exists('HvnlyNab\Core\SettingsManager')) {
+    if ( ! class_exists('HvnlyNab\Core\SettingsManager')) {
         $is_custom = false;
         return false;
     }
@@ -521,9 +511,9 @@ function hvnly_marker_color_is_custom()
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
     $map_settings     = $settings_manager->get_map_settings();
     $brand            = hvnly_get_brand_color();
-    $marker           = isset($map_settings['hvnly_marker_color']) ? trim((string) $map_settings['hvnly_marker_color']) : '';
+    $marker           = isset($map_settings['hvnly_marker_color']) ? trim( (string) $map_settings['hvnly_marker_color']) : '';
 
-    if ($marker === '' || !preg_match('/^#[a-f0-9]{6}$/i', $marker)) {
+    if ($marker === '' || ! preg_match('/^#[a-f0-9]{6}$/i', $marker)) {
         $is_custom = false;
         return false;
     }
@@ -548,9 +538,8 @@ function hvnly_marker_color_is_custom()
  *
  * @return string
  */
-function hvnly_get_marker_color_css()
-{
-    if (!hvnly_marker_color_is_custom()) {
+function hvnly_get_marker_color_css() {
+    if ( ! hvnly_marker_color_is_custom()) {
         return 'var(--hvnly-primary-color)';
     }
 
@@ -562,8 +551,7 @@ function hvnly_get_marker_color_css()
  *
  * @return string
  */
-function hvnly_get_secondary_color()
-{
+function hvnly_get_secondary_color() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->get_secondary_color();
@@ -576,8 +564,7 @@ function hvnly_get_secondary_color()
  *
  * @return string
  */
-function hvnly_get_link_color()
-{
+function hvnly_get_link_color() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->get_link_color();
@@ -590,8 +577,7 @@ function hvnly_get_link_color()
  *
  * @return string
  */
-function hvnly_get_title_color()
-{
+function hvnly_get_title_color() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->get_title_color();
@@ -604,8 +590,7 @@ function hvnly_get_title_color()
  *
  * @return int
  */
-function hvnly_get_body_font_size()
-{
+function hvnly_get_body_font_size() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->get_body_font_size();
@@ -618,8 +603,7 @@ function hvnly_get_body_font_size()
  *
  * @return string
  */
-function hvnly_get_body_color()
-{
+function hvnly_get_body_color() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
         return $settings_manager->get_body_color();
@@ -632,10 +616,9 @@ function hvnly_get_body_color()
  *
  * @return array
  */
-if (!function_exists('hvnly_get_cached_sidebar_filters')) {
-    function hvnly_get_cached_sidebar_filters()
-    {
-        if (!class_exists('HvnlyNab\Frontend\ViewModels\SidebarSearchFilters')) {
+if ( ! function_exists('hvnly_get_cached_sidebar_filters')) {
+    function hvnly_get_cached_sidebar_filters() {
+        if ( ! class_exists('HvnlyNab\Frontend\ViewModels\SidebarSearchFilters')) {
             // Fallback to direct query if ViewModel not available
             return hvnly_get_current_filters();
         }
@@ -650,10 +633,9 @@ if (!function_exists('hvnly_get_cached_sidebar_filters')) {
  *
  * @return void
  */
-if (!function_exists('hvnly_clear_sidebar_cache')) {
-    function hvnly_clear_sidebar_cache()
-    {
-        if (!class_exists('HvnlyNab\Frontend\ViewModels\SidebarSearchFilters')) {
+if ( ! function_exists('hvnly_clear_sidebar_cache')) {
+    function hvnly_clear_sidebar_cache() {
+        if ( ! class_exists('HvnlyNab\Frontend\ViewModels\SidebarSearchFilters')) {
             return;
         }
 
@@ -675,15 +657,14 @@ if (!function_exists('hvnly_clear_sidebar_cache')) {
  * @param array  $args     Get terms arguments
  * @return array
  */
-if (!function_exists('hvnly_get_cached_terms')) {
-    function hvnly_get_cached_terms($taxonomy, $args = [])
-    {
-        if (!class_exists('HvnlyNab\Frontend\ViewModels\SearchFilters')) {
+if ( ! function_exists('hvnly_get_cached_terms')) {
+    function hvnly_get_cached_terms( $taxonomy, $args = array() ) {
+        if ( ! class_exists('HvnlyNab\Frontend\ViewModels\SearchFilters')) {
             // Fallback to direct query if ViewModel not available
-            return get_terms(wp_parse_args($args, [
+            return get_terms(wp_parse_args($args, array(
                 'taxonomy' => $taxonomy,
                 'hide_empty' => true,
-            ]));
+            )));
         }
 
         $search_filters = new HvnlyNab\Frontend\ViewModels\SearchFilters();
@@ -696,9 +677,8 @@ if (!function_exists('hvnly_get_cached_terms')) {
  *
  * @return bool
  */
-if (!function_exists('hvnly_is_cache_enabled')) {
-    function hvnly_is_cache_enabled()
-    {
+if ( ! function_exists('hvnly_is_cache_enabled')) {
+    function hvnly_is_cache_enabled() {
         return (bool) get_option('hvnly_cache_enabled', 0);
     }
 }
@@ -709,17 +689,16 @@ if (!function_exists('hvnly_is_cache_enabled')) {
  * @param bool $enabled Whether cache is enabled.
  * @return bool Normalized enabled state.
  */
-if (!function_exists('hvnly_sync_cache_enabled_setting')) {
-    function hvnly_sync_cache_enabled_setting($enabled)
-    {
+if ( ! function_exists('hvnly_sync_cache_enabled_setting')) {
+    function hvnly_sync_cache_enabled_setting( $enabled ) {
         $enabled = ! empty($enabled);
         update_option('hvnly_cache_enabled', $enabled ? 1 : 0, false);
 
         $all_settings = get_option('hvnly_plugin_settings', array());
-        if (! is_array($all_settings)) {
+        if ( ! is_array($all_settings)) {
             $all_settings = array();
         }
-        if (! isset($all_settings['performance']) || ! is_array($all_settings['performance'])) {
+        if ( ! isset($all_settings['performance']) || ! is_array($all_settings['performance'])) {
             $all_settings['performance'] = array();
         }
         $all_settings['performance']['hvnly_cache_enabled'] = $enabled;
@@ -901,9 +880,8 @@ add_action(
  *
  * @return void
  */
-function hvnly_clear_all_cache()
-{
-    if (!class_exists('HvnlyNab\Frontend\ViewModels\SearchFilters')) {
+function hvnly_clear_all_cache() {
+    if ( ! class_exists('HvnlyNab\Frontend\ViewModels\SearchFilters')) {
         return;
     }
 
@@ -918,9 +896,8 @@ function hvnly_clear_all_cache()
  *
  * @return bool
  */
-if (!function_exists('hvnly_transients_available')) {
-    function hvnly_transients_available()
-    {
+if ( ! function_exists('hvnly_transients_available')) {
+    function hvnly_transients_available() {
         return HVNLY_NAB()->transients_available();
     }
 }
@@ -931,9 +908,8 @@ if (!function_exists('hvnly_transients_available')) {
  * @since 2.0.0
  * @return array
  */
-if (!function_exists('hvnly_get_cache_stats')) {
-    function hvnly_get_cache_stats()
-    {
+if ( ! function_exists('hvnly_get_cache_stats')) {
+    function hvnly_get_cache_stats() {
         return HVNLY_NAB()->get_cache_stats();
     }
 }
@@ -943,18 +919,16 @@ if (!function_exists('hvnly_get_cache_stats')) {
  * @since 2.0.0
  * @return void
  */
-if (!function_exists('hvnly_clear_cache')) {
-    function hvnly_clear_cache()
-    {
+if ( ! function_exists('hvnly_clear_cache')) {
+    function hvnly_clear_cache() {
         HVNLY_NAB()->clear_cache();
     }
 }
 /**
  * Check if it's a property archive
  */
-if (!function_exists('hvnly_is_property_archive')) {
-    function hvnly_is_property_archive()
-    {
+if ( ! function_exists('hvnly_is_property_archive')) {
+    function hvnly_is_property_archive() {
         $post_type = 'hvnly_property';
 
         // Get the queried object
@@ -967,8 +941,8 @@ if (!function_exists('hvnly_is_property_archive')) {
 
         // Check if it's a taxonomy archive (dynamically)
         if (is_tax() && isset($queried_object->taxonomy)) {
-            $taxonomy = get_taxonomy($queried_object->taxonomy);
-            $allowed_taxonomies = ['hvnly_prop_types', 'hvnly_prop_depts', 'hvnly_prop_locations'];
+            $taxonomy           = get_taxonomy($queried_object->taxonomy);
+            $allowed_taxonomies = array( 'hvnly_prop_types', 'hvnly_prop_depts', 'hvnly_prop_locations' );
 
             // Allow for translated taxonomy slugs
             if (in_array($taxonomy->name, $allowed_taxonomies, true)) {
@@ -988,14 +962,13 @@ if (!function_exists('hvnly_is_property_archive')) {
 /**
  * Check if it's an author property archive
  */
-if (!function_exists('hvnly_is_author_property_archive')) {
-    function hvnly_is_author_property_archive()
-    {
+if ( ! function_exists('hvnly_is_author_property_archive')) {
+    function hvnly_is_author_property_archive() {
         $is_properties = isset( $_GET['properties'] )
             ? sanitize_text_field( wp_unslash( $_GET['properties'] ) )
             : '';
 
-        if (is_author() && (($is_properties === 'yes') || (get_post_type() === 'hvnly_property'))) {
+        if (is_author() && ( ( $is_properties === 'yes' ) || ( get_post_type() === 'hvnly_property' ) )) {
             return true;
         }
         return false;
@@ -1005,9 +978,8 @@ if (!function_exists('hvnly_is_author_property_archive')) {
 /**
  * Get common property meta
  */
-if (!function_exists('hvnly_get_common_property_meta')) {
-    function hvnly_get_common_property_meta($post_id, $metakey, $single = true)
-    {
+if ( ! function_exists('hvnly_get_common_property_meta')) {
+    function hvnly_get_common_property_meta( $post_id, $metakey, $single = true ) {
         return get_post_meta($post_id, $metakey, $single);
     }
 }
@@ -1015,16 +987,15 @@ if (!function_exists('hvnly_get_common_property_meta')) {
 /**
  * Get property type info
  */
-if (!function_exists('hvnly_get_property_type_info')) {
-    function hvnly_get_property_type_info($post_id, $entity)
-    {
-        $property_type = get_post_meta($post_id, 'hvnly_property_type', true);
-        $property_type_name = get_term((int) $property_type)->name;
+if ( ! function_exists('hvnly_get_property_type_info')) {
+    function hvnly_get_property_type_info( $post_id, $entity ) {
+        $property_type      = get_post_meta($post_id, 'hvnly_property_type', true);
+        $property_type_name = get_term( (int) $property_type)->name;
 
         if ($entity === 'name') {
             return $property_type_name;
         } else {
-            $property_type_icon = get_term_meta((int) $property_type, 'hvnly_term_icon', true);
+            $property_type_icon = get_term_meta( (int) $property_type, 'hvnly_term_icon', true);
             return $property_type_icon;
         }
     }
@@ -1033,9 +1004,8 @@ if (!function_exists('hvnly_get_property_type_info')) {
 /**
  * Render repeated taxonomy terms
  */
-if (!function_exists('hvnly_render_repeated_tax')) {
-    function hvnly_render_repeated_tax($post_id, $tax = 'hvnly_prop_locations', $display_item = 2)
-    {
+if ( ! function_exists('hvnly_render_repeated_tax')) {
+    function hvnly_render_repeated_tax( $post_id, $tax = 'hvnly_prop_locations', $display_item = 2 ) {
         $terms = get_the_terms($post_id, $tax) ? get_the_terms($post_id, $tax) : array();
         return array_slice($terms, 0, $display_item);
     }
@@ -1044,9 +1014,8 @@ if (!function_exists('hvnly_render_repeated_tax')) {
 /**
  * Get property feature image
  */
-if (!function_exists('hvnly_get_property_feature')) {
-    function hvnly_get_property_feature($post_id)
-    {
+if ( ! function_exists('hvnly_get_property_feature')) {
+    function hvnly_get_property_feature( $post_id ) {
         $feature_image = get_the_post_thumbnail_url($post_id);
         if ($feature_image) {
             return $feature_image;
@@ -1057,9 +1026,8 @@ if (!function_exists('hvnly_get_property_feature')) {
 /**
  * Get terms with arguments
  */
-if (!function_exists('hvnly_get_terms')) {
-    function hvnly_get_terms($taxonomy, $args = array())
-    {
+if ( ! function_exists('hvnly_get_terms')) {
+    function hvnly_get_terms( $taxonomy, $args = array() ) {
         return get_terms(
             array_merge(
                 array(
@@ -1075,16 +1043,15 @@ if (!function_exists('hvnly_get_terms')) {
 /**
  * Property type navigation URL
  */
-if (!function_exists('hvnly_property_type_nav_url')) {
-    function hvnly_property_type_nav_url($type = 'all', $base_url = null)
-    {
+if ( ! function_exists('hvnly_property_type_nav_url')) {
+    function hvnly_property_type_nav_url( $type = 'all', $base_url = null ) {
         if (empty($base_url)) {
-            $base_url = remove_query_arg(array('page', 'paged'));
+            $base_url = remove_query_arg(array( 'page', 'paged' ));
             $base_url = preg_replace('~/page/(\d+)/?~', '', $base_url);
             $base_url = preg_replace('~/paged/(\d+)/?~', '', $base_url);
         }
 
-        $url = add_query_arg(array('property_type' => $type), $base_url);
+        $url = add_query_arg(array( 'property_type' => $type ), $base_url);
 
         return $url;
     }
@@ -1095,9 +1062,8 @@ if (!function_exists('hvnly_property_type_nav_url')) {
 /**
  * Get search page URL
  */
-if (!function_exists('hvnly_get_search_page_url')) {
-    function hvnly_get_search_page_url()
-    {
+if ( ! function_exists('hvnly_get_search_page_url')) {
+    function hvnly_get_search_page_url() {
         return get_post_type_archive_link('hvnly_property');
     }
 }
@@ -1109,9 +1075,8 @@ if (!function_exists('hvnly_get_search_page_url')) {
 /**
  * Get property author URL
  */
-if (!function_exists('hvnly_property_author_url')) {
-    function hvnly_property_author_url($author_id, $post_type = 'hvnly_property')
-    {
+if ( ! function_exists('hvnly_property_author_url')) {
+    function hvnly_property_author_url( $author_id, $post_type = 'hvnly_property' ) {
         // You can customize this based on your URL structure
         return get_author_posts_url($author_id);
     }
@@ -1122,9 +1087,8 @@ if (!function_exists('hvnly_property_author_url')) {
 /**
  * Get AJAX URL
  */
-if (!function_exists('hvnly_get_ajax_url')) {
-    function hvnly_get_ajax_url()
-    {
+if ( ! function_exists('hvnly_get_ajax_url')) {
+    function hvnly_get_ajax_url() {
         return admin_url('admin-ajax.php');
     }
 }
@@ -1136,28 +1100,28 @@ if (!function_exists('hvnly_get_ajax_url')) {
  * @return bool
  * @since 2.0.3
  */
-if (!function_exists('hvnly_should_show_top_search_bar')) {
+if ( ! function_exists('hvnly_should_show_top_search_bar')) {
     function hvnly_should_show_top_search_bar() {
         // Only check on property archive
-        if (!is_post_type_archive('hvnly_property') && !function_exists('hvnly_page_has_property_shortcode')) {
+        if ( ! is_post_type_archive('hvnly_property') && ! function_exists('hvnly_page_has_property_shortcode')) {
             return true;
         }
-        
-        if (function_exists('hvnly_page_has_property_shortcode') && !is_post_type_archive('hvnly_property') && !hvnly_page_has_property_shortcode()) {
+
+        if (function_exists('hvnly_page_has_property_shortcode') && ! is_post_type_archive('hvnly_property') && ! hvnly_page_has_property_shortcode()) {
             return true;
         }
-        
+
         if (class_exists('HvnlyNab\Core\SettingsManager')) {
             $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-            $search_settings = $settings_manager->get_search_settings();
-            
+            $search_settings  = $settings_manager->get_search_settings();
+
             if (isset($search_settings['hvnly_hideTopSearchBar'])) {
                 $is_hidden = $search_settings['hvnly_hideTopSearchBar'];
                 $is_hidden = filter_var($is_hidden, FILTER_VALIDATE_BOOLEAN);
-                return !$is_hidden;
+                return ! $is_hidden;
             }
         }
-        
+
         return true;
     }
 }
@@ -1169,23 +1133,23 @@ if (!function_exists('hvnly_should_show_top_search_bar')) {
  */
 function hvnly_should_show_filter_sidebar() {
     // Only check on property archive
-    if (!is_post_type_archive('hvnly_property') && !hvnly_page_has_property_shortcode()) {
+    if ( ! is_post_type_archive('hvnly_property') && ! hvnly_page_has_property_shortcode()) {
         return true;
     }
-    
+
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $search_settings = $settings_manager->get_search_settings();
-        
+        $search_settings  = $settings_manager->get_search_settings();
+
         // Check if hide left search bar is enabled (true means hide, so we return false)
         if (isset($search_settings['hvnly_hideLeftSearchBar'])) {
             $is_hidden = $search_settings['hvnly_hideLeftSearchBar'];
             // Convert to boolean properly
             $is_hidden = filter_var($is_hidden, FILTER_VALIDATE_BOOLEAN);
-            return !$is_hidden;
+            return ! $is_hidden;
         }
     }
-    
+
     return true;
 }
 
@@ -1198,9 +1162,9 @@ function hvnly_should_show_filter_sidebar() {
 function hvnly_get_search_button_text() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $search_settings = $settings_manager->get_search_settings();
-        
-        if (isset($search_settings['hvnly_searchButtonText']) && !empty($search_settings['hvnly_searchButtonText'])) {
+        $search_settings  = $settings_manager->get_search_settings();
+
+        if (isset($search_settings['hvnly_searchButtonText']) && ! empty($search_settings['hvnly_searchButtonText'])) {
             return $search_settings['hvnly_searchButtonText'];
         }
     }
@@ -1217,13 +1181,13 @@ function hvnly_get_search_button_text() {
 function hvnly_get_search_filter_fields() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $search_settings = $settings_manager->get_search_settings();
-        
+        $search_settings  = $settings_manager->get_search_settings();
+
         // Check both possible keys
-        if (isset($search_settings['hvnly_search_fields']) && !empty($search_settings['hvnly_search_fields'])) {
+        if (isset($search_settings['hvnly_search_fields']) && ! empty($search_settings['hvnly_search_fields'])) {
             return $search_settings['hvnly_search_fields'];
         }
-        if (isset($search_settings['search_fields']) && !empty($search_settings['search_fields'])) {
+        if (isset($search_settings['search_fields']) && ! empty($search_settings['search_fields'])) {
             return $search_settings['search_fields'];
         }
     }
@@ -1237,18 +1201,88 @@ function hvnly_get_search_filter_fields() {
  * @since 2.0.3
  */
 function hvnly_get_default_search_filter_fields() {
-    return [
-        ['id' => 'price', 'title' => __('Price', 'havenlytics'), 'type' => 'range', 'enabled' => true, 'order' => 1, 'is_default' => true],
-        ['id' => 'status', 'title' => __('Status', 'havenlytics'), 'type' => 'dropdown', 'enabled' => true, 'order' => 2, 'is_default' => true],
-        ['id' => 'bedrooms_bathrooms', 'title' => __('Bedrooms & Bathrooms', 'havenlytics'), 'type' => 'group', 'enabled' => true, 'order' => 3, 'is_default' => true],
-        ['id' => 'reception_rooms', 'title' => __('Reception Rooms', 'havenlytics'), 'type' => 'number', 'enabled' => true, 'order' => 4, 'is_default' => true],
-        ['id' => 'property_types', 'title' => __('Property Types', 'havenlytics'), 'type' => 'checkbox', 'enabled' => true, 'order' => 5, 'is_default' => true],
-        ['id' => 'locations', 'title' => __('Locations', 'havenlytics'), 'type' => 'dropdown', 'enabled' => true, 'order' => 6, 'is_default' => true],
-        ['id' => 'features', 'title' => __('Features', 'havenlytics'), 'type' => 'checkbox', 'enabled' => true, 'order' => 7, 'is_default' => true],
-        ['id' => 'tags', 'title' => __('Tags', 'havenlytics'), 'type' => 'dropdown', 'enabled' => true, 'order' => 8, 'is_default' => true],
-        ['id' => 'badges', 'title' => __('Badges', 'havenlytics'), 'type' => 'checkbox', 'enabled' => true, 'order' => 9, 'is_default' => true],
-        ['id' => 'property_id', 'title' => __('Property ID', 'havenlytics'), 'type' => 'text', 'enabled' => true, 'order' => 10, 'is_default' => true]
-    ];
+    return array(
+        array(
+			'id' => 'price',
+			'title' => __('Price', 'havenlytics'),
+			'type' => 'range',
+			'enabled' => true,
+			'order' => 1,
+			'is_default' => true,
+		),
+        array(
+			'id' => 'status',
+			'title' => __('Status', 'havenlytics'),
+			'type' => 'dropdown',
+			'enabled' => true,
+			'order' => 2,
+			'is_default' => true,
+		),
+        array(
+			'id' => 'bedrooms_bathrooms',
+			'title' => __('Bedrooms & Bathrooms', 'havenlytics'),
+			'type' => 'group',
+			'enabled' => true,
+			'order' => 3,
+			'is_default' => true,
+		),
+        array(
+			'id' => 'reception_rooms',
+			'title' => __('Reception Rooms', 'havenlytics'),
+			'type' => 'number',
+			'enabled' => true,
+			'order' => 4,
+			'is_default' => true,
+		),
+        array(
+			'id' => 'property_types',
+			'title' => __('Property Types', 'havenlytics'),
+			'type' => 'checkbox',
+			'enabled' => true,
+			'order' => 5,
+			'is_default' => true,
+		),
+        array(
+			'id' => 'locations',
+			'title' => __('Locations', 'havenlytics'),
+			'type' => 'dropdown',
+			'enabled' => true,
+			'order' => 6,
+			'is_default' => true,
+		),
+        array(
+			'id' => 'features',
+			'title' => __('Features', 'havenlytics'),
+			'type' => 'checkbox',
+			'enabled' => true,
+			'order' => 7,
+			'is_default' => true,
+		),
+        array(
+			'id' => 'tags',
+			'title' => __('Tags', 'havenlytics'),
+			'type' => 'dropdown',
+			'enabled' => true,
+			'order' => 8,
+			'is_default' => true,
+		),
+        array(
+			'id' => 'badges',
+			'title' => __('Badges', 'havenlytics'),
+			'type' => 'checkbox',
+			'enabled' => true,
+			'order' => 9,
+			'is_default' => true,
+		),
+        array(
+			'id' => 'property_id',
+			'title' => __('Property ID', 'havenlytics'),
+			'type' => 'text',
+			'enabled' => true,
+			'order' => 10,
+			'is_default' => true,
+		),
+    );
 }
 
 /**
@@ -1259,10 +1293,10 @@ function hvnly_get_default_search_filter_fields() {
  */
 function hvnly_get_unique_property_ids() {
     global $wpdb;
-    
-    $cache_key = 'hvnly_unique_property_ids';
+
+    $cache_key    = 'hvnly_unique_property_ids';
     $property_ids = get_transient($cache_key);
-    
+
     if (false === $property_ids) {
         $property_ids = $wpdb->get_col(
             "SELECT DISTINCT pm.meta_value 
@@ -1275,10 +1309,10 @@ function hvnly_get_unique_property_ids() {
              AND pm.meta_value != ''
              ORDER BY CAST(pm.meta_value AS UNSIGNED)"
         );
-        
+
         set_transient($cache_key, $property_ids, 12 * HOUR_IN_SECONDS);
     }
-    
+
     return $property_ids;
 }
 
@@ -1291,9 +1325,9 @@ function hvnly_get_unique_property_ids() {
 function hvnly_get_default_sort_option() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $search_settings = $settings_manager->get_search_settings();
-        
-        if (isset($search_settings['hvnly_propertySortByType']) && !empty($search_settings['hvnly_propertySortByType'])) {
+        $search_settings  = $settings_manager->get_search_settings();
+
+        if (isset($search_settings['hvnly_propertySortByType']) && ! empty($search_settings['hvnly_propertySortByType'])) {
             return $search_settings['hvnly_propertySortByType'];
         }
     }
@@ -1321,14 +1355,20 @@ function hvnly_get_default_view_option() {
 
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $search_settings = $settings_manager->get_search_settings();
-        
-        if (isset($search_settings['hvnly_propertyViewType']) && !empty($search_settings['hvnly_propertyViewType'])) {
+        $search_settings  = $settings_manager->get_search_settings();
+
+        if (isset($search_settings['hvnly_propertyViewType']) && ! empty($search_settings['hvnly_propertyViewType'])) {
             $view = strtolower($search_settings['hvnly_propertyViewType']);
             // Map the values to match frontend
-            if ($view === 'grid') return 'grid';
-            if ($view === 'list') return 'list';
-            if ($view === 'map') return 'map';
+            if ($view === 'grid') {
+				return 'grid';
+            }
+            if ($view === 'list') {
+				return 'list';
+            }
+            if ($view === 'map') {
+				return 'map';
+            }
             return 'grid';
         }
     }
@@ -1344,9 +1384,9 @@ function hvnly_get_default_view_option() {
 function hvnly_get_ajax_load_more_button_text() {
     if (class_exists('HvnlyNab\Core\SettingsManager')) {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $search_settings = $settings_manager->get_search_settings();
-        
-        if (isset($search_settings['hvnly_AjaxLoadMoreButtonText']) && !empty($search_settings['hvnly_AjaxLoadMoreButtonText'])) {
+        $search_settings  = $settings_manager->get_search_settings();
+
+        if (isset($search_settings['hvnly_AjaxLoadMoreButtonText']) && ! empty($search_settings['hvnly_AjaxLoadMoreButtonText'])) {
             return $search_settings['hvnly_AjaxLoadMoreButtonText'];
         }
     }
@@ -1390,13 +1430,13 @@ function hvnly_get_search_sidebar_layout_class() {
  * @param WP_Query $query The WordPress query object.
  * @return void
  */
-function hvnly_modify_property_archive_posts_per_page($query) {
-    if (!is_admin() && $query->is_main_query() && function_exists('hvnly_is_property_archive')) {
+function hvnly_modify_property_archive_posts_per_page( $query ) {
+    if ( ! is_admin() && $query->is_main_query() && function_exists('hvnly_is_property_archive')) {
         if (hvnly_is_property_archive()) {
-            $properties_per_page = function_exists('hvnly_get_properties_per_page') 
-                ? hvnly_get_properties_per_page() 
+            $properties_per_page = function_exists('hvnly_get_properties_per_page')
+                ? hvnly_get_properties_per_page()
                 : 12;
-            
+
             $query->set('posts_per_page', $properties_per_page);
         }
     }
@@ -1407,32 +1447,32 @@ add_action('pre_get_posts', 'hvnly_modify_property_archive_posts_per_page', 20);
 
 /**
  * Check if page has property shortcode (fallback for Elementor)
- * 
+ *
  * @since 2.2.1
  * @return bool
  */
-if (!function_exists('hvnly_page_has_property_shortcode')) {
+if ( ! function_exists('hvnly_page_has_property_shortcode')) {
     function hvnly_page_has_property_shortcode() {
         global $post;
-        
-        if (!$post || !isset($post->post_content)) {
+
+        if ( ! $post || ! isset($post->post_content)) {
             return false;
         }
-        
-        $property_shortcodes = [
+
+        $property_shortcodes = array(
             'hvnly_property_grid',
-            'hvnly_property_list', 
+            'hvnly_property_list',
             'hvnly_property_search',
             'hvnly_featured_properties',
-            'hvnly_properties'
-        ];
-        
+            'hvnly_properties',
+        );
+
         foreach ($property_shortcodes as $shortcode) {
             if (has_shortcode($post->post_content, $shortcode)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 }
@@ -1448,9 +1488,9 @@ if (!function_exists('hvnly_page_has_property_shortcode')) {
  * @param int|null $property_id Property id. Defaults to the current post.
  * @return bool
  */
-if (!function_exists('hvnly_is_property_favorited')) {
-    function hvnly_is_property_favorited($property_id = null) {
-        if (!is_user_logged_in()) {
+if ( ! function_exists('hvnly_is_property_favorited')) {
+    function hvnly_is_property_favorited( $property_id = null ) {
+        if ( ! is_user_logged_in()) {
             return false;
         }
 
@@ -1459,8 +1499,8 @@ if (!function_exists('hvnly_is_property_favorited')) {
             return false;
         }
 
-        if (!class_exists('\HvnlyNab\Favorites\FavoritesSchema')
-            || !\HvnlyNab\Favorites\FavoritesSchema::table_exists()) {
+        if ( ! class_exists('\HvnlyNab\Favorites\FavoritesSchema')
+            || ! \HvnlyNab\Favorites\FavoritesSchema::table_exists()) {
             return false;
         }
 
@@ -1480,7 +1520,7 @@ if (!function_exists('hvnly_is_property_favorited')) {
  *
  * @return bool
  */
-if (!function_exists('hvnly_is_favorites_enabled')) {
+if ( ! function_exists('hvnly_is_favorites_enabled')) {
     function hvnly_is_favorites_enabled() {
         $enabled = class_exists('\HvnlyNab\Favorites\FavoritesSchema');
 
@@ -1507,12 +1547,15 @@ if (!function_exists('hvnly_is_favorites_enabled')) {
  * @param int|null $property_id Property id. Defaults to the current post.
  * @return array{title:string,thumb:string}
  */
-if (!function_exists('hvnly_get_favorite_toast_data')) {
-    function hvnly_get_favorite_toast_data($property_id = null) {
+if ( ! function_exists('hvnly_get_favorite_toast_data')) {
+    function hvnly_get_favorite_toast_data( $property_id = null ) {
         $property_id = $property_id ? absint($property_id) : (int) get_the_ID();
 
         if ($property_id <= 0) {
-            return array('title' => '', 'thumb' => '');
+            return array(
+				'title' => '',
+				'thumb' => '',
+			);
         }
 
         $thumb = get_the_post_thumbnail_url($property_id, 'thumbnail');

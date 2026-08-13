@@ -32,17 +32,17 @@ $hvnly_height = isset( $hvnly_config['height'] ) ? max( 240, absint( $hvnly_conf
 	<div class="hvnly-block-map__canvas" id="<?php echo esc_attr( $hvnly_uid ); ?>"></div>
 
 	<div class="hvnly-block-map__toolbar">
-		<button type="button" class="hvnly-block-map__btn" data-hvnly-block-map-action="zoom-in" aria-label="<?php esc_attr_e( 'Zoom in', 'havenlytics' ); ?>">
+		<button type="button" class="hvnly-ui-control hvnly-block-map__btn" data-hvnly-block-map-action="zoom-in" aria-label="<?php esc_attr_e( 'Zoom in', 'havenlytics' ); ?>">
 			<i class="fas fa-plus" aria-hidden="true"></i>
 		</button>
-		<button type="button" class="hvnly-block-map__btn" data-hvnly-block-map-action="zoom-out" aria-label="<?php esc_attr_e( 'Zoom out', 'havenlytics' ); ?>">
+		<button type="button" class="hvnly-ui-control hvnly-block-map__btn" data-hvnly-block-map-action="zoom-out" aria-label="<?php esc_attr_e( 'Zoom out', 'havenlytics' ); ?>">
 			<i class="fas fa-minus" aria-hidden="true"></i>
 		</button>
-		<button type="button" class="hvnly-block-map__btn" data-hvnly-block-map-action="fit" aria-label="<?php esc_attr_e( 'Fit all properties', 'havenlytics' ); ?>">
+		<button type="button" class="hvnly-ui-control hvnly-block-map__btn" data-hvnly-block-map-action="fit" aria-label="<?php esc_attr_e( 'Fit all properties', 'havenlytics' ); ?>">
 			<i class="fas fa-expand" aria-hidden="true"></i>
 		</button>
 		<?php if ( ! empty( $hvnly_config['geolocate'] ) ) : ?>
-			<button type="button" class="hvnly-block-map__btn" data-hvnly-block-map-action="locate" aria-label="<?php esc_attr_e( 'My location', 'havenlytics' ); ?>">
+			<button type="button" class="hvnly-ui-control hvnly-block-map__btn" data-hvnly-block-map-action="locate" aria-label="<?php esc_attr_e( 'My location', 'havenlytics' ); ?>">
 				<i class="fas fa-location-arrow" aria-hidden="true"></i>
 			</button>
 		<?php endif; ?>

@@ -44,8 +44,8 @@ use Throwable;
  *
  * @since 2.0.0
  */
-class CacheInvalidator
-{
+class CacheInvalidator {
+
     /**
      * Invalidate all relevant caches for a property update
      *
@@ -57,13 +57,12 @@ class CacheInvalidator
      * @param \WP_Post|null $post    Post object (passed on delete hooks).
      * @return void
      */
-    public static function invalidate($post_id, $post = null)
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    public static function invalidate( $post_id, $post = null ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
-        if (!self::is_hvnly_property($post_id, $post)) {
+        if ( ! self::is_hvnly_property($post_id, $post)) {
             return;
         }
 
@@ -75,8 +74,7 @@ class CacheInvalidator
      * @param \WP_Post|null $post    Optional post object.
      * @return bool
      */
-    private static function is_hvnly_property($post_id, $post = null)
-    {
+    private static function is_hvnly_property( $post_id, $post = null ) {
         if ($post instanceof \WP_Post) {
             return $post->post_type === 'hvnly_property';
         }
@@ -89,14 +87,13 @@ class CacheInvalidator
      *
      * @return void
      */
-    private static function clear_all_listing_caches()
-    {
+    private static function clear_all_listing_caches() {
         if (class_exists(SearchFilters::class)) {
-            (new SearchFilters())->clear_all_search_cache();
+            ( new SearchFilters() )->clear_all_search_cache();
         }
 
         if (class_exists(SidebarSearchFilters::class)) {
-            (new SidebarSearchFilters())->clear_sidebar_cache();
+            ( new SidebarSearchFilters() )->clear_sidebar_cache();
         }
 
         try {
@@ -121,15 +118,14 @@ class CacheInvalidator
      * @param string $meta_key   Meta key.
      * @param mixed  $meta_value Meta value.
      */
-    public static function invalidate_on_meta_delete($meta_ids, $post_id, $meta_key, $meta_value)
-    {
+    public static function invalidate_on_meta_delete( $meta_ids, $post_id, $meta_key, $meta_value ) {
         unset($meta_ids, $meta_value);
 
-        if (!\hvnly_is_cache_enabled()) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
-        if (!self::is_listing_meta_key($meta_key) || !self::is_hvnly_property($post_id)) {
+        if ( ! self::is_listing_meta_key($meta_key) || ! self::is_hvnly_property($post_id)) {
             return;
         }
 
@@ -146,15 +142,14 @@ class CacheInvalidator
      * @param bool   $append     Whether terms were appended.
      * @param array  $old_tt_ids Previous term taxonomy IDs.
      */
-    public static function invalidate_on_term_assignment($object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids)
-    {
+    public static function invalidate_on_term_assignment( $object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids ) {
         unset($terms, $tt_ids, $append, $old_tt_ids);
 
-        if (!\hvnly_is_cache_enabled()) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
-        if (!self::is_property_listing_taxonomy($taxonomy) || !self::is_hvnly_property($object_id)) {
+        if ( ! self::is_property_listing_taxonomy($taxonomy) || ! self::is_hvnly_property($object_id)) {
             return;
         }
 
@@ -165,8 +160,7 @@ class CacheInvalidator
      * @param string $meta_key Meta key.
      * @return bool
      */
-    private static function is_listing_meta_key($meta_key)
-    {
+    private static function is_listing_meta_key( $meta_key ) {
         $meta_key = (string) $meta_key;
 
         $exact_keys = array(
@@ -214,8 +208,7 @@ class CacheInvalidator
      * @param string $taxonomy Taxonomy slug.
      * @return bool
      */
-    private static function is_property_listing_taxonomy($taxonomy)
-    {
+    private static function is_property_listing_taxonomy( $taxonomy ) {
         static $taxonomies = array(
             'hvnly_prop_types',
             'hvnly_prop_depts',
@@ -228,10 +221,10 @@ class CacheInvalidator
             'amenities',
         );
 
-        return in_array((string) $taxonomy, $taxonomies, true);
+        return in_array( (string) $taxonomy, $taxonomies, true);
     }
 }
 
-add_action('before_delete_post', array(CacheInvalidator::class, 'invalidate'), 10, 2);
-add_action('deleted_post_meta', array(CacheInvalidator::class, 'invalidate_on_meta_delete'), 10, 4);
-add_action('set_object_terms', array(CacheInvalidator::class, 'invalidate_on_term_assignment'), 10, 6);
+add_action('before_delete_post', array( CacheInvalidator::class, 'invalidate' ), 10, 2);
+add_action('deleted_post_meta', array( CacheInvalidator::class, 'invalidate_on_meta_delete' ), 10, 4);
+add_action('set_object_terms', array( CacheInvalidator::class, 'invalidate_on_term_assignment' ), 10, 6);

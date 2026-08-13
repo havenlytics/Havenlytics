@@ -97,15 +97,15 @@ class PropertyViewTracker {
 		if ( ! $property_id || $this->should_skip_tracking( $property_id ) ) {
 			return;
 		}
-		
+
 		// Prevent duplicate tracking in same request
 		if ( in_array( $property_id, $this->tracked_properties, true ) ) {
 			return;
 		}
 
 		$this->tracked_properties[] = $property_id;
-		$user_id     = get_current_user_id();
-		$is_unique   = $this->is_unique_view( $property_id );
+		$user_id                    = get_current_user_id();
+		$is_unique                  = $this->is_unique_view( $property_id );
 
 		$this->increment_view_count( $property_id, $is_unique );
 		$this->record_view_analytics( $property_id, $user_id, $is_unique );
@@ -228,7 +228,7 @@ class PropertyViewTracker {
 			$rate_map = array();
 		}
 
-		$property_id = absint( $property_id );
+		$property_id              = absint( $property_id );
 		$rate_map[ $property_id ] = time();
 
 		if ( count( $rate_map ) > 50 ) {
@@ -300,7 +300,7 @@ class PropertyViewTracker {
 	private function increment_view_count( $property_id, $is_unique = true ) {
 		// Get current views with proper default structure
 		$current_views = get_post_meta( $property_id, self::VIEW_COUNT_META, true );
-		
+
 		// Ensure we have a proper array structure
 		if ( empty( $current_views ) || ! is_array( $current_views ) ) {
 			$current_views = array(
@@ -320,7 +320,7 @@ class PropertyViewTracker {
 			'this_week'  => 0,
 			'this_month' => 0,
 		);
-		
+
 		$current_views = wp_parse_args( $current_views, $defaults );
 
 		// Update counts - ensure we're working with integers
@@ -348,7 +348,7 @@ class PropertyViewTracker {
 	private function record_view_analytics( $property_id, $user_id, $is_unique ) {
 		$current_date = current_time( 'Y-m-d' );
 		$analytics    = get_post_meta( $property_id, self::VIEW_ANALYTICS_META, true );
-		
+
 		// Ensure we have a proper array
 		if ( empty( $analytics ) || ! is_array( $analytics ) ) {
 			$analytics = array();
@@ -369,12 +369,12 @@ class PropertyViewTracker {
 			'unique' => 0,
 			'users'  => array(),
 		);
-		
+
 		$analytics[ $current_date ] = wp_parse_args( $analytics[ $current_date ], $daily_defaults );
 
 		// Update counts
 		$analytics[ $current_date ]['total'] = absint( $analytics[ $current_date ]['total'] ) + 1;
-		
+
 		if ( $is_unique ) {
 			$analytics[ $current_date ]['unique'] = absint( $analytics[ $current_date ]['unique'] ) + 1;
 		}
@@ -402,7 +402,7 @@ class PropertyViewTracker {
 	 */
 	public function get_view_count( $property_id = null, $type = 'total' ) {
 		$property_id = $property_id ?: get_the_ID();
-		
+
 		if ( ! $property_id ) {
 			return 0;
 		}
@@ -412,7 +412,7 @@ class PropertyViewTracker {
 
 		if ( false === $views ) {
 			$views_data = get_post_meta( $property_id, self::VIEW_COUNT_META, true );
-			
+
 			// If no data exists, return 0
 			if ( empty( $views_data ) || ! is_array( $views_data ) ) {
 				$views = 0;
@@ -420,7 +420,7 @@ class PropertyViewTracker {
 				// Ensure we have the requested type, fallback to total
 				$views = isset( $views_data[ $type ] ) ? absint( $views_data[ $type ] ) : absint( $views_data['total'] );
 			}
-			
+
 			wp_cache_set( $cache_key, $views, self::CACHE_GROUP, HOUR_IN_SECONDS );
 		}
 
@@ -437,7 +437,7 @@ class PropertyViewTracker {
 	 */
 	public function get_view_analytics( $property_id = null, $period = '30days' ) {
 		$property_id = $property_id ?: get_the_ID();
-		
+
 		if ( ! $property_id ) {
 			return array();
 		}
@@ -447,7 +447,7 @@ class PropertyViewTracker {
 
 		if ( false === $analytics ) {
 			$all_analytics = get_post_meta( $property_id, self::VIEW_ANALYTICS_META, true );
-			
+
 			if ( ! $all_analytics || ! is_array( $all_analytics ) ) {
 				return array();
 			}
@@ -478,7 +478,7 @@ class PropertyViewTracker {
 	 * @since 2.0.0
 	 */
 	public function get_top_viewed_properties( $limit = 10, $period = 'all' ) {
-		$cache_key = "top_viewed_properties_{$limit}_{$period}";
+		$cache_key  = "top_viewed_properties_{$limit}_{$period}";
 		$properties = wp_cache_get( $cache_key, self::CACHE_GROUP );
 
 		if ( false === $properties ) {

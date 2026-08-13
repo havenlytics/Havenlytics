@@ -78,8 +78,8 @@ final class AgentManagementAdminList {
 			return;
 		}
 
-		$ver        = defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '3.2.0';
-		$reg_handle = 'hvnly-ws-registration-admin';
+		$ver         = defined( 'HVNLYNAB_VERSION' ) ? HVNLYNAB_VERSION : '3.2.0';
+		$reg_handle  = 'hvnly-ws-registration-admin';
 		$mgmt_handle = 'hvnly-agent-management-admin';
 
 		// Lifecycle badges live in registration-admin CSS — register before depending on it.
@@ -326,10 +326,10 @@ final class AgentManagementAdminList {
 	 * @return void
 	 */
 	private function render_inquiries_column( int $post_id, array $row ): void {
-		$inq           = isset( $row['inquiries'] ) && is_array( $row['inquiries'] ) ? $row['inquiries'] : array();
-		$hvnly_total   = (int) ( $inq['total'] ?? 0 );
-		$hvnly_unread  = (int) ( $inq['unread'] ?? 0 );
-		$tip           = sprintf(
+		$inq          = isset( $row['inquiries'] ) && is_array( $row['inquiries'] ) ? $row['inquiries'] : array();
+		$hvnly_total  = (int) ( $inq['total'] ?? 0 );
+		$hvnly_unread = (int) ( $inq['unread'] ?? 0 );
+		$tip          = sprintf(
 			/* translators: 1: unread 2: open 3: replied 4: archived */
 			__( 'Unread %1$d · Open %2$d · Replied %3$d · Archived %4$d', 'havenlytics' ),
 			$hvnly_unread,
@@ -374,12 +374,12 @@ final class AgentManagementAdminList {
 	 * @return void
 	 */
 	private function render_summary_column( int $post_id, array $row ): void {
-		$status = $row['lifecycle'] ?? WorkspaceRegistrationStatus::get_for_agent( $post_id );
-		$ws     = (string) ( $row['workspace'] ?? '—' );
-		$flags       = isset( $row['health']['flags'] ) ? (array) $row['health']['flags'] : array();
-		$hvnly_pct   = (int) ( $row['completeness']['percent'] ?? 0 );
-		$miss        = implode( ', ', (array) ( $row['completeness']['missing'] ?? array() ) );
-		$level       = $hvnly_pct >= 90 ? 'ok' : ( $hvnly_pct >= 70 ? 'mid' : 'low' );
+		$status    = $row['lifecycle'] ?? WorkspaceRegistrationStatus::get_for_agent( $post_id );
+		$ws        = (string) ( $row['workspace'] ?? '—' );
+		$flags     = isset( $row['health']['flags'] ) ? (array) $row['health']['flags'] : array();
+		$hvnly_pct = (int) ( $row['completeness']['percent'] ?? 0 );
+		$miss      = implode( ', ', (array) ( $row['completeness']['missing'] ?? array() ) );
+		$level     = $hvnly_pct >= 90 ? 'ok' : ( $hvnly_pct >= 70 ? 'mid' : 'low' );
 
 		echo '<div class="hvnly-mgmt-summary">';
 		echo '<div class="hvnly-mgmt-summary__badges">';
@@ -448,7 +448,7 @@ final class AgentManagementAdminList {
 	 * @return string
 	 */
 	private function activity_line( string $label, string $gmt ): string {
-		$rel = AgentActivityTracker::format_admin( $gmt );
+		$rel   = AgentActivityTracker::format_admin( $gmt );
 		$empty = ( '' === $gmt || '—' === $rel );
 
 		if ( $empty ) {
@@ -536,7 +536,7 @@ final class AgentManagementAdminList {
 	 * @return array<string, string>
 	 */
 	public function lifecycle_views( array $views ): array {
-		$base = admin_url( 'edit.php?post_type=' . AgentConstants::POST_TYPE );
+		$base    = admin_url( 'edit.php?post_type=' . AgentConstants::POST_TYPE );
 		$current = isset( $_GET['hvnly_lifecycle'] ) ? sanitize_key( wp_unslash( $_GET['hvnly_lifecycle'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		$map = array(
@@ -549,8 +549,8 @@ final class AgentManagementAdminList {
 		);
 
 		foreach ( $map as $slug => $label ) {
-			$url = add_query_arg( 'hvnly_lifecycle', $slug, $base );
-			$class = $current === $slug ? 'class="current"' : '';
+			$url                          = add_query_arg( 'hvnly_lifecycle', $slug, $base );
+			$class                        = $current === $slug ? 'class="current"' : '';
 			$views[ 'hvnly_lc_' . $slug ] = sprintf(
 				'<a href="%s" %s>%s</a>',
 				esc_url( $url ),
@@ -712,7 +712,7 @@ final class AgentManagementAdminList {
 		}
 
 		global $wpdb;
-		$like = '%' . $wpdb->esc_like( $term ) . '%';
+		$like  = '%' . $wpdb->esc_like( $term ) . '%';
 		$extra = $wpdb->prepare(
 			" OR EXISTS (
 				SELECT 1 FROM {$wpdb->postmeta} em
@@ -765,9 +765,9 @@ final class AgentManagementAdminList {
 		if ( ! $this->can_manage() ) {
 			return $actions;
 		}
-		$actions['hvnly_mgmt_ensure_caps'] = __( 'Ensure Capabilities', 'havenlytics' );
+		$actions['hvnly_mgmt_ensure_caps']   = __( 'Ensure Capabilities', 'havenlytics' );
 		$actions['hvnly_mgmt_identity_scan'] = __( 'Run Identity Scan', 'havenlytics' );
-		$actions['hvnly_mgmt_export'] = __( 'Export Selected', 'havenlytics' );
+		$actions['hvnly_mgmt_export']        = __( 'Export Selected', 'havenlytics' );
 		return $actions;
 	}
 

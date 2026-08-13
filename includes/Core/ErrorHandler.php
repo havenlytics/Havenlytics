@@ -36,8 +36,8 @@ defined('ABSPATH') || exit;
  * @final This class should not be extended
  * @since 2.0.0
  */
-final class ErrorHandler
-{
+final class ErrorHandler {
+
     /**
      * Plugin file path for deactivation purposes
      *
@@ -61,8 +61,7 @@ final class ErrorHandler
      * @param string $plugin_file The main plugin file path
      * @return void
      */
-    public static function init(string $plugin_file): void
-    {
+    public static function init( string $plugin_file ): void {
         /**
          * Store plugin file path for deactivation if needed
          */
@@ -71,23 +70,23 @@ final class ErrorHandler
         /**
          * Set custom error handler to catch PHP errors and warnings
          */
-       // set_error_handler([self::class, 'handle_error']);
+		// set_error_handler([self::class, 'handle_error']);
 
         /**
          * Set custom exception handler to catch uncaught exceptions
          */
-        set_exception_handler([self::class, 'handle_exception']);
+        set_exception_handler(array( self::class, 'handle_exception' ));
 
         /**
          * Register shutdown function to catch fatal errors
          */
-        register_shutdown_function([self::class, 'handle_shutdown']);
+        register_shutdown_function(array( self::class, 'handle_shutdown' ));
 
         /**
          * Set up admin notice and deactivation handling for fatal errors
          */
         if (is_admin()) {
-            add_action('admin_init', [self::class, 'maybe_show_notice_and_deactivate']);
+            add_action('admin_init', array( self::class, 'maybe_show_notice_and_deactivate' ));
         }
     }
 
@@ -102,18 +101,17 @@ final class ErrorHandler
      * @param int $line The line number where the error occurred
      * @return void
      */
-    public static function record_fatal(string $message, string $file = '', int $line = 0): void
-    {
+    public static function record_fatal( string $message, string $file = '', int $line = 0 ): void {
         /**
          * Store error details in a transient for 24 hours
          * This allows displaying the error on next page load
          */
-        set_transient(self::TRANSIENT, [
+        set_transient(self::TRANSIENT, array(
             'message' => $message,
             'file'    => $file,
             'line'    => $line,
             'time'    => current_time('timestamp'),
-        ], DAY_IN_SECONDS);
+        ), DAY_IN_SECONDS);
 
         /**
          * If in admin context, show a proper WordPress error screen
@@ -123,7 +121,7 @@ final class ErrorHandler
             wp_die(
                 esc_html( $message ),
                 esc_html__( 'Havenlytics Fatal Error', 'havenlytics' ),
-                [ 'response' => 500 ]
+                array( 'response' => 500 )
             );
         }
         exit;
@@ -137,8 +135,7 @@ final class ErrorHandler
      *
      * @return bool True if a fatal error is recorded, false otherwise
      */
-    public static function has_fatal_recorded(): bool
-    {
+    public static function has_fatal_recorded(): bool {
         return (bool) get_transient(self::TRANSIENT);
     }
 
@@ -161,7 +158,7 @@ final class ErrorHandler
     //      * Check error_reporting level without calling the function directly
     //      */
     //     $error_reporting = defined('E_ALL') ? E_ALL : 0;
-        
+
     //     if (!($error_reporting & $severity)) return false;
 
     //     /**
@@ -191,8 +188,7 @@ final class ErrorHandler
      * @param \Throwable $exception The uncaught exception
      * @return void
      */
-    public static function handle_exception($exception): void
-    {
+    public static function handle_exception( $exception ): void {
         /**
          * Format exception details for logging and reporting
          */
@@ -218,8 +214,7 @@ final class ErrorHandler
      *
      * @return void
      */
-    public static function handle_shutdown(): void
-    {
+    public static function handle_shutdown(): void {
         /**
          * Get the last error that occurred
          */
@@ -228,7 +223,7 @@ final class ErrorHandler
         /**
          * Check if the error was a fatal one that caused shutdown
          */
-        if ($error && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        if ($error && in_array($error['type'], array( E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR ))) {
             $msg = $error['message'] . ' in ' . $error['file'] . ':' . $error['line'];
 
             /**
@@ -254,23 +249,26 @@ final class ErrorHandler
      *
      * @return void
      */
-    public static function maybe_show_notice_and_deactivate(): void
-    {
+    public static function maybe_show_notice_and_deactivate(): void {
         /**
          * Only proceed for users who can activate plugins (admins)
          */
-        if (!current_user_can('activate_plugins')) return;
+        if ( ! current_user_can('activate_plugins')) {
+			return;
+        }
 
         /**
          * Check if a fatal error was recorded
          */
         $payload = get_transient(self::TRANSIENT);
-        if (!$payload) return;
+        if ( ! $payload) {
+			return;
+        }
 
         /**
          * Display admin notice with error details and support information
          */
-        add_action('admin_notices', function () use ($payload) {
+        add_action('admin_notices', function () use ( $payload ) {
             echo '<div class="notice notice-error is-dismissible"><p>';
             printf(
                 '<strong>%s</strong> %s<br><strong>%s</strong> %s:%d<br>%s <a href="mailto:support@havenlytics.com">support@havenlytics.com</a>.',
@@ -278,7 +276,7 @@ final class ErrorHandler
                 esc_html__('Plugin deactivated due to fatal error.', 'havenlytics'),
                 esc_html__('Details:', 'havenlytics'),
                 esc_html($payload['message']),
-                (int)$payload['line'],
+                (int) $payload['line'],
                 esc_html__('Contact', 'havenlytics')
             );
             echo '</p></div>';

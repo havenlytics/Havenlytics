@@ -130,15 +130,15 @@ final class ProfileService {
 			);
 		}
 
-		$fields    = AgentFields::get_profile_raw( $agent_id );
+		$fields = AgentFields::get_profile_raw( $agent_id );
 		// avatarId stays the raw uploaded-photo id (0 = none) so the editor knows
 		// whether a custom photo can be removed; avatarUrl uses the shared chain
 		// (uploaded → Gravatar → placeholder) so the preview is never blank.
-		$avatar_id = (int) get_post_thumbnail_id( $agent_id );
-		$avatar    = \HvnlyNab\Common\AvatarService::resolve_url( $agent_id, $user_id, 96, 'medium' );
-		$agency    = AgencyFields::resolve_for_agent( $agent_id );
-		$ext       = get_post_meta( $agent_id, AgentConstants::META_EXTENSIONS, true );
-		$ext       = is_array( $ext ) ? $ext : array();
+		$avatar_id  = (int) get_post_thumbnail_id( $agent_id );
+		$avatar     = \HvnlyNab\Common\AvatarService::resolve_url( $agent_id, $user_id, 96, 'medium' );
+		$agency     = AgencyFields::resolve_for_agent( $agent_id );
+		$ext        = get_post_meta( $agent_id, AgentConstants::META_EXTENSIONS, true );
+		$ext        = is_array( $ext ) ? $ext : array();
 		$experience = isset( $ext['experience_years'] ) ? absint( $ext['experience_years'] ) : 0;
 		if ( $experience <= 0 && isset( $ext['experience'] ) ) {
 			$experience = absint( $ext['experience'] );
@@ -298,7 +298,7 @@ final class ProfileService {
 			}
 		}
 
-		$url_fields = array(
+		$url_fields  = array(
 			'website'   => 'contact.website',
 			'facebook'  => 'social.facebook',
 			'instagram' => 'social.instagram',

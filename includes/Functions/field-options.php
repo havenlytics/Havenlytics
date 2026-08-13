@@ -107,7 +107,7 @@ function hvnly_get_country_field_options() {
     if ( class_exists( '\HvnlyNab\Api\Type\Builders\DefaultTabSectionsData' ) ) {
         $legacy = \HvnlyNab\Api\Type\Builders\DefaultTabSectionsData::hvnly_get_property_countries();
         foreach ( $legacy as $code => $label ) {
-            $countries[ $code ] = $label;
+            $countries[ $code ]               = $label;
             $countries[ strtoupper( $code ) ] = $label;
         }
     }

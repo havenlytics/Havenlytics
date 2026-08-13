@@ -341,7 +341,7 @@ final class ZipGuard {
 				}
 				$copied += strlen( $chunk );
 				if ( $copied > $max ) {
-					$failed = true;
+					$failed   = true;
 					$errors[] = array(
 						'code'    => 'hvnly_ie_extract_size_exceeded',
 						'message' => 'Extraction aborted: entry exceeded size limit while streaming.',
@@ -350,7 +350,7 @@ final class ZipGuard {
 					break;
 				}
 				if ( false === fwrite( $out, $chunk ) ) {
-					$failed = true;
+					$failed   = true;
 					$errors[] = array(
 						'code'    => 'hvnly_ie_extract_write_failed',
 						'message' => 'Failed while writing extracted file.',

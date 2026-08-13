@@ -180,7 +180,7 @@ function hvnly_safe_delete_option( string $option, string $context = '' ): bool 
  */
 function hvnly_rest_deletion_confirmed( bool $confirm ): bool {
 	if ( ! HVNLY_REQUIRE_DELETE_CONFIRM ) {
-	 return true;
+		return true;
 	}
 	return $confirm && current_user_can( 'manage_options' );
 }

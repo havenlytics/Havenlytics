@@ -273,8 +273,8 @@ final class UrlGuard {
 		if ( $mask < 0 || $mask > 32 ) {
 			return false;
 		}
-		$ip_long   = ip2long( $ip );
-		$net_long  = ip2long( $m[1] );
+		$ip_long  = ip2long( $ip );
+		$net_long = ip2long( $m[1] );
 		if ( false === $ip_long || false === $net_long ) {
 			return false;
 		}

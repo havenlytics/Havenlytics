@@ -35,7 +35,7 @@ class UrlField extends BaseFieldType {
 		$field_id    = $field['fieldid'] ?? $field_name;
 		$is_required = ! empty( $field['is_required'] );
 
-		$html = $this->render_label( $field );
+		$html  = $this->render_label( $field );
 		$html .= sprintf(
 			'<input type="url" id="%1$s" name="%2$s" value="%3$s" placeholder="%4$s" class="hvnly__dyamic_metabox_tab__input widefat" data-field-type="url" %5$s />',
 			esc_attr( $field_id ),

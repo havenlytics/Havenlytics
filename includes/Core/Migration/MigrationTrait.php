@@ -12,7 +12,7 @@
 namespace HvnlyNab\Core\Migration\Traits;
 
 // Prevent direct access.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -33,7 +33,7 @@ trait MigrationTrait {
      * @param string $version    Migration version.
      * @return string|false Backup ID or false on failure.
      */
-    protected function backup_option(string $option_key, string $version) {
+    protected function backup_option( string $option_key, string $version ) {
         $data = get_option($option_key, array());
 
         if (empty($data)) {
@@ -64,10 +64,10 @@ trait MigrationTrait {
      * @param string $backup_id Backup ID to restore.
      * @return bool True on success, false on failure.
      */
-    protected function restore_from_backup(string $backup_id): bool {
+    protected function restore_from_backup( string $backup_id ): bool {
         $backup = get_option($backup_id, null);
 
-        if (!$backup || !is_array($backup) || !isset($backup['option']) || !isset($backup['data'])) {
+        if ( ! $backup || ! is_array($backup) || ! isset($backup['option']) || ! isset($backup['data'])) {
             return false;
         }
 
@@ -83,7 +83,7 @@ trait MigrationTrait {
      * @param int $keep Number of backups to keep per option.
      * @return int Number of backups deleted.
      */
-    protected function cleanup_backups(int $keep = 5): int {
+    protected function cleanup_backups( int $keep = 5 ): int {
         $deleted = 0;
 
         // Get all backup options using WordPress API with caching.
@@ -98,18 +98,18 @@ trait MigrationTrait {
         foreach ($backups as $backup_name) {
             // Remove the prefix to get the version and option key parts.
             $clean_name = str_replace('_hvnly_backup_', '', $backup_name);
-            $parts = explode('_', $clean_name);
-            
+            $parts      = explode('_', $clean_name);
+
             if (count($parts) >= 2) {
                 // First part is version, rest is the option key.
-                $version = $parts[0];
+                $version      = $parts[0];
                 $option_parts = array_slice($parts, 1);
-                $option_key = implode('_', $option_parts);
-                
-                if (!isset($backups_by_option[$option_key])) {
-                    $backups_by_option[$option_key] = array();
+                $option_key   = implode('_', $option_parts);
+
+                if ( ! isset($backups_by_option[ $option_key ])) {
+                    $backups_by_option[ $option_key ] = array();
                 }
-                $backups_by_option[$option_key][] = $backup_name;
+                $backups_by_option[ $option_key ][] = $backup_name;
             }
         }
 
@@ -117,10 +117,10 @@ trait MigrationTrait {
             if (count($option_backups) > $keep) {
                 // Sort by backup name (which contains timestamp) in descending order.
                 rsort($option_backups);
-                
+
                 // Keep the newest backups, delete the rest.
                 $to_delete = array_slice($option_backups, $keep);
-                
+
                 foreach ($to_delete as $backup_name) {
                     if (delete_option($backup_name)) {
                         $deleted++;
@@ -143,7 +143,7 @@ trait MigrationTrait {
      */
     private function get_backup_options(): array {
         // Try to get cached backup list first.
-        $cache_key = 'hvnly_migration_backups';
+        $cache_key   = 'hvnly_migration_backups';
         $backup_list = wp_cache_get($cache_key, 'options');
 
         if (false !== $backup_list) {
@@ -180,7 +180,7 @@ trait MigrationTrait {
      * @param string|null $version Optional migration version tag.
      * @return void
      */
-    protected function log(string $message, string $type = 'info', ?string $version = null): void {
+    protected function log( string $message, string $type = 'info', ?string $version = null ): void {
         if ( function_exists( 'hvnly_debug_log' ) ) {
             $prefix = 'Migration';
             if ( $version ) {
@@ -207,7 +207,7 @@ trait MigrationTrait {
      * @param mixed  $value    Value to store.
      * @return bool True when meta was added or already present with same value.
      */
-    protected function safe_add_post_meta(int $post_id, string $meta_key, $value): bool {
+    protected function safe_add_post_meta( int $post_id, string $meta_key, $value ): bool {
         $existing = get_post_meta($post_id, $meta_key, true);
         if ($existing !== '' && $existing !== false && $existing !== null) {
             return true;
@@ -222,7 +222,7 @@ trait MigrationTrait {
      * @param mixed  $value      New value.
      * @return bool True when the option was updated or unchanged.
      */
-    protected function safe_update_option(string $option_key, $value): bool {
+    protected function safe_update_option( string $option_key, $value ): bool {
         $current = get_option($option_key, null);
         if ($current === $value) {
             return true;
@@ -239,12 +239,12 @@ trait MigrationTrait {
      * @return array|null
      */
     protected function get_unified_builder_config(): ?array {
-        if (!class_exists('\HvnlyNab\Core\UnifiedFieldGenerator')) {
+        if ( ! class_exists('\HvnlyNab\Core\UnifiedFieldGenerator')) {
             return null;
         }
         $unified = \HvnlyNab\Core\UnifiedFieldGenerator::get_instance();
         $config  = $unified->get_unified_configuration();
-        return is_array($config) && !empty($config) ? $config : null;
+        return is_array($config) && ! empty($config) ? $config : null;
     }
 
     /**
@@ -253,7 +253,7 @@ trait MigrationTrait {
      * @param string $group_type Group type slug.
      * @return string
      */
-    protected function generate_migration_base_id(string $group_type): string {
+    protected function generate_migration_base_id( string $group_type ): string {
         if (class_exists('\HvnlyNab\Core\UnifiedFieldGenerator')) {
             $unified = \HvnlyNab\Core\UnifiedFieldGenerator::get_instance();
             return $unified->generate_unique_base_id($group_type);
@@ -273,17 +273,17 @@ trait MigrationTrait {
      * @param string $base_id  New base ID.
      * @return void
      */
-    protected function apply_group_base_id_to_field(array &$field, string $base_id): void {
+    protected function apply_group_base_id_to_field( array &$field, string $base_id ): void {
         $meta_key = $field['metaKey'] ?? '';
         if (empty($meta_key)) {
-            $name_parts = explode('_', $field['name'] ?? $field['id'] ?? '');
-            $meta_key   = (string) end($name_parts);
+            $name_parts       = explode('_', $field['name'] ?? $field['id'] ?? '');
+            $meta_key         = (string) end($name_parts);
             $field['metaKey'] = $meta_key;
         }
         $field['group_base_id'] = $base_id;
         $field['id']            = $base_id . '_' . $meta_key;
         $field['name']          = $base_id . '_' . $meta_key;
-        $group_type = $field['group_type'] ?? '';
+        $group_type             = $field['group_type'] ?? '';
         if ($group_type === 'map') {
             $field['address_field_name'] = $base_id . '_address';
             $field['lat_field_name']     = $base_id . '_latitude';
@@ -298,11 +298,11 @@ trait MigrationTrait {
      * @param array $config Builder sections option value.
      * @return array Fixed config.
      */
-    protected function fix_duplicate_group_base_ids_in_config(array $config): array {
-        $seen_base_ids = [];
+    protected function fix_duplicate_group_base_ids_in_config( array $config ): array {
+        $seen_base_ids = array();
 
         foreach ($config as $section_key => &$section) {
-            if (empty($section['fields']) || !is_array($section['fields'])) {
+            if (empty($section['fields']) || ! is_array($section['fields'])) {
                 continue;
             }
             foreach ($section['fields'] as $field_index => &$field) {
@@ -340,22 +340,22 @@ trait MigrationTrait {
      * @param array $config Current builder config.
      * @return array
      */
-    protected function merge_missing_standard_sections(array $config): array {
+    protected function merge_missing_standard_sections( array $config ): array {
         $unified = $this->get_unified_builder_config();
         if ($unified === null) {
             return $config;
         }
 
-        $existing_titles = [];
+        $existing_titles = array();
         foreach ($config as $section) {
-            if (!empty($section['title'])) {
+            if ( ! empty($section['title'])) {
                 $existing_titles[ $section['title'] ] = true;
             }
         }
 
         foreach ($unified as $key => $section) {
             $title = $section['title'] ?? '';
-            if ($title !== '' && !isset($existing_titles[ $title ])) {
+            if ($title !== '' && ! isset($existing_titles[ $title ])) {
                 $config[ $key ] = $section;
                 $this->log('Merged missing standard section: ' . $title, 'info');
             }
@@ -363,7 +363,7 @@ trait MigrationTrait {
 
         uasort(
             $config,
-            static function ($a, $b) {
+            static function ( $a, $b ) {
                 return ( $a['order'] ?? 999 ) - ( $b['order'] ?? 999 );
             }
         );
@@ -377,11 +377,11 @@ trait MigrationTrait {
      * @param array $config Builder sections option value.
      * @return bool
      */
-    protected function has_duplicate_group_base_ids(array $config): bool {
-        $seen = [];
+    protected function has_duplicate_group_base_ids( array $config ): bool {
+        $seen = array();
 
         foreach ($config as $section) {
-            foreach ($section['fields'] ?? [] as $field) {
+            foreach ($section['fields'] ?? array() as $field) {
                 $base_id = $field['group_base_id'] ?? '';
                 if ($base_id === '') {
                     continue;

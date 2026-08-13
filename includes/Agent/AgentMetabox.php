@@ -62,7 +62,6 @@ class AgentMetabox {
 		add_action( 'save_post_' . AgentConstants::POST_TYPE, array( $this, 'save' ), 10, 2 );
 
 		add_action( 'edit_form_after_title', array( $this, 'render_title_help' ) );
-
 	}
 
 
@@ -97,8 +96,6 @@ class AgentMetabox {
 
 		}
 
-
-
 		add_meta_box(
 
 			'hvnly-agent-availability',
@@ -114,8 +111,6 @@ class AgentMetabox {
 			'high'
 
 		);
-
-
 
 		add_meta_box(
 
@@ -133,8 +128,6 @@ class AgentMetabox {
 
 		);
 
-
-
 		add_meta_box(
 
 			'hvnly-agent-photo-help',
@@ -150,7 +143,6 @@ class AgentMetabox {
 			'high'
 
 		);
-
 	}
 
 
@@ -180,7 +172,6 @@ class AgentMetabox {
 		</p>
 
 		<?php
-
 	}
 
 
@@ -202,7 +193,6 @@ class AgentMetabox {
 		<p><?php esc_html_e( 'Set the profile photo using the Featured Image panel. This image appears on property pages and agent profiles.', 'havenlytics' ); ?></p>
 
 		<?php
-
 	}
 
 
@@ -223,15 +213,11 @@ class AgentMetabox {
 
 		$groups = AgentFields::field_groups();
 
-
-
 		if ( ! isset( $groups[ $group ] ) ) {
 
 			return;
 
 		}
-
-
 
 		if ( 'professional' === $group ) {
 
@@ -239,13 +225,9 @@ class AgentMetabox {
 
 		}
 
-
-
 		$modifier = 'social' === $group ? ' hvnly-agent-metabox--social' : '';
 
 		echo '<div class="hvnly-agent-metabox' . esc_attr( $modifier ) . '">';
-
-
 
 		foreach ( $groups[ $group ] as $field ) {
 
@@ -253,10 +235,7 @@ class AgentMetabox {
 
 		}
 
-
-
 		echo '</div>';
-
 	}
 
 
@@ -270,7 +249,7 @@ class AgentMetabox {
 	 */
 
 	public function render_availability_box( $post ): void {
-		$current = AgentFields::get_availability( (int) $post->ID );
+		$current     = AgentFields::get_availability( (int) $post->ID );
 		$definitions = function_exists( 'hvnly_get_agent_availability_definitions' )
 			? hvnly_get_agent_availability_definitions()
 			: array();
@@ -492,7 +471,7 @@ class AgentMetabox {
 				echo ' ';
 				$bits = array();
 				foreach ( $occupied as $uid => $aid ) {
-					$u = get_userdata( (int) $uid );
+					$u      = get_userdata( (int) $uid );
 					$bits[] = sprintf(
 						/* translators: 1: user login, 2: agent ID */
 						esc_html__( '%1$s → Agent #%2$d', 'havenlytics' ),
@@ -515,7 +494,6 @@ class AgentMetabox {
 		<?php endif; ?>
 
 		<?php
-
 	}
 
 
@@ -534,15 +512,15 @@ class AgentMetabox {
 
 		$meta_key = (string) $field['key'];
 
-		$value    = get_post_meta( $post_id, $meta_key, true );
+		$value = get_post_meta( $post_id, $meta_key, true );
 
-		$id       = str_replace( array( '_', '-' ), '', $meta_key );
+		$id = str_replace( array( '_', '-' ), '', $meta_key );
 
-		$type     = (string) $field['type'];
+		$type = (string) $field['type'];
 
-		$full     = ! empty( $field['full_width'] );
+		$full = ! empty( $field['full_width'] );
 
-		$class    = 'hvnly-agent-metabox__field' . ( $full ? ' hvnly-agent-metabox__field--full' : '' );
+		$class = 'hvnly-agent-metabox__field' . ( $full ? ' hvnly-agent-metabox__field--full' : '' );
 
 		?>
 
@@ -593,7 +571,6 @@ class AgentMetabox {
 		</p>
 
 		<?php
-
 	}
 
 
@@ -616,23 +593,17 @@ class AgentMetabox {
 
 		}
 
-
-
 		if ( wp_is_post_revision( $post_id ) ) {
 
 			return;
 
 		}
 
-
-
 		if ( ! function_exists( 'hvnly_current_user_can_edit_post_type' ) || ! hvnly_current_user_can_edit_post_type( $post_id, AgentConstants::POST_TYPE ) ) {
 
 			return;
 
 		}
-
-
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 
@@ -642,8 +613,6 @@ class AgentMetabox {
 
 		}
 
-
-
 		$nonce = sanitize_text_field( wp_unslash( $_POST[ self::NONCE_FIELD ] ) );
 
 		if ( ! wp_verify_nonce( $nonce, self::NONCE_ACTION ) ) {
@@ -652,17 +621,11 @@ class AgentMetabox {
 
 		}
 
-
-
 		unset( $post );
-
-
 
 		AgentFields::save_from_request( $post_id );
 
 		AgentFields::save_availability_from_request( $post_id );
-
-
 
 		/**
 
@@ -679,9 +642,7 @@ class AgentMetabox {
 		 */
 
 		do_action( 'hvnly_agent_profile_saved', $post_id );
-
 	}
-
 }
 
 

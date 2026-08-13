@@ -87,17 +87,17 @@ if (empty($hvnly_current_view_type)) {
 
     <div class="hvnly-property-view-buttons" role="group"
         aria-label="<?php esc_attr_e('View layout options', 'havenlytics'); ?>">
-        <button type="button" class="hvnly-property-view-btn <?php echo $hvnly_current_view_type === 'list' ? 'active' : ''; ?>"
+        <button type="button" class="hvnly-ui-control hvnly-property-view-btn <?php echo $hvnly_current_view_type === 'list' ? 'active' : ''; ?>"
             data-view="list" aria-label="<?php esc_attr_e('List view', 'havenlytics'); ?>"
             aria-pressed="<?php echo $hvnly_current_view_type === 'list' ? 'true' : 'false'; ?>">
             <i class="fas fa-list" aria-hidden="true"></i>
         </button>
-        <button type="button" class="hvnly-property-view-btn <?php echo $hvnly_current_view_type === 'grid' ? 'active' : ''; ?>"
+        <button type="button" class="hvnly-ui-control hvnly-property-view-btn <?php echo $hvnly_current_view_type === 'grid' ? 'active' : ''; ?>"
             data-view="grid" aria-label="<?php esc_attr_e('Grid view', 'havenlytics'); ?>"
             aria-pressed="<?php echo $hvnly_current_view_type === 'grid' ? 'true' : 'false'; ?>">
             <i class="fas fa-th" aria-hidden="true"></i>
         </button>
-        <button type="button" class="hvnly-property-view-btn <?php echo $hvnly_current_view_type === 'map' ? 'active' : ''; ?>"
+        <button type="button" class="hvnly-ui-control hvnly-property-view-btn <?php echo $hvnly_current_view_type === 'map' ? 'active' : ''; ?>"
             data-view="map" aria-label="<?php esc_attr_e('Map view', 'havenlytics'); ?>"
             aria-pressed="<?php echo $hvnly_current_view_type === 'map' ? 'true' : 'false'; ?>">
             <i class="fas fa-map-marker-alt" aria-hidden="true"></i>

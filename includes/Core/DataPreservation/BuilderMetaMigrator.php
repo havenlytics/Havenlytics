@@ -167,7 +167,11 @@ class BuilderMetaMigrator {
 
 		if ( empty( $remap ) ) {
 			delete_option( $batch_state_key );
-			return array( 'complete' => true, 'copied' => 0, 'properties' => 0 );
+			return array(
+				'complete' => true,
+				'copied' => 0,
+				'properties' => 0,
+			);
 		}
 
 		$copied_total = 0;

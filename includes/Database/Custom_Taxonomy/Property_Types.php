@@ -1,7 +1,7 @@
 <?php
 /**
  * Property Types
- * 
+ *
  * @package HvnlyNab\Database\Custom_Taxonomy
  * @since 2.0.0
  */
@@ -13,14 +13,14 @@ use HvnlyNab\Database\Traits\Taxonomy_Permalink_Manager;
 use HvnlyNab\Database\Traits\Taxonomy_Fields\Hvnly_Advanced_Icon_Manager;
 use HvnlyNab\Database\Traits\Taxonomy_Fields\Hvnly_Advanced_Img_Manager;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 /**
  * Property_Types class
  */
-class Property_Types extends Custom_Taxonomy
-{
+class Property_Types extends Custom_Taxonomy {
+
     use Taxonomy_Permalink_Manager, Hvnly_Advanced_Icon_Manager, Hvnly_Advanced_Img_Manager {
         Hvnly_Advanced_Icon_Manager::hvnly_is_taxonomy_admin_page insteadof Hvnly_Advanced_Img_Manager;
     }
@@ -31,13 +31,12 @@ class Property_Types extends Custom_Taxonomy
     /**
      * Extended constructor with icon management
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
-        
+
         // Initialize permalink manager
         $this->hvnly_initialize_permalink_manager($this->hvnly_slug);
-        
+
         // Initialize advanced icon management (keeps icon meta + persistence intact for
         // backward compatibility and the frontend image → icon → text fallback).
         $this->hvnly_initialize_icon_manager($this->hvnly_slug);
@@ -62,14 +61,13 @@ class Property_Types extends Custom_Taxonomy
      * @since 3.1.2
      * @return void
      */
-    private function hvnly_hide_property_type_icon_admin_ui()
-    {
+    private function hvnly_hide_property_type_icon_admin_ui() {
         $slug = $this->hvnly_slug;
 
-        remove_action("{$slug}_add_form_fields", [$this, 'hvnly_render_icon_selection_field']);
-        remove_action("{$slug}_edit_form_fields", [$this, 'hvnly_render_icon_editing_field']);
-        remove_filter("manage_edit-{$slug}_columns", [$this, 'hvnly_add_icon_admin_column']);
-        remove_filter("manage_{$slug}_custom_column", [$this, 'hvnly_display_icon_admin_column'], 10);
+        remove_action("{$slug}_add_form_fields", array( $this, 'hvnly_render_icon_selection_field' ));
+        remove_action("{$slug}_edit_form_fields", array( $this, 'hvnly_render_icon_editing_field' ));
+        remove_filter("manage_edit-{$slug}_columns", array( $this, 'hvnly_add_icon_admin_column' ));
+        remove_filter("manage_{$slug}_custom_column", array( $this, 'hvnly_display_icon_admin_column' ), 10);
     }
 
     /**
@@ -77,8 +75,7 @@ class Property_Types extends Custom_Taxonomy
      *
      * @return void
      */
-    public function register_custom_taxonomy()
-    {
+    public function register_custom_taxonomy() {
 
         // init taxonomy Settings
         $this->init(
@@ -89,12 +86,12 @@ class Property_Types extends Custom_Taxonomy
             array(
                 'show_admin_column' => true,
                 'public' => true,
-                'publicly_queryable' => true,  
+                'publicly_queryable' => true,
                 'query_var' => true,
-                'rewrite' => [
+                'rewrite' => array(
                     'slug' => $this->hvnly_slug,
                     'with_front' => false,
-                ],
+                ),
             )
         );
     }

@@ -59,7 +59,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 	public function __construct( ?InquiryEmailRenderer $renderer = null ) {
 
 		$this->renderer = $renderer ?? new InquiryEmailRenderer();
-
 	}
 
 
@@ -86,15 +85,9 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		}
 
-
-
 		$property_id = isset( $inquiry['property_id'] ) ? absint( $inquiry['property_id'] ) : 0;
 
-
-
 		$agent = InquiryAgentResolver::profile_from_inquiry( $inquiry );
-
-
 
 		if ( empty( $agent ) && $property_id > 0 && function_exists( 'hvnly_get_property_agent' ) ) {
 
@@ -102,19 +95,13 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		}
 
-
-
 		if ( ! is_array( $agent ) ) {
 
 			$agent = array();
 
 		}
 
-
-
 		$context = InquiryEmailContextBuilder::build( $inquiry_id, $inquiry, $agent );
-
-
 
 		$results = array(
 
@@ -125,8 +112,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 			'sender' => null,
 
 		);
-
-
 
 		if ( function_exists( 'hvnly_contact_agent_notify_agent_enabled' ) && hvnly_contact_agent_notify_agent_enabled() ) {
 
@@ -150,8 +135,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		}
 
-
-
 		if ( function_exists( 'hvnly_contact_agent_notify_admin_enabled' ) && hvnly_contact_agent_notify_admin_enabled() ) {
 
 			$admin_email = function_exists( 'hvnly_contact_agent_admin_notification_email' )
@@ -159,8 +142,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 				? hvnly_contact_agent_admin_notification_email()
 
 				: sanitize_email( (string) get_option( 'admin_email' ) );
-
-
 
 			if ( is_email( $admin_email ) ) {
 
@@ -186,8 +167,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		}
 
-
-
 		if ( function_exists( 'hvnly_contact_agent_notify_sender_enabled' ) && hvnly_contact_agent_notify_sender_enabled() ) {
 
 			$sender_email = isset( $inquiry['sender_email'] ) ? sanitize_email( (string) $inquiry['sender_email'] ) : '';
@@ -210,8 +189,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		}
 
-
-
 		/**
 
 		 * Fires after inquiry notification attempts complete.
@@ -232,10 +209,7 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		do_action( 'hvnly_contact_agent_inquiry_notified', $inquiry_id, $results, $context );
 
-
-
 		return true;
-
 	}
 
 
@@ -258,9 +232,7 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		$subject = $this->resolve_subject( $email_type, $context );
 
-		$body    = $this->renderer->render( $email_type, $context );
-
-
+		$body = $this->renderer->render( $email_type, $context );
 
 		if ( '' === trim( $body ) ) {
 
@@ -268,11 +240,7 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		}
 
-
-
 		$sent = wp_mail( $recipient, $subject, $body, $headers );
-
-
 
 		if ( ! $sent && function_exists( 'hvnly_debug_log' ) ) {
 
@@ -294,10 +262,7 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		}
 
-
-
 		return (bool) $sent;
-
 	}
 
 
@@ -317,7 +282,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 		switch ( $email_type ) {
 
 			case ContactAgentConstants::EMAIL_TYPE_SENDER:
-
 				$subject = ContactAgentSettings::get_sender_subject();
 
 				if ( '' === trim( $subject ) ) {
@@ -337,10 +301,7 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 				break;
 
-
-
 			case ContactAgentConstants::EMAIL_TYPE_ADMIN:
-
 				$subject = sprintf(
 					/* translators: 1: property title, 2: inquiry ID */
 					__( 'New Property Inquiry • %1$s (#%2$d)', 'havenlytics' ),
@@ -350,12 +311,8 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 				break;
 
-
-
 			case ContactAgentConstants::EMAIL_TYPE_AGENT:
-
 			default:
-
 				$subject = sprintf(
 
 					/* translators: %s: property title */
@@ -368,8 +325,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 				break;
 
 		}
-
-
 
 		/**
 
@@ -390,7 +345,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 		 */
 
 		return (string) apply_filters( 'hvnly_contact_agent_email_subject', $subject, $email_type, $context );
-
 	}
 
 
@@ -407,9 +361,7 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		$inquiry = isset( $context['inquiry'] ) && is_array( $context['inquiry'] ) ? $context['inquiry'] : array();
 
-
-
-		$sender_name  = isset( $inquiry['sender_name'] ) ? (string) $inquiry['sender_name'] : '';
+		$sender_name = isset( $inquiry['sender_name'] ) ? (string) $inquiry['sender_name'] : '';
 
 		$sender_email = isset( $inquiry['sender_email'] ) ? (string) $inquiry['sender_email'] : '';
 
@@ -430,8 +382,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		}
 
-
-
 		/**
 
 		 * Filter Contact Agent notification email headers.
@@ -449,7 +399,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 		 */
 
 		return apply_filters( 'hvnly_contact_agent_email_headers', $headers, $context );
-
 	}
 
 
@@ -469,7 +418,7 @@ class InquiryNotifier implements InquiryNotifierInterface {
 
 		$agent_email = isset( $context['agent_email'] ) ? (string) $context['agent_email'] : '';
 
-		$agent_name  = isset( $context['agent_name'] ) ? (string) $context['agent_name'] : '';
+		$agent_name = isset( $context['agent_name'] ) ? (string) $context['agent_name'] : '';
 
 		$reply_to = \HvnlyNab\Email\EmailHeaders::reply_to( $agent_email, $agent_name );
 
@@ -478,8 +427,6 @@ class InquiryNotifier implements InquiryNotifierInterface {
 			$headers[] = $reply_to;
 
 		}
-
-
 
 		/**
 
@@ -498,9 +445,5 @@ class InquiryNotifier implements InquiryNotifierInterface {
 		 */
 
 		return apply_filters( 'hvnly_contact_agent_sender_email_headers', $headers, $context );
-
 	}
-
 }
-
-

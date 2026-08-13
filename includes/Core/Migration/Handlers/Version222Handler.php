@@ -17,7 +17,7 @@ use HvnlyNab\Core\Migration\Interfaces\MigrationInterface;
 use HvnlyNab\Core\Migration\Traits\MigrationTrait;
 
 // Prevent direct access.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -46,9 +46,9 @@ class Version222Handler implements MigrationInterface {
      */
     const CARD_BUILDER_KEY = 'hvnly_property_card.sections';
 
-    const BATCH_KEY    = 'hvnly_migration_222_offset';
-    const CONFIG_DONE  = 'hvnly_migration_222_config_done';
-    const STATS_KEY    = 'hvnly_migration_222_stats';
+    const BATCH_KEY   = 'hvnly_migration_222_offset';
+    const CONFIG_DONE = 'hvnly_migration_222_config_done';
+    const STATS_KEY   = 'hvnly_migration_222_stats';
 
     /**
      * Get the target version.
@@ -79,19 +79,19 @@ class Version222Handler implements MigrationInterface {
     public function is_needed(): bool {
         // Always run on first install of 2.2.2
         $version_completed = get_option('hvnly_migration_2.2.2_completed', false);
-        
+
         if ($version_completed) {
             return false;
         }
-        
+
         // Check if there are any properties that need migration
-        $properties = get_posts([
+        $properties = get_posts(array(
             'post_type' => 'hvnly_property',
             'posts_per_page' => 1,
-            'fields' => 'ids'
-        ]);
-        
-        return !empty($properties);
+            'fields' => 'ids',
+        ));
+
+        return ! empty($properties);
     }
 
     /**
@@ -199,8 +199,8 @@ class Version222Handler implements MigrationInterface {
      * @return bool
      */
     private function normalize_builder_configuration(): bool {
-        $sections = get_option(self::PROPERTY_BUILDER_KEY, []);
-        
+        $sections = get_option(self::PROPERTY_BUILDER_KEY, array());
+
         if (empty($sections)) {
             // Create default configuration with proper structure
             $sections = $this->get_default_normalized_configuration();
@@ -208,40 +208,40 @@ class Version222Handler implements MigrationInterface {
             $this->log('Created default normalized configuration');
             return true;
         }
-        
+
         $updated = false;
-        
+
         foreach ($sections as &$section) {
-            if (!isset($section['fields']) || !is_array($section['fields'])) {
+            if ( ! isset($section['fields']) || ! is_array($section['fields'])) {
                 continue;
             }
-            
+
             foreach ($section['fields'] as &$field) {
                 // Normalize group fields
-                if (!empty($field['group_id'])) {
+                if ( ! empty($field['group_id'])) {
                     $normalized = $this->normalize_group_field($field);
                     if ($normalized !== $field) {
-                        $field = $normalized;
+                        $field   = $normalized;
                         $updated = true;
                     }
                 }
-                
+
                 // Normalize regular fields
                 if (empty($field['group_id'])) {
                     $normalized = $this->normalize_regular_field($field);
                     if ($normalized !== $field) {
-                        $field = $normalized;
+                        $field   = $normalized;
                         $updated = true;
                     }
                 }
             }
         }
-        
+
         if ($updated) {
             update_option(self::PROPERTY_BUILDER_KEY, $sections);
             $this->log('Builder configuration normalized');
         }
-        
+
         return $updated;
     }
 
@@ -252,13 +252,13 @@ class Version222Handler implements MigrationInterface {
      * @param array $field Field configuration.
      * @return array Normalized field.
      */
-    private function normalize_group_field(array $field): array {
+    private function normalize_group_field( array $field ): array {
         // Ensure consistent group_base_id
         if (empty($field['group_base_id'])) {
-            $timestamp = time();
+            $timestamp     = time();
             $unique_suffix = substr(uniqid(), -8);
-            $group_type = $field['group_type'] ?? 'unknown';
-            
+            $group_type    = $field['group_type'] ?? 'unknown';
+
             switch ($group_type) {
                 case 'video':
                     $field['group_base_id'] = "video_{$timestamp}_{$unique_suffix}";
@@ -276,21 +276,21 @@ class Version222Handler implements MigrationInterface {
                     $field['group_base_id'] = "group_{$timestamp}_{$unique_suffix}";
             }
         }
-        
+
         // Ensure consistent metaKey
         if (empty($field['metaKey'])) {
-            $name_parts = explode('_', $field['name'] ?? $field['id'] ?? '');
+            $name_parts       = explode('_', $field['name'] ?? $field['id'] ?? '');
             $field['metaKey'] = end($name_parts);
         }
-        
+
         // Ensure consistent name format (use group_base_id + metaKey)
-        if (!empty($field['group_base_id']) && !empty($field['metaKey'])) {
+        if ( ! empty($field['group_base_id']) && ! empty($field['metaKey'])) {
             $expected_name = $field['group_base_id'] . '_' . $field['metaKey'];
-            if (($field['name'] ?? '') !== $expected_name) {
+            if (( $field['name'] ?? '' ) !== $expected_name) {
                 $field['name'] = $expected_name;
             }
         }
-        
+
         return $field;
     }
 
@@ -301,9 +301,9 @@ class Version222Handler implements MigrationInterface {
      * @param array $field Field configuration.
      * @return array Normalized field.
      */
-    private function normalize_regular_field(array $field): array {
+    private function normalize_regular_field( array $field ): array {
         // Ensure consistent name format for standard fields
-        $standard_fields = [
+        $standard_fields = array(
             '_hvnly_property_price' => 'price_label',
             '_hvnly_property_bedrooms' => 'number',
             '_hvnly_property_bathrooms' => 'number',
@@ -312,14 +312,14 @@ class Version222Handler implements MigrationInterface {
             '_hvnly_property_year_built' => 'number',
             '_hvnly_property_location' => 'select',
             '_hvnly_property_country_location' => 'select',
-        ];
-        
+        );
+
         $field_name = $field['name'] ?? $field['id'] ?? '';
-        
-        if (isset($standard_fields[$field_name])) {
-            $field['type'] = $standard_fields[$field_name];
+
+        if (isset($standard_fields[ $field_name ])) {
+            $field['type'] = $standard_fields[ $field_name ];
         }
-        
+
         return $field;
     }
 
@@ -330,31 +330,31 @@ class Version222Handler implements MigrationInterface {
      * @return bool
      */
     private function normalize_card_builder_configuration(): bool {
-        $sections = get_option(self::CARD_BUILDER_KEY, []);
-        
+        $sections = get_option(self::CARD_BUILDER_KEY, array());
+
         if (empty($sections)) {
             return false;
         }
-        
+
         // Card builder normalization logic
         $updated = false;
-        
+
         foreach ($sections as &$section) {
             if (isset($section['fields']) && is_array($section['fields'])) {
                 foreach ($section['fields'] as &$field) {
                     if (isset($field['type']) && $field['type'] === 'price') {
                         $field['type'] = 'price_label';
-                        $updated = true;
+                        $updated       = true;
                     }
                 }
             }
         }
-        
+
         if ($updated) {
             update_option(self::CARD_BUILDER_KEY, $sections);
             $this->log('Card builder configuration normalized');
         }
-        
+
         return $updated;
     }
 
@@ -366,36 +366,36 @@ class Version222Handler implements MigrationInterface {
      */
     private function migrate_all_properties(): array {
         global $wpdb;
-        
-        $properties = get_posts([
+
+        $properties = get_posts(array(
             'post_type' => 'hvnly_property',
             'posts_per_page' => -1,
             'post_status' => 'any',
-            'fields' => 'ids'
-        ]);
-        
-        $stats = [
+            'fields' => 'ids',
+        ));
+
+        $stats = array(
             'properties_processed' => count($properties),
             'fields_migrated' => 0,
             'documents_migrated' => 0,
             'videos_migrated' => 0,
             'galleries_migrated' => 0,
-            'maps_migrated' => 0
-        ];
-        
+            'maps_migrated' => 0,
+        );
+
         foreach ($properties as $property_id) {
             $this->log("Migrating property ID: {$property_id}");
-            
+
             // Migrate all group fields
             $stats['fields_migrated'] += $this->migrate_property_groups($property_id, $stats);
-            
+
             // Ensure price field is properly formatted
             $this->normalize_price_field($property_id);
-            
+
             // Generate property ID if missing
             $this->ensure_property_id($property_id);
         }
-        
+
         return $stats;
     }
 
@@ -407,183 +407,183 @@ class Version222Handler implements MigrationInterface {
      * @param array &$stats Statistics reference.
      * @return int Number of fields migrated.
      */
-    private function migrate_property_groups(int $property_id, array &$stats): int {
+    private function migrate_property_groups( int $property_id, array &$stats ): int {
         global $wpdb;
-        
-        $all_meta = get_post_meta($property_id);
+
+        $all_meta       = get_post_meta($property_id);
         $migrated_count = 0;
-        
+
         // Track processed groups to avoid duplicates
-        $processed_groups = [];
-        
+        $processed_groups = array();
+
         // PATTERN 1: Migrate video groups
-        $video_patterns = ['/^video_\d+_([a-f0-9]+)_/', '/^video_([a-f0-9]+)_/'];
-        $video_groups = $this->find_groups_by_pattern($all_meta, $video_patterns);
-        
+        $video_patterns = array( '/^video_\d+_([a-f0-9]+)_/', '/^video_([a-f0-9]+)_/' );
+        $video_groups   = $this->find_groups_by_pattern($all_meta, $video_patterns);
+
         foreach ($video_groups as $group_base => $fields) {
             if (in_array($group_base, $processed_groups)) {
                 continue;
             }
-            
+
             $processed_groups[] = $group_base;
-            
+
             // Extract video data
-            $title = $fields['title'] ?? '';
-            $url = $fields['url'] ?? '';
+            $title     = $fields['title'] ?? '';
+            $url       = $fields['url'] ?? '';
             $thumbnail = $fields['thumbnail'] ?? '';
-            
-            if (!empty($url)) {
+
+            if ( ! empty($url)) {
                 // Create normalized field names
-                $timestamp = time();
+                $timestamp     = time();
                 $unique_suffix = substr(uniqid(), -8);
-                $new_base = "video_{$timestamp}_{$unique_suffix}";
-                
-                $new_title_key = $new_base . '_title';
-                $new_url_key = $new_base . '_url';
+                $new_base      = "video_{$timestamp}_{$unique_suffix}";
+
+                $new_title_key     = $new_base . '_title';
+                $new_url_key       = $new_base . '_url';
                 $new_thumbnail_key = $new_base . '_thumbnail';
-                
+
                 // Copy to new keys if they don't exist
-                if (!isset($all_meta[$new_url_key])) {
+                if ( ! isset($all_meta[ $new_url_key ])) {
                     update_post_meta($property_id, $new_title_key, $title);
                     update_post_meta($property_id, $new_url_key, $url);
                     update_post_meta($property_id, $new_thumbnail_key, $thumbnail);
                     $migrated_count += 3;
                     $stats['videos_migrated']++;
-                    
+
                     $this->log("  - Migrated video group: {$group_base} -> {$new_base}");
                 }
             }
         }
-        
+
         // PATTERN 2: Migrate gallery groups
-        $gallery_patterns = ['/^gallery_\d+_([a-f0-9]+)_/', '/^gallery_([a-f0-9]+)_/'];
-        $gallery_groups = $this->find_groups_by_pattern($all_meta, $gallery_patterns);
-        
+        $gallery_patterns = array( '/^gallery_\d+_([a-f0-9]+)_/', '/^gallery_([a-f0-9]+)_/' );
+        $gallery_groups   = $this->find_groups_by_pattern($all_meta, $gallery_patterns);
+
         foreach ($gallery_groups as $group_base => $fields) {
             if (in_array($group_base, $processed_groups)) {
                 continue;
             }
-            
+
             $processed_groups[] = $group_base;
-            
-            $title = $fields['title'] ?? '';
+
+            $title  = $fields['title'] ?? '';
             $images = $fields['images'] ?? '';
-            
-            if (!empty($images)) {
-                $timestamp = time();
+
+            if ( ! empty($images)) {
+                $timestamp     = time();
                 $unique_suffix = substr(uniqid(), -8);
-                $new_base = "gallery_{$timestamp}_{$unique_suffix}";
-                
-                $new_title_key = $new_base . '_title';
+                $new_base      = "gallery_{$timestamp}_{$unique_suffix}";
+
+                $new_title_key  = $new_base . '_title';
                 $new_images_key = $new_base . '_images';
-                
-                if (!isset($all_meta[$new_images_key])) {
+
+                if ( ! isset($all_meta[ $new_images_key ])) {
                     update_post_meta($property_id, $new_title_key, $title);
                     update_post_meta($property_id, $new_images_key, $images);
                     $migrated_count += 2;
                     $stats['galleries_migrated']++;
-                    
+
                     $this->log("  - Migrated gallery group: {$group_base} -> {$new_base}");
                 }
             }
         }
-        
+
         // PATTERN 3: Migrate map groups
-        $map_patterns = ['/^map_\d+_([a-f0-9]+)_/', '/^map_([a-f0-9]+)_/'];
-        $map_groups = $this->find_groups_by_pattern($all_meta, $map_patterns);
-        
+        $map_patterns = array( '/^map_\d+_([a-f0-9]+)_/', '/^map_([a-f0-9]+)_/' );
+        $map_groups   = $this->find_groups_by_pattern($all_meta, $map_patterns);
+
         foreach ($map_groups as $group_base => $fields) {
             if (in_array($group_base, $processed_groups)) {
                 continue;
             }
-            
+
             $processed_groups[] = $group_base;
-            
-            $address = $fields['address'] ?? '';
-            $latitude = $fields['latitude'] ?? '';
+
+            $address   = $fields['address'] ?? '';
+            $latitude  = $fields['latitude'] ?? '';
             $longitude = $fields['longitude'] ?? '';
-            
-            if (!empty($address) || (!empty($latitude) && !empty($longitude))) {
-                $timestamp = time();
+
+            if ( ! empty($address) || ( ! empty($latitude) && ! empty($longitude) )) {
+                $timestamp     = time();
                 $unique_suffix = substr(uniqid(), -8);
-                $new_base = "map_{$timestamp}_{$unique_suffix}";
-                
-                $new_address_key = $new_base . '_address';
-                $new_latitude_key = $new_base . '_latitude';
+                $new_base      = "map_{$timestamp}_{$unique_suffix}";
+
+                $new_address_key   = $new_base . '_address';
+                $new_latitude_key  = $new_base . '_latitude';
                 $new_longitude_key = $new_base . '_longitude';
-                $new_preview_key = $new_base . '_preview';
-                
-                if (!isset($all_meta[$new_address_key])) {
+                $new_preview_key   = $new_base . '_preview';
+
+                if ( ! isset($all_meta[ $new_address_key ])) {
                     update_post_meta($property_id, $new_address_key, $address);
                     update_post_meta($property_id, $new_latitude_key, $latitude);
                     update_post_meta($property_id, $new_longitude_key, $longitude);
                     update_post_meta($property_id, $new_preview_key, '');
                     $migrated_count += 4;
                     $stats['maps_migrated']++;
-                    
+
                     $this->log("  - Migrated map group: {$group_base} -> {$new_base}");
                 }
             }
         }
-        
+
         // PATTERN 4: Migrate property documents groups
-        $docs_patterns = ['/^property_docs_\d+_([a-f0-9]+)_/', '/^property_docs_([a-f0-9]+)_/'];
-        $docs_groups = $this->find_groups_by_pattern($all_meta, $docs_patterns);
-        
+        $docs_patterns = array( '/^property_docs_\d+_([a-f0-9]+)_/', '/^property_docs_([a-f0-9]+)_/' );
+        $docs_groups   = $this->find_groups_by_pattern($all_meta, $docs_patterns);
+
         foreach ($docs_groups as $group_base => $fields) {
             if (in_array($group_base, $processed_groups)) {
                 continue;
             }
-            
+
             $processed_groups[] = $group_base;
-            
-            $icons = $fields['icon'] ?? '';
+
+            $icons  = $fields['icon'] ?? '';
             $labels = $fields['label'] ?? '';
-            $urls = $fields['url'] ?? '';
-            
-            if (!empty($labels) && !empty($urls)) {
+            $urls   = $fields['url'] ?? '';
+
+            if ( ! empty($labels) && ! empty($urls)) {
                 // Build documents array
-                $documents = [];
-                $icon_array = is_array($icons) ? $icons : ($icons ? [$icons] : []);
-                $label_array = is_array($labels) ? $labels : ($labels ? [$labels] : []);
-                $url_array = is_array($urls) ? $urls : ($urls ? [$urls] : []);
-                
+                $documents   = array();
+                $icon_array  = is_array($icons) ? $icons : ( $icons ? array( $icons ) : array() );
+                $label_array = is_array($labels) ? $labels : ( $labels ? array( $labels ) : array() );
+                $url_array   = is_array($urls) ? $urls : ( $urls ? array( $urls ) : array() );
+
                 $count = max(count($label_array), count($url_array));
-                
+
                 for ($i = 0; $i < $count; $i++) {
-                    $label = $label_array[$i] ?? '';
-                    $url = $url_array[$i] ?? '';
-                    $icon = $icon_array[$i] ?? 'file-pdf';
-                    
-                    if (!empty($label) && !empty($url)) {
-                        $documents[] = [
+                    $label = $label_array[ $i ] ?? '';
+                    $url   = $url_array[ $i ] ?? '';
+                    $icon  = $icon_array[ $i ] ?? 'file-pdf';
+
+                    if ( ! empty($label) && ! empty($url)) {
+                        $documents[] = array(
                             'icon' => $icon,
                             'label' => $label,
                             'url' => $url,
-                            'url_type' => 'custom'
-                        ];
+                            'url_type' => 'custom',
+                        );
                     }
                 }
-                
-                if (!empty($documents)) {
-                    $timestamp = time();
+
+                if ( ! empty($documents)) {
+                    $timestamp     = time();
                     $unique_suffix = substr(uniqid(), -8);
-                    $new_base = "property_docs_{$timestamp}_{$unique_suffix}";
-                    
+                    $new_base      = "property_docs_{$timestamp}_{$unique_suffix}";
+
                     $documents_json = wp_json_encode($documents);
-                    $json_field = $new_base . '_documents';
-                    
-                    if (!isset($all_meta[$json_field])) {
+                    $json_field     = $new_base . '_documents';
+
+                    if ( ! isset($all_meta[ $json_field ])) {
                         update_post_meta($property_id, $json_field, $documents_json);
                         $migrated_count++;
                         $stats['documents_migrated']++;
-                        
+
                         $this->log("  - Migrated documents group: {$group_base} -> {$new_base} ({$count} documents)");
                     }
                 }
             }
         }
-        
+
         return $migrated_count;
     }
 
@@ -595,27 +595,27 @@ class Version222Handler implements MigrationInterface {
      * @param array $patterns Regex patterns.
      * @return array Found groups.
      */
-    private function find_groups_by_pattern(array $all_meta, array $patterns): array {
-        $groups = [];
-        
+    private function find_groups_by_pattern( array $all_meta, array $patterns ): array {
+        $groups = array();
+
         foreach ($all_meta as $meta_key => $meta_value) {
             foreach ($patterns as $pattern) {
                 if (preg_match($pattern, $meta_key, $matches)) {
                     $group_base = $matches[0];
                     $field_type = $this->get_field_type_from_key($meta_key);
-                    
-                    if (!isset($groups[$group_base])) {
-                        $groups[$group_base] = [];
+
+                    if ( ! isset($groups[ $group_base ])) {
+                        $groups[ $group_base ] = array();
                     }
-                    
-                    $value = is_array($meta_value) ? ($meta_value[0] ?? '') : $meta_value;
-                    $groups[$group_base][$field_type] = $value;
-                    
+
+                    $value                                = is_array($meta_value) ? ( $meta_value[0] ?? '' ) : $meta_value;
+                    $groups[ $group_base ][ $field_type ] = $value;
+
                     break;
                 }
             }
         }
-        
+
         return $groups;
     }
 
@@ -626,7 +626,7 @@ class Version222Handler implements MigrationInterface {
      * @param string $meta_key Meta key.
      * @return string Field type.
      */
-    private function get_field_type_from_key(string $meta_key): string {
+    private function get_field_type_from_key( string $meta_key ): string {
         if (strpos($meta_key, '_title') !== false) {
             return 'title';
         }
@@ -660,7 +660,7 @@ class Version222Handler implements MigrationInterface {
         if (strpos($meta_key, '_documents') !== false) {
             return 'documents';
         }
-        
+
         return 'unknown';
     }
 
@@ -670,29 +670,33 @@ class Version222Handler implements MigrationInterface {
      * @since 2.2.2
      * @param int $property_id Property ID.
      */
-    private function normalize_price_field(int $property_id): void {
+    private function normalize_price_field( int $property_id ): void {
         $price_value = get_post_meta($property_id, '_hvnly_property_price', true);
-        
+
         if (empty($price_value)) {
             return;
         }
-        
+
         // Check if already JSON format
         if (is_string($price_value) && strlen($price_value) > 0 && $price_value[0] === '{') {
             return;
         }
-        
+
         // Check if it's a price on call value
-        $price_on_call_values = [
-            'priceOnCall', 'fixedPrice', 'guidePrice', 'offersOver', 'priceOnCallNone'
-        ];
-        
+        $price_on_call_values = array(
+            'priceOnCall',
+			'fixedPrice',
+			'guidePrice',
+			'offersOver',
+			'priceOnCallNone',
+        );
+
         if (in_array($price_value, $price_on_call_values)) {
-            $json_value = json_encode([
+            $json_value = json_encode(array(
                 '__type' => 'custom_label',
                 'value' => $price_value,
-                'label' => $this->get_price_label($price_value)
-            ]);
+                'label' => $this->get_price_label($price_value),
+            ));
             update_post_meta($property_id, '_hvnly_property_price', $json_value);
             $this->log("  - Normalized price field: {$price_value} -> JSON format");
         } elseif (is_numeric($price_value)) {
@@ -708,16 +712,16 @@ class Version222Handler implements MigrationInterface {
      * @param string $value Price value.
      * @return string Label.
      */
-    private function get_price_label(string $value): string {
-        $labels = [
+    private function get_price_label( string $value ): string {
+        $labels = array(
             'priceOnCall' => __('Price on Call', 'havenlytics'),
             'fixedPrice' => __('Fixed Price', 'havenlytics'),
             'guidePrice' => __('Guide Price', 'havenlytics'),
             'offersOver' => __('Offers Over', 'havenlytics'),
             'priceOnCallNone' => __('Price on Request', 'havenlytics'),
-        ];
-        
-        return $labels[$value] ?? ucwords(str_replace(['_', '-'], ' ', $value));
+        );
+
+        return $labels[ $value ] ?? ucwords(str_replace(array( '_', '-' ), ' ', $value));
     }
 
     /**
@@ -726,9 +730,9 @@ class Version222Handler implements MigrationInterface {
      * @since 2.2.2
      * @param int $property_id Property ID.
      */
-    private function ensure_property_id(int $property_id): void {
+    private function ensure_property_id( int $property_id ): void {
         $property_id_value = get_post_meta($property_id, '_hvnly_unique_property_id', true);
-        
+
         if (empty($property_id_value)) {
             if (function_exists('hvnlyMain') && method_exists(hvnlyMain(), 'Helper')) {
                 $property_id_value = hvnlyMain()->Helper->generate_property_id($property_id);
@@ -744,8 +748,8 @@ class Version222Handler implements MigrationInterface {
      */
     private function create_unified_meta_index(): void {
         global $wpdb;
-        
-        $index = [
+
+        $index = array(
             'price_field' => '_hvnly_property_price',
             'bedrooms_field' => '_hvnly_property_bedrooms',
             'bathrooms_field' => '_hvnly_property_bathrooms',
@@ -758,8 +762,8 @@ class Version222Handler implements MigrationInterface {
             'map_lat_field' => '_hvnly_property_location_Latitude',
             'map_lng_field' => '_hvnly_property_location_Longitude',
             'map_address_field' => '_hvnly_property_map_location_address',
-        ];
-        
+        );
+
         update_option('hvnly_unified_meta_index', $index);
         $this->log('Unified meta index created');
     }
@@ -788,34 +792,34 @@ class Version222Handler implements MigrationInterface {
      * @return array
      */
     private function get_current_field_names(): array {
-        $sections = get_option(self::PROPERTY_BUILDER_KEY, []);
-        $field_names = [];
-        
+        $sections    = get_option(self::PROPERTY_BUILDER_KEY, array());
+        $field_names = array();
+
         foreach ($sections as $section) {
             if (empty($section['fields'])) {
                 continue;
             }
-            
+
             foreach ($section['fields'] as $field) {
-                if (!empty($field['name'])) {
+                if ( ! empty($field['name'])) {
                     $field_names[] = $field['name'];
                 }
-                if (!empty($field['id'])) {
+                if ( ! empty($field['id'])) {
                     $field_names[] = $field['id'];
                 }
             }
         }
-        
+
         // Add system fields
-        $system_fields = [
+        $system_fields = array(
             '_hvnly_unique_property_id',
             '_hvnly_property_featured',
             '_hvnly_property_views',
             '_thumbnail_id',
             '_edit_lock',
             '_edit_last',
-        ];
-        
+        );
+
         return array_unique(array_merge($field_names, $system_fields));
     }
 
@@ -826,8 +830,8 @@ class Version222Handler implements MigrationInterface {
      * @param string $key Meta key.
      * @return bool
      */
-    private function is_system_key(string $key): bool {
-        $system_patterns = [
+    private function is_system_key( string $key ): bool {
+        $system_patterns = array(
             '_wp_',
             '_edit_',
             '_encloseme',
@@ -835,14 +839,14 @@ class Version222Handler implements MigrationInterface {
             '_oembed_',
             '_thumbnail_id',
             '_hvnly_importing',
-        ];
-        
+        );
+
         foreach ($system_patterns as $pattern) {
             if (strpos($key, $pattern) === 0) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -853,19 +857,19 @@ class Version222Handler implements MigrationInterface {
      * @return array
      */
     private function get_default_normalized_configuration(): array {
-        $timestamp = time();
+        $timestamp     = time();
         $unique_suffix = substr(uniqid(), -8);
-        
-        return [
-            'sec_basic_info' => [
+
+        return array(
+            'sec_basic_info' => array(
                 'id' => 'sec_basic_info',
                 'title' => 'Basic Info',
                 'icon' => 'fas fa-home',
                 'required' => true,
                 'order' => 0,
                 'collapsed' => false,
-                'fields' => [
-                    [
+                'fields' => array(
+                    array(
                         'id' => '_hvnly_property_price',
                         'name' => '_hvnly_property_price',
                         'type' => 'price_label',
@@ -874,8 +878,8 @@ class Version222Handler implements MigrationInterface {
                         'required' => true,
                         'locked' => true,
                         'order' => 0,
-                    ],
-                    [
+                    ),
+                    array(
                         'id' => '_hvnly_property_bedrooms',
                         'name' => '_hvnly_property_bedrooms',
                         'type' => 'number',
@@ -884,8 +888,8 @@ class Version222Handler implements MigrationInterface {
                         'required' => true,
                         'locked' => true,
                         'order' => 1,
-                    ],
-                    [
+                    ),
+                    array(
                         'id' => '_hvnly_property_bathrooms',
                         'name' => '_hvnly_property_bathrooms',
                         'type' => 'number',
@@ -894,8 +898,8 @@ class Version222Handler implements MigrationInterface {
                         'required' => true,
                         'locked' => true,
                         'order' => 2,
-                    ],
-                    [
+                    ),
+                    array(
                         'id' => '_hvnly_property_reception_rooms',
                         'name' => '_hvnly_property_reception_rooms',
                         'type' => 'number',
@@ -904,8 +908,8 @@ class Version222Handler implements MigrationInterface {
                         'required' => true,
                         'locked' => true,
                         'order' => 3,
-                    ],
-                    [
+                    ),
+                    array(
                         'id' => '_hvnly_property_sqft',
                         'name' => '_hvnly_property_sqft',
                         'type' => 'number',
@@ -914,8 +918,8 @@ class Version222Handler implements MigrationInterface {
                         'required' => false,
                         'locked' => false,
                         'order' => 4,
-                    ],
-                    [
+                    ),
+                    array(
                         'id' => '_hvnly_property_year_built',
                         'name' => '_hvnly_property_year_built',
                         'type' => 'number',
@@ -924,10 +928,10 @@ class Version222Handler implements MigrationInterface {
                         'required' => false,
                         'locked' => false,
                         'order' => 5,
-                    ],
-                ],
-            ],
-        ];
+                    ),
+                ),
+            ),
+        );
     }
 
     /**
@@ -938,10 +942,10 @@ class Version222Handler implements MigrationInterface {
      */
     public function down(): bool {
         $this->log('Rolling back migration to version ' . $this->get_version());
-        
+
         // Find most recent backup
         $backup_id = $this->find_latest_backup();
-        
+
         if ($backup_id) {
             $restored = $this->restore_from_backup($backup_id);
             if ($restored) {
@@ -952,7 +956,7 @@ class Version222Handler implements MigrationInterface {
                 return true;
             }
         }
-        
+
         $this->log('No backup found for rollback');
         return false;
     }
@@ -965,9 +969,9 @@ class Version222Handler implements MigrationInterface {
      */
     private function find_latest_backup() {
         global $wpdb;
-        
+
         $backup_pattern = '_hvnly_backup_2.2.2_%';
-        
+
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Migration backup option lookup.
         $backups = $wpdb->get_col(
             $wpdb->prepare(
@@ -977,7 +981,7 @@ class Version222Handler implements MigrationInterface {
                 $backup_pattern
             )
         );
-        
-        return !empty($backups) ? $backups[0] : false;
+
+        return ! empty($backups) ? $backups[0] : false;
     }
 }

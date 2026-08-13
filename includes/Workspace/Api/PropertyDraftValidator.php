@@ -46,7 +46,7 @@ final class PropertyDraftValidator {
 			$raw   = array_key_exists( $name, $fields ) ? $fields[ $name ] : null;
 			$empty = self::is_empty_value( $raw );
 			if ( $empty ) {
-				$detail = self::describe_field( $schema, $name, $label, $raw );
+				$detail                      = self::describe_field( $schema, $name, $label, $raw );
 				$errors[ 'fields.' . $name ] = sprintf(
 					/* translators: %s: field label */
 					__( '%s is required.', 'havenlytics' ),

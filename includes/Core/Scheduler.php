@@ -35,8 +35,8 @@ defined('ABSPATH') || exit;
  *
  * @since 2.0.0
  */
-class Scheduler
-{
+class Scheduler {
+
     /**
      * Schedule all plugin events with WordPress cron system
      *
@@ -53,13 +53,12 @@ class Scheduler
      * @return void
      * @since 2.0.0
      */
-    public static function schedule_events()
-    {
+    public static function schedule_events() {
         /**
          * Schedule daily cache cleanup event
          * Removes expired cache entries to prevent database bloat
          */
-        if (!wp_next_scheduled('hvnly_daily_cache_cleanup')) {
+        if ( ! wp_next_scheduled('hvnly_daily_cache_cleanup')) {
             wp_schedule_event(time(), 'daily', 'hvnly_daily_cache_cleanup');
         }
 
@@ -67,7 +66,7 @@ class Scheduler
          * Schedule daily analytics cleanup event
          * Prunes per-property view analytics older than the retention window
          */
-        if (!wp_next_scheduled('hvnly_daily_analytics_cleanup')) {
+        if ( ! wp_next_scheduled('hvnly_daily_analytics_cleanup')) {
             wp_schedule_event(time(), 'daily', 'hvnly_daily_analytics_cleanup');
         }
 
@@ -75,7 +74,7 @@ class Scheduler
          * Schedule weekly optimization event
          * Performs performance optimization and database maintenance
          */
-        if (!wp_next_scheduled('hvnly_weekly_optimization')) {
+        if ( ! wp_next_scheduled('hvnly_weekly_optimization')) {
             wp_schedule_event(time(), 'weekly', 'hvnly_weekly_optimization');
         }
 
@@ -83,7 +82,7 @@ class Scheduler
          * Schedule monthly comprehensive cleanup event
          * Handles extensive maintenance tasks and system optimization
          */
-        if (!wp_next_scheduled('hvnly_monthly_cleanup')) {
+        if ( ! wp_next_scheduled('hvnly_monthly_cleanup')) {
             wp_schedule_event(time(), 'monthly', 'hvnly_monthly_cleanup');
         }
     }
@@ -98,8 +97,7 @@ class Scheduler
      * @return void
      * @since 2.0.0
      */
-    public static function clear_scheduled_events()
-    {
+    public static function clear_scheduled_events() {
         /**
          * Remove daily cache cleanup event
          */
@@ -132,25 +130,24 @@ class Scheduler
      * @return array Modified schedules with custom intervals added
      * @since 2.0.0
      */
-    public static function custom_cron_intervals($schedules)
-    {
+    public static function custom_cron_intervals( $schedules ) {
         /**
          * Add weekly interval (7 days / 604,800 seconds)
          * Used for weekly optimization tasks
          */
-        $schedules['weekly'] = [
+        $schedules['weekly'] = array(
             'interval' => WEEK_IN_SECONDS,
             'display'  => __('Once Weekly', 'havenlytics'),
-        ];
+        );
 
         /**
          * Add monthly interval (approximately 30 days)
          * Used for comprehensive monthly maintenance
          */
-        $schedules['monthly'] = [
+        $schedules['monthly'] = array(
             'interval' => 30 * DAY_IN_SECONDS,
             'display'  => __('Once Monthly', 'havenlytics'),
-        ];
+        );
 
         return $schedules;
     }
@@ -170,24 +167,23 @@ class Scheduler
      * @return void
      * @since 2.0.0
      */
-    public static function init()
-    {
+    public static function init() {
         /**
          * Register custom cron intervals with WordPress
          * This allows using 'weekly' and 'monthly' intervals in scheduling
          */
-        add_filter('cron_schedules', [self::class, 'custom_cron_intervals']);
+        add_filter('cron_schedules', array( self::class, 'custom_cron_intervals' ));
 
         /**
          * Schedule plugin events when all plugins are loaded
          * Ensures WordPress is fully initialized before scheduling
          */
-        add_action('plugins_loaded', [self::class, 'schedule_events']);
+        add_action('plugins_loaded', array( self::class, 'schedule_events' ));
 
         /**
          * Register deactivation hook to clear scheduled events
          * Ensures clean removal of cron jobs when plugin is deactivated
          */
-        register_deactivation_hook(HVNLYNAB_FILE, [self::class, 'clear_scheduled_events']);
+        register_deactivation_hook(HVNLYNAB_FILE, array( self::class, 'clear_scheduled_events' ));
     }
 }

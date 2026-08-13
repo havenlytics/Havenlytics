@@ -27,7 +27,7 @@ use HvnlyNab\Workspace\Auth\SessionAuthController;
 use HvnlyNab\Workspace\WorkspaceSettings;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -46,72 +46,72 @@ final class AuthenticationBlockRenderer {
      * @param object $block      Block instance (unused).
      * @return string
      */
-    public static function render($attributes = [], string $content = '', $block = null): string {
+    public static function render( $attributes = array(), string $content = '', $block = null ): string {
         unset($content, $block);
 
-        if (!function_exists('hvnly_get_template_part')) {
+        if ( ! function_exists('hvnly_get_template_part')) {
             return '';
         }
 
-        $attributes = is_array($attributes) ? $attributes : [];
+        $attributes = is_array($attributes) ? $attributes : array();
 
         $mode = self::choice(
-            (string) ($attributes['authMode'] ?? 'auto'),
-            ['auto', 'login', 'register', 'tabs'],
+            (string) ( $attributes['authMode'] ?? 'auto' ),
+            array( 'auto', 'login', 'register', 'tabs' ),
             'auto'
         );
 
         $layout = self::choice(
-            (string) ($attributes['layout'] ?? 'card'),
-            ['card', 'modern', 'classic', 'minimal'],
+            (string) ( $attributes['layout'] ?? 'card' ),
+            array( 'card', 'modern', 'classic', 'minimal' ),
             'card'
         );
 
         $align = self::choice(
-            (string) ($attributes['cardAlign'] ?? 'center'),
-            ['left', 'center', 'right'],
+            (string) ( $attributes['cardAlign'] ?? 'center' ),
+            array( 'left', 'center', 'right' ),
             'center'
         );
 
         $default_tab = self::choice(
-            (string) ($attributes['defaultTab'] ?? 'login'),
-            ['login', 'register'],
+            (string) ( $attributes['defaultTab'] ?? 'login' ),
+            array( 'login', 'register' ),
             'login'
         );
 
-        $card_width = (int) ($attributes['cardWidth'] ?? 460);
+        $card_width = (int) ( $attributes['cardWidth'] ?? 460 );
         $card_width = max(320, min(720, $card_width));
 
-        $is_logged_in       = is_user_logged_in();
-        $workspace_enabled  = class_exists(WorkspaceSettings::class) && WorkspaceSettings::is_enabled();
-        $registration_open  = class_exists(WorkspaceSettings::class) && WorkspaceSettings::is_registration_enabled();
-        $registration_mode  = class_exists(WorkspaceSettings::class) ? WorkspaceSettings::get_registration_mode() : 'disabled';
+        $is_logged_in      = is_user_logged_in();
+        $workspace_enabled = class_exists(WorkspaceSettings::class) && WorkspaceSettings::is_enabled();
+        $registration_open = class_exists(WorkspaceSettings::class) && WorkspaceSettings::is_registration_enabled();
+        $registration_mode = class_exists(WorkspaceSettings::class) ? WorkspaceSettings::get_registration_mode() : 'disabled';
 
         // Resolved, validated redirect targets (JS only navigates to these).
         $dashboard_url = $workspace_enabled ? WorkspaceSettings::route_url('dashboard') : home_url('/');
         $account_url   = $workspace_enabled ? WorkspaceSettings::route_url('profile') : home_url('/');
 
-        $after_login = self::resolve_redirect(
-            (string) ($attributes['afterLogin'] ?? 'current'),
-            (string) ($attributes['afterLoginUrl'] ?? ''),
+        $after_login    = self::resolve_redirect(
+            (string) ( $attributes['afterLogin'] ?? 'current' ),
+            (string) ( $attributes['afterLoginUrl'] ?? '' ),
             $dashboard_url,
             $account_url
         );
         $after_register = self::resolve_redirect(
-            (string) ($attributes['afterRegister'] ?? 'current'),
-            (string) ($attributes['afterRegisterUrl'] ?? ''),
+            (string) ( $attributes['afterRegister'] ?? 'current' ),
+            (string) ( $attributes['afterRegisterUrl'] ?? '' ),
             $dashboard_url,
             $account_url
         );
 
         // Per-instance data attributes consumed by hvnly-block-auth.js.
-        $config = [
+        $config = array(
             'mode'             => $mode,
             'defaultTab'       => $default_tab,
             'afterLogin'       => $after_login,
             'afterRegister'    => $after_register,
             'registrationMode' => $registration_mode,
-        ];
+        );
 
         $wrapper_class = 'hvnly-auth hvnly-auth--layout-' . $layout . ' hvnly-auth--align-' . $align;
         if ($is_logged_in) {
@@ -119,10 +119,10 @@ final class AuthenticationBlockRenderer {
         }
 
         $wrapper = function_exists('get_block_wrapper_attributes')
-            ? get_block_wrapper_attributes(['class' => $wrapper_class])
+            ? get_block_wrapper_attributes(array( 'class' => $wrapper_class ))
             : 'class="' . esc_attr($wrapper_class) . '"';
 
-        $template_args = [
+        $template_args = array(
             'attributes'        => $attributes,
             'mode'              => $mode,
             'layout'            => $layout,
@@ -137,7 +137,7 @@ final class AuthenticationBlockRenderer {
             'dashboard_url'     => $dashboard_url,
             'account_url'       => $account_url,
             'wrapper'           => $wrapper,
-        ];
+        );
 
         if ($is_logged_in) {
             $template_args = array_merge($template_args, self::current_user_panel_data());
@@ -159,21 +159,21 @@ final class AuthenticationBlockRenderer {
 
         $avatar = '';
         if (class_exists(AvatarService::class)) {
-            $avatar = AvatarService::resolve_for_user((int) $user->ID, 96);
+            $avatar = AvatarService::resolve_for_user( (int) $user->ID, 96);
         }
         if ($avatar === '') {
-            $avatar = get_avatar_url((int) $user->ID, ['size' => 96]);
+            $avatar = get_avatar_url( (int) $user->ID, array( 'size' => 96 ));
         }
 
-        $roles     = is_array($user->roles) ? $user->roles : [];
-        $is_admin  = current_user_can('manage_options');
+        $roles      = is_array($user->roles) ? $user->roles : array();
+        $is_admin   = current_user_can('manage_options');
         $agent_role = class_exists(PortalCapabilities::class) ? PortalCapabilities::WP_ROLE_AGENT : 'hvnly_agent';
         $portal_cap = class_exists(PortalCapabilities::class) ? PortalCapabilities::PORTAL_ACCESS : 'hvnly_portal_access';
 
         $is_agent = in_array($agent_role, $roles, true)
-            || (user_can($user, $portal_cap) && !user_can($user, 'edit_posts'));
+            || ( user_can($user, $portal_cap) && ! user_can($user, 'edit_posts') );
 
-        return [
+        return array(
             'user'          => $user,
             'display_name'  => $user->display_name !== '' ? $user->display_name : $user->user_login,
             'avatar_url'    => $avatar,
@@ -181,7 +181,7 @@ final class AuthenticationBlockRenderer {
             'is_admin'      => $is_admin,
             'is_agent'      => $is_agent,
             'logout_action' => class_exists(SessionAuthController::class) ? SessionAuthController::ACTION_LOGOUT : 'hvnly_ws_logout',
-        ];
+        );
     }
 
     /**
@@ -191,7 +191,7 @@ final class AuthenticationBlockRenderer {
      * @param bool     $is_admin Whether the user can manage_options.
      * @return string
      */
-    private static function role_label(array $roles, bool $is_admin): string {
+    private static function role_label( array $roles, bool $is_admin ): string {
         if ($is_admin) {
             return __('Administrator', 'havenlytics');
         }
@@ -203,12 +203,12 @@ final class AuthenticationBlockRenderer {
 
         if (function_exists('wp_roles')) {
             $names = wp_roles()->get_names();
-            if (isset($names[$primary])) {
-                return translate_user_role((string) $names[$primary]);
+            if (isset($names[ $primary ])) {
+                return translate_user_role( (string) $names[ $primary ]);
             }
         }
 
-        return ucwords(str_replace(['_', '-'], ' ', $primary));
+        return ucwords(str_replace(array( '_', '-' ), ' ', $primary));
     }
 
     /**
@@ -222,7 +222,7 @@ final class AuthenticationBlockRenderer {
      * @param string $account   Resolved account URL.
      * @return string Absolute URL, or '' for "reload current page".
      */
-    private static function resolve_redirect(string $type, string $custom, string $dashboard, string $account): string {
+    private static function resolve_redirect( string $type, string $custom, string $dashboard, string $account ): string {
         switch ($type) {
             case 'dashboard':
                 return $dashboard;
@@ -245,7 +245,7 @@ final class AuthenticationBlockRenderer {
      * @param string   $default Fallback.
      * @return string
      */
-    private static function choice(string $value, array $allowed, string $default): string {
+    private static function choice( string $value, array $allowed, string $default ): string {
         return in_array($value, $allowed, true) ? $value : $default;
     }
 }

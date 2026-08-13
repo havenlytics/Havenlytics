@@ -63,7 +63,7 @@ $hvnly_min_height = isset($hvnly_a['min_height']) ? (int) $hvnly_a['min_height']
                     </div>
                 <?php elseif (!empty($hvnly_gate['button_url'])) : ?>
                     <p class="hvnly-dashboard-block__gate-actions">
-                        <a class="hvnly-dashboard-block__gate-btn" href="<?php echo esc_url((string) $hvnly_gate['button_url']); ?>">
+                        <a class="hvnly-btn hvnly-btn--primary hvnly-dashboard-block__gate-btn" href="<?php echo esc_url((string) $hvnly_gate['button_url']); ?>">
                             <?php echo esc_html((string) ($hvnly_gate['button_label'] ?? __('Sign in', 'havenlytics'))); ?>
                         </a>
                     </p>

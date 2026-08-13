@@ -16,23 +16,28 @@
     cursor: pointer;
 }
 
+/* Saved / busy / focus-visible detail; chrome in hvnly-frontend-components.css */
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite.is-favorited,
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite[aria-pressed="true"],
 .hvnly-property--grid-list--favorite.is-favorited,
 .hvnly-property--grid-list--favorite[aria-pressed="true"] {
     color: var(--hvnly-brand-error, #ff4d4f);
 }
 
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite.is-favorited i,
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite[aria-pressed="true"] i,
 .hvnly-property--grid-list--favorite.is-favorited i,
 .hvnly-property--grid-list--favorite[aria-pressed="true"] i {
     color: var(--hvnly-brand-error, #ff4d4f);
 }
 
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite:focus-visible,
 .hvnly-property--grid-list--favorite:focus-visible {
     outline: 2px solid var(--hvnly-brand-primary, #0073aa);
     outline-offset: 2px;
 }
 
-/* In-flight REST call — keep the optimistic state visible but
-   signal that the control is temporarily inert. */
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite[data-hvnly-busy="1"],
 .hvnly-property--grid-list--favorite[data-hvnly-busy="1"] {
     opacity: 0.65;
     pointer-events: none;

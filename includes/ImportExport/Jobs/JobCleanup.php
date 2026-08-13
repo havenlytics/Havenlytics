@@ -121,7 +121,7 @@ final class JobCleanup {
 
 		if ( ! empty( $job['zip_path'] ) && is_string( $job['zip_path'] ) ) {
 			TempStorage::delete_workdir( wp_normalize_path( dirname( (string) $job['zip_path'] ) ) );
-			$job['zip_path']      = '';
+			$job['zip_path']     = '';
 			$job['zip_filename'] = '';
 		}
 

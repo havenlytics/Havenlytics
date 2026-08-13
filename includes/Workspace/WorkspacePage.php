@@ -192,7 +192,7 @@ final class WorkspacePage {
 			}
 		}
 
-		$slug = WorkspaceSettings::get_page_slug();
+		$slug    = WorkspaceSettings::get_page_slug();
 		$by_path = get_page_by_path( $slug );
 		if ( $by_path instanceof \WP_Post ) {
 			update_option( WorkspaceConstants::PAGE_ID_OPTION, (int) $by_path->ID, false );

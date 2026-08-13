@@ -124,7 +124,7 @@ $hvnly_field = function (array $field) {
                 <?php echo !empty($field['minlength']) ? 'minlength="' . esc_attr((string) $field['minlength']) . '"' : ''; ?>
             />
             <?php if ($has_toggle) : ?>
-                <button type="button" class="hvnly-auth__toggle" data-hvnly-auth-toggle aria-label="<?php esc_attr_e('Show password', 'havenlytics'); ?>" aria-pressed="false">
+                <button type="button" class="hvnly-ui-control hvnly-auth__toggle" data-hvnly-auth-toggle aria-label="<?php esc_attr_e('Show password', 'havenlytics'); ?>" aria-pressed="false">
                     <span class="hvnly-auth__toggle-icon" aria-hidden="true"></span>
                 </button>
             <?php endif; ?>
@@ -201,7 +201,7 @@ $hvnly_field = function (array $field) {
                 <?php endif; ?>
 
                 <div class="hvnly-auth__account-actions">
-                    <button type="button" class="hvnly-auth__btn hvnly-auth__btn--ghost" data-hvnly-auth-logout data-action="<?php echo esc_attr($hvnly_logout_action); ?>">
+                    <button type="button" class="hvnly-btn hvnly-btn--ghost hvnly-auth__btn hvnly-auth__btn--ghost" data-hvnly-auth-logout data-action="<?php echo esc_attr($hvnly_logout_action); ?>">
                         <span class="hvnly-auth__btn-label"><?php echo esc_html__('Sign out', 'havenlytics'); ?></span>
                         <span class="hvnly-auth__spinner" aria-hidden="true"></span>
                     </button>
@@ -229,8 +229,8 @@ $hvnly_field = function (array $field) {
 
                 <?php if ($hvnly_use_tabs) : ?>
                     <div class="hvnly-auth__tabs" role="tablist" aria-label="<?php esc_attr_e('Authentication', 'havenlytics'); ?>">
-                        <button type="button" class="hvnly-auth__tab" role="tab" data-hvnly-auth-tab="login" aria-selected="false"><?php echo esc_html__('Sign in', 'havenlytics'); ?></button>
-                        <button type="button" class="hvnly-auth__tab" role="tab" data-hvnly-auth-tab="register" aria-selected="false"><?php echo esc_html__('Create account', 'havenlytics'); ?></button>
+                        <button type="button" class="hvnly-ui-control hvnly-auth__tab" role="tab" data-hvnly-auth-tab="login" aria-selected="false"><?php echo esc_html__('Sign in', 'havenlytics'); ?></button>
+                        <button type="button" class="hvnly-ui-control hvnly-auth__tab" role="tab" data-hvnly-auth-tab="register" aria-selected="false"><?php echo esc_html__('Create account', 'havenlytics'); ?></button>
                     </div>
                 <?php endif; ?>
 
@@ -265,17 +265,17 @@ $hvnly_field = function (array $field) {
                                 </label>
                             <?php endif; ?>
                             <?php if ($hvnly_show_forgot) : ?>
-                                <button type="button" class="hvnly-auth__linkbtn" data-hvnly-auth-goto="forgot"><?php echo esc_html__('Forgot password?', 'havenlytics'); ?></button>
+                                <button type="button" class="hvnly-ui-control hvnly-auth__linkbtn" data-hvnly-auth-goto="forgot"><?php echo esc_html__('Forgot password?', 'havenlytics'); ?></button>
                             <?php endif; ?>
                         </div>
-                        <button type="submit" class="hvnly-auth__btn hvnly-auth__btn--primary">
+                        <button type="submit" class="hvnly-btn hvnly-btn--primary hvnly-auth__btn hvnly-auth__btn--primary">
                             <span class="hvnly-auth__btn-label"><?php echo esc_html__('Sign in', 'havenlytics'); ?></span>
                             <span class="hvnly-auth__spinner" aria-hidden="true"></span>
                         </button>
                         <?php if ($hvnly_show_register_lnk && $hvnly_can_register && !$hvnly_use_tabs) : ?>
                             <p class="hvnly-auth__alt">
                                 <?php echo esc_html__("Don't have an account?", 'havenlytics'); ?>
-                                <button type="button" class="hvnly-auth__linkbtn" data-hvnly-auth-goto="register"><?php echo esc_html__('Create one', 'havenlytics'); ?></button>
+                                <button type="button" class="hvnly-ui-control hvnly-auth__linkbtn" data-hvnly-auth-goto="register"><?php echo esc_html__('Create one', 'havenlytics'); ?></button>
                             </p>
                         <?php endif; ?>
                     </form>
@@ -363,14 +363,14 @@ $hvnly_field = function (array $field) {
                         <?php if ('approval' === $hvnly_registration_mode) : ?>
                             <p class="hvnly-auth__hint"><?php echo esc_html__('New accounts require administrator approval before Workspace access.', 'havenlytics'); ?></p>
                         <?php endif; ?>
-                        <button type="submit" class="hvnly-auth__btn hvnly-auth__btn--primary">
+                        <button type="submit" class="hvnly-btn hvnly-btn--primary hvnly-auth__btn hvnly-auth__btn--primary">
                             <span class="hvnly-auth__btn-label"><?php echo esc_html__('Create account', 'havenlytics'); ?></span>
                             <span class="hvnly-auth__spinner" aria-hidden="true"></span>
                         </button>
                         <?php if (!$hvnly_use_tabs) : ?>
                             <p class="hvnly-auth__alt">
                                 <?php echo esc_html__('Already have an account?', 'havenlytics'); ?>
-                                <button type="button" class="hvnly-auth__linkbtn" data-hvnly-auth-goto="login"><?php echo esc_html__('Sign in', 'havenlytics'); ?></button>
+                                <button type="button" class="hvnly-ui-control hvnly-auth__linkbtn" data-hvnly-auth-goto="login"><?php echo esc_html__('Sign in', 'havenlytics'); ?></button>
                             </p>
                         <?php endif; ?>
                     </form>
@@ -388,12 +388,12 @@ $hvnly_field = function (array $field) {
                             'required'     => true,
                         ));
                         ?>
-                        <button type="submit" class="hvnly-auth__btn hvnly-auth__btn--primary">
+                        <button type="submit" class="hvnly-btn hvnly-btn--primary hvnly-auth__btn hvnly-auth__btn--primary">
                             <span class="hvnly-auth__btn-label"><?php echo esc_html__('Send reset link', 'havenlytics'); ?></span>
                             <span class="hvnly-auth__spinner" aria-hidden="true"></span>
                         </button>
                         <p class="hvnly-auth__alt">
-                            <button type="button" class="hvnly-auth__linkbtn" data-hvnly-auth-goto="login"><?php echo esc_html__('Back to sign in', 'havenlytics'); ?></button>
+                            <button type="button" class="hvnly-ui-control hvnly-auth__linkbtn" data-hvnly-auth-goto="login"><?php echo esc_html__('Back to sign in', 'havenlytics'); ?></button>
                         </p>
                     </form>
                 <?php endif; ?>

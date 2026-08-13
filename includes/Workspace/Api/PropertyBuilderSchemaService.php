@@ -270,10 +270,10 @@ final class PropertyBuilderSchemaService {
 				if ( '' === $meta ) {
 					continue;
 				}
-				$original_name                    = (string) ( $member['name'] ?? '' );
-				$canonical_name                   = $group_base_id . '_' . $meta;
+				$original_name                  = (string) ( $member['name'] ?? '' );
+				$canonical_name                 = $group_base_id . '_' . $meta;
 				$members[ $idx ]['groupBaseId'] = $group_base_id;
-				$members[ $idx ]['name']          = $canonical_name;
+				$members[ $idx ]['name']        = $canonical_name;
 				if ( '' !== $original_name && $original_name !== $canonical_name ) {
 					$members[ $idx ]['legacyName'] = $original_name;
 				}
@@ -891,7 +891,7 @@ final class PropertyBuilderSchemaService {
 	 * @return array<int, array{value:string,label:string}>
 	 */
 	private static function currency_options(): array {
-		$map = array();
+		$map    = array();
 		$helper = ( function_exists( 'HVNLY_NAB' ) && HVNLY_NAB() ) ? HVNLY_NAB()->Helper : null;
 		if ( $helper && method_exists( $helper, 'get_currency_symbols_map' ) ) {
 			$map = $helper->get_currency_symbols_map();
@@ -949,7 +949,7 @@ final class PropertyBuilderSchemaService {
 			'clipboard-check' => 'Inspection',
 			'file-signature'  => 'Contract',
 		);
-		$out = array();
+		$out   = array();
 		foreach ( $icons as $value => $label ) {
 			$out[] = array(
 				'value' => $value,
@@ -959,7 +959,7 @@ final class PropertyBuilderSchemaService {
 		return $out;
 	}
 
-private static function known_gaps(): array {
+	private static function known_gaps(): array {
 		return array(
 			array(
 				'id'     => 'seo',
@@ -1038,11 +1038,26 @@ private static function known_gaps(): array {
 	 */
 	private static function price_label_options(): array {
 		$defaults = array(
-			array( 'value' => 'priceOnCallNone', 'label' => __( 'None', 'havenlytics' ) ),
-			array( 'value' => 'priceOnCall', 'label' => __( 'Price On Call', 'havenlytics' ) ),
-			array( 'value' => 'fixedPrice', 'label' => __( 'Fixed Price', 'havenlytics' ) ),
-			array( 'value' => 'guidePrice', 'label' => __( 'Guide Price', 'havenlytics' ) ),
-			array( 'value' => 'offersOver', 'label' => __( 'Offers Over', 'havenlytics' ) ),
+			array(
+				'value' => 'priceOnCallNone',
+				'label' => __( 'None', 'havenlytics' ),
+			),
+			array(
+				'value' => 'priceOnCall',
+				'label' => __( 'Price On Call', 'havenlytics' ),
+			),
+			array(
+				'value' => 'fixedPrice',
+				'label' => __( 'Fixed Price', 'havenlytics' ),
+			),
+			array(
+				'value' => 'guidePrice',
+				'label' => __( 'Guide Price', 'havenlytics' ),
+			),
+			array(
+				'value' => 'offersOver',
+				'label' => __( 'Offers Over', 'havenlytics' ),
+			),
 		);
 
 		$custom = get_option( 'hvnly_price_on_call_custom_options', array() );

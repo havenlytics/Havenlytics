@@ -1,7 +1,7 @@
 <?php
 /**
  * Meta Cleanup API Endpoint - COMPLETE FINAL VERSION
- * 
+ *
  * Handles cleanup of ALL orphaned meta data with full control
  *
  * @package HvnlyNab\Api\Type\Builders
@@ -15,11 +15,11 @@ use WP_REST_Response;
 use WP_Error;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
-class MetaCleanup
-{
+class MetaCleanup {
+
     /**
      * Storage key for property builder sections
      *
@@ -44,100 +44,96 @@ class MetaCleanup
     /**
      * Constructor
      */
-    public function __construct()
-    {
-        add_action('rest_api_init', [$this, 'routes']);
+    public function __construct() {
+        add_action('rest_api_init', array( $this, 'routes' ));
     }
 
     /**
      * Register REST API routes
      */
-    public function routes()
-    {
+    public function routes() {
         // GET orphaned meta keys
-        register_rest_route($this->namespace, '/' . $this->route_base . '/orphaned', [
+        register_rest_route($this->namespace, '/' . $this->route_base . '/orphaned', array(
             'methods' => 'GET',
-            'callback' => [$this, 'get_orphaned_meta'],
-            'permission_callback' => [$this, 'get_per'],
-            'args' => [
-                'property_id' => [
+            'callback' => array( $this, 'get_orphaned_meta' ),
+            'permission_callback' => array( $this, 'get_per' ),
+            'args' => array(
+                'property_id' => array(
                     'required' => false,
                     'type' => 'integer',
-                    'sanitize_callback' => 'absint'
-                ]
-            ]
-        ]);
+                    'sanitize_callback' => 'absint',
+                ),
+            ),
+        ));
 
         // POST cleanup orphaned meta
-        register_rest_route($this->namespace, '/' . $this->route_base . '/cleanup', [
+        register_rest_route($this->namespace, '/' . $this->route_base . '/cleanup', array(
             'methods' => 'POST',
-            'callback' => [$this, 'cleanup_orphaned_meta'],
-            'permission_callback' => [$this, 'create_per'],
-            'args' => [
-                'fields' => [
+            'callback' => array( $this, 'cleanup_orphaned_meta' ),
+            'permission_callback' => array( $this, 'create_per' ),
+            'args' => array(
+                'fields' => array(
                     'required' => true,
                     'type' => 'array',
-                    'validate_callback' => function($param) {
-                        return is_array($param) && !empty($param);
-                    }
-                ],
-                'property_id' => [
+                    'validate_callback' => function ( $param ) {
+                        return is_array($param) && ! empty($param);
+                    },
+                ),
+                'property_id' => array(
                     'required' => false,
                     'type' => 'integer',
-                    'sanitize_callback' => 'absint'
-                ]
-            ]
-        ]);
+                    'sanitize_callback' => 'absint',
+                ),
+            ),
+        ));
 
         // POST reset and cleanup combined
-        register_rest_route($this->namespace, '/' . $this->route_base . '/reset-and-cleanup', [
+        register_rest_route($this->namespace, '/' . $this->route_base . '/reset-and-cleanup', array(
             'methods' => 'POST',
-            'callback' => [$this, 'reset_and_cleanup_aggressive'],
-            'permission_callback' => [$this, 'create_per'],
-        ]);
+            'callback' => array( $this, 'reset_and_cleanup_aggressive' ),
+            'permission_callback' => array( $this, 'create_per' ),
+        ));
 
         // GET cleanup stats
-        register_rest_route($this->namespace, '/' . $this->route_base . '/stats', [
+        register_rest_route($this->namespace, '/' . $this->route_base . '/stats', array(
             'methods' => 'GET',
-            'callback' => [$this, 'get_cleanup_stats'],
-            'permission_callback' => [$this, 'get_per'],
-        ]);
+            'callback' => array( $this, 'get_cleanup_stats' ),
+            'permission_callback' => array( $this, 'get_per' ),
+        ));
 
         // POST complete database cleanup
-        register_rest_route($this->namespace, '/' . $this->route_base . '/cleanup-all', [
+        register_rest_route($this->namespace, '/' . $this->route_base . '/cleanup-all', array(
             'methods' => 'POST',
-            'callback' => [$this, 'cleanup_all_orphaned'],
-            'permission_callback' => [$this, 'create_per'],
-        ]);
+            'callback' => array( $this, 'cleanup_all_orphaned' ),
+            'permission_callback' => array( $this, 'create_per' ),
+        ));
 
         // POST inventory export (scan-only report)
-        register_rest_route($this->namespace, '/' . $this->route_base . '/inventory', [
+        register_rest_route($this->namespace, '/' . $this->route_base . '/inventory', array(
             'methods' => 'GET',
-            'callback' => [$this, 'get_data_inventory'],
-            'permission_callback' => [$this, 'get_per'],
-        ]);
+            'callback' => array( $this, 'get_data_inventory' ),
+            'permission_callback' => array( $this, 'get_per' ),
+        ));
 
         // POST final cleanup — scan-only unless confirm=true
-        register_rest_route($this->namespace, '/' . $this->route_base . '/final-cleanup', [
+        register_rest_route($this->namespace, '/' . $this->route_base . '/final-cleanup', array(
             'methods' => 'POST',
-            'callback' => [$this, 'final_cleanup'],
-            'permission_callback' => [$this, 'create_per'],
-        ]);
+            'callback' => array( $this, 'final_cleanup' ),
+            'permission_callback' => array( $this, 'create_per' ),
+        ));
     }
 
     /**
      * Permission callback for GET requests
      */
-    public function get_per()
-    {
+    public function get_per() {
         return current_user_can('manage_options');
     }
 
     /**
      * Permission callback for POST requests
      */
-    public function create_per()
-    {
+    public function create_per() {
         return current_user_can('manage_options');
     }
 
@@ -157,12 +153,11 @@ class MetaCleanup
     /**
      * Reset + cleanup — scan-only; protected meta is never deleted without wp-config override.
      */
-    public function reset_and_cleanup_aggressive($request)
-    {
+    public function reset_and_cleanup_aggressive( $request ) {
         try {
             $nonce = $request->get_header('X-WP-Nonce');
-            if (!wp_verify_nonce($nonce, 'wp_rest')) {
-                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), ['status' => 403]);
+            if ( ! wp_verify_nonce($nonce, 'wp_rest')) {
+                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), array( 'status' => 403 ));
             }
 
             $confirm         = rest_sanitize_boolean( $request->get_param( 'confirm' ) );
@@ -192,7 +187,7 @@ class MetaCleanup
             return new WP_Error(
                 'reset_cleanup_failed',
                 __('Failed to reset and cleanup', 'havenlytics'),
-                ['status' => 500]
+                array( 'status' => 500 )
             );
         }
     }
@@ -257,9 +252,9 @@ class MetaCleanup
                     : ( function_exists( 'hvnly_is_protected_meta_key' ) && hvnly_is_protected_meta_key( $meta_key ) );
 
                 if ( $is_protected ) {
-                    $row['protected']   = true;
-                    $row['deletable']   = function_exists( 'hvnly_allow_protected_meta_delete' ) && hvnly_allow_protected_meta_delete();
-                    $protected_meta[]   = $row;
+                    $row['protected'] = true;
+                    $row['deletable'] = function_exists( 'hvnly_allow_protected_meta_delete' ) && hvnly_allow_protected_meta_delete();
+                    $protected_meta[] = $row;
                     ++$protected_types[ $type_bucket ];
                     continue;
                 }
@@ -372,12 +367,11 @@ class MetaCleanup
     /**
      * Cleanup ALL orphaned meta — scan-only unless confirm=true.
      */
-    public function cleanup_all_orphaned($request)
-    {
+    public function cleanup_all_orphaned( $request ) {
         try {
             $nonce = $request->get_header('X-WP-Nonce');
-            if (!wp_verify_nonce($nonce, 'wp_rest')) {
-                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), ['status' => 403]);
+            if ( ! wp_verify_nonce($nonce, 'wp_rest')) {
+                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), array( 'status' => 403 ));
             }
 
             $confirm         = rest_sanitize_boolean( $request->get_param( 'confirm' ) );
@@ -406,7 +400,7 @@ class MetaCleanup
             return new WP_Error(
                 'cleanup_failed',
                 __('Failed to cleanup meta', 'havenlytics'),
-                ['status' => 500]
+                array( 'status' => 500 )
             );
         }
     }
@@ -414,12 +408,11 @@ class MetaCleanup
     /**
      * FINAL cleanup — scan legacy pattern matches; delete only with confirm=true.
      */
-    public function final_cleanup($request)
-    {
+    public function final_cleanup( $request ) {
         try {
             $nonce = $request->get_header('X-WP-Nonce');
-            if (!wp_verify_nonce($nonce, 'wp_rest')) {
-                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), ['status' => 403]);
+            if ( ! wp_verify_nonce($nonce, 'wp_rest')) {
+                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), array( 'status' => 403 ));
             }
 
             $confirm         = rest_sanitize_boolean( $request->get_param( 'confirm' ) );
@@ -448,20 +441,19 @@ class MetaCleanup
             return new WP_Error(
                 'cleanup_failed',
                 __('Failed to cleanup meta', 'havenlytics'),
-                ['status' => 500]
+                array( 'status' => 500 )
             );
         }
     }
 
     /**
-     * Get orphaned meta keys 
+     * Get orphaned meta keys
      */
-    public function get_orphaned_meta($request)
-    {
+    public function get_orphaned_meta( $request ) {
         try {
             $nonce = $request->get_header('X-WP-Nonce');
-            if (!wp_verify_nonce($nonce, 'wp_rest')) {
-                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), ['status' => 403]);
+            if ( ! wp_verify_nonce($nonce, 'wp_rest')) {
+                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), array( 'status' => 403 ));
             }
 
             global $wpdb;
@@ -472,7 +464,7 @@ class MetaCleanup
 
             // Build query for meta keys with proper LIKE placeholders
             $like_pattern = '%_hvnly_%';
-            
+
             // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             if ($property_id) {
                 // For single property - directly use prepare in get_col
@@ -484,7 +476,7 @@ class MetaCleanup
                         $wpdb->esc_like($like_pattern)
                     )
                 );
-                
+
                 // Get gallery keys for this property
                 $gallery_keys = $wpdb->get_col(
                     $wpdb->prepare(
@@ -494,7 +486,7 @@ class MetaCleanup
                         $wpdb->esc_like('gallery_') . '%'
                     )
                 );
-                
+
                 // Get video keys for this property
                 $video_keys = $wpdb->get_col(
                     $wpdb->prepare(
@@ -504,7 +496,7 @@ class MetaCleanup
                         $wpdb->esc_like('video_') . '%'
                     )
                 );
-                
+
                 // Get map keys for this property
                 $map_keys = $wpdb->get_col(
                     $wpdb->prepare(
@@ -514,7 +506,7 @@ class MetaCleanup
                         $wpdb->esc_like('map_') . '%'
                     )
                 );
-                
+
                 // Get havenlytics keys for this property
                 $havenlytics_keys = $wpdb->get_col(
                     $wpdb->prepare(
@@ -533,7 +525,7 @@ class MetaCleanup
                         $wpdb->esc_like($like_pattern)
                     )
                 );
-                
+
                 // Get gallery keys
                 $gallery_keys = $wpdb->get_col(
                     $wpdb->prepare(
@@ -542,7 +534,7 @@ class MetaCleanup
                         $wpdb->esc_like('gallery_') . '%'
                     )
                 );
-                
+
                 // Get video keys
                 $video_keys = $wpdb->get_col(
                     $wpdb->prepare(
@@ -551,7 +543,7 @@ class MetaCleanup
                         $wpdb->esc_like('video_') . '%'
                     )
                 );
-                
+
                 // Get map keys
                 $map_keys = $wpdb->get_col(
                     $wpdb->prepare(
@@ -560,7 +552,7 @@ class MetaCleanup
                         $wpdb->esc_like('map_') . '%'
                     )
                 );
-                
+
                 // Get havenlytics keys
                 $havenlytics_keys = $wpdb->get_col(
                     $wpdb->prepare(
@@ -571,18 +563,18 @@ class MetaCleanup
                 );
             }
             // phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            
+
             // Merge all keys
             $meta_keys = array_merge($meta_keys, $gallery_keys, $video_keys, $map_keys, $havenlytics_keys);
             $meta_keys = array_unique($meta_keys);
 
             if (empty($meta_keys)) {
-                $meta_keys = [];
+                $meta_keys = array();
             }
 
             // Find orphaned keys (non-protected only; protected keys are report-only).
             $orphaned = array_diff( $meta_keys, $current_fields );
-            $orphaned = array_filter( $orphaned, [ $this, 'is_not_system_key' ] );
+            $orphaned = array_filter( $orphaned, array( $this, 'is_not_system_key' ) );
 
             $deletable_orphans = array();
             $protected_orphans = array();
@@ -610,45 +602,45 @@ class MetaCleanup
             }
 
             // Group deletable orphans by type.
-            $grouped = [
-                'gallery' => [],
-                'video' => [],
-                'map' => [],
-                'legacy' => [],
-                'other' => []
-            ];
+            $grouped = array(
+                'gallery' => array(),
+                'video' => array(),
+                'map' => array(),
+                'legacy' => array(),
+                'other' => array(),
+            );
 
             foreach ( $deletable_orphans as $key ) {
                 $grouped[ $this->classify_meta_key_type( $key ) ][] = $key;
             }
 
-            $protected_grouped = [
-                'gallery' => [],
-                'video' => [],
-                'map' => [],
-                'legacy' => [],
-                'other' => []
-            ];
+            $protected_grouped = array(
+                'gallery' => array(),
+                'video' => array(),
+                'map' => array(),
+                'legacy' => array(),
+                'other' => array(),
+            );
 
             foreach ( $protected_orphans as $key ) {
                 $protected_grouped[ $this->classify_meta_key_type( $key ) ][] = $key;
             }
 
-            return rest_ensure_response([
+            return rest_ensure_response(array(
                 'success' => true,
                 'data' => $grouped,
                 'protected_meta' => $protected_grouped,
                 'total' => count( $deletable_orphans ),
                 'protected_total' => count( $protected_orphans ),
                 'protected_read_only' => true,
-                'property_id' => $property_id
-            ]);
+                'property_id' => $property_id,
+            ));
 
         } catch (\Exception $e) {
             return new WP_Error(
                 'fetch_failed',
                 __('Failed to fetch orphaned meta', 'havenlytics'),
-                ['status' => 500]
+                array( 'status' => 500 )
             );
         }
     }
@@ -656,23 +648,22 @@ class MetaCleanup
     /**
      * Cleanup orphaned meta data for specific fields
      */
-    public function cleanup_orphaned_meta($request)
-    {
+    public function cleanup_orphaned_meta( $request ) {
         try {
             $nonce = $request->get_header('X-WP-Nonce');
-            if (!wp_verify_nonce($nonce, 'wp_rest')) {
-                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), ['status' => 403]);
+            if ( ! wp_verify_nonce($nonce, 'wp_rest')) {
+                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), array( 'status' => 403 ));
             }
 
             global $wpdb;
-            $fields = $request->get_param('fields');
+            $fields      = $request->get_param('fields');
             $property_id = $request->get_param('property_id');
 
-            if (empty($fields) || !is_array($fields)) {
+            if (empty($fields) || ! is_array($fields)) {
                 return new WP_Error(
                     'invalid_data',
                     __('Fields array is required', 'havenlytics'),
-                    ['status' => 400]
+                    array( 'status' => 400 )
                 );
             }
 
@@ -715,7 +706,7 @@ class MetaCleanup
                 $deleted_keys[] = $field_name;
             }
 
-            return rest_ensure_response([
+            return rest_ensure_response(array(
                 'success' => true,
                 'message' => sprintf(
                     /* translators: %d: number of deleted entries */
@@ -725,32 +716,31 @@ class MetaCleanup
                 'deleted_count' => $deleted_count,
                 'deleted_keys' => $deleted_keys,
                 'skipped_protected' => $skipped_keys,
-            ]);
+            ));
 
         } catch (\Exception $e) {
             return new WP_Error(
                 'cleanup_failed',
                 __('Failed to cleanup meta', 'havenlytics'),
-                ['status' => 500]
+                array( 'status' => 500 )
             );
         }
     }
 
     /**
-     * Get cleanup statistics 
+     * Get cleanup statistics
      */
-    public function get_cleanup_stats($request)
-    {
+    public function get_cleanup_stats( $request ) {
         try {
             $nonce = $request->get_header('X-WP-Nonce');
-            if (!wp_verify_nonce($nonce, 'wp_rest')) {
-                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), ['status' => 403]);
+            if ( ! wp_verify_nonce($nonce, 'wp_rest')) {
+                return new WP_Error('rest_forbidden', __('Invalid nonce', 'havenlytics'), array( 'status' => 403 ));
             }
 
             global $wpdb;
 
             $total_properties = wp_count_posts('hvnly_property')->publish ?? 0;
-            
+
             // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             // Get main _hvnly_ count
             $total_meta = $wpdb->get_var(
@@ -762,7 +752,7 @@ class MetaCleanup
                     $wpdb->esc_like('%_hvnly_%')
                 )
             );
-            
+
             // Get gallery count
             $gallery_count = $wpdb->get_var(
                 $wpdb->prepare(
@@ -773,7 +763,7 @@ class MetaCleanup
                     $wpdb->esc_like('gallery_') . '%'
                 )
             );
-            
+
             // Get video count
             $video_count = $wpdb->get_var(
                 $wpdb->prepare(
@@ -784,7 +774,7 @@ class MetaCleanup
                     $wpdb->esc_like('video_') . '%'
                 )
             );
-            
+
             // Get map count
             $map_count = $wpdb->get_var(
                 $wpdb->prepare(
@@ -795,7 +785,7 @@ class MetaCleanup
                     $wpdb->esc_like('map_') . '%'
                 )
             );
-            
+
             // Get havenlytics count
             $havenlytics_count = $wpdb->get_var(
                 $wpdb->prepare(
@@ -807,24 +797,24 @@ class MetaCleanup
                 )
             );
             // phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-            
+
             // Sum all counts
             $total_meta = (int) $total_meta + (int) $gallery_count + (int) $video_count + (int) $map_count + (int) $havenlytics_count;
 
-            return rest_ensure_response([
+            return rest_ensure_response(array(
                 'success' => true,
-                'data' => [
+                'data' => array(
                     'total_properties' => (int) $total_properties,
                     'total_meta_entries' => (int) $total_meta,
-                    'storage_key' => $this->storage_key
-                ]
-            ]);
+                    'storage_key' => $this->storage_key,
+                ),
+            ));
 
         } catch (\Exception $e) {
             return new WP_Error(
                 'stats_failed',
                 __('Failed to get stats', 'havenlytics'),
-                ['status' => 500]
+                array( 'status' => 500 )
             );
         }
     }
@@ -832,31 +822,30 @@ class MetaCleanup
     /**
      * Get all current field names from builder configuration
      */
-    private function get_current_field_names()
-    {
-        $sections = get_option($this->storage_key, []);
-        $field_names = [];
+    private function get_current_field_names() {
+        $sections    = get_option($this->storage_key, array());
+        $field_names = array();
 
-        if (!is_array($sections)) {
+        if ( ! is_array($sections)) {
             return $field_names;
         }
 
         foreach ($sections as $section) {
-            if (empty($section['fields']) || !is_array($section['fields'])) {
+            if (empty($section['fields']) || ! is_array($section['fields'])) {
                 continue;
             }
 
             foreach ($section['fields'] as $field) {
-                if (!empty($field['name'])) {
+                if ( ! empty($field['name'])) {
                     $field_names[] = $field['name'];
-                } elseif (!empty($field['id'])) {
+                } elseif ( ! empty($field['id'])) {
                     $field_names[] = $field['id'];
                 }
             }
         }
 
         // Add system fields that should never be deleted
-        $system_fields = [
+        $system_fields = array(
             '_hvnly_field_map',
             '_hvnly_orphan_candidates',
             '_hvnly_property_featured',
@@ -866,8 +855,8 @@ class MetaCleanup
             '_wp_attached_file',
             '_wp_attachment_metadata',
             '_edit_lock',
-            '_edit_last'
-        ];
+            '_edit_last',
+        );
 
         return array_unique(array_merge($field_names, $system_fields));
     }
@@ -875,16 +864,15 @@ class MetaCleanup
     /**
      * Check if key is a system key (should not be deleted)
      */
-    private function is_system_key($key)
-    {
-        $system_patterns = [
+    private function is_system_key( $key ) {
+        $system_patterns = array(
             '_wp_',
             '_edit_',
             '_encloseme',
             '_pingme',
             '_oembed_',
-            '_thumbnail_id'
-        ];
+            '_thumbnail_id',
+        );
 
         foreach ($system_patterns as $pattern) {
             if (strpos($key, $pattern) === 0) {
@@ -898,8 +886,7 @@ class MetaCleanup
     /**
      * Check if key is not a system key (for array filtering)
      */
-    private function is_not_system_key($key)
-    {
-        return !$this->is_system_key($key);
+    private function is_not_system_key( $key ) {
+        return ! $this->is_system_key($key);
     }
 }

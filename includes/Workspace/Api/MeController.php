@@ -141,9 +141,12 @@ final class MeController {
 
 		// Identity verification state (Condition 2) — the SPA renders the Verify page from
 		// this. `can_access` below already folds this in via PortalAuthorization.
-		$verification  = $user_id > 0
+		$verification   = $user_id > 0
 			? \HvnlyNab\Workspace\Identity\IdentityVerificationService::instance()->state_for_user( $user_id )
-			: array( 'satisfied' => false, 'factors' => array() );
+			: array(
+				'satisfied' => false,
+				'factors' => array(),
+			);
 		$email_verified = ! empty( $verification['factors']['email']['satisfied'] );
 
 		$payload = array(

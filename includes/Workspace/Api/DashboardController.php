@@ -70,7 +70,7 @@ final class DashboardController {
 	 * @return array<string, mixed>
 	 */
 	public function filter_localize( array $data ): array {
-		$rest = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
+		$rest              = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
 		$rest['dashboard'] = esc_url_raw( rest_url( WorkspaceConstants::REST_NAMESPACE . '/dashboard' ) );
 		$data['rest']      = $rest;
 		return $data;

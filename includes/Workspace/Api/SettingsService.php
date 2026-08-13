@@ -18,6 +18,8 @@ use HvnlyNab\Workspace\Auth\AgentIdentityService;
 use HvnlyNab\Workspace\Auth\AgentProvisioner;
 use HvnlyNab\Workspace\Auth\PortalAuthorization;
 use HvnlyNab\Workspace\Auth\WorkspaceRegistrationStatus;
+use HvnlyNab\Workspace\WorkspaceBranding;
+use HvnlyNab\Workspace\WorkspaceProCapabilities;
 use HvnlyNab\Workspace\WorkspaceSettings;
 use WP_Error;
 
@@ -160,6 +162,8 @@ final class SettingsService {
 					'future'    => true,
 				),
 			),
+			'branding'      => WorkspaceBranding::get_public( $user_id ),
+			'pro'           => WorkspaceProCapabilities::localize_payload(),
 		);
 	}
 
@@ -180,10 +184,11 @@ final class SettingsService {
 
 		$errors = array();
 
-		$account = isset( $payload['account'] ) && is_array( $payload['account'] ) ? $payload['account'] : array();
-		$ws      = isset( $payload['workspace'] ) && is_array( $payload['workspace'] ) ? $payload['workspace'] : array();
-		$email   = isset( $payload['email'] ) && is_array( $payload['email'] ) ? $payload['email'] : array();
-		$notif   = isset( $payload['notifications'] ) && is_array( $payload['notifications'] ) ? $payload['notifications'] : array();
+		$account  = isset( $payload['account'] ) && is_array( $payload['account'] ) ? $payload['account'] : array();
+		$ws       = isset( $payload['workspace'] ) && is_array( $payload['workspace'] ) ? $payload['workspace'] : array();
+		$email    = isset( $payload['email'] ) && is_array( $payload['email'] ) ? $payload['email'] : array();
+		$notif    = isset( $payload['notifications'] ) && is_array( $payload['notifications'] ) ? $payload['notifications'] : array();
+		$branding = isset( $payload['branding'] ) && is_array( $payload['branding'] ) ? $payload['branding'] : null;
 
 		// Account → same storage as Profile (wp_users). Never write site plugin settings.
 		$profile_payload = array();
@@ -208,7 +213,7 @@ final class SettingsService {
 				$data = $result->get_error_data();
 				if ( is_array( $data ) && ! empty( $data['fields'] ) && is_array( $data['fields'] ) ) {
 					foreach ( $data['fields'] as $key => $msg ) {
-						$mapped = str_replace(
+						$mapped            = str_replace(
 							array( 'general.displayName', 'account.' ),
 							array( 'account.displayName', 'account.' ),
 							(string) $key
@@ -271,6 +276,28 @@ final class SettingsService {
 			}
 		}
 
+		$branding_row = null;
+		if ( null !== $branding ) {
+			if ( ! WorkspaceBranding::can_edit( $user_id ) ) {
+				return new WP_Error(
+					'hvnly_branding_forbidden',
+					__( 'You cannot update Workspace branding.', 'havenlytics' ),
+					array( 'status' => 403 )
+				);
+			}
+			$validated = WorkspaceBranding::validate_payload( $branding );
+			if ( is_wp_error( $validated ) ) {
+				$data = $validated->get_error_data();
+				if ( is_array( $data ) && ! empty( $data['fields'] ) && is_array( $data['fields'] ) ) {
+					$errors = array_merge( $errors, $data['fields'] );
+				} else {
+					return $validated;
+				}
+			} else {
+				$branding_row = $validated;
+			}
+		}
+
 		if ( ! empty( $errors ) ) {
 			return new WP_Error(
 				'hvnly_settings_invalid',
@@ -280,6 +307,10 @@ final class SettingsService {
 					'fields' => $errors,
 				)
 			);
+		}
+
+		if ( null !== $branding_row ) {
+			WorkspaceBranding::persist( $branding_row, $user_id );
 		}
 
 		$saved = $this->save_user_prefs( $user_id, $prefs );

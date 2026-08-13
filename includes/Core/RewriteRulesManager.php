@@ -271,7 +271,7 @@ class RewriteRulesManager {
 			return;
 		}
 
-		$needs_flush = (bool) get_option( self::FLUSH_OPTION );
+		$needs_flush   = (bool) get_option( self::FLUSH_OPTION );
 		$needs_upgrade = ! PermalinkSettings::rewrite_is_current();
 
 		if ( ! $needs_flush && ! $needs_upgrade ) {
@@ -362,4 +362,3 @@ class RewriteRulesManager {
 		self::schedule_flush();
 	}
 }
-

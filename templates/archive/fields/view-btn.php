@@ -32,7 +32,7 @@ $hvnly_button_display = function_exists( 'hvnly_translate_ui' )
 ?>
 
 <div class="hvnly-field-view-btn hvnly-default-field">
-    <a href="<?php echo esc_url($hvnly_button_url); ?>" class="hvnly-btn-primary" aria-label="<?php 
+    <a href="<?php echo esc_url($hvnly_button_url); ?>" class="hvnly-btn hvnly-btn-primary" aria-label="<?php 
         echo esc_attr(sprintf(
             /* translators: %s: Property title */
             __('View details for %s', 'havenlytics'), get_the_title($property_id))); ?>">

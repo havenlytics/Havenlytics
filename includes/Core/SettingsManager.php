@@ -13,69 +13,66 @@
 namespace HvnlyNab\Core;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
 /**
  * Settings Manager class
- * 
+ *
  * Handles retrieving and caching plugin settings for frontend use
  *
  * @since 2.0.3
  */
-class SettingsManager
-{
+class SettingsManager {
+
     /**
      * Singleton instance
      *
      * @var self|null
      */
     private static $instance = null;
-    
+
     /**
      * Cached settings
      *
      * @var array|null
      */
     private $cached_settings = null;
-    
+
     /**
      * Storage key for settings
      *
      * @var string
      */
     private $storage_key = 'hvnly_plugin_settings';
-    
+
     /**
      * Get singleton instance
      *
      * @return self
      */
-    public static function get_instance()
-    {
+    public static function get_instance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
         return self::$instance;
     }
-    
+
     /**
      * Constructor
      */
-    private function __construct()
-    {
-        add_action('init', [$this, 'load_settings'], 5);
-        add_action('hvnly_settings_updated', [$this, 'clear_cache']);
+    private function __construct() {
+        add_action('init', array( $this, 'load_settings' ), 5);
+        add_action('hvnly_settings_updated', array( $this, 'clear_cache' ));
     }
-    
+
     /**
      * Load and cache all settings
      *
      * @return array
      */
-    public function load_settings()
-    {
+    public function load_settings() {
         if (null !== $this->cached_settings) {
             return $this->cached_settings;
         }
@@ -83,22 +80,22 @@ class SettingsManager
         if ( function_exists( 'hvnly_maybe_migrate_legacy_settings' ) ) {
             hvnly_maybe_migrate_legacy_settings();
         }
-        
-        $settings = get_option($this->storage_key, []);
-        
+
+        $settings = get_option($this->storage_key, array());
+
         // Ensure all required groups exist
-        $default_groups = ['general', 'design', 'search', 'properties', 'shortcodes', 'property-details', 'contact-agent'];
+        $default_groups = array( 'general', 'design', 'search', 'properties', 'shortcodes', 'property-details', 'contact-agent' );
         foreach ($default_groups as $group) {
-            if (!isset($settings[$group]) || !is_array($settings[$group])) {
-                $settings[$group] = [];
+            if ( ! isset($settings[ $group ]) || ! is_array($settings[ $group ])) {
+                $settings[ $group ] = array();
             }
         }
-        
+
         $this->cached_settings = $settings;
-        
+
         return $this->cached_settings;
     }
-    
+
     /**
      * Get current property view type (single source of truth)
      *
@@ -107,16 +104,16 @@ class SettingsManager
      */
     public function get_current_property_view_type() {
         $settings = $this->load_settings();
-        
-        $search_view = isset($settings['search']['hvnly_propertyViewType']) 
-            ? sanitize_text_field($settings['search']['hvnly_propertyViewType']) 
+
+        $search_view = isset($settings['search']['hvnly_propertyViewType'])
+            ? sanitize_text_field($settings['search']['hvnly_propertyViewType'])
             : 'GRID';
-        
-        $allowed_views = array('GRID', 'LIST');
-        if (!in_array($search_view, $allowed_views, true)) {
+
+        $allowed_views = array( 'GRID', 'LIST' );
+        if ( ! in_array($search_view, $allowed_views, true)) {
             $search_view = 'GRID';
         }
-        
+
         return $search_view;
     }
 
@@ -127,35 +124,35 @@ class SettingsManager
      * @param string $view_type 'GRID' or 'LIST'
      * @return bool True if sync was performed, false otherwise
      */
-    public function sync_property_view_type($view_type) {
-        $allowed_views = array('GRID', 'LIST');
-        if (!in_array($view_type, $allowed_views, true)) {
+    public function sync_property_view_type( $view_type ) {
+        $allowed_views = array( 'GRID', 'LIST' );
+        if ( ! in_array($view_type, $allowed_views, true)) {
             return false;
         }
-        
+
         $settings = get_option('hvnly_plugin_settings', array());
-        if (!is_array($settings)) {
+        if ( ! is_array($settings)) {
             $settings = array();
         }
-        
-        if (!isset($settings['search']) || !is_array($settings['search'])) {
+
+        if ( ! isset($settings['search']) || ! is_array($settings['search'])) {
             $settings['search'] = array();
         }
-        
-        $current_search_view = isset($settings['search']['hvnly_propertyViewType']) 
-            ? $settings['search']['hvnly_propertyViewType'] 
+
+        $current_search_view = isset($settings['search']['hvnly_propertyViewType'])
+            ? $settings['search']['hvnly_propertyViewType']
             : 'GRID';
-        
+
         if ($current_search_view === $view_type) {
             return false;
         }
-        
+
         $settings['search']['hvnly_propertyViewType'] = $view_type;
         update_option('hvnly_plugin_settings', $settings);
         $this->clear_cache();
-        
+
         do_action('hvnly_property_view_type_synced', $view_type, $settings);
-        
+
         return true;
     }
 
@@ -164,11 +161,10 @@ class SettingsManager
      *
      * @return array
      */
-    public function get_general_settings()
-    {
+    public function get_general_settings() {
         $settings = $this->load_settings();
-        
-        $defaults = [
+
+        $defaults = array(
             // Currency settings
             'hvnly_EnabledCurrencyFormat' => false,
             'hvnly_thousandSeparator' => ',',
@@ -181,16 +177,16 @@ class SettingsManager
             'hvnly_currencyPositionType' => 'LEFT',
             'hvnly_priceOnCallText' => 'priceOnCallNone',
             'hvnly_priceFormat' => 'comma',
-            
+
             // Misc settings
             'hvnly_EnabledGutenbergEditor' => false,
             'hvnly_defaultCity' => 'Birmingham',
             'hvnly_defaultState' => 'Scotland',
             'hvnly_countryType' => 'GB',
-        ];
-        
-        $general_settings = isset($settings['general']) ? $settings['general'] : [];
-        
+        );
+
+        $general_settings = isset($settings['general']) ? $settings['general'] : array();
+
         return wp_parse_args($general_settings, $defaults);
     }
 
@@ -199,11 +195,10 @@ class SettingsManager
      *
      * @return array
      */
-    public function get_design_settings()
-    {
+    public function get_design_settings() {
         $settings = $this->load_settings();
-        
-        $defaults = [
+
+        $defaults = array(
             'hvnly_brandColor' => '#6C60FE',
             'hvnly_secondaryColor' => '#764ba2',
             'hvnly_linkColor' => '#1E1E2F',
@@ -211,26 +206,26 @@ class SettingsManager
             'hvnly_titleColor' => '#1E1E2F',
             'hvnly_primaryTextColor' => '#1E1E2F',
             'hvnly_secondaryTextColor' => '#555555',
-        ];
-        
-        $design_settings = isset($settings['design']) ? $settings['design'] : [];
-        
+        );
+
+        $design_settings = isset($settings['design']) ? $settings['design'] : array();
+
         // Normalize settings - ensure all keys have hvnly_ prefix
-        $normalized_settings = [];
+        $normalized_settings = array();
         foreach ($design_settings as $key => $value) {
             // If key doesn't have hvnly_ prefix, add it
             if (strpos($key, 'hvnly_') !== 0) {
-                $new_key = 'hvnly_' . $key;
-                $normalized_settings[$new_key] = $value;
+                $new_key                         = 'hvnly_' . $key;
+                $normalized_settings[ $new_key ] = $value;
             } else {
-                $normalized_settings[$key] = $value;
+                $normalized_settings[ $key ] = $value;
             }
         }
-        
+
         // Merge with defaults
         return wp_parse_args($normalized_settings, $defaults);
     }
-    
+
     /**
      * Get a specific design setting
      *
@@ -238,22 +233,21 @@ class SettingsManager
      * @param mixed  $default Default value
      * @return mixed
      */
-    public function get_design_setting($key, $default = null)
-    {
+    public function get_design_setting( $key, $default = null ) {
         $design = $this->get_design_settings();
-        
+
         // Ensure key has hvnly_ prefix for lookup
         $prefixed_key = 'hvnly_' . ltrim($key, 'hvnly_');
-        
-        if (isset($design[$prefixed_key])) {
-            return $design[$prefixed_key];
+
+        if (isset($design[ $prefixed_key ])) {
+            return $design[ $prefixed_key ];
         }
-        
+
         // Try without prefix as fallback
-        if (isset($design[$key])) {
-            return $design[$key];
+        if (isset($design[ $key ])) {
+            return $design[ $key ];
         }
-        
+
         return $default;
     }
 
@@ -262,20 +256,18 @@ class SettingsManager
      *
      * @return string
      */
-    public function get_brand_color()
-    {
+    public function get_brand_color() {
         return $this->get_design_setting('brandColor', '#6C60FE');
     }
-    
+
     /**
      * Get search settings
      *
      * @return array
      */
-    public function get_search_settings()
-    {
+    public function get_search_settings() {
         $settings = $this->load_settings();
-        $defaults = [
+        $defaults = array(
             'hvnly_searchBarTitle' => __('Search Properties', 'havenlytics'),
             'hvnly_searchButtonText' => __('Search', 'havenlytics'),
             'hvnly_hideTopSearchTitle' => false,
@@ -292,25 +284,24 @@ class SettingsManager
             'hvnly_enableAjaxLoadMore' => true,
             'hvnly_AjaxLoadMoreButtonText' => __('Load More', 'havenlytics'),
             'hvnly_propertiesPerPage' => 6,
-            'search_fields' => [],
-        ];
-        
-        $search_settings = isset($settings['search']) ? $settings['search'] : [];
-        
+            'search_fields' => array(),
+        );
+
+        $search_settings = isset($settings['search']) ? $settings['search'] : array();
+
         return wp_parse_args($search_settings, $defaults);
     }
-    
+
     /**
      * Check if AJAX Load More is enabled
      *
      * @return bool
      * @since 2.0.3
      */
-    public function is_ajax_load_more_enabled()
-    {
+    public function is_ajax_load_more_enabled() {
         $search_settings = $this->get_search_settings();
-        return isset($search_settings['hvnly_enableAjaxLoadMore']) 
-            ? (bool) $search_settings['hvnly_enableAjaxLoadMore'] 
+        return isset($search_settings['hvnly_enableAjaxLoadMore'])
+            ? (bool) $search_settings['hvnly_enableAjaxLoadMore']
             : true;
     }
     /**
@@ -319,8 +310,7 @@ class SettingsManager
      * @return int
      * @since 2.0.3
      */
-    public function get_properties_per_page()
-    {
+    public function get_properties_per_page() {
         $search_settings = $this->get_search_settings();
         if ( isset( $search_settings['hvnly_propertiesPerPage'] ) && $search_settings['hvnly_propertiesPerPage'] !== '' ) {
             return absint( $search_settings['hvnly_propertiesPerPage'] );
@@ -336,8 +326,7 @@ class SettingsManager
      *
      * @return int
      */
-    public function get_archive_grid_columns()
-    {
+    public function get_archive_grid_columns() {
         $search_settings = $this->get_search_settings();
         $columns         = isset( $search_settings['hvnly_numberOfColumns'] )
             ? absint( $search_settings['hvnly_numberOfColumns'] )
@@ -351,8 +340,7 @@ class SettingsManager
      *
      * @return string LEFT|RIGHT
      */
-    public function get_search_sidebar_layout()
-    {
+    public function get_search_sidebar_layout() {
         $search_settings = $this->get_search_settings();
         $layout          = isset( $search_settings['hvnly_sidebarLayoutType'] )
             ? strtoupper( (string) $search_settings['hvnly_sidebarLayoutType'] )
@@ -367,31 +355,30 @@ class SettingsManager
      * @since 2.2.0
      * @return array
      */
-    public function get_map_settings()
-    {
+    public function get_map_settings() {
         $settings = $this->load_settings();
-        
-        $defaults = [
+
+        $defaults = array(
             // Map Provider Configuration
             'hvnly_map_provider' => 'leaflet',
             'hvnly_map_api_key' => '',
-            
+
             // Map Display Settings
             'hvnly_default_lat' => '51.514939',
             'hvnly_default_lng' => '-0.091839',
             'hvnly_map_zoom' => 12,
             'hvnly_map_style' => 'standard',
-            
+
             // Marker Settings
             'hvnly_cluster_markers' => true,
             'hvnly_custom_marker' => false,
             'hvnly_marker_color' => '#6C60FE',
-            
+
             // Map UI Settings
             'hvnly_show_fullscreen' => true,
             'hvnly_show_zoom_control' => true,
             'hvnly_show_scroll_wheel' => true,
-            
+
             // Google Maps Specific
             'hvnly_google_map_type' => 'roadmap',
             'hvnly_google_map_id' => '',
@@ -399,10 +386,10 @@ class SettingsManager
             // OpenStreetMap Specific
             'hvnly_osm_tile_url' => 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             'hvnly_osm_attribution' => '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        ];
-        
-        $map_settings = isset($settings['map']) ? $settings['map'] : [];
-        
+        );
+
+        $map_settings = isset($settings['map']) ? $settings['map'] : array();
+
         return wp_parse_args($map_settings, $defaults);
     }
 
@@ -412,11 +399,10 @@ class SettingsManager
      * @since 2.2.0
      * @return string
      */
-    public function get_map_provider()
-    {
+    public function get_map_provider() {
         $map_settings = $this->get_map_settings();
-        $provider = $map_settings['hvnly_map_provider'] ?? 'leaflet';
-        $allowed    = array( 'leaflet', 'openstreetmap', 'google' );
+        $provider     = $map_settings['hvnly_map_provider'] ?? 'leaflet';
+        $allowed      = array( 'leaflet', 'openstreetmap', 'google' );
 
         return in_array( $provider, $allowed, true ) ? $provider : 'leaflet';
     }
@@ -484,13 +470,12 @@ class SettingsManager
      * @since 2.2.0
      * @return bool
      */
-    public function should_use_google_maps()
-    {
+    public function should_use_google_maps() {
         $map_settings = $this->get_map_settings();
-        $provider = $map_settings['hvnly_map_provider'] ?? 'leaflet';
-        $api_key = $map_settings['hvnly_map_api_key'] ?? '';
-        
-        return ($provider === 'google' && !empty($api_key));
+        $provider     = $map_settings['hvnly_map_provider'] ?? 'leaflet';
+        $api_key      = $map_settings['hvnly_map_api_key'] ?? '';
+
+        return ( $provider === 'google' && ! empty($api_key) );
     }
 
     /**
@@ -500,8 +485,8 @@ class SettingsManager
      */
     public function get_osm_tile_url() {
         $map_settings = $this->get_map_settings();
-        return isset($map_settings['hvnly_osm_tile_url']) 
-            ? $map_settings['hvnly_osm_tile_url'] 
+        return isset($map_settings['hvnly_osm_tile_url'])
+            ? $map_settings['hvnly_osm_tile_url']
             : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     }
 
@@ -512,8 +497,8 @@ class SettingsManager
      */
     public function get_osm_attribution() {
         $map_settings = $this->get_map_settings();
-        return isset($map_settings['hvnly_osm_attribution']) 
-            ? $map_settings['hvnly_osm_attribution'] 
+        return isset($map_settings['hvnly_osm_attribution'])
+            ? $map_settings['hvnly_osm_attribution']
             : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
     }
 
@@ -524,14 +509,13 @@ class SettingsManager
      * @since 2.2.0
      * @return string
      */
-    public function get_google_maps_api_key()
-    {
+    public function get_google_maps_api_key() {
         $map_settings = $this->get_map_settings();
-        
+
         if ($this->should_use_google_maps()) {
             return $map_settings['hvnly_map_api_key'] ?? '';
         }
-        
+
         return '';
     }
 
@@ -541,10 +525,9 @@ class SettingsManager
      * @since 2.2.0
      * @return float
      */
-    public function get_default_latitude()
-    {
+    public function get_default_latitude() {
         $map_settings = $this->get_map_settings();
-        return (float) ($map_settings['hvnly_default_lat'] ?? 40.7128);
+        return (float) ( $map_settings['hvnly_default_lat'] ?? 40.7128 );
     }
 
     /**
@@ -553,10 +536,9 @@ class SettingsManager
      * @since 2.2.0
      * @return float
      */
-    public function get_default_longitude()
-    {
+    public function get_default_longitude() {
         $map_settings = $this->get_map_settings();
-        return (float) ($map_settings['hvnly_default_lng'] ?? -74.0060);
+        return (float) ( $map_settings['hvnly_default_lng'] ?? -74.0060 );
     }
 
     /**
@@ -565,8 +547,7 @@ class SettingsManager
      * @since 2.2.0
      * @return int
      */
-    public function get_map_zoom()
-    {
+    public function get_map_zoom() {
         $map_settings = $this->get_map_settings();
         return absint($map_settings['hvnly_map_zoom'] ?? 12);
     }
@@ -577,10 +558,9 @@ class SettingsManager
      * @since 2.2.0
      * @return bool
      */
-    public function is_marker_clustering_enabled()
-    {
+    public function is_marker_clustering_enabled() {
         $map_settings = $this->get_map_settings();
-        return (bool) ($map_settings['hvnly_cluster_markers'] ?? true);
+        return (bool) ( $map_settings['hvnly_cluster_markers'] ?? true );
     }
 
     /**
@@ -589,8 +569,7 @@ class SettingsManager
      * @since 2.2.0
      * @return string
      */
-    public function get_map_style()
-    {
+    public function get_map_style() {
         $map_settings = $this->get_map_settings();
         return $map_settings['hvnly_map_style'] ?? 'standard';
     }
@@ -601,8 +580,7 @@ class SettingsManager
      * @since 2.2.0
      * @return string
      */
-    public function get_google_map_type()
-    {
+    public function get_google_map_type() {
         $map_settings = $this->get_map_settings();
         return $map_settings['hvnly_google_map_type'] ?? 'roadmap';
     }
@@ -613,10 +591,9 @@ class SettingsManager
      * @since 2.2.0
      * @return bool
      */
-    public function is_fullscreen_enabled()
-    {
+    public function is_fullscreen_enabled() {
         $map_settings = $this->get_map_settings();
-        return (bool) ($map_settings['hvnly_show_fullscreen'] ?? true);
+        return (bool) ( $map_settings['hvnly_show_fullscreen'] ?? true );
     }
 
     /**
@@ -625,10 +602,9 @@ class SettingsManager
      * @since 2.2.0
      * @return bool
      */
-    public function is_zoom_control_enabled()
-    {
+    public function is_zoom_control_enabled() {
         $map_settings = $this->get_map_settings();
-        return (bool) ($map_settings['hvnly_show_zoom_control'] ?? true);
+        return (bool) ( $map_settings['hvnly_show_zoom_control'] ?? true );
     }
 
     /**
@@ -637,10 +613,9 @@ class SettingsManager
      * @since 2.2.0
      * @return bool
      */
-    public function is_scroll_wheel_enabled()
-    {
+    public function is_scroll_wheel_enabled() {
         $map_settings = $this->get_map_settings();
-        return (bool) ($map_settings['hvnly_show_scroll_wheel'] ?? true);
+        return (bool) ( $map_settings['hvnly_show_scroll_wheel'] ?? true );
     }
 
     /**
@@ -649,13 +624,12 @@ class SettingsManager
      * @since 2.2.0
      * @return string
      */
-    public function get_marker_color()
-    {
-        $map_settings = $this->get_map_settings();
+    public function get_marker_color() {
+        $map_settings  = $this->get_map_settings();
         $brand_default = $this->get_design_setting('brandColor', '#6C60FE');
-        $color = $map_settings['hvnly_marker_color'] ?? $brand_default;
+        $color         = $map_settings['hvnly_marker_color'] ?? $brand_default;
 
-        if (!preg_match('/^#[a-f0-9]{6}$/i', $color)) {
+        if ( ! preg_match('/^#[a-f0-9]{6}$/i', $color)) {
             $color = $brand_default;
         }
 
@@ -668,10 +642,9 @@ class SettingsManager
      * @since 2.2.0
      * @return bool
      */
-    public function is_custom_marker_enabled()
-    {
+    public function is_custom_marker_enabled() {
         $map_settings = $this->get_map_settings();
-        return (bool) ($map_settings['hvnly_custom_marker'] ?? false);
+        return (bool) ( $map_settings['hvnly_custom_marker'] ?? false );
     }
 
 
@@ -683,63 +656,58 @@ class SettingsManager
      *
      * @return string
      */
-    public function get_secondary_color()
-    {
+    public function get_secondary_color() {
         return $this->get_design_setting('secondaryColor', '#764ba2');
     }
-    
+
     /**
      * Get link color
      *
      * @return string
      */
-    public function get_link_color()
-    {
+    public function get_link_color() {
         return $this->get_design_setting('linkColor', '#1E1E2F');
     }
-    
+
     /**
      * Get title color
      *
      * @return string
      */
-    public function get_title_color()
-    {
+    public function get_title_color() {
         return $this->get_design_setting('titleColor', '#1E1E2F');
     }
-    
+
     /**
      * Get property details settings
      *
      * @return array
      */
-    public function get_property_details_settings()
-    {
+    public function get_property_details_settings() {
         $settings = $this->load_settings();
-        
-        $defaults = [
+
+        $defaults = array(
             'hvnly_EnableBreadcrumbs' => true,
             'hvnly_EnableBackToTop' => false,
             'hvnly_EnablePrintButton' => false,
             'hvnly_EnableSaveProperty' => false,
-        ];
-        
-        $property_details = isset($settings['property-details']) ? $settings['property-details'] : [];
-        
+        );
+
+        $property_details = isset($settings['property-details']) ? $settings['property-details'] : array();
+
         return wp_parse_args($property_details, $defaults);
     }
-    
+
     /**
      * Check if breadcrumbs are enabled
      *
      * @return bool
      * @since 2.0.3
      */
-    public function is_breadcrumb_enabled()
-    {
+    public function is_breadcrumb_enabled() {
         $property_details = $this->get_property_details_settings();
-        return isset($property_details['hvnly_EnableBreadcrumbs']) 
-            ? (bool) $property_details['hvnly_EnableBreadcrumbs'] 
+        return isset($property_details['hvnly_EnableBreadcrumbs'])
+            ? (bool) $property_details['hvnly_EnableBreadcrumbs']
             : true;
     }
 
@@ -749,11 +717,10 @@ class SettingsManager
      * @return bool
      * @since 2.0.3
      */
-    public function is_back_to_top_enabled()
-    {
+    public function is_back_to_top_enabled() {
         $property_details = $this->get_property_details_settings();
-        return isset($property_details['hvnly_EnableBackToTop']) 
-            ? (bool) $property_details['hvnly_EnableBackToTop'] 
+        return isset($property_details['hvnly_EnableBackToTop'])
+            ? (bool) $property_details['hvnly_EnableBackToTop']
             : false;
     }
 
@@ -763,34 +730,30 @@ class SettingsManager
      * @return bool
      * @since 2.0.3
      */
-    public function is_print_button_enabled()
-    {
+    public function is_print_button_enabled() {
         $property_details = $this->get_property_details_settings();
-        return isset($property_details['hvnly_EnablePrintButton']) 
-            ? (bool) $property_details['hvnly_EnablePrintButton'] 
+        return isset($property_details['hvnly_EnablePrintButton'])
+            ? (bool) $property_details['hvnly_EnablePrintButton']
             : false;
     }
-    
+
     /**
      * Check if save property button is enabled
      *
      * @return bool
      * @since 2.0.3
      */
-    public function is_save_property_enabled()
-    {
+    public function is_save_property_enabled() {
         $property_details = $this->get_property_details_settings();
-        return isset($property_details['hvnly_EnableSaveProperty']) 
-            ? (bool) $property_details['hvnly_EnableSaveProperty'] 
+        return isset($property_details['hvnly_EnableSaveProperty'])
+            ? (bool) $property_details['hvnly_EnableSaveProperty']
             : false;
     }
 
     /**
      * Clear settings cache
      */
-    public function clear_cache()
-    {
+    public function clear_cache() {
         $this->cached_settings = null;
     }
-    
 }

@@ -59,11 +59,11 @@ final class MediaUnpacker {
 			$index_files = array_slice( $index_files, $offset );
 		}
 
-		$map     = $existing_map;
-		$by_path = $existing_by_path;
-		$created = 0;
-		$skipped = 0;
-		$failed  = 0;
+		$map      = $existing_map;
+		$by_path  = $existing_by_path;
+		$created  = 0;
+		$skipped  = 0;
+		$failed   = 0;
 		$warnings = array();
 
 		if ( empty( $index_files ) ) {
@@ -107,7 +107,10 @@ final class MediaUnpacker {
 				$warnings[] = array(
 					'code'    => 'hvnly_ie_media_index_row_invalid',
 					'message' => 'Media index row missing export_key or path; skipped.',
-					'context' => array( 'export_key' => $export_key, 'path' => $rel_path ),
+					'context' => array(
+						'export_key' => $export_key,
+						'path' => $rel_path,
+					),
 				);
 				continue;
 			}
@@ -131,7 +134,10 @@ final class MediaUnpacker {
 				$warnings[] = array(
 					'code'    => 'hvnly_ie_media_path_outside',
 					'message' => 'Media entry path is outside media/; rejected.',
-					'context' => array( 'export_key' => $export_key, 'path' => $rel_path ),
+					'context' => array(
+						'export_key' => $export_key,
+						'path' => $rel_path,
+					),
 				);
 				continue;
 			}
@@ -146,7 +152,10 @@ final class MediaUnpacker {
 				$warnings[] = array(
 					'code'    => 'hvnly_ie_media_file_missing',
 					'message' => 'Packaged media file is missing; import continues without it.',
-					'context' => array( 'export_key' => $export_key, 'path' => $rel_path ),
+					'context' => array(
+						'export_key' => $export_key,
+						'path' => $rel_path,
+					),
 				);
 				continue;
 			}
@@ -157,7 +166,10 @@ final class MediaUnpacker {
 				$warnings[] = array(
 					'code'    => 'hvnly_ie_media_file_unreadable',
 					'message' => 'Packaged media file is unreadable; import continues without it.',
-					'context' => array( 'export_key' => $export_key, 'path' => $rel_path ),
+					'context' => array(
+						'export_key' => $export_key,
+						'path' => $rel_path,
+					),
 				);
 				continue;
 			}
@@ -176,7 +188,10 @@ final class MediaUnpacker {
 				$warnings[] = array(
 					'code'    => 'hvnly_ie_media_checksum_required',
 					'message' => 'Media entry is missing a checksum and was skipped.',
-					'context' => array( 'export_key' => $export_key, 'path' => $rel_path ),
+					'context' => array(
+						'export_key' => $export_key,
+						'path' => $rel_path,
+					),
 				);
 				continue;
 			}
@@ -211,7 +226,10 @@ final class MediaUnpacker {
 				$warnings[] = array(
 					'code'    => 'hvnly_ie_media_attach_failed',
 					'message' => 'Failed to create WordPress attachment for packaged media.',
-					'context' => array( 'export_key' => $export_key, 'path' => $rel_path ),
+					'context' => array(
+						'export_key' => $export_key,
+						'path' => $rel_path,
+					),
 				);
 				continue;
 			}

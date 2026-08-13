@@ -21,8 +21,8 @@ defined( 'ABSPATH' ) || exit;
  */
 final class RegistrationAdminActions {
 
-	public const AJAX_ACTION  = 'hvnly_ws_reg_set_status';
-	public const NONCE_ACTION = 'hvnly_ws_reg_status';
+	public const AJAX_ACTION   = 'hvnly_ws_reg_set_status';
+	public const NONCE_ACTION  = 'hvnly_ws_reg_status';
 	public const META_FIELD    = 'hvnly_ws_registration_status_field';
 	public const META_PREVIOUS = 'hvnly_ws_registration_status_previous';
 	public const META_NONCE    = 'hvnly_ws_reg_metabox';
@@ -157,7 +157,7 @@ final class RegistrationAdminActions {
 			return $actions;
 		}
 
-		$status  = WorkspaceRegistrationStatus::get_for_user( $user_id );
+		$status   = WorkspaceRegistrationStatus::get_for_user( $user_id );
 		$agent_id = (int) $post->ID;
 
 		$links = $this->available_actions_for_status( $status );
@@ -179,8 +179,8 @@ final class RegistrationAdminActions {
 	 * @return array<string, array{status:string,label:string}>
 	 */
 	private function available_actions_for_status( string $status ): array {
-		$status = WorkspaceRegistrationStatus::normalize( $status );
-		$out    = array();
+		$status   = WorkspaceRegistrationStatus::normalize( $status );
+		$out      = array();
 		$is_admin = current_user_can( 'manage_options' );
 
 		switch ( $status ) {
@@ -583,7 +583,7 @@ final class RegistrationAdminActions {
 	 * @return string
 	 */
 	private function fallback_url( string $action_key, int $agent_id ): string {
-		$map = array(
+		$map    = array(
 			'approve'  => 'hvnly_ws_reg_approve',
 			'activate' => 'hvnly_ws_reg_activate',
 			'suspend'  => 'hvnly_ws_reg_suspend',

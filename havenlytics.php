@@ -7,17 +7,17 @@
  * @author      Havenlytics <support@havenlytics.com>
  * @link        https://havenlytics.com
  * @copyright   © Havenlytics
- * 
+ *
  * @wordpress-plugin
  * Plugin Name:       Havenlytics – Real Estate Listings, Property Search & Agent Workspace
  * Plugin URI:        https://wordpress.org/plugins/havenlytics/
  * Description:       Powerful WordPress real estate plugin with property listings, AJAX search, Migration Engine, CSV Import & Export, Gutenberg blocks, Agent Workspace, and multilingual support.
- * Version:           3.7.3
+ * Version:           3.7.4
  * Author:            Havenlytics
  * Author URI:        https://havenlytics.com
  * Requires at least: 6.3
  * Requires PHP:      7.4
- * Tested up to:      7.0
+ * Tested up to:      7.0.4
  * Text Domain:       havenlytics
  * Domain Path:       /languages
  * License:           GPLv2 or later
@@ -31,7 +31,7 @@ defined('ABSPATH') || exit;
  * Define plugin constants for paths, URLs, and configuration
  * These constants are used throughout the plugin for easy reference
  */
-define('HVNLYNAB_VERSION', '3.7.3');
+define('HVNLYNAB_VERSION', '3.7.4');
 define('HVNLYNAB_FILE', __FILE__);
 define('HVNLYNAB_BASENAME', plugin_basename(HVNLYNAB_FILE));
 define('HVNLYNAB_SLUG', 'havenlytics');
@@ -101,7 +101,7 @@ if ( is_readable( $hvnly_plugin_check_escape ) ) {
  * Template debugging constant - controls whether to use debug mode for templates
  * Can be overridden by defining HVNLYNAB_TEMPLATE_DEBUG elsewhere
  */
-if (!defined('HVNLYNAB_TEMPLATE_DEBUG')) {
+if ( ! defined('HVNLYNAB_TEMPLATE_DEBUG')) {
     define('HVNLYNAB_TEMPLATE_DEBUG', false);
 }
 
@@ -138,8 +138,6 @@ if ( is_readable( $hvnly_autoload ) ) {
                 esc_html__('Havenlytics:', 'havenlytics'),
                 esc_html__('Core class missing. Run <code>composer install</code>.', 'havenlytics')
             );
-
-           
         });
         return;
     }
@@ -164,7 +162,7 @@ if ( is_readable( $hvnly_autoload ) ) {
         4
     );
 
-    
+
 } else {
     /**
      * Display admin notice if Composer autoloader is not found
@@ -196,7 +194,7 @@ use HvnlyNab\Core\Scheduler;
  * Combines:
  *  - Hvnly = Havenlytics (plugin name)
  *  - Nab   = Nababur (developer)
- *  - Profile URL: https://nababur.com
+ *  - Profile URL: https://havenlytics.com/author/nababur/
  * Main controller for the Real Estate Property Management plugin
  * - Singleton pattern (one instance)
  * - Manages constants, services, hooks, lifecycle
@@ -205,8 +203,8 @@ use HvnlyNab\Core\Scheduler;
  * @class HvnlyNab Main class for the plugin
  * @since 2.0.0
  */
-final class HvnlyNab
-{
+final class HvnlyNab {
+
     /**
      * Singleton instance storage
      * Ensures only one instance of the plugin class exists
@@ -221,7 +219,7 @@ final class HvnlyNab
      *
      * @var array
      */
-    private $container = [];
+    private $container = array();
 
     /**
      * Minimum WordPress version required for plugin operation
@@ -245,13 +243,12 @@ final class HvnlyNab
      *
      * @since 2.0.0
      */
-    private function __construct()
-    {
+    private function __construct() {
         /**
          * Perform basic environment check before proceeding
          * If environment doesn't meet requirements, stop initialization
          */
-        if (!$this->basic_environment_check()) {
+        if ( ! $this->basic_environment_check()) {
             return;
         }
 
@@ -259,7 +256,7 @@ final class HvnlyNab
          * Perform full environment check using dedicated class
          * This handles more complex environment validation
          */
-        if (!EnvironmentChecker::check()) {
+        if ( ! EnvironmentChecker::check()) {
             return;
         }
 
@@ -273,13 +270,13 @@ final class HvnlyNab
          * Flush rewrite rules after plugin is loaded
          * Ensures custom post type URLs work correctly
          */
-       // add_action('wp_loaded', [$this, 'flush_rewrite_rules']);
+		// add_action('wp_loaded', [$this, 'flush_rewrite_rules']);
 
         /**
          * Initialize plugin on plugins_loaded hook with priority 5
          * Ensures plugin loads before most other plugins
          */
-        add_action('plugins_loaded', [$this, 'init_plugin'], 5);
+        add_action('plugins_loaded', array( $this, 'init_plugin' ), 5);
     }
 
     /**
@@ -290,8 +287,7 @@ final class HvnlyNab
      *
      * @return bool True if environment meets requirements, false otherwise
      */
-    private function basic_environment_check(): bool
-    {
+    private function basic_environment_check(): bool {
         global $wp_version;
 
         /**
@@ -303,9 +299,9 @@ final class HvnlyNab
              * Display admin notice detailing version requirements
              * Shows both PHP and WordPress requirements if both are missing
              */
-            add_action('admin_notices', function () use ($wp_version) {
+            add_action('admin_notices', function () use ( $wp_version ) {
                 echo '<div class="notice notice-error"><p><strong>Havenlytics:</strong> ';
-                
+
                 if (version_compare(PHP_VERSION, self::MIN_PHP, '<')) {
                     printf(
                         /* translators: 1: minimum PHP version, 2: current PHP version */
@@ -315,7 +311,7 @@ final class HvnlyNab
                     );
                     echo ' ';
                 }
-                
+
                 if (version_compare($wp_version, self::MIN_WP, '<')) {
                     printf(
                         /* translators: 1: minimum WP version, 2: current WP version */
@@ -350,8 +346,7 @@ final class HvnlyNab
      *
      * @return self Singleton instance of the plugin
      */
-    public static function init(): self
-    {
+    public static function init(): self {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -367,16 +362,15 @@ final class HvnlyNab
      * @param string $prop The service name to retrieve
      * @return mixed|null The service instance or null if not found
      */
-    public function __get($prop)
-    {
+    public function __get( $prop ) {
         /**
          * Lazy load Helper service if accessed but not yet initialized
          * Retrieves helper from bootstrap if available
          */
-        if ($prop === 'Helper' && !isset($this->container[$prop])) {
+        if ($prop === 'Helper' && ! isset($this->container[ $prop ])) {
             $bootstrap = $this->container['bootstrap'] ?? null;
             if ($bootstrap && method_exists($bootstrap, 'get_helper')) {
-                $this->container[$prop] = $bootstrap->get_helper();
+                $this->container[ $prop ] = $bootstrap->get_helper();
             }
         }
 
@@ -384,14 +378,14 @@ final class HvnlyNab
          * Lazy load Database service if accessed but not yet initialized
          * Retrieves database instance from bootstrap if available
          */
-        if ($prop === 'DB' && !isset($this->container[$prop])) {
+        if ($prop === 'DB' && ! isset($this->container[ $prop ])) {
             $bootstrap = $this->container['bootstrap'] ?? null;
             if ($bootstrap && method_exists($bootstrap, 'get_database')) {
-                $this->container[$prop] = $bootstrap->get_database();
+                $this->container[ $prop ] = $bootstrap->get_database();
             }
         }
 
-        return $this->container[$prop] ?? null;
+        return $this->container[ $prop ] ?? null;
     }
 
     /**
@@ -402,9 +396,8 @@ final class HvnlyNab
      * @param string $prop The service name to check
      * @return bool True if service exists, false otherwise
      */
-    public function __isset($prop)
-    {
-        return isset($this->container[$prop]);
+    public function __isset( $prop ) {
+        return isset($this->container[ $prop ]);
     }
     /**
      * Get helper service instance
@@ -415,8 +408,7 @@ final class HvnlyNab
      * @return \HvnlyNab\Helpers|null Helper service instance or null if not available
      * @since 2.0.0
      */
-    public function get_helper()
-    {
+    public function get_helper() {
         return $this->Helper;
     }
     /**
@@ -425,8 +417,7 @@ final class HvnlyNab
      * Sets up activation, deactivation, and uninstall handlers
      * Uses anonymous functions for activation to handle errors gracefully
      */
-    private function register_lifecycle_hooks()
-    {
+    private function register_lifecycle_hooks() {
         /**
          * Plugin activation handler with error trapping
          * Performs installation tasks and sets up initial data
@@ -454,7 +445,6 @@ final class HvnlyNab
                 delete_option( 'hvnly_activation_redirect_done' );
                 update_option( 'hvnly_activation_redirect', 1 );
                 set_transient( 'hvnly_activation_redirect', 1, HOUR_IN_SECONDS );
-
 
                 /**
                  * Register CPT/taxonomies first, then flush rewrite rules.
@@ -488,13 +478,13 @@ final class HvnlyNab
          * Plugin deactivation handler
          * Cleans up scheduled events and flushes rewrite rules
          */
-        register_deactivation_hook(__FILE__, [$this, 'deactivate']);
+        register_deactivation_hook(__FILE__, array( $this, 'deactivate' ));
 
         /**
          * Plugin uninstall handler
          * Performs complete cleanup when plugin is deleted
          */
-       // register_uninstall_hook(__FILE__, [__CLASS__, 'uninstall']);
+		// register_uninstall_hook(__FILE__, [__CLASS__, 'uninstall']);
     }
 
     /**
@@ -514,8 +504,7 @@ final class HvnlyNab
      * Cleans up scheduled events, flushes rewrite rules,
      * and removes activation flags to ensure fresh installs work properly.
      */
-    public function deactivate()
-    {
+    public function deactivate() {
         /**
          * Clear all scheduled events and cron jobs
          */
@@ -560,8 +549,7 @@ final class HvnlyNab
      * Main initialization method called on plugins_loaded hook
      * Sets up all plugin components and services
      */
-    public function init_plugin()
-    {
+    public function init_plugin() {
         /**
          * Check if fatal errors were recorded during earlier stages
          * Prevents initialization if plugin is in error state
@@ -584,42 +572,42 @@ final class HvnlyNab
             $this->container['bootstrap'] = new Bootstrap();
             $this->container['bootstrap']->init();
 
-       // ==============================================
-        // ELEMENTOR INTEGRATION - PROFESSIONAL INITIALIZATION
-        // ==============================================
-        // Initialize Elementor integration after plugins_loaded with proper priority
-        add_action('plugins_loaded', function() {
-            // Check if Elementor is active (multiple reliable methods)
-            $elementor_active = false;
-            
-            if (class_exists('\Elementor\Plugin')) {
-                $elementor_active = true;
-            }
-            if (defined('ELEMENTOR_VERSION')) {
-                $elementor_active = true;
-            }
-            
-            if ($elementor_active) {
-                // Load Elementor integration bootstrap
-                $elementor_bootstrap = HVNLYNAB_INCLUDES . '/Integrations/Elementor/Bootstrap.php';
-                if (file_exists($elementor_bootstrap)) {
-                    require_once $elementor_bootstrap;
-                    if (class_exists('\HvnlyNab\Integrations\Elementor\Bootstrap')) {
-                        \HvnlyNab\Integrations\Elementor\Bootstrap::get_instance();
-                    }
-                }
-            }
-        }, 20); // Priority 20 ensures Elementor is loaded
+			// ==============================================
+			// ELEMENTOR INTEGRATION - PROFESSIONAL INITIALIZATION
+			// ==============================================
+			// Initialize Elementor integration after plugins_loaded with proper priority
+			add_action('plugins_loaded', function () {
+				// Check if Elementor is active (multiple reliable methods)
+				$elementor_active = false;
 
-        // ==============================================
-        // GUTENBERG BLOCK INTEGRATION
-        // ==============================================
-        // Registers native block-editor blocks that reuse the existing query,
-        // template, card and caching layers. Additive and independent of
-        // Elementor — the registrar self-hooks `init` for block registration.
-        if (class_exists('\HvnlyNab\Integrations\Blocks\BlockRegistrar')) {
-            \HvnlyNab\Integrations\Blocks\BlockRegistrar::get_instance();
-        }
+				if (class_exists('\Elementor\Plugin')) {
+					$elementor_active = true;
+				}
+				if (defined('ELEMENTOR_VERSION')) {
+					$elementor_active = true;
+				}
+
+				if ($elementor_active) {
+					// Load Elementor integration bootstrap
+					$elementor_bootstrap = HVNLYNAB_INCLUDES . '/Integrations/Elementor/Bootstrap.php';
+					if (file_exists($elementor_bootstrap)) {
+						require_once $elementor_bootstrap;
+						if (class_exists('\HvnlyNab\Integrations\Elementor\Bootstrap')) {
+							\HvnlyNab\Integrations\Elementor\Bootstrap::get_instance();
+						}
+					}
+				}
+			}, 20); // Priority 20 ensures Elementor is loaded
+
+			// ==============================================
+			// GUTENBERG BLOCK INTEGRATION
+			// ==============================================
+			// Registers native block-editor blocks that reuse the existing query,
+			// template, card and caching layers. Additive and independent of
+			// Elementor — the registrar self-hooks `init` for block registration.
+			if (class_exists('\HvnlyNab\Integrations\Blocks\BlockRegistrar')) {
+				\HvnlyNab\Integrations\Blocks\BlockRegistrar::get_instance();
+			}
 
             /**
              * Fire loaded action for other plugins/themes to hook into
@@ -641,10 +629,9 @@ final class HvnlyNab
     /**
      * Initialize Appsero tracking safely
      */
-    private function init_appsero(): void
-    {
+    private function init_appsero(): void {
         // Prevent fatal error if library missing
-        if (!class_exists('Appsero\Client')) {
+        if ( ! class_exists('Appsero\Client')) {
             $appsero_path = __DIR__ . '/vendor/appsero/client/src/Client.php';
 
             if ( ! is_readable( $appsero_path ) && defined( 'HVNLYNAB_PATH' ) ) {
@@ -679,8 +666,7 @@ final class HvnlyNab
      *
      * @return string Current plugin version
      */
-    public function version(): string
-    {
+    public function version(): string {
         return HVNLYNAB_VERSION;
     }
 
@@ -689,8 +675,7 @@ final class HvnlyNab
      *
      * @return string Absolute path to plugin directory
      */
-    public function plugin_path(): string
-    {
+    public function plugin_path(): string {
         return HVNLYNAB_PATH;
     }
 
@@ -700,8 +685,7 @@ final class HvnlyNab
      * @param string $file Optional file path to append to assets URL
      * @return string Full URL to assets directory or specific file
      */
-    public function assets_url(string $file = ''): string
-    {
+    public function assets_url( string $file = '' ): string {
         return HVNLYNAB_ASSETS_URL . ltrim($file, '/');
     }
 
@@ -713,8 +697,7 @@ final class HvnlyNab
      *
      * @return mixed Engine instance or null if not available
      */
-    public function engine()
-    {
+    public function engine() {
         return $this->container['bootstrap']->get_engine() ?? null;
     }
 
@@ -725,8 +708,7 @@ final class HvnlyNab
      *
      * @return mixed Database instance or null if not available
      */
-    public function database()
-    {
+    public function database() {
         return $this->DB;
     }
 
@@ -736,9 +718,10 @@ final class HvnlyNab
      * Clears cached data if engine is available
      * Useful after data updates or settings changes
      */
-    public function clear_cache(): void
-    {
-        if ($engine = $this->engine()) $engine->clear_all_cache();
+    public function clear_cache(): void {
+        if ($engine = $this->engine()) {
+			$engine->clear_all_cache();
+        }
     }
 }
 
@@ -767,9 +750,8 @@ final class HvnlyNab
  * @since   2.1.3
  * @return  HvnlyNab  Singleton plugin instance
  */
-if (!function_exists('HVNLY_NAB')) {
-    function HVNLY_NAB(): HvnlyNab
-    {
+if ( ! function_exists('HVNLY_NAB')) {
+    function HVNLY_NAB(): HvnlyNab {
         return HvnlyNab::init();
     }
 }
@@ -783,9 +765,8 @@ if (!function_exists('HVNLY_NAB')) {
  * @since   2.1.3
  * @return  mixed  Engine instance or null if not available
  */
-if (!function_exists('HVNLY_NAB_engine')) {
-    function HVNLY_NAB_engine()
-    {
+if ( ! function_exists('HVNLY_NAB_engine')) {
+    function HVNLY_NAB_engine() {
         return HVNLY_NAB()->engine();
     }
 }

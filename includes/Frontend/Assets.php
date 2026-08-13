@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Assets Manager for Havenlytics 
+ * Assets Manager for Havenlytics
  *
  * @package     Havenlytics
  * @subpackage  Frontend
@@ -13,7 +13,7 @@
 namespace HvnlyNab\Frontend;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -22,48 +22,47 @@ if (!defined('ABSPATH')) {
  *
  * @since 2.0.0
  */
-class Assets
-{
-    private $is_property_archive = false;
-    private $is_single_property = false;
-    private $is_single_agent = false;
-    private $is_agent_archive = false;
-    private $is_agency_archive = false;
-    private $is_agency_single = false;
-    private $is_property_taxonomy = false;
-    private $is_property_search_page = false;
-    private $has_property_shortcode = false; 
-    private $has_agents_shortcode = false;
-    private $has_agencies_shortcode = false;
-    private $has_property_block = false;
-    private $ajax_params = null;
-    private $map_params = null;
-    private $map_localize_params = null;
-    private $localization_done = false; 
-    
-    // Elementor Integration Properties
-    private $has_elementor_widget = false;
-    private $elementor_assets_enqueued = false;
-    
-    public function __construct()
-    {
-        add_action('wp_enqueue_scripts', [$this, 'setup_page_conditions'], 1);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
-        // Late: beat theme global button CSS (Astra, Kadence, Hello, etc.)
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_theme_button_isolation'], 999);
+class Assets {
 
-        add_action('template_redirect', [$this, 'start_output_buffering'], 1);
+    private $is_property_archive     = false;
+    private $is_single_property      = false;
+    private $is_single_agent         = false;
+    private $is_agent_archive        = false;
+    private $is_agency_archive       = false;
+    private $is_agency_single        = false;
+    private $is_property_taxonomy    = false;
+    private $is_property_search_page = false;
+    private $has_property_shortcode  = false;
+    private $has_agents_shortcode    = false;
+    private $has_agencies_shortcode  = false;
+    private $has_property_block      = false;
+    private $ajax_params             = null;
+    private $map_params              = null;
+    private $map_localize_params     = null;
+    private $localization_done       = false;
+
+    // Elementor Integration Properties
+    private $has_elementor_widget      = false;
+    private $elementor_assets_enqueued = false;
+
+    public function __construct() {
+        add_action('wp_enqueue_scripts', array( $this, 'setup_page_conditions' ), 1);
+        add_action('wp_enqueue_scripts', array( $this, 'enqueue_styles' ));
+        add_action('wp_enqueue_scripts', array( $this, 'enqueue_scripts' ));
+        // Late: beat theme global button CSS (Astra, Kadence, Hello, etc.)
+        add_action('wp_enqueue_scripts', array( $this, 'enqueue_theme_button_isolation' ), 999);
+
+        add_action('template_redirect', array( $this, 'start_output_buffering' ), 1);
 
         // After setup_page_conditions so Elementor/widget flags are available.
-        add_action('wp_enqueue_scripts', [$this, 'output_frontend_script_globals'], 2);
-        
+        add_action('wp_enqueue_scripts', array( $this, 'output_frontend_script_globals' ), 2);
+
         // Elementor Integration Hooks
-        add_action('elementor/frontend/before_enqueue_scripts', [$this, 'enqueue_elementor_assets'], 5);
-        add_action('elementor/preview/enqueue_scripts', [$this, 'enqueue_elementor_assets'], 5);
-        add_action('elementor/editor/after_enqueue_scripts', [$this, 'enqueue_elementor_editor_assets']);
-        add_action('elementor/frontend/after_enqueue_styles', [$this, 'enqueue_elementor_styles'], 5);
-        add_action('elementor/frontend/after_enqueue_styles', [$this, 'enqueue_theme_button_isolation'], 20);
+        add_action('elementor/frontend/before_enqueue_scripts', array( $this, 'enqueue_elementor_assets' ), 5);
+        add_action('elementor/preview/enqueue_scripts', array( $this, 'enqueue_elementor_assets' ), 5);
+        add_action('elementor/editor/after_enqueue_scripts', array( $this, 'enqueue_elementor_editor_assets' ));
+        add_action('elementor/frontend/after_enqueue_styles', array( $this, 'enqueue_elementor_styles' ), 5);
+        add_action('elementor/frontend/after_enqueue_styles', array( $this, 'enqueue_theme_button_isolation' ), 20);
     }
 
     /**
@@ -71,36 +70,35 @@ class Assets
      *
      * @return void
      */
-    public function output_frontend_script_globals()
-    {
+    public function output_frontend_script_globals() {
         $has_shortcode = false;
 
         if (is_singular()) {
             global $post;
 
-            if (!empty($post->post_content) && has_shortcode($post->post_content, 'hvnly_property_search')) {
+            if ( ! empty($post->post_content) && has_shortcode($post->post_content, 'hvnly_property_search')) {
                 $has_shortcode = true;
             }
         }
 
         if (
-            !$has_shortcode &&
-            !$this->has_elementor_widget &&
-            !$this->is_elementor_editor_mode() &&
-            !is_post_type_archive('hvnly_property') &&
-            !is_tax(get_object_taxonomies('hvnly_property')) &&
-            !is_singular('hvnly_property')
+            ! $has_shortcode &&
+            ! $this->has_elementor_widget &&
+            ! $this->is_elementor_editor_mode() &&
+            ! is_post_type_archive('hvnly_property') &&
+            ! is_tax(get_object_taxonomies('hvnly_property')) &&
+            ! is_singular('hvnly_property')
         ) {
             return;
         }
 
-        $is_ajax_load_more_enabled = function_exists('hvnly_is_ajax_load_more_enabled') 
-            ? hvnly_is_ajax_load_more_enabled() 
+        $is_ajax_load_more_enabled = function_exists('hvnly_is_ajax_load_more_enabled')
+            ? hvnly_is_ajax_load_more_enabled()
             : true;
 
         wp_add_inline_script(
             'jquery',
-            'window.hvnly_ajax_load_more_enabled = ' . ($is_ajax_load_more_enabled ? 'true' : 'false') . ';',
+            'window.hvnly_ajax_load_more_enabled = ' . ( $is_ajax_load_more_enabled ? 'true' : 'false' ) . ';',
             'before'
         );
     }
@@ -108,19 +106,18 @@ class Assets
     /**
      * Setup page conditions early
      */
-    public function setup_page_conditions()
-    {
-        $this->is_single_property = is_singular('hvnly_property');
-        $this->is_single_agent = is_singular('hvnly_agent');
-        $this->is_agent_archive = is_post_type_archive('hvnly_agent');
-        $this->is_agency_archive = function_exists('hvnly_is_agency_archive_index') && hvnly_is_agency_archive_index();
-        $this->is_agency_single = is_tax('hvnly_agent_agency') && !$this->is_agency_archive;
-        $this->is_property_archive = is_post_type_archive('hvnly_property');
+    public function setup_page_conditions() {
+        $this->is_single_property   = is_singular('hvnly_property');
+        $this->is_single_agent      = is_singular('hvnly_agent');
+        $this->is_agent_archive     = is_post_type_archive('hvnly_agent');
+        $this->is_agency_archive    = function_exists('hvnly_is_agency_archive_index') && hvnly_is_agency_archive_index();
+        $this->is_agency_single     = is_tax('hvnly_agent_agency') && ! $this->is_agency_archive;
+        $this->is_property_archive  = is_post_type_archive('hvnly_property');
         $this->is_property_taxonomy = is_tax(get_object_taxonomies('hvnly_property'));
-        
+
         // Check if this is our property search page
         $this->is_property_search_page = $this->is_property_search_page();
-        
+
         // Check if page contains property shortcodes
         $this->has_property_shortcode = $this->has_property_shortcodes();
 
@@ -129,7 +126,7 @@ class Assets
 
         // Check if page contains agencies shortcode
         $this->has_agencies_shortcode = $this->has_agencies_shortcode();
-        
+
         // Check if page contains Elementor widget
         $this->has_elementor_widget = $this->has_elementor_widgets();
 
@@ -155,7 +152,7 @@ class Assets
         return has_block( 'havenlytics/property-archive', $post )
             || has_block( 'havenlytics/property-search', $post );
     }
-    
+
     /**
      * Check if current page has any property shortcodes
      *
@@ -163,25 +160,25 @@ class Assets
      */
     private function has_property_shortcodes() {
         global $post;
-        
-        if (!$post || !isset($post->post_content)) {
+
+        if ( ! $post || ! isset($post->post_content)) {
             return false;
         }
-        
-        $property_shortcodes = [
+
+        $property_shortcodes = array(
             'hvnly_property_grid',
             'hvnly_property_list',
             'hvnly_property_search',
             'hvnly_featured_properties',
-            'hvnly_properties'
-        ];
-        
+            'hvnly_properties',
+        );
+
         foreach ($property_shortcodes as $shortcode) {
             if (has_shortcode($post->post_content, $shortcode)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -236,7 +233,7 @@ class Assets
 
         return false;
     }
-    
+
     /**
      * Check if current page has Elementor widget
      *
@@ -244,30 +241,30 @@ class Assets
      */
     private function has_elementor_widgets() {
         global $post;
-        
-        if (!$post || !$post->ID) {
+
+        if ( ! $post || ! $post->ID) {
             return false;
         }
-        
+
         // Check Elementor data for our widgets
         $elementor_data = get_post_meta($post->ID, '_elementor_data', true);
-        if (!empty($elementor_data) && (
+        if ( ! empty($elementor_data) && (
             strpos($elementor_data, 'hvnly_all_properties') !== false
             || strpos($elementor_data, 'hvnly_property_agents') !== false
             || strpos($elementor_data, 'hvnly_property_agencies') !== false
         )) {
             return true;
         }
-        
+
         // Check if we're in Elementor editor mode
         if (isset($_GET['action']) && $_GET['action'] === 'elementor') {
             return true;
         }
-        
+
         if (isset($_GET['elementor-preview'])) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -277,18 +274,18 @@ class Assets
      * @param string $widget_name Elementor widget name slug.
      * @return bool
      */
-    private function page_has_elementor_widget($widget_name) {
+    private function page_has_elementor_widget( $widget_name ) {
         global $post;
 
-        if (!$post || !$post->ID || '' === $widget_name) {
+        if ( ! $post || ! $post->ID || '' === $widget_name) {
             return false;
         }
 
         $elementor_data = get_post_meta($post->ID, '_elementor_data', true);
 
-        return !empty($elementor_data) && strpos($elementor_data, $widget_name) !== false;
+        return ! empty($elementor_data) && strpos($elementor_data, $widget_name) !== false;
     }
-    
+
     /**
      * Check if we're in Elementor editor mode
      *
@@ -303,7 +300,7 @@ class Assets
         }
         return false;
     }
-    
+
     /**
      * Check if current page is the property search page
      *
@@ -311,35 +308,34 @@ class Assets
      */
     private function is_property_search_page() {
         global $post;
-        
+
         // Check by page ID if we have the page installer class
         if (class_exists('\HvnlyNab\Setup\PageInstaller')) {
-            $grid_page_id = \HvnlyNab\Setup\PageInstaller::get_page_id('property_grid');
+            $grid_page_id  = \HvnlyNab\Setup\PageInstaller::get_page_id('property_grid');
             $lists_page_id = \HvnlyNab\Setup\PageInstaller::get_page_id('property_lists');
-            
-            if (($grid_page_id && is_page($grid_page_id)) || ($lists_page_id && is_page($lists_page_id))) {
+
+            if (( $grid_page_id && is_page($grid_page_id) ) || ( $lists_page_id && is_page($lists_page_id) )) {
                 return true;
             }
         }
-        
+
         // Fallback: Check if post content contains the shortcodes
         if ($post && isset($post->post_content)) {
-            if (has_shortcode($post->post_content, 'hvnly_property_grid') || 
+            if (has_shortcode($post->post_content, 'hvnly_property_grid') ||
                 has_shortcode($post->post_content, 'hvnly_property_lists') ||
                 has_shortcode($post->post_content, 'hvnly_property_search')) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
     /**
      * Start output buffering to remove source maps
      */
-    public function start_output_buffering()
-    {
-        ob_start(function($buffer) {
+    public function start_output_buffering() {
+        ob_start(function ( $buffer ) {
             // Remove all sourceURL comments
             $buffer = preg_replace('/\/\/# sourceURL=[^\n\r]*[\n\r]*/m', '', $buffer);
             return $buffer;
@@ -349,20 +345,19 @@ class Assets
     /**
      * Enqueue frontend styles
      */
-    public function enqueue_styles()
-    {
+    public function enqueue_styles() {
         // Register all styles
         $this->register_styles();
-        
+
         // Always enqueue base styles
         wp_enqueue_style('hvnly-fontawesome-all-frontend');
         wp_enqueue_style('hvnly-frontend-default');
         wp_enqueue_style('hvnly-frontend-components');
         wp_enqueue_style('hvnly-frontend-global-grid');
-        
+
         // Inject dynamic CSS from design settings
         $this->inject_dynamic_css();
-        
+
         // Conditional styles
         if ($this->is_single_property) {
             // Agents section CSS is bundled in property-single.css; drop legacy style handle.
@@ -398,11 +393,11 @@ class Assets
         if ($this->page_has_elementor_widget('hvnly_property_agents') || $this->is_elementor_editor_mode()) {
             $agents_css_path = HVNLYNAB_ASSETS_PATH . '/frontend/elementor/css/hvnly-property-agents.css';
             if (file_exists($agents_css_path)) {
-                if (!wp_style_is('hvnly-elementor-property-agents', 'registered')) {
+                if ( ! wp_style_is('hvnly-elementor-property-agents', 'registered')) {
                     wp_register_style(
                         'hvnly-elementor-property-agents',
                         HVNLYNAB_ASSETS_URL . '/frontend/elementor/css/hvnly-property-agents.css',
-                        ['hvnly-frontend-property-agents-archive', 'hvnly-frontend-cards'],
+                        array( 'hvnly-frontend-property-agents-archive', 'hvnly-frontend-cards' ),
                         HVNLYNAB_VERSION
                     );
                 }
@@ -422,7 +417,7 @@ class Assets
             wp_enqueue_style('hvnly-frontend-property-single');
             wp_enqueue_script('hvnly-frontend-property-single-gallery');
         }
-        
+
         // Load archive styles on archive, taxonomy, search page, agent listings, shortcodes, or Elementor widget.
         if ($this->is_single_agent || $this->is_agency_single || $this->is_property_archive || $this->is_property_taxonomy || $this->is_property_search_page || $this->has_property_shortcode || $this->has_agencies_shortcode || $this->has_elementor_widget || $this->is_elementor_editor_mode()) {
             wp_enqueue_style('hvnly-frontend-property-ajax-filter');
@@ -434,12 +429,12 @@ class Assets
         if (is_page() || is_home() || is_front_page() || $this->is_property_archive || $this->is_property_taxonomy || $this->is_property_search_page || $this->has_property_shortcode || $this->has_agencies_shortcode || $this->has_elementor_widget) {
             wp_enqueue_style('hvnly-frontend-property-ajax-filter');
         }
-        
+
         // Enqueue Elementor widget styles if needed
         if ($this->has_elementor_widget || $this->is_elementor_editor_mode()) {
             $this->enqueue_elementor_styles();
         }
-        
+
         // =============================================
         // NEW: Enqueue Elementor Widget CSS (ADDED)
         // This ensures custom Elementor widget CSS loads
@@ -447,7 +442,7 @@ class Assets
         if ($this->has_elementor_widget || $this->is_elementor_editor_mode()) {
             $this->enqueue_elementor_widget_css();
         }
-        
+
         // Always load responsive CSS last
         wp_enqueue_style('hvnly-frontend-property-responsive');
 
@@ -455,11 +450,11 @@ class Assets
         // Enqueued last so it cascades after every legacy stylesheet; legacy
         // CSS stays enqueued underneath (dequeue this one handle = rollback).
         if ($this->is_single_property) {
-            if (!wp_style_is('hvnly-frontend-single-property-v2', 'registered')) {
+            if ( ! wp_style_is('hvnly-frontend-single-property-v2', 'registered')) {
                 wp_register_style(
                     'hvnly-frontend-single-property-v2',
                     HVNLYNAB_ASSETS_URL . '/frontend/css/single-property/single-property.css',
-                    ['hvnly-frontend-property-single', 'hvnly-frontend-property-responsive'],
+                    array( 'hvnly-frontend-property-single', 'hvnly-frontend-property-responsive' ),
                     HVNLYNAB_VERSION
                 );
             }
@@ -480,7 +475,7 @@ class Assets
             }
         }
     }
-    
+
     /**
      * Enqueue theme button isolation CSS late so global theme `button` /
      * `input[type=submit]` rules (Astra, Kadence, Hello Elementor, etc.)
@@ -489,17 +484,16 @@ class Assets
      *
      * @return void
      */
-    public function enqueue_theme_button_isolation()
-    {
-        if (!wp_style_is('hvnly-frontend-default', 'registered') && !wp_style_is('hvnly-frontend-default', 'enqueued')) {
+    public function enqueue_theme_button_isolation() {
+        if ( ! wp_style_is('hvnly-frontend-default', 'registered') && ! wp_style_is('hvnly-frontend-default', 'enqueued')) {
             return;
         }
 
-        if (!wp_style_is('hvnly-frontend-theme-button-isolation', 'registered')) {
+        if ( ! wp_style_is('hvnly-frontend-theme-button-isolation', 'registered')) {
             wp_register_style(
                 'hvnly-frontend-theme-button-isolation',
                 HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-theme-button-isolation.css',
-                ['hvnly-frontend-default', 'hvnly-frontend-components'],
+                array( 'hvnly-frontend-default', 'hvnly-frontend-components' ),
                 HVNLYNAB_VERSION
             );
         }
@@ -518,128 +512,127 @@ class Assets
     /**
      * Register all CSS files
      */
-    private function register_styles()
-    {
-        $styles = [
-            'hvnly-fontawesome-all-frontend' => [
+    private function register_styles() {
+        $styles = array(
+            'hvnly-fontawesome-all-frontend' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/admin/css/fontawesome-all.min.css',
-                'deps' => [],
+                'deps' => array(),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-default' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-default' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-default.css',
-                'deps' => [],
+                'deps' => array(),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-theme-button-isolation' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-theme-button-isolation' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-theme-button-isolation.css',
-                'deps' => ['hvnly-frontend-default', 'hvnly-frontend-components'],
+                'deps' => array( 'hvnly-frontend-default', 'hvnly-frontend-components' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-components' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-components' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-components.css',
-                'deps' => ['hvnly-frontend-default'],
+                'deps' => array( 'hvnly-frontend-default' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-global-grid' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-global-grid' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-global-grid.css',
-                'deps' => [],
+                'deps' => array(),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-property-card-embed' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-property-card-embed' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/property-cards/hvnly-frontend-property-card-embed.css',
-                'deps' => ['hvnly-frontend-default', 'hvnly-frontend-components'],
+                'deps' => array( 'hvnly-frontend-default', 'hvnly-frontend-components' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-property-ajax-filter' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-property-ajax-filter' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/property-search/hvnly-frontend-property-ajax-filter-search.css',
-                'deps' => ['hvnly-frontend-property-card-embed', 'hvnly-frontend-property-map'],
+                'deps' => array( 'hvnly-frontend-property-card-embed', 'hvnly-frontend-property-map' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-property-single' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-property-single' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-property-single.css',
-                'deps' => ['hvnly-frontend-default'],
+                'deps' => array( 'hvnly-frontend-default' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-mobile-contact-dock' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-mobile-contact-dock' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-mobile-contact-dock.css',
-                'deps' => ['hvnly-frontend-default', 'hvnly-fontawesome-all-frontend'],
+                'deps' => array( 'hvnly-frontend-default', 'hvnly-fontawesome-all-frontend' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-widgets' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-widgets' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-widgets.css',
-                'deps' => [],
+                'deps' => array(),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-contact-agent' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-contact-agent' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-contact-agent.css',
-                'deps' => ['hvnly-frontend-property-single', 'hvnly-frontend-widgets'],
+                'deps' => array( 'hvnly-frontend-property-single', 'hvnly-frontend-widgets' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-property-archive' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-property-archive' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/property-search/hvnly-frontend-property-archive.css',
-                'deps' => ['hvnly-frontend-global-grid'],
+                'deps' => array( 'hvnly-frontend-global-grid' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-property-map' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-property-map' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/property-search/hvnly-frontend-property-map.css',
-                'deps' => [],
+                'deps' => array(),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-property-responsive' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-property-responsive' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-property-responsive.css',
-                'deps' => [],
+                'deps' => array(),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-property-agent-widget' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-property-agent-widget' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-property-agent-widget.css',
-                'deps' => ['hvnly-frontend-widgets'],
+                'deps' => array( 'hvnly-frontend-widgets' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-property-agents-archive' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-property-agents-archive' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-property-agents-archive.css',
-                'deps' => ['hvnly-frontend-default', 'hvnly-frontend-components', 'hvnly-frontend-cards'],
+                'deps' => array( 'hvnly-frontend-default', 'hvnly-frontend-components', 'hvnly-frontend-cards' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-frontend-cards' => [
+                'media' => 'all',
+            ),
+            'hvnly-frontend-cards' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-cards.css',
-                'deps' => ['hvnly-frontend-default', 'hvnly-frontend-components'],
+                'deps' => array( 'hvnly-frontend-default', 'hvnly-frontend-components' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-            'hvnly-elementor-property-agents' => [
+                'media' => 'all',
+            ),
+            'hvnly-elementor-property-agents' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/elementor/css/hvnly-property-agents.css',
-                'deps' => ['hvnly-frontend-property-agents-archive', 'hvnly-frontend-cards'],
+                'deps' => array( 'hvnly-frontend-property-agents-archive', 'hvnly-frontend-cards' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
+                'media' => 'all',
+            ),
             // =============================================
             // NEW: Register Elementor Widget CSS (ADDED)
             // =============================================
-            'hvnly-elementor-widgets' => [
+            'hvnly-elementor-widgets' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/elementor/css/hvnly-elementor-widgets.css',
-                'deps' => ['hvnly-frontend-property-ajax-filter'],
+                'deps' => array( 'hvnly-frontend-property-ajax-filter' ),
                 'ver' => HVNLYNAB_VERSION,
-                'media' => 'all'
-            ],
-        ];
-        
+                'media' => 'all',
+            ),
+        );
+
         foreach ($styles as $handle => $style) {
             wp_register_style(
                 $handle,
@@ -650,7 +643,7 @@ class Assets
             );
         }
     }
-    
+
     /**
      * Enqueue Elementor styles
      */
@@ -667,11 +660,11 @@ class Assets
         $css_url  = HVNLYNAB_ASSETS_URL . '/frontend/elementor/css/hvnly-all-properties.css';
 
         if (file_exists($css_path)) {
-            if (!wp_style_is('hvnly-elementor-archive-widget', 'registered')) {
+            if ( ! wp_style_is('hvnly-elementor-archive-widget', 'registered')) {
                 wp_register_style(
                     'hvnly-elementor-archive-widget',
                     $css_url,
-                    ['hvnly-frontend-property-ajax-filter', 'hvnly-frontend-property-archive'],
+                    array( 'hvnly-frontend-property-ajax-filter', 'hvnly-frontend-property-archive' ),
                     HVNLYNAB_VERSION
                 );
             }
@@ -680,11 +673,11 @@ class Assets
 
         $widgets_css_path = HVNLYNAB_ASSETS_PATH . '/frontend/elementor/css/hvnly-elementor-widgets.css';
         if (file_exists($widgets_css_path)) {
-            if (!wp_style_is('hvnly-elementor-widgets', 'registered')) {
+            if ( ! wp_style_is('hvnly-elementor-widgets', 'registered')) {
                 wp_register_style(
                     'hvnly-elementor-widgets',
                     HVNLYNAB_ASSETS_URL . '/frontend/elementor/css/hvnly-elementor-widgets.css',
-                    ['hvnly-frontend-property-ajax-filter', 'hvnly-elementor-archive-widget'],
+                    array( 'hvnly-frontend-property-ajax-filter', 'hvnly-elementor-archive-widget' ),
                     HVNLYNAB_VERSION
                 );
             }
@@ -701,7 +694,7 @@ class Assets
     public function enqueue_elementor_widget_css() {
         $this->enqueue_elementor_styles();
     }
-    
+
     /**
      * Enqueue Elementor editor assets
      */
@@ -711,7 +704,7 @@ class Assets
             wp_enqueue_style(
                 'hvnly-elementor-editor',
                 HVNLYNAB_ASSETS_URL . '/admin/css/elementor-editor.css',
-                ['elementor-editor'],
+                array( 'elementor-editor' ),
                 HVNLYNAB_VERSION
             );
         }
@@ -734,19 +727,19 @@ class Assets
             }
         ');
     }
-    
+
     /**
      * Register Elementor widget scripts
      */
     private function register_elementor_scripts() {
         // Check multiple possible paths for Elementor JS
         $js_path_v1 = HVNLYNAB_ASSETS_PATH . '/elementor/js/hvnly-all-properties.js';
-        $js_url_v1 = HVNLYNAB_ASSETS_URL . '/elementor/js/hvnly-all-properties.js';
-        
+        $js_url_v1  = HVNLYNAB_ASSETS_URL . '/elementor/js/hvnly-all-properties.js';
+
         $js_path_v2 = HVNLYNAB_ASSETS_PATH . '/frontend/elementor/js/hvnly-all-properties.js';
-        $js_url_v2 = HVNLYNAB_ASSETS_URL . '/frontend/elementor/js/hvnly-all-properties.js';
-        
-        $elementor_widget_deps = ['jquery', 'hvnly-frontend-property-ajax-filter-search'];
+        $js_url_v2  = HVNLYNAB_ASSETS_URL . '/frontend/elementor/js/hvnly-all-properties.js';
+
+        $elementor_widget_deps = array( 'jquery', 'hvnly-frontend-property-ajax-filter-search' );
 
         if (file_exists($js_path_v1)) {
             wp_register_script(
@@ -769,31 +762,31 @@ class Assets
             wp_register_script(
                 'hvnly-elementor-widgets',
                 HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/hvnly-frontend-property-ajax-filter-search.js',
-                ['jquery'],
+                array( 'jquery' ),
                 HVNLYNAB_VERSION,
                 true
             );
         }
-        
+
         // Localize on live frontend only — editor preview localized in Elementor Bootstrap (full archive stack).
         if ( ! $this->is_elementor_editor_mode() ) {
-            wp_localize_script('hvnly-elementor-widgets', 'hvnlyElementor', [
+            wp_localize_script('hvnly-elementor-widgets', 'hvnlyElementor', array(
                 'ajaxUrl'    => admin_url('admin-ajax.php'),
                 'nonce'      => wp_create_nonce('hvnly_ajax_request'),
                 'pluginUrl'  => HVNLYNAB_URL,
                 'assetsUrl'  => HVNLYNAB_ASSETS_URL,
                 'isEditMode' => false,
                 'initDelay'  => 0,
-                'i18n'       => [
+                'i18n'       => array(
                     'loading'      => __('Loading...', 'havenlytics'),
                     'loadMore'     => __('Load More Properties', 'havenlytics'),
                     'noProperties' => __('No properties found.', 'havenlytics'),
                     'error'        => __('An error occurred. Please try again.', 'havenlytics'),
-                ],
-            ]);
+                ),
+            ));
         }
     }
-    
+
     /**
      * Enqueue Elementor widget assets (called when needed)
      */
@@ -801,30 +794,29 @@ class Assets
         if ($this->elementor_assets_enqueued) {
             return;
         }
-        
+
         $this->register_elementor_scripts();
-        
+
         // Only enqueue if not already enqueued by main flow
-        if (!wp_script_is('hvnly-elementor-widgets', 'enqueued')) {
+        if ( ! wp_script_is('hvnly-elementor-widgets', 'enqueued')) {
             wp_enqueue_script('hvnly-elementor-widgets');
         }
-        
+
         // Ensure jQuery is available
-        if (!wp_script_is('jquery', 'enqueued')) {
+        if ( ! wp_script_is('jquery', 'enqueued')) {
             wp_enqueue_script('jquery');
         }
-        
+
         $this->elementor_assets_enqueued = true;
     }
-    
+
     /**
      * Inject dynamic CSS from design settings
      * This method generates and injects dynamic CSS based on design settings
      *
      * @return void
      */
-    private function inject_dynamic_css()
-    {
+    private function inject_dynamic_css() {
         // Check if DynamicStyleGenerator class exists
         if (class_exists('HvnlyNab\Core\DynamicStyleGenerator')) {
             $generator = \HvnlyNab\Core\DynamicStyleGenerator::get_instance();
@@ -835,8 +827,7 @@ class Assets
     /**
      * Enqueue frontend scripts
      */
-    public function enqueue_scripts()
-    {
+    public function enqueue_scripts() {
         // Register all scripts first
         $this->register_scripts();
 
@@ -845,10 +836,10 @@ class Assets
             $this->enqueue_map_assets();
             $this->apply_map_search_script_dependencies();
         }
-        
+
         // Always enqueue jQuery
         wp_enqueue_script('jquery');
-        
+
         // Property archive search stack — same order/handles as native archive template.
         if ( $this->should_enqueue_property_search_scripts() ) {
             wp_enqueue_script( 'hvnly-elementor-preview-guard' );
@@ -868,7 +859,7 @@ class Assets
         // Enqueue single property scripts (without filter search)
         if ($this->is_single_property) {
             $this->enqueue_single_property_scripts();
-            
+
             // Even if AJAX system is not loaded, we need map params for the single map
             $map_localize_params = $this->get_map_localize_params();
             wp_localize_script('hvnly-frontend-property-single-map', 'hvnly_map_params', $map_localize_params);
@@ -876,14 +867,14 @@ class Assets
 
         if ($this->is_single_agent) {
             wp_enqueue_script('hvnly-frontend-agent-single');
-            wp_localize_script('hvnly-frontend-agent-single', 'hvnly_agent_single', [
-                'i18n' => [
+            wp_localize_script('hvnly-frontend-agent-single', 'hvnly_agent_single', array(
+                'i18n' => array(
                     'listingsMatchDepartment' =>
                         /* translators: %d: Number of listings matching the selected department. */
                         __( '%d listing(s) match this department.', 'havenlytics' ),
                     'noListingsMatchDepartment' => __( 'No listings match this department.', 'havenlytics' ),
-                ],
-            ]);
+                ),
+            ));
 
             if (function_exists('hvnly_is_contact_agent_enabled') && hvnly_is_contact_agent_enabled()) {
                 wp_enqueue_script('hvnly-frontend-contact-agent');
@@ -901,7 +892,7 @@ class Assets
         if ($this->should_load_agencies_listing_assets()) {
             wp_enqueue_script('hvnly-frontend-property-agents-archive');
         }
-        
+
         // Elementor widget helper script (archive stack loaded above when widget is present).
         if ( $this->has_elementor_widget || $this->is_elementor_editor_mode() ) {
             $this->enqueue_elementor_assets();
@@ -987,99 +978,98 @@ class Assets
 
         $agencies_css_path = HVNLYNAB_ASSETS_PATH . '/frontend/elementor/css/hvnly-property-agencies.css';
         if (file_exists($agencies_css_path)) {
-            if (!wp_style_is('hvnly-elementor-property-agencies', 'registered')) {
+            if ( ! wp_style_is('hvnly-elementor-property-agencies', 'registered')) {
                 wp_register_style(
                     'hvnly-elementor-property-agencies',
                     HVNLYNAB_ASSETS_URL . '/frontend/elementor/css/hvnly-property-agencies.css',
-                    ['hvnly-frontend-property-agents-archive', 'hvnly-frontend-cards'],
+                    array( 'hvnly-frontend-property-agents-archive', 'hvnly-frontend-cards' ),
                     HVNLYNAB_VERSION
                 );
             }
             wp_enqueue_style('hvnly-elementor-property-agencies');
         }
     }
-    
+
     /**
      * Register all JavaScript files
      */
-    private function register_scripts()
-    {
+    private function register_scripts() {
         // Main property scripts
-        $scripts = [
-            'hvnly-frontend-property-map-search' => [
+        $scripts = array(
+            'hvnly-frontend-property-map-search' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/hvnly-frontend-property-map-search.js',
-                'deps' => ['jquery', 'hvnly-frontend-dom-resolver'],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-ajax-filter-search' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/hvnly-frontend-property-ajax-filter-search.js',
-                'deps' => ['jquery', 'hvnly-frontend-property-map-search'],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-single-gallery' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-single-gallery.js',
-                'deps' => ['jquery'],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-single-video' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-single-video.js',
-                'deps' => ['jquery'],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-single-map' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-single-map.js',
-                'deps' => ['jquery'],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-single' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-single.js',
-                'deps' => ['jquery'],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-mobile-contact-dock' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-mobile-contact-dock.js',
-                'deps' => [],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-contact-agent' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-contact-agent.js',
-                'deps' => ['jquery'],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-agents-section-js' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-agents-section.js',
-                'deps' => [],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-agent-single' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-agent-single.js',
-                'deps' => [],
-                'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-agents-archive' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-agents-archive.js',
-                'deps' => [],
+                'deps' => array( 'jquery', 'hvnly-frontend-dom-resolver' ),
                 'ver' => HVNLYNAB_VERSION,
                 'in_footer' => true,
-            ],
-            'hvnly-elementor-preview-guard' => [
-                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-elementor-preview-guard.js',
-                'deps' => ['jquery'],
+            ),
+            'hvnly-frontend-property-ajax-filter-search' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/hvnly-frontend-property-ajax-filter-search.js',
+                'deps' => array( 'jquery', 'hvnly-frontend-property-map-search' ),
                 'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-        ];
-        
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-single-gallery' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-single-gallery.js',
+                'deps' => array( 'jquery' ),
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-single-video' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-single-video.js',
+                'deps' => array( 'jquery' ),
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-single-map' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-single-map.js',
+                'deps' => array( 'jquery' ),
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-single' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-single.js',
+                'deps' => array( 'jquery' ),
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-mobile-contact-dock' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-mobile-contact-dock.js',
+                'deps' => array(),
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-contact-agent' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-contact-agent.js',
+                'deps' => array( 'jquery' ),
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-agents-section-js' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-agents-section.js',
+                'deps' => array(),
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-agent-single' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-agent-single.js',
+                'deps' => array(),
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-agents-archive' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-frontend-property-agents-archive.js',
+                'deps' => array(),
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true,
+            ),
+            'hvnly-elementor-preview-guard' => array(
+                'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/hvnly-elementor-preview-guard.js',
+                'deps' => array( 'jquery' ),
+                'ver' => HVNLYNAB_VERSION,
+                'in_footer' => true,
+            ),
+        );
+
         foreach ($scripts as $handle => $script) {
             wp_register_script(
                 $handle,
@@ -1089,75 +1079,74 @@ class Assets
                 $script['in_footer']
             );
         }
-        
+
         // Register modular AJAX scripts
         $this->register_modular_ajax_scripts();
     }
-    
+
     /**
      * Register modular AJAX scripts
      */
-    private function register_modular_ajax_scripts()
-    {
-        $ajax_modules = [
-            'hvnly-frontend-dom-resolver' => [
+    private function register_modular_ajax_scripts() {
+        $ajax_modules = array(
+            'hvnly-frontend-dom-resolver' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/modules/hvnly-frontend-dom-resolver.js',
-                'deps' => ['jquery'],
+                'deps' => array( 'jquery' ),
                 'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-ajax-utils' => [
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-ajax-utils' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/modules/hvnly-frontend-property-ajax-utils.js',
-                'deps' => ['jquery', 'hvnly-frontend-dom-resolver'],
+                'deps' => array( 'jquery', 'hvnly-frontend-dom-resolver' ),
                 'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-ajax-filters' => [
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-ajax-filters' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/modules/hvnly-frontend-property-ajax-filters.js',
-                'deps' => ['jquery', 'hvnly-frontend-property-ajax-utils'],
+                'deps' => array( 'jquery', 'hvnly-frontend-property-ajax-utils' ),
                 'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-ajax-search' => [
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-ajax-search' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/modules/hvnly-frontend-property-ajax-search.js',
-                'deps' => ['jquery', 'hvnly-frontend-property-ajax-utils', 'hvnly-frontend-property-ajax-filters'],
+                'deps' => array( 'jquery', 'hvnly-frontend-property-ajax-utils', 'hvnly-frontend-property-ajax-filters' ),
                 'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-ajax-pagination' => [
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-ajax-pagination' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/modules/hvnly-frontend-property-ajax-pagination.js',
-                'deps' => ['jquery', 'hvnly-frontend-property-ajax-utils'],
+                'deps' => array( 'jquery', 'hvnly-frontend-property-ajax-utils' ),
                 'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-ajax-url' => [
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-ajax-url' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/modules/hvnly-frontend-property-ajax-url.js',
-                'deps' => ['jquery', 'hvnly-frontend-property-ajax-utils'],
+                'deps' => array( 'jquery', 'hvnly-frontend-property-ajax-utils' ),
                 'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-ajax-ui' => [
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-ajax-ui' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/modules/hvnly-frontend-property-ajax-ui.js',
-                'deps' => ['jquery', 'hvnly-frontend-property-ajax-utils'],
+                'deps' => array( 'jquery', 'hvnly-frontend-property-ajax-utils' ),
                 'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ],
-            'hvnly-frontend-property-ajax-root' => [
+                'in_footer' => true,
+            ),
+            'hvnly-frontend-property-ajax-root' => array(
                 'path' => HVNLYNAB_ASSETS_URL . '/frontend/js/property-search/hvnly-frontend-property-ajax-root.js',
-                'deps' => [
+                'deps' => array(
                     'jquery',
                     'hvnly-frontend-property-ajax-utils',
                     'hvnly-frontend-property-ajax-filters',
                     'hvnly-frontend-property-ajax-search',
                     'hvnly-frontend-property-ajax-pagination',
                     'hvnly-frontend-property-ajax-url',
-                    'hvnly-frontend-property-ajax-ui'
-                ],
+                    'hvnly-frontend-property-ajax-ui',
+                ),
                 'ver' => HVNLYNAB_VERSION,
-                'in_footer' => true
-            ]
-        ];
-        
+                'in_footer' => true,
+            ),
+        );
+
         foreach ($ajax_modules as $handle => $module) {
             wp_register_script(
                 $handle,
@@ -1168,33 +1157,32 @@ class Assets
             );
         }
     }
-    
+
     /**
      * Get AJAX parameters (cached)
      */
-    private function get_ajax_params()
-    {
+    private function get_ajax_params() {
         if ($this->ajax_params === null) {
             global $wp_query;
-            
+
             // Get custom properties per page from settings
             $properties_per_page = 6;
             if (function_exists('hvnly_get_properties_per_page')) {
                 $properties_per_page = hvnly_get_properties_per_page();
             }
-            
+
             // Sanitize view_type from URL
             $view_type = 'grid';
             if (isset($_GET['view_type'])) {
                 $view_type = sanitize_text_field(wp_unslash($_GET['view_type']));
                 // Allow only specific values
-                $allowed_view_types = ['grid', 'list', 'map'];
-                if (!in_array($view_type, $allowed_view_types, true)) {
+                $allowed_view_types = array( 'grid', 'list', 'map' );
+                if ( ! in_array($view_type, $allowed_view_types, true)) {
                     $view_type = 'grid';
                 }
             }
-            
-            $this->ajax_params = [
+
+            $this->ajax_params = array(
                 'ajax_url'           => esc_url(admin_url('admin-ajax.php')),
                 'nonce'              => '', // Will be set in localization with fresh nonce
                 'current_page'       => max(1, absint(get_query_var('paged'))),
@@ -1202,7 +1190,7 @@ class Assets
                 'found_posts'        => absint($wp_query->found_posts ?? 0),
                 'post_count'         => absint($wp_query->post_count ?? 0),
                 'per_page'           => absint($properties_per_page),
-                'properties_per_page'=> absint($properties_per_page),
+                'properties_per_page' => absint($properties_per_page),
                 'loading_text'       => esc_html__('Loading...', 'havenlytics'),
                 'load_more_text'     => esc_html__('Load More Properties', 'havenlytics'),
                 'error_text'         => esc_html__('An error occurred. Please try again.', 'havenlytics'),
@@ -1217,63 +1205,60 @@ class Assets
                 'debug'              => ( function_exists( 'hvnly_is_debug_logging_enabled' ) && hvnly_is_debug_logging_enabled() ) ? '1' : '0',
                 'is_archive'         => $this->is_property_archive,
                 'is_taxonomy'        => $this->is_property_taxonomy,
-                'has_shortcode'      => $this->has_property_shortcode 
-            ];
+                'has_shortcode'      => $this->has_property_shortcode,
+            );
         }
-        
+
         return $this->ajax_params;
     }
-    
+
     /**
      * Get map parameters (cached)
      */
-    private function get_map_params()
-    {
+    private function get_map_params() {
         if ($this->map_params === null) {
-            $this->map_params = [
+            $this->map_params = array(
                 'default_lat' => $this->sanitize_coordinate(get_option('hvnly_default_lat', '40.7128')),
                 'default_lng' => $this->sanitize_coordinate(get_option('hvnly_default_lng', '-74.0060')),
                 'zoom_level' => absint(get_option('hvnly_map_zoom', 12)),
                 'cluster_markers' => (bool) get_option('hvnly_cluster_markers', true),
                 'map_provider' => sanitize_text_field(get_option('hvnly_map_provider', 'leaflet')),
                 'api_key' => sanitize_text_field(get_option('hvnly_map_api_key', '')),
-            ];
+            );
         }
-        
+
         return $this->map_params;
     }
-    
+
     /**
      * Sanitize coordinate values (lat/lng)
      */
-    private function sanitize_coordinate($coord)
-    {
+    private function sanitize_coordinate( $coord ) {
         $coord = sanitize_text_field($coord);
         if (is_numeric($coord)) {
             return (float) $coord;
         }
         return $coord;
     }
-    
+
     /**
      * Get extended map parameters (cached)
      */
-    private function get_map_localize_params()
-    {
+    private function get_map_localize_params() {
         if ($this->map_localize_params === null) {
             $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-            $map_settings = $settings_manager->get_map_settings();
-            
-            $map_provider = isset($map_settings['hvnly_map_provider']) ? $map_settings['hvnly_map_provider'] : 'leaflet';
-            $api_key = isset($map_settings['hvnly_map_api_key']) ? $map_settings['hvnly_map_api_key'] : '';
+            $map_settings     = $settings_manager->get_map_settings();
+
+            $map_provider    = isset($map_settings['hvnly_map_provider']) ? $map_settings['hvnly_map_provider'] : 'leaflet';
+            $api_key         = isset($map_settings['hvnly_map_api_key']) ? $map_settings['hvnly_map_api_key'] : '';
             $enable_fallback = isset($map_settings['hvnly_enable_google_fallback']) ? (bool) $map_settings['hvnly_enable_google_fallback'] : true;
-            
+
             $final_provider = $map_provider;
             if ($map_provider === 'google' && empty($api_key)) {
                 $final_provider = 'leaflet';
             }
-            
-            $this->map_localize_params = [
+
+            $this->map_localize_params = array(
                 'provider' => $final_provider,
                 'api_key' => $api_key,
                 'enable_google_fallback' => $enable_fallback,
@@ -1283,9 +1268,9 @@ class Assets
                 'cluster_markers' => isset($map_settings['hvnly_cluster_markers']) ? (bool) $map_settings['hvnly_cluster_markers'] : true,
                 'map_style' => isset($map_settings['hvnly_map_style']) ? sanitize_text_field($map_settings['hvnly_map_style']) : 'standard',
                 'custom_marker' => isset($map_settings['hvnly_custom_marker']) ? (bool) $map_settings['hvnly_custom_marker'] : false,
-                'marker_color' => function_exists('hvnly_get_marker_color') ? hvnly_get_marker_color() : (isset($map_settings['hvnly_marker_color']) ? sanitize_text_field($map_settings['hvnly_marker_color']) : '#6C60FE'),
-                'marker_uses_brand_color' => function_exists('hvnly_marker_color_is_custom') ? !hvnly_marker_color_is_custom() : false,
-                'marker_color_css' => function_exists('hvnly_get_marker_color_css') ? hvnly_get_marker_color_css() : (function_exists('hvnly_get_marker_color') ? hvnly_get_marker_color() : '#6C60FE'),
+                'marker_color' => function_exists('hvnly_get_marker_color') ? hvnly_get_marker_color() : ( isset($map_settings['hvnly_marker_color']) ? sanitize_text_field($map_settings['hvnly_marker_color']) : '#6C60FE' ),
+                'marker_uses_brand_color' => function_exists('hvnly_marker_color_is_custom') ? ! hvnly_marker_color_is_custom() : false,
+                'marker_color_css' => function_exists('hvnly_get_marker_color_css') ? hvnly_get_marker_color_css() : ( function_exists('hvnly_get_marker_color') ? hvnly_get_marker_color() : '#6C60FE' ),
                 'show_fullscreen' => isset($map_settings['hvnly_show_fullscreen']) ? (bool) $map_settings['hvnly_show_fullscreen'] : true,
                 'show_zoom_control' => isset($map_settings['hvnly_show_zoom_control']) ? (bool) $map_settings['hvnly_show_zoom_control'] : true,
                 'show_scroll_wheel' => isset($map_settings['hvnly_show_scroll_wheel']) ? (bool) $map_settings['hvnly_show_scroll_wheel'] : true,
@@ -1297,7 +1282,7 @@ class Assets
                 'is_single_property' => $this->is_single_property,
                 'is_property_archive' => $this->is_property_archive,
                 'debug' => ( function_exists( 'hvnly_is_debug_logging_enabled' ) && hvnly_is_debug_logging_enabled() ) ? '1' : '0',
-                'i18n' => [
+                'i18n' => array(
                     'requestTimedOut' => __( 'Request timed out. Please try again.', 'havenlytics' ),
                     'errorLoadingProperties' => __( 'Error loading properties: ', 'havenlytics' ),
                     'mapPlaceholderMissing' => __( 'Map placeholder not found on this page.', 'havenlytics' ),
@@ -1334,18 +1319,17 @@ class Assets
                     'save' => __( 'Save', 'havenlytics' ),
                     'view' => __( 'View', 'havenlytics' ),
                     'viewProperty' => __( 'View Property', 'havenlytics' ),
-                ],
-            ];
+                ),
+            );
         }
-        
+
         return $this->map_localize_params;
     }
-    
+
     /**
      * Enqueue modular AJAX system
      */
-    private function enqueue_modular_ajax_system()
-    {
+    private function enqueue_modular_ajax_system() {
         wp_enqueue_script('hvnly-frontend-dom-resolver');
         wp_enqueue_script('hvnly-frontend-property-map-search');
         wp_enqueue_script('hvnly-frontend-property-ajax-utils');
@@ -1356,17 +1340,16 @@ class Assets
         wp_enqueue_script('hvnly-frontend-property-ajax-ui');
         wp_enqueue_script('hvnly-frontend-property-ajax-root');
     }
-    
+
     /**
      * Enqueue single property scripts
      */
-    private function enqueue_single_property_scripts()
-    {
+    private function enqueue_single_property_scripts() {
         $property_id = get_the_ID();
 
         wp_enqueue_script('hvnly-frontend-property-single-gallery');
         wp_enqueue_script('hvnly-frontend-property-single-video');
-        
+
         // Ensure Leaflet is loaded before map script
         $this->enqueue_leaflet_assets();
         // Local Font Awesome (already registered/enqueued site-wide; reinforce for single map icons).
@@ -1388,10 +1371,10 @@ class Assets
         }
 
         // Localize property data for single property pages
-        wp_localize_script('hvnly-frontend-property-single-gallery', 'hvnly_property_data', [
+        wp_localize_script('hvnly-frontend-property-single-gallery', 'hvnly_property_data', array(
             'property_id' => absint($property_id),
             'gallery_images' => $this->get_property_gallery_images($property_id),
-            'i18n' => [
+            'i18n' => array(
                 'propertyImage' => __( 'Property Image', 'havenlytics' ),
                 'viewImage' =>
                     /* translators: %d: Image number in the gallery. */
@@ -1401,65 +1384,62 @@ class Assets
                     __( 'Go to slide group %1$d of %2$d', 'havenlytics' ),
                 'dismissNotification' => __( 'Dismiss notification', 'havenlytics' ),
                 'videoCannotPlay' => __( 'Video cannot be played', 'havenlytics' ),
-            ],
-        ]);
+            ),
+        ));
     }
-    
+
     /**
      * Get property gallery images
      */
-    private function get_property_gallery_images($property_id)
-    {
-        return [];
+    private function get_property_gallery_images( $property_id ) {
+        return array();
     }
-    
+
     /**
      * Localize scripts for AJAX - ONCE ONLY
      * All scripts share the same global data via the root script
      */
-    private function localize_ajax_scripts_once()
-    {
+    private function localize_ajax_scripts_once() {
         if ($this->localization_done === true) {
             return;
         }
 
         $ajax_nonce = wp_create_nonce('hvnly_ajax_request');
-        
+
         global $wp_query;
 
-        $ajax_params = $this->get_ajax_params();
+        $ajax_params         = $this->get_ajax_params();
         $map_localize_params = $this->get_map_localize_params();
-        
+
         $ajax_params['nonce'] = $ajax_nonce;
-        
+
         $ajax_params['current_page'] = max(1, absint(get_query_var('paged')));
-        $ajax_params['max_pages'] = absint($wp_query->max_num_pages ?? 1);
-        $ajax_params['found_posts'] = absint($wp_query->found_posts ?? 0);
-        $ajax_params['post_count'] = absint($wp_query->post_count ?? 0);
+        $ajax_params['max_pages']    = absint($wp_query->max_num_pages ?? 1);
+        $ajax_params['found_posts']  = absint($wp_query->found_posts ?? 0);
+        $ajax_params['post_count']   = absint($wp_query->post_count ?? 0);
 
         if (wp_script_is('hvnly-frontend-property-ajax-root', 'enqueued')) {
             wp_localize_script('hvnly-frontend-property-ajax-root', 'hvnly_PROPERTY_ajax', $ajax_params);
             wp_localize_script('hvnly-frontend-property-ajax-root', 'hvnly_map_params', $map_localize_params);
         }
-        
+
         if (wp_script_is('hvnly-frontend-property-map-search', 'enqueued')) {
-            wp_localize_script('hvnly-frontend-property-map-search', 'hvnlyFrontend', [
+            wp_localize_script('hvnly-frontend-property-map-search', 'hvnlyFrontend', array(
                 'ajax_url' => esc_url(admin_url('admin-ajax.php')),
                 'ajax_nonce' => $ajax_nonce,
-                'plugin_url' => esc_url(HVNLYNAB_URL)
-            ]);
+                'plugin_url' => esc_url(HVNLYNAB_URL),
+            ));
             wp_localize_script('hvnly-frontend-property-map-search', 'hvnly_map_params', $map_localize_params);
             wp_localize_script('hvnly-frontend-property-map-search', 'hvnly_PROPERTY_ajax', $ajax_params);
         }
-        
+
         $this->localization_done = true;
     }
-    
+
     /**
      * Check if maps should be loaded
      */
-    private function should_load_maps()
-    {
+    private function should_load_maps() {
         if (
             $this->is_property_archive
             || $this->is_property_taxonomy
@@ -1471,30 +1451,32 @@ class Assets
         ) {
             return true;
         }
-        
+
         if ($this->is_single_property) {
             $property_id = get_the_ID();
-            
+
             $lat = $this->get_property_coordinate($property_id, 'latitude');
             $lng = $this->get_property_coordinate($property_id, 'longitude');
-            
-            return !empty($lat) && !empty($lng);
+
+            return ! empty($lat) && ! empty($lng);
         }
-        
+
         return false;
     }
-    
+
     /**
      * Get property coordinate safely
      */
-    private function get_property_coordinate($property_id, $type)
-    {
+    private function get_property_coordinate( $property_id, $type ) {
         $meta_key = $type === 'latitude' ? 'latitude' : 'longitude';
 
         if ( function_exists( 'hvnly_resolve_field_meta' ) ) {
             $coord = hvnly_resolve_field_meta(
                 (int) $property_id,
-                array( 'group_type' => 'map', 'metaKey' => $meta_key )
+                array(
+					'group_type' => 'map',
+					'metaKey' => $meta_key,
+				)
             );
             if ( ! empty( $coord ) && is_numeric( $coord ) ) {
                 return (float) $coord;
@@ -1503,34 +1485,33 @@ class Assets
 
         return '';
     }
-    
+
     /**
      * Enqueue map assets
      */
-    private function enqueue_map_assets()
-    {
+    private function enqueue_map_assets() {
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $map_settings = $settings_manager->get_map_settings();
-        
+        $map_settings     = $settings_manager->get_map_settings();
+
         $map_provider = isset($map_settings['hvnly_map_provider']) ? $map_settings['hvnly_map_provider'] : 'leaflet';
-        $api_key = isset($map_settings['hvnly_map_api_key']) ? $map_settings['hvnly_map_api_key'] : '';
-        
+        $api_key      = isset($map_settings['hvnly_map_api_key']) ? $map_settings['hvnly_map_api_key'] : '';
+
         wp_enqueue_style(
             'hvnly-frontend-property-map',
             esc_url(HVNLYNAB_ASSETS_URL . '/frontend/css/property-search/hvnly-frontend-property-map.css'),
-            [],
+            array(),
             HVNLYNAB_VERSION
         );
 
-        if ($map_provider === 'google' && !empty($api_key)) {
+        if ($map_provider === 'google' && ! empty($api_key)) {
             wp_enqueue_script(
                 'hvnly-google-maps',
                 'https://maps.googleapis.com/maps/api/js?key=' . urlencode($api_key) . '&libraries=places&loading=async&callback=initHvnlyMap',
                 array(),
                 HVNLYNAB_VERSION,
-                ['strategy' => 'async']
+                array( 'strategy' => 'async' )
             );
-            
+
             wp_add_inline_script('hvnly-google-maps', '
                 function initHvnlyMap() {
                     window.dispatchEvent(new Event("hvnlyGoogleMapsLoaded"));
@@ -1539,22 +1520,21 @@ class Assets
                     }
                 }
             ');
-            
+
         } else {
             $this->enqueue_leaflet_assets();
         }
     }
-    
+
     /**
      * Enqueue Leaflet map assets
      */
-    private function enqueue_leaflet_assets()
-    {
+    private function enqueue_leaflet_assets() {
         if ( ! wp_style_is( 'hvnly-frontend-property-leaflet', 'registered' ) ) {
             wp_register_style(
                 'hvnly-frontend-property-leaflet',
                 esc_url(HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/css/leaflet.css'),
-                [],
+                array(),
                 '1.9.4'
             );
         }
@@ -1562,7 +1542,7 @@ class Assets
             wp_register_script(
                 'hvnly-frontend-property-leaflet',
                 esc_url(HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/js/leaflet.js'),
-                [],
+                array(),
                 '1.9.4',
                 true
             );
@@ -1575,7 +1555,7 @@ class Assets
             wp_register_style(
                 'hvnly-frontend-property-leaflet-markercluster',
                 esc_url(HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/css/MarkerCluster.css'),
-                [],
+                array(),
                 '1.5.3'
             );
         }
@@ -1583,7 +1563,7 @@ class Assets
             wp_register_style(
                 'hvnly-frontend-property-leaflet-markercluster-default',
                 esc_url(HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/css/MarkerCluster.Default.css'),
-                [],
+                array(),
                 '1.5.3'
             );
         }
@@ -1591,7 +1571,7 @@ class Assets
             wp_register_script(
                 'hvnly-frontend-property-leaflet-markercluster',
                 esc_url(HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/js/leaflet.markercluster.js'),
-                ['hvnly-frontend-property-leaflet'],
+                array( 'hvnly-frontend-property-leaflet' ),
                 '1.5.3',
                 true
             );
@@ -1605,7 +1585,7 @@ class Assets
             wp_register_style(
                 'hvnly-frontend-property-leaflet-fullscreen',
                 esc_url(HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/css/Control.FullScreen.css'),
-                [],
+                array(),
                 '2.4.0'
             );
         }
@@ -1613,7 +1593,7 @@ class Assets
             wp_register_script(
                 'hvnly-frontend-property-leaflet-fullscreen',
                 esc_url(HVNLYNAB_ASSETS_URL . '/frontend/lib/leaflet/js/Control.FullScreen.min.js'),
-                ['hvnly-frontend-property-leaflet'],
+                array( 'hvnly-frontend-property-leaflet' ),
                 '2.4.0',
                 true
             );

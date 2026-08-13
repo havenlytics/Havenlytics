@@ -279,7 +279,7 @@ class OnboardingWizard {
 			$all_settings = array();
 		}
 
-		$general      = isset( $all_settings['general'] ) && is_array( $all_settings['general'] )
+		$general       = isset( $all_settings['general'] ) && is_array( $all_settings['general'] )
 			? $all_settings['general'] : array();
 		$contact_agent = isset( $all_settings['contact-agent'] ) && is_array( $all_settings['contact-agent'] )
 			? $all_settings['contact-agent'] : array();
@@ -302,7 +302,10 @@ class OnboardingWizard {
 			: array( 'USD' => 'United States dollar ($)' );
 		$countries  = class_exists( TabData::class )
 			? TabData::hvnly_get_property_countries()
-			: array( 'GB' => 'United Kingdom', 'US' => 'United States' );
+			: array(
+				'GB' => 'United Kingdom',
+				'US' => 'United States',
+			);
 
 		return array(
 			'restUrl'    => esc_url_raw( rest_url( 'hvnlynab/v1/' ) ),
@@ -347,9 +350,18 @@ class OnboardingWizard {
 			// Supported map providers (mirrors the Settings → Map provider list;
 			// no provider added or removed).
 			'mapProviders'          => array(
-				array( 'value' => 'leaflet', 'label' => esc_html__( 'Leaflet — OpenStreetMap (free, no API key)', 'havenlytics' ) ),
-				array( 'value' => 'openstreetmap', 'label' => esc_html__( 'OpenStreetMap (free, no API key)', 'havenlytics' ) ),
-				array( 'value' => 'google', 'label' => esc_html__( 'Google Maps (API key required)', 'havenlytics' ) ),
+				array(
+					'value' => 'leaflet',
+					'label' => esc_html__( 'Leaflet — OpenStreetMap (free, no API key)', 'havenlytics' ),
+				),
+				array(
+					'value' => 'openstreetmap',
+					'label' => esc_html__( 'OpenStreetMap (free, no API key)', 'havenlytics' ),
+				),
+				array(
+					'value' => 'google',
+					'label' => esc_html__( 'Google Maps (API key required)', 'havenlytics' ),
+				),
 			),
 			// Existing OSM tile config so the interactive preview matches the
 			// front-end exactly (reused from SettingsManager, not redefined).

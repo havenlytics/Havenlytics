@@ -7,7 +7,7 @@
  * @since       2.2.0
  */
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -18,14 +18,14 @@ if (!defined('ABSPATH')) {
  */
 function hvnly_get_map_provider() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    $provider = $map_settings['hvnly_map_provider'] ?? 'leaflet';
-    
-    $allowed_providers = ['leaflet', 'openstreetmap', 'google'];
-    if (!in_array($provider, $allowed_providers, true)) {
+    $map_settings     = $settings_manager->get_map_settings();
+    $provider         = $map_settings['hvnly_map_provider'] ?? 'leaflet';
+
+    $allowed_providers = array( 'leaflet', 'openstreetmap', 'google' );
+    if ( ! in_array($provider, $allowed_providers, true)) {
         $provider = 'leaflet';
     }
-    
+
     return apply_filters('hvnly_map_provider', $provider);
 }
 
@@ -36,8 +36,8 @@ function hvnly_get_map_provider() {
  */
 function hvnly_use_google_maps() {
     $provider = hvnly_get_map_provider();
-    $api_key = hvnly_get_google_maps_api_key();
-    return ($provider === 'google' && !empty($api_key));
+    $api_key  = hvnly_get_google_maps_api_key();
+    return ( $provider === 'google' && ! empty($api_key) );
 }
 
 /**
@@ -47,7 +47,7 @@ function hvnly_use_google_maps() {
  */
 function hvnly_use_openstreetmap() {
     $provider = hvnly_get_map_provider();
-    return ($provider === 'openstreetmap');
+    return ( $provider === 'openstreetmap' );
 }
 
 /**
@@ -57,7 +57,7 @@ function hvnly_use_openstreetmap() {
  */
 function hvnly_use_leaflet() {
     $provider = hvnly_get_map_provider();
-    return ($provider === 'leaflet');
+    return ( $provider === 'leaflet' );
 }
 
 /**
@@ -67,9 +67,9 @@ function hvnly_use_leaflet() {
  */
 function hvnly_get_google_maps_api_key() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    $api_key = $map_settings['hvnly_map_api_key'] ?? '';
-    
+    $map_settings     = $settings_manager->get_map_settings();
+    $api_key          = $map_settings['hvnly_map_api_key'] ?? '';
+
     return apply_filters('hvnly_google_maps_api_key', $api_key);
 }
 
@@ -106,9 +106,9 @@ function hvnly_update_map_settings( array $partial ) {
  */
 function hvnly_get_osm_tile_url() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    $tile_url = $map_settings['hvnly_osm_tile_url'] ?? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    
+    $map_settings     = $settings_manager->get_map_settings();
+    $tile_url         = $map_settings['hvnly_osm_tile_url'] ?? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
     return apply_filters('hvnly_osm_tile_url', $tile_url);
 }
 
@@ -119,9 +119,9 @@ function hvnly_get_osm_tile_url() {
  */
 function hvnly_get_osm_attribution() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    $attribution = $map_settings['hvnly_osm_attribution'] ?? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-    
+    $map_settings     = $settings_manager->get_map_settings();
+    $attribution      = $map_settings['hvnly_osm_attribution'] ?? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
     return apply_filters('hvnly_osm_attribution', $attribution);
 }
 
@@ -132,7 +132,7 @@ function hvnly_get_osm_attribution() {
  */
 function hvnly_get_map_zoom() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
+    $map_settings     = $settings_manager->get_map_settings();
     return absint($map_settings['hvnly_map_zoom'] ?? 12);
 }
 
@@ -143,8 +143,8 @@ function hvnly_get_map_zoom() {
  */
 function hvnly_get_default_latitude() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    return (float) ($map_settings['hvnly_default_lat'] ?? 51.514939);
+    $map_settings     = $settings_manager->get_map_settings();
+    return (float) ( $map_settings['hvnly_default_lat'] ?? 51.514939 );
 }
 
 /**
@@ -154,8 +154,8 @@ function hvnly_get_default_latitude() {
  */
 function hvnly_get_default_longitude() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    return (float) ($map_settings['hvnly_default_lng'] ?? -0.091839);
+    $map_settings     = $settings_manager->get_map_settings();
+    return (float) ( $map_settings['hvnly_default_lng'] ?? -0.091839 );
 }
 
 /**
@@ -165,8 +165,8 @@ function hvnly_get_default_longitude() {
  */
 function hvnly_is_marker_clustering_enabled() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    return (bool) ($map_settings['hvnly_cluster_markers'] ?? true);
+    $map_settings     = $settings_manager->get_map_settings();
+    return (bool) ( $map_settings['hvnly_cluster_markers'] ?? true );
 }
 
 /**
@@ -176,8 +176,8 @@ function hvnly_is_marker_clustering_enabled() {
  */
 function hvnly_is_fullscreen_enabled() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    return (bool) ($map_settings['hvnly_show_fullscreen'] ?? true);
+    $map_settings     = $settings_manager->get_map_settings();
+    return (bool) ( $map_settings['hvnly_show_fullscreen'] ?? true );
 }
 
 /**
@@ -187,8 +187,8 @@ function hvnly_is_fullscreen_enabled() {
  */
 function hvnly_is_zoom_control_enabled() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    return (bool) ($map_settings['hvnly_show_zoom_control'] ?? true);
+    $map_settings     = $settings_manager->get_map_settings();
+    return (bool) ( $map_settings['hvnly_show_zoom_control'] ?? true );
 }
 
 /**
@@ -198,8 +198,8 @@ function hvnly_is_zoom_control_enabled() {
  */
 function hvnly_is_scroll_wheel_enabled() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    return (bool) ($map_settings['hvnly_show_scroll_wheel'] ?? true);
+    $map_settings     = $settings_manager->get_map_settings();
+    return (bool) ( $map_settings['hvnly_show_scroll_wheel'] ?? true );
 }
 
 /**
@@ -209,14 +209,14 @@ function hvnly_is_scroll_wheel_enabled() {
  */
 function hvnly_get_google_map_type() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    $type = $map_settings['hvnly_google_map_type'] ?? 'roadmap';
-    
-    $allowed_types = ['roadmap', 'satellite', 'hybrid', 'terrain'];
-    if (!in_array($type, $allowed_types, true)) {
+    $map_settings     = $settings_manager->get_map_settings();
+    $type             = $map_settings['hvnly_google_map_type'] ?? 'roadmap';
+
+    $allowed_types = array( 'roadmap', 'satellite', 'hybrid', 'terrain' );
+    if ( ! in_array($type, $allowed_types, true)) {
         $type = 'roadmap';
     }
-    
+
     return $type;
 }
 
@@ -227,16 +227,16 @@ function hvnly_get_google_map_type() {
  */
 function hvnly_get_marker_color() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    $brand_default = function_exists('hvnly_get_brand_color') ? hvnly_get_brand_color() : '#6C60FE';
+    $map_settings     = $settings_manager->get_map_settings();
+    $brand_default    = function_exists('hvnly_get_brand_color') ? hvnly_get_brand_color() : '#6C60FE';
 
-    if (!function_exists('hvnly_marker_color_is_custom') || !hvnly_marker_color_is_custom()) {
+    if ( ! function_exists('hvnly_marker_color_is_custom') || ! hvnly_marker_color_is_custom()) {
         return $brand_default;
     }
 
     $color = $map_settings['hvnly_marker_color'] ?? $brand_default;
 
-    if (!preg_match('/^#[a-f0-9]{6}$/i', $color)) {
+    if ( ! preg_match('/^#[a-f0-9]{6}$/i', $color)) {
         $color = $brand_default;
     }
 
@@ -250,8 +250,8 @@ function hvnly_get_marker_color() {
  */
 function hvnly_is_custom_marker_enabled() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
-    return (bool) ($map_settings['hvnly_custom_marker'] ?? false);
+    $map_settings     = $settings_manager->get_map_settings();
+    return (bool) ( $map_settings['hvnly_custom_marker'] ?? false );
 }
 
 /**
@@ -261,7 +261,7 @@ function hvnly_is_custom_marker_enabled() {
  */
 function hvnly_get_map_style() {
     $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-    $map_settings = $settings_manager->get_map_settings();
+    $map_settings     = $settings_manager->get_map_settings();
     return $map_settings['hvnly_map_style'] ?? 'standard';
 }
 
@@ -272,13 +272,13 @@ function hvnly_get_map_style() {
  */
 function hvnly_get_map_config() {
     $provider = hvnly_get_map_provider();
-    $api_key = hvnly_get_google_maps_api_key();
-    
+    $api_key  = hvnly_get_google_maps_api_key();
+
     // If Google Maps selected but no API key, fallback to Leaflet
     if ($provider === 'google' && empty($api_key)) {
         $provider = 'leaflet';
     }
-    
+
     return array(
         'provider' => $provider,
         'api_key' => $api_key,
@@ -293,7 +293,7 @@ function hvnly_get_map_config() {
         'show_zoom_control' => hvnly_is_zoom_control_enabled(),
         'show_scroll_wheel' => hvnly_is_scroll_wheel_enabled(),
         'marker_color' => hvnly_get_marker_color(),
-        'marker_uses_brand_color' => function_exists('hvnly_marker_color_is_custom') ? !hvnly_marker_color_is_custom() : false,
+        'marker_uses_brand_color' => function_exists('hvnly_marker_color_is_custom') ? ! hvnly_marker_color_is_custom() : false,
         'marker_color_css' => function_exists('hvnly_get_marker_color_css') ? hvnly_get_marker_color_css() : hvnly_get_marker_color(),
         'custom_marker' => hvnly_is_custom_marker_enabled(),
         'map_style' => hvnly_get_map_style(),
@@ -311,7 +311,7 @@ function hvnly_get_map_config() {
 //     if (!defined('WP_DEBUG') || !WP_DEBUG) {
 //         return;
 //     }
-    
+
 //     $config = hvnly_get_map_config();
 //     error_log('Havenlytics Map Config: ' . json_encode([
 //         'provider' => $config['provider'],

@@ -12,8 +12,8 @@ defined( 'ABSPATH' ) || exit;
 
 class BackupManager {
 
-	const TIMESTAMP_KEY = 'hvnly_backup_timestamp';
-	const VERSION_KEY   = 'hvnly_backup_version';
+	const TIMESTAMP_KEY   = 'hvnly_backup_timestamp';
+	const VERSION_KEY     = 'hvnly_backup_version';
 	const SNAPSHOT_PREFIX = 'hvnly_snapshot_';
 
 	/**

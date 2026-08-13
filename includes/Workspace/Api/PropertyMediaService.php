@@ -191,7 +191,7 @@ final class PropertyMediaService {
 				$clean[] = $id;
 			}
 		}
-		$clean     = array_values( array_unique( $clean ) );
+		$clean      = array_values( array_unique( $clean ) );
 		$serialized = implode( ',', $clean );
 
 		$builder_key = self::builder_gallery_meta_key();

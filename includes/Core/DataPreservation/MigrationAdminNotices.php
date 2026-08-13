@@ -123,13 +123,13 @@ class MigrationAdminNotices {
 			return;
 		}
 
-		$error = get_option( 'hvnly_migration_error', '' );
-		$step  = get_option( 'hvnly_migration_last_step', '' );
-		$retry = wp_nonce_url(
+		$error    = get_option( 'hvnly_migration_error', '' );
+		$step     = get_option( 'hvnly_migration_last_step', '' );
+		$retry    = wp_nonce_url(
 			admin_url( 'admin-post.php?action=hvnly_retry_migrations' ),
 			'hvnly_retry_migrations'
 		);
-		$restore = wp_nonce_url(
+		$restore  = wp_nonce_url(
 			admin_url( 'admin-post.php?action=hvnly_restore_backup' ),
 			'hvnly_restore_backup'
 		);

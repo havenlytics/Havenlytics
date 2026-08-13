@@ -65,7 +65,7 @@ final class AgentDeleteInventoryService {
 				'login'    => $user ? (string) $user->user_login : '',
 				'email'    => $user ? (string) $user->user_email : '',
 				'exists'   => (bool) $user,
-				'lifecycle'=> $user_id > 0 ? WorkspaceRegistrationStatus::get_for_user( $user_id ) : '',
+				'lifecycle' => $user_id > 0 ? WorkspaceRegistrationStatus::get_for_user( $user_id ) : '',
 			),
 			'properties'    => $props,
 			'inquiries'     => array(
@@ -120,7 +120,7 @@ final class AgentDeleteInventoryService {
 			if ( ! $post ) {
 				continue;
 			}
-			$item = array(
+			$item  = array(
 				'id'       => $pid,
 				'title'    => (string) $post->post_title,
 				'status'   => (string) $post->post_status,

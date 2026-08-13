@@ -144,7 +144,7 @@ final class WorkspaceSettings {
 			$stored = array();
 		}
 
-		$settings = array_merge( self::defaults(), $stored );
+		$settings                              = array_merge( self::defaults(), $stored );
 		$settings['enabled']                   = (bool) $settings['enabled'];
 		$settings['agents_can_direct_publish'] = ! empty( $settings['agents_can_direct_publish'] );
 		$settings['page_slug']                 = sanitize_title( (string) $settings['page_slug'] );
@@ -456,8 +456,8 @@ final class WorkspaceSettings {
 	 * @return string
 	 */
 	public static function get_logout_redirect_url(): string {
-		$stored = self::get();
-		$custom = isset( $stored['logout_redirect'] ) ? trim( (string) $stored['logout_redirect'] ) : '';
+		$stored   = self::get();
+		$custom   = isset( $stored['logout_redirect'] ) ? trim( (string) $stored['logout_redirect'] ) : '';
 		$fallback = self::route_url( 'login' );
 
 		if ( $custom !== '' ) {
@@ -549,7 +549,7 @@ final class WorkspaceSettings {
 	 * @return string
 	 */
 	private static function normalize_registration_role( string $role ): string {
-		$role = sanitize_key( $role );
+		$role    = sanitize_key( $role );
 		$allowed = array(
 			PortalCapabilities::WP_ROLE_AGENT,
 			'agent', // UI alias → hvnly_agent.

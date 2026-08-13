@@ -494,10 +494,10 @@ function hvnly_localize_contact_agent_script( int $property_id = 0 ): void {
 				'validationEmailInvalid' => __( 'Please enter a valid email address.', 'havenlytics' ),
 				'validationPhoneInvalid'   => __( 'Please enter a valid phone number.', 'havenlytics' ),
 				'validationPhoneMax'       => __( 'Your phone number is too long.', 'havenlytics' ),
-				'validationMessageRequired'=> __( 'Message is required.', 'havenlytics' ),
+				'validationMessageRequired' => __( 'Message is required.', 'havenlytics' ),
 				'validationMessageMin'     => __( 'Message must contain at least 10 characters.', 'havenlytics' ),
 				'validationMessageMax'     => __( 'Your message is too long.', 'havenlytics' ),
-				'validationPrivacyRequired'=> __( 'Please accept the Privacy Policy.', 'havenlytics' ),
+				'validationPrivacyRequired' => __( 'Please accept the Privacy Policy.', 'havenlytics' ),
 			),
 		)
 	);

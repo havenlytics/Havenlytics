@@ -77,7 +77,7 @@ final class NotificationsController {
 	 * @return array<string, mixed>
 	 */
 	public function filter_localize( array $data ): array {
-		$rest = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
+		$rest                  = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
 		$rest['notifications'] = esc_url_raw( rest_url( WorkspaceConstants::REST_NAMESPACE . '/notifications' ) );
 		$data['rest']          = $rest;
 		return $data;
@@ -171,7 +171,10 @@ final class NotificationsController {
 			return $result;
 		}
 
-		return rest_ensure_response( array( 'success' => true, 'data' => $result ) );
+		return rest_ensure_response( array(
+			'success' => true,
+			'data' => $result,
+		) );
 	}
 
 	/**
@@ -197,7 +200,10 @@ final class NotificationsController {
 			return $result;
 		}
 
-		return rest_ensure_response( array( 'success' => true, 'data' => $result ) );
+		return rest_ensure_response( array(
+			'success' => true,
+			'data' => $result,
+		) );
 	}
 
 	/**
@@ -214,6 +220,9 @@ final class NotificationsController {
 			return $result;
 		}
 
-		return rest_ensure_response( array( 'success' => true, 'data' => $result ) );
+		return rest_ensure_response( array(
+			'success' => true,
+			'data' => $result,
+		) );
 	}
 }

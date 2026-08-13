@@ -15,7 +15,7 @@
 namespace HvnlyNab\Admin;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -27,8 +27,8 @@ if (!defined('ABSPATH')) {
  *
  * @since 2.0.5
  */
-class SetupWizardNotice
-{
+class SetupWizardNotice {
+
     /**
      * Option name for hiding the notice
      *
@@ -53,10 +53,9 @@ class SetupWizardNotice
     /**
      * Constructor
      */
-    public function __construct()
-    {
-        add_action('admin_init', [$this, 'handle_notice_dismissal']);
-        add_action('admin_notices', [$this, 'display_notice']);
+    public function __construct() {
+        add_action('admin_init', array( $this, 'handle_notice_dismissal' ));
+        add_action('admin_notices', array( $this, 'display_notice' ));
     }
 
     /**
@@ -70,8 +69,7 @@ class SetupWizardNotice
      *
      * @return bool True if notice should be displayed, false otherwise
      */
-    private function should_display_notice(): bool
-    {
+    private function should_display_notice(): bool {
         // Don't show on the import wizard page itself
         if ($this->is_import_wizard_page()) {
             return false;
@@ -83,7 +81,7 @@ class SetupWizardNotice
         }
 
         // Check if there are any published properties
-        $property_count = wp_count_posts('hvnly_property');
+        $property_count  = wp_count_posts('hvnly_property');
         $published_count = isset($property_count->publish) ? absint($property_count->publish) : 0;
 
         // Only show if no properties exist
@@ -100,8 +98,7 @@ class SetupWizardNotice
      *
      * @return bool True if on import wizard page, false otherwise
      */
-    private function is_import_wizard_page(): bool
-    {
+    private function is_import_wizard_page(): bool {
         global $current_screen;
 
         if ($current_screen && 'hvnly_property_page_hvnly-property-onboarding' === $current_screen->id) {
@@ -120,20 +117,19 @@ class SetupWizardNotice
      *
      * @return void
      */
-    public function handle_notice_dismissal(): void
-    {
+    public function handle_notice_dismissal(): void {
         // Check if this is a dismissal request
-        if (!isset($_GET['hvnly-hide-setup-notice'])) {
+        if ( ! isset($_GET['hvnly-hide-setup-notice'])) {
             return;
         }
 
         // Verify nonce
-        if (!isset($_GET[self::NONCE_NAME]) || !wp_verify_nonce($_GET[self::NONCE_NAME], self::NONCE_ACTION)) {
+        if ( ! isset($_GET[ self::NONCE_NAME ]) || ! wp_verify_nonce($_GET[ self::NONCE_NAME ], self::NONCE_ACTION)) {
             return;
         }
 
         // Check user capability
-        if (!current_user_can('manage_options')) {
+        if ( ! current_user_can('manage_options')) {
             return;
         }
 
@@ -141,7 +137,7 @@ class SetupWizardNotice
         update_option(self::HIDE_NOTICE_OPTION, true);
 
         // Redirect back to the current page without the query parameter
-        $redirect_url = remove_query_arg(['hvnly-hide-setup-notice', self::NONCE_NAME]);
+        $redirect_url = remove_query_arg(array( 'hvnly-hide-setup-notice', self::NONCE_NAME ));
         wp_safe_redirect($redirect_url);
         exit;
     }
@@ -151,18 +147,17 @@ class SetupWizardNotice
      *
      * @return void
      */
-    public function display_notice(): void
-    {
-        if (!$this->should_display_notice()) {
+    public function display_notice(): void {
+        if ( ! $this->should_display_notice()) {
             return;
         }
 
         // Generate nonce URL for dismissal
         $dismiss_url = add_query_arg(
-            [
+            array(
                 'hvnly-hide-setup-notice' => 1,
                 self::NONCE_NAME => wp_create_nonce(self::NONCE_ACTION),
-            ]
+            )
         );
 
         // Onboarding ("Get Started") URL
@@ -206,7 +201,7 @@ class SetupWizardNotice
     margin-left: 10px;
 }
 </style>
-<?php
+		<?php
     }
 
     /**
@@ -215,8 +210,7 @@ class SetupWizardNotice
      *
      * @return void
      */
-    public static function reset_notice(): void
-    {
+    public static function reset_notice(): void {
         delete_option(self::HIDE_NOTICE_OPTION);
     }
 
@@ -225,8 +219,7 @@ class SetupWizardNotice
      *
      * @return bool
      */
-    public static function is_notice_hidden(): bool
-    {
+    public static function is_notice_hidden(): bool {
         return (bool) get_option(self::HIDE_NOTICE_OPTION, false);
     }
 }

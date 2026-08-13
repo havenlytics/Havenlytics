@@ -69,7 +69,7 @@ final class JobWorkspace {
 	 * @return string|null Absolute path or null if unsafe.
 	 */
 	private static function resolve_path( string $dir, string $relative ): ?string {
-		$dir = wp_normalize_path( $dir );
+		$dir   = wp_normalize_path( $dir );
 		$under = TempStorage::assert_under_base( $dir );
 		if ( ! $under->ok() ) {
 			return null;
@@ -90,8 +90,8 @@ final class JobWorkspace {
 			$relative = (string) $sanitized->data();
 		}
 
-		$path = trailingslashit( $dir ) . $relative;
-		$path = wp_normalize_path( $path );
+		$path  = trailingslashit( $dir ) . $relative;
+		$path  = wp_normalize_path( $path );
 		$check = TempStorage::assert_under_base( $path );
 		if ( ! $check->ok() ) {
 			// Parent may not exist yet for nested writes — assert parent dir.

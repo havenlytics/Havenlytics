@@ -188,7 +188,7 @@ final class CsvStream {
 	private function assoc_row( array $row ): array {
 		$assoc = array();
 		foreach ( $this->headers as $index => $header ) {
-			$value           = $row[ $index ] ?? '';
+			$value            = $row[ $index ] ?? '';
 			$assoc[ $header ] = self::to_utf8( is_string( $value ) ? $value : (string) $value );
 		}
 		return $assoc;
@@ -221,7 +221,7 @@ final class CsvStream {
 		}
 		$line = self::strip_bom( $line );
 
-		$best      = ',';
+		$best       = ',';
 		$best_count = -1;
 		foreach ( self::CANDIDATE_DELIMITERS as $candidate ) {
 			$count = substr_count( $line, $candidate );

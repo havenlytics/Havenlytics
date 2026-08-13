@@ -68,7 +68,7 @@ final class PropertyWorkflowAdminActions {
 				esc_url( $this->action_url( 'hvnly_ws_prop_approve', (int) $post->ID ) ),
 				esc_html__( 'Approve Listing', 'havenlytics' )
 			);
-			$actions['hvnly_ws_reject'] = sprintf(
+			$actions['hvnly_ws_reject']  = sprintf(
 				'<a href="%s">%s</a>',
 				esc_url( $this->action_url( 'hvnly_ws_prop_reject', (int) $post->ID ) ),
 				esc_html__( 'Reject Listing', 'havenlytics' )

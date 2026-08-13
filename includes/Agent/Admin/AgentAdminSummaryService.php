@@ -65,11 +65,11 @@ final class AgentAdminSummaryService {
 		$inquiries = $this->batch_inquiry_counts( $missing );
 
 		foreach ( $missing as $agent_id ) {
-			$user_id = absint( get_post_meta( $agent_id, AgentConstants::META_LINKED_USER_ID, true ) );
-			$user    = $user_id > 0 ? get_userdata( $user_id ) : false;
-			$status  = WorkspaceRegistrationStatus::get_for_agent( $agent_id );
-			$comp    = $this->completeness->evaluate( $agent_id );
-			$health  = $this->detect_health_flags( $agent_id, $user_id, $user ? true : false );
+			$user_id  = absint( get_post_meta( $agent_id, AgentConstants::META_LINKED_USER_ID, true ) );
+			$user     = $user_id > 0 ? get_userdata( $user_id ) : false;
+			$status   = WorkspaceRegistrationStatus::get_for_agent( $agent_id );
+			$comp     = $this->completeness->evaluate( $agent_id );
+			$health   = $this->detect_health_flags( $agent_id, $user_id, $user ? true : false );
 			$activity = $user_id > 0 ? AgentActivityTracker::get_for_user( $user_id ) : array(
 				'login'     => '',
 				'activity'  => '',
@@ -187,7 +187,7 @@ final class AgentAdminSummaryService {
 		foreach ( $rows as $row ) {
 			$post_ids[] = absint( $row['ID'] ?? 0 );
 		}
-		$post_ids = array_filter( array_unique( $post_ids ) );
+		$post_ids     = array_filter( array_unique( $post_ids ) );
 		$rejected_map = array();
 		if ( ! empty( $post_ids ) ) {
 			update_meta_cache( 'post', $post_ids );
@@ -200,9 +200,9 @@ final class AgentAdminSummaryService {
 		}
 
 		foreach ( $rows as $row ) {
-			$pid    = absint( $row['ID'] ?? 0 );
-			$status = (string) ( $row['post_status'] ?? '' );
-			$meta   = (string) ( $row['meta_value'] ?? '' );
+			$pid     = absint( $row['ID'] ?? 0 );
+			$status  = (string) ( $row['post_status'] ?? '' );
+			$meta    = (string) ( $row['meta_value'] ?? '' );
 			$matched = $this->agents_in_meta( $meta, $agent_ids );
 			foreach ( $matched as $aid ) {
 				if ( ! isset( $out[ $aid ] ) ) {
@@ -346,7 +346,7 @@ final class AgentAdminSummaryService {
 			'duplicate_email'    => __( 'Duplicate Email', 'havenlytics' ),
 			'profile_incomplete' => __( 'Incomplete', 'havenlytics' ),
 		);
-		$parts = array();
+		$parts  = array();
 		foreach ( $flags as $f ) {
 			if ( isset( $labels[ $f ] ) ) {
 				$parts[] = $labels[ $f ];

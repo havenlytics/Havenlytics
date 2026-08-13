@@ -10,22 +10,22 @@
     Using main plugin CSS variables
 ============================================ */
 :root {
-    /* All variables are now using the main plugin CSS variables */
-    
-    /* Typography */
+    /*
+     * Consume Core Layer 1 (hvnly-frontend-default) for brand, status, price
+     * fonts, shadow-card-hover, button-bg-hover. Do not re-assign those here.
+     * Keep only single-property feature tokens below.
+     */
+
+    /* Additive type rung used by single (not defined on Core Layer 1) */
     --hvnly-font-size-2xl: 2rem;
-    --hvnly-font-size-price: 1.2rem;
-    --hvnly-font-size-md-price: 1.4rem;
-    
-    /* Shadows */
+
+    /* Single-local elevation (not Core --hvnly-shadow-card) */
     --hvnly-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --hvnly-shadow-card-hover: 0 4px 12px rgba(0,0,0,0.08);
-    
-    /* Status Colors */
-    --hvnly-status-rent: #00C2A8;
-    
-    /* Additional Variables */
-    --hvnly-button-bg-hover: var(--hvnly-brand-secondary);
+
+    /*
+     * Intentionally keeps brand secondary (Core pagination-hover is #f0f0f0).
+     * Changing this would alter single pagination hover — left as-is.
+     */
     --hvnly-pagination-hover-bg: var(--hvnly-brand-secondary);
 
     /* Responsive media block height (shared by single-property map & video) */
@@ -2040,7 +2040,13 @@ button.hvnly-property-single__action-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2000;
+    /*
+     * Must sit above companion-theme chrome (Havenlytics Realty sticky/fixed
+     * header ~1020, mobile menu/overlay 10000–100050, property search panel
+     * 100000). Default themes without those layers also remain correct.
+     * Keep below toast/preloader (≈999999).
+     */
+    z-index: 100100;
     opacity: 0;
     visibility: hidden;
     transition: all 0.5s ease;
@@ -2504,18 +2510,32 @@ button.hvnly-property-single__fancybox-nav:focus-visible {
     border-color: rgba(255, 255, 255, 0.35);
 }
 
-.hvnly-property-single__fancybox-fullscreen .hvnly-expand {
-    display: block;
+/*
+ * Two-state fullscreen icons (expand ↔ compress).
+ * Must beat `button.hvnly-ui-control :is(i, svg, .hvnly-icon) { display: inline-block }`
+ * from hvnly-frontend-components.css (specificity 0,2,1), which otherwise paints
+ * BOTH sprites visible inside the fancybox fullscreen control.
+ */
+button.hvnly-ui-control.hvnly-property-single__fancybox-fullscreen .hvnly-expand,
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-fullscreen .hvnly-expand {
+    display: inline-block;
 }
 
-.hvnly-property-single__fancybox-fullscreen .hvnly-compress {
+button.hvnly-ui-control.hvnly-property-single__fancybox-fullscreen .hvnly-compress,
+.hvnly-property-single__fancybox-popup button.hvnly-property-single__fancybox-fullscreen .hvnly-compress {
     display: none;
 }
 
-.hvnly-property-single__fancybox-popup--fullscreen .hvnly-property-single__fancybox-content {
+/*
+ * Prefer --active + --fullscreen together so runtime #hvnly-video-styles
+ * (equal-specificity --active size) cannot keep 90vw/90vh while "fullscreen".
+ */
+.hvnly-property-single__fancybox-popup--fullscreen .hvnly-property-single__fancybox-content,
+.hvnly-property-single__fancybox-popup--active.hvnly-property-single__fancybox-popup--fullscreen .hvnly-property-single__fancybox-content {
     width: 100vw;
     height: 100vh;
     max-width: none;
+    max-height: none;
     border-radius: 0;
 }
 
@@ -2527,12 +2547,14 @@ button.hvnly-property-single__fancybox-nav:focus-visible {
     border-radius: 0;
 }
 
-.hvnly-property-single__fancybox-popup--fullscreen .hvnly-property-single__fancybox-fullscreen .hvnly-expand {
+.hvnly-property-single__fancybox-popup--fullscreen button.hvnly-ui-control.hvnly-property-single__fancybox-fullscreen .hvnly-expand,
+.hvnly-property-single__fancybox-popup--fullscreen button.hvnly-property-single__fancybox-fullscreen .hvnly-expand {
     display: none;
 }
 
-.hvnly-property-single__fancybox-popup--fullscreen .hvnly-property-single__fancybox-fullscreen .hvnly-compress {
-    display: block;
+.hvnly-property-single__fancybox-popup--fullscreen button.hvnly-ui-control.hvnly-property-single__fancybox-fullscreen .hvnly-compress,
+.hvnly-property-single__fancybox-popup--fullscreen button.hvnly-property-single__fancybox-fullscreen .hvnly-compress {
+    display: inline-block;
 }
 
 /* Scroll to top button for gallery */
@@ -2576,7 +2598,7 @@ button.hvnly-property-single__fancybox-nav:focus-visible {
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
-    z-index: 10000;
+    z-index: 100110;
 }
 
 .hvnly-property-single__fullscreen-indicator--show {

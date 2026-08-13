@@ -48,7 +48,7 @@ hvnly_get_template_part( 'blocks/section-header', null, $hvnly_header );
 >
 	<div class="hvnly-block-carousel__stage">
 		<?php if ( $hvnly_show_nav ) : ?>
-			<button type="button" class="hvnly-block-carousel__arrow hvnly-block-carousel__arrow--prev" data-hvnly-block-carousel-prev aria-label="<?php esc_attr_e( 'Previous', 'havenlytics' ); ?>">
+			<button type="button" class="hvnly-ui-control hvnly-block-carousel__arrow hvnly-block-carousel__arrow--prev" data-hvnly-block-carousel-prev aria-label="<?php esc_attr_e( 'Previous', 'havenlytics' ); ?>">
 				<span class="hvnly-block-carousel__arrow-icon" aria-hidden="true"></span>
 			</button>
 		<?php endif; ?>
@@ -68,7 +68,7 @@ hvnly_get_template_part( 'blocks/section-header', null, $hvnly_header );
 		</div>
 
 		<?php if ( $hvnly_show_nav ) : ?>
-			<button type="button" class="hvnly-block-carousel__arrow hvnly-block-carousel__arrow--next" data-hvnly-block-carousel-next aria-label="<?php esc_attr_e( 'Next', 'havenlytics' ); ?>">
+			<button type="button" class="hvnly-ui-control hvnly-block-carousel__arrow hvnly-block-carousel__arrow--next" data-hvnly-block-carousel-next aria-label="<?php esc_attr_e( 'Next', 'havenlytics' ); ?>">
 				<span class="hvnly-block-carousel__arrow-icon" aria-hidden="true"></span>
 			</button>
 		<?php endif; ?>

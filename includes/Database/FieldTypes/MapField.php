@@ -1,7 +1,7 @@
 <?php
 /**
  * Map Field Handler - Dynamic Map Provider Support
- * 
+ *
  * @package HvnlyNab\Database\FieldTypes
  * @since 2.0.0
  */
@@ -9,23 +9,23 @@
 namespace HvnlyNab\Database\FieldTypes;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
 class MapField extends BaseFieldType {
-    
+
     /**
      * Debug flag - disable for production
      */
     private static $debug_enabled = false;
-    
+
     public function __construct() {
         parent::__construct('map');
         $this->requires_assets = true;
     }
-    
-    public function render($field, $value, $post_id) {
+
+    public function render( $field, $value, $post_id ) {
         // Only render the main map widget (preview), not address/lat/lng sub-fields.
         $meta_key   = $field['metaKey'] ?? '';
         $field_type = $field['type'] ?? $field['input_type'] ?? '';
@@ -38,23 +38,23 @@ class MapField extends BaseFieldType {
         }
 
         $field = $this->prepare_group_field( $field, 'MapField' );
-        
+
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $map_provider = $settings_manager->get_map_provider();
-        $google_api_key = $settings_manager->get_google_maps_api_key();
-        $default_lat = $settings_manager->get_default_latitude();
-        $default_lng = $settings_manager->get_default_longitude();
-        $default_zoom = $settings_manager->get_map_zoom();
-        
-        $use_leaflet = in_array($map_provider, ['leaflet', 'openstreetmap']);
-        $use_google = ($map_provider === 'google' && !empty($google_api_key));
-        
+        $map_provider     = $settings_manager->get_map_provider();
+        $google_api_key   = $settings_manager->get_google_maps_api_key();
+        $default_lat      = $settings_manager->get_default_latitude();
+        $default_lng      = $settings_manager->get_default_longitude();
+        $default_zoom     = $settings_manager->get_map_zoom();
+
+        $use_leaflet = in_array($map_provider, array( 'leaflet', 'openstreetmap' ));
+        $use_google  = ( $map_provider === 'google' && ! empty($google_api_key) );
+
         if ($map_provider === 'google' && empty($google_api_key)) {
-            $use_leaflet = true;
-            $use_google = false;
+            $use_leaflet  = true;
+            $use_google   = false;
             $map_provider = 'leaflet';
         }
-        
+
         $group_base_id = $field['group_base_id'] ?? '';
         if ( ! empty( $group_base_id ) ) {
             $address_field_name = $group_base_id . '_address';
@@ -70,26 +70,26 @@ class MapField extends BaseFieldType {
         $lat_value     = $this->get_map_subfield_value( $post_id, $field, $lat_field_name, 'latitude' );
         $lng_value     = $this->get_map_subfield_value( $post_id, $field, $lng_field_name, 'longitude' );
         $is_required   = ! empty( $field['is_required'] );
-        
+
         // Generate a clean map ID (replace hyphens with underscores for JavaScript)
-        $raw_map_id = $group_base_id ?: $field['id'] ?? uniqid('map_');
-        $map_id = 'hvnly_map_' . sanitize_html_class($raw_map_id);
+        $raw_map_id  = $group_base_id ?: $field['id'] ?? uniqid('map_');
+        $map_id      = 'hvnly_map_' . sanitize_html_class($raw_map_id);
         $js_callback = 'initGoogleMap_' . str_replace('-', '_', $map_id);
-        
-        $tile_url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+        $tile_url    = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
         $attribution = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-        
+
         if ($map_provider === 'openstreetmap') {
-            $tile_url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            $tile_url    = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
             $attribution = '© OpenStreetMap contributors';
         }
 
-        $brand_color              = function_exists( 'hvnly_get_brand_color' ) ? hvnly_get_brand_color() : '#6C60FE';
+        $brand_color                = function_exists( 'hvnly_get_brand_color' ) ? hvnly_get_brand_color() : '#6C60FE';
         $hvnly_map_brand_color_attr = esc_attr( $brand_color );
         $hvnly_map_brand_color_bg   = esc_attr( $brand_color . '15' );
 
         // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Map admin inline styles reuse esc_attr-assigned CSS variables.
-        
+
         ob_start();
         ?>
 <div data-field-id="<?php echo esc_attr($field['id'] ?? ''); ?>" data-field-type="map"
@@ -161,7 +161,7 @@ class MapField extends BaseFieldType {
                     style="display: inline-flex; align-items: center; gap: 6px; background: <?php echo $hvnly_map_brand_color_bg; ?>; padding: 4px 12px; border-radius: 20px; border-left: 3px solid <?php echo $hvnly_map_brand_color_attr; ?>;">
                     <i class="fas fa-map-marker-alt" style="color: <?php echo $hvnly_map_brand_color_attr; ?>; font-size: 12px;"></i>
                     <span style="font-size: 11px; font-weight: 500; color: <?php echo $hvnly_map_brand_color_attr; ?>;">
-                        <?php 
+                        <?php
                         if ($use_google) {
                             echo esc_html__('Google Maps', 'havenlytics');
                         } elseif ($map_provider === 'openstreetmap') {
@@ -169,8 +169,9 @@ class MapField extends BaseFieldType {
                         } else {
                             echo esc_html__('Leaflet (OpenStreetMap)', 'havenlytics');
                         }
-                        ?> -
-                        <?php echo !empty($lat_value) && !empty($lng_value) ? esc_html__('Coordinates Saved', 'havenlytics') : esc_html__('Set coordinates by searching or dragging marker', 'havenlytics'); ?>
+                        ?>
+                        -
+                        <?php echo ! empty($lat_value) && ! empty($lng_value) ? esc_html__('Coordinates Saved', 'havenlytics') : esc_html__('Set coordinates by searching or dragging marker', 'havenlytics'); ?>
                     </span>
                 </div>
 
@@ -190,9 +191,9 @@ class MapField extends BaseFieldType {
                     <i class="fas fa-location-dot" style="color: <?php echo $hvnly_map_brand_color_attr; ?>; margin-right: 4px;"></i>
                     <strong><?php esc_html_e('Coordinates:', 'havenlytics'); ?></strong>
                     <span class="current-lat"
-                        style="font-weight: 500;"><?php echo !empty($lat_value) ? esc_html(number_format((float)$lat_value, 6)) : '—'; ?></span>,
+                        style="font-weight: 500;"><?php echo ! empty($lat_value) ? esc_html(number_format( (float) $lat_value, 6)) : '—'; ?></span>,
                     <span class="current-lng"
-                        style="font-weight: 500;"><?php echo !empty($lng_value) ? esc_html(number_format((float)$lng_value, 6)) : '—'; ?></span>
+                        style="font-weight: 500;"><?php echo ! empty($lng_value) ? esc_html(number_format( (float) $lng_value, 6)) : '—'; ?></span>
                 </div>
             </div>
 
@@ -202,7 +203,7 @@ class MapField extends BaseFieldType {
                 <i class="fas fa-map-pin" style="color: <?php echo $hvnly_map_brand_color_attr; ?>; margin-right: 8px;"></i>
                 <strong><?php esc_html_e('Current Address:', 'havenlytics'); ?></strong>
                 <span class="hvnly-map-current-address" id="hvnly-current-address-<?php echo esc_attr($map_id); ?>">
-                    <?php echo !empty($address_value) ? esc_html($address_value) : esc_html__('No address set', 'havenlytics'); ?>
+                    <?php echo ! empty($address_value) ? esc_html($address_value) : esc_html__('No address set', 'havenlytics'); ?>
                 </span>
             </div>
 
@@ -222,8 +223,8 @@ class MapField extends BaseFieldType {
                     data-address-field-name="<?php echo esc_attr($address_field_name); ?>"
                     data-lat-field-name="<?php echo esc_attr($lat_field_name); ?>"
                     data-lng-field-name="<?php echo esc_attr($lng_field_name); ?>"
-                    data-initial-lat="<?php echo esc_attr(!empty($lat_value) ? $lat_value : $default_lat); ?>"
-                    data-initial-lng="<?php echo esc_attr(!empty($lng_value) ? $lng_value : $default_lng); ?>"
+                    data-initial-lat="<?php echo esc_attr( ! empty($lat_value) ? $lat_value : $default_lat); ?>"
+                    data-initial-lng="<?php echo esc_attr( ! empty($lng_value) ? $lng_value : $default_lng); ?>"
                     data-default-zoom="<?php echo esc_attr($default_zoom); ?>"
                     data-google-api-key="<?php echo esc_attr($google_api_key); ?>"
                     style="height: 400px; width: 100%; background: #f0f0f0; border: 1px solid #ddd; border-radius: 8px;">
@@ -244,8 +245,8 @@ class MapField extends BaseFieldType {
                     data-address-field-name="<?php echo esc_attr($address_field_name); ?>"
                     data-lat-field-name="<?php echo esc_attr($lat_field_name); ?>"
                     data-lng-field-name="<?php echo esc_attr($lng_field_name); ?>"
-                    data-initial-lat="<?php echo esc_attr(!empty($lat_value) ? $lat_value : $default_lat); ?>"
-                    data-initial-lng="<?php echo esc_attr(!empty($lng_value) ? $lng_value : $default_lng); ?>"
+                    data-initial-lat="<?php echo esc_attr( ! empty($lat_value) ? $lat_value : $default_lat); ?>"
+                    data-initial-lng="<?php echo esc_attr( ! empty($lng_value) ? $lng_value : $default_lng); ?>"
                     data-default-zoom="<?php echo esc_attr($default_zoom); ?>"
                     style="height: 400px; width: 100%; background: #f0f0f0; border: 1px solid #ddd; border-radius: 8px;">
                     <div class="hvnly-map-loading"
@@ -298,7 +299,7 @@ class MapField extends BaseFieldType {
     border: 1px solid #e9ecef;
 }
 </style>
-<?php
+		<?php
         // phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
         return ob_get_clean();
     }
@@ -338,23 +339,23 @@ class MapField extends BaseFieldType {
 
         return '';
     }
-    
-    public function save($post_id, $field_name, $value, $extra = null) { 
+
+    public function save( $post_id, $field_name, $value, $extra = null ) {
         // Map fields are saved via their individual address/lat/lng fields
-        return; 
+        return;
     }
-    
-    public function sanitize($value) { 
-        return sanitize_text_field($value); 
+
+    public function sanitize( $value ) {
+        return sanitize_text_field($value);
     }
-    
-    public function validate($value, $field) { 
+
+    public function validate( $value, $field ) {
         if (empty($field['is_required'])) {
             return true;
         }
 
         $address_field = $field['address_field_name'] ?? '';
-        if ('' === $address_field && !empty($field['group_base_id'])) {
+        if ('' === $address_field && ! empty($field['group_base_id'])) {
             $address_field = $field['group_base_id'] . '_address';
         }
 
@@ -378,11 +379,11 @@ class MapField extends BaseFieldType {
 
         return true;
     }
-    
+
     public function enqueue_assets() {
         wp_enqueue_media();
         wp_enqueue_script('jquery-ui-sortable');
-        
+
         wp_enqueue_style(
             'hvnly-map-field',
             HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-map-field.css',

@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 use HvnlyNab\Frontend\LayoutManager;
@@ -11,9 +11,8 @@ use HvnlyNab\Frontend\LayoutManager;
 /**
  * Output start page wrapper.
  */
-if (!function_exists('hvnly_output_content_wrapper_start')) {
-    function hvnly_output_content_wrapper_start()
-    {
+if ( ! function_exists('hvnly_output_content_wrapper_start')) {
+    function hvnly_output_content_wrapper_start() {
         hvnly_get_template_part('global/wrapper-start');
     }
 }
@@ -21,9 +20,8 @@ if (!function_exists('hvnly_output_content_wrapper_start')) {
 /**
  * Output end page wrapper.
  */
-if (!function_exists('hvnly_output_content_wrapper_end')) {
-    function hvnly_output_content_wrapper_end()
-    {
+if ( ! function_exists('hvnly_output_content_wrapper_end')) {
+    function hvnly_output_content_wrapper_end() {
         hvnly_get_template_part('global/wrapper-end');
     }
 }
@@ -34,11 +32,10 @@ if (!function_exists('hvnly_output_content_wrapper_end')) {
 
 /* ==== Scroll Progress Functions ==== */
 
-if (!function_exists('hvnly_single_property_scroll_progress')) {
-    function hvnly_single_property_scroll_progress()
-    {
+if ( ! function_exists('hvnly_single_property_scroll_progress')) {
+    function hvnly_single_property_scroll_progress() {
         // Only show on single property pages
-        if (!is_singular('hvnly_property')) {
+        if ( ! is_singular('hvnly_property')) {
             return;
         }
 
@@ -51,11 +48,10 @@ if (!function_exists('hvnly_single_property_scroll_progress')) {
 
 /* ==== SVG Icons Functions ==== */
 
-if (!function_exists('hvnly_single_property_svg_icons')) {
-    function hvnly_single_property_svg_icons()
-    {
+if ( ! function_exists('hvnly_single_property_svg_icons')) {
+    function hvnly_single_property_svg_icons() {
         // Only show on single property pages
-        if (!is_singular('hvnly_property')) {
+        if ( ! is_singular('hvnly_property')) {
             return;
         }
 
@@ -65,22 +61,20 @@ if (!function_exists('hvnly_single_property_svg_icons')) {
 
 /* ==== Modal Popup Functions ==== */
 
-if (!function_exists('hvnly_single_property_gallery_popup')) {
-    function hvnly_single_property_gallery_popup()
-    {
+if ( ! function_exists('hvnly_single_property_gallery_popup')) {
+    function hvnly_single_property_gallery_popup() {
         // Only show on single property pages
-        if (!is_singular('hvnly_property')) {
+        if ( ! is_singular('hvnly_property')) {
             return;
         }
         hvnly_get_template_part('single-property/modal-gallery');
     }
 }
 
-if (!function_exists('hvnly_single_property_video_popup')) {
-    function hvnly_single_property_video_popup()
-    {
+if ( ! function_exists('hvnly_single_property_video_popup')) {
+    function hvnly_single_property_video_popup() {
         // Only show on single property pages
-        if (!is_singular('hvnly_property')) {
+        if ( ! is_singular('hvnly_property')) {
             return;
         }
 
@@ -88,25 +82,24 @@ if (!function_exists('hvnly_single_property_video_popup')) {
     }
 }
 
-if (!function_exists('hvnly_single_property_contact_agent_modal')) {
+if ( ! function_exists('hvnly_single_property_contact_agent_modal')) {
     /**
      * Output Contact Agent inquiry modal on single property pages.
      *
      * @since 3.0.2
      * @return void
      */
-    function hvnly_single_property_contact_agent_modal()
-    {
-        if (!is_singular('hvnly_property')) {
+    function hvnly_single_property_contact_agent_modal() {
+        if ( ! is_singular('hvnly_property')) {
             return;
         }
 
-        if (!function_exists('hvnly_is_contact_agent_enabled') || !hvnly_is_contact_agent_enabled()) {
+        if ( ! function_exists('hvnly_is_contact_agent_enabled') || ! hvnly_is_contact_agent_enabled()) {
             return;
         }
 
         $property_id = get_the_ID();
-        if (!$property_id) {
+        if ( ! $property_id) {
             return;
         }
 
@@ -116,12 +109,12 @@ if (!function_exists('hvnly_single_property_contact_agent_modal')) {
 
         if (empty($agents) && function_exists('hvnly_get_property_agent')) {
             $primary = hvnly_get_property_agent($property_id);
-            if (is_array($primary) && !empty($primary)) {
-                $agents = array($primary);
+            if (is_array($primary) && ! empty($primary)) {
+                $agents = array( $primary );
             }
         }
 
-        $agent = !empty($agents) ? $agents[0] : array();
+        $agent = ! empty($agents) ? $agents[0] : array();
 
         hvnly_get_template_part(
             'single-property/modal-contact-agent',
@@ -136,7 +129,7 @@ if (!function_exists('hvnly_single_property_contact_agent_modal')) {
     }
 }
 
-if (!function_exists('hvnly_single_property_mobile_contact_dock')) {
+if ( ! function_exists('hvnly_single_property_mobile_contact_dock')) {
     /**
      * Output the premium mobile floating contact dock on single property pages.
      *
@@ -145,9 +138,8 @@ if (!function_exists('hvnly_single_property_mobile_contact_dock')) {
      * @since 3.5.0
      * @return void
      */
-    function hvnly_single_property_mobile_contact_dock()
-    {
-        if (!class_exists('\HvnlyNab\Frontend\MobileContactDock')) {
+    function hvnly_single_property_mobile_contact_dock() {
+        if ( ! class_exists('\HvnlyNab\Frontend\MobileContactDock')) {
             return;
         }
 
@@ -155,7 +147,7 @@ if (!function_exists('hvnly_single_property_mobile_contact_dock')) {
     }
 }
 
-if (!function_exists('hvnly_single_property_mobile_contact_dock_body_class')) {
+if ( ! function_exists('hvnly_single_property_mobile_contact_dock_body_class')) {
     /**
      * Reserve bottom space for the mobile contact dock (no layout jump).
      *
@@ -164,24 +156,23 @@ if (!function_exists('hvnly_single_property_mobile_contact_dock_body_class')) {
      * @param string[] $classes Body classes.
      * @return string[]
      */
-    function hvnly_single_property_mobile_contact_dock_body_class($classes)
-    {
-        if (!is_array($classes)) {
+    function hvnly_single_property_mobile_contact_dock_body_class( $classes ) {
+        if ( ! is_array($classes)) {
             $classes = array();
         }
 
-        if (!class_exists('\HvnlyNab\Frontend\MobileContactDock')) {
+        if ( ! class_exists('\HvnlyNab\Frontend\MobileContactDock')) {
             return $classes;
         }
 
-        if (!\HvnlyNab\Frontend\MobileContactDock::should_display()) {
+        if ( ! \HvnlyNab\Frontend\MobileContactDock::should_display()) {
             return $classes;
         }
 
         $classes[] = 'hvnly-has-mobile-contact-dock';
 
         $args = \HvnlyNab\Frontend\MobileContactDock::get_template_args();
-        if (is_array($args) && !empty($args['max_width'])) {
+        if (is_array($args) && ! empty($args['max_width'])) {
             // data-hvnly-mcd-max is set on <body> via JS; class carries the gate for no-JS CSS.
             $classes[] = 'hvnly-has-mobile-contact-dock--max-' . absint($args['max_width']);
         }
@@ -190,16 +181,15 @@ if (!function_exists('hvnly_single_property_mobile_contact_dock_body_class')) {
     }
 }
 
-if (!function_exists('hvnly_single_property_scroll_top')) {
-    function hvnly_single_property_scroll_top()
-    {
+if ( ! function_exists('hvnly_single_property_scroll_top')) {
+    function hvnly_single_property_scroll_top() {
         // Check if back to top button is enabled in settings
-        if (!hvnly_is_back_to_top_enabled()) {
+        if ( ! hvnly_is_back_to_top_enabled()) {
             return;
         }
 
         // Only show on single property pages
-        if (!is_singular('hvnly_property')) {
+        if ( ! is_singular('hvnly_property')) {
             return;
         }
         echo '<!-- Scroll to top button -->
@@ -211,48 +201,43 @@ if (!function_exists('hvnly_single_property_scroll_top')) {
 
 /* ==== Header Functions ==== */
 
-if (!function_exists('hvnly_single_property_header')) {
-    function hvnly_single_property_header()
-    {
+if ( ! function_exists('hvnly_single_property_header')) {
+    function hvnly_single_property_header() {
         echo '<div class="hvnly-property-single__header">';
         echo '<div class="hvnly-property-single__container">';
-        
+
         do_action('hvnly_single_property_header');
-        
+
         echo '</div>';
         echo '</div>';
     }
 }
 
-if (!function_exists('hvnly_single_property_breadcrumb')) {
-    function hvnly_single_property_breadcrumb()
-    {
+if ( ! function_exists('hvnly_single_property_breadcrumb')) {
+    function hvnly_single_property_breadcrumb() {
         // Check if breadcrumbs are enabled in settings
-        if (!hvnly_is_breadcrumb_enabled()) {
+        if ( ! hvnly_is_breadcrumb_enabled()) {
             return; // Exit early if disabled
         }
-        
+
         hvnly_get_template_part('single-property/breadcrumb');
     }
 }
 
-if (!function_exists('hvnly_single_property_title_section')) {
-    function hvnly_single_property_title_section()
-    {
+if ( ! function_exists('hvnly_single_property_title_section')) {
+    function hvnly_single_property_title_section() {
         hvnly_get_template_part('single-property/title-section');
     }
 }
 
-if (!function_exists('hvnly_single_property_meta')) {
-    function hvnly_single_property_meta()
-    {
+if ( ! function_exists('hvnly_single_property_meta')) {
+    function hvnly_single_property_meta() {
         hvnly_get_template_part('single-property/meta');
     }
 }
 
-if (!function_exists('hvnly_single_property_actions')) {
-    function hvnly_single_property_actions()
-    {
+if ( ! function_exists('hvnly_single_property_actions')) {
+    function hvnly_single_property_actions() {
         /*
          * 3.4.0: the Favorite button follows the Favorites feature, not the
          * legacy `hvnly_EnableSaveProperty` toggle.
@@ -289,35 +274,32 @@ if (!function_exists('hvnly_single_property_actions')) {
          */
         hvnly_get_template_part('single-property/actions', '', array(
             'save_enabled' => $save_enabled,
-            'print_enabled' => $print_enabled
+            'print_enabled' => $print_enabled,
         ));
     }
 }
 
 /* ==== Main Container Functions ==== */
 
-if (!function_exists('hvnly_single_property_main_container_start')) {
-    function hvnly_single_property_main_container_start()
-    {
+if ( ! function_exists('hvnly_single_property_main_container_start')) {
+    function hvnly_single_property_main_container_start() {
         echo '<div class="hvnly-property-single__container">';
     }
 }
 
-if (!function_exists('hvnly_single_property_main_container_end')) {
-    function hvnly_single_property_main_container_end()
-    {
+if ( ! function_exists('hvnly_single_property_main_container_end')) {
+    function hvnly_single_property_main_container_end() {
         echo '</div>';
     }
 }
 
 /* ==== Layout Grid Functions ==== */
 
-if (!function_exists('hvnly_single_property_layout_grid')) {
-    function hvnly_single_property_layout_grid()
-    {
+if ( ! function_exists('hvnly_single_property_layout_grid')) {
+    function hvnly_single_property_layout_grid() {
         $layout_manager = LayoutManager::instance();
-        $grid_classes = apply_filters('hvnly_layout_grid_classes', [], 'single');
-        
+        $grid_classes   = apply_filters('hvnly_layout_grid_classes', array(), 'single');
+
         echo '<div class="' . esc_attr(implode(' ', $grid_classes)) . '">';
         do_action('hvnly_single_property_layout_grid');
         echo '</div>';
@@ -326,12 +308,11 @@ if (!function_exists('hvnly_single_property_layout_grid')) {
 
 /* ==== Main Content Area Functions ==== */
 
-if (!function_exists('hvnly_single_property_main_content_area')) {
-    function hvnly_single_property_main_content_area()
-    {
-        $layout_manager = LayoutManager::instance();
-        $content_classes = apply_filters('hvnly_main_content_classes', [], 'single');
-        
+if ( ! function_exists('hvnly_single_property_main_content_area')) {
+    function hvnly_single_property_main_content_area() {
+        $layout_manager  = LayoutManager::instance();
+        $content_classes = apply_filters('hvnly_main_content_classes', array(), 'single');
+
         echo '<div class="' . esc_attr(implode(' ', $content_classes)) . '">';
         do_action('hvnly_single_property_main_content');
         echo '</div>';
@@ -340,18 +321,17 @@ if (!function_exists('hvnly_single_property_main_content_area')) {
 
 /* ==== Sidebar Area Functions ==== */
 
-if (!function_exists('hvnly_single_property_sidebar_area')) {
-    function hvnly_single_property_sidebar_area()
-    {
+if ( ! function_exists('hvnly_single_property_sidebar_area')) {
+    function hvnly_single_property_sidebar_area() {
         $layout_manager = LayoutManager::instance();
         $should_display = apply_filters('hvnly_should_display_sidebar', true, 'single');
-        
-        if (!$should_display) {
+
+        if ( ! $should_display) {
             return;
         }
-        
-        $sidebar_classes = apply_filters('hvnly_sidebar_classes', [], 'single');
-        
+
+        $sidebar_classes = apply_filters('hvnly_sidebar_classes', array(), 'single');
+
         echo '<div class="' . esc_attr(implode(' ', $sidebar_classes)) . '">';
         do_action('hvnly_single_property_sidebar');
         echo '</div>';
@@ -360,41 +340,36 @@ if (!function_exists('hvnly_single_property_sidebar_area')) {
 
 /* ==== Widget Functions ==== */
 
-if (!function_exists('hvnly_display_sidebar_widgets')) {
-    function hvnly_display_sidebar_widgets()
-    {
-       hvnly_get_template_part('single-property/sidebar');
+if ( ! function_exists('hvnly_display_sidebar_widgets')) {
+    function hvnly_display_sidebar_widgets() {
+		hvnly_get_template_part('single-property/sidebar');
     }
 }
 
 /* ==== Similar Properties Functions ==== */
 
-if (!function_exists('hvnly_single_property_similar_properties')) {
-    function hvnly_single_property_similar_properties()
-    {
+if ( ! function_exists('hvnly_single_property_similar_properties')) {
+    function hvnly_single_property_similar_properties() {
         echo '<div class="hvnly-property-single__similar-properties">';
         do_action('hvnly_single_property_similar_properties');
         echo '</div>';
     }
 }
 
-if (!function_exists('hvnly_single_property_similar_header')) {
-    function hvnly_single_property_similar_header()
-    {
+if ( ! function_exists('hvnly_single_property_similar_header')) {
+    function hvnly_single_property_similar_header() {
         hvnly_get_template_part('single-property/similar-carousel-header');
     }
 }
 
-if (!function_exists('hvnly_single_property_similar_carousel')) {
-    function hvnly_single_property_similar_carousel()
-    {
+if ( ! function_exists('hvnly_single_property_similar_carousel')) {
+    function hvnly_single_property_similar_carousel() {
         hvnly_get_template_part('single-property/similar-carousel-properties');
     }
 }
 
-if (!function_exists('hvnly_single_property_similar_carousel_dots')) {
-    function hvnly_single_property_similar_carousel_dots()
-    {
+if ( ! function_exists('hvnly_single_property_similar_carousel_dots')) {
+    function hvnly_single_property_similar_carousel_dots() {
         hvnly_get_template_part('single-property/similar-carousel-dots');
     }
 }
@@ -406,9 +381,8 @@ if (!function_exists('hvnly_single_property_similar_carousel_dots')) {
 /**
  * Output search loop start.
  */
-if (!function_exists('hvnly_search_loop_start')) {
-    function hvnly_search_loop_start()
-    {
+if ( ! function_exists('hvnly_search_loop_start')) {
+    function hvnly_search_loop_start() {
         hvnly_get_template_part('search/loop-start');
     }
 }
@@ -416,9 +390,8 @@ if (!function_exists('hvnly_search_loop_start')) {
 /**
  * Output search loop end.
  */
-if (!function_exists('hvnly_search_loop_end')) {
-    function hvnly_search_loop_end()
-    {
+if ( ! function_exists('hvnly_search_loop_end')) {
+    function hvnly_search_loop_end() {
         hvnly_get_template_part('search/loop-end');
     }
 }
@@ -430,24 +403,24 @@ if (!function_exists('hvnly_search_loop_end')) {
 /**
  * Add dynamic archive layout styles based on sidebar visibility
  * This function adds CSS to adjust grid columns when sidebar is hidden
- * 
+ *
  * @since 2.0.3
  */
-if (!function_exists('hvnly_add_archive_layout_styles')) {
+if ( ! function_exists('hvnly_add_archive_layout_styles')) {
     function hvnly_add_archive_layout_styles() {
         // Only apply on property archive pages
-        if (!is_post_type_archive('hvnly_property') && !is_tax(get_object_taxonomies('hvnly_property'))) {
+        if ( ! is_post_type_archive('hvnly_property') && ! is_tax(get_object_taxonomies('hvnly_property'))) {
             return;
         }
-        
+
         // Check if sidebar should be shown
         $show_sidebar = function_exists('hvnly_should_show_filter_sidebar') ? hvnly_should_show_filter_sidebar() : true;
-        
+
         // If sidebar is shown, no need to add custom styles
         if ($show_sidebar) {
             return;
         }
-        
+
         // Add custom CSS when sidebar is hidden
         ?>
 <style id="hvnly-no-sidebar-styles">
@@ -480,7 +453,7 @@ if (!function_exists('hvnly_add_archive_layout_styles')) {
     }
 }
 </style>
-<?php
+		<?php
     }
 }
 

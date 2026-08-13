@@ -60,6 +60,17 @@
                 closeVideoPopup(videoPopup, videoPlayer);
             });
         }
+
+        // Same CSS-class fullscreen contract as the gallery popup (not browser FS API).
+        const fullscreenBtn = videoPopup.querySelector('.hvnly-property-single__fancybox-fullscreen');
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                videoPopup.classList.toggle('hvnly-property-single__fancybox-popup--fullscreen');
+                updateFullscreenIcons(videoPopup);
+            });
+        }
         
         videoPopup.addEventListener('click', (e) => {
             if (e.target === videoPopup) {
@@ -82,11 +93,20 @@
         
         const style = document.createElement('style');
         style.id = styleId;
+        // Scope the 90vw/90vh active size so it cannot override gallery/video
+        // CSS-class "fullscreen" (equal specificity otherwise wins via late inject).
         style.textContent = `
-            .hvnly-property-single__fancybox-popup--active .hvnly-property-single__fancybox-content {
+            .hvnly-property-single__fancybox-popup--active:not(.hvnly-property-single__fancybox-popup--fullscreen) .hvnly-property-single__fancybox-content {
                 width: 90vw;
                 height: 90vh;
                 max-width: 1400px;
+            }
+
+            .hvnly-property-single__fancybox-popup--active.hvnly-property-single__fancybox-popup--fullscreen .hvnly-property-single__fancybox-content {
+                width: 100vw;
+                height: 100vh;
+                max-width: none;
+                max-height: none;
             }
             
             .hvnly-property-single__fancybox-popup--active #hvnlyPropertySingleVideoPlayer {
@@ -104,6 +124,26 @@
             }
         `;
         document.head.appendChild(style);
+    }
+
+    /**
+     * Keep expand/compress as a single visible state (matches gallery controller).
+     * Inline display beats the shared `.hvnly-ui-control svg { display:inline-block }` rule.
+     */
+    function updateFullscreenIcons(popup) {
+        const fullscreenBtn = popup && popup.querySelector('.hvnly-property-single__fancybox-fullscreen');
+        if (!fullscreenBtn) {
+            return;
+        }
+
+        const isFullscreen = popup.classList.contains('hvnly-property-single__fancybox-popup--fullscreen');
+        const expandIcon = fullscreenBtn.querySelector('.hvnly-expand');
+        const compressIcon = fullscreenBtn.querySelector('.hvnly-compress');
+
+        if (expandIcon && compressIcon) {
+            expandIcon.style.display = isFullscreen ? 'none' : 'inline-block';
+            compressIcon.style.display = isFullscreen ? 'inline-block' : 'none';
+        }
     }
     
     function handleVideoClick(e) {
@@ -152,12 +192,16 @@
         container.appendChild(iframe);
         videoPlayer.appendChild(container);
         
+        videoPopup.classList.remove('hvnly-property-single__fancybox-popup--fullscreen');
         videoPopup.classList.add('hvnly-property-single__fancybox-popup--active');
+        updateFullscreenIcons(videoPopup);
         document.body.style.overflow = 'hidden';
     }
     
     function closeVideoPopup(popup, player) {
         popup.classList.remove('hvnly-property-single__fancybox-popup--active');
+        popup.classList.remove('hvnly-property-single__fancybox-popup--fullscreen');
+        updateFullscreenIcons(popup);
         document.body.style.overflow = '';
         if (player) player.innerHTML = '';
     }

@@ -123,7 +123,7 @@ final class AgentOwnershipTransferService {
 				throw new \RuntimeException( $prop_result->get_error_message(), 1 );
 			}
 
-			$inq = new InquiryRepository();
+			$inq   = new InquiryRepository();
 			$inq_n = $inq->reassign_agent(
 				$from_agent,
 				$to_agent,
@@ -153,7 +153,7 @@ final class AgentOwnershipTransferService {
 				);
 			}
 
-			$notif = new NotificationRepository();
+			$notif   = new NotificationRepository();
 			$notif_n = $notif->reassign_identity( $from_user, $from_agent, $to_user, $to_agent );
 			if ( is_wp_error( $notif_n ) ) {
 				throw new \RuntimeException( $notif_n->get_error_message(), 3 );
@@ -284,7 +284,7 @@ final class AgentOwnershipTransferService {
 	 * @return void
 	 */
 	public function rollback(): void {
-		$steps = array_reverse( $this->undo );
+		$steps      = array_reverse( $this->undo );
 		$this->undo = array();
 
 		$inq   = new InquiryRepository();

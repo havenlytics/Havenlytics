@@ -367,8 +367,8 @@ final class DemoContentLocalizer {
 			return self::$catalog;
 		}
 
-		$path = HVNLYNAB_INCLUDES . '/Admin/Data/demo-content-catalog.php';
-		$list = is_file( $path ) ? include $path : array();
+		$path          = HVNLYNAB_INCLUDES . '/Admin/Data/demo-content-catalog.php';
+		$list          = is_file( $path ) ? include $path : array();
 		self::$catalog = is_array( $list ) ? $list : array();
 
 		foreach ( self::uk_location_english_parts() as $part ) {

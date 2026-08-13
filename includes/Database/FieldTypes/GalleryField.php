@@ -1,7 +1,7 @@
 <?php
 /**
  * Gallery Field Handler - FIXED to use correct field names
- * 
+ *
  * @package HvnlyNab\Database\FieldTypes
  * @since 2.0.0
  */
@@ -11,23 +11,23 @@ namespace HvnlyNab\Database\FieldTypes;
 defined( 'ABSPATH' ) || exit;
 
 class GalleryField extends BaseFieldType {
-    
+
     public function __construct() {
         parent::__construct('gallery');
         $this->requires_assets = true;
     }
-    
-    public function render($field, $value, $post_id) {
+
+    public function render( $field, $value, $post_id ) {
         $field = $this->prepare_group_field( $field, 'GalleryField' );
 
         // Get the UNIQUE field name for this gallery
-        $field_name = $field['name'] ?? $field['id'] ?? '';
+        $field_name    = $field['name'] ?? $field['id'] ?? '';
         $group_base_id = $field['group_base_id'] ?? '';
-        $metaKey = $field['metaKey'] ?? '';
-        
+        $metaKey       = $field['metaKey'] ?? '';
+
         // Get saved title from the title field (unique to this group)
         $title_field_name = $group_base_id . '_title';
-        $saved_title = get_post_meta($post_id, $title_field_name, true);
+        $saved_title      = get_post_meta($post_id, $title_field_name, true);
 
         // Resolve images via MetaResolver when available.
         $saved_value = '';
@@ -37,7 +37,7 @@ class GalleryField extends BaseFieldType {
         if ( empty( $saved_value ) && $field_name !== '' ) {
             $saved_value = get_post_meta( $post_id, $field_name, true );
         }
-        
+
         // Legacy global gallery meta only for non-scoped imports (never cross-section).
         if (
             empty( $saved_value )
@@ -51,25 +51,25 @@ class GalleryField extends BaseFieldType {
                 $saved_value = $legacy_value;
             }
         }
-        
+
         // Convert to array
-        $gallery_images = !empty($saved_value) ? explode(',', $saved_value) : array();
-        
+        $gallery_images = ! empty($saved_value) ? explode(',', $saved_value) : array();
+
         // CRITICAL FIX: Use group_base_id as the gallery identifier, NOT field_name
         // This ensures consistent naming between render and save
         $gallery_id = $group_base_id;
-        
+
         if (empty($gallery_id)) {
             $gallery_id = $field['fieldid'] ?? $field['id'] ?? uniqid('gallery_');
         }
-        
+
         // Create UNIQUE input names based on group_base_id ONLY
-        $title_input_name = 'hvnly_gallery_title_' . $gallery_id;
+        $title_input_name   = 'hvnly_gallery_title_' . $gallery_id;
         $caption_input_name = 'hvnly_gallery_caption_' . $gallery_id;
-        $ids_input_name = 'hvnly_gallery_ids_' . $gallery_id;
-        
+        $ids_input_name     = 'hvnly_gallery_ids_' . $gallery_id;
+
         ob_start();
-        $image_count   = count( array_filter( $gallery_images ) );
+        $image_count    = count( array_filter( $gallery_images ) );
         $is_empty_class = $image_count < 1 ? ' hvnly-gallery-is-empty' : '';
         $status_suffix  = ( 1 === (int) $image_count )
             ? __( 'Image', 'havenlytics' )
@@ -120,9 +120,9 @@ class GalleryField extends BaseFieldType {
         <div class="hvnly-gallery-stage">
             <ul class="hvnly-gallery-images" id="hvnly-gallery-list-<?php echo esc_attr($gallery_id); ?>">
                 <?php
-                if (!empty($gallery_images)) {
+                if ( ! empty($gallery_images)) {
                     foreach ($gallery_images as $image_id) {
-                        if (!empty($image_id)) {
+                        if ( ! empty($image_id)) {
                             $this->render_gallery_item($image_id, $gallery_id, $title_input_name, $caption_input_name, $ids_input_name);
                         }
                     }
@@ -159,14 +159,14 @@ class GalleryField extends BaseFieldType {
         name="<?php echo esc_attr($field_name); ?>" value="<?php echo esc_attr($saved_value); ?>"
         class="hvnly-gallery-hidden" />
 </div>
-<?php
+		<?php
         return ob_get_clean();
     }
-    
+
     /**
      * Render a single gallery item
      */
-    private function render_gallery_item($image_id, $gallery_id, $title_input_name, $caption_input_name, $ids_input_name) {
+    private function render_gallery_item( $image_id, $gallery_id, $title_input_name, $caption_input_name, $ids_input_name ) {
         $image = wp_get_attachment_image_src( (int) $image_id, 'medium' );
         if ( ! $image ) {
             $image = wp_get_attachment_image_src( (int) $image_id, 'thumbnail' );
@@ -208,46 +208,46 @@ class GalleryField extends BaseFieldType {
 
     <input type="hidden" name="<?php echo esc_attr($ids_input_name); ?>[]" value="<?php echo esc_attr($image_id); ?>" />
 </li>
-<?php
+		<?php
     }
-    
-    public function save($post_id, $field_name, $value, $extra = null) {
+
+    public function save( $post_id, $field_name, $value, $extra = null ) {
         // Sanitize and save to the unique field name (images)
-        $image_ids = explode(',', sanitize_text_field($value));
-        $image_ids = array_map('intval', array_filter($image_ids));
+        $image_ids   = explode(',', sanitize_text_field($value));
+        $image_ids   = array_map('intval', array_filter($image_ids));
         $clean_value = implode(',', $image_ids);
-        
+
         // Get the group_base_id from the extra array or extract from field_name
         $group_base_id = $extra['group_base_id'] ?? '';
-        
+
         // If no group_base_id in extra, try to extract from field_name
         if (empty($group_base_id) && strpos($field_name, '_images') !== false) {
             $group_base_id = str_replace('_images', '', $field_name);
         }
-        
+
         // Save the images to the field name (which should be {group_base_id}_images)
-        if (!empty($clean_value)) {
+        if ( ! empty($clean_value)) {
             update_post_meta($post_id, $field_name, $clean_value);
         } else {
             hvnly_safe_delete_post_meta($post_id, $field_name, 'user_save_empty');
         }
-        
+
         // Also handle the title if present in POST
-        if (!empty($group_base_id)) {
+        if ( ! empty($group_base_id)) {
             $title_field_name = $group_base_id . '_title';
-            $title_value = filter_input(INPUT_POST, $title_field_name, FILTER_UNSAFE_RAW);
+            $title_value      = filter_input(INPUT_POST, $title_field_name, FILTER_UNSAFE_RAW);
             if ($title_value !== null) {
                 update_post_meta($post_id, $title_field_name, sanitize_text_field($title_value));
             }
         }
     }
-    
-    public function sanitize($value) {
+
+    public function sanitize( $value ) {
         $image_ids = explode(',', $value);
         return implode(',', array_map('intval', array_filter($image_ids)));
     }
-    
-    public function validate($value, $field) {
+
+    public function validate( $value, $field ) {
         if (empty($field['is_required'])) {
             return true;
         }
@@ -267,7 +267,7 @@ class GalleryField extends BaseFieldType {
 
         return true;
     }
-    
+
     public function enqueue_assets() {
         wp_enqueue_media();
         wp_enqueue_script('jquery-ui-sortable');
@@ -275,14 +275,14 @@ class GalleryField extends BaseFieldType {
         wp_enqueue_style(
             'hvnly-gallery-field',
             HVNLYNAB_ASSETS_URL . '/admin/css/hvnly-gallery-field.css',
-            [],
+            array(),
             HVNLYNAB_VERSION
         );
-        
+
         wp_enqueue_script(
             'hvnly-gallery-field',
             HVNLYNAB_ASSETS_URL . '/admin/js/hvnly-gallery-field.js',
-            ['jquery', 'jquery-ui-sortable'],
+            array( 'jquery', 'jquery-ui-sortable' ),
             HVNLYNAB_VERSION,
             true
         );

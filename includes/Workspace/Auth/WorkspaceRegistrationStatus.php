@@ -358,7 +358,7 @@ final class WorkspaceRegistrationStatus {
 			self::BLOCKED   => '🔴',
 			self::ARCHIVED  => '⚪',
 		);
-		$icon = isset( $icons[ $status ] ) ? $icons[ $status ] : '';
+		$icon   = isset( $icons[ $status ] ) ? $icons[ $status ] : '';
 
 		return sprintf(
 			'<span class="%s"><span class="hvnly-ws-reg-badge__icon" aria-hidden="true">%s</span><span class="hvnly-ws-reg-badge__label">%s</span></span>',

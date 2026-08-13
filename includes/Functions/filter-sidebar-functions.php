@@ -1,15 +1,15 @@
 <?php
 /**
  * Filter Sidebar Global Helper Functions
- * 
+ *
  * These functions provide easy access to the Helpers class methods
  * with the proper hvnly_filter_sidebar_ prefix.
- * 
+ *
  * @package HvnlyNab
  * @since 2.1.0
  */
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -30,7 +30,7 @@ function hvnly_filter_sidebar_get_fields() {
  * @param string $field_id
  * @return array|null
  */
-function hvnly_filter_sidebar_get_field_config($field_id) {
+function hvnly_filter_sidebar_get_field_config( $field_id ) {
     return HvnlyNab\Helpers::get_instance()->hvnly_filter_sidebar_get_field_config($field_id);
 }
 
@@ -91,7 +91,7 @@ function hvnly_filter_sidebar_get_reception_rooms_options() {
  * @param string $field_id
  * @return array
  */
-function hvnly_filter_sidebar_get_custom_dropdown_options($field_id) {
+function hvnly_filter_sidebar_get_custom_dropdown_options( $field_id ) {
     return HvnlyNab\Helpers::get_instance()->hvnly_filter_sidebar_get_custom_dropdown_options($field_id);
 }
 
@@ -102,7 +102,7 @@ function hvnly_filter_sidebar_get_custom_dropdown_options($field_id) {
  * @param string $field_id
  * @return array
  */
-function hvnly_filter_sidebar_get_custom_checkbox_options($field_id) {
+function hvnly_filter_sidebar_get_custom_checkbox_options( $field_id ) {
     return HvnlyNab\Helpers::get_instance()->hvnly_filter_sidebar_get_custom_checkbox_options($field_id);
 }
 
@@ -113,7 +113,7 @@ function hvnly_filter_sidebar_get_custom_checkbox_options($field_id) {
  * @param string $taxonomy
  * @return array
  */
-function hvnly_filter_sidebar_get_taxonomy_terms($taxonomy) {
+function hvnly_filter_sidebar_get_taxonomy_terms( $taxonomy ) {
     return HvnlyNab\Helpers::get_instance()->hvnly_filter_sidebar_get_taxonomy_terms($taxonomy);
 }
 
@@ -154,7 +154,7 @@ function hvnly_filter_sidebar_get_unique_property_ids() {
  * @param string $field_id
  * @return bool
  */
-function hvnly_filter_sidebar_field_uses_taxonomy($field_id) {
+function hvnly_filter_sidebar_field_uses_taxonomy( $field_id ) {
     return HvnlyNab\Helpers::get_instance()->hvnly_filter_sidebar_field_uses_taxonomy($field_id);
 }
 
@@ -165,7 +165,7 @@ function hvnly_filter_sidebar_field_uses_taxonomy($field_id) {
  * @param string $field_id
  * @return string|null
  */
-function hvnly_filter_sidebar_get_field_taxonomy($field_id) {
+function hvnly_filter_sidebar_get_field_taxonomy( $field_id ) {
     return HvnlyNab\Helpers::get_instance()->hvnly_filter_sidebar_get_field_taxonomy($field_id);
 }
 
@@ -177,7 +177,7 @@ function hvnly_filter_sidebar_get_field_taxonomy($field_id) {
  * @param string $default
  * @return string
  */
-function hvnly_filter_sidebar_get_field_placeholder($field_id, $default = '') {
+function hvnly_filter_sidebar_get_field_placeholder( $field_id, $default = '' ) {
     return HvnlyNab\Helpers::get_instance()->hvnly_filter_sidebar_get_field_placeholder($field_id, $default);
 }
 
@@ -188,6 +188,6 @@ function hvnly_filter_sidebar_get_field_placeholder($field_id, $default = '') {
  * @param string $field_id
  * @return bool
  */
-function hvnly_filter_sidebar_has_select_all_option($field_id) {
+function hvnly_filter_sidebar_has_select_all_option( $field_id ) {
     return HvnlyNab\Helpers::get_instance()->hvnly_filter_sidebar_has_select_all_option($field_id);
 }

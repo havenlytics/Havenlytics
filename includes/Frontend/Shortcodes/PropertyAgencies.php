@@ -98,8 +98,6 @@ class PropertyAgencies extends AbstractShortcode {
 
 		$this->before_render();
 
-
-
 		if ( function_exists( 'hvnly_load_template_functions' ) ) {
 
 			hvnly_load_template_functions();
@@ -114,8 +112,6 @@ class PropertyAgencies extends AbstractShortcode {
 
 		$atts = $this->parse_attributes( $atts );
 
-
-
 		$view_filter = function ( $view ) use ( $atts ) {
 
 			if ( ! empty( $_GET['view'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -124,39 +120,24 @@ class PropertyAgencies extends AbstractShortcode {
 
 			}
 
-
-
 			$default = sanitize_key( (string) ( $atts['default_view'] ?? 'grid' ) );
 
-
-
 			return in_array( $default, array( 'grid', 'list' ), true ) ? $default : 'grid';
-
 		};
-
-
 
 		add_filter( 'hvnly_property_archive_view_type', $view_filter, 20 );
 
-
-
 		$agency_query = $this->build_agency_query( $atts );
 
-		$columns      = max( 1, min( 4, absint( $atts['columns'] ) ) );
+		$columns = max( 1, min( 4, absint( $atts['columns'] ) ) );
 
-		$search_url   = $this->get_search_action_url();
+		$search_url = $this->get_search_action_url();
 
-		$instance_id  = 'shortcode-agencies';
-
-
+		$instance_id = 'shortcode-agencies';
 
 		do_action( 'hvnly_before_archive_agency' );
 
-
-
 		ob_start();
-
-
 
 		$wrapper_classes = array_filter(
 
@@ -173,8 +154,6 @@ class PropertyAgencies extends AbstractShortcode {
 			)
 
 		);
-
-
 
 		?>
 
@@ -244,26 +223,15 @@ class PropertyAgencies extends AbstractShortcode {
 
 		<?php
 
-
-
 		do_action( 'hvnly_after_archive_agency' );
-
-
 
 		remove_filter( 'hvnly_property_archive_view_type', $view_filter, 20 );
 
-
-
 		$output = ob_get_clean();
-
-
 
 		$this->after_render();
 
-
-
 		return $output;
-
 	}
 
 
@@ -278,15 +246,13 @@ class PropertyAgencies extends AbstractShortcode {
 
 	private function build_agency_query( array $atts ): array {
 
-		$paged    = max( 1, (int) get_query_var( 'paged' ), (int) get_query_var( 'page' ) );
+		$paged = max( 1, (int) get_query_var( 'paged' ), (int) get_query_var( 'page' ) );
 
 		$per_page = max( 1, absint( $atts['posts_per_page'] ) );
 
-		$orderby  = sanitize_key( (string) ( $atts['orderby'] ?? 'name' ) );
+		$orderby = sanitize_key( (string) ( $atts['orderby'] ?? 'name' ) );
 
-		$order    = strtoupper( sanitize_key( (string) ( $atts['order'] ?? 'ASC' ) ) );
-
-
+		$order = strtoupper( sanitize_key( (string) ( $atts['order'] ?? 'ASC' ) ) );
 
 		if ( ! in_array( $orderby, array( 'name', 'date' ), true ) ) {
 
@@ -294,15 +260,11 @@ class PropertyAgencies extends AbstractShortcode {
 
 		}
 
-
-
 		if ( ! in_array( $order, array( 'ASC', 'DESC' ), true ) ) {
 
 			$order = 'ASC';
 
 		}
-
-
 
 		$query_args = array(
 
@@ -316,23 +278,17 @@ class PropertyAgencies extends AbstractShortcode {
 
 		);
 
-
-
 		if ( class_exists( AgencyArchiveQuery::class ) ) {
 
 			return AgencyArchiveQuery::query_agencies( $query_args );
 
 		}
 
-
-
 		if ( function_exists( 'hvnly_get_agency_archive_query' ) ) {
 
 			return hvnly_get_agency_archive_query( $query_args );
 
 		}
-
-
 
 		return array(
 
@@ -347,7 +303,6 @@ class PropertyAgencies extends AbstractShortcode {
 			'per_page'     => $per_page,
 
 		);
-
 	}
 
 
@@ -366,8 +321,6 @@ class PropertyAgencies extends AbstractShortcode {
 
 		global $post;
 
-
-
 		if ( $post instanceof \WP_Post && $post->ID > 0 ) {
 
 			$url = get_permalink( $post );
@@ -380,10 +333,7 @@ class PropertyAgencies extends AbstractShortcode {
 
 		}
 
-
-
 		return home_url( add_query_arg( array(), isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( (string) $_SERVER['REQUEST_URI'] ) : '/' ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-
 	}
 
 
@@ -400,13 +350,9 @@ class PropertyAgencies extends AbstractShortcode {
 
 		$atts = parent::validate_attributes( $atts );
 
-
-
 		$atts['posts_per_page'] = max( 1, min( 100, absint( $atts['posts_per_page'] ) ) );
 
-		$atts['columns']        = max( 1, min( 4, absint( $atts['columns'] ) ) );
-
-
+		$atts['columns'] = max( 1, min( 4, absint( $atts['columns'] ) ) );
 
 		foreach ( array( 'show_header', 'show_search', 'show_view_controls' ) as $flag ) {
 
@@ -414,15 +360,11 @@ class PropertyAgencies extends AbstractShortcode {
 
 		}
 
-
-
 		$atts['default_view'] = in_array( $atts['default_view'], array( 'grid', 'list' ), true )
 
 			? $atts['default_view']
 
 			: 'grid';
-
-
 
 		if ( ! in_array( $atts['orderby'], array( 'name', 'date' ), true ) ) {
 
@@ -430,11 +372,7 @@ class PropertyAgencies extends AbstractShortcode {
 
 		}
 
-
-
 		return $atts;
-
 	}
-
 }
 

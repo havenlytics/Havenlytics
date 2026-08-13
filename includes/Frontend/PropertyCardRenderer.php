@@ -150,7 +150,7 @@ class PropertyCardRenderer {
 
 		return $saved_sections;
 	}
-	
+
 	/**
 	 * Sort fields by their order value.
 	 *
@@ -173,7 +173,7 @@ class PropertyCardRenderer {
 
 		return $fields;
 	}
-	
+
 	/**
 	 * Check if any section has fields configured.
 	 *
@@ -296,7 +296,7 @@ class PropertyCardRenderer {
 					$section_found = true;
 					// Sort fields by order before passing to template.
 					$section['fields'] = $this->sort_fields_by_order( $section['fields'] );
-					
+
 					// Special handling for footer - collect all footer sections
 					if ( 'footer' === $template_name ) {
 						$this->render_combined_footer_section( $sections, $property_id, $property_data );
@@ -311,7 +311,7 @@ class PropertyCardRenderer {
 		// Close content wrapper.
 		echo '</div>';
 	}
-	
+
 	/**
 	 * Render combined footer section with left and right footer sections.
 	 *
@@ -323,18 +323,18 @@ class PropertyCardRenderer {
 	private function render_combined_footer_section( $sections, $property_id, $property_data ) {
 		// Collect all footer sections
 		$footer_sections = array();
-		
+
 		foreach ( $sections as $section ) {
 			$section_id = $section['id'];
 			if ( in_array( $section_id, array( 'card-footer-left', 'card-footer-right' ), true ) && ! empty( $section['fields'] ) ) {
 				$footer_sections[] = $section;
 			}
 		}
-		
+
 		if ( empty( $footer_sections ) ) {
 			return;
 		}
-		
+
 		// Pass all footer sections to the footer template
 		$template_args = array(
 			'property_id'     => $property_id,
@@ -343,10 +343,10 @@ class PropertyCardRenderer {
 			'all_sections'    => $this->get_sections(),
 			'footer_sections' => $footer_sections, // Pass all footer sections
 		);
-		
+
 		$this->load_template( 'archive/sections/footer', $template_args );
 	}
-	
+
 	/**
 	 * Render a preset section with its fields.
 	 *
@@ -358,17 +358,17 @@ class PropertyCardRenderer {
 	 */
 	private function render_preset_section( $section, $property_id, $property_data = array(), $template_name = '' ) {
 		$section_id = $section['id'];
-		
+
 		// Skip sections that are handled elsewhere.
 		if ( in_array( $section_id, array( 'thumbnail', 'avatar' ), true ) ) {
 			return;
 		}
-		
+
 		// Skip overlay sections (handled within thumbnail template).
 		if ( strpos( $section_id, 'image-overlay-' ) === 0 ) {
 			return;
 		}
-		
+
 		// If template name is provided, use it.
 		if ( ! empty( $template_name ) ) {
 			$template_args = array(
@@ -378,7 +378,7 @@ class PropertyCardRenderer {
 				'all_sections'  => $this->get_sections(),
 				'section'       => $section, // Pass the section data for reference.
 			);
-			
+
 			// Special handling for header to include avatar.
 			if ( 'header' === $template_name ) {
 				// Check if avatar section exists and has fields.
@@ -387,11 +387,11 @@ class PropertyCardRenderer {
 					$template_args['show_avatar'] = true;
 				}
 			}
-			
+
 			$this->load_template( 'archive/sections/' . $template_name, $template_args );
 			return;
 		}
-		
+
 		// For other sections, render fields individually.
 		if ( ! empty( $section['fields'] ) && is_array( $section['fields'] ) ) {
 			$section_class = 'hvnly-preset-section hvnly-preset-section-' . esc_attr( $section_id );
@@ -402,11 +402,11 @@ class PropertyCardRenderer {
 				$sorted_fields = $this->sort_fields_by_order( $section['fields'] );
 				foreach ( $sorted_fields as $field ) {
 					$field_type = $field['type'] ?? '';
-					
+
 					$mapping = $this->get_field_template_mapping();
 					if ( isset( $mapping[ $field_type ] ) ) {
 						$field_template_name = $mapping[ $field_type ];
-						
+
 						// Pass the builder field config so labels/button text are used.
 						hvnly_render_field(
 							$field_template_name,
@@ -426,7 +426,7 @@ class PropertyCardRenderer {
 								'field'         => $field,
 							)
 						);
-						
+
 						// if ( ! $template_loaded && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 						//     echo '<!-- ' . esc_html( sprintf( 'Missing template for field type: %s', $field_type ) ) . ' -->';
 						// }
@@ -470,7 +470,7 @@ class PropertyCardRenderer {
 					'mode'          => 'default',
 				)
 			);
-			
+
 			// Use section templates for excerpt and features.
 			$this->load_template(
 				'archive/sections/excerpt',
@@ -480,7 +480,7 @@ class PropertyCardRenderer {
 					'mode'          => 'default',
 				)
 			);
-			
+
 			$this->load_template(
 				'archive/sections/features',
 				array(
@@ -489,7 +489,7 @@ class PropertyCardRenderer {
 					'mode'          => 'default',
 				)
 			);
-			
+
 			$this->load_template(
 				'archive/sections/footer',
 				array(
@@ -514,7 +514,7 @@ class PropertyCardRenderer {
 	public function load_template( $template, $args = array(), $require_once = false ) {
 		// Remove .php extension if present
 		$template = preg_replace( '/\.php$/', '', $template );
-		
+
 		// Use the template function
 		hvnly_get_template( $template . '.php', $args );
 		return true;
@@ -569,18 +569,18 @@ class PropertyCardRenderer {
 			);
 
 			if ( $args['include_meta'] ) {
-				$icon_data   = get_term_meta( $term->term_id, '_hvnly_advanced_icon_data', true );
-				$icon_class  = is_array( $icon_data ) && isset( $icon_data['class'] ) ? $icon_data['class'] : '';
-				$image_url   = function_exists( 'hvnly_get_term_advanced_image_url' )
+				$icon_data       = get_term_meta( $term->term_id, '_hvnly_advanced_icon_data', true );
+				$icon_class      = is_array( $icon_data ) && isset( $icon_data['class'] ) ? $icon_data['class'] : '';
+				$image_url       = function_exists( 'hvnly_get_term_advanced_image_url' )
 					? hvnly_get_term_advanced_image_url( $term->term_id )
 					: '';
 				$term_meta_color = get_term_meta( $term->term_id, 'hvnly_badge_background_color', true );
-				$display_option = get_term_meta( $term->term_id, 'hvnly_badge_display_option', true );
+				$display_option  = get_term_meta( $term->term_id, 'hvnly_badge_display_option', true );
 
-				$term_data['color']        = $term_meta_color;
-				$term_data['icon']         = $icon_class;
-				$term_data['image']        = $image_url;
-				$term_data['display_all']  = ! empty( $display_option );
+				$term_data['color']       = $term_meta_color;
+				$term_data['icon']        = $icon_class;
+				$term_data['image']       = $image_url;
+				$term_data['display_all'] = ! empty( $display_option );
 			}
 
 			if ( $args['include_link'] ) {
@@ -712,9 +712,9 @@ class PropertyCardRenderer {
 
 			case 'all':
 			default:
-				$icon_data = get_term_meta( $term_id, '_hvnly_advanced_icon_data', true );
-				$icon_class = is_array( $icon_data ) && isset( $icon_data['class'] ) ? $icon_data['class'] : '';
-				$term_color = get_term_meta( $term_id, 'hvnly_badge_background_color', true );
+				$icon_data      = get_term_meta( $term_id, '_hvnly_advanced_icon_data', true );
+				$icon_class     = is_array( $icon_data ) && isset( $icon_data['class'] ) ? $icon_data['class'] : '';
+				$term_color     = get_term_meta( $term_id, 'hvnly_badge_background_color', true );
 				$display_option = get_term_meta( $term_id, 'hvnly_badge_display_option', true );
 
 				return array(

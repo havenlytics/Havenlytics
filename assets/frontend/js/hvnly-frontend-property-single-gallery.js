@@ -813,7 +813,10 @@ class HavenlyticsSingleFancyboxModule extends HavenlyticsBaseGalleryModule {
         this.currentPopup = 'gallery';
         this.isExternalGallery = false;
         this.updateGalleryImages();
+        // Always start non-fullscreen with a single visible icon state.
+        this.elements.galleryPopup.classList.remove('hvnly-property-single__fancybox-popup--fullscreen');
         this.elements.galleryPopup.classList.add('hvnly-property-single__fancybox-popup--active');
+        this.updateFullscreenIcons(this.elements.galleryPopup);
         document.body.style.overflow = 'hidden';
         this.trapFocus(this.elements.galleryPopup);
         
@@ -830,7 +833,9 @@ class HavenlyticsSingleFancyboxModule extends HavenlyticsBaseGalleryModule {
         this.currentGalleryIndex = startIndex;
         
         this.updateExternalGalleryImages();
+        this.elements.galleryPopup.classList.remove('hvnly-property-single__fancybox-popup--fullscreen');
         this.elements.galleryPopup.classList.add('hvnly-property-single__fancybox-popup--active');
+        this.updateFullscreenIcons(this.elements.galleryPopup);
         document.body.style.overflow = 'hidden';
         this.trapFocus(this.elements.galleryPopup);
         
@@ -897,9 +902,9 @@ class HavenlyticsSingleFancyboxModule extends HavenlyticsBaseGalleryModule {
         if (expandIcon && compressIcon) {
             if (isFullscreen) {
                 expandIcon.style.display = 'none';
-                compressIcon.style.display = 'block';
+                compressIcon.style.display = 'inline-block';
             } else {
-                expandIcon.style.display = 'block';
+                expandIcon.style.display = 'inline-block';
                 compressIcon.style.display = 'none';
             }
         } else {

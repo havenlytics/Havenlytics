@@ -16,7 +16,7 @@ use HvnlyNab\Core\Migration\Traits\MigrationTrait;
 use HvnlyNab\Core\SectionIdentity;
 
 // Prevent direct access.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -65,22 +65,22 @@ class Version224Handler implements MigrationInterface {
      * @return bool
      */
     public function is_needed(): bool {
-        $sections = get_option(self::PROPERTY_BUILDER_KEY, []);
-        
+        $sections = get_option(self::PROPERTY_BUILDER_KEY, array());
+
         if (empty($sections)) {
             return true;
         }
-        
+
         // Check if missing sections via SectionIdentity (sole alias source of truth).
-        $missing = [];
+        $missing = array();
         if ( ! SectionIdentity::has_equivalent_section( $sections, SectionIdentity::SEC_PROPERTY_DETAILS ) ) {
             $missing[] = SectionIdentity::SEC_PROPERTY_DETAILS;
         }
-        if (!isset($sections['sec_address_neighborhood']) && !isset($sections['sec_address_neighborhood_legacy'])) {
+        if ( ! isset($sections['sec_address_neighborhood']) && ! isset($sections['sec_address_neighborhood_legacy'])) {
             $missing[] = 'sec_address_neighborhood';
         }
-        
-        return !empty($missing);
+
+        return ! empty($missing);
     }
 
     /**
@@ -99,21 +99,21 @@ class Version224Handler implements MigrationInterface {
             $this->log('Backup created: ' . $backup_id);
         }
 
-        $sections = get_option(self::PROPERTY_BUILDER_KEY, []);
-        
+        $sections = get_option(self::PROPERTY_BUILDER_KEY, array());
+
         if (empty($sections)) {
             // Get complete configuration from UnifiedFieldGenerator
             if (class_exists('\HvnlyNab\Core\UnifiedFieldGenerator')) {
-                $unified = \HvnlyNab\Core\UnifiedFieldGenerator::get_instance();
+                $unified  = \HvnlyNab\Core\UnifiedFieldGenerator::get_instance();
                 $sections = $unified->get_unified_configuration();
                 update_option(self::PROPERTY_BUILDER_KEY, $sections);
                 $this->log('Created complete configuration with ALL 7 sections');
             }
             return true;
         }
-        
+
         $updated = false;
-        
+
         // Add Additional Information only when SectionIdentity finds no equivalent.
         if ( ! SectionIdentity::has_equivalent_section( $sections, SectionIdentity::SEC_PROPERTY_DETAILS ) ) {
             $section = $this->get_additional_info_section();
@@ -121,14 +121,14 @@ class Version224Handler implements MigrationInterface {
             $updated = true;
             $this->log('Added Additional Information section');
         }
-        
+
         // Add Address & Neighborhood section if missing
-        if (!isset($sections['sec_address_neighborhood']) && !isset($sections['sec_address_neighborhood_legacy'])) {
+        if ( ! isset($sections['sec_address_neighborhood']) && ! isset($sections['sec_address_neighborhood_legacy'])) {
             $sections['sec_address_neighborhood'] = $this->get_address_neighborhood_section();
-            $updated = true;
+            $updated                              = true;
             $this->log('Added Address & Neighborhood section');
         }
-        
+
         // Reorder sections
         if ($updated) {
             $sections = $this->reorder_sections($sections);
@@ -138,10 +138,10 @@ class Version224Handler implements MigrationInterface {
         } else {
             $this->log('No missing sections found, migration not needed');
         }
-        
+
         // Clean up old backups
         $this->cleanup_backups(5);
-        
+
         $this->log('Migration completed');
         return true;
     }
@@ -153,15 +153,15 @@ class Version224Handler implements MigrationInterface {
      * @return array
      */
     private function get_additional_info_section(): array {
-        return [
+        return array(
             'id' => SectionIdentity::SEC_PROPERTY_DETAILS,
             'title' => 'Additional Information',
             'icon' => 'fas fa-info-circle',
             'required' => false,
             'order' => 1,
             'collapsed' => false,
-            'fields' => [
-                [
+            'fields' => array(
+                array(
                     'id' => '_hvnly_property_sqft',
                     'name' => '_hvnly_property_sqft',
                     'type' => 'number',
@@ -170,8 +170,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => true,
                     'locked' => false,
                     'order' => 0,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_lot_size',
                     'name' => '_hvnly_property_lot_size',
                     'type' => 'text',
@@ -180,8 +180,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => true,
                     'locked' => false,
                     'order' => 1,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_hoa_fee',
                     'name' => '_hvnly_property_hoa_fee',
                     'type' => 'text',
@@ -190,8 +190,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 2,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_annual_tax_amount',
                     'name' => '_hvnly_property_annual_tax_amount',
                     'type' => 'number',
@@ -200,8 +200,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 3,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_heating',
                     'name' => '_hvnly_property_heating',
                     'type' => 'select',
@@ -209,15 +209,15 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 4,
-                    'options' => [
+                    'options' => array(
                         'forced_air' => 'Forced Air',
                         'radiator' => 'Radiator',
                         'heat_pump' => 'Heat Pump',
                         'baseboard' => 'Baseboard',
                         'none' => 'None',
-                    ],
-                ],
-                [
+                    ),
+                ),
+                array(
                     'id' => '_hvnly_property_cooling',
                     'name' => '_hvnly_property_cooling',
                     'type' => 'select',
@@ -225,15 +225,15 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 5,
-                    'options' => [
+                    'options' => array(
                         'central' => 'Central Air',
                         'window' => 'Window Units',
                         'heat_pump' => 'Heat Pump',
                         'baseboard' => 'Baseboard',
                         'none' => 'None',
-                    ],
-                ],
-                [
+                    ),
+                ),
+                array(
                     'id' => '_hvnly_property_water',
                     'name' => '_hvnly_property_water',
                     'type' => 'select',
@@ -241,15 +241,15 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 6,
-                    'options' => [
+                    'options' => array(
                         'city' => 'City',
                         'well' => 'Well',
                         'shared_well' => 'Shared Well',
                         'none' => 'None',
-                    ],
-                ],
-            ],
-        ];
+                    ),
+                ),
+            ),
+        );
     }
 
     /**
@@ -259,15 +259,15 @@ class Version224Handler implements MigrationInterface {
      * @return array
      */
     private function get_address_neighborhood_section(): array {
-        return [
+        return array(
             'id' => 'sec_address_neighborhood',
             'title' => 'Address & Neighborhood',
             'icon' => 'fas fa-building',
             'required' => false,
             'order' => 2,
             'collapsed' => false,
-            'fields' => [
-                [
+            'fields' => array(
+                array(
                     'id' => '_hvnly_property_reference_number',
                     'name' => '_hvnly_property_reference_number',
                     'type' => 'text',
@@ -276,8 +276,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 0,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_building_number',
                     'name' => '_hvnly_property_building_number',
                     'type' => 'text',
@@ -286,8 +286,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 1,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_street',
                     'name' => '_hvnly_property_street',
                     'type' => 'text',
@@ -296,8 +296,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 2,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_address_line_1',
                     'name' => '_hvnly_property_address_line_1',
                     'type' => 'text',
@@ -306,8 +306,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 3,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_address_line_2',
                     'name' => '_hvnly_property_address_line_2',
                     'type' => 'text',
@@ -316,8 +316,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 4,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_town_city',
                     'name' => '_hvnly_property_town_city',
                     'type' => 'text',
@@ -326,8 +326,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 5,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_country_state',
                     'name' => '_hvnly_property_country_state',
                     'type' => 'text',
@@ -336,8 +336,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 6,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_zip_code',
                     'name' => '_hvnly_property_zip_code',
                     'type' => 'text',
@@ -346,8 +346,8 @@ class Version224Handler implements MigrationInterface {
                     'required' => false,
                     'locked' => false,
                     'order' => 7,
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_location',
                     'name' => '_hvnly_property_location',
                     'type' => 'select',
@@ -356,8 +356,8 @@ class Version224Handler implements MigrationInterface {
                     'locked' => false,
                     'order' => 8,
                     'options' => $this->get_property_locations(),
-                ],
-                [
+                ),
+                array(
                     'id' => '_hvnly_property_country_location',
                     'name' => '_hvnly_property_country_location',
                     'type' => 'select',
@@ -366,9 +366,9 @@ class Version224Handler implements MigrationInterface {
                     'locked' => false,
                     'order' => 9,
                     'options' => $this->get_property_countries(),
-                ],
-            ],
-        ];
+                ),
+            ),
+        );
     }
 
     /**
@@ -378,7 +378,7 @@ class Version224Handler implements MigrationInterface {
      * @return array
      */
     private function get_property_locations(): array {
-        return [
+        return array(
             'new-york' => 'New York',
             'los-angeles' => 'Los Angeles',
             'chicago' => 'Chicago',
@@ -388,7 +388,7 @@ class Version224Handler implements MigrationInterface {
             'dallas' => 'Dallas',
             'seattle' => 'Seattle',
             'boston' => 'Boston',
-        ];
+        );
     }
 
     /**
@@ -398,7 +398,7 @@ class Version224Handler implements MigrationInterface {
      * @return array
      */
     private function get_property_countries(): array {
-        return [
+        return array(
             'US' => 'United States',
             'GB' => 'United Kingdom',
             'CA' => 'Canada',
@@ -407,7 +407,7 @@ class Version224Handler implements MigrationInterface {
             'FR' => 'France',
             'ES' => 'Spain',
             'IT' => 'Italy',
-        ];
+        );
     }
 
     /**
@@ -417,11 +417,11 @@ class Version224Handler implements MigrationInterface {
      * @param array $sections Sections to reorder.
      * @return array Reordered sections.
      */
-    private function reorder_sections(array $sections): array {
-        $order = [];
-        
+    private function reorder_sections( array $sections ): array {
+        $order = array();
+
         // Find sections by title, not by ID
-        $titles_order = [
+        $titles_order = array(
             'Basic Info' => 0,
             'Additional Information' => 1,
             'Address & Neighborhood' => 2,
@@ -429,22 +429,22 @@ class Version224Handler implements MigrationInterface {
             'Property Gallery' => 4,
             'Property Location' => 5,
             'Property Documents' => 6,
-        ];
-        
+        );
+
         foreach ($sections as $key => &$section) {
             $title = $section['title'] ?? '';
-            if (isset($titles_order[$title])) {
-                $section['order'] = $titles_order[$title];
+            if (isset($titles_order[ $title ])) {
+                $section['order'] = $titles_order[ $title ];
             } else {
                 $section['order'] = $section['order'] ?? 999;
             }
         }
-        
+
         // Sort by order
-        uasort($sections, function($a, $b) {
-            return ($a['order'] ?? 999) - ($b['order'] ?? 999);
+        uasort($sections, function ( $a, $b ) {
+            return ( $a['order'] ?? 999 ) - ( $b['order'] ?? 999 );
         });
-        
+
         return $sections;
     }
 
@@ -456,10 +456,10 @@ class Version224Handler implements MigrationInterface {
      */
     public function down(): bool {
         $this->log('Rolling back migration to version ' . $this->get_version());
-        
+
         // Find most recent backup
         $backup_id = $this->find_latest_backup();
-        
+
         if ($backup_id) {
             $restored = $this->restore_from_backup($backup_id);
             if ($restored) {
@@ -467,7 +467,7 @@ class Version224Handler implements MigrationInterface {
                 return true;
             }
         }
-        
+
         $this->log('No backup found for rollback');
         return false;
     }
@@ -480,9 +480,9 @@ class Version224Handler implements MigrationInterface {
      */
     private function find_latest_backup() {
         global $wpdb;
-        
+
         $backup_pattern = '_hvnly_backup_2.2.4_%';
-        
+
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Migration backup option lookup.
         $backups = $wpdb->get_col(
             $wpdb->prepare(
@@ -492,7 +492,7 @@ class Version224Handler implements MigrationInterface {
                 $backup_pattern
             )
         );
-        
-        return !empty($backups) ? $backups[0] : false;
+
+        return ! empty($backups) ? $backups[0] : false;
     }
 }

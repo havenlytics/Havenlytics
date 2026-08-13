@@ -19,9 +19,9 @@ defined( 'ABSPATH' ) || exit;
  */
 final class AgentActivityTracker {
 
-	public const META_LAST_LOGIN             = '_hvnly_ws_last_login';
-	public const META_LAST_ACTIVITY          = '_hvnly_ws_last_activity';
-	public const META_LAST_WORKSPACE_ACCESS  = '_hvnly_ws_last_workspace_access';
+	public const META_LAST_LOGIN            = '_hvnly_ws_last_login';
+	public const META_LAST_ACTIVITY         = '_hvnly_ws_last_activity';
+	public const META_LAST_WORKSPACE_ACCESS = '_hvnly_ws_last_workspace_access';
 
 	/**
 	 * @return void

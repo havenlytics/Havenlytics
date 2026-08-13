@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit80cdca7702b847118d383462f20c5b49
+class ComposerStaticInita6e6f9b9904c296734cc2c734c61ac45
 {
     public static $prefixLengthsPsr4 = array (
         'H' =>
@@ -436,9 +436,11 @@ class ComposerStaticInit80cdca7702b847118d383462f20c5b49
         'HvnlyNab\\Workspace\\WorkspaceAssets' => __DIR__ . '/../..' . '/includes/Workspace/WorkspaceAssets.php',
         'HvnlyNab\\Workspace\\WorkspaceAvailability' => __DIR__ . '/../..' . '/includes/Workspace/WorkspaceAvailability.php',
         'HvnlyNab\\Workspace\\WorkspaceBootstrap' => __DIR__ . '/../..' . '/includes/Workspace/WorkspaceBootstrap.php',
+        'HvnlyNab\\Workspace\\WorkspaceBranding' => __DIR__ . '/../..' . '/includes/Workspace/WorkspaceBranding.php',
         'HvnlyNab\\Workspace\\WorkspaceConstants' => __DIR__ . '/../..' . '/includes/Workspace/WorkspaceConstants.php',
         'HvnlyNab\\Workspace\\WorkspaceDateTime' => __DIR__ . '/../..' . '/includes/Workspace/WorkspaceDateTime.php',
         'HvnlyNab\\Workspace\\WorkspacePage' => __DIR__ . '/../..' . '/includes/Workspace/WorkspacePage.php',
+        'HvnlyNab\\Workspace\\WorkspaceProCapabilities' => __DIR__ . '/../..' . '/includes/Workspace/WorkspaceProCapabilities.php',
         'HvnlyNab\\Workspace\\WorkspaceSettings' => __DIR__ . '/../..' . '/includes/Workspace/WorkspaceSettings.php',
         'HvnlyNab\\Workspace\\WorkspaceShortcode' => __DIR__ . '/../..' . '/includes/Workspace/WorkspaceShortcode.php',
         'HvnlyNab\\Workspace\\WorkspaceTemplateLoader' => __DIR__ . '/../..' . '/includes/Workspace/WorkspaceTemplateLoader.php',
@@ -447,9 +449,9 @@ class ComposerStaticInit80cdca7702b847118d383462f20c5b49
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit80cdca7702b847118d383462f20c5b49::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit80cdca7702b847118d383462f20c5b49::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit80cdca7702b847118d383462f20c5b49::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInita6e6f9b9904c296734cc2c734c61ac45::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInita6e6f9b9904c296734cc2c734c61ac45::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInita6e6f9b9904c296734cc2c734c61ac45::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -55,10 +55,10 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
 			return;
 		}
 
-		$instance  = $this->sanitize_instance( $instance );
-		$title     = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Mortgage Calculator', 'havenlytics' );
+		$instance    = $this->sanitize_instance( $instance );
+		$title       = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Mortgage Calculator', 'havenlytics' );
 		$property_id = get_the_ID();
-		$resolved  = Hvnly_Price_Resolver::resolve( $property_id );
+		$resolved    = Hvnly_Price_Resolver::resolve( $property_id );
 
 		echo wp_kses_post( $args['before_widget'] );
 		echo wp_kses_post( $args['before_title'] ) . esc_html( $title ) . wp_kses_post( $args['after_title'] );
@@ -93,12 +93,12 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
 		);
 		?>
 <div class="hvnly-mortgage-unavailable" role="status" aria-live="polite">
-    <?php if ( ! empty( $display ) ) : ?>
+		<?php if ( ! empty( $display ) ) : ?>
     <span class="hvnly-mortgage-unavailable__price"><?php echo esc_html( $display ); ?></span>
     <?php endif; ?>
     <p class="hvnly-mortgage-unavailable__message"><?php echo esc_html( $message ); ?></p>
 </div>
-<?php
+		<?php
 	}
 
 	/**
@@ -109,20 +109,20 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
 	 * @param array $resolved    Price resolver result.
 	 */
 	private function render_calculator( array $instance, $property_id, array $resolved ) {
-		$default_interest_rate          = isset( $instance['default_interest_rate'] ) ? floatval( $instance['default_interest_rate'] ) : 4.5;
-		$show_advanced                  = ! empty( $instance['show_advanced'] );
-		$default_term                   = ! empty( $instance['default_term'] ) ? absint( $instance['default_term'] ) : 30;
-		$default_down_payment_percent   = ! empty( $instance['default_down_payment_percent'] ) ? absint( $instance['default_down_payment_percent'] ) : 10;
-		$show_property_tax              = ! empty( $instance['show_property_tax'] );
-		$show_home_insurance            = ! empty( $instance['show_home_insurance'] );
-		$show_hoa_fees                  = ! empty( $instance['show_hoa_fees'] );
-		$show_pmi                       = ! empty( $instance['show_pmi'] );
-		$show_closing_costs             = ! empty( $instance['show_closing_costs'] );
-		$show_amortization              = ! empty( $instance['show_amortization'] );
-		$show_currency_selector         = ! empty( $instance['show_currency_selector'] );
+		$default_interest_rate        = isset( $instance['default_interest_rate'] ) ? floatval( $instance['default_interest_rate'] ) : 4.5;
+		$show_advanced                = ! empty( $instance['show_advanced'] );
+		$default_term                 = ! empty( $instance['default_term'] ) ? absint( $instance['default_term'] ) : 30;
+		$default_down_payment_percent = ! empty( $instance['default_down_payment_percent'] ) ? absint( $instance['default_down_payment_percent'] ) : 10;
+		$show_property_tax            = ! empty( $instance['show_property_tax'] );
+		$show_home_insurance          = ! empty( $instance['show_home_insurance'] );
+		$show_hoa_fees                = ! empty( $instance['show_hoa_fees'] );
+		$show_pmi                     = ! empty( $instance['show_pmi'] );
+		$show_closing_costs           = ! empty( $instance['show_closing_costs'] );
+		$show_amortization            = ! empty( $instance['show_amortization'] );
+		$show_currency_selector       = ! empty( $instance['show_currency_selector'] );
 
-		$numeric_price = (float) $resolved['numeric_price'];
-		$currency      = $this->get_currency_context();
+		$numeric_price     = (float) $resolved['numeric_price'];
+		$currency          = $this->get_currency_context();
 		$currency_symbol   = $currency['currency_symbol'];
 		$currency_position = strtolower( $currency['currency_position'] );
 
@@ -131,7 +131,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
 		$stored_tax = get_post_meta( $property_id, '_hvnly_property_annual_tax_amount', true );
 		$stored_hoa = get_post_meta( $property_id, '_hvnly_property_hoa_fee', true );
 
-		$default_tax = $show_property_tax
+		$default_tax       = $show_property_tax
 			? ( is_numeric( $stored_tax ) && (float) $stored_tax > 0 ? (float) $stored_tax : $numeric_price * 0.01 )
 			: 0;
 		$default_insurance = $show_home_insurance ? $numeric_price * 0.0035 : 0;
@@ -157,7 +157,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
 			'defaultInsurance'   => round( $default_insurance ),
 			'defaultHoa'         => $default_hoa,
 			'defaultPmiRate'     => $default_pmi_rate,
-			'defaultClosingCosts'=> round( $default_closing ),
+			'defaultClosingCosts' => round( $default_closing ),
 		);
 
 		$widget_id = $this->id;
@@ -165,7 +165,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
 <div class="hvnly-mortgage-calculator-root" data-widget-id="<?php echo esc_attr( $widget_id ); ?>"
     data-hvnly-mortgage-config="<?php echo esc_attr( wp_json_encode( $js_config ) ); ?>">
 
-    <?php if ( $show_currency_selector ) : ?>
+		<?php if ( $show_currency_selector ) : ?>
     <div class="hvnly-mortgage-currency-selector" style="margin-bottom: var(--hvnly-space-md);">
         <label for="hvnlyCurrency_<?php echo esc_attr( $widget_id ); ?>"
             style="display: block; margin-bottom: var(--hvnly-space-xs); font-size: var(--hvnly-font-size-sm);">
@@ -228,9 +228,11 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
                 class="hvnly-mortgage-term-btn <?php echo (int) $default_term === (int) $term_years ? 'active' : ''; ?>"
                 data-term="<?php echo esc_attr( $term_years ); ?>"
                 data-widget-id="<?php echo esc_attr( $widget_id ); ?>">
-                <?php echo esc_html(
+                <?php
+                echo esc_html(
                     /* translators: %d: number of years for loan term */
-                     sprintf( __( '%d yrs', 'havenlytics' ), $term_years ) ); ?>
+                    sprintf( __( '%d yrs', 'havenlytics' ), $term_years ) );
+				?>
             </button>
             <?php endforeach; ?>
         </div>
@@ -251,7 +253,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
         </div>
     </div>
 
-    <?php if ( $show_advanced && ( $show_property_tax || $show_home_insurance || $show_hoa_fees || $show_pmi || $show_closing_costs ) ) : ?>
+		<?php if ( $show_advanced && ( $show_property_tax || $show_home_insurance || $show_hoa_fees || $show_pmi || $show_closing_costs ) ) : ?>
     <button type="button" class="hvnly-mortgage-advanced-toggle"
         id="hvnlyToggleAdvanced_<?php echo esc_attr( $widget_id ); ?>"
         data-widget-id="<?php echo esc_attr( $widget_id ); ?>" aria-expanded="false"
@@ -259,11 +261,11 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
         <svg class="hvnly-icon hvnly-icon-sm" aria-hidden="true">
             <use xlink:href="#hvnly-chevron-right"></use>
         </svg>
-        <?php esc_html_e( 'Advanced Options', 'havenlytics' ); ?>
+			<?php esc_html_e( 'Advanced Options', 'havenlytics' ); ?>
     </button>
 
     <div class="hvnly-mortgage-advanced-panel" id="hvnlyAdvancedPanel_<?php echo esc_attr( $widget_id ); ?>">
-        <?php if ( $show_property_tax ) : ?>
+			<?php if ( $show_property_tax ) : ?>
         <div class="hvnly-property-single__form-group" style="margin-bottom: var(--hvnly-space-md);">
             <label class="hvnly-mortgage-field-label" for="hvnlyPropertyTax_<?php echo esc_attr( $widget_id ); ?>">
                 <?php esc_html_e( 'Annual Property Tax', 'havenlytics' ); ?>
@@ -278,7 +280,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
         </div>
         <?php endif; ?>
 
-        <?php if ( $show_home_insurance ) : ?>
+			<?php if ( $show_home_insurance ) : ?>
         <div class="hvnly-property-single__form-group" style="margin-bottom: var(--hvnly-space-md);">
             <label class="hvnly-mortgage-field-label" for="hvnlyHomeInsurance_<?php echo esc_attr( $widget_id ); ?>">
                 <?php esc_html_e( 'Annual Home Insurance', 'havenlytics' ); ?>
@@ -293,7 +295,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
         </div>
         <?php endif; ?>
 
-        <?php if ( $show_hoa_fees ) : ?>
+			<?php if ( $show_hoa_fees ) : ?>
         <div class="hvnly-property-single__form-group" style="margin-bottom: var(--hvnly-space-md);">
             <label class="hvnly-mortgage-field-label" for="hvnlyHOA_<?php echo esc_attr( $widget_id ); ?>">
                 <?php esc_html_e( 'Monthly HOA Fees', 'havenlytics' ); ?>
@@ -307,7 +309,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
         </div>
         <?php endif; ?>
 
-        <?php if ( $show_pmi ) : ?>
+			<?php if ( $show_pmi ) : ?>
         <div class="hvnly-property-single__form-group" style="margin-bottom: var(--hvnly-space-md);">
             <label class="hvnly-mortgage-field-label" for="hvnlyPMIRate_<?php echo esc_attr( $widget_id ); ?>">
                 <?php esc_html_e( 'PMI Rate (%)', 'havenlytics' ); ?>
@@ -322,7 +324,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
         </div>
         <?php endif; ?>
 
-        <?php if ( $show_closing_costs ) : ?>
+			<?php if ( $show_closing_costs ) : ?>
         <div class="hvnly-property-single__form-group" style="margin-bottom: var(--hvnly-space-md);">
             <label class="hvnly-mortgage-field-label" for="hvnlyClosingCosts_<?php echo esc_attr( $widget_id ); ?>">
                 <?php esc_html_e( 'Estimated Closing Costs', 'havenlytics' ); ?>
@@ -419,7 +421,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
         <?php endif; ?>
     </div>
 
-    <?php if ( $show_amortization ) : ?>
+		<?php if ( $show_amortization ) : ?>
     <div class="hvnly-mortgage-amortization" style="margin-top: var(--hvnly-space-lg);">
         <button type="button" class="hvnly-mortgage-amortization-toggle"
             id="hvnlyAmortizationToggle_<?php echo esc_attr( $widget_id ); ?>"
@@ -453,7 +455,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
         *<?php esc_html_e( 'Estimated payment for informational purposes only. Actual rates may vary.', 'havenlytics' ); ?>
     </p>
 </div>
-<?php
+		<?php
 	}
 
 	/**
@@ -532,16 +534,16 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
 		$default_term                 = isset( $instance['default_term'] ) ? $instance['default_term'] : 30;
 		$default_down_payment_percent = isset( $instance['default_down_payment_percent'] ) ? $instance['default_down_payment_percent'] : 10;
 
-		$show_advanced            = ! empty( $instance['show_advanced'] );
-		$show_property_tax        = ! empty( $instance['show_property_tax'] );
-		$show_home_insurance      = ! empty( $instance['show_home_insurance'] );
-		$show_hoa_fees            = ! empty( $instance['show_hoa_fees'] );
-		$show_pmi                 = ! empty( $instance['show_pmi'] );
-		$show_closing_costs       = ! empty( $instance['show_closing_costs'] );
-		$show_amortization        = ! empty( $instance['show_amortization'] );
-		$show_currency_selector   = ! empty( $instance['show_currency_selector'] );
+		$show_advanced          = ! empty( $instance['show_advanced'] );
+		$show_property_tax      = ! empty( $instance['show_property_tax'] );
+		$show_home_insurance    = ! empty( $instance['show_home_insurance'] );
+		$show_hoa_fees          = ! empty( $instance['show_hoa_fees'] );
+		$show_pmi               = ! empty( $instance['show_pmi'] );
+		$show_closing_costs     = ! empty( $instance['show_closing_costs'] );
+		$show_amortization      = ! empty( $instance['show_amortization'] );
+		$show_currency_selector = ! empty( $instance['show_currency_selector'] );
 
-		$currency = $this->get_currency_context();
+		$currency         = $this->get_currency_context();
 		$current_currency = $currency['currency_code'] . ' (' . $currency['currency_symbol'] . ')';
 		?>
 
@@ -570,9 +572,11 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
             name="<?php echo esc_attr( $this->get_field_name( 'default_term' ) ); ?>">
             <?php foreach ( array( 30, 20, 15, 10 ) as $term_option ) : ?>
             <option value="<?php echo esc_attr( $term_option ); ?>" <?php selected( $default_term, $term_option ); ?>>
-                <?php echo esc_html(
+                <?php
+                echo esc_html(
                     /* translators: %d: number of years for loan term */
-                     sprintf( __( '%d years', 'havenlytics' ), $term_option ) ); ?>
+                    sprintf( __( '%d years', 'havenlytics' ), $term_option ) );
+				?>
             </option>
             <?php endforeach; ?>
         </select>
@@ -669,7 +673,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
     margin-bottom: 15px;
 }
 </style>
-<?php
+		<?php
 	}
 
 	/**
@@ -738,7 +742,7 @@ class Hvnly_Mortgage_Calculator_Widget extends \WP_Widget {
 
 		$instance['title']                        = sanitize_text_field( $instance['title'] );
 		$instance['default_interest_rate']        = floatval( $instance['default_interest_rate'] );
-		$instance['default_term']               = absint( $instance['default_term'] );
+		$instance['default_term']                 = absint( $instance['default_term'] );
 		$instance['default_down_payment_percent'] = absint( $instance['default_down_payment_percent'] );
 
 		foreach ( array_keys( $defaults ) as $key ) {

@@ -1,7 +1,7 @@
 <?php
 /**
  * File Field Handler
- * 
+ *
  * @package HvnlyNab\Database\FieldTypes
  * @since 2.0.0
  */
@@ -11,12 +11,12 @@ namespace HvnlyNab\Database\FieldTypes;
 defined( 'ABSPATH' ) || exit;
 
 class FileField extends BaseFieldType {
-    
+
     public function __construct() {
         parent::__construct('file');
         $this->requires_assets = true;
     }
-    
+
     /**
      * Render the file field HTML
      *
@@ -25,21 +25,21 @@ class FileField extends BaseFieldType {
      * @param int $post_id Current post ID.
      * @return string Rendered HTML.
      */
-    public function render($field, $value, $post_id) {
+    public function render( $field, $value, $post_id ) {
         $file_type   = $field['file_type'] ?? $field['fileType'] ?? 'file';
         $field_id    = $field['fieldid'] ?? '';
         $field_name  = $field['name'] ?? '';
         $placeholder = $field['placeholder'] ?? '';
         $label       = $field['label'] ?? '';
         $description = isset($field['description']) ? wp_kses_post($field['description']) : '';
-        
+
         ob_start();
         ?>
 <div data-field-type="file" data-field-id="<?php echo esc_attr( $field_id ); ?>" class="hvnly-file-field-wrapper">
-    <?php if (!empty($label)) : ?>
+		<?php if ( ! empty($label)) : ?>
     <label for="<?php echo esc_attr( $field_id ); ?>" class="hvnly-field-label">
-        <?php echo esc_html( hvnly_translate_ui( (string) $label ) ); ?>
-        <?php if (isset($field['is_required']) && $field['is_required']) : ?>
+			<?php echo esc_html( hvnly_translate_ui( (string) $label ) ); ?>
+			<?php if (isset($field['is_required']) && $field['is_required']) : ?>
         <span class="hvnly-required-star" style="color: #d63638;">*</span>
         <?php endif; ?>
     </label>
@@ -60,22 +60,22 @@ class FileField extends BaseFieldType {
         </div>
     </div>
 
-    <?php if (!empty($description)) : ?>
+		<?php if ( ! empty($description)) : ?>
     <p class="description hvnly-field-description"><?php echo wp_kses_post( $description ); ?></p>
     <?php endif; ?>
 </div>
-<?php
-        
+		<?php
+
         return ob_get_clean();
     }
-    
+
     /**
      * Get upload button text based on file type
      *
      * @param string $file_type File type (image, pdf, file).
      * @return string Button text.
      */
-    private function get_upload_button_text($file_type) {
+    private function get_upload_button_text( $file_type ) {
         switch ($file_type) {
             case 'image':
                 return __('Upload Image', 'havenlytics');
@@ -85,7 +85,7 @@ class FileField extends BaseFieldType {
                 return __('Upload File', 'havenlytics');
         }
     }
-    
+
     /**
      * Save file field data
      *
@@ -95,27 +95,27 @@ class FileField extends BaseFieldType {
      * @param mixed $extra Optional extra parameter (for interface compatibility).
      * @return void
      */
-    public function save($post_id, $field_name, $value, $extra = null) {
-        if (!empty($value)) {
+    public function save( $post_id, $field_name, $value, $extra = null ) {
+        if ( ! empty($value)) {
             update_post_meta($post_id, $field_name, esc_url_raw($value));
         } else {
             hvnly_safe_delete_post_meta($post_id, $field_name, 'user_save_empty');
         }
     }
-    
+
     /**
      * Sanitize file field value
      *
      * @param mixed $value Field value.
      * @return string Sanitized URL.
      */
-    public function sanitize($value) {
+    public function sanitize( $value ) {
         if (empty($value)) {
             return '';
         }
         return esc_url_raw(trim($value));
     }
-    
+
     /**
      * Validate file field value
      *
@@ -123,7 +123,7 @@ class FileField extends BaseFieldType {
      * @param array $field Field configuration.
      * @return bool|\WP_Error
      */
-    public function validate($value, $field) {
+    public function validate( $value, $field ) {
         // Check if required
         if (isset($field['is_required']) && $field['is_required'] && empty($value)) {
             return new \WP_Error(
@@ -135,9 +135,9 @@ class FileField extends BaseFieldType {
                 )
             );
         }
-        
+
         // Validate URL if value exists
-        if (!empty($value) && !filter_var($value, FILTER_VALIDATE_URL)) {
+        if ( ! empty($value) && ! filter_var($value, FILTER_VALIDATE_URL)) {
             return new \WP_Error(
                 'invalid_url',
                 sprintf(
@@ -147,10 +147,10 @@ class FileField extends BaseFieldType {
                 )
             );
         }
-        
+
         return true;
     }
-    
+
     /**
      * Enqueue required assets
      */

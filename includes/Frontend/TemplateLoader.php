@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Loader for Havenlytics 
+ * Template Loader for Havenlytics
  *
  * @package     Havenlytics
  * @subpackage  Frontend
@@ -14,7 +14,7 @@ namespace HvnlyNab\Frontend;
 use HvnlyNab\Agent\AgentConstants;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -23,8 +23,8 @@ if (!defined('ABSPATH')) {
  *
  * @since 2.0.0
  */
-class TemplateLoader
-{
+class TemplateLoader {
+
     /**
      * Post type
      *
@@ -56,24 +56,23 @@ class TemplateLoader
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->default_path = HVNLYNAB_PATH . 'templates/';
-        
+
         // Customize Frontend Template
-        add_filter('template_include', array($this, 'template_loader'));
-        
+        add_filter('template_include', array( $this, 'template_loader' ));
+
         // Custom Author Page
-        add_filter('generate_rewrite_rules', array($this, 'author_page_rewrite_rules'));
-        
+        add_filter('generate_rewrite_rules', array( $this, 'author_page_rewrite_rules' ));
+
         // Customize Review Comment Template
-        add_filter('comments_template', array($this, 'comment_review_template_loader'));
-        
-        add_filter('body_class', array($this, 'body_class'));
-        add_filter('admin_body_class', array($this, 'admin_body_class'));
-        
+        add_filter('comments_template', array( $this, 'comment_review_template_loader' ));
+
+        add_filter('body_class', array( $this, 'body_class' ));
+        add_filter('admin_body_class', array( $this, 'admin_body_class' ));
+
         // Add template path filter
-        add_filter('hvnly_template_path', array($this, 'set_template_path'));
+        add_filter('hvnly_template_path', array( $this, 'set_template_path' ));
     }
 
     /**
@@ -100,7 +99,7 @@ class TemplateLoader
      * @param string $path Template path
      * @return string
      */
-    public function set_template_path($path) {
+    public function set_template_path( $path ) {
         return $this->template_path;
     }
 
@@ -112,30 +111,30 @@ class TemplateLoader
      * @param string $default_path Default path
      * @return string
      */
-    public function locate_template($template_names, $template_path = '', $default_path = '') {
-        if (!$template_path) {
+    public function locate_template( $template_names, $template_path = '', $default_path = '' ) {
+        if ( ! $template_path) {
             $template_path = $this->get_template_path();
         }
-        
-        if (!$default_path) {
+
+        if ( ! $default_path) {
             $default_path = $this->get_default_path();
         }
-        
+
         // Convert to array if it's a string
         $template_names = (array) $template_names;
-        $located = '';
-        
+        $located        = '';
+
         foreach ($template_names as $template_name) {
             // Skip if empty
             if (empty($template_name)) {
                 continue;
             }
-            
+
             // Ensure it's a string
-            if (!is_string($template_name)) {
+            if ( ! is_string($template_name)) {
                 continue;
             }
-            
+
             // Look within passed path within the theme - this is theme override
             $template = locate_template(
                 array(
@@ -143,18 +142,18 @@ class TemplateLoader
                     $template_name,
                 )
             );
-            
+
             // Get default template from plugin
-            if (!$template && file_exists($default_path . $template_name)) {
+            if ( ! $template && file_exists($default_path . $template_name)) {
                 $template = $default_path . $template_name;
             }
-            
+
             if ($template) {
                 $located = $template;
                 break;
             }
         }
-        
+
         // Return what we found
         return apply_filters('hvnly_locate_template', $located, $template_names, $template_path, $default_path);
     }
@@ -165,8 +164,7 @@ class TemplateLoader
      * @param string $template Template path.
      * @return string
      */
-    public function template_loader($template)
-    {
+    public function template_loader( $template ) {
         $file = false;
 
         if (is_singular($this->post_type)) {
@@ -187,7 +185,7 @@ class TemplateLoader
         if ($file) {
             // Use locate_template with theme override support
             $located = $this->locate_template($file);
-            
+
             if ($located && file_exists($located)) {
                 $template = $located;
             }
@@ -201,8 +199,7 @@ class TemplateLoader
      *
      * @return bool
      */
-    private function is_agency_taxonomy_page()
-    {
+    private function is_agency_taxonomy_page() {
         return is_tax(AgentConstants::TAXONOMY_AGENCY);
     }
 
@@ -212,11 +209,10 @@ class TemplateLoader
      * @param object $wp_rewrite WP_Rewrite object.
      * @return object
      */
-    public function author_page_rewrite_rules($wp_rewrite)
-    {
-        $key        = '^author/([a-zA-Z0-9\-_]+)/properties(?:/page/([0-9]+))?/?$';
-        $rewrite    = 'index.php?post_type=hvnly_property&author_name=$matches[1]&paged=$matches[2]';
-        $new_rules   = array($key => $rewrite);
+    public function author_page_rewrite_rules( $wp_rewrite ) {
+        $key               = '^author/([a-zA-Z0-9\-_]+)/properties(?:/page/([0-9]+))?/?$';
+        $rewrite           = 'index.php?post_type=hvnly_property&author_name=$matches[1]&paged=$matches[2]';
+        $new_rules         = array( $key => $rewrite );
         $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
 
         return $wp_rewrite;
@@ -229,17 +225,16 @@ class TemplateLoader
      * @param string $template Template path.
      * @return string
      */
-    public function comment_review_template_loader($template)
-    {
+    public function comment_review_template_loader( $template ) {
         global $post;
-        if (!(is_singular($this->post_type) && (have_comments() || ('open' == $post->comment_status)))) {
+        if ( ! ( is_singular($this->post_type) && ( have_comments() || ( 'open' == $post->comment_status ) ) )) {
             return $template;
         }
 
         if ($post && $post->post_type == $this->post_type) {
             $template_name = 'single-property-reviews.php';
-            $located = $this->locate_template($template_name);
-            
+            $located       = $this->locate_template($template_name);
+
             if ($located && file_exists($located)) {
                 $template = $located;
             }
@@ -253,8 +248,7 @@ class TemplateLoader
      *
      * @return bool
      */
-    private function is_property_archive()
-    {
+    private function is_property_archive() {
         if (is_post_type_archive($this->post_type)) {
             return true;
         }
@@ -262,8 +256,8 @@ class TemplateLoader
         if (is_tax()) {
             $queried_object = get_queried_object();
             if (isset($queried_object->taxonomy)) {
-                $taxonomy = get_taxonomy($queried_object->taxonomy);
-                $allowed_taxonomies = array('hvnly_prop_types', 'hvnly_prop_depts', 'hvnly_prop_locations', 'hvnly_prop_status', 'hvnly_prop_features', 'hvnly_prop_badges', 'hvnly_prop_tags');
+                $taxonomy           = get_taxonomy($queried_object->taxonomy);
+                $allowed_taxonomies = array( 'hvnly_prop_types', 'hvnly_prop_depts', 'hvnly_prop_locations', 'hvnly_prop_status', 'hvnly_prop_features', 'hvnly_prop_badges', 'hvnly_prop_tags' );
 
                 if (in_array($taxonomy->name, $allowed_taxonomies, true)) {
                     return true;
@@ -286,10 +280,10 @@ class TemplateLoader
      */
     private function is_author_property_archive() {
         $properties_raw = filter_input(INPUT_GET, 'properties', FILTER_UNSAFE_RAW);
-        $properties = $properties_raw ? sanitize_text_field($properties_raw) : '';
+        $properties     = $properties_raw ? sanitize_text_field($properties_raw) : '';
 
         $nonce_raw = filter_input(INPUT_GET, 'nonce', FILTER_UNSAFE_RAW);
-        $nonce = $nonce_raw ? sanitize_text_field($nonce_raw) : '';
+        $nonce     = $nonce_raw ? sanitize_text_field($nonce_raw) : '';
 
         // Verify nonce
         if ( ! wp_verify_nonce( $nonce, 'hvnly_properties_check' ) ) {
@@ -303,17 +297,16 @@ class TemplateLoader
         return false;
     }
 
- 
+
     /**
      * Add body classes
      *
      * @param array $classes Body classes.
      * @return array
      */
-    public function body_class($classes)
-    {
+    public function body_class( $classes ) {
         // Check if this is a plugin-related page
-        if (!$this->is_plugin_page()) {
+        if ( ! $this->is_plugin_page()) {
             return $classes;
         }
 
@@ -321,7 +314,7 @@ class TemplateLoader
         $plugin_classes = array(
             'hvnly-content-active',
             'hvnly-plugin-active',
-            'hvnly-property-page'
+            'hvnly-property-page',
         );
 
         // Add base plugin classes
@@ -332,9 +325,9 @@ class TemplateLoader
             $single_classes = array(
                 'hvnly-property-single',
                 'hvnly-property',
-                'hvnly-single-property'
+                'hvnly-single-property',
             );
-            $classes = array_merge($classes, $single_classes);
+            $classes        = array_merge($classes, $single_classes);
         }
         // Single agent profile page
         elseif (is_singular(AgentConstants::POST_TYPE)) {
@@ -380,9 +373,9 @@ class TemplateLoader
             $archive_classes = array(
                 'hvnly-property-archive',
                 'hvnly-property',
-                'hvnly-archive-property'
+                'hvnly-archive-property',
             );
-            $classes = array_merge($classes, $archive_classes);
+            $classes         = array_merge($classes, $archive_classes);
         }
 
         // Remove duplicates (just in case)
@@ -398,8 +391,7 @@ class TemplateLoader
      * @param string $classes Admin body classes.
      * @return string
      */
-    public function admin_body_class($classes)
-    {
+    public function admin_body_class( $classes ) {
         // Add plugin class to admin body for plugin admin pages
         $screen = get_current_screen();
 
@@ -408,7 +400,7 @@ class TemplateLoader
             (
                 strpos($screen->id, 'hvnly') !== false ||
                 $screen->post_type === 'hvnly_property' ||
-                ($screen->taxonomy && in_array($screen->taxonomy, array('hvnly_prop_types', 'hvnly_prop_depts', 'hvnly_prop_locations', 'hvnly_prop_status', 'hvnly_prop_features', 'hvnly_prop_badges', 'hvnly_prop_tags'), true))
+                ( $screen->taxonomy && in_array($screen->taxonomy, array( 'hvnly_prop_types', 'hvnly_prop_depts', 'hvnly_prop_locations', 'hvnly_prop_status', 'hvnly_prop_features', 'hvnly_prop_badges', 'hvnly_prop_tags' ), true) )
             )
         ) {
             $classes .= ' hvnly-admin-active hvnly-content-active';
@@ -422,8 +414,7 @@ class TemplateLoader
      *
      * @return bool
      */
-    private function is_plugin_page()
-    {
+    private function is_plugin_page() {
         // Check if current page is related to the plugin
         if (
             is_singular('hvnly_property') ||
@@ -431,7 +422,7 @@ class TemplateLoader
             is_post_type_archive('hvnly_property') ||
             is_post_type_archive(AgentConstants::POST_TYPE) ||
             $this->is_agency_taxonomy_page() ||
-            is_tax(array('hvnly_prop_types', 'hvnly_prop_depts', 'hvnly_prop_locations', 'hvnly_prop_status', 'hvnly_prop_features', 'hvnly_prop_badges', 'hvnly_prop_tags')) ||
+            is_tax(array( 'hvnly_prop_types', 'hvnly_prop_depts', 'hvnly_prop_locations', 'hvnly_prop_status', 'hvnly_prop_features', 'hvnly_prop_badges', 'hvnly_prop_tags' )) ||
             is_page_template('havenlytics')
         ) {
             return true;

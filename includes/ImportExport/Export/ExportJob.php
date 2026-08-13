@@ -195,10 +195,10 @@ final class ExportJob {
 			$warnings[] = $warning;
 		}
 
-		$data['entities']     = $entities;
-		$data['media_index']  = $has_media_binaries ? $media_index : array( 'files' => array() );
-		$data['warnings']     = $warnings;
-		$data['counts']       = $counts;
+		$data['entities']    = $entities;
+		$data['media_index'] = $has_media_binaries ? $media_index : array( 'files' => array() );
+		$data['warnings']    = $warnings;
+		$data['counts']      = $counts;
 
 		return PackageResult::success( $data, $warnings );
 	}

@@ -71,7 +71,7 @@ final class InquiriesController {
 	 * @return array<string, mixed>
 	 */
 	public function filter_localize( array $data ): array {
-		$rest = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
+		$rest              = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
 		$rest['inquiries'] = esc_url_raw( rest_url( WorkspaceConstants::REST_NAMESPACE . '/inquiries' ) );
 		$data['rest']      = $rest;
 		return $data;

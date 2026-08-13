@@ -32,7 +32,7 @@ $hvnly_button_url = $hvnly_field_data['url'] ?? get_permalink($hvnly_property_id
 ?>
 
 <div class="hvnly-field-schedule-tour hvnly-property-field-mode-<?php echo esc_attr( $hvnly_mode ); ?>">
-    <a href="<?php echo esc_url( $hvnly_button_url ); ?>" class="hvnly-schedule-tour-button"
+    <a href="<?php echo esc_url( $hvnly_button_url ); ?>" class="hvnly-btn hvnly-btn--primary hvnly-schedule-tour-button"
         aria-label="<?php echo esc_attr( sprintf( __('Schedule a tour for this property', 'havenlytics' ) ) ); ?>">
         <?php if ( ! empty( $hvnly_button_icon ) ) : ?>
         <i class="fas fa-<?php echo esc_attr( $hvnly_button_icon ); ?>" aria-hidden="true"></i>

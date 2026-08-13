@@ -237,7 +237,7 @@ final class AgentAdminChrome {
 			return $redirect_to;
 		}
 
-		$roles = is_array( $user->roles ) ? $user->roles : array();
+		$roles    = is_array( $user->roles ) ? $user->roles : array();
 		$is_agent = in_array( PortalCapabilities::WP_ROLE_AGENT, $roles, true )
 			|| ( user_can( $user, PortalCapabilities::PORTAL_ACCESS ) && ! user_can( $user, 'edit_posts' ) );
 

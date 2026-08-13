@@ -2,143 +2,32 @@
 
 /* ======================
    Buttons
+   Size / loading / groups — paint ruled by Interactive controls block below.
 ======================= */
-.hvnly-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: var(--hvnly-button-padding, 0.75rem 1.5rem);
-  font-family: inherit;
-  font-size: var(--hvnly-font-size-label, .8rem);
-  font-weight: var(--hvnly-font-weight-regular, 400);
-  line-height: 1;
-  text-decoration: none;
-  border: 1px solid transparent;
-  border-radius: var(--hvnly-button-radius, 4px);
-  cursor: pointer;
-  transition: all var(--hvnly-transition-time, 0.3s ease);
-  white-space: nowrap;
-  user-select: none;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Keyboard focus ring = primary; mouse clicks stay clean (Sprint 31H). */
-.hvnly-btn:focus-visible {
-  outline: 2px solid var(--hvnly-brand-primary);
-  outline-offset: 2px;
-}
-
-.hvnly-btn:focus:not(:focus-visible) {
-  outline: none;
-}
-
-.hvnly-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-}
 
 /* Button Sizes */
-.hvnly-btn-sm {
+.hvnly-btn-sm,
+.hvnly-btn--sm {
   padding: 0.5rem 1rem;
   font-size: var(--hvnly-font-size-sm, 0.875rem);
 }
 
-.hvnly-btn-lg {
+.hvnly-btn-lg,
+.hvnly-btn--lg {
   padding: 1rem 2rem;
   font-size: var(--hvnly-font-size-lg, 1.25rem);
 }
 
-.hvnly-btn-xl {
+.hvnly-btn-xl,
+.hvnly-btn--xl {
   padding: 1.25rem 2.5rem;
   font-size: var(--hvnly-font-size-xl, 1.5rem);
 }
 
-/* Button Variants.
-   Sprint 31H: the `--modifier` names (brief-requested, BEM-style) are added
-   as ALIASES sharing each existing rule — legacy `.hvnly-btn-*` names keep
-   working, so no template needs to change. Primary bg = primary token,
-   hover = secondary token, focus ring = primary (see .hvnly-btn:focus). */
-.hvnly-btn-primary,
-.hvnly-btn--primary {
-  background-color: var(--hvnly-button-bg);
-  color: var(--hvnly-button-color);
-  border-color: var(--hvnly-button-bg);
-}
-
-.hvnly-btn-primary:hover:not(:disabled),
-.hvnly-btn--primary:hover:not(:disabled) {
-  background-color: var(--hvnly-button-bg-hover);
-  border-color: var(--hvnly-button-bg-hover);
-}
-
-.hvnly-btn-secondary,
-.hvnly-btn--secondary {
-  background-color: var(--hvnly-brand-secondary);
-  color: var(--hvnly-color-white, var(--hvnly-color-white));
-  border-color: var(--hvnly-brand-secondary);
-}
-
-.hvnly-btn-secondary:hover:not(:disabled),
-.hvnly-btn--secondary:hover:not(:disabled) {
-  background-color: #5a3d8a;
-  border-color: #5a3d8a;
-}
-
-.hvnly-btn-outline,
-.hvnly-btn--outline {
-  background-color: transparent;
-  color: var(--hvnly-brand-primary);
-  border-color: var(--hvnly-brand-primary);
-}
-
-.hvnly-btn-outline:hover:not(:disabled),
-.hvnly-btn--outline:hover:not(:disabled) {
-  background-color: var(--hvnly-brand-primary);
-  color: var(--hvnly-color-white, var(--hvnly-color-white));
-}
-
-.hvnly-btn-ghost,
-.hvnly-btn--ghost {
-  background-color: transparent;
-  color: var(--hvnly-brand-primary);
-  border-color: transparent;
-}
-
-.hvnly-btn-ghost:hover:not(:disabled),
-.hvnly-btn--ghost:hover:not(:disabled) {
-  background-color: var(--hvnly-brand-primary);
-  color: var(--hvnly-color-white, var(--hvnly-color-white));
-}
-
-.hvnly-btn-success,
-.hvnly-btn--success {
-  background-color: var(--hvnly-brand-success);
-  color: var(--hvnly-color-white, var(--hvnly-color-white));
-  border-color: var(--hvnly-brand-success);
-}
-
-/* `--danger` is the brief's name for the error/alert variant. */
-.hvnly-btn-alert,
-.hvnly-btn--danger,
-.hvnly-btn--alert {
-  background-color: var(--hvnly-brand-error);
-  color: var(--hvnly-color-white, var(--hvnly-color-white));
-  border-color: var(--hvnly-brand-error);
-}
-
-.hvnly-btn-warning,
-.hvnly-btn--warning {
-  background-color: var(--hvnly-brand-warning);
-  color: var(--hvnly-color-white, var(--hvnly-color-white));
-  border-color: var(--hvnly-brand-warning);
-}
-
 /* Button States */
-.hvnly-btn-loading {
-  color: transparent !important;
+.hvnly-btn-loading,
+.hvnly-btn--loading {
+  color: transparent;
   pointer-events: none;
 }
 
@@ -586,3 +475,878 @@ input.hvnly-form-check-input:disabled,
   .lg\:hvnly-d-none { display: none; }
   .lg\:hvnly-d-block { display: block; }
 }
+
+/* ======================
+   Interactive controls (migrated from UI layer → Core tokens)
+   Public classes unchanged: .hvnly-ui-control, .hvnly-btn, .hvnly-action-toggle
+   Paint consumes Core design tokens (--hvnly-button-*, --hvnly-brand-*, …).
+======================= */
+
+/* ======================================================================
+ * 1) .hvnly-ui-control — generic interactive chrome
+ * ====================================================================== */
+button.hvnly-ui-control,
+a.hvnly-ui-control,
+input.hvnly-ui-control[type="button"],
+input.hvnly-ui-control[type="submit"],
+input.hvnly-ui-control[type="reset"] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	box-sizing: border-box;
+	margin: 0;
+	font-family: inherit;
+	font-style: normal;
+	letter-spacing: normal;
+	text-transform: none;
+	text-shadow: none;
+	text-decoration: none;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	outline: none;
+	-webkit-tap-highlight-color: transparent;
+	/* Soft-surface defaults (surfaces override via --hvnly-ui-* bridges). */
+	background-color: var(--hvnly-ui-bg, var(--hvnly-color-bg-white, #fff));
+	color: var(--hvnly-ui-fg, var(--hvnly-text-primary, #1a1a2e));
+	border-style: solid;
+	border-width: var(--hvnly-ui-border-width, 1px);
+	border-color: var(--hvnly-ui-border, var(--hvnly-border-color, #e0e0e0));
+	border-radius: var(--hvnly-button-radius, var(--hvnly-border-radius-xs, 4px));
+	box-shadow: var(--hvnly-ui-shadow, none);
+	transition:
+		background-color var(--hvnly-transition-time, 0.2s ease),
+		color var(--hvnly-transition-time, 0.2s ease),
+		border-color var(--hvnly-transition-time, 0.2s ease),
+		box-shadow var(--hvnly-transition-time, 0.2s ease),
+		opacity var(--hvnly-transition-time, 0.2s ease),
+		transform var(--hvnly-transition-time, 0.2s ease);
+	transform: none;
+}
+
+/* Attr *[class*="hvnly-"] bumps specificity past theme `button:hover` (0,2,1). */
+button.hvnly-ui-control[class*="hvnly-"]:is(:hover, :focus, :active, :focus-visible),
+a.hvnly-ui-control[class*="hvnly-"]:is(:hover, :focus, :active, :focus-visible),
+input.hvnly-ui-control[type="button"][class*="hvnly-"]:is(:hover, :focus, :active, :focus-visible),
+input.hvnly-ui-control[type="submit"][class*="hvnly-"]:is(:hover, :focus, :active, :focus-visible),
+input.hvnly-ui-control[type="reset"][class*="hvnly-"]:is(:hover, :focus, :active, :focus-visible) {
+	background-image: none;
+	background-color: var(
+		--hvnly-ui-bg-hover,
+		var(--hvnly-ui-bg, var(--hvnly-color-bg-light, #f5f5f5))
+	);
+	color: var(--hvnly-ui-fg-hover, var(--hvnly-ui-fg, var(--hvnly-brand-primary)));
+	border-color: var(
+		--hvnly-ui-border-hover,
+		var(--hvnly-ui-border, var(--hvnly-brand-primary))
+	);
+	box-shadow: var(--hvnly-ui-shadow-hover, var(--hvnly-ui-shadow, none));
+	text-decoration: none;
+	text-shadow: none;
+	outline: none;
+	transform: none;
+}
+
+button.hvnly-ui-control:focus-visible,
+a.hvnly-ui-control:focus-visible,
+input.hvnly-ui-control[type="button"]:focus-visible,
+input.hvnly-ui-control[type="submit"]:focus-visible,
+input.hvnly-ui-control[type="reset"]:focus-visible {
+	outline: 2px solid var(--hvnly-brand-secondary, var(--hvnly-secondary-color));
+	outline-offset: 2px;
+	box-shadow: 0 0 0 3px var(--hvnly-focus-ring);
+}
+
+/* Selected / pressed / current / active page.
+   Exclude `.hvnly-property-view-btn`: JS toggles `.active` only and leaves
+   SSR `aria-pressed` stale — keyed paint here kept the wrong view lit. */
+button.hvnly-ui-control.active,
+button.hvnly-ui-control.is-active,
+button.hvnly-ui-control[aria-pressed="true"]:not(.hvnly-property-view-btn),
+button.hvnly-ui-control[aria-current="page"],
+a.hvnly-ui-control.active,
+a.hvnly-ui-control.is-active,
+a.hvnly-ui-control[aria-current="page"] {
+	background-color: var(
+		--hvnly-ui-bg-active,
+		var(--hvnly-button-bg, var(--hvnly-brand-primary))
+	);
+	color: var(
+		--hvnly-ui-fg-active,
+		var(--hvnly-button-color, #fff)
+	);
+	border-color: var(
+		--hvnly-ui-border-active,
+		var(--hvnly-button-bg, var(--hvnly-brand-primary))
+	);
+}
+
+button.hvnly-ui-control.active:is(:hover, :focus, :active),
+button.hvnly-ui-control.is-active:is(:hover, :focus, :active),
+button.hvnly-ui-control[aria-pressed="true"]:not(.hvnly-property-view-btn):is(:hover, :focus, :active),
+button.hvnly-ui-control[aria-current="page"]:is(:hover, :focus, :active),
+a.hvnly-ui-control.active:is(:hover, :focus, :active),
+a.hvnly-ui-control.is-active:is(:hover, :focus, :active) {
+	background-color: var(
+		--hvnly-ui-bg-active-hover,
+		var(--hvnly-ui-bg-active, var(--hvnly-button-bg-hover))
+	);
+	color: var(--hvnly-ui-fg-active, var(--hvnly-button-color, #fff));
+	border-color: var(
+		--hvnly-ui-border-active-hover,
+		var(--hvnly-ui-border-active, var(--hvnly-button-bg-hover))
+	);
+	background-image: none;
+	transform: none;
+}
+
+button.hvnly-ui-control:disabled,
+button.hvnly-ui-control[aria-disabled="true"],
+button.hvnly-ui-control[data-hvnly-busy="1"],
+input.hvnly-ui-control:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+	pointer-events: none;
+	transform: none;
+	background-color: var(
+		--hvnly-ui-bg-disabled,
+		var(--hvnly-color-bg-light)
+	);
+	color: var(
+		--hvnly-ui-fg-disabled,
+		var(--hvnly-text-secondary)
+	);
+	border-color: var(
+		--hvnly-ui-border-disabled,
+		var(--hvnly-border-color)
+	);
+}
+
+/* Icon / SVG kids — kill theme `button i` / `button svg` leakage */
+button.hvnly-ui-control :is(i, svg, .hvnly-icon),
+a.hvnly-ui-control :is(i, svg, .hvnly-icon) {
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	float: none;
+	position: static;
+	max-width: none;
+	max-height: none;
+	border: 0;
+	background: transparent;
+	background-image: none;
+	box-shadow: none;
+	color: inherit;
+	line-height: 1;
+	vertical-align: middle;
+	transform: none;
+	pointer-events: none;
+}
+
+button.hvnly-ui-control:is(:hover, :focus, :active) :is(i, svg, .hvnly-icon),
+a.hvnly-ui-control:is(:hover, :focus, :active) :is(i, svg, .hvnly-icon) {
+	background: transparent;
+	color: inherit;
+	transform: none;
+}
+
+/* ----------------------------------------------------------------------
+ * Surface paint bridges — existing BEM → --hvnly-ui-* (layout unchanged)
+ * -------------------------------------------------------------------- */
+.hvnly-property-view-btn,
+.hvnly-property--archive__view-btn,
+.hvnly-block-saved__view-btn {
+	--hvnly-ui-bg: var(--hvnly-card-bg, var(--hvnly-color-bg-white, #fff));
+	--hvnly-ui-fg: var(--hvnly-text-secondary);
+	--hvnly-ui-border: var(--hvnly-border-color);
+	--hvnly-ui-bg-hover: var(--hvnly-secondary-color, var(--hvnly-brand-secondary));
+	--hvnly-ui-fg-hover: var(--hvnly-button-color, var(--hvnly-color-white, #fff));
+	--hvnly-ui-border-hover: var(--hvnly-secondary-color, var(--hvnly-brand-secondary));
+	--hvnly-ui-bg-active: var(--hvnly-primary-color, var(--hvnly-brand-primary));
+	--hvnly-ui-fg-active: var(--hvnly-button-color, var(--hvnly-color-white, #fff));
+	--hvnly-ui-border-active: var(--hvnly-primary-color, var(--hvnly-brand-primary));
+	--hvnly-ui-bg-active-hover: var(--hvnly-primary-color, var(--hvnly-brand-primary));
+	--hvnly-ui-border-active-hover: var(--hvnly-primary-color, var(--hvnly-brand-primary));
+	--hvnly-ui-border-width: 1px;
+}
+
+.hvnly-property-pagination-item,
+.hvnly-property--archive__pagination-item,
+.hvnly-block-saved__page {
+	--hvnly-ui-bg: var(--hvnly-color-bg-white, #fff);
+	--hvnly-ui-fg: var(--hvnly-text-secondary);
+	--hvnly-ui-border: var(--hvnly-border-color);
+	--hvnly-ui-bg-hover: rgba(var(--hvnly-primary-rgb, 0, 115, 170), 0.08);
+	--hvnly-ui-fg-hover: var(--hvnly-brand-primary);
+	--hvnly-ui-border-hover: rgba(var(--hvnly-primary-rgb, 0, 115, 170), 0.45);
+	--hvnly-ui-bg-active: var(--hvnly-brand-primary);
+	--hvnly-ui-fg-active: var(--hvnly-color-white, #fff);
+	--hvnly-ui-border-active: var(--hvnly-brand-primary);
+	--hvnly-ui-shadow-hover: none;
+	--hvnly-ui-border-width: 1px;
+}
+
+.hvnly-property-load-more-btn,
+.hvnly-property--archive__search-btn,
+.hvnly-ajax-retry-btn,
+.hvnly-retry-map-btn {
+	--hvnly-ui-bg: var(--hvnly-button-bg, var(--hvnly-brand-primary));
+	--hvnly-ui-fg: var(--hvnly-button-color, #fff);
+	--hvnly-ui-border: var(--hvnly-button-bg, var(--hvnly-brand-primary));
+	--hvnly-ui-bg-hover: var(--hvnly-button-bg-hover, var(--hvnly-brand-secondary));
+	--hvnly-ui-fg-hover: var(--hvnly-button-color, #fff);
+	--hvnly-ui-border-hover: var(--hvnly-button-bg-hover, var(--hvnly-brand-secondary));
+	--hvnly-ui-border-width: 1px;
+}
+
+.hvnly-property-reset-filters-btn {
+	--hvnly-ui-bg: transparent;
+	--hvnly-ui-fg: var(--hvnly-brand-primary);
+	--hvnly-ui-border: transparent;
+	--hvnly-ui-bg-hover: transparent;
+	--hvnly-ui-fg-hover: var(--hvnly-brand-secondary);
+	--hvnly-ui-border-hover: transparent;
+	--hvnly-ui-border-width: 0;
+}
+
+.hvnly-property-filter-toggle {
+	--hvnly-ui-bg: var(--hvnly-color-bg-white, #fff);
+	--hvnly-ui-fg: var(--hvnly-text-primary);
+	--hvnly-ui-border: var(--hvnly-border-color);
+	--hvnly-ui-bg-hover: var(--hvnly-color-bg-light, #f5f5f5);
+	--hvnly-ui-fg-hover: var(--hvnly-brand-primary);
+	--hvnly-ui-border-hover: var(--hvnly-brand-primary);
+	--hvnly-ui-bg-active: var(--hvnly-brand-primary);
+	--hvnly-ui-fg-active: var(--hvnly-color-white, #fff);
+	--hvnly-ui-border-active: var(--hvnly-brand-primary);
+	--hvnly-ui-border-width: 1px;
+}
+
+.hvnly-property-carousel-nav-btn,
+.hvnly-block-map__btn,
+.hvnly-block-carousel__arrow,
+.hvnly-map-fullscreen-btn,
+.hvnly-property-single__gallery-btn,
+.hvnly-property-single__carousel-btn,
+.hvnly-property-single__carousel-dot,
+.hvnly-agent-widget__nav-btn,
+.hvnly-agent-listings-nav-btn,
+.hvnly-auth__toggle,
+.hvnly-auth__tab,
+.hvnly-agent-single__status-tab {
+	--hvnly-ui-bg: var(--hvnly-color-bg-white, #fff);
+	--hvnly-ui-fg: var(--hvnly-text-primary);
+	--hvnly-ui-border: var(--hvnly-border-color);
+	--hvnly-ui-bg-hover: var(--hvnly-color-bg-light, #f5f5f5);
+	--hvnly-ui-fg-hover: var(--hvnly-brand-primary);
+	--hvnly-ui-border-hover: var(--hvnly-brand-primary);
+	--hvnly-ui-border-width: 1px;
+}
+
+.hvnly-auth__toggle {
+	--hvnly-ui-bg: transparent;
+	--hvnly-ui-fg: var(--hvnly-text-secondary);
+	--hvnly-ui-border: transparent;
+	--hvnly-ui-bg-hover: transparent;
+	--hvnly-ui-fg-hover: var(--hvnly-brand-primary);
+	--hvnly-ui-border-hover: transparent;
+	--hvnly-ui-border-width: 0;
+}
+
+.hvnly-auth__linkbtn {
+	--hvnly-ui-bg: transparent;
+	--hvnly-ui-fg: var(--hvnly-brand-primary);
+	--hvnly-ui-border: transparent;
+	--hvnly-ui-bg-hover: transparent;
+	--hvnly-ui-fg-hover: var(--hvnly-brand-secondary);
+	--hvnly-ui-border-hover: transparent;
+	--hvnly-ui-border-width: 0;
+}
+
+.hvnly-map-fullscreen-btn {
+	--hvnly-ui-bg-hover: var(--hvnly-brand-primary);
+	--hvnly-ui-fg-hover: var(--hvnly-color-white, #fff);
+	--hvnly-ui-border-hover: var(--hvnly-brand-primary);
+}
+
+/* Fancybox / media chrome — keep layout file in charge; only seal theme fill */
+.hvnly-property-single__fancybox-close,
+.hvnly-property-single__fancybox-fullscreen,
+.hvnly-property-single__fancybox-nav {
+	--hvnly-ui-bg: transparent;
+	--hvnly-ui-fg: inherit;
+	--hvnly-ui-border: transparent;
+	--hvnly-ui-bg-hover: transparent;
+	--hvnly-ui-fg-hover: inherit;
+	--hvnly-ui-border-hover: transparent;
+	--hvnly-ui-border-width: 0;
+}
+
+/* Print / unlabeled single action chrome (Save uses action-toggle) */
+.hvnly-property-single__print-btn,
+.hvnly-property-single__action-btn:not(.hvnly-action-toggle) {
+	--hvnly-ui-bg: transparent;
+	--hvnly-ui-fg: var(--hvnly-text-primary);
+	--hvnly-ui-border: var(--hvnly-border-color);
+	--hvnly-ui-bg-hover: var(--hvnly-color-bg-light, #f5f5f5);
+	--hvnly-ui-fg-hover: var(--hvnly-brand-primary);
+	--hvnly-ui-border-hover: var(--hvnly-brand-primary);
+	--hvnly-ui-border-width: 1px;
+}
+
+/* ======================================================================
+ * 2) .hvnly-btn — labeled CTA primitive
+ *    Legacy `.hvnly-btn-primary` (without `.hvnly-btn`) stays supported.
+ * ====================================================================== */
+a.hvnly-btn,
+button.hvnly-btn,
+input.hvnly-btn[type="button"],
+input.hvnly-btn[type="submit"],
+a.hvnly-btn-primary,
+button.hvnly-btn-primary,
+a.hvnly-btn--primary,
+button.hvnly-btn--primary {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin: 0;
+	padding: var(--hvnly-button-padding, 0.75rem 1.5rem);
+	font-family: inherit;
+	font-size: var(--hvnly-font-size-label, 0.8rem);
+	font-weight: var(--hvnly-font-weight-regular, 400);
+	font-style: normal;
+	line-height: 1;
+	letter-spacing: normal;
+	text-align: center;
+	text-decoration: none;
+	text-transform: none;
+	text-shadow: none;
+	white-space: nowrap;
+	user-select: none;
+	vertical-align: middle;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: var(--hvnly-button-radius, var(--hvnly-border-radius-xs, 4px));
+	background-image: none;
+	outline: none;
+	-webkit-tap-highlight-color: transparent;
+	transition:
+		background-color var(--hvnly-transition-time, 0.2s ease),
+		color var(--hvnly-transition-time, 0.2s ease),
+		border-color var(--hvnly-transition-time, 0.2s ease),
+		box-shadow var(--hvnly-transition-time, 0.2s ease),
+		opacity var(--hvnly-transition-time, 0.2s ease),
+		transform var(--hvnly-transition-time, 0.2s ease);
+	transform: none;
+}
+
+/* Default / primary paint (token SOT) */
+a.hvnly-btn:not([class*="hvnly-btn--"]):not([class*="hvnly-btn-outline"]):not([class*="hvnly-btn-ghost"]):not([class*="hvnly-btn-secondary"]):not([class*="hvnly-btn-success"]):not([class*="hvnly-btn-alert"]):not([class*="hvnly-btn-warning"]),
+button.hvnly-btn:not([class*="hvnly-btn--"]):not([class*="hvnly-btn-outline"]):not([class*="hvnly-btn-ghost"]):not([class*="hvnly-btn-secondary"]):not([class*="hvnly-btn-success"]):not([class*="hvnly-btn-alert"]):not([class*="hvnly-btn-warning"]),
+a.hvnly-btn-primary,
+button.hvnly-btn-primary,
+a.hvnly-btn--primary,
+button.hvnly-btn--primary,
+a.hvnly-btn.hvnly-btn-primary,
+button.hvnly-btn.hvnly-btn-primary,
+a.hvnly-btn.hvnly-btn--primary,
+button.hvnly-btn.hvnly-btn--primary {
+	background-color: var(--hvnly-button-bg, var(--hvnly-brand-primary, var(--hvnly-primary-color)));
+	color: var(--hvnly-button-color, var(--hvnly-color-white, #fff));
+	border-color: var(--hvnly-button-bg, var(--hvnly-brand-primary, var(--hvnly-primary-color)));
+}
+
+a.hvnly-btn-primary:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn-primary:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn--primary:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn--primary:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn.hvnly-btn-primary:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn.hvnly-btn-primary:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn.hvnly-btn--primary:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn.hvnly-btn--primary:is(:hover, :focus, :active):not(:disabled) {
+	background-color: var(--hvnly-button-bg-hover, var(--hvnly-brand-secondary, var(--hvnly-secondary-color)));
+	color: var(--hvnly-button-color, var(--hvnly-color-white, #fff));
+	border-color: var(--hvnly-button-bg-hover, var(--hvnly-brand-secondary, var(--hvnly-secondary-color)));
+	background-image: none;
+	text-decoration: none;
+	text-shadow: none;
+	transform: none;
+}
+
+/* Secondary */
+a.hvnly-btn-secondary,
+button.hvnly-btn-secondary,
+a.hvnly-btn--secondary,
+button.hvnly-btn--secondary,
+a.hvnly-btn.hvnly-btn-secondary,
+button.hvnly-btn.hvnly-btn-secondary,
+a.hvnly-btn.hvnly-btn--secondary,
+button.hvnly-btn.hvnly-btn--secondary {
+	background-color: var(--hvnly-brand-secondary);
+	color: var(--hvnly-color-white, #fff);
+	border-color: var(--hvnly-brand-secondary);
+}
+
+a.hvnly-btn-secondary:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn-secondary:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn--secondary:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn--secondary:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn.hvnly-btn-secondary:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn.hvnly-btn-secondary:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn.hvnly-btn--secondary:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn.hvnly-btn--secondary:is(:hover, :focus, :active):not(:disabled) {
+	background-color: var(--hvnly-brand-secondary, var(--hvnly-secondary-color));
+	color: var(--hvnly-color-white, #fff);
+	border-color: var(--hvnly-brand-secondary, var(--hvnly-secondary-color));
+	background-image: none;
+	text-decoration: none;
+	transform: none;
+}
+
+/* Outline */
+a.hvnly-btn-outline,
+button.hvnly-btn-outline,
+a.hvnly-btn--outline,
+button.hvnly-btn--outline,
+a.hvnly-btn.hvnly-btn-outline,
+button.hvnly-btn.hvnly-btn-outline,
+a.hvnly-btn.hvnly-btn--outline,
+button.hvnly-btn.hvnly-btn--outline {
+	background-color: transparent;
+	color: var(--hvnly-brand-primary);
+	border-color: var(--hvnly-brand-primary);
+}
+
+a.hvnly-btn-outline:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn-outline:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn--outline:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn--outline:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn.hvnly-btn-outline:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn.hvnly-btn-outline:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn.hvnly-btn--outline:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn.hvnly-btn--outline:is(:hover, :focus, :active):not(:disabled) {
+	background-color: var(--hvnly-brand-primary);
+	color: var(--hvnly-color-white, #fff);
+	border-color: var(--hvnly-brand-primary);
+	background-image: none;
+	text-decoration: none;
+	transform: none;
+}
+
+/* Ghost */
+a.hvnly-btn-ghost,
+button.hvnly-btn-ghost,
+a.hvnly-btn--ghost,
+button.hvnly-btn--ghost,
+a.hvnly-btn.hvnly-btn-ghost,
+button.hvnly-btn.hvnly-btn-ghost,
+a.hvnly-btn.hvnly-btn--ghost,
+button.hvnly-btn.hvnly-btn--ghost {
+	background-color: transparent;
+	color: var(--hvnly-brand-primary);
+	border-color: transparent;
+}
+
+a.hvnly-btn-ghost:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn-ghost:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn--ghost:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn--ghost:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn.hvnly-btn-ghost:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn.hvnly-btn-ghost:is(:hover, :focus, :active):not(:disabled),
+a.hvnly-btn.hvnly-btn--ghost:is(:hover, :focus, :active):not(:disabled),
+button.hvnly-btn.hvnly-btn--ghost:is(:hover, :focus, :active):not(:disabled) {
+	background-color: var(--hvnly-brand-primary);
+	color: var(--hvnly-color-white, #fff);
+	border-color: var(--hvnly-brand-primary);
+	background-image: none;
+	text-decoration: none;
+	transform: none;
+}
+
+/* Success / danger / warning */
+a.hvnly-btn-success,
+button.hvnly-btn-success,
+a.hvnly-btn--success,
+button.hvnly-btn--success {
+	background-color: var(--hvnly-brand-success);
+	color: var(--hvnly-color-white, #fff);
+	border-color: var(--hvnly-brand-success);
+}
+
+a.hvnly-btn-alert,
+button.hvnly-btn-alert,
+a.hvnly-btn--danger,
+button.hvnly-btn--danger,
+a.hvnly-btn--alert,
+button.hvnly-btn--alert {
+	background-color: var(--hvnly-brand-error);
+	color: var(--hvnly-color-white, #fff);
+	border-color: var(--hvnly-brand-error);
+}
+
+a.hvnly-btn-warning,
+button.hvnly-btn-warning,
+a.hvnly-btn--warning,
+button.hvnly-btn--warning {
+	background-color: var(--hvnly-brand-warning);
+	color: var(--hvnly-color-white, #fff);
+	border-color: var(--hvnly-brand-warning);
+}
+
+a.hvnly-btn:focus-visible,
+button.hvnly-btn:focus-visible,
+a.hvnly-btn-primary:focus-visible,
+button.hvnly-btn-primary:focus-visible,
+a.hvnly-btn--primary:focus-visible,
+button.hvnly-btn--primary:focus-visible {
+	outline: 2px solid var(--hvnly-brand-secondary, var(--hvnly-secondary-color));
+	outline-offset: 2px;
+	box-shadow: 0 0 0 3px var(--hvnly-focus-ring);
+}
+
+a.hvnly-btn:focus:not(:focus-visible),
+button.hvnly-btn:focus:not(:focus-visible) {
+	outline: none;
+}
+
+/* Visited anchors must never become browser purple */
+a.hvnly-btn:visited,
+a.hvnly-btn-primary:visited,
+a.hvnly-btn--primary:visited,
+a.hvnly-btn-secondary:visited,
+a.hvnly-btn--secondary:visited,
+a.hvnly-btn-outline:visited,
+a.hvnly-btn--outline:visited,
+a.hvnly-btn-ghost:visited,
+a.hvnly-btn--ghost:visited,
+a.hvnly-button:visited {
+	color: var(--hvnly-button-color, var(--hvnly-color-white, #fff));
+}
+
+a.hvnly-btn-outline:visited,
+a.hvnly-btn--outline:visited,
+a.hvnly-btn-ghost:visited,
+a.hvnly-btn--ghost:visited {
+	color: var(--hvnly-brand-primary, var(--hvnly-primary-color));
+}
+
+a.hvnly-btn:disabled,
+button.hvnly-btn:disabled,
+button.hvnly-btn[aria-disabled="true"] {
+	opacity: 0.6;
+	cursor: not-allowed;
+	transform: none;
+	pointer-events: none;
+}
+
+/* Sizes — must beat `button.hvnly-btn` (0,1,1) from components.css leftovers */
+button.hvnly-btn.hvnly-btn--sm,
+a.hvnly-btn.hvnly-btn--sm,
+button.hvnly-btn.hvnly-btn-sm,
+a.hvnly-btn.hvnly-btn-sm {
+	padding: 0.5rem 1rem;
+	font-size: var(--hvnly-font-size-sm, 0.875rem);
+}
+
+button.hvnly-btn.hvnly-btn--lg,
+a.hvnly-btn.hvnly-btn--lg,
+button.hvnly-btn.hvnly-btn-lg,
+a.hvnly-btn.hvnly-btn-lg {
+	padding: 1rem 2rem;
+	font-size: var(--hvnly-font-size-lg, 1.25rem);
+}
+
+button.hvnly-btn.hvnly-btn--xl,
+a.hvnly-btn.hvnly-btn--xl,
+button.hvnly-btn.hvnly-btn-xl,
+a.hvnly-btn.hvnly-btn-xl {
+	padding: 1.25rem 2.5rem;
+	font-size: var(--hvnly-font-size-xl, 1.5rem);
+}
+
+a.hvnly-btn :is(i, svg, .hvnly-icon),
+button.hvnly-btn :is(i, svg, .hvnly-icon) {
+	float: none;
+	position: static;
+	background: transparent;
+	color: inherit;
+	line-height: 1;
+	transform: none;
+	pointer-events: none;
+}
+
+/* Legacy `.hvnly-button` → btn contract */
+a.hvnly-button,
+button.hvnly-button {
+	-webkit-appearance: none;
+	appearance: none;
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	cursor: pointer;
+	background-color: var(--hvnly-button-bg, var(--hvnly-brand-primary, var(--hvnly-primary-color)));
+	color: var(--hvnly-button-color, var(--hvnly-color-white, #fff));
+	border: 1px solid var(--hvnly-button-bg, var(--hvnly-brand-primary, var(--hvnly-primary-color)));
+	border-radius: var(--hvnly-button-radius, var(--hvnly-border-radius-xs, 4px));
+	padding: var(--hvnly-button-padding, 0.75rem 1.5rem);
+	transform: none;
+}
+
+a.hvnly-button:is(:hover, :focus, :active),
+button.hvnly-button:is(:hover, :focus, :active) {
+	background-color: var(--hvnly-button-bg-hover, var(--hvnly-brand-secondary, var(--hvnly-secondary-color)));
+	color: var(--hvnly-button-color, var(--hvnly-color-white, #fff));
+	border-color: var(--hvnly-button-bg-hover, var(--hvnly-brand-secondary, var(--hvnly-secondary-color)));
+	background-image: none;
+	text-decoration: none;
+	transform: none;
+}
+
+/* ======================================================================
+ * 3) .hvnly-action-toggle — Favorite / Compare primitive (base chrome)
+ *    Specialty favorited/compared/labeled/footer follows below.
+ * ====================================================================== */
+button.hvnly-action-toggle,
+a.hvnly-action-toggle {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+	padding: 0;
+	border-style: solid;
+	border-width: 0;
+	border-color: transparent;
+	border-radius: 50%;
+	width: 2rem;
+	height: 2rem;
+	min-width: 2rem;
+	min-height: 2rem;
+	max-width: 2rem;
+	max-height: 2rem;
+	background-color: rgba(255, 255, 255, 0.9);
+	background-image: none;
+	color: var(--hvnly-text-primary, #1a1a2e);
+	font-family: inherit;
+	font-size: var(--hvnly-font-size-xs, 0.75rem);
+	font-weight: inherit;
+	font-style: normal;
+	line-height: 1;
+	letter-spacing: normal;
+	text-align: center;
+	text-transform: none;
+	text-decoration: none;
+	text-shadow: none;
+	box-shadow: none;
+	outline: none;
+	cursor: pointer;
+	overflow: visible;
+	vertical-align: middle;
+	-webkit-tap-highlight-color: transparent;
+	transition:
+		background-color var(--hvnly-transition-time, 0.2s ease),
+		color var(--hvnly-transition-time, 0.2s ease),
+		border-color var(--hvnly-transition-time, 0.2s ease),
+		box-shadow var(--hvnly-transition-time, 0.2s ease),
+		opacity var(--hvnly-transition-time, 0.2s ease),
+		transform var(--hvnly-transition-time, 0.2s ease);
+	transform: none;
+}
+
+button.hvnly-action-toggle :is(i, svg, .hvnly-action-toggle__icon, .hvnly-compare-toggle__icon),
+a.hvnly-action-toggle :is(i, svg, .hvnly-action-toggle__icon, .hvnly-compare-toggle__icon) {
+	display: block;
+	margin: 0;
+	padding: 0;
+	float: none;
+	position: static;
+	width: auto;
+	height: auto;
+	max-width: none;
+	max-height: none;
+	border: 0;
+	background: transparent;
+	background-image: none;
+	box-shadow: none;
+	color: inherit;
+	font-size: inherit;
+	line-height: 1;
+	vertical-align: middle;
+	transform: none;
+	pointer-events: none;
+}
+
+/* Beat Hello Elementor `button:hover` (0,2,1) → (0,3,1)+ */
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite:is(:hover, :focus, :active, :focus-visible),
+button.hvnly-action-toggle.hvnly-property--grid-list--compare:is(:hover, :focus, :active, :focus-visible),
+button.hvnly-action-toggle.hvnly-compare-toggle:is(:hover, :focus, :active, :focus-visible),
+a.hvnly-action-toggle.hvnly-property--grid-list--favorite:is(:hover, :focus, :active, :focus-visible),
+a.hvnly-action-toggle.hvnly-property--grid-list--compare:is(:hover, :focus, :active, :focus-visible) {
+	background-color: #fff;
+	background-image: none;
+	border-color: transparent;
+	color: var(--hvnly-brand-primary, #0073aa);
+	text-decoration: none;
+	text-shadow: none;
+	box-shadow: none;
+	outline: none;
+	transform: scale(1.08);
+}
+
+button.hvnly-action-toggle:focus-visible,
+a.hvnly-action-toggle:focus-visible {
+	outline: 2px solid var(--hvnly-brand-primary, #0073aa);
+	outline-offset: 2px;
+	box-shadow: none;
+}
+
+button.hvnly-action-toggle[data-hvnly-busy="1"],
+button.hvnly-action-toggle:disabled,
+button.hvnly-action-toggle[aria-disabled="true"] {
+	opacity: 0.65;
+	cursor: default;
+	pointer-events: none;
+	transform: none;
+}
+
+/* ======================================================================
+ * Reduced motion
+ * ====================================================================== */
+@media (prefers-reduced-motion: reduce) {
+	button.hvnly-ui-control,
+	a.hvnly-ui-control,
+	a.hvnly-btn,
+	button.hvnly-btn,
+	button.hvnly-action-toggle,
+	a.hvnly-action-toggle,
+	button.hvnly-ui-control:is(:hover, :focus, :active),
+	a.hvnly-btn:is(:hover, :focus, :active),
+	button.hvnly-action-toggle:is(:hover, :focus, :active) {
+		transition: none;
+		transform: none;
+	}
+}
+
+/* Action-toggle specialty (was hvnly-action-toggle.css) */
+/* ----------------------------------------------------------------------
+ * Favorite saved state (tokens)
+ * -------------------------------------------------------------------- */
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite.is-favorited,
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite[aria-pressed="true"] {
+	color: var(--hvnly-brand-error, #ff4d4f);
+}
+
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite.is-favorited :is(i, svg),
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite[aria-pressed="true"] :is(i, svg) {
+	color: var(--hvnly-brand-error, #ff4d4f);
+}
+
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite.is-favorited:is(:hover, :focus, :active),
+button.hvnly-action-toggle.hvnly-property--grid-list--favorite[aria-pressed="true"]:is(:hover, :focus, :active) {
+	background-color: #fff;
+	background-image: none;
+	color: var(--hvnly-brand-error, #ff4d4f);
+}
+
+/* Compare pressed */
+button.hvnly-action-toggle.hvnly-compare-toggle[aria-pressed="true"],
+button.hvnly-action-toggle.hvnly-property--grid-list--compare[aria-pressed="true"],
+button.hvnly-action-toggle.hvnly-compare-toggle.is-compared,
+button.hvnly-action-toggle.hvnly-property--grid-list--compare.is-compared {
+	color: var(--hvnly-color-bg-white, #fff);
+	background-color: var(--hvnly-brand-primary, #6C60FE);
+	background-image: none;
+}
+
+/* ----------------------------------------------------------------------
+ * Root-scoped reinforces (map popups / archives / shortcodes / Elementor)
+ * -------------------------------------------------------------------- */
+.hvnly-content-wrapper button.hvnly-action-toggle.hvnly-property--grid-list--favorite:is(:hover, :focus, :active),
+.hvnly-content-wrapper button.hvnly-action-toggle.hvnly-property--grid-list--compare:is(:hover, :focus, :active),
+.hvnly-content-wrapper button.hvnly-action-toggle.hvnly-compare-toggle:is(:hover, :focus, :active),
+.hvnly-property-display-shortcode button.hvnly-action-toggle.hvnly-property--grid-list--favorite:is(:hover, :focus, :active),
+.hvnly-property-display-shortcode button.hvnly-action-toggle.hvnly-property--grid-list--compare:is(:hover, :focus, :active),
+.hvnly-property-display-shortcode button.hvnly-action-toggle.hvnly-compare-toggle:is(:hover, :focus, :active),
+.hvnly-block-map__popup-host button.hvnly-action-toggle.hvnly-property--grid-list--favorite:is(:hover, :focus, :active),
+.hvnly-block-map__popup-host button.hvnly-action-toggle.hvnly-property--grid-list--compare:is(:hover, :focus, :active),
+.hvnly-block-map__popup-host button.hvnly-action-toggle.hvnly-compare-toggle:is(:hover, :focus, :active),
+body.hvnly-plugin-active button.hvnly-action-toggle.hvnly-property--grid-list--favorite:is(:hover, :focus, :active),
+body.hvnly-plugin-active button.hvnly-action-toggle.hvnly-property--grid-list--compare:is(:hover, :focus, :active),
+body.hvnly-plugin-active button.hvnly-action-toggle.hvnly-compare-toggle:is(:hover, :focus, :active),
+body.hvnly-property-archive button.hvnly-action-toggle.hvnly-property--grid-list--favorite:is(:hover, :focus, :active),
+body.hvnly-property-archive button.hvnly-action-toggle.hvnly-property--grid-list--compare:is(:hover, :focus, :active),
+body.hvnly-property-single button.hvnly-action-toggle.hvnly-property--grid-list--favorite:is(:hover, :focus, :active) {
+	background-color: #fff;
+	background-image: none;
+	color: var(--hvnly-brand-primary, #0073aa);
+	border-color: transparent;
+	text-decoration: none;
+	transform: scale(1.08);
+}
+
+/* Footers that intentionally brand-tint the control */
+.hvnly-property-field-footer button.hvnly-action-toggle.hvnly-property--grid-list--favorite,
+.hvnly-property--grid-list--footer button.hvnly-action-toggle.hvnly-property--grid-list--favorite {
+	background-color: var(--hvnly-brand-primary, #0073aa);
+	color: var(--hvnly-color-white, #fff);
+}
+
+.hvnly-property-field-footer button.hvnly-action-toggle.hvnly-property--grid-list--favorite:is(:hover, :focus, :active),
+.hvnly-property--grid-list--footer button.hvnly-action-toggle.hvnly-property--grid-list--favorite:is(:hover, :focus, :active) {
+	background-color: var(--hvnly-brand-secondary, var(--hvnly-brand-primary, #0073aa));
+	color: var(--hvnly-color-white, #fff);
+	transform: scale(1.08);
+}
+
+/* ----------------------------------------------------------------------
+ * Labeled variant (single property “Save”)
+ * -------------------------------------------------------------------- */
+button.hvnly-action-toggle.hvnly-action-toggle--labeled {
+	width: auto;
+	max-width: none;
+	height: auto;
+	min-width: 0;
+	min-height: 0;
+	max-height: none;
+	border-radius: var(--hvnly-button-radius, var(--hvnly-border-radius-xs, 4px));
+	padding: 0.5rem 0.75rem;
+	gap: 0.4rem;
+	background-color: transparent;
+	background-image: none;
+	transform: none;
+}
+
+button.hvnly-action-toggle.hvnly-action-toggle--labeled:is(:hover, :focus, :active, :focus-visible) {
+	background-color: transparent;
+	background-image: none;
+	transform: none;
+	color: inherit;
+}
+
+button.hvnly-action-toggle.hvnly-action-toggle--labeled.is-favorited:is(:hover, :focus, :active),
+button.hvnly-action-toggle.hvnly-action-toggle--labeled[aria-pressed="true"]:is(:hover, :focus, :active) {
+	background-color: transparent;
+	background-image: none;
+	color: var(--hvnly-brand-error, #ff4d4f);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	button.hvnly-action-toggle:is(:hover, :focus, :active),
+	a.hvnly-action-toggle:is(:hover, :focus, :active) {
+		transform: none;
+	}
+}
+

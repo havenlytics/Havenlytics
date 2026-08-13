@@ -18,7 +18,7 @@
 namespace HvnlyNab\Core;
 
 // Prevent direct access to WordPress files.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -35,8 +35,8 @@ use HvnlyNab\Core\Migration\Migrator;
  *
  * @since 2.0.0
  */
-class Installer
-{
+class Installer {
+
     /**
      * Database version option key for tracking schema versions.
      *
@@ -69,19 +69,19 @@ class Installer
             $installer = new SetupInstaller();
             $installer->run();
         }
-        
+
         // Step 2: Create required plugin pages with shortcodes.
         self::create_required_pages();
 
         // Step 2b: Department listing pages (fresh install only — not run on existing-site activate).
         self::create_department_pages();
-        
+
         // Step 3: Schedule recurring cron events for maintenance.
         Scheduler::schedule_events();
-        
+
         // Step 4: Initialize default builder configurations if not exist.
         self::initialize_builders();
-        
+
         // Step 5: Run database migrations; bump DB version only when all succeed.
         $migrations_ok = Migrator::run( true );
         if ( $migrations_ok ) {
@@ -149,7 +149,7 @@ class Installer
         delete_option( 'hvnly_activation_redirect' );
         delete_transient( 'hvnly_activation_redirect' );
     }
-    
+
     /**
      * Plugin deactivation handler.
      *
@@ -163,10 +163,10 @@ class Installer
         if (class_exists('HvnlyNab\Frontend\Shortcodes\Registry')) {
             HvnlyNab\Frontend\Shortcodes\Registry::clear_all_caches();
         }
-        
+
         // Clear scheduled cron events.
         Scheduler::clear_scheduled_events();
-        
+
         // Flush rewrite rules to remove custom post type routes.
         flush_rewrite_rules();
     }
@@ -193,68 +193,67 @@ class Installer
      * @since 2.0.0
      * @return void
      */
-    private static function create_required_pages()
-    {
-        $pages = [
-            [
+    private static function create_required_pages() {
+        $pages = array(
+            array(
                 'title'      => __('Property Search', 'havenlytics'),
                 'full_title' => 'Property Search -- Havenlytics',
                 'shortcode'  => '[hvnly_property_search]',
                 'option_key' => 'hvnly_property_search_page_id',
                 'slug'       => 'property-search',
-            ],
-            [
+            ),
+            array(
                 'title'      => __('Property Grid', 'havenlytics'),
                 'full_title' => 'Property Grid -- Havenlytics',
                 'shortcode'  => '[hvnly_property_grid]',
                 'option_key' => 'hvnly_property_grid_page_id',
                 'slug'       => 'property-grid',
-            ],
-            [
+            ),
+            array(
                 'title'      => __('Property Lists', 'havenlytics'),
                 'full_title' => 'Property Lists -- Havenlytics',
                 'shortcode'  => '[hvnly_property_lists]',
                 'option_key' => 'hvnly_property_list_page_id',
                 'slug'       => 'property-lists',
-            ],
-            [
+            ),
+            array(
                 'title'      => __('Agents', 'havenlytics'),
                 'full_title' => 'Agents -- Havenlytics',
                 'shortcode'  => '[hvnly_property_agents]',
                 'option_key' => 'hvnly_property_agents_page_id',
                 'slug'       => 'property-agents',
-            ],
-            [
+            ),
+            array(
                 'title'      => __('Agency', 'havenlytics'),
                 'full_title' => 'Agency -- Havenlytics',
                 'shortcode'  => '[hvnly_property_agencies]',
                 'option_key' => 'hvnly_property_agencies_page_id',
                 'slug'       => 'property-agencies',
-            ],
-            [
+            ),
+            array(
                 'title'      => __('Sign In', 'havenlytics'),
                 'full_title' => 'Sign In -- Havenlytics',
                 'shortcode'  => '<!-- wp:havenlytics/authentication /-->',
                 'option_key' => 'hvnly_sign_in_page_id',
                 'slug'       => 'sign-in',
                 'content_type' => 'block',
-            ],
-            [
+            ),
+            array(
                 'title'      => __('Dashboard', 'havenlytics'),
                 'full_title' => 'Agent Dashboard -- Havenlytics',
                 'shortcode'  => '[hvnly_agent_dashboard]',
                 'option_key' => 'hvnly_workspace_page_id',
                 'slug'       => 'agent-dashboard',
-            ],
-            [
+            ),
+            array(
                 'title'      => __('Favorites', 'havenlytics'),
                 'full_title' => 'Favorites -- Havenlytics',
                 'shortcode'  => '<!-- wp:havenlytics/saved-properties /-->',
                 'option_key' => 'hvnly_favorites_page_id',
                 'slug'       => 'favorites',
                 'content_type' => 'block',
-            ],
-        ];
+            ),
+        );
 
         foreach ($pages as $page) {
             $existing_id = absint( get_option( $page['option_key'], 0 ) );
@@ -266,10 +265,10 @@ class Installer
                     // Only rename when the target slug is free.
                     $slug_owner = get_page_by_path( $page['slug'], OBJECT, 'page' );
                     if ( ! ( $slug_owner instanceof \WP_Post ) || (int) $slug_owner->ID === (int) $existing_id ) {
-                        wp_update_post([
+                        wp_update_post(array(
                             'ID'         => $existing_id,
                             'post_name'  => $page['slug'],
-                        ]);
+                        ));
                     }
                 }
                 if ( empty( $page['content_type'] ) || 'block' !== $page['content_type'] ) {
@@ -289,54 +288,57 @@ class Installer
                 }
                 continue;
             }
-            
+
             // Check if page exists by full title.
-            $query = new \WP_Query([
+            $query = new \WP_Query(array(
                 'post_type'      => 'page',
                 'post_status'    => 'publish',
                 'posts_per_page' => 1,
                 'title'          => $page['full_title'],
                 'fields'         => 'ids',
-            ]);
+            ));
 
             if ($query->have_posts()) {
                 $found_id = $query->posts[0];
                 update_option($page['option_key'], $found_id);
                 update_post_meta($found_id, '_hvnly_property_auto_created', true);
                 update_post_meta($found_id, '_hvnly_plugin_page', '1');
-                
+
                 // Update slug for existing page when free.
                 $slug_owner = get_page_by_path( $page['slug'], OBJECT, 'page' );
                 if ( ! ( $slug_owner instanceof \WP_Post ) || (int) $slug_owner->ID === (int) $found_id ) {
-                    wp_update_post([
+                    wp_update_post(array(
                         'ID'         => $found_id,
                         'post_name'  => $page['slug'],
-                    ]);
+                    ));
                 }
                 if ( empty( $page['content_type'] ) || 'block' !== $page['content_type'] ) {
                     self::sync_plugin_page_shortcode( (int) $found_id, $page['shortcode'] );
                 }
                 continue;
             }
-            
+
             // Get current user ID or fallback to admin.
             $current_user_id = get_current_user_id();
-            if (!$current_user_id) {
-                $admin_user = get_users(['role' => 'administrator', 'number' => 1]);
-                $current_user_id = !empty($admin_user) ? $admin_user[0]->ID : 1;
+            if ( ! $current_user_id) {
+                $admin_user      = get_users(array(
+					'role' => 'administrator',
+					'number' => 1,
+				));
+                $current_user_id = ! empty($admin_user) ? $admin_user[0]->ID : 1;
             }
-            
+
             // Insert new page with custom slug.
-            $page_id = wp_insert_post([
+            $page_id = wp_insert_post(array(
                 'post_title'   => $page['full_title'],
                 'post_name'    => $page['slug'],
                 'post_content' => $page['shortcode'],
                 'post_status'  => 'publish',
                 'post_type'    => 'page',
                 'post_author'  => $current_user_id,
-            ]);
+            ));
 
-            if (!is_wp_error($page_id) && $page_id > 0) {
+            if ( ! is_wp_error($page_id) && $page_id > 0) {
                 update_option($page['option_key'], $page_id);
                 update_post_meta($page_id, '_hvnly_property_auto_created', true);
                 update_post_meta($page_id, '_hvnly_plugin_page', '1');
@@ -352,38 +354,37 @@ class Installer
      * @since 3.1.2
      * @return void
      */
-    private static function create_department_pages(): void
-    {
-        $pages = [
-            [
+    private static function create_department_pages(): void {
+        $pages = array(
+            array(
                 'title'      => __('Rent', 'havenlytics'),
                 'full_title' => 'Rent -- Havenlytics',
                 'shortcode'  => "[hvnly_property_grid department='rent']",
                 'option_key' => 'hvnly_department_rent_page_id',
                 'slug'       => 'rent',
-            ],
-            [
+            ),
+            array(
                 'title'      => __('Sale', 'havenlytics'),
                 'full_title' => 'Sale -- Havenlytics',
                 'shortcode'  => "[hvnly_property_grid department='sale']",
                 'option_key' => 'hvnly_department_sale_page_id',
                 'slug'       => 'sale',
-            ],
-            [
+            ),
+            array(
                 'title'      => __('Commercial', 'havenlytics'),
                 'full_title' => 'Commercial -- Havenlytics',
                 'shortcode'  => "[hvnly_property_grid department='commercial']",
                 'option_key' => 'hvnly_department_commercial_page_id',
                 'slug'       => 'commercial',
-            ],
-            [
+            ),
+            array(
                 'title'      => __('Let', 'havenlytics'),
                 'full_title' => 'Let -- Havenlytics',
                 'shortcode'  => "[hvnly_property_grid department='let']",
                 'option_key' => 'hvnly_department_let_page_id',
                 'slug'       => 'let',
-            ],
-        ];
+            ),
+        );
 
         foreach ($pages as $page) {
             $existing_id = get_option($page['option_key']);
@@ -397,28 +398,31 @@ class Installer
             }
 
             $current_user_id = get_current_user_id();
-            if (!$current_user_id) {
-                $admin_user = get_users(['role' => 'administrator', 'number' => 1]);
-                $current_user_id = !empty($admin_user) ? $admin_user[0]->ID : 1;
+            if ( ! $current_user_id) {
+                $admin_user      = get_users(array(
+					'role' => 'administrator',
+					'number' => 1,
+				));
+                $current_user_id = ! empty($admin_user) ? $admin_user[0]->ID : 1;
             }
 
-            $page_id = wp_insert_post([
+            $page_id = wp_insert_post(array(
                 'post_title'   => $page['full_title'],
                 'post_name'    => $page['slug'],
                 'post_content' => $page['shortcode'],
                 'post_status'  => 'publish',
                 'post_type'    => 'page',
                 'post_author'  => $current_user_id,
-            ]);
+            ));
 
-            if (!is_wp_error($page_id) && $page_id > 0) {
+            if ( ! is_wp_error($page_id) && $page_id > 0) {
                 update_option($page['option_key'], $page_id);
                 update_post_meta($page_id, '_hvnly_property_auto_created', true);
                 update_post_meta($page_id, '_hvnly_plugin_page', '1');
             }
         }
     }
-    
+
     /**
      * Ensure a plugin page contains its shortcode (skip Elementor-built pages).
      *
@@ -464,9 +468,9 @@ class Installer
      * @return void
      */
     public static function add_admin_filters() {
-        add_filter('display_post_states', [__CLASS__, 'add_plugin_page_state'], 10, 2);
+        add_filter('display_post_states', array( __CLASS__, 'add_plugin_page_state' ), 10, 2);
     }
-    
+
     /**
      * Add plugin page state to show in admin pages list.
      *
@@ -478,19 +482,19 @@ class Installer
      * @param WP_Post $post        Current post object.
      * @return array Modified post states.
      */
-    public static function add_plugin_page_state($post_states, $post) {
+    public static function add_plugin_page_state( $post_states, $post ) {
         // Only add state for pages with our plugin meta.
         if ($post->post_type === 'page') {
             $is_plugin_page = get_post_meta($post->ID, '_hvnly_plugin_page', true);
-            
+
             if ($is_plugin_page) {
                 $post_states['hvnly_plugin_page'] = __('Havenlytics', 'havenlytics');
             }
         }
-        
+
         return $post_states;
     }
-    
+
     /**
      * Run on plugin update.
      *
@@ -502,14 +506,14 @@ class Installer
      * @param string $new_version The new version number.
      * @return void
      */
-    public static function update($old_version, $new_version) {
+    public static function update( $old_version, $new_version ) {
         // Database version is bumped by Bootstrap only after Migrator::run() succeeds.
         // Clear all caches to ensure fresh data after successful upgrade.
         if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine()) {
             HVNLY_NAB()->engine()->clear_all_cache();
         }
     }
-    
+
     /**
      * Initialize default builder configurations.
      *
@@ -529,7 +533,7 @@ class Installer
                 update_option('hvnly_property_builder.sections', self::get_default_property_builder());
             }
         }
-        
+
         // Initialize card builder if not exists.
         if (get_option('hvnly_property_card.sections') === false) {
             if (class_exists('\HvnlyNab\Api\Type\Builders\DnDCardBuilder')) {
@@ -540,7 +544,7 @@ class Installer
             }
         }
     }
-    
+
     /**
      * Get default property builder configuration.
      *
@@ -551,23 +555,23 @@ class Installer
      * @return array Default property builder configuration.
      */
     private static function get_default_property_builder(): array {
-        return [
-            [
+        return array(
+            array(
                 'id' => 'basic_info',
                 'title' => 'Basic Info',
                 'icon' => 'fas fa-home',
-                'fields' => [
-                    [
+                'fields' => array(
+                    array(
                         'id' => 'property_price',
                         'name' => '_hvnly_property_price',
                         'type' => 'price_label',
                         'label' => 'Property Price',
                         'required' => true,
-                        'order' => 0
-                    ]
-                ],
-                'order' => 0
-            ]
-        ];
+                        'order' => 0,
+                    ),
+                ),
+                'order' => 0,
+            ),
+        );
     }
 }

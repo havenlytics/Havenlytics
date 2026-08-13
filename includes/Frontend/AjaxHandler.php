@@ -17,7 +17,7 @@ use HvnlyNab\Frontend\Query\PropertyQueryCache;
 use HvnlyNab\Frontend\Query\PropertyQueryExecutor;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -26,8 +26,8 @@ if (!defined('ABSPATH')) {
  *
  * @since 2.0.0
  */
-class AjaxHandler
-{
+class AjaxHandler {
+
     /**
      * Cache duration for search results
      *
@@ -47,7 +47,7 @@ class AjaxHandler
      *
      * @var array
      */
-    private $map_field_definitions = [];
+    private $map_field_definitions = array();
 
     /**
      * Cached map group configs from the property builder (group_id => field row).
@@ -59,37 +59,36 @@ class AjaxHandler
     /**
      * Constructor
      */
-    public function __construct()
-    {
-        add_action('wp_ajax_hvnly_search_properties', array($this, 'search_properties'));
-        add_action('wp_ajax_nopriv_hvnly_search_properties', array($this, 'search_properties'));
+    public function __construct() {
+        add_action('wp_ajax_hvnly_search_properties', array( $this, 'search_properties' ));
+        add_action('wp_ajax_nopriv_hvnly_search_properties', array( $this, 'search_properties' ));
 
-        add_action('wp_ajax_hvnly_load_more', array($this, 'load_more_properties'));
-        add_action('wp_ajax_nopriv_hvnly_load_more', array($this, 'load_more_properties'));
+        add_action('wp_ajax_hvnly_load_more', array( $this, 'load_more_properties' ));
+        add_action('wp_ajax_nopriv_hvnly_load_more', array( $this, 'load_more_properties' ));
 
-        add_action('wp_ajax_hvnly_get_filters', array($this, 'get_filter_options'));
-        add_action('wp_ajax_nopriv_hvnly_get_filters', array($this, 'get_filter_options'));
+        add_action('wp_ajax_hvnly_get_filters', array( $this, 'get_filter_options' ));
+        add_action('wp_ajax_nopriv_hvnly_get_filters', array( $this, 'get_filter_options' ));
 
-        add_action('wp_ajax_hvnly_get_properties_for_map', array($this, 'hvnly_get_properties_for_map'));
-        add_action('wp_ajax_nopriv_hvnly_get_properties_for_map', array($this, 'hvnly_get_properties_for_map'));
+        add_action('wp_ajax_hvnly_get_properties_for_map', array( $this, 'hvnly_get_properties_for_map' ));
+        add_action('wp_ajax_nopriv_hvnly_get_properties_for_map', array( $this, 'hvnly_get_properties_for_map' ));
 
-        add_action('save_post_hvnly_property', array($this, 'clear_property_cache'));
-        add_action('delete_post', array($this, 'clear_property_cache'), 10, 2);
-        add_action('before_delete_post', array($this, 'clear_property_cache'), 10, 2);
-        add_action('updated_post_meta', array($this, 'clear_property_cache_on_meta_update'), 10, 4);
-        add_action('added_post_meta', array($this, 'clear_property_cache_on_meta_update'), 10, 4);
-        add_action('deleted_post_meta', array($this, 'clear_property_cache_on_meta_delete'), 10, 4);
-        add_action('set_object_terms', array($this, 'clear_property_cache_on_term_assignment'), 10, 6);
-        add_action('created_term', array($this, 'clear_terms_cache'), 10, 2);
-        add_action('edited_term', array($this, 'clear_terms_cache'), 10, 2);
-        add_action('delete_term', array($this, 'clear_terms_cache'), 10, 3);
+        add_action('save_post_hvnly_property', array( $this, 'clear_property_cache' ));
+        add_action('delete_post', array( $this, 'clear_property_cache' ), 10, 2);
+        add_action('before_delete_post', array( $this, 'clear_property_cache' ), 10, 2);
+        add_action('updated_post_meta', array( $this, 'clear_property_cache_on_meta_update' ), 10, 4);
+        add_action('added_post_meta', array( $this, 'clear_property_cache_on_meta_update' ), 10, 4);
+        add_action('deleted_post_meta', array( $this, 'clear_property_cache_on_meta_delete' ), 10, 4);
+        add_action('set_object_terms', array( $this, 'clear_property_cache_on_term_assignment' ), 10, 6);
+        add_action('created_term', array( $this, 'clear_terms_cache' ), 10, 2);
+        add_action('edited_term', array( $this, 'clear_terms_cache' ), 10, 2);
+        add_action('delete_term', array( $this, 'clear_terms_cache' ), 10, 3);
 
-        add_action('created_term', array($this, 'clear_sidebar_terms_cache'), 10, 2);
-        add_action('edited_term', array($this, 'clear_sidebar_terms_cache'), 10, 2);
-        add_action('delete_term', array($this, 'clear_sidebar_terms_cache'), 10, 3);
+        add_action('created_term', array( $this, 'clear_sidebar_terms_cache' ), 10, 2);
+        add_action('edited_term', array( $this, 'clear_sidebar_terms_cache' ), 10, 2);
+        add_action('delete_term', array( $this, 'clear_sidebar_terms_cache' ), 10, 3);
 
-        add_action('wp_ajax_hvnly_render_map_container', array($this, 'hvnly_render_map_container'));
-        add_action('wp_ajax_nopriv_hvnly_render_map_container', array($this, 'hvnly_render_map_container'));
+        add_action('wp_ajax_hvnly_render_map_container', array( $this, 'hvnly_render_map_container' ));
+        add_action('wp_ajax_nopriv_hvnly_render_map_container', array( $this, 'hvnly_render_map_container' ));
     }
 
     /**
@@ -97,12 +96,11 @@ class AjaxHandler
      *
      * @return array
      */
-    private function get_property_builder_sections()
-    {
+    private function get_property_builder_sections() {
         if ($this->property_builder_sections === null) {
             $this->property_builder_sections = get_option('hvnly_property_builder.sections', array());
-            
-            if (empty($this->property_builder_sections) || !is_array($this->property_builder_sections)) {
+
+            if (empty($this->property_builder_sections) || ! is_array($this->property_builder_sections)) {
                 $this->property_builder_sections = array();
             }
         }
@@ -114,17 +112,16 @@ class AjaxHandler
      *
      * @return array
      */
-    private function get_map_field_definitions()
-    {
-        if (!empty($this->map_field_definitions)) {
+    private function get_map_field_definitions() {
+        if ( ! empty($this->map_field_definitions)) {
             return $this->map_field_definitions;
         }
 
-        $sections = $this->get_property_builder_sections();
+        $sections   = $this->get_property_builder_sections();
         $map_fields = array();
 
         foreach ($sections as $section) {
-            if (empty($section['fields']) || !is_array($section['fields'])) {
+            if (empty($section['fields']) || ! is_array($section['fields'])) {
                 continue;
             }
 
@@ -139,10 +136,10 @@ class AjaxHandler
 
                 if ($is_map_field && isset($field['name'])) {
                     $field_name = $field['name'];
-                    $base_name = preg_replace('/_(address|latitude|longitude|preview)$/', '', $field_name);
-                    
-                    if (!empty($base_name)) {
-                        $map_fields[$base_name] = array(
+                    $base_name  = preg_replace('/_(address|latitude|longitude|preview)$/', '', $field_name);
+
+                    if ( ! empty($base_name)) {
+                        $map_fields[ $base_name ] = array(
                             'base_id' => $base_name,
                             'address_key' => $base_name . '_address',
                             'latitude_key' => $base_name . '_latitude',
@@ -216,9 +213,8 @@ class AjaxHandler
      * @param mixed $lng Longitude value.
      * @return array|null Normalized ['lat' => float, 'lng' => float] or null when invalid.
      */
-    private function normalize_map_coordinates($lat, $lng)
-    {
-        if (!is_numeric($lat) || !is_numeric($lng)) {
+    private function normalize_map_coordinates( $lat, $lng ) {
+        if ( ! is_numeric($lat) || ! is_numeric($lng)) {
             return null;
         }
 
@@ -246,13 +242,12 @@ class AjaxHandler
      * @param int $property_id Property ID
      * @return array ['lat' => float, 'lng' => float, 'address' => string, 'has_coordinates' => bool]
      */
-    private function get_property_map_data($property_id)
-    {
+    private function get_property_map_data( $property_id ) {
         $result = array(
             'lat' => null,
             'lng' => null,
             'address' => '',
-            'has_coordinates' => false
+            'has_coordinates' => false,
         );
 
         $property_id = (int) $property_id;
@@ -293,8 +288,8 @@ class AjaxHandler
             if ( ! empty( $lat ) && is_numeric( $lat ) && ! empty( $lng ) && is_numeric( $lng ) ) {
                 $coords = $this->normalize_map_coordinates( $lat, $lng );
                 if ( $coords ) {
-                    $active_addr_key = get_post_meta( $property_id, '_hvnly_active_map_address_key', true );
-                    $address         = is_string( $active_addr_key ) && $active_addr_key !== ''
+                    $active_addr_key           = get_post_meta( $property_id, '_hvnly_active_map_address_key', true );
+                    $address                   = is_string( $active_addr_key ) && $active_addr_key !== ''
                         ? get_post_meta( $property_id, $active_addr_key, true )
                         : '';
                     $result['lat']             = $coords['lat'];
@@ -315,7 +310,7 @@ class AjaxHandler
                 if ( $coords ) {
                     $result['lat']             = $coords['lat'];
                     $result['lng']             = $coords['lng'];
-                    $address = get_post_meta( $property_id, $definition['address_key'], true );
+                    $address                   = get_post_meta( $property_id, $definition['address_key'], true );
                     $result['address']         = is_string( $address ) ? $address : '';
                     $result['has_coordinates'] = true;
                     return $result;
@@ -330,15 +325,15 @@ class AjaxHandler
 
         foreach ( $legacy_pairs as $pair ) {
             list( $lat_key, $lng_key, $address_key ) = $pair;
-            $lat = get_post_meta( $property_id, $lat_key, true );
-            $lng = get_post_meta( $property_id, $lng_key, true );
+            $lat                                     = get_post_meta( $property_id, $lat_key, true );
+            $lng                                     = get_post_meta( $property_id, $lng_key, true );
 
             if ( ! empty( $lat ) && is_numeric( $lat ) && ! empty( $lng ) && is_numeric( $lng ) ) {
                 $coords = $this->normalize_map_coordinates( $lat, $lng );
                 if ( $coords ) {
                     $result['lat']             = $coords['lat'];
                     $result['lng']             = $coords['lng'];
-                    $address = get_post_meta( $property_id, $address_key, true );
+                    $address                   = get_post_meta( $property_id, $address_key, true );
                     $result['address']         = is_string( $address ) ? $address : '';
                     $result['has_coordinates'] = true;
                     return $result;
@@ -422,8 +417,8 @@ class AjaxHandler
         }
 
         if ( count( $lat_by_base ) === 1 && count( $lng_by_base ) === 1 ) {
-            $lat  = reset( $lat_by_base );
-            $lng  = reset( $lng_by_base );
+            $lat    = reset( $lat_by_base );
+            $lng    = reset( $lng_by_base );
             $coords = $this->normalize_map_coordinates( $lat, $lng );
             if ( $coords ) {
                 $address = ! empty( $address_by_base ) ? (string) reset( $address_by_base ) : '';
@@ -443,23 +438,22 @@ class AjaxHandler
      *
      * @return void
      */
-    public function hvnly_render_map_container()
-    {
+    public function hvnly_render_map_container() {
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
-        
-        if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {
+
+        if ( ! wp_verify_nonce($nonce, 'hvnly_ajax_request')) {
             wp_send_json_error(__( 'Security check failed', 'havenlytics' ));
         }
-        
+
         $provider = isset($_POST['provider']) ? sanitize_text_field(wp_unslash($_POST['provider'])) : 'leaflet';
-        
+
         ob_start();
-        hvnly_get_template_part('map/map-container', null, array('provider' => $provider));
+        hvnly_get_template_part('map/map-container', null, array( 'provider' => $provider ));
         $html = ob_get_clean();
-        
+
         wp_send_json_success(array(
             'html' => $html,
-            'provider' => $provider
+            'provider' => $provider,
         ));
     }
 
@@ -468,24 +462,23 @@ class AjaxHandler
      *
      * @return void
      */
-    public function search_properties()
-    {
+    public function search_properties() {
         // Fixed nonce handling with proper unslashing
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
-        
-        if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {  
+
+        if ( ! wp_verify_nonce($nonce, 'hvnly_ajax_request')) {
             wp_send_json_error(__( 'Security check failed', 'havenlytics' ));
         }
 
         try {
             $page = isset($_POST['page']) ? absint(wp_unslash($_POST['page'])) : 1;
-            
-            // Use custom properties per page setting instead of WordPress default
-            $custom_per_page = function_exists('hvnly_get_properties_per_page') 
-    ? hvnly_get_properties_per_page() 
-    : get_option('posts_per_page', 12);
 
-$per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) : $custom_per_page;
+            // Use custom properties per page setting instead of WordPress default
+            $custom_per_page = function_exists('hvnly_get_properties_per_page')
+			? hvnly_get_properties_per_page()
+			: get_option('posts_per_page', 12);
+
+			$per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) : $custom_per_page;
 
             $is_top_search = isset($_POST['is_top_search']) && sanitize_text_field(wp_unslash($_POST['is_top_search'])) === 'true';
 
@@ -493,23 +486,23 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             $post_data = $this->sanitize_post_data($_POST);
 
             // Build query args and check cache
-            $args = $this->build_query_args($post_data, $page, $per_page);
+            $args      = $this->build_query_args($post_data, $page, $per_page);
             $cache_key = $this->generate_search_cache_key($args, $page, $per_page);
 
             // Try to get cached results
             $cached_results = $this->get_cached_search_results($cache_key);
 
-            if (false !== $cached_results && !$is_top_search) {
+            if (false !== $cached_results && ! $is_top_search) {
                 // Use cached results
                 wp_send_json_success($cached_results);
             }
 
             // No cache found or top search - perform fresh query
-            $query_started = microtime(true);
-            $properties_query = PropertyQueryExecutor::query($post_data, $page, $per_page, [
+            $query_started    = microtime(true);
+            $properties_query = PropertyQueryExecutor::query($post_data, $page, $per_page, array(
                 'filter_context' => 'ajax',
                 'bypass_cache'   => $is_top_search,
-            ]);
+            ));
             if (function_exists('HVNLY_NAB') && HVNLY_NAB()->engine() && method_exists(HVNLY_NAB()->engine(), 'track_query_executed')) {
                 HVNLY_NAB()->engine()->track_query_executed(microtime(true) - $query_started);
             }
@@ -522,7 +515,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             $response_data = $this->generate_search_response($properties_query, $page, $per_page, $post_data, $is_top_search);
 
             // Cache the results (except for top search)
-            if (!$is_top_search) {
+            if ( ! $is_top_search) {
                 $this->set_cached_search_results($cache_key, $response_data);
             }
 
@@ -540,10 +533,9 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param array $data Raw POST data
      * @return array
      */
-    private function sanitize_post_data($data)
-    {
+    private function sanitize_post_data( $data ) {
         $sanitized = array();
-        
+
         // Define allowed keys and their sanitization callbacks
         $allowed_keys = array(
             'nonce' => 'sanitize_text_field',
@@ -559,24 +551,24 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             'reception_rooms' => 'absint',
             'garages' => 'absint',
             'orderby' => 'sanitize_text_field',
-            'property_ids' => array($this, 'sanitize_array_field'),
-            'property_type' => array($this, 'sanitize_array_field'),
-            'hvnly_prop_depts' => array($this, 'sanitize_array_field'),
-            'hvnly_prop_types' => array($this, 'sanitize_array_field'),
-            'hvnly_prop_locations' => array($this, 'sanitize_array_field'),
-            'in_tag' => array($this, 'sanitize_taxonomy_ids'),
-            'in_badge' => array($this, 'sanitize_taxonomy_ids'),
-            'in_status' => array($this, 'sanitize_taxonomy_ids'),
-            'in_type' => array($this, 'sanitize_taxonomy_ids'),
-            'in_location' => array($this, 'sanitize_taxonomy_ids'),
-            'in_feature' => array($this, 'sanitize_taxonomy_ids'),
-            'in_review' => array($this, 'sanitize_taxonomy_ids'),
-            'amenities' => array($this, 'sanitize_array_field'),
-            'hvnly_prop_features' => array($this, 'sanitize_array_field'),
-            'hvnly_prop_reviews' => array($this, 'sanitize_array_field'),
-            'hvnly_prop_tags' => array($this, 'sanitize_array_field'),
-            'hvnly_prop_badges' => array($this, 'sanitize_array_field'),
-            'hvnly_prop_status' => array($this, 'sanitize_array_field'),
+            'property_ids' => array( $this, 'sanitize_array_field' ),
+            'property_type' => array( $this, 'sanitize_array_field' ),
+            'hvnly_prop_depts' => array( $this, 'sanitize_array_field' ),
+            'hvnly_prop_types' => array( $this, 'sanitize_array_field' ),
+            'hvnly_prop_locations' => array( $this, 'sanitize_array_field' ),
+            'in_tag' => array( $this, 'sanitize_taxonomy_ids' ),
+            'in_badge' => array( $this, 'sanitize_taxonomy_ids' ),
+            'in_status' => array( $this, 'sanitize_taxonomy_ids' ),
+            'in_type' => array( $this, 'sanitize_taxonomy_ids' ),
+            'in_location' => array( $this, 'sanitize_taxonomy_ids' ),
+            'in_feature' => array( $this, 'sanitize_taxonomy_ids' ),
+            'in_review' => array( $this, 'sanitize_taxonomy_ids' ),
+            'amenities' => array( $this, 'sanitize_array_field' ),
+            'hvnly_prop_features' => array( $this, 'sanitize_array_field' ),
+            'hvnly_prop_reviews' => array( $this, 'sanitize_array_field' ),
+            'hvnly_prop_tags' => array( $this, 'sanitize_array_field' ),
+            'hvnly_prop_badges' => array( $this, 'sanitize_array_field' ),
+            'hvnly_prop_status' => array( $this, 'sanitize_array_field' ),
             'featured_only' => 'sanitize_text_field',
             'view_type' => 'sanitize_text_field',
             'paged' => 'absint',
@@ -585,19 +577,19 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             'agent_id' => 'absint',
             'agency_term_id' => 'absint',
         );
-        
+
         foreach ($allowed_keys as $key => $callback) {
-            if (isset($data[$key])) {
+            if (isset($data[ $key ])) {
                 if (is_array($callback)) {
-                    $sanitized[$key] = call_user_func($callback, $data[$key]);
+                    $sanitized[ $key ] = call_user_func($callback, $data[ $key ]);
                 } elseif (is_callable($callback)) {
-                    $sanitized[$key] = $callback(wp_unslash($data[$key]));
+                    $sanitized[ $key ] = $callback(wp_unslash($data[ $key ]));
                 } else {
-                    $sanitized[$key] = $callback;
+                    $sanitized[ $key ] = $callback;
                 }
             }
         }
-        
+
         return $sanitized;
     }
 
@@ -607,16 +599,15 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param mixed $data
      * @return array
      */
-    private function sanitize_array_field($data)
-    {
+    private function sanitize_array_field( $data ) {
         if (empty($data)) {
             return array();
         }
-        
-        if (!is_array($data)) {
+
+        if ( ! is_array($data)) {
             $data = explode(',', $data);
         }
-        
+
         return array_map('sanitize_text_field', array_filter($data));
     }
 
@@ -626,19 +617,18 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param mixed $data
      * @return array
      */
-    private function sanitize_taxonomy_ids($data)
-    {
+    private function sanitize_taxonomy_ids( $data ) {
         if (empty($data)) {
             return array();
         }
-        
+
         // Replace %2C with comma if present
         $data = str_replace('%2C', ',', $data);
-        
-        if (!is_array($data)) {
+
+        if ( ! is_array($data)) {
             $data = explode(',', $data);
         }
-        
+
         return array_map('absint', array_filter($data));
     }
 
@@ -650,13 +640,12 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param int   $per_page
      * @return string
      */
-    private function generate_search_cache_key($args, $page, $per_page)
-    {
+    private function generate_search_cache_key( $args, $page, $per_page ) {
         $key_data = array(
             'args' => $args,
             'page' => $page,
             'per_page' => $per_page,
-            'lang' => function_exists('pll_current_language') ? pll_current_language() : get_locale()
+            'lang' => function_exists('pll_current_language') ? pll_current_language() : get_locale(),
         );
 
         $cache_key = 'hvnly_search_' . md5(serialize($key_data));
@@ -670,9 +659,8 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param string $cache_key
      * @return mixed
      */
-    private function get_cached_search_results($cache_key)
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    private function get_cached_search_results( $cache_key ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return false;
         }
 
@@ -696,9 +684,8 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param string $cache_key Cache key
      * @param mixed  $data      Data to cache
      */
-    private function set_cached_search_results($cache_key, $data)
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    private function set_cached_search_results( $cache_key, $data ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
@@ -718,13 +705,12 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param bool     $is_top_search Whether it's a top search
      * @return array
      */
-    private function generate_search_response($query, $page, $per_page, $filters, $is_top_search = false)
-    {
+    private function generate_search_response( $query, $page, $per_page, $filters, $is_top_search = false ) {
         global $wp_query;
 
         // Set up global query for template compatibility
         $original_query = $wp_query;
-        $wp_query = $query;
+        $wp_query       = $query;
 
         // Use template for property grid
         ob_start();
@@ -752,8 +738,8 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
         $results_count_html = ob_get_clean();
 
         // Calculate start and end for display
-        $start = (($page - 1) * $per_page) + 1;
-        $end = min($page * $per_page, $query->found_posts);
+        $start        = ( ( $page - 1 ) * $per_page ) + 1;
+        $end          = min($page * $per_page, $query->found_posts);
         $loaded_count = min($page * $per_page, $query->found_posts);
 
         return array(
@@ -778,8 +764,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param array     $filters       Current search filters (agent/agency context)
      * @return void
      */
-    private function load_property_grid_template($query, $is_top_search = false, $filters = array())
-    {
+    private function load_property_grid_template( $query, $is_top_search = false, $filters = array() ) {
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
@@ -800,8 +785,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param array $filters Current search filters
      * @return void
      */
-    private function render_property_listing_card($filters = array())
-    {
+    private function render_property_listing_card( $filters = array() ) {
         $instance_id    = isset($filters['instance_id']) ? sanitize_text_field($filters['instance_id']) : '';
         $agent_id       = isset($filters['agent_id']) ? absint($filters['agent_id']) : 0;
         $agency_term_id = isset($filters['agency_term_id']) ? absint($filters['agency_term_id']) : 0;
@@ -814,11 +798,11 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
         }
 
         if ($instance_id === 'agent-properties' || $agent_id > 0) {
-            $dept_ids = wp_get_post_terms(get_the_ID(), 'hvnly_prop_depts', array('fields' => 'ids'));
+            $dept_ids = wp_get_post_terms(get_the_ID(), 'hvnly_prop_depts', array( 'fields' => 'ids' ));
             if (is_wp_error($dept_ids)) {
                 $dept_ids = array();
             }
-            $dept_attr = !empty($dept_ids) ? implode(' ', array_map('absint', $dept_ids)) : 'none';
+            $dept_attr = ! empty($dept_ids) ? implode(' ', array_map('absint', $dept_ids)) : 'none';
             printf(
                 '<div class="hvnly-agent-single__property-item" data-dept-ids="%s">',
                 esc_attr($dept_attr)
@@ -838,8 +822,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param int $current_page Current page number
      * @return void
      */
-    private function generate_pagination_template($query, $current_page)
-    {
+    private function generate_pagination_template( $query, $current_page ) {
         if (function_exists('hvnly_render_ajax_pagination_fragment')) {
             hvnly_render_ajax_pagination_fragment($query, $current_page);
             return;
@@ -866,8 +849,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param array $filters Current filters
      * @return void
      */
-    private function generate_results_count_template($query, $current_page, $per_page, $filters)
-    {
+    private function generate_results_count_template( $query, $current_page, $per_page, $filters ) {
         if (function_exists('hvnly_render_ajax_results_count_fragment')) {
             hvnly_render_ajax_results_count_fragment($query, $current_page, $per_page, $filters);
             return;
@@ -878,8 +860,8 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
         $original_query   = $wp_query;
         $wp_query         = $query;
         $total_properties = (int) $query->found_posts;
-        $start            = (( (int) $current_page - 1 ) * (int) $per_page) + 1;
-        $end              = min((int) $current_page * (int) $per_page, $total_properties);
+        $start            = ( ( (int) $current_page - 1 ) * (int) $per_page ) + 1;
+        $end              = min( (int) $current_page * (int) $per_page, $total_properties);
         $current_filters  = function_exists('hvnly_build_ajax_result_count_filters')
             ? hvnly_build_ajax_result_count_filters($filters)
             : array();
@@ -907,28 +889,27 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param int    $tt_id   Term taxonomy ID
      * @param string $taxonomy Taxonomy name
      */
-    public function clear_sidebar_terms_cache($term_id, $tt_id = 0, $taxonomy = '')
-    {
+    public function clear_sidebar_terms_cache( $term_id, $tt_id = 0, $taxonomy = '' ) {
         // Handle different hook signatures
         if (func_num_args() === 1) {
             // For delete_term hook (3 params)
-            $term_id = func_get_arg(0);
+            $term_id  = func_get_arg(0);
             $taxonomy = func_get_arg(2);
         } elseif (func_num_args() === 2) {
             // For created_term and edited_term hooks
-            $term_id = func_get_arg(0);
+            $term_id  = func_get_arg(0);
             $taxonomy = func_get_arg(1);
         }
-        
+
         // Early validation to prevent unnecessary processing
-        if (empty($term_id) || !is_numeric($term_id)) {
+        if (empty($term_id) || ! is_numeric($term_id)) {
             return;
         }
 
         $term = get_term($term_id);
-        
+
         // Comprehensive validation for term existence and validity
-        if (!$term || is_wp_error($term) || !isset($term->taxonomy)) {
+        if ( ! $term || is_wp_error($term) || ! isset($term->taxonomy)) {
             return;
         }
 
@@ -938,27 +919,26 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
                 $sidebar_filters = new \HvnlyNab\Frontend\ViewModels\SidebarSearchFilters();
                 $sidebar_filters->clear_terms_cache($term->taxonomy);
             }
-            
+
             do_action('hvnly_cleared_sidebar_terms_cache', $term_id, $term->taxonomy);
         } catch (\Exception $e) {
             // Silent fail in production
         }
     }
 
-    
+
     /**
      * Clear cache when property is saved or deleted
      *
      * @param int           $post_id Post ID.
      * @param \WP_Post|null $post    Post object (required for delete_post / before_delete_post).
      */
-    public function clear_property_cache($post_id, $post = null)
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    public function clear_property_cache( $post_id, $post = null ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
-        if (!$this->is_hvnly_property($post_id, $post)) {
+        if ( ! $this->is_hvnly_property($post_id, $post)) {
             return;
         }
 
@@ -974,8 +954,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param string $meta_key   Meta key.
      * @param mixed  $meta_value Meta value.
      */
-    public function clear_property_cache_on_meta_update($meta_id, $post_id, $meta_key, $meta_value)
-    {
+    public function clear_property_cache_on_meta_update( $meta_id, $post_id, $meta_key, $meta_value ) {
         unset($meta_id, $meta_value);
         $this->maybe_clear_property_cache_for_meta($post_id, $meta_key);
     }
@@ -988,8 +967,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param string $meta_key   Meta key.
      * @param mixed  $meta_value Meta value.
      */
-    public function clear_property_cache_on_meta_delete($meta_ids, $post_id, $meta_key, $meta_value)
-    {
+    public function clear_property_cache_on_meta_delete( $meta_ids, $post_id, $meta_key, $meta_value ) {
         unset($meta_ids, $meta_value);
         $this->maybe_clear_property_cache_for_meta($post_id, $meta_key);
     }
@@ -1004,11 +982,10 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param bool   $append     Whether terms were appended.
      * @param array  $old_tt_ids Previous term taxonomy IDs.
      */
-    public function clear_property_cache_on_term_assignment($object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids)
-    {
+    public function clear_property_cache_on_term_assignment( $object_id, $terms, $tt_ids, $taxonomy, $append, $old_tt_ids ) {
         unset($terms, $tt_ids, $append, $old_tt_ids);
 
-        if (!$this->is_property_listing_taxonomy($taxonomy) || !$this->is_hvnly_property($object_id)) {
+        if ( ! $this->is_property_listing_taxonomy($taxonomy) || ! $this->is_hvnly_property($object_id)) {
             return;
         }
 
@@ -1019,13 +996,12 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param int    $post_id  Post ID.
      * @param string $meta_key Meta key.
      */
-    private function maybe_clear_property_cache_for_meta($post_id, $meta_key)
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    private function maybe_clear_property_cache_for_meta( $post_id, $meta_key ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
-        if (!$this->is_listing_meta_key($meta_key) || !$this->is_hvnly_property($post_id)) {
+        if ( ! $this->is_listing_meta_key($meta_key) || ! $this->is_hvnly_property($post_id)) {
             return;
         }
 
@@ -1038,8 +1014,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param \WP_Post|null $post    Optional post object.
      * @return bool
      */
-    private function is_hvnly_property($post_id, $post = null)
-    {
+    private function is_hvnly_property( $post_id, $post = null ) {
         if ($post instanceof \WP_Post) {
             return $post->post_type === 'hvnly_property';
         }
@@ -1051,8 +1026,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param string $meta_key Meta key.
      * @return bool
      */
-    private function is_listing_meta_key($meta_key)
-    {
+    private function is_listing_meta_key( $meta_key ) {
         $meta_key = (string) $meta_key;
 
         $exact_keys = array(
@@ -1100,8 +1074,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param string $taxonomy Taxonomy slug.
      * @return bool
      */
-    private function is_property_listing_taxonomy($taxonomy)
-    {
+    private function is_property_listing_taxonomy( $taxonomy ) {
         static $taxonomies = array(
             'hvnly_prop_types',
             'hvnly_prop_depts',
@@ -1114,7 +1087,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             'amenities',
         );
 
-        return in_array((string) $taxonomy, $taxonomies, true);
+        return in_array( (string) $taxonomy, $taxonomies, true);
     }
 
     /**
@@ -1124,34 +1097,33 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param int    $tt_id   Term taxonomy ID
      * @param string $taxonomy Taxonomy name
      */
-    public function clear_terms_cache($term_id, $tt_id = 0, $taxonomy = '')
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    public function clear_terms_cache( $term_id, $tt_id = 0, $taxonomy = '' ) {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
         // Handle different hook signatures
         if (func_num_args() === 1) {
             // For delete_term hook (3 params)
-            $term_id = func_get_arg(0);
+            $term_id  = func_get_arg(0);
             $taxonomy = func_get_arg(2);
         } elseif (func_num_args() === 2) {
             // For created_term and edited_term hooks
-            $term_id = func_get_arg(0);
+            $term_id  = func_get_arg(0);
             $taxonomy = func_get_arg(1);
         }
-        
+
         // Early validation to prevent unnecessary processing
-        if (empty($term_id) || !is_numeric($term_id)) {
+        if (empty($term_id) || ! is_numeric($term_id)) {
             $this->clear_all_search_transients();
             do_action('hvnly_cleared_terms_cache', $term_id);
             return;
         }
 
         $term = get_term($term_id);
-        
+
         // Comprehensive validation for term existence and validity
-        if (!$term || is_wp_error($term) || !isset($term->taxonomy)) {
+        if ( ! $term || is_wp_error($term) || ! isset($term->taxonomy)) {
             $this->clear_all_search_transients();
             do_action('hvnly_cleared_terms_cache', $term_id);
             return;
@@ -1179,14 +1151,13 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * WordPress API. This is the most efficient method for clearing
      * multiple transients matching a pattern.
      */
-    private function clear_all_search_transients()
-    {
-        if (!\hvnly_is_cache_enabled()) {
+    private function clear_all_search_transients() {
+        if ( ! \hvnly_is_cache_enabled()) {
             return;
         }
 
         global $wpdb;
-        
+
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         // Direct query required for pattern-based transient deletion
         $transient_keys = $wpdb->get_col(
@@ -1200,7 +1171,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             )
         );
         // phpcs:enable
-        
+
         if (empty($transient_keys)) {
             if (class_exists(PropertyQueryCache::class)) {
                 PropertyQueryCache::invalidate_all();
@@ -1208,21 +1179,21 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             do_action('hvnly_cleared_all_search_transients');
             return;
         }
-        
+
         // Batch delete transients for better performance
         $deleted_count = 0;
         foreach ($transient_keys as $key) {
             // Extract transient name using regex for reliability
             if (preg_match('/^_transient_(?:timeout_)?(.+)$/', $key, $matches)) {
                 $transient_name = $matches[1];
-                
+
                 // Use WordPress API to ensure proper cache invalidation
                 if (delete_transient($transient_name)) {
                     $deleted_count++;
                 }
             }
         }
-        
+
         // Log deletion for debugging if needed (only in debug mode)
 
         if (class_exists(PropertyQueryCache::class)) {
@@ -1240,8 +1211,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      * @param int   $per_page Posts per page
      * @return array Query args
      */
-    private function build_query_args($data, $page = 1, $per_page = 12)
-    {
+    private function build_query_args( $data, $page = 1, $per_page = 12 ) {
         return PropertyQueryArgsBuilder::build($data, (int) $page, (int) $per_page);
     }
 
@@ -1250,11 +1220,10 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      *
      * @return void
      */
-    public function hvnly_get_properties_for_map()
-    {
+    public function hvnly_get_properties_for_map() {
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
-        
-        if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {  
+
+        if ( ! wp_verify_nonce($nonce, 'hvnly_ajax_request')) {
             wp_send_json_error(__( 'Security check failed', 'havenlytics' ));
         }
 
@@ -1271,7 +1240,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
             }
 
             $post_data = $this->sanitize_post_data($_POST);
-            $args = $this->build_query_args($post_data, $page, $per_page);
+            $args      = $this->build_query_args($post_data, $page, $per_page);
             $cache_key = $this->generate_search_cache_key($args, $page, $per_page) . '_map';
 
             $cached_results = $this->get_cached_search_results($cache_key);
@@ -1286,11 +1255,11 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
                 }
             }
 
-            $properties_query = PropertyQueryExecutor::query($post_data, $page, $per_page, [
+            $properties_query       = PropertyQueryExecutor::query($post_data, $page, $per_page, array(
                 'filter_context' => 'map',
-            ]);
-            $properties = array();
-            $posts_scanned = 0;
+            ));
+            $properties             = array();
+            $posts_scanned          = 0;
             $posts_with_coordinates = 0;
 
             if ($properties_query->have_posts()) {
@@ -1300,15 +1269,15 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
                     ++$posts_scanned;
 
                     $map_data = $this->get_property_map_data($post_id);
-                    
-                    $price = get_post_meta($post_id, '_hvnly_property_price', true);
-                    $bedrooms = get_post_meta($post_id, '_hvnly_property_bedrooms', true);
+
+                    $price     = get_post_meta($post_id, '_hvnly_property_price', true);
+                    $bedrooms  = get_post_meta($post_id, '_hvnly_property_bedrooms', true);
                     $bathrooms = get_post_meta($post_id, '_hvnly_property_bathrooms', true);
 
                     $formatted_price = '';
-                    if (!empty($price)) {
+                    if ( ! empty($price)) {
                         if (is_numeric($price)) {
-                            $formatted_price = '$' . number_format((float)$price);
+                            $formatted_price = '$' . number_format( (float) $price);
                         } elseif (is_string($price)) {
                             $decoded = json_decode($price, true);
                             if (is_array($decoded) && isset($decoded['__type']) && $decoded['__type'] === 'custom_label') {
@@ -1316,7 +1285,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
                             } else {
                                 $clean_price = preg_replace('/[^0-9.]/', '', $price);
                                 if (is_numeric($clean_price)) {
-                                    $formatted_price = '$' . number_format((float)$clean_price);
+                                    $formatted_price = '$' . number_format( (float) $clean_price);
                                 } else {
                                     $formatted_price = $price;
                                 }
@@ -1326,9 +1295,9 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
 
                     $sqft = get_post_meta($post_id, '_hvnly_property_sqft', true);
                     $area = '';
-                    if (!empty($sqft)) {
+                    if ( ! empty($sqft)) {
                         $area = is_numeric($sqft)
-                            ? number_format((float) $sqft) . ' ' . __('sqft', 'havenlytics')
+                            ? number_format( (float) $sqft) . ' ' . __('sqft', 'havenlytics')
                             : (string) $sqft;
                     }
 
@@ -1336,7 +1305,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
                     // Additive field: existing consumers ignore it; reads the real hvnly_prop_status taxonomy.
                     $status_label = '';
                     $status_terms = get_the_terms($post_id, 'hvnly_prop_status');
-                    if (is_array($status_terms) && !empty($status_terms) && !is_wp_error($status_terms)) {
+                    if (is_array($status_terms) && ! empty($status_terms) && ! is_wp_error($status_terms)) {
                         $status_label = $status_terms[0]->name;
                     }
 
@@ -1365,12 +1334,12 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
                 wp_reset_postdata();
             }
 
-            $valid_properties = array_filter($properties, function ($property) {
+            $valid_properties = array_filter($properties, function ( $property ) {
                 return $property['has_coordinates'];
             });
 
-            $start = (($page - 1) * $per_page) + 1;
-            $end = min($page * $per_page, $properties_query->found_posts);
+            $start = ( ( $page - 1 ) * $per_page ) + 1;
+            $end   = min($page * $per_page, $properties_query->found_posts);
 
             ob_start();
             $this->generate_pagination_template($properties_query, $page);
@@ -1421,7 +1390,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
 
             $this->set_cached_search_results($cache_key, $response_data);
             wp_send_json_success($response_data);
-            
+
         } catch (\Exception $e) {
             wp_send_json_error(__( 'An error occurred while loading map properties.', 'havenlytics' ));
         } catch (\Error $e) {
@@ -1434,8 +1403,7 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      *
      * @return void
      */
-    public function load_more_properties()
-    {
+    public function load_more_properties() {
         $this->search_properties();
     }
 
@@ -1444,12 +1412,11 @@ $per_page = isset($_POST['per_page']) ? absint(wp_unslash($_POST['per_page'])) :
      *
      * @return void
      */
-    public function get_filter_options()
-    {
+    public function get_filter_options() {
         // Fixed nonce handling with proper unslashing
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
-        
-        if (!wp_verify_nonce($nonce, 'hvnly_ajax_request')) {
+
+        if ( ! wp_verify_nonce($nonce, 'hvnly_ajax_request')) {
             wp_send_json_error(__( 'Security check failed', 'havenlytics' ));
         }
 

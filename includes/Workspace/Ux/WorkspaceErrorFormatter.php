@@ -30,7 +30,7 @@ final class WorkspaceErrorFormatter {
 			'propertyType'       => __( 'Property type', 'havenlytics' ),
 			'propertyDepartment' => __( 'Department', 'havenlytics' ),
 			'propertyStatus'     => __( 'Status', 'havenlytics' ),
-			'propertyFeaturesTax'=> __( 'Features', 'havenlytics' ),
+			'propertyFeaturesTax' => __( 'Features', 'havenlytics' ),
 			'propertyLocations'  => __( 'Locations', 'havenlytics' ),
 			'propertyTags'       => __( 'Tags', 'havenlytics' ),
 			'propertyBadges'     => __( 'Badges', 'havenlytics' ),
@@ -55,7 +55,7 @@ final class WorkspaceErrorFormatter {
 					$name  = (string) $item['field']['name'];
 					$label = (string) ( $item['field']['label'] ?? '' );
 					if ( '' !== $label ) {
-						$index[ $name ]           = $label;
+						$index[ $name ]             = $label;
 						$index[ 'fields.' . $name ] = $label;
 					}
 				}

@@ -176,7 +176,7 @@ final class TempStorage {
 			return $base;
 		}
 
-		$dir = (string) $base->data();
+		$dir     = (string) $base->data();
 		$removed = 0;
 		$cutoff  = time() - ManifestSchema::TEMP_RETENTION_SECONDS;
 

@@ -121,7 +121,7 @@ final class WorkspaceTemplateLoader {
 			return '';
 		}
 
-		$file = $basename . '.php';
+		$file       = $basename . '.php';
 		$theme_path = $this->get_theme_template_path();
 		$default    = $this->get_default_path();
 

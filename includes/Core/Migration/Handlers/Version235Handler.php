@@ -44,7 +44,7 @@ class Version235Handler implements MigrationInterface {
 
     const BATCH_KEY = 'hvnly_migration_235_offset';
 
-    const DONE_KEY  = 'hvnly_migration_235_done';
+    const DONE_KEY = 'hvnly_migration_235_done';
 
 
 
@@ -67,7 +67,6 @@ class Version235Handler implements MigrationInterface {
     public function get_version(): string {
 
         return '2.3.5';
-
     }
 
 
@@ -75,7 +74,6 @@ class Version235Handler implements MigrationInterface {
     public function get_description(): string {
 
         return 'Soft-flags duplicate group field meta (orphan candidates) — no automatic deletion';
-
     }
 
 
@@ -83,7 +81,6 @@ class Version235Handler implements MigrationInterface {
     public function is_needed(): bool {
 
         return ! get_option( self::DONE_KEY, false );
-
     }
 
 
@@ -92,23 +89,18 @@ class Version235Handler implements MigrationInterface {
 
         $this->log( 'Starting soft orphan scan migration 2.3.5', 'info', '2.3.5' );
 
-
-
         $flagged = 0;
 
-        $result  = BatchProcessor::each_property(
+        $result = BatchProcessor::each_property(
 
             function ( int $post_id ) use ( &$flagged ) {
 
                 $flagged += $this->flag_property_leaked_meta( $post_id );
-
             },
 
             self::BATCH_KEY
 
         );
-
-
 
         $this->log(
 
@@ -132,22 +124,17 @@ class Version235Handler implements MigrationInterface {
 
         );
 
-
-
         if ( ! $result['complete'] ) {
 
             return false;
 
         }
 
-
-
         update_option( self::DONE_KEY, 1, false );
 
         $this->log( '235 soft orphan scan complete — no meta deleted', 'info', '2.3.5' );
 
         return true;
-
     }
 
 
@@ -155,7 +142,6 @@ class Version235Handler implements MigrationInterface {
     public function down(): bool {
 
         return true;
-
     }
 
 
@@ -178,15 +164,11 @@ class Version235Handler implements MigrationInterface {
 
         }
 
+        $flagged = 0;
 
-
-        $flagged   = 0;
-
-        $all_meta  = get_post_meta( $post_id );
+        $all_meta = get_post_meta( $post_id );
 
         $canonical = array();
-
-
 
         foreach ( self::TYPE_SUFFIXES as $type => $suffixes ) {
 
@@ -215,8 +197,6 @@ class Version235Handler implements MigrationInterface {
                 continue;
 
             }
-
-
 
             foreach ( $bases as $base ) {
 
@@ -252,15 +232,11 @@ class Version235Handler implements MigrationInterface {
 
         }
 
-
-
         if ( empty( $canonical ) ) {
 
             return 0;
 
         }
-
-
 
         foreach ( $all_meta as $meta_key => $rows ) {
 
@@ -270,15 +246,13 @@ class Version235Handler implements MigrationInterface {
 
             }
 
-
-
             foreach ( self::TYPE_SUFFIXES as $type => $suffixes ) {
 
                 foreach ( $suffixes as $suffix ) {
 
                     $needle = '_' . $suffix;
 
-                    $len    = strlen( $needle );
+                    $len = strlen( $needle );
 
                     if ( strlen( $meta_key ) <= $len || substr( $meta_key, -$len ) !== $needle ) {
 
@@ -292,11 +266,9 @@ class Version235Handler implements MigrationInterface {
 
                     }
 
-
-
                     $base = substr( $meta_key, 0, -$len );
 
-                    $val  = maybe_unserialize( $rows[0] ?? '' );
+                    $val = maybe_unserialize( $rows[0] ?? '' );
 
                     if ( $val === '' || $val === false || $val === null ) {
 
@@ -306,15 +278,11 @@ class Version235Handler implements MigrationInterface {
 
                     $str_val = is_scalar( $val ) ? (string) $val : wp_json_encode( $val );
 
-
-
                     if ( empty( $canonical[ $suffix ][ $type ] ) ) {
 
                         continue;
 
                     }
-
-
 
                     foreach ( $canonical[ $suffix ][ $type ] as $canon ) {
 
@@ -346,12 +314,6 @@ class Version235Handler implements MigrationInterface {
 
         }
 
-
-
         return $flagged;
-
     }
-
 }
-
-

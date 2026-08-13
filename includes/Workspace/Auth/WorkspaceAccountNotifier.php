@@ -140,8 +140,8 @@ final class WorkspaceAccountNotifier {
 			return $defaults; // No Workspace page — leave core's email alone.
 		}
 
-		$context = $this->base_context( $user_data );
-		$context = array_merge(
+		$context              = $this->base_context( $user_data );
+		$context              = array_merge(
 			$context,
 			array(
 				'email_type' => EmailConstants::TYPE_PASSWORD_RESET,
@@ -192,8 +192,8 @@ final class WorkspaceAccountNotifier {
 			return;
 		}
 
-		$context = $this->base_context( $user );
-		$context = array_merge(
+		$context              = $this->base_context( $user );
+		$context              = array_merge(
 			$context,
 			array(
 				'email_type'  => EmailConstants::TYPE_PASSWORD_CHANGED,
@@ -267,8 +267,8 @@ final class WorkspaceAccountNotifier {
 			return;
 		}
 
-		$context = $this->base_context( $user );
-		$context = array_merge(
+		$context              = $this->base_context( $user );
+		$context              = array_merge(
 			$context,
 			array(
 				'email_type'  => EmailConstants::TYPE_AGENT_PROFILE_UPDATE,
@@ -405,8 +405,8 @@ final class WorkspaceAccountNotifier {
 			return;
 		}
 
-		$context = $this->base_context( $user );
-		$context = array_merge(
+		$context              = $this->base_context( $user );
+		$context              = array_merge(
 			$context,
 			array(
 				'email_type' => EmailConstants::TYPE_WS_INVITATION,

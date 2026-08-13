@@ -200,7 +200,7 @@ final class WorkspaceBootstrap {
 		$taxonomy_requests_controller   = new TaxonomyRequestsController( $this->identity, $this->authorization );
 		// Guest mode takes no identity/authorization: a guest is never a
 		// WordPress user, so there is no identity to resolve.
-		$guest_controller               = new Api\GuestController();
+		$guest_controller = new Api\GuestController();
 
 		$this->page->register_hooks();
 		$this->assets->register_hooks();

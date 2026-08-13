@@ -57,7 +57,7 @@ $hvnly_search_term = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( (str
 			<?php if ( 'list' === $hvnly_view_type ) : ?>
 				<input type="hidden" name="view" value="list" />
 			<?php endif; ?>
-			<button type="submit" class="hvnly-property--archive__search-btn">
+			<button type="submit" class="hvnly-ui-control hvnly-property--archive__search-btn">
 				<i class="fas fa-search" aria-hidden="true"></i>
 				<span><?php esc_html_e( 'Search', 'havenlytics' ); ?></span>
 			</button>
@@ -65,10 +65,10 @@ $hvnly_search_term = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( (str
 		<?php endif; ?>
 
 		<div class="hvnly-property--archive__view-buttons" role="group" aria-label="<?php esc_attr_e( 'View layout options', 'havenlytics' ); ?>">
-			<button type="button" class="hvnly-property--archive__view-btn <?php echo esc_attr( 'list' === $hvnly_view_type ? 'active' : '' ); ?>" data-view="list" aria-pressed="<?php echo esc_attr( 'list' === $hvnly_view_type ? 'true' : 'false' ); ?>" aria-label="<?php esc_attr_e( 'List view', 'havenlytics' ); ?>">
+			<button type="button" class="hvnly-ui-control hvnly-property--archive__view-btn <?php echo esc_attr( 'list' === $hvnly_view_type ? 'active' : '' ); ?>" data-view="list" aria-pressed="<?php echo esc_attr( 'list' === $hvnly_view_type ? 'true' : 'false' ); ?>" aria-label="<?php esc_attr_e( 'List view', 'havenlytics' ); ?>">
 				<i class="fas fa-list" aria-hidden="true"></i>
 			</button>
-			<button type="button" class="hvnly-property--archive__view-btn <?php echo esc_attr( 'grid' === $hvnly_view_type ? 'active' : '' ); ?>" data-view="grid" aria-pressed="<?php echo esc_attr( 'grid' === $hvnly_view_type ? 'true' : 'false' ); ?>" aria-label="<?php esc_attr_e( 'Grid view', 'havenlytics' ); ?>">
+			<button type="button" class="hvnly-ui-control hvnly-property--archive__view-btn <?php echo esc_attr( 'grid' === $hvnly_view_type ? 'active' : '' ); ?>" data-view="grid" aria-pressed="<?php echo esc_attr( 'grid' === $hvnly_view_type ? 'true' : 'false' ); ?>" aria-label="<?php esc_attr_e( 'Grid view', 'havenlytics' ); ?>">
 				<i class="fas fa-th" aria-hidden="true"></i>
 			</button>
 		</div>

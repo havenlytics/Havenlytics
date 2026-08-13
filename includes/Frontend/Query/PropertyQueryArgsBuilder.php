@@ -9,7 +9,7 @@
 
 namespace HvnlyNab\Frontend\Query;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -20,14 +20,14 @@ class PropertyQueryArgsBuilder {
      *
      * @var array<string, array>
      */
-    private static $hvnly_build_cache = [];
+    private static $hvnly_build_cache = array();
 
     /**
      * Request-level memoization for merged Elementor widget context.
      *
      * @var array<string, array>
      */
-    private static $hvnly_widget_context_cache = [];
+    private static $hvnly_widget_context_cache = array();
 
     /**
      * Build WP_Query args from filter/search data.
@@ -38,30 +38,30 @@ class PropertyQueryArgsBuilder {
      * @param array $options  Optional: widget_id (string).
      * @return array
      */
-    public static function build(array $data, int $page = 1, int $per_page = 12, array $options = []): array {
+    public static function build( array $data, int $page = 1, int $per_page = 12, array $options = array() ): array {
         $hvnly_memo_key = self::hvnly_build_memo_key($data, $page, $per_page, $options);
-        if (isset(self::$hvnly_build_cache[$hvnly_memo_key])) {
-            return self::$hvnly_build_cache[$hvnly_memo_key];
+        if (isset(self::$hvnly_build_cache[ $hvnly_memo_key ])) {
+            return self::$hvnly_build_cache[ $hvnly_memo_key ];
         }
 
-        $widget_id = isset($options['widget_id']) ? (string) $options['widget_id'] : '';
+        $widget_id     = isset($options['widget_id']) ? (string) $options['widget_id'] : '';
         $resolved_page = self::resolve_paged($widget_id, $data, $page);
 
-        $args = [
+        $args = array(
             'post_type'      => 'hvnly_property',
             'post_status'    => 'publish',
             'paged'          => $resolved_page,
             'posts_per_page' => max(1, absint($per_page)),
-        ];
+        );
 
         self::apply_tax_queries($args, $data);
         self::apply_meta_queries($args, $data);
 
-        if (!empty($data['address_keyword'])) {
-            $args['s'] = sanitize_text_field((string) $data['address_keyword']);
+        if ( ! empty($data['address_keyword'])) {
+            $args['s'] = sanitize_text_field( (string) $data['address_keyword']);
         }
 
-        if (!empty($data['orderby'])) {
+        if ( ! empty($data['orderby'])) {
             self::apply_orderby($args, (string) $data['orderby']);
         } else {
             self::apply_default_orderby($args, $data);
@@ -69,11 +69,11 @@ class PropertyQueryArgsBuilder {
 
         $args = apply_filters('hvnly_property_query_args', $args, $data);
 
-        if (!empty($options['filter_context']) && $options['filter_context'] === 'elementor_load_more') {
+        if ( ! empty($options['filter_context']) && $options['filter_context'] === 'elementor_load_more') {
             $args = apply_filters('hvnly_elementor_load_more_query_args', $args, $data);
         }
 
-        self::$hvnly_build_cache[$hvnly_memo_key] = $args;
+        self::$hvnly_build_cache[ $hvnly_memo_key ] = $args;
 
         return $args;
     }
@@ -85,20 +85,20 @@ class PropertyQueryArgsBuilder {
      * @param string $widget_id Elementor widget instance ID.
      * @return array
      */
-    public static function merge_elementor_widget_context(array $settings, string $widget_id): array {
-        $hvnly_context_key = md5(wp_json_encode([$settings, $widget_id]));
-        if (isset(self::$hvnly_widget_context_cache[$hvnly_context_key])) {
-            return self::$hvnly_widget_context_cache[$hvnly_context_key];
+    public static function merge_elementor_widget_context( array $settings, string $widget_id ): array {
+        $hvnly_context_key = md5(wp_json_encode(array( $settings, $widget_id )));
+        if (isset(self::$hvnly_widget_context_cache[ $hvnly_context_key ])) {
+            return self::$hvnly_widget_context_cache[ $hvnly_context_key ];
         }
 
-        $filters = function_exists('hvnly_get_current_filters') ? hvnly_get_current_filters() : [];
-        $data    = is_array($filters) ? $filters : [];
+        $filters = function_exists('hvnly_get_current_filters') ? hvnly_get_current_filters() : array();
+        $data    = is_array($filters) ? $filters : array();
 
-        if (empty($data['orderby']) && !empty($settings['orderby'])) {
+        if (empty($data['orderby']) && ! empty($settings['orderby'])) {
             $data['orderby'] = (string) $settings['orderby'];
         }
 
-        if (empty($data['department']) && !empty($settings['default_department'])) {
+        if (empty($data['department']) && ! empty($settings['default_department'])) {
             $data['department'] = (string) $settings['default_department'];
         }
 
@@ -110,11 +110,11 @@ class PropertyQueryArgsBuilder {
             $data['max_price'] = $settings['default_max_price'];
         }
 
-        if (empty($data['bedrooms']) && !empty($settings['default_bedrooms'])) {
+        if (empty($data['bedrooms']) && ! empty($settings['default_bedrooms'])) {
             $data['bedrooms'] = $settings['default_bedrooms'];
         }
 
-        if (empty($data['bathrooms']) && !empty($settings['default_bathrooms'])) {
+        if (empty($data['bathrooms']) && ! empty($settings['default_bathrooms'])) {
             $data['bathrooms'] = $settings['default_bathrooms'];
         }
 
@@ -124,7 +124,7 @@ class PropertyQueryArgsBuilder {
 
         $data['widget_id'] = $widget_id;
 
-        self::$hvnly_widget_context_cache[$hvnly_context_key] = $data;
+        self::$hvnly_widget_context_cache[ $hvnly_context_key ] = $data;
 
         return $data;
     }
@@ -137,26 +137,26 @@ class PropertyQueryArgsBuilder {
      * @param int    $fallback  Explicit page from caller (AJAX).
      * @return int
      */
-    public static function resolve_paged(string $widget_id = '', array $data = [], int $fallback = 1): int {
+    public static function resolve_paged( string $widget_id = '', array $data = array(), int $fallback = 1 ): int {
         // Explicit AJAX `page` must win over the search form hidden `paged=1` field.
-        if (!empty($data['page'])) {
+        if ( ! empty($data['page'])) {
             return max(1, absint($data['page']));
         }
 
         if ($widget_id !== '') {
             $key = 'hvnly_paged_' . sanitize_key($widget_id);
-            if (isset($_GET[$key])) {
-                return max(1, absint(wp_unslash($_GET[$key])));
+            if (isset($_GET[ $key ])) {
+                return max(1, absint(wp_unslash($_GET[ $key ])));
             }
 
-            if (!empty($data['paged'])) {
+            if ( ! empty($data['paged'])) {
                 return max(1, absint($data['paged']));
             }
 
             return max(1, absint($fallback));
         }
 
-        if (!empty($data['paged'])) {
+        if ( ! empty($data['paged'])) {
             return max(1, absint($data['paged']));
         }
 
@@ -169,17 +169,17 @@ class PropertyQueryArgsBuilder {
      * @param array $settings Widget settings (optional).
      * @return string grid|list|map
      */
-    public static function resolve_view_type(array $settings = []): string {
-        $filters = function_exists('hvnly_get_current_filters') ? hvnly_get_current_filters() : [];
+    public static function resolve_view_type( array $settings = array() ): string {
+        $filters = function_exists('hvnly_get_current_filters') ? hvnly_get_current_filters() : array();
         $raw     = '';
 
-        if (!empty($filters['view_type'])) {
+        if ( ! empty($filters['view_type'])) {
             $raw = (string) $filters['view_type'];
         } elseif (isset($_GET['view'])) {
             $raw = sanitize_text_field(wp_unslash($_GET['view']));
         } elseif (isset($_GET['view_type'])) {
             $raw = sanitize_text_field(wp_unslash($_GET['view_type']));
-        } elseif (!empty($settings['default_view'])) {
+        } elseif ( ! empty($settings['default_view'])) {
             $raw = (string) $settings['default_view'];
         } elseif (function_exists('hvnly_get_default_view_option')) {
             $raw = (string) hvnly_get_default_view_option();
@@ -189,7 +189,7 @@ class PropertyQueryArgsBuilder {
 
         $raw = strtolower(sanitize_text_field($raw));
 
-        return in_array($raw, ['grid', 'list', 'map'], true) ? $raw : 'grid';
+        return in_array($raw, array( 'grid', 'list', 'map' ), true) ? $raw : 'grid';
     }
 
     /**
@@ -198,30 +198,30 @@ class PropertyQueryArgsBuilder {
      * @param array $data
      * @return bool
      */
-    public static function is_featured_only(array $data): bool {
+    public static function is_featured_only( array $data ): bool {
         if (empty($data['featured_only'])) {
             return false;
         }
 
-        $value = strtolower(trim((string) $data['featured_only']));
+        $value = strtolower(trim( (string) $data['featured_only']));
 
-        return in_array($value, ['yes', '1', 'true'], true);
+        return in_array($value, array( 'yes', '1', 'true' ), true);
     }
 
     public static function get_featured_meta_query(): array {
-        return [
+        return array(
             'relation' => 'OR',
-            [
+            array(
                 'key'     => '_hvnly_property_featured',
                 'value'   => '1',
                 'compare' => '=',
-            ],
-            [
+            ),
+            array(
                 'key'     => '_hvnly_property_action_tool_is_featured',
                 'value'   => '1',
                 'compare' => '=',
-            ],
-        ];
+            ),
+        );
     }
 
     /**
@@ -231,7 +231,7 @@ class PropertyQueryArgsBuilder {
      * @param string $orderby
      * @return void
      */
-    public static function apply_orderby(array &$args, string $orderby): void {
+    public static function apply_orderby( array &$args, string $orderby ): void {
         $orderby = sanitize_text_field($orderby);
 
         switch ($orderby) {
@@ -301,7 +301,7 @@ class PropertyQueryArgsBuilder {
      * @param array $data
      * @return void
      */
-    public static function apply_default_orderby(array &$args, array $data): void {
+    public static function apply_default_orderby( array &$args, array $data ): void {
         $default_sort = function_exists('hvnly_get_default_sort_option') ? hvnly_get_default_sort_option() : 'date';
         self::apply_orderby($args, (string) $default_sort);
     }
@@ -311,48 +311,48 @@ class PropertyQueryArgsBuilder {
      * @param array $data
      * @return void
      */
-    private static function apply_tax_queries(array &$args, array $data): void {
-        $tax_query = [];
+    private static function apply_tax_queries( array &$args, array $data ): void {
+        $tax_query = array();
 
-        if (!empty($data['department'])) {
-            $department = sanitize_text_field((string) $data['department']);
+        if ( ! empty($data['department'])) {
+            $department = sanitize_text_field( (string) $data['department']);
             if ($department !== '') {
-                $tax_query[] = [
+                $tax_query[] = array(
                     'taxonomy' => 'hvnly_prop_depts',
                     'field'    => 'slug',
                     'terms'    => $department,
-                ];
+                );
             }
         }
 
-        if (!empty($data['property_type'])) {
-            $property_types = is_array($data['property_type']) ? $data['property_type'] : [$data['property_type']];
-            $tax_query[] = [
+        if ( ! empty($data['property_type'])) {
+            $property_types = is_array($data['property_type']) ? $data['property_type'] : array( $data['property_type'] );
+            $tax_query[]    = array(
                 'taxonomy' => 'hvnly_prop_types',
                 'field'    => 'slug',
                 'terms'    => array_map('sanitize_text_field', $property_types),
-            ];
+            );
         }
 
-        if (!empty($data['location'])) {
-            $locations = is_array($data['location']) ? $data['location'] : [$data['location']];
-            $tax_query[] = [
+        if ( ! empty($data['location'])) {
+            $locations   = is_array($data['location']) ? $data['location'] : array( $data['location'] );
+            $tax_query[] = array(
                 'taxonomy' => 'hvnly_prop_locations',
                 'field'    => 'slug',
                 'terms'    => array_map('sanitize_text_field', $locations),
-            ];
+            );
         }
 
-        if (!empty($data['status'])) {
-            $statuses = is_array($data['status']) ? $data['status'] : [$data['status']];
-            $tax_query[] = [
+        if ( ! empty($data['status'])) {
+            $statuses    = is_array($data['status']) ? $data['status'] : array( $data['status'] );
+            $tax_query[] = array(
                 'taxonomy' => 'hvnly_prop_status',
                 'field'    => 'slug',
                 'terms'    => array_map('sanitize_text_field', $statuses),
-            ];
+            );
         }
 
-        $slug_taxonomies = [
+        $slug_taxonomies = array(
             'hvnly_prop_depts',
             'hvnly_prop_types',
             'hvnly_prop_locations',
@@ -362,26 +362,26 @@ class PropertyQueryArgsBuilder {
             'hvnly_prop_badges',
             'hvnly_prop_status',
             'amenities',
-        ];
+        );
 
         foreach ($slug_taxonomies as $taxonomy) {
-            if (empty($data[$taxonomy])) {
+            if (empty($data[ $taxonomy ])) {
                 continue;
             }
 
-            $terms = is_array($data[$taxonomy]) ? $data[$taxonomy] : explode(',', (string) $data[$taxonomy]);
+            $terms = is_array($data[ $taxonomy ]) ? $data[ $taxonomy ] : explode(',', (string) $data[ $taxonomy ]);
             $terms = array_filter(array_map('sanitize_text_field', $terms));
 
-            if (!empty($terms)) {
-                $tax_query[] = [
+            if ( ! empty($terms)) {
+                $tax_query[] = array(
                     'taxonomy' => $taxonomy,
                     'field'    => 'slug',
                     'terms'    => $terms,
-                ];
+                );
             }
         }
 
-        $in_taxonomy_params = [
+        $in_taxonomy_params = array(
             'in_tag'      => 'hvnly_prop_tags',
             'in_badge'    => 'hvnly_prop_badges',
             'in_status'   => 'hvnly_prop_status',
@@ -389,23 +389,23 @@ class PropertyQueryArgsBuilder {
             'in_location' => 'hvnly_prop_locations',
             'in_feature'  => 'hvnly_prop_features',
             'in_review'   => 'hvnly_prop_reviews',
-        ];
+        );
 
         foreach ($in_taxonomy_params as $param => $taxonomy) {
-            if (empty($data[$param])) {
+            if (empty($data[ $param ])) {
                 continue;
             }
 
-            $param_value = $data[$param];
+            $param_value = $data[ $param ];
             $term_ids    = is_array($param_value) ? $param_value : array_map('absint', explode(',', (string) $param_value));
             $term_ids    = array_filter($term_ids);
 
-            if (!empty($term_ids)) {
-                $tax_query[] = [
+            if ( ! empty($term_ids)) {
+                $tax_query[] = array(
                     'taxonomy' => $taxonomy,
                     'field'    => 'term_id',
                     'terms'    => $term_ids,
-                ];
+                );
             }
         }
 
@@ -413,16 +413,16 @@ class PropertyQueryArgsBuilder {
             return;
         }
 
-        $grouped = [];
+        $grouped = array();
         foreach ($tax_query as $tax_item) {
             $taxonomy = $tax_item['taxonomy'];
-            if (!isset($grouped[$taxonomy])) {
-                $grouped[$taxonomy] = $tax_item;
+            if ( ! isset($grouped[ $taxonomy ])) {
+                $grouped[ $taxonomy ] = $tax_item;
                 continue;
             }
 
-            if (is_array($grouped[$taxonomy]['terms']) && is_array($tax_item['terms'])) {
-                $grouped[$taxonomy]['terms'] = array_merge($grouped[$taxonomy]['terms'], $tax_item['terms']);
+            if (is_array($grouped[ $taxonomy ]['terms']) && is_array($tax_item['terms'])) {
+                $grouped[ $taxonomy ]['terms'] = array_merge($grouped[ $taxonomy ]['terms'], $tax_item['terms']);
             }
         }
 
@@ -440,124 +440,124 @@ class PropertyQueryArgsBuilder {
      * @param array $data
      * @return void
      */
-    private static function apply_meta_queries(array &$args, array $data): void {
-        $min_price = !empty($data['min_price']) ? absint($data['min_price']) : 0;
-        $max_price = !empty($data['max_price']) ? absint($data['max_price']) : 0;
+    private static function apply_meta_queries( array &$args, array $data ): void {
+        $min_price = ! empty($data['min_price']) ? absint($data['min_price']) : 0;
+        $max_price = ! empty($data['max_price']) ? absint($data['max_price']) : 0;
         $has_price = $min_price > 0 || $max_price > 0;
 
         $has_filters = $has_price
-            || !empty($data['bedrooms'])
-            || !empty($data['bathrooms'])
-            || !empty($data['reception_rooms'])
-            || !empty($data['garages'])
+            || ! empty($data['bedrooms'])
+            || ! empty($data['bathrooms'])
+            || ! empty($data['reception_rooms'])
+            || ! empty($data['garages'])
             || self::is_featured_only($data)
-            || !empty($data['property_ids']);
+            || ! empty($data['property_ids']);
 
-        if (!$has_filters) {
+        if ( ! $has_filters) {
             return;
         }
 
-        $meta_query = [];
-        $property_ids_meta_query = [];
+        $meta_query              = array();
+        $property_ids_meta_query = array();
 
-        if (!empty($data['property_ids'])) {
-            $property_ids = is_array($data['property_ids']) ? $data['property_ids'] : [$data['property_ids']];
+        if ( ! empty($data['property_ids'])) {
+            $property_ids = is_array($data['property_ids']) ? $data['property_ids'] : array( $data['property_ids'] );
             $clean_ids    = array_map('sanitize_text_field', array_filter($property_ids));
 
-            if (!empty($clean_ids)) {
-                $property_ids_meta_query = ['relation' => 'OR'];
+            if ( ! empty($clean_ids)) {
+                $property_ids_meta_query = array( 'relation' => 'OR' );
                 foreach ($clean_ids as $property_id) {
-                    $property_ids_meta_query[] = [
+                    $property_ids_meta_query[] = array(
                         'key'     => '_hvnly_unique_property_id',
                         'value'   => $property_id,
                         'compare' => 'LIKE',
-                    ];
+                    );
                 }
             }
         }
 
         if ($min_price > 0 || $max_price > 0) {
-            $price_query = [];
+            $price_query = array();
 
             if ($min_price > 0) {
-                $price_query[] = [
+                $price_query[] = array(
                     'key'     => '_hvnly_property_price',
                     'value'   => $min_price,
                     'type'    => 'NUMERIC',
                     'compare' => '>=',
-                ];
+                );
             }
 
             if ($max_price > 0) {
-                $price_query[] = [
+                $price_query[] = array(
                     'key'     => '_hvnly_property_price',
                     'value'   => $max_price,
                     'type'    => 'NUMERIC',
                     'compare' => '<=',
-                ];
+                );
             }
 
             if (count($price_query) > 1) {
                 $price_query['relation'] = 'AND';
-                $meta_query[] = $price_query;
-            } elseif (!empty($price_query)) {
+                $meta_query[]            = $price_query;
+            } elseif ( ! empty($price_query)) {
                 $meta_query[] = $price_query[0];
             }
         }
 
-        if (!empty($data['bedrooms'])) {
-            $meta_query[] = [
+        if ( ! empty($data['bedrooms'])) {
+            $meta_query[] = array(
                 'key'     => '_hvnly_property_bedrooms',
                 'value'   => absint($data['bedrooms']),
                 'type'    => 'NUMERIC',
                 'compare' => '>=',
-            ];
+            );
         }
 
-        if (!empty($data['bathrooms'])) {
-            $meta_query[] = [
+        if ( ! empty($data['bathrooms'])) {
+            $meta_query[] = array(
                 'key'     => '_hvnly_property_bathrooms',
                 'value'   => absint($data['bathrooms']),
                 'type'    => 'NUMERIC',
                 'compare' => '>=',
-            ];
+            );
         }
 
-        if (!empty($data['reception_rooms'])) {
-            $meta_query[] = [
+        if ( ! empty($data['reception_rooms'])) {
+            $meta_query[] = array(
                 'key'     => '_hvnly_property_reception_rooms',
                 'value'   => absint($data['reception_rooms']),
                 'type'    => 'NUMERIC',
                 'compare' => '>=',
-            ];
+            );
         }
 
-        if (!empty($data['garages'])) {
-            $meta_query[] = [
+        if ( ! empty($data['garages'])) {
+            $meta_query[] = array(
                 'key'     => '_hvnly_property_garage_sqft',
                 'value'   => absint($data['garages']),
                 'type'    => 'NUMERIC',
                 'compare' => '>=',
-            ];
+            );
         }
 
         if (self::is_featured_only($data)) {
             $meta_query[] = self::get_featured_meta_query();
         }
 
-        if (!empty($property_ids_meta_query) && !empty($meta_query)) {
+        if ( ! empty($property_ids_meta_query) && ! empty($meta_query)) {
             if (count($meta_query) > 1) {
                 $meta_query['relation'] = 'AND';
             }
 
-            $args['meta_query'] = [
+            $args['meta_query'] = array(
                 'relation' => 'AND',
                 $property_ids_meta_query,
                 $meta_query,
-            ];
-        } elseif (!empty($property_ids_meta_query)) {
+            );
+        } elseif ( ! empty($property_ids_meta_query)) {
             $args['meta_query'] = $property_ids_meta_query;
-        } elseif (!empty($meta_query)) {
+        } elseif ( ! empty($meta_query)) {
             if (count($meta_query) > 1) {
                 $meta_query['relation'] = 'AND';
             }
@@ -572,13 +572,13 @@ class PropertyQueryArgsBuilder {
      * @param array $options
      * @return string
      */
-    private static function hvnly_build_memo_key(array $data, int $page, int $per_page, array $options): string {
-        return md5(wp_json_encode([
+    private static function hvnly_build_memo_key( array $data, int $page, int $per_page, array $options ): string {
+        return md5(wp_json_encode(array(
             $data,
             $page,
             $per_page,
             $options,
-            self::resolve_paged((string) ($options['widget_id'] ?? ''), $data, $page),
-        ]));
+            self::resolve_paged( (string) ( $options['widget_id'] ?? '' ), $data, $page),
+        )));
     }
 }

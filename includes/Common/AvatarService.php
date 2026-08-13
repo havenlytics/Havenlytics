@@ -191,7 +191,7 @@ final class AvatarService {
 	public static function placeholder_url(): string {
 		$url = '';
 		if ( defined( 'HVNLYNAB_ASSETS_URL' ) ) {
-			$base = trailingslashit( HVNLYNAB_ASSETS_URL );
+			$base    = trailingslashit( HVNLYNAB_ASSETS_URL );
 			$primary = $base . 'images/placeholders/agent-avatar.svg';
 			$legacy  = $base . 'frontend/img/agent-avatar-placeholder.svg';
 			$url     = $primary;
@@ -341,8 +341,8 @@ final class AvatarService {
 			return false;
 		}
 
-		$email = strtolower( trim( (string) $user->user_email ) );
-		$key   = self::GRAVATAR_CACHE_PREFIX . md5( $email );
+		$email  = strtolower( trim( (string) $user->user_email ) );
+		$key    = self::GRAVATAR_CACHE_PREFIX . md5( $email );
 		$cached = get_transient( $key );
 
 		if ( '1' === $cached ) {

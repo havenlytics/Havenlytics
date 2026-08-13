@@ -12,7 +12,7 @@
 namespace HvnlyNab\Core\Migration\Interfaces;
 
 // Prevent direct access.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 

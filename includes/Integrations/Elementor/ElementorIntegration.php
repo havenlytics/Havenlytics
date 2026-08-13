@@ -10,7 +10,7 @@
 namespace HvnlyNab\Integrations\Elementor;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -61,7 +61,7 @@ final class ElementorIntegration {
      */
     private function __construct() {
         // Only initialize if Elementor is active
-        add_action('plugins_loaded', [$this, 'init'], 5);
+        add_action('plugins_loaded', array( $this, 'init' ), 5);
     }
 
     /**
@@ -73,20 +73,20 @@ final class ElementorIntegration {
         }
 
         // Check if Elementor is active
-        if (!did_action('elementor/loaded') && !class_exists('\Elementor\Plugin')) {
-            add_action('admin_notices', [$this, 'missing_elementor_notice']);
+        if ( ! did_action('elementor/loaded') && ! class_exists('\Elementor\Plugin')) {
+            add_action('admin_notices', array( $this, 'missing_elementor_notice' ));
             return;
         }
 
         // Version compatibility check
-        if (defined('ELEMENTOR_VERSION') && !version_compare(ELEMENTOR_VERSION, self::MIN_ELEMENTOR_VERSION, '>=')) {
-            add_action('admin_notices', [$this, 'elementor_version_notice']);
+        if (defined('ELEMENTOR_VERSION') && ! version_compare(ELEMENTOR_VERSION, self::MIN_ELEMENTOR_VERSION, '>=')) {
+            add_action('admin_notices', array( $this, 'elementor_version_notice' ));
             return;
         }
 
         // Initialize Elementor integration
         $this->register_hooks();
-        
+
         $this->initialized = true;
     }
 
@@ -95,14 +95,14 @@ final class ElementorIntegration {
      */
     private function register_hooks(): void {
         // Register widget categories
-        add_action('elementor/elements/categories_registered', [$this, 'register_categories']);
-        
+        add_action('elementor/elements/categories_registered', array( $this, 'register_categories' ));
+
         // Register widgets
-        add_action('elementor/widgets/register', [$this, 'register_widgets']);
-        
+        add_action('elementor/widgets/register', array( $this, 'register_widgets' ));
+
         // Register Elementor Pro theme locations
-        add_action('elementor/theme/register_locations', [$this, 'register_theme_locations']);
-        
+        add_action('elementor/theme/register_locations', array( $this, 'register_theme_locations' ));
+
         // Register AJAX handlers
         $this->register_ajax_handlers();
     }
@@ -112,13 +112,13 @@ final class ElementorIntegration {
      *
      * @param \Elementor\Elements_Manager $elements_manager
      */
-    public function register_categories($elements_manager): void {
+    public function register_categories( $elements_manager ): void {
         $elements_manager->add_category(
             'havenlytics',
-            [
+            array(
                 'title' => __('Havenlytics', 'havenlytics'),
                 'icon'  => 'eicon-home',
-            ]
+            )
         );
     }
 
@@ -127,17 +127,17 @@ final class ElementorIntegration {
      *
      * @param \Elementor\Widgets_Manager $widgets_manager
      */
-    public function register_widgets($widgets_manager): void {
-        $widgets = [
+    public function register_widgets( $widgets_manager ): void {
+        $widgets = array(
             'HvnlyAllPropertiesWidget.php'     => '\HvnlyNab\Integrations\Elementor\Widgets\HvnlyAllPropertiesWidget',
             'HvnlyPropertyAgentsWidget.php'     => '\HvnlyNab\Integrations\Elementor\Widgets\HvnlyPropertyAgentsWidget',
             'HvnlyPropertyAgenciesWidget.php' => '\HvnlyNab\Integrations\Elementor\Widgets\HvnlyPropertyAgenciesWidget',
-        ];
+        );
 
         foreach ($widgets as $file => $class) {
             $widget_file = HVNLYNAB_INCLUDES . '/Integrations/Elementor/Widgets/' . $file;
 
-            if (!file_exists($widget_file)) {
+            if ( ! file_exists($widget_file)) {
                 continue;
             }
 
@@ -164,8 +164,8 @@ final class ElementorIntegration {
      *
      * @param \ElementorPro\Modules\ThemeBuilder\Classes\Locations_Manager $location_manager
      */
-    public function register_theme_locations($location_manager): void {
-        if (!class_exists('\ElementorPro\Modules\ThemeBuilder\Classes\Locations_Manager')) {
+    public function register_theme_locations( $location_manager ): void {
+        if ( ! class_exists('\ElementorPro\Modules\ThemeBuilder\Classes\Locations_Manager')) {
             return;
         }
 
@@ -177,7 +177,7 @@ final class ElementorIntegration {
      * Display admin notice if Elementor is missing
      */
     public function missing_elementor_notice(): void {
-        if (!current_user_can('activate_plugins')) {
+        if ( ! current_user_can('activate_plugins')) {
             return;
         }
 
@@ -200,7 +200,7 @@ final class ElementorIntegration {
      * Display admin notice for Elementor version
      */
     public function elementor_version_notice(): void {
-        if (!current_user_can('activate_plugins')) {
+        if ( ! current_user_can('activate_plugins')) {
             return;
         }
 

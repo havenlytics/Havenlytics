@@ -26,25 +26,25 @@ defined( 'ABSPATH' ) || exit;
  */
 final class AgentIdentityIntegrityScanner {
 
-	public const RULE_AGENT_MISSING_USER       = 'agent_cpt_linked_user_missing';
-	public const RULE_USER_MISSING_AGENT       = 'agent_role_user_missing_cpt';
-	public const RULE_MULTI_AGENT_ONE_USER     = 'multiple_agents_linked_to_user';
-	public const RULE_AGENT_MULTI_USER_META    = 'agent_multiple_linked_user_meta_rows';
-	public const RULE_BROKEN_LINKED_ID         = 'broken_linked_user_id';
-	public const RULE_DUPLICATE_EMAIL          = 'duplicate_email';
-	public const RULE_DUPLICATE_USERNAME       = 'duplicate_username';
-	public const RULE_REG_STATUS_MISMATCH      = 'registration_status_mismatch';
-	public const RULE_ROLE_MISMATCH            = 'role_mismatch';
-	public const RULE_PROFILE_INCOMPLETE       = 'profile_incomplete';
-	public const RULE_FEATURED_IMAGE_MISSING   = 'featured_image_missing';
-	public const RULE_PROPERTY_ASSIGNED_GONE   = 'property_assigned_agent_missing';
-	public const RULE_PROPERTY_AUTHOR_GONE     = 'property_author_missing';
-	public const RULE_INQUIRY_INVALID_AGENT    = 'inquiry_invalid_agent_id';
+	public const RULE_AGENT_MISSING_USER        = 'agent_cpt_linked_user_missing';
+	public const RULE_USER_MISSING_AGENT        = 'agent_role_user_missing_cpt';
+	public const RULE_MULTI_AGENT_ONE_USER      = 'multiple_agents_linked_to_user';
+	public const RULE_AGENT_MULTI_USER_META     = 'agent_multiple_linked_user_meta_rows';
+	public const RULE_BROKEN_LINKED_ID          = 'broken_linked_user_id';
+	public const RULE_DUPLICATE_EMAIL           = 'duplicate_email';
+	public const RULE_DUPLICATE_USERNAME        = 'duplicate_username';
+	public const RULE_REG_STATUS_MISMATCH       = 'registration_status_mismatch';
+	public const RULE_ROLE_MISMATCH             = 'role_mismatch';
+	public const RULE_PROFILE_INCOMPLETE        = 'profile_incomplete';
+	public const RULE_FEATURED_IMAGE_MISSING    = 'featured_image_missing';
+	public const RULE_PROPERTY_ASSIGNED_GONE    = 'property_assigned_agent_missing';
+	public const RULE_PROPERTY_AUTHOR_GONE      = 'property_author_missing';
+	public const RULE_INQUIRY_INVALID_AGENT     = 'inquiry_invalid_agent_id';
 	public const RULE_NOTIFICATION_INVALID_USER = 'notification_invalid_user';
-	public const RULE_DASHBOARD_OWNERSHIP_SKEW = 'dashboard_ownership_skew';
-	public const RULE_TAXONOMY_CONFLICT        = 'agent_taxonomy_conflict';
-	public const RULE_LEGACY_PROPERTY_AGENT    = 'legacy_property_agent_meta';
-	public const RULE_ORPHAN_DATA              = 'orphan_data';
+	public const RULE_DASHBOARD_OWNERSHIP_SKEW  = 'dashboard_ownership_skew';
+	public const RULE_TAXONOMY_CONFLICT         = 'agent_taxonomy_conflict';
+	public const RULE_LEGACY_PROPERTY_AGENT     = 'legacy_property_agent_meta';
+	public const RULE_ORPHAN_DATA               = 'orphan_data';
 
 	/**
 	 * @var AgentIdentityIssue[]
@@ -234,7 +234,7 @@ final class AgentIdentityIntegrityScanner {
 			if ( ! $post instanceof \WP_Post ) {
 				continue;
 			}
-			$id = (int) $post->ID;
+			$id         = (int) $post->ID;
 			$out[ $id ] = array(
 				'id'           => $id,
 				'title'        => (string) $post->post_title,
@@ -255,7 +255,7 @@ final class AgentIdentityIntegrityScanner {
 	 * @return array<int, \WP_User>
 	 */
 	private function load_agent_role_users(): array {
-		$q = new \WP_User_Query(
+		$q   = new \WP_User_Query(
 			array(
 				'role'   => PortalCapabilities::WP_ROLE_AGENT,
 				'number' => -1,
@@ -713,7 +713,7 @@ final class AgentIdentityIntegrityScanner {
 	 * @return void
 	 */
 	private function check_properties( array $agents ): void {
-		$posts = get_posts(
+		$posts                             = get_posts(
 			array(
 				'post_type'              => AgentConstants::PROPERTY_POST_TYPE,
 				'post_status'            => array( 'publish', 'pending', 'draft', 'private', 'trash' ),
@@ -795,7 +795,7 @@ final class AgentIdentityIntegrityScanner {
 		global $wpdb;
 		$table = InquirySchema::table_name();
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$rows = $wpdb->get_results( "SELECT id, agent_id, property_id FROM {$table} WHERE agent_id > 0", ARRAY_A );
+		$rows                             = $wpdb->get_results( "SELECT id, agent_id, property_id FROM {$table} WHERE agent_id > 0", ARRAY_A );
 		$this->stats['inquiries_scanned'] = is_array( $rows ) ? count( $rows ) : 0;
 
 		foreach ( (array) $rows as $row ) {
@@ -844,7 +844,7 @@ final class AgentIdentityIntegrityScanner {
 		global $wpdb;
 		$table = NotificationSchema::table_name();
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		$rows = $wpdb->get_results( "SELECT id, user_id, agent_id FROM {$table}", ARRAY_A );
+		$rows                                 = $wpdb->get_results( "SELECT id, user_id, agent_id FROM {$table}", ARRAY_A );
 		$this->stats['notifications_scanned'] = is_array( $rows ) ? count( $rows ) : 0;
 
 		foreach ( (array) $rows as $row ) {
@@ -898,7 +898,7 @@ final class AgentIdentityIntegrityScanner {
 		}
 
 		// Properties assigned to an agent but authored by someone else → agent may edit but not see in author-scoped lists.
-		$posts = get_posts(
+		$posts    = get_posts(
 			array(
 				'post_type'              => AgentConstants::PROPERTY_POST_TYPE,
 				'post_status'            => array( 'publish', 'pending', 'draft' ),
@@ -963,7 +963,7 @@ final class AgentIdentityIntegrityScanner {
 			return;
 		}
 
-		$posts = get_posts(
+		$posts                               = get_posts(
 			array(
 				'post_type'              => AgentConstants::PROPERTY_POST_TYPE,
 				'post_status'            => array( 'publish', 'pending', 'draft' ),
@@ -1011,7 +1011,7 @@ final class AgentIdentityIntegrityScanner {
 	private function check_legacy_property_agent_meta(): void {
 		global $wpdb;
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$rows = $wpdb->get_results(
+		$rows                                  = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value <> '' LIMIT 200",
 				AgentConstants::META_PROPERTY_AGENT_LEGACY

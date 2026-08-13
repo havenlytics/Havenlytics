@@ -34,7 +34,7 @@ class Version234Handler implements MigrationInterface {
     }
 
     public function is_needed(): bool {
-        $config = get_option( self::PROPERTY_BUILDER_KEY, [] );
+        $config = get_option( self::PROPERTY_BUILDER_KEY, array() );
         if ( empty( $config ) || ! is_array( $config ) ) {
             return false;
         }
@@ -45,7 +45,7 @@ class Version234Handler implements MigrationInterface {
     public function up(): bool {
         $this->log( 'Starting group field isolation migration 2.3.4', 'info', '2.3.4' );
 
-        $config = get_option( self::PROPERTY_BUILDER_KEY, [] );
+        $config = get_option( self::PROPERTY_BUILDER_KEY, array() );
         if ( empty( $config ) || ! is_array( $config ) ) {
             $this->log( 'No builder config to update', 'info', '2.3.4' );
             return true;
@@ -89,7 +89,7 @@ class Version234Handler implements MigrationInterface {
         $base_to_group = array();
 
         foreach ( $config as $section ) {
-            foreach ( $section['fields'] ?? [] as $field ) {
+            foreach ( $section['fields'] ?? array() as $field ) {
                 $base = $field['group_base_id'] ?? '';
                 $gid  = $field['group_id'] ?? '';
 

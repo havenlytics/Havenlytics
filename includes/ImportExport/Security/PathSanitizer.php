@@ -49,7 +49,10 @@ final class PathSanitizer {
 			return PackageResult::failure(
 				'hvnly_ie_path_too_long',
 				'Archive entry path exceeds maximum length.',
-				array( 'entry' => $entry, 'max' => self::MAX_PATH_LENGTH )
+				array(
+					'entry' => $entry,
+					'max' => self::MAX_PATH_LENGTH,
+				)
 			);
 		}
 
@@ -62,7 +65,7 @@ final class PathSanitizer {
 			);
 		}
 
-		$parts     = explode( '/', $raw );
+		$parts      = explode( '/', $raw );
 		$normalized = array();
 
 		foreach ( $parts as $part ) {
@@ -80,7 +83,10 @@ final class PathSanitizer {
 				return PackageResult::failure(
 					'hvnly_ie_path_unsafe_segment',
 					'Archive path contains an unsafe filename segment.',
-					array( 'entry' => $entry, 'segment' => $part )
+					array(
+						'entry' => $entry,
+						'segment' => $part,
+					)
 				);
 			}
 			$normalized[] = $part;

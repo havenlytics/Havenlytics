@@ -1,5 +1,5 @@
 <?php
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
  */
 
 // ==============================================
-// GLOBAL WRAPPER HOOKS 
+// GLOBAL WRAPPER HOOKS
 // ==============================================
 
 // Content Wrappers.
@@ -18,7 +18,7 @@ add_action('hvnly_before_main_content', 'hvnly_output_content_wrapper_start', 10
 add_action('hvnly_after_main_content', 'hvnly_output_content_wrapper_end', 10);
 
 // ==============================================
-// SINGLE PROPERTY HOOKS 
+// SINGLE PROPERTY HOOKS
 // ==============================================
 
 // Scroll Progress Indicator
@@ -61,7 +61,7 @@ add_action('hvnly_single_property_similar_properties', 'hvnly_single_property_si
 add_action('hvnly_single_property_similar_properties', 'hvnly_single_property_similar_carousel_dots', 30);
 
 // ==============================================
-// SEARCH HOOKS 
+// SEARCH HOOKS
 // ==============================================
 
 // Search Hooks
@@ -70,7 +70,7 @@ add_action('hvnly_after_search_loop', 'hvnly_search_loop_end', 10);
 add_action('hvnly_after_search_loop', 'hvnly_search_pagination', 20);
 
 // ==============================================
-// ARCHIVE LAYOUT HOOKS 
+// ARCHIVE LAYOUT HOOKS
 // ==============================================
 
 // Archive layout styles - Add to wp_head

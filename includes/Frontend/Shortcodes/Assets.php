@@ -15,7 +15,7 @@
 namespace HvnlyNab\Frontend\Shortcodes;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -31,7 +31,7 @@ class Assets {
      *
      * @var array
      */
-    private $shortcode_tags = [
+    private $shortcode_tags = array(
         'hvnly_property_search',
         'hvnly_property_grid',
         'hvnly_property_list',
@@ -41,17 +41,17 @@ class Assets {
         'hvnly_properties', // Legacy
         'hvnly_property_lists', // Legacy
         'hvnly_property_search_form', // Legacy
-    ];
+    );
 
     /**
      * Constructor
      */
     public function __construct() {
-        add_action('wp', [$this, 'check_shortcode_presence']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_shortcode_assets'], 20);
-        
+        add_action('wp', array( $this, 'check_shortcode_presence' ));
+        add_action('wp_enqueue_scripts', array( $this, 'enqueue_shortcode_assets' ), 20);
+
         // Body class filter - now uses AbstractShortcode's registry
-        add_filter('body_class', [$this, 'add_shortcode_body_classes'], 20);
+        add_filter('body_class', array( $this, 'add_shortcode_body_classes' ), 20);
     }
 
     /**
@@ -60,10 +60,10 @@ class Assets {
      */
     public function check_shortcode_presence() {
         global $post, $hvnly_has_shortcode;
-        
+
         $hvnly_has_shortcode = false;
-        
-        if (is_a($post, 'WP_Post') && !empty($post->post_content)) {
+
+        if (is_a($post, 'WP_Post') && ! empty($post->post_content)) {
             foreach ($this->shortcode_tags as $tag) {
                 if (has_shortcode($post->post_content, $tag)) {
                     $hvnly_has_shortcode = true;
@@ -80,20 +80,20 @@ class Assets {
      * @param array $classes Body classes
      * @return array
      */
-    public function add_shortcode_body_classes($classes) {
+    public function add_shortcode_body_classes( $classes ) {
         // Add classes for shortcodes that have been rendered
         $active_shortcodes = AbstractShortcode::get_active_shortcodes();
         foreach ($active_shortcodes as $tag) {
             $class_name = str_replace('_', '-', $tag);
-            $classes[] = 'hvnly-' . $class_name . '-shortcode';
+            $classes[]  = 'hvnly-' . $class_name . '-shortcode';
         }
-        
+
         // Also add a general class if any shortcode is present
         global $hvnly_has_shortcode;
         if ($hvnly_has_shortcode) {
             $classes[] = 'hvnly-shortcode-page';
         }
-        
+
         return $classes;
     }
 
@@ -102,25 +102,25 @@ class Assets {
      */
     public function enqueue_shortcode_assets() {
         global $hvnly_has_shortcode;
-        
+
         // Only enqueue if shortcodes are present on the page
-        if (!$hvnly_has_shortcode) {
+        if ( ! $hvnly_has_shortcode) {
             return;
         }
 
         $version = defined('HVNLYNAB_VERSION') ? HVNLYNAB_VERSION : '2.2.0';
-        
+
         // Enqueue main shortcode CSS
         wp_enqueue_style(
             'hvnly-shortcodes',
             HVNLYNAB_ASSETS_URL . '/frontend/css/shortcodes/hvnly-shortcodes.css',
-            [], // No dependencies
+            array(), // No dependencies
             $version
         );
 
         /**
          * Action: hvnly_after_shortcode_assets_enqueued
-         * 
+         *
          * Allows additional assets to be enqueued after shortcode CSS.
          */
         do_action('hvnly_after_shortcode_assets_enqueued');
@@ -132,13 +132,13 @@ class Assets {
      * @param string $tag Shortcode tag to check
      * @return bool
      */
-    public static function has_shortcode($tag) {
+    public static function has_shortcode( $tag ) {
         global $post;
-        
-        if (!is_a($post, 'WP_Post') || empty($post->post_content)) {
+
+        if ( ! is_a($post, 'WP_Post') || empty($post->post_content)) {
             return false;
         }
-        
+
         return has_shortcode($post->post_content, $tag);
     }
 

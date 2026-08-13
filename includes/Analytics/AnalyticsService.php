@@ -171,7 +171,7 @@ class AnalyticsService {
 	 * @return array{filename: string, headers: string[], rows: array<int, array<int, string|int>>}
 	 */
 	public function get_export( string $type ): array {
-		$type = sanitize_key( $type );
+		$type        = sanitize_key( $type );
 		$date_suffix = $this->range->get_start() . '_to_' . $this->range->get_end();
 
 		switch ( $type ) {
@@ -391,7 +391,10 @@ class AnalyticsService {
 	 */
 	private function get_monthly_inquiries(): array {
 		if ( ! InquirySchema::table_exists() ) {
-			return array( 'labels' => array(), 'values' => array() );
+			return array(
+				'labels' => array(),
+				'values' => array(),
+			);
 		}
 
 		global $wpdb;
@@ -498,7 +501,10 @@ class AnalyticsService {
 		);
 
 		if ( is_wp_error( $terms ) || empty( $terms ) ) {
-			return array( 'labels' => array(), 'values' => array() );
+			return array(
+				'labels' => array(),
+				'values' => array(),
+			);
 		}
 
 		$labels = array();
@@ -519,7 +525,10 @@ class AnalyticsService {
 	 */
 	private function get_inquiry_status_distribution(): array {
 		if ( ! InquirySchema::table_exists() ) {
-			return array( 'labels' => array(), 'values' => array() );
+			return array(
+				'labels' => array(),
+				'values' => array(),
+			);
 		}
 
 		global $wpdb;
@@ -845,10 +854,10 @@ class AnalyticsService {
 			)
 		);
 
-		$rows = array();
+		$rows      = array();
 		$view_meta = $this->get_view_counts_by_post();
 		foreach ( $posts as $post ) {
-			$views  = $view_meta[ $post->ID ] ?? array();
+			$views    = $view_meta[ $post->ID ] ?? array();
 			$featured = get_post_meta( $post->ID, '_hvnly_property_featured', true );
 			$rows[]   = array(
 				$post->ID,
@@ -933,9 +942,9 @@ class AnalyticsService {
 
 		foreach ( $table as $item ) {
 			$property_id = (int) $item['id'];
-			$views  = $view_meta[ (int) $item['id'] ] ?? array();
-			$period = $this->get_property_period_views( $property_id, $today, $month_key );
-			$rows[] = array(
+			$views       = $view_meta[ (int) $item['id'] ] ?? array();
+			$period      = $this->get_property_period_views( $property_id, $today, $month_key );
+			$rows[]      = array(
 				$item['title'],
 				isset( $views['total'] ) ? (int) $views['total'] : 0,
 				isset( $views['unique'] ) ? (int) $views['unique'] : 0,
@@ -969,8 +978,8 @@ class AnalyticsService {
 				continue;
 			}
 
-			$totals['today'] += $this->sum_daily_views_in_range( $analytics, $today, $today );
-			$totals['this_week'] += $this->sum_daily_views_in_range( $analytics, $week_start, $today );
+			$totals['today']      += $this->sum_daily_views_in_range( $analytics, $today, $today );
+			$totals['this_week']  += $this->sum_daily_views_in_range( $analytics, $week_start, $today );
 			$totals['this_month'] += $this->sum_daily_views_in_month( $analytics, $month_key );
 		}
 

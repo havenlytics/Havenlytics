@@ -11,8 +11,8 @@ use HvnlyNab\Common\Keys;
  *
  * Install necessary database tables and options for the plugin.
  */
-class Installer
-{
+class Installer {
+
 
     /**
      * Run the installer.
@@ -21,8 +21,7 @@ class Installer
      *
      * @return void
      */
-    public function run(): void
-    {
+    public function run(): void {
         // Update the installed version.
         $this->add_version();
     }
@@ -35,14 +34,13 @@ class Installer
      *
      * @return void
      */
-    public function add_version(): void
-    {
+    public function add_version(): void {
         // Flush rewrite rules
         // flush_rewrite_rules();
 
         $installed = get_option(Keys::HVNLYNAB_INSTALLED);
 
-        if (! $installed) {
+        if ( ! $installed) {
             update_option(Keys::HVNLYNAB_INSTALLED, time());
         }
 

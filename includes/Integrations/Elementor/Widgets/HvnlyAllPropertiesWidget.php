@@ -1,10 +1,10 @@
 <?php
 /**
  * HVN: Property Archive Widget - Complete Integration
- * 
+ *
  * This widget loads the ENTIRE property archive template system,
  * including filters, grid/list/map views, pagination, and AJAX.
- * 
+ *
  * @package     Havenlytics
  * @subpackage  Integrations\Elementor\Widgets
  * @since       3.0.0
@@ -17,7 +17,7 @@ use Elementor\Controls_Manager;
 use HvnlyNab\Frontend\Query\PropertyQueryArgsBuilder;
 use HvnlyNab\Frontend\Query\PropertyQueryExecutor;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -65,11 +65,11 @@ class HvnlyAllPropertiesWidget extends Widget_Base {
     }
 
     public function get_categories(): array {
-        return ['havenlytics'];
+        return array( 'havenlytics' );
     }
 
     public function get_keywords(): array {
-        return ['havenlytics', 'property', 'real estate', 'listing', 'archive', 'search', 'filter'];
+        return array( 'havenlytics', 'property', 'real estate', 'listing', 'archive', 'search', 'filter' );
     }
 
     /**
@@ -78,7 +78,7 @@ class HvnlyAllPropertiesWidget extends Widget_Base {
      * @return array
      */
     public function get_style_depends(): array {
-        return [
+        return array(
             'hvnly-fontawesome-all-frontend',
             'hvnly-frontend-default',
             'hvnly-frontend-components',
@@ -89,7 +89,7 @@ class HvnlyAllPropertiesWidget extends Widget_Base {
             'hvnly-frontend-property-responsive',
             'hvnly-elementor-archive-widget',
             'hvnly-elementor-widgets',
-        ];
+        );
     }
 
     /**
@@ -98,78 +98,78 @@ class HvnlyAllPropertiesWidget extends Widget_Base {
      * @return array
      */
     public function get_script_depends(): array {
-        return ['hvnly-elementor-widgets'];
+        return array( 'hvnly-elementor-widgets' );
     }
 
     protected function register_controls(): void {
         // Display Settings
         $this->start_controls_section(
             'display_section',
-            [
+            array(
                 'label' => __('Display Settings', 'havenlytics'),
                 'tab' => Controls_Manager::TAB_CONTENT,
-            ]
+            )
         );
 
         $this->add_control(
             'show_filter_sidebar',
-            [
+            array(
                 'label' => __('Show Filter Sidebar', 'havenlytics'),
                 'type' => Controls_Manager::SWITCHER,
                 'default' => 'yes',
-            ]
+            )
         );
 
         $this->add_control(
             'show_top_search',
-            [
+            array(
                 'label' => __('Show Top Search Bar', 'havenlytics'),
                 'type' => Controls_Manager::SWITCHER,
                 'default' => 'yes',
-            ]
+            )
         );
 
         $this->add_control(
             'default_view',
-            [
+            array(
                 'label' => __('Default View', 'havenlytics'),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'grid',
-                'options' => [
+                'options' => array(
                     'grid' => __('Grid View', 'havenlytics'),
                     'list' => __('List View', 'havenlytics'),
                     'map' => __('Map View', 'havenlytics'),
-                ],
-            ]
+                ),
+            )
         );
 
         $this->add_control(
             'sidebar_position',
-            [
+            array(
                 'label' => __('Sidebar Position', 'havenlytics'),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'left',
-                'options' => [
+                'options' => array(
                     'left' => __('Left', 'havenlytics'),
                     'right' => __('Right', 'havenlytics'),
-                ],
-                'condition' => ['show_filter_sidebar' => 'yes'],
-            ]
+                ),
+                'condition' => array( 'show_filter_sidebar' => 'yes' ),
+            )
         );
 
         $this->add_control(
             'columns',
-            [
+            array(
                 'label' => __('Grid Columns', 'havenlytics'),
                 'type' => Controls_Manager::SELECT,
                 'default' => '2',
-                'options' => [
+                'options' => array(
                     '1' => __('1 Column', 'havenlytics'),
                     '2' => __('2 Columns', 'havenlytics'),
                     '3' => __('3 Columns', 'havenlytics'),
                     '4' => __('4 Columns', 'havenlytics'),
-                ],
-            ]
+                ),
+            )
         );
 
         $this->end_controls_section();
@@ -177,46 +177,46 @@ class HvnlyAllPropertiesWidget extends Widget_Base {
         // Query Settings
         $this->start_controls_section(
             'query_section',
-            [
+            array(
                 'label' => __('Query Settings', 'havenlytics'),
                 'tab' => Controls_Manager::TAB_CONTENT,
-            ]
+            )
         );
 
         $this->add_control(
             'posts_per_page',
-            [
+            array(
                 'label' => __('Properties Per Page', 'havenlytics'),
                 'type' => Controls_Manager::NUMBER,
                 'default' => 4,
                 'min' => 1,
                 'max' => 100,
-            ]
+            )
         );
 
         $this->add_control(
             'orderby',
-            [
+            array(
                 'label' => __('Order By', 'havenlytics'),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'date',
-                'options' => [
+                'options' => array(
                     'date' => __('Date (Newest)', 'havenlytics'),
                     'title' => __('Title', 'havenlytics'),
                     'price_low' => __('Price (Low to High)', 'havenlytics'),
                     'price_high' => __('Price (High to Low)', 'havenlytics'),
                     'rand' => __('Random', 'havenlytics'),
-                ],
-            ]
+                ),
+            )
         );
 
         $this->add_control(
             'featured_only',
-            [
+            array(
                 'label' => __('Featured Only', 'havenlytics'),
                 'type' => Controls_Manager::SWITCHER,
                 'default' => 'no',
-            ]
+            )
         );
 
         $this->end_controls_section();
@@ -224,58 +224,58 @@ class HvnlyAllPropertiesWidget extends Widget_Base {
         // Filter Defaults
         $this->start_controls_section(
             'filter_defaults_section',
-            [
+            array(
                 'label' => __('Default Filters', 'havenlytics'),
                 'tab' => Controls_Manager::TAB_CONTENT,
-            ]
+            )
         );
 
         $this->add_control(
             'default_department',
-            [
+            array(
                 'label' => __('Default Department', 'havenlytics'),
                 'type' => Controls_Manager::SELECT2,
                 'options' => $this->get_taxonomy_options('hvnly_prop_depts'),
                 'label_block' => true,
-            ]
+            )
         );
 
         $this->add_control(
             'default_min_price',
-            [
+            array(
                 'label' => __('Default Min Price', 'havenlytics'),
                 'type' => Controls_Manager::NUMBER,
                 'min' => 0,
-            ]
+            )
         );
 
         $this->add_control(
             'default_max_price',
-            [
+            array(
                 'label' => __('Default Max Price', 'havenlytics'),
                 'type' => Controls_Manager::NUMBER,
                 'min' => 0,
-            ]
+            )
         );
 
         $this->add_control(
             'default_bedrooms',
-            [
+            array(
                 'label' => __('Default Min Bedrooms', 'havenlytics'),
                 'type' => Controls_Manager::NUMBER,
                 'min' => 0,
                 'max' => 10,
-            ]
+            )
         );
 
         $this->add_control(
             'default_bathrooms',
-            [
+            array(
                 'label' => __('Default Min Bathrooms', 'havenlytics'),
                 'type' => Controls_Manager::NUMBER,
                 'min' => 0,
                 'max' => 10,
-            ]
+            )
         );
 
         $this->end_controls_section();
@@ -283,34 +283,34 @@ class HvnlyAllPropertiesWidget extends Widget_Base {
         // Style Controls
         $this->start_controls_section(
             'style_section',
-            [
+            array(
                 'label' => __('Style Settings', 'havenlytics'),
                 'tab' => Controls_Manager::TAB_STYLE,
-            ]
+            )
         );
 
         $this->add_control(
             'brand_color',
-            [
+            array(
                 'label' => __('Brand Color', 'havenlytics'),
                 'type' => Controls_Manager::COLOR,
                 'default' => '#6C60FE',
-                'selectors' => [
+                'selectors' => array(
                     '{{WRAPPER}}' => '--hvnly-brand-primary: {{VALUE}};',
-                ],
-            ]
+                ),
+            )
         );
 
         $this->add_control(
             'secondary_color',
-            [
+            array(
                 'label' => __('Secondary Color', 'havenlytics'),
                 'type' => Controls_Manager::COLOR,
                 'default' => '#764ba2',
-                'selectors' => [
+                'selectors' => array(
                     '{{WRAPPER}}' => '--hvnly-brand-secondary: {{VALUE}};',
-                ],
-            ]
+                ),
+            )
         );
 
         $this->end_controls_section();
@@ -319,21 +319,21 @@ class HvnlyAllPropertiesWidget extends Widget_Base {
     /**
      * Get taxonomy options for select controls
      */
-    private function get_taxonomy_options(string $taxonomy): array {
-        $options = ['' => __('Default (All)', 'havenlytics')];
+    private function get_taxonomy_options( string $taxonomy ): array {
+        $options = array( '' => __('Default (All)', 'havenlytics') );
 
-        if (!taxonomy_exists($taxonomy)) {
+        if ( ! taxonomy_exists($taxonomy)) {
             return $options;
         }
 
-        $terms = get_terms([
+        $terms = get_terms(array(
             'taxonomy' => $taxonomy,
             'hide_empty' => true,
-        ]);
+        ));
 
-        if (!is_wp_error($terms)) {
+        if ( ! is_wp_error($terms)) {
             foreach ($terms as $term) {
-                $options[$term->slug] = $term->name;
+                $options[ $term->slug ] = $term->name;
             }
         }
 
@@ -345,11 +345,11 @@ class HvnlyAllPropertiesWidget extends Widget_Base {
      */
     private function save_original_query_state(): void {
         global $wp_query, $post;
-        
+
         if ($this->original_wp_query === null) {
             $this->original_wp_query = clone $wp_query;
         }
-        
+
         if ($this->original_post === null && isset($post)) {
             $this->original_post = $post;
         }
@@ -360,92 +360,92 @@ class HvnlyAllPropertiesWidget extends Widget_Base {
      */
     private function restore_original_query_state(): void {
         global $wp_query, $post;
-        
+
         if ($this->original_wp_query !== null) {
-            $wp_query = $this->original_wp_query;
+            $wp_query                = $this->original_wp_query;
             $this->original_wp_query = null;
         }
-        
+
         if ($this->original_post !== null) {
             $post = $this->original_post;
             setup_postdata($post);
             $this->original_post = null;
         }
-        
+
         wp_reset_postdata();
     }
 
     /**
      * Setup the WordPress query for widget context via shared builder.
      */
-    private function setup_widget_query(array $settings, string $widget_id): \WP_Query {
-        $data     = PropertyQueryArgsBuilder::merge_elementor_widget_context($settings, $widget_id);
-        $per_page = absint($settings['posts_per_page']);
-        $page     = PropertyQueryArgsBuilder::resolve_paged($widget_id, $data, 1);
-        $signature = md5(wp_json_encode([$settings, $widget_id, $page]));
+    private function setup_widget_query( array $settings, string $widget_id ): \WP_Query {
+        $data      = PropertyQueryArgsBuilder::merge_elementor_widget_context($settings, $widget_id);
+        $per_page  = absint($settings['posts_per_page']);
+        $page      = PropertyQueryArgsBuilder::resolve_paged($widget_id, $data, 1);
+        $signature = md5(wp_json_encode(array( $settings, $widget_id, $page )));
 
         if ($this->render_property_query instanceof \WP_Query && $this->render_property_query_signature === $signature) {
             return $this->render_property_query;
         }
 
-        $this->render_property_query = PropertyQueryExecutor::query($data, $page, $per_page, [
+        $this->render_property_query           = PropertyQueryExecutor::query($data, $page, $per_page, array(
             'widget_id'      => $widget_id,
             'filter_context' => 'ssr',
-        ]);
+        ));
         $this->render_property_query_signature = $signature;
 
         return $this->render_property_query;
     }
 
-/**
- * Render the widget - LOADS EXISTING TEMPLATE SYSTEM
- */
-protected function render(): void {
-    $settings = $this->get_settings_for_display();
+	/**
+	 * Render the widget - LOADS EXISTING TEMPLATE SYSTEM
+	 */
+	protected function render(): void {
+		$settings = $this->get_settings_for_display();
 
-    if (class_exists('\HvnlyNab\Integrations\Elementor\Bootstrap')) {
-        \HvnlyNab\Integrations\Elementor\Bootstrap::get_instance()->enqueue_widget_assets_for_render();
-    }
+		if (class_exists('\HvnlyNab\Integrations\Elementor\Bootstrap')) {
+			\HvnlyNab\Integrations\Elementor\Bootstrap::get_instance()->enqueue_widget_assets_for_render();
+		}
 
-    $this->save_original_query_state();
-    
-    global $hvnly_elementor_widget_active, $hvnly_elementor_widget_settings, $wp_query;
-    $hvnly_elementor_widget_active = true;
-    $hvnly_elementor_widget_settings = $settings;
+		$this->save_original_query_state();
 
-    $widget_id = $this->get_id();
-    $grid_id   = 'hvnly-property-grid-' . $widget_id;
-    $map_id    = 'hvnly-map-placeholder-' . $widget_id;
-    $view_type = PropertyQueryArgsBuilder::resolve_view_type($settings);
-    
-    $wrapper_classes = [
-        'hvnly-content-wrapper',
-        'hvnly-property-archive__content-wrapper',
-        'hvnly-all-properties-widget',
-        'hvnly-elementor-widget',
-        'hvnly-widget-' . $widget_id,
-    ];
-    
-    if ($settings['show_filter_sidebar'] !== 'yes') {
-        $wrapper_classes[] = 'hvnly-no-sidebar';
-    }
-    
-    if ($settings['sidebar_position'] === 'right') {
-        $wrapper_classes[] = 'hvnly-sidebar-right';
-    }
+		global $hvnly_elementor_widget_active, $hvnly_elementor_widget_settings, $wp_query;
+		$hvnly_elementor_widget_active   = true;
+		$hvnly_elementor_widget_settings = $settings;
 
-    $columns = absint($settings['columns'] ?? 2);
-    if ($columns < 1 || $columns > 4) {
-        $columns = 2;
-    }
+		$widget_id = $this->get_id();
+		$grid_id   = 'hvnly-property-grid-' . $widget_id;
+		$map_id    = 'hvnly-map-placeholder-' . $widget_id;
+		$view_type = PropertyQueryArgsBuilder::resolve_view_type($settings);
 
-    $grid_columns_style = '--hvnly-grid-columns: ' . $columns . ';';
+		$wrapper_classes = array(
+			'hvnly-content-wrapper',
+			'hvnly-property-archive__content-wrapper',
+			'hvnly-all-properties-widget',
+			'hvnly-elementor-widget',
+			'hvnly-widget-' . $widget_id,
+		);
 
-    $property_query = $this->setup_widget_query($settings, $widget_id);
-    $original_wp_query = $wp_query;
-    $wp_query = $property_query;
+		if ($settings['show_filter_sidebar'] !== 'yes') {
+			$wrapper_classes[] = 'hvnly-no-sidebar';
+		}
 
-    ?>
+		if ($settings['sidebar_position'] === 'right') {
+			$wrapper_classes[] = 'hvnly-sidebar-right';
+		}
+
+		$columns = absint($settings['columns'] ?? 2);
+		if ($columns < 1 || $columns > 4) {
+			$columns = 2;
+		}
+
+		$grid_columns_style = '--hvnly-grid-columns: ' . $columns . ';';
+
+		$property_query    = $this->setup_widget_query($settings, $widget_id);
+		$original_wp_query = $wp_query;
+		$wp_query          = $property_query;
+
+		?>
 <div class="<?php echo esc_attr(implode(' ', $wrapper_classes)); ?>"
     data-widget-id="<?php echo esc_attr($widget_id); ?>"
     data-grid-id="<?php echo esc_attr($grid_id); ?>"
@@ -463,37 +463,37 @@ protected function render(): void {
     data-default-bathrooms="<?php echo esc_attr($settings['default_bathrooms'] ?? ''); ?>"
     style="<?php echo esc_attr($grid_columns_style); ?>">
 
-    <?php
-            if ($settings['show_top_search'] === 'yes') {
-                $this->render_search_filters();
-            }
-            
+		<?php
+		if ($settings['show_top_search'] === 'yes') {
+			$this->render_search_filters();
+		}
+
             echo '<div class="hvnly-with-sidebar__contents__grids">';
-            
-            if ($settings['show_filter_sidebar'] === 'yes') {
-                $this->render_filter_sidebar($settings);
-            }
-            
+
+		if ($settings['show_filter_sidebar'] === 'yes') {
+			$this->render_filter_sidebar($settings);
+		}
+
             echo '<section class="hvnly-property--grid--listings">';
-            
+
             $this->render_view_controls($property_query, $settings, $widget_id);
             $this->render_property_loop($property_query, $settings, $widget_id, $grid_id, $map_id, $view_type, $columns);
             $this->render_pagination($property_query, $settings, $widget_id);
-            
+
             echo '</section>';
             echo '</div>';
-            ?>
+		?>
 
 </div>
-<?php
-    
-    $wp_query = $original_wp_query;
-    wp_reset_postdata();
-    $this->restore_original_query_state();
-    
-    unset($GLOBALS['hvnly_elementor_widget_active']);
-    unset($GLOBALS['hvnly_elementor_widget_settings']);
-}
+		<?php
+
+		$wp_query = $original_wp_query;
+		wp_reset_postdata();
+		$this->restore_original_query_state();
+
+		unset($GLOBALS['hvnly_elementor_widget_active']);
+		unset($GLOBALS['hvnly_elementor_widget_settings']);
+	}
 
     /**
      * Render search filters using existing template
@@ -515,8 +515,8 @@ protected function render(): void {
      *
      * @param array $settings Widget display settings.
      */
-    private function render_filter_sidebar(array $settings): void {
-        $defaults_filter = function (array $filters) use ($settings): array {
+    private function render_filter_sidebar( array $settings ): void {
+        $defaults_filter = function ( array $filters ) use ( $settings ): array {
             if ($this->has_active_url_filters()) {
                 return $filters;
             }
@@ -529,16 +529,16 @@ protected function render(): void {
                 $filters['max_price'] = (string) $settings['default_max_price'];
             }
 
-            if (empty($filters['bedrooms']) && !empty($settings['default_bedrooms'])) {
+            if (empty($filters['bedrooms']) && ! empty($settings['default_bedrooms'])) {
                 $filters['bedrooms'] = (string) $settings['default_bedrooms'];
             }
 
-            if (empty($filters['bathrooms']) && !empty($settings['default_bathrooms'])) {
+            if (empty($filters['bathrooms']) && ! empty($settings['default_bathrooms'])) {
                 $filters['bathrooms'] = (string) $settings['default_bathrooms'];
             }
 
-            if (empty($filters['hvnly_prop_depts']) && !empty($settings['default_department'])) {
-                $filters['hvnly_prop_depts'] = [(string) $settings['default_department']];
+            if (empty($filters['hvnly_prop_depts']) && ! empty($settings['default_department'])) {
+                $filters['hvnly_prop_depts'] = array( (string) $settings['default_department'] );
             }
 
             return $filters;
@@ -559,7 +559,7 @@ protected function render(): void {
      * Whether the request includes URL-driven filter params (SSR only).
      */
     private function has_active_url_filters(): bool {
-        $keys = [
+        $keys = array(
             'min_price',
             'max_price',
             'bedrooms',
@@ -569,10 +569,10 @@ protected function render(): void {
             'hvnly_prop_depts',
             'search',
             'address_keyword',
-        ];
+        );
 
         foreach ($keys as $key) {
-            if (!empty($_GET[$key])) {
+            if ( ! empty($_GET[ $key ])) {
                 return true;
             }
         }
@@ -580,69 +580,72 @@ protected function render(): void {
         return false;
     }
 
-/**
- * Render view controls (sort, grid/list/map toggle) with results count
- * 
- * @param \WP_Query $property_query The property query
- * @param array $settings Widget settings
- */
-private function render_view_controls(\WP_Query $property_query, array $settings, string $widget_id): void {
-    $current_page = PropertyQueryArgsBuilder::resolve_paged($widget_id);
-    $per_page = $property_query->get('posts_per_page');
-    $total_properties = $property_query->found_posts;
-    $start = $total_properties > 0 ? (($current_page - 1) * $per_page) + 1 : 0;
-    $end = min($current_page * $per_page, $total_properties);
-    $current_filters = function_exists('hvnly_get_current_filters') ? hvnly_get_current_filters() : [];
+	/**
+	 * Render view controls (sort, grid/list/map toggle) with results count
+	 *
+	 * @param \WP_Query $property_query The property query
+	 * @param array $settings Widget settings
+	 */
+	private function render_view_controls( \WP_Query $property_query, array $settings, string $widget_id ): void {
+		$current_page     = PropertyQueryArgsBuilder::resolve_paged($widget_id);
+		$per_page         = $property_query->get('posts_per_page');
+		$total_properties = $property_query->found_posts;
+		$start            = $total_properties > 0 ? ( ( $current_page - 1 ) * $per_page ) + 1 : 0;
+		$end              = min($current_page * $per_page, $total_properties);
+		$current_filters  = function_exists('hvnly_get_current_filters') ? hvnly_get_current_filters() : array();
 
-    ?>
+		?>
 <div class="hvnly-property--view--controls">
-    <?php
-    hvnly_get_template_part('search/result', 'count', array(
-        'total_properties' => $total_properties,
-        'start'            => $start,
-        'end'              => $end,
-        'current_filters'  => $current_filters,
-    ));
-    ?>
-    <?php hvnly_get_template_part('archive/view', 'controls'); ?>
+		<?php
+		hvnly_get_template_part('search/result', 'count', array(
+			'total_properties' => $total_properties,
+			'start'            => $start,
+			'end'              => $end,
+			'current_filters'  => $current_filters,
+		));
+		?>
+		<?php hvnly_get_template_part('archive/view', 'controls'); ?>
 </div>
-<?php
-}
+		<?php
+	}
 
-/**
- * Render property loop (the actual property cards)
- * 
- * @param \WP_Query $property_query The property query
- * @param array $settings Widget settings
- */
-private function render_property_loop(\WP_Query $property_query, array $settings, string $widget_id, string $grid_id, string $map_id, string $view_type, int $columns = 2): void {
-    $view_class = '';
-    $display_style = '';
+	/**
+	 * Render property loop (the actual property cards)
+	 *
+	 * @param \WP_Query $property_query The property query
+	 * @param array $settings Widget settings
+	 */
+	private function render_property_loop( \WP_Query $property_query, array $settings, string $widget_id, string $grid_id, string $map_id, string $view_type, int $columns = 2 ): void {
+		$view_class    = '';
+		$display_style = '';
 
-    if ($view_type === 'grid') {
-        $view_class = 'hvnly-grid-view grid-view hvnly-columns-' . $columns;
-        $display_style = 'display: grid; grid-template-columns: repeat(' . $columns . ', 1fr); --hvnly-grid-columns: ' . $columns . '; gap: 20px;';
-    } elseif ($view_type === 'list') {
-        $view_class = 'hvnly-list-view list-view';
-        $display_style = 'display: flex; flex-direction: column; gap: 20px;';
-    } elseif ($view_type === 'map') {
-        $view_class = 'map-view';
-        $display_style = 'display: none;';
-    }
+		if ($view_type === 'grid') {
+			$view_class    = 'hvnly-grid-view grid-view hvnly-columns-' . $columns;
+			$display_style = 'display: grid; grid-template-columns: repeat(' . $columns . ', 1fr); --hvnly-grid-columns: ' . $columns . '; gap: 20px;';
+		} elseif ($view_type === 'list') {
+			$view_class    = 'hvnly-list-view list-view';
+			$display_style = 'display: flex; flex-direction: column; gap: 20px;';
+		} elseif ($view_type === 'map') {
+			$view_class    = 'map-view';
+			$display_style = 'display: none;';
+		}
 
-    $per_page = $property_query->get('posts_per_page');
-    ?>
+		$per_page = $property_query->get('posts_per_page');
+		?>
 <div class="hvnly-property-grid-view <?php echo esc_attr($view_class); ?>"
     id="<?php echo esc_attr($grid_id); ?>"
     data-view-type="<?php echo esc_attr($view_type); ?>" data-instance-id="<?php echo esc_attr($widget_id); ?>"
     data-columns="<?php echo esc_attr($columns); ?>"
     style="<?php echo esc_attr($display_style); ?>">
-    <?php if ($property_query->have_posts()) : ?>
-    <?php while ($property_query->have_posts()) : $property_query->the_post(); ?>
-    <?php if (function_exists('hvnly_render_property_card')) : ?>
-    <?php hvnly_render_property_card(get_the_ID()); ?>
+		<?php if ($property_query->have_posts()) : ?>
+			<?php
+            while ($property_query->have_posts()) :
+				$property_query->the_post();
+				?>
+				<?php if (function_exists('hvnly_render_property_card')) : ?>
+					<?php hvnly_render_property_card(get_the_ID()); ?>
     <?php else : ?>
-    <?php $this->render_fallback_property_card(); ?>
+		<?php $this->render_fallback_property_card(); ?>
     <?php endif; ?>
     <?php endwhile; ?>
     <?php else : ?>
@@ -669,18 +672,18 @@ private function render_property_loop(\WP_Query $property_query, array $settings
     style="<?php echo $view_type === 'map' ? 'display: block; min-height: 500px;' : 'display: none; min-height: 500px;'; ?>"
     data-provider="<?php echo esc_attr(function_exists('hvnly_get_map_provider') ? hvnly_get_map_provider() : 'leaflet'); ?>">
 </div>
-<?php
-}
+		<?php
+	}
 
     /**
      * Fallback property card rendering
      */
     private function render_fallback_property_card(): void {
-        $price = get_post_meta(get_the_ID(), '_hvnly_property_price', true);
+        $price           = get_post_meta(get_the_ID(), '_hvnly_property_price', true);
         $formatted_price = function_exists('hvnly_format_price') ? hvnly_format_price($price) : '$' . number_format(floatval($price));
-        $bedrooms = get_post_meta(get_the_ID(), '_hvnly_property_bedrooms', true);
-        $bathrooms = get_post_meta(get_the_ID(), '_hvnly_property_bathrooms', true);
-        $thumbnail = function_exists('hvnly_get_property_thumbnail_url')
+        $bedrooms        = get_post_meta(get_the_ID(), '_hvnly_property_bedrooms', true);
+        $bathrooms       = get_post_meta(get_the_ID(), '_hvnly_property_bathrooms', true);
+        $thumbnail       = function_exists('hvnly_get_property_thumbnail_url')
             ? hvnly_get_property_thumbnail_url(get_the_ID(), 'medium')
             : (string) get_the_post_thumbnail_url(get_the_ID(), 'medium');
         ?>
@@ -692,52 +695,52 @@ private function render_property_loop(\WP_Query $property_query, array $settings
         <h3 class="hvnly-property--grid-list--title">
             <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
         </h3>
-        <?php if (!empty($price)) : ?>
+        <?php if ( ! empty($price)) : ?>
         <div class="hvnly-property-price"><?php echo wp_kses_post($formatted_price); ?></div>
         <?php endif; ?>
         <div class="hvnly-property--grid-list--meta">
-            <?php if (!empty($bedrooms)) : ?>
+            <?php if ( ! empty($bedrooms)) : ?>
             <span><i class="fas fa-bed"></i> <?php echo esc_html($bedrooms); ?></span>
             <?php endif; ?>
-            <?php if (!empty($bathrooms)) : ?>
+            <?php if ( ! empty($bathrooms)) : ?>
             <span><i class="fas fa-bath"></i> <?php echo esc_html($bathrooms); ?></span>
             <?php endif; ?>
         </div>
     </div>
 </div>
-<?php
+		<?php
     }
 
-/**
- * Render pagination or load more button
- * 
- * @param \WP_Query $property_query The property query
- * @param array $settings Widget settings
- */
-private function render_pagination(\WP_Query $property_query, array $settings, string $widget_id): void {
-    if (!function_exists('hvnly_render_property_listing_pagination')) {
-        return;
-    }
+	/**
+	 * Render pagination or load more button
+	 *
+	 * @param \WP_Query $property_query The property query
+	 * @param array $settings Widget settings
+	 */
+	private function render_pagination( \WP_Query $property_query, array $settings, string $widget_id ): void {
+		if ( ! function_exists('hvnly_render_property_listing_pagination')) {
+			return;
+		}
 
-    $current_page = PropertyQueryArgsBuilder::resolve_paged($widget_id);
-    $max_pages    = (int) $property_query->max_num_pages;
-    $found_posts  = (int) $property_query->found_posts;
-    $per_page     = absint($settings['posts_per_page'] ?? 0);
+		$current_page = PropertyQueryArgsBuilder::resolve_paged($widget_id);
+		$max_pages    = (int) $property_query->max_num_pages;
+		$found_posts  = (int) $property_query->found_posts;
+		$per_page     = absint($settings['posts_per_page'] ?? 0);
 
-    if ($per_page < 1) {
-        $per_page = max(1, (int) $property_query->get('posts_per_page'));
-    }
+		if ($per_page < 1) {
+			$per_page = max(1, (int) $property_query->get('posts_per_page'));
+		}
 
-    if ($max_pages <= 1 && $found_posts > $per_page) {
-        $max_pages = (int) ceil($found_posts / $per_page);
-    }
+		if ($max_pages <= 1 && $found_posts > $per_page) {
+			$max_pages = (int) ceil($found_posts / $per_page);
+		}
 
-    global $wp_query;
-    $original_wp_query = $wp_query;
-    $wp_query          = $property_query;
+		global $wp_query;
+		$original_wp_query = $wp_query;
+		$wp_query          = $property_query;
 
-    hvnly_render_property_listing_pagination(
-        [
+		hvnly_render_property_listing_pagination(
+        array(
             'current_page'          => $current_page,
             'max_pages'             => $max_pages,
             'per_page'              => $per_page,
@@ -745,9 +748,9 @@ private function render_pagination(\WP_Query $property_query, array $settings, s
             'instance_id'           => $widget_id,
             'pagination_wrapper_id' => 'hvnly-property-pagination-' . $widget_id,
             'wrap_load_more'        => false,
-        ]
-    );
+        )
+		);
 
-    $wp_query = $original_wp_query;
-}
+		$wp_query = $original_wp_query;
+	}
 }

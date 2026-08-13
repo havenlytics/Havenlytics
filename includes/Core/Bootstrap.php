@@ -17,7 +17,7 @@
 namespace HvnlyNab\Core;
 
 // Prevent direct access to WordPress files.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -44,8 +44,8 @@ use Error;
  *
  * @since 2.0.0
  */
-class Bootstrap
-{
+class Bootstrap {
+
     /**
      * Database version option key for tracking schema versions.
      *
@@ -63,7 +63,7 @@ class Bootstrap
      * @since 2.0.0
      * @var array
      */
-    private $services = [];
+    private $services = array();
 
     /**
      * Plugin engine instance.
@@ -85,8 +85,7 @@ class Bootstrap
      * @since 2.0.0
      * @return void
      */
-    public function init()
-    {
+    public function init() {
         // Step 1: Load core dependencies and files.
         $this->load_core_dependencies();
 
@@ -163,8 +162,7 @@ class Bootstrap
      * @since 2.0.0
      * @return void
      */
-    private function load_core_dependencies()
-    {
+    private function load_core_dependencies() {
         // Reserved for future core dependency loading.
         // Currently handled by Composer autoloader.
     }
@@ -179,8 +177,7 @@ class Bootstrap
      * @since 2.0.0
      * @return void
      */
-    private function init_engine()
-    {
+    private function init_engine() {
         // Check if the main engine class file exists.
         $engine_file = HVNLYNAB_INCLUDES . '/HvnlyEngine.php';
 
@@ -209,11 +206,10 @@ class Bootstrap
      * @since 2.0.0
      * @return object Anonymous class with basic engine methods.
      */
-    private function create_fallback_engine()
-    {
+    private function create_fallback_engine() {
         // Return anonymous class that implements basic engine functionality.
         // This provides graceful degradation when main engine fails.
-        return new class {
+        return new class() {
             /**
              * Clear all plugin cache entries.
              *
@@ -223,8 +219,7 @@ class Bootstrap
              * @since 2.0.0
              * @return int|false Number of rows affected or false on error.
              */
-            public function clear_all_cache()
-            {
+            public function clear_all_cache() {
                 global $wpdb;
 
                 // Delete both transient values and their timeout entries.
@@ -249,8 +244,7 @@ class Bootstrap
              * @since 2.0.0
              * @return array Cache statistics including size, counts, and hit rate.
              */
-            public function get_cache_stats()
-            {
+            public function get_cache_stats() {
                 global $wpdb;
 
                 try {
@@ -266,7 +260,7 @@ class Bootstrap
                     );
 
                     // Initialize counters for different cache types.
-                    $total_size = $search_count = $sidebar_count = $term_count = 0;
+                    $total_size  = $search_count = $sidebar_count = $term_count = 0;
                     $total_items = count($cache_data);
 
                     // Analyze each cache entry to categorize and calculate totals.
@@ -284,26 +278,26 @@ class Bootstrap
                     }
 
                     // Return comprehensive cache statistics.
-                    return [
+                    return array(
                         'total_cache_size'    => $total_size,
                         'search_cache_count'  => $search_count,
                         'sidebar_cache_count' => $sidebar_count,
                         'term_cache_count'    => $term_count,
                         'cache_hit_rate'      => $total_items > 0 ? 85.0 : 0,
                         'total_cached_items'  => $total_items,
-                        'cache_size_human'    => $this->format_bytes($total_size)
-                    ];
+                        'cache_size_human'    => $this->format_bytes($total_size),
+                    );
                 } catch (Exception $e) {
                     // Return default stats on error.
-                    return [
+                    return array(
                         'total_cache_size'    => 0,
                         'search_cache_count'  => 0,
                         'sidebar_cache_count' => 0,
                         'term_cache_count'    => 0,
                         'cache_hit_rate'      => 0,
                         'total_cached_items'  => 0,
-                        'cache_size_human'    => '0 Bytes'
-                    ];
+                        'cache_size_human'    => '0 Bytes',
+                    );
                 }
             }
 
@@ -316,14 +310,13 @@ class Bootstrap
              * @since 2.0.0
              * @return array Performance metrics including query times and efficiency.
              */
-            public function get_performance_metrics()
-            {
-                return [
+            public function get_performance_metrics() {
+                return array(
                     'average_query_time' => 0.15,
                     'cache_efficiency'   => 85.5,
                     'memory_usage'       => memory_get_usage(true),
-                    'total_queries_saved' => 1250
-                ];
+                    'total_queries_saved' => 1250,
+                );
             }
 
             /**
@@ -336,8 +329,7 @@ class Bootstrap
              * @param string $pattern The pattern to match in cache keys.
              * @return int|false Number of rows affected or false on error.
              */
-            public function clear_transients_by_pattern($pattern)
-            {
+            public function clear_transients_by_pattern( $pattern ) {
                 global $wpdb;
 
                 // Delete transients matching the specific pattern.
@@ -362,8 +354,7 @@ class Bootstrap
              * @param array $config Configuration array to update.
              * @return void
              */
-            public function update_config($config)
-            {
+            public function update_config( $config ) {
                 // No operation in fallback engine.
                 // Full engine would persist configuration changes.
             }
@@ -377,14 +368,13 @@ class Bootstrap
              * @since 2.0.0
              * @return array Current engine configuration.
              */
-            public function get_config()
-            {
-                return [
+            public function get_config() {
+                return array(
                     'cache_ttl'          => get_option('hvnly_cache_ttl', HOUR_IN_SECONDS * 6),
                     'cache_compression'  => (bool) get_option('hvnly_cache_compression', false),
                     'enable_performance' => (bool) get_option('hvnly_cache_debug', false),
-                    'cache_prefix'       => 'hvnly_'
-                ];
+                    'cache_prefix'       => 'hvnly_',
+                );
             }
 
             /**
@@ -397,18 +387,17 @@ class Bootstrap
              * @param int $decimals Number of decimal places to show.
              * @return string Formatted byte string with unit.
              */
-            private function format_bytes($bytes, $decimals = 2)
-            {
+            private function format_bytes( $bytes, $decimals = 2 ) {
                 if ($bytes === 0) {
                     return '0 Bytes';
                 }
 
-                $k = 1024;
-                $dm = $decimals < 0 ? 0 : $decimals;
-                $sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                $i = floor(log($bytes) / log($k));
+                $k     = 1024;
+                $dm    = $decimals < 0 ? 0 : $decimals;
+                $sizes = array( 'Bytes', 'KB', 'MB', 'GB' );
+                $i     = floor(log($bytes) / log($k));
 
-                return number_format($bytes / pow($k, $i), $dm) . ' ' . $sizes[$i];
+                return number_format($bytes / pow($k, $i), $dm) . ' ' . $sizes[ $i ];
             }
         };
     }
@@ -422,8 +411,7 @@ class Bootstrap
      * @since 2.0.0
      * @return void
      */
-    private function init_shared_services()
-    {
+    private function init_shared_services() {
         try {
             // Avatar SSOT → WordPress get_avatar() (Users list, admin bar, comments, …).
             if ( class_exists( \HvnlyNab\Common\AvatarService::class ) ) {
@@ -493,13 +481,12 @@ class Bootstrap
      * @since 2.1.0
      * @return void
      */
-    private function init_settings_system()
-    {
+    private function init_settings_system() {
         // Initialize Settings Manager for plugin settings.
         if (class_exists('HvnlyNab\Core\SettingsManager')) {
             $this->services['settings_manager'] = \HvnlyNab\Core\SettingsManager::get_instance();
         }
-        
+
         // Initialize Dynamic Style Generator for frontend CSS.
         if (class_exists('HvnlyNab\Core\DynamicStyleGenerator')) {
             $this->services['style_generator'] = \HvnlyNab\Core\DynamicStyleGenerator::get_instance();
@@ -515,11 +502,10 @@ class Bootstrap
      * @since 2.0.0
      * @return void
      */
-    private function init_services()
-    {
+    private function init_services() {
         // Initialize core managers that are always needed.
         $this->services['cache_manager'] = new CacheManager();
-        $this->services['hook_manager']   = new HookManager();
+        $this->services['hook_manager']  = new HookManager();
 
         // Initialize admin-specific services if in admin area.
         if (is_admin()) {
@@ -527,7 +513,7 @@ class Bootstrap
         }
 
         // Initialize frontend services if not in admin area or during AJAX.
-        if (!is_admin() || (defined('DOING_AJAX') && DOING_AJAX)) {
+        if ( ! is_admin() || ( defined('DOING_AJAX') && DOING_AJAX )) {
             $this->init_frontend_services();
         }
     }
@@ -541,8 +527,7 @@ class Bootstrap
      * @since 2.0.0
      * @return void
      */
-    private function init_admin_services()
-    {
+    private function init_admin_services() {
         try {
             // Initialize main admin interface.
             if (class_exists(Admin::class)) {
@@ -575,8 +560,7 @@ class Bootstrap
      * @since 2.0.0
      * @return void
      */
-    private function init_frontend_services()
-    {
+    private function init_frontend_services() {
         try {
             // Initialize frontend functionality.
             if (class_exists(Frontend::class)) {
@@ -598,8 +582,7 @@ class Bootstrap
      * @since 2.0.0
      * @return void
      */
-    private function register_hooks()
-    {
+    private function register_hooks() {
         if (isset($this->services['hook_manager'])) {
             $this->services['hook_manager']->register_hooks();
         }
@@ -614,8 +597,7 @@ class Bootstrap
      * @since 2.0.0
      * @return void
      */
-    private function schedule_events()
-    {
+    private function schedule_events() {
         Scheduler::schedule_events();
     }
 
@@ -628,8 +610,7 @@ class Bootstrap
      * @since 2.0.0
      * @return mixed The engine instance.
      */
-    public function get_engine()
-    {
+    public function get_engine() {
         return $this->engine;
     }
 
@@ -643,9 +624,8 @@ class Bootstrap
      * @param string $service The service name to retrieve.
      * @return mixed The service instance or null if not found.
      */
-    public function get_service($service)
-    {
-        return $this->services[$service] ?? null;
+    public function get_service( $service ) {
+        return $this->services[ $service ] ?? null;
     }
 
     /**
@@ -657,8 +637,7 @@ class Bootstrap
      * @since 2.0.0
      * @return mixed The database service instance or null if not found.
      */
-    public function get_database()
-    {
+    public function get_database() {
         return $this->services['DB'] ?? null;
     }
 
@@ -671,8 +650,7 @@ class Bootstrap
      * @since 2.0.0
      * @return mixed The helpers service instance or null if not found.
      */
-    public function get_helper()
-    {
+    public function get_helper() {
         return $this->services['Helper'] ?? null;
     }
 }

@@ -116,12 +116,12 @@ class GroupFieldIdentity {
                 }
 
                 if ( $base_id === '' ) {
-                    $base_id = self::generate_base_id( $group_type );
+                    $base_id                  = self::generate_base_id( $group_type );
                     $seen_groups[ $group_id ] = $base_id;
                 }
 
                 if ( isset( $seen_bases[ $base_id ] ) && $seen_bases[ $base_id ] !== $group_id ) {
-                    $base_id = self::generate_base_id( $group_type );
+                    $base_id                  = self::generate_base_id( $group_type );
                     $seen_groups[ $group_id ] = $base_id;
                 }
 
@@ -169,12 +169,18 @@ class GroupFieldIdentity {
     public static function get_field_map( int $post_id ): array {
         $raw = get_post_meta( $post_id, self::FIELD_MAP_META, true );
         if ( empty( $raw ) ) {
-            return array( 'groups' => array(), 'legacy' => array() );
+            return array(
+				'groups' => array(),
+				'legacy' => array(),
+			);
         }
 
         $decoded = json_decode( $raw, true );
         if ( ! is_array( $decoded ) ) {
-            return array( 'groups' => array(), 'legacy' => array() );
+            return array(
+				'groups' => array(),
+				'legacy' => array(),
+			);
         }
 
         if ( isset( $decoded['groups'] ) || isset( $decoded['legacy'] ) ) {
@@ -383,7 +389,7 @@ class GroupFieldIdentity {
             return;
         }
 
-        $map = self::get_field_map( $post_id );
+        $map                        = self::get_field_map( $post_id );
         $map['groups'][ $group_id ] = $group_base_id;
 
         if ( $group_type !== '' && empty( $map['legacy'][ $group_type ] ) ) {

@@ -94,7 +94,7 @@ final class CsvAjaxController {
 			self::error( 'hvnly_csv_upload_missing', __( 'No CSV file uploaded.', 'havenlytics' ), 400 );
 		}
 
-		$file  = $_FILES['file']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$file   = $_FILES['file']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$stored = CsvParser::store_upload( $file );
 		if ( is_wp_error( $stored ) ) {
 			self::error( (string) $stored->get_error_code(), $stored->get_error_message(), 400 );
@@ -219,7 +219,10 @@ final class CsvAjaxController {
 		self::gate();
 		$job = self::require_owned_job( CsvJobStateStore::TYPE_IMPORT );
 		if ( CsvJobStateStore::is_terminal( $job ) ) {
-			self::ok( array( 'job' => CsvJobStateStore::public_view( $job ), 'done' => true ) );
+			self::ok( array(
+				'job' => CsvJobStateStore::public_view( $job ),
+				'done' => true,
+			) );
 		}
 
 		if ( ! CsvJobLock::acquire( (string) $job['id'], get_current_user_id() ) ) {
@@ -235,7 +238,10 @@ final class CsvAjaxController {
 		self::assert_job_owner( $job );
 		if ( CsvJobStateStore::is_terminal( $job ) ) {
 			CsvJobLock::release( (string) $job['id'] );
-			self::ok( array( 'job' => CsvJobStateStore::public_view( $job ), 'done' => true ) );
+			self::ok( array(
+				'job' => CsvJobStateStore::public_view( $job ),
+				'done' => true,
+			) );
 		}
 
 		try {
@@ -304,7 +310,10 @@ final class CsvAjaxController {
 		self::gate();
 		$job = self::require_owned_job( CsvJobStateStore::TYPE_EXPORT );
 		if ( CsvJobStateStore::is_terminal( $job ) ) {
-			self::ok( array( 'job' => CsvJobStateStore::public_view( $job ), 'done' => true ) );
+			self::ok( array(
+				'job' => CsvJobStateStore::public_view( $job ),
+				'done' => true,
+			) );
 		}
 
 		if ( ! CsvJobLock::acquire( (string) $job['id'], get_current_user_id() ) ) {
@@ -319,7 +328,10 @@ final class CsvAjaxController {
 		self::assert_job_owner( $job );
 		if ( CsvJobStateStore::is_terminal( $job ) ) {
 			CsvJobLock::release( (string) $job['id'] );
-			self::ok( array( 'job' => CsvJobStateStore::public_view( $job ), 'done' => true ) );
+			self::ok( array(
+				'job' => CsvJobStateStore::public_view( $job ),
+				'done' => true,
+			) );
 		}
 
 		try {
@@ -571,7 +583,7 @@ final class CsvAjaxController {
 				$mapping[ (string) $header ] = null;
 				continue;
 			}
-			$field_id = sanitize_key( (string) $field_id );
+			$field_id                    = sanitize_key( (string) $field_id );
 			$mapping[ (string) $header ] = isset( $known[ $field_id ] ) ? $field_id : null;
 		}
 		return $mapping;
@@ -669,14 +681,14 @@ final class CsvAjaxController {
 			'percent' => (int) ( $job['progress']['percent'] ?? 0 ),
 			'message' => __( 'Job timed out due to inactivity.', 'havenlytics' ),
 		);
-		$job = CsvJobStateStore::push_error(
+		$job                 = CsvJobStateStore::push_error(
 			$job,
 			array(
 				'code'    => 'hvnly_csv_job_stale',
 				'message' => __( 'The CSV Transfer job was abandoned and automatically marked as failed.', 'havenlytics' ),
 			)
 		);
-		$job = CsvTempCleanup::after_terminal( $job );
+		$job                 = CsvTempCleanup::after_terminal( $job );
 		CsvJobStateStore::save_job( $job );
 		CsvJobLock::release( (string) ( $job['id'] ?? '' ) );
 	}
@@ -686,9 +698,9 @@ final class CsvAjaxController {
 	 * @return array
 	 */
 	private static function cancel_job( array $job ): array {
-		$job['status']       = CsvJobStateStore::STATUS_CANCELLED;
-		$job['phase']        = 'cancelled';
-		$job['completed_at'] = gmdate( 'c' );
+		$job['status']              = CsvJobStateStore::STATUS_CANCELLED;
+		$job['phase']               = 'cancelled';
+		$job['completed_at']        = gmdate( 'c' );
 		$job['progress']['message'] = __( 'Cancelled by user.', 'havenlytics' );
 		return $job;
 	}

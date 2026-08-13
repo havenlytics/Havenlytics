@@ -33,7 +33,7 @@ final class BuildersExporter {
 
 		$card_sections = get_option( 'hvnly_property_card.sections', array() );
 		if ( ! is_array( $card_sections ) || empty( $card_sections ) ) {
-			$legacy = get_option( 'hvnly_pb_card_builder_sections', array() );
+			$legacy        = get_option( 'hvnly_pb_card_builder_sections', array() );
 			$card_sections = is_array( $legacy ) ? $legacy : array();
 		}
 

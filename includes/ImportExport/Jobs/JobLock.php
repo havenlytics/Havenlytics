@@ -56,7 +56,7 @@ final class JobLock {
 			'job_id'    => $job_id,
 			'user_id'   => $user_id,
 			'locked_at' => time(),
-			'expires_at'=> time() + self::TTL_SECONDS,
+			'expires_at' => time() + self::TTL_SECONDS,
 		);
 
 		update_option( ManifestSchema::OPTION_JOB_LOCK, $payload, false );

@@ -282,7 +282,7 @@ if ( $hvnly_office ) {
 
 					<?php if ( $hvnly_email ) : ?>
 
-						<a class="hvnly-agent-single__quick-btn hvnly-agent-single__quick-btn--primary" href="mailto:<?php echo esc_attr( $hvnly_email ); ?>">
+						<a class="hvnly-btn hvnly-btn--primary hvnly-agent-single__quick-btn hvnly-agent-single__quick-btn--primary" href="mailto:<?php echo esc_attr( $hvnly_email ); ?>">
 
 							<i class="fas fa-envelope" aria-hidden="true"></i>
 
@@ -296,7 +296,7 @@ if ( $hvnly_office ) {
 
 					<?php if ( $hvnly_phone ) : ?>
 
-						<a class="hvnly-agent-single__quick-btn" href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $hvnly_phone ) ); ?>">
+						<a class="hvnly-btn hvnly-btn--outline hvnly-agent-single__quick-btn" href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $hvnly_phone ) ); ?>">
 
 							<i class="fas fa-phone-alt" aria-hidden="true"></i>
 

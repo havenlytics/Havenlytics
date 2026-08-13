@@ -14,7 +14,7 @@ namespace HvnlyNab\Frontend\Shortcodes;
 
 use HvnlyNab\Frontend\Query\PropertyQueryExecutor;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -22,17 +22,17 @@ class PropertySearch extends AbstractShortcode {
 
     protected $tag = 'hvnly_property_search';
 
-    protected $default_atts = [
+    protected $default_atts = array(
         'posts_per_page' => 4,
         'class'          => '',
         'id'             => '',
-    ];
+    );
 
     public function __construct() {
         parent::__construct();
     }
 
-    public function render($atts, $content = '') {
+    public function render( $atts, $content = '' ) {
 
         $this->before_render();
 
@@ -43,7 +43,7 @@ class PropertySearch extends AbstractShortcode {
 
         $atts = shortcode_atts($this->default_atts, $atts, $this->tag);
 
-        $current_filters = function_exists('hvnly_get_current_filters') ? hvnly_get_current_filters() : [];
+        $current_filters = function_exists('hvnly_get_current_filters') ? hvnly_get_current_filters() : array();
 
         $paged = max(
             1,
@@ -54,12 +54,12 @@ class PropertySearch extends AbstractShortcode {
 
         // Keep initial SSR query and AJAX query architecture aligned.
         $properties_query = PropertyQueryExecutor::query(
-            is_array($current_filters) ? $current_filters : [],
+            is_array($current_filters) ? $current_filters : array(),
             (int) $paged,
             (int) $atts['posts_per_page'],
-            [
+            array(
                 'filter_context' => 'shortcode_initial',
-            ]
+            )
         );
 
         global $wp_query, $post;
@@ -76,8 +76,8 @@ class PropertySearch extends AbstractShortcode {
         // ADD INLINE CSS WHEN SIDEBAR IS HIDDEN
         // ==============================================
         $show_sidebar = function_exists('hvnly_should_show_filter_sidebar') ? hvnly_should_show_filter_sidebar() : true;
-        
-        if (!$show_sidebar) {
+
+        if ( ! $show_sidebar) {
             ?>
 <style>
 /* Hide sidebar in shortcode when setting is OFF */
@@ -109,19 +109,19 @@ class PropertySearch extends AbstractShortcode {
     }
 }
 </style>
-<?php
+			<?php
         }
 
-        $container_classes = [];
+        $container_classes = array();
 
-        if (!empty($atts['class'])) {
+        if ( ! empty($atts['class'])) {
             $container_classes[] = esc_attr($atts['class']);
         }
 
-        $container_id = !empty($atts['id']) ? ' id="' . esc_attr($atts['id']) . '"' : '';
+        $container_id = ! empty($atts['id']) ? ' id="' . esc_attr($atts['id']) . '"' : '';
 
         // Only output class attribute if there are classes
-        if (!empty($container_classes)) {
+        if ( ! empty($container_classes)) {
             echo '<div class="' . esc_attr(implode(' ', $container_classes)) . '"' . $container_id . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         } else {
             echo '<div' . $container_id . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

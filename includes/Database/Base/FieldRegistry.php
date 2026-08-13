@@ -1,7 +1,7 @@
 <?php
 /**
  * Field Type Registry
- * 
+ *
  * Handles registration and management of field type handlers
  * with individual JS file loading for the property metabox.
  *
@@ -16,36 +16,36 @@
 namespace HvnlyNab\Database\Base;
 
 // Security check - prevent direct access.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
 /**
  * Class FieldRegistry
- * 
+ *
  * Handles registration and management of field type handlers
  * with individual JS file loading for each field type.
- * 
+ *
  * @since 2.0.0
  */
 class FieldRegistry {
-    
+
     /**
      * Registered field type handlers.
      *
      * @since 2.0.0
      * @var array
      */
-    private $field_types = [];
-    
+    private $field_types = array();
+
     /**
      * JS assets to enqueue for each field type.
      *
      * @since 2.0.0
      * @var array
      */
-    private $js_assets = [];
-    
+    private $js_assets = array();
+
     /**
      * Constructor - registers field types and assets.
      *
@@ -55,10 +55,10 @@ class FieldRegistry {
      */
     public function __construct() {
         // Register assets early for proper enqueuing.
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_field_assets'], 5);
-        
+        add_action('admin_enqueue_scripts', array( $this, 'enqueue_field_assets' ), 5);
+
         // Register field types after WordPress is fully initialized.
-        add_action('admin_init', [$this, 'register_default_field_types']);
+        add_action('admin_init', array( $this, 'register_default_field_types' ));
     }
 
     /**
@@ -71,7 +71,7 @@ class FieldRegistry {
      */
     public function register_default_field_types() {
         // Map of field type identifiers to their handler classes.
-        $field_classes = [
+        $field_classes = array(
             'text'           => '\HvnlyNab\Database\FieldTypes\TextField',
             'textarea'       => '\HvnlyNab\Database\FieldTypes\TextareaField',
             'number'         => '\HvnlyNab\Database\FieldTypes\NumberField',
@@ -88,8 +88,8 @@ class FieldRegistry {
             'date'           => '\HvnlyNab\Database\FieldTypes\DateField',
             'faq'            => '\HvnlyNab\Database\FieldTypes\FAQField',
             'repeater'       => '\HvnlyNab\Database\FieldTypes\RepeaterField',
-        ];
-        
+        );
+
         // Register each field type if the class exists.
         foreach ($field_classes as $type => $class) {
             if (class_exists($class)) {
@@ -97,7 +97,7 @@ class FieldRegistry {
             }
         }
     }
-    
+
     /**
      * Register a single field type with its assets.
      *
@@ -106,21 +106,21 @@ class FieldRegistry {
      * @param string $handler_class Fully qualified handler class name.
      * @return bool True on success, false on failure.
      */
-    public function register($type, $handler_class) {
+    public function register( $type, $handler_class ) {
         try {
             // Instantiate the field handler.
-            $this->field_types[$type] = new $handler_class();
-            
+            $this->field_types[ $type ] = new $handler_class();
+
             // Register field-specific JS assets.
             $this->register_field_assets($type);
-            
+
             return true;
         } catch (\Throwable $e) {
             // Silent fail in production to prevent fatal errors.
             return false;
         }
     }
-    
+
     /**
      * Register field type specific JavaScript assets.
      *
@@ -130,94 +130,94 @@ class FieldRegistry {
      * @param string $type Field type identifier.
      * @return void
      */
-    private function register_field_assets($type) {
+    private function register_field_assets( $type ) {
         $assets_dir = HVNLYNAB_ASSETS_URL . '/admin/js/';
-        $base_deps = ['jquery'];
-        
+        $base_deps  = array( 'jquery' );
+
         switch ($type) {
             case 'gallery':
-                $this->js_assets['hvnly-gallery-field'] = [
+                $this->js_assets['hvnly-gallery-field'] = array(
                     'src'       => $assets_dir . 'hvnly-gallery-field.js',
-                    'deps'      => array_merge($base_deps, ['jquery-ui-sortable']),
+                    'deps'      => array_merge($base_deps, array( 'jquery-ui-sortable' )),
                     'ver'       => $this->get_file_version($assets_dir . 'hvnly-gallery-field.js'),
-                    'in_footer' => true
-                ];
+                    'in_footer' => true,
+                );
                 break;
-                
+
             case 'map':
-                $this->js_assets['hvnly-map-field'] = [
+                $this->js_assets['hvnly-map-field'] = array(
                     'src'       => $assets_dir . 'hvnly-map-field.js',
-                    'deps'      => array_merge($base_deps, ['leaflet']),
+                    'deps'      => array_merge($base_deps, array( 'leaflet' )),
                     'ver'       => $this->get_file_version($assets_dir . 'hvnly-map-field.js'),
-                    'in_footer' => true
-                ];
+                    'in_footer' => true,
+                );
                 break;
-                
+
             case 'video':
-                $this->js_assets['hvnly-video-field'] = [
+                $this->js_assets['hvnly-video-field'] = array(
                     'src'       => $assets_dir . 'hvnly-video-field.js',
                     'deps'      => $base_deps,
                     'ver'       => $this->get_file_version($assets_dir . 'hvnly-video-field.js'),
-                    'in_footer' => true
-                ];
+                    'in_footer' => true,
+                );
                 break;
-                
+
             case 'file':
-                $this->js_assets['hvnly-file-field'] = [
+                $this->js_assets['hvnly-file-field'] = array(
                     'src'       => $assets_dir . 'hvnly-file-field.js',
                     'deps'      => array_merge( $base_deps, array( 'media-upload', 'media-views' ) ),
                     'ver'       => $this->get_file_version($assets_dir . 'hvnly-file-field.js'),
-                    'in_footer' => true
-                ];
+                    'in_footer' => true,
+                );
                 break;
-                
+
             case 'checkbox':
-                $this->js_assets['hvnly-checkbox-repeater-field'] = [
+                $this->js_assets['hvnly-checkbox-repeater-field'] = array(
                     'src'       => $assets_dir . 'hvnly-checkbox-repeater-field.js',
-                    'deps'      => array_merge($base_deps, ['jquery-ui-sortable']),
+                    'deps'      => array_merge($base_deps, array( 'jquery-ui-sortable' )),
                     'ver'       => $this->get_file_version($assets_dir . 'hvnly-checkbox-repeater-field.js'),
-                    'in_footer' => true
-                ];
+                    'in_footer' => true,
+                );
                 break;
-                
+
             case 'property_docs':
-                $this->js_assets['hvnly-document-field'] = [
+                $this->js_assets['hvnly-document-field'] = array(
                     'src'       => $assets_dir . 'hvnly-document-field.js',
-                    'deps'      => array_merge($base_deps, ['jquery-ui-sortable']),
+                    'deps'      => array_merge($base_deps, array( 'jquery-ui-sortable' )),
                     'ver'       => $this->get_file_version($assets_dir . 'hvnly-document-field.js'),
-                    'in_footer' => true
-                ];
+                    'in_footer' => true,
+                );
                 break;
 
             case 'agents':
-                $this->js_assets['hvnly-agents-section-field'] = [
+                $this->js_assets['hvnly-agents-section-field'] = array(
                     'src'       => $assets_dir . 'hvnly-agents-section-field.js',
                     'deps'      => $base_deps,
                     'ver'       => $this->get_file_version($assets_dir . 'hvnly-agents-section-field.js'),
-                    'in_footer' => true
-                ];
+                    'in_footer' => true,
+                );
                 break;
 
             case 'faq':
-                $this->js_assets['hvnly-faq-field'] = [
+                $this->js_assets['hvnly-faq-field'] = array(
                     'src'       => $assets_dir . 'hvnly-faq-field.js',
                     'deps'      => array_merge( $base_deps, array( 'jquery-ui-sortable' ) ),
                     'ver'       => $this->get_file_version( $assets_dir . 'hvnly-faq-field.js' ),
                     'in_footer' => true,
-                ];
+                );
                 break;
 
             case 'repeater':
-                $this->js_assets['hvnly-repeater-field'] = [
+                $this->js_assets['hvnly-repeater-field'] = array(
                     'src'       => $assets_dir . 'hvnly-repeater-field.js',
                     'deps'      => array_merge( $base_deps, array( 'jquery-ui-sortable', 'hvnly-document-field' ) ),
                     'ver'       => $this->get_file_version( $assets_dir . 'hvnly-repeater-field.js' ),
                     'in_footer' => true,
-                ];
+                );
                 break;
         }
     }
-    
+
     /**
      * Get file version based on file modification time.
      *
@@ -228,11 +228,11 @@ class FieldRegistry {
      * @param string $file_url URL of the file.
      * @return string Version string for cache busting.
      */
-    private function get_file_version($file_url) {
+    private function get_file_version( $file_url ) {
         $file_path = str_replace(HVNLYNAB_ASSETS_URL, HVNLYNAB_PATH . 'assets', $file_url);
         return file_exists($file_path) ? filemtime($file_path) : HVNLYNAB_VERSION;
     }
-    
+
     /**
      * Enqueue field specific assets on the property edit screen.
      *
@@ -241,30 +241,30 @@ class FieldRegistry {
      */
     public function enqueue_field_assets() {
         $screen = get_current_screen();
-        if (!$screen) {
+        if ( ! $screen) {
             return;
         }
-        
+
         // Only enqueue on our property post type.
-        $allowed_post_types = ['hvnly_property'];
-        if (!in_array($screen->post_type ?? '', $allowed_post_types, true)) {
+        $allowed_post_types = array( 'hvnly_property' );
+        if ( ! in_array($screen->post_type ?? '', $allowed_post_types, true)) {
             return;
         }
-        
+
         // Only on add/edit property screens (not list table).
-        if (!in_array($screen->base, ['post', 'post-new'], true)) {
+        if ( ! in_array($screen->base, array( 'post', 'post-new' ), true)) {
             return;
         }
-        
+
         // Enqueue jQuery UI Sortable for reorderable fields.
         wp_enqueue_script('jquery-ui-sortable');
 
         // Ensure the WordPress media library is available for file/gallery/video fields.
         wp_enqueue_media();
-        
+
         // Enqueue core JS files first (dependencies).
         $this->enqueue_core_assets();
-        
+
         // Ensure Leaflet is registered before map field scripts (FieldRegistry runs at priority 5).
         if ( isset( $this->js_assets['hvnly-map-field'] ) && ! wp_script_is( 'leaflet', 'registered' ) ) {
             wp_register_script(
@@ -286,14 +286,14 @@ class FieldRegistry {
                 $asset['in_footer']
             );
         }
-        
+
         // Enqueue field-specific CSS.
         $this->enqueue_field_css();
-        
+
         // Pass data from PHP to JavaScript.
         $this->localize_scripts();
     }
-    
+
     /**
      * Enqueue core assets required for all field types.
      *
@@ -302,26 +302,26 @@ class FieldRegistry {
      */
     private function enqueue_core_assets() {
         $assets_dir = HVNLYNAB_ASSETS_URL . '/admin/js/';
-        
+
         // 1. Field Registry (loads first - core functionality).
         wp_enqueue_script(
             'hvnly-admin-field-registry',
             $assets_dir . 'hvnly-admin-field-registry.js',
-            ['jquery'],
+            array( 'jquery' ),
             $this->get_file_version($assets_dir . 'hvnly-admin-field-registry.js'),
             true
         );
-        
+
         // 2. Main metabox controller (depends on registry).
         wp_enqueue_script(
             'hvnly-admin-metabox',
             $assets_dir . 'hvnly-admin-metabox.js',
-            ['jquery', 'hvnly-admin-field-registry'],
+            array( 'jquery', 'hvnly-admin-field-registry' ),
             $this->get_file_version($assets_dir . 'hvnly-admin-metabox.js'),
             true
         );
     }
-    
+
     /**
      * Enqueue field-specific CSS styles.
      *
@@ -330,13 +330,13 @@ class FieldRegistry {
      */
     private function enqueue_field_css() {
         $assets_dir = HVNLYNAB_ASSETS_URL . '/admin/';
-        
+
         // Document field CSS.
         if (isset($this->js_assets['hvnly-document-field'])) {
             wp_enqueue_style(
                 'hvnly-document-field',
                 $assets_dir . 'css/hvnly-document-field.css',
-                [],
+                array(),
                 $this->get_file_version($assets_dir . 'css/hvnly-document-field.css')
             );
         }
@@ -403,10 +403,10 @@ class FieldRegistry {
                 $this->get_file_version($assets_dir . 'css/hvnly-checkbox-repeater-field.css')
             );
         }
-        
+
         // Additional field CSS can be added here.
     }
-    
+
     /**
      * Localize scripts with PHP data for JavaScript.
      *
@@ -420,11 +420,11 @@ class FieldRegistry {
         wp_localize_script(
             'hvnly-admin-metabox',
             'HvnlyNabMetaBox',
-            [
+            array(
                 'security' => wp_create_nonce('hvnly-metabox-security'),
                 'postType' => get_current_screen()->post_type ?? 'hvnly_property',
                 'ajaxUrl'  => admin_url('admin-ajax.php'),
-                'i18n'     => [
+                'i18n'     => array(
                     'ok'                    => __('OK', 'havenlytics'),
                     'requiredMissingTitle'  => __('Required Fields Missing', 'havenlytics'),
                     'requiredFieldsIntro'   => __('The following required fields are empty or invalid:', 'havenlytics'),
@@ -434,37 +434,37 @@ class FieldRegistry {
                     'phpRequiredIntro'      => __('The following required fields need attention:', 'havenlytics'),
                     'phpZeroHint'           => __('Fields with value "0" are not accepted. Enter a number greater than 0.', 'havenlytics'),
                     'alertBanner'           => __('PLEASE COMPLETE REQUIRED FIELDS', 'havenlytics'),
-                ],
-            ]
+                ),
+            )
         );
-        
+
         // Localize field registry script.
         wp_localize_script(
             'hvnly-admin-field-registry',
             'HvnlyFieldRegistry',
-            [
+            array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce'   => wp_create_nonce('hvnly-field-registry-nonce'),
-                'i18n'    => [
+                'i18n'    => array(
                     'selectFile'       => __('Select File', 'havenlytics'),
                     'selectImage'      => __('Select Image', 'havenlytics'),
                     'selectPdf'        => __('Select PDF', 'havenlytics'),
                     'useThisFile'      => __('Use this file', 'havenlytics'),
                     'invalidImage'     => __('Please select a valid image file (JPG, PNG, GIF, WebP, BMP)', 'havenlytics'),
                     'invalidPdf'       => __('Please select a PDF file', 'havenlytics'),
-                    'invalidImageOrPdf'=> __('Please select an image (JPG, PNG, GIF, WebP, BMP) or PDF file', 'havenlytics'),
+                    'invalidImageOrPdf' => __('Please select an image (JPG, PNG, GIF, WebP, BMP) or PDF file', 'havenlytics'),
                     'invalidFile'      => __('Please select a valid file', 'havenlytics'),
-                ],
-            ]
+                ),
+            )
         );
 
         if (isset($this->js_assets['hvnly-map-field'])) {
             wp_localize_script(
                 'hvnly-map-field',
                 'hvnlyMapFieldParams',
-                [
+                array(
                     'brandColor' => function_exists('hvnly_get_brand_color') ? hvnly_get_brand_color() : '#6C60FE',
-                    'i18n'       => [
+                    'i18n'       => array(
                         'noAddressSet'       => __('No address set', 'havenlytics'),
                         'locationPopup'      => __('Location', 'havenlytics'),
                         'latLabel'           => __('Lat:', 'havenlytics'),
@@ -476,8 +476,8 @@ class FieldRegistry {
                         'searchError'        => __('Error searching for address.', 'havenlytics'),
                         'getCoordinates'     => __('Get Coordinates from Address', 'havenlytics'),
                         'noAddressesFound'   => __('No addresses found', 'havenlytics'),
-                    ],
-                ]
+                    ),
+                )
             );
         }
 
@@ -485,8 +485,8 @@ class FieldRegistry {
             wp_localize_script(
                 'hvnly-gallery-field',
                 'HvnlyGalleryField',
-                [
-                    'i18n' => [
+                array(
+                    'i18n' => array(
                         'mediaUnavailable' => __('Media library is not available.', 'havenlytics'),
                         'manageTitle'      => __('Manage Gallery Images', 'havenlytics'),
                         'updateGallery'    => __('Update Gallery', 'havenlytics'),
@@ -499,8 +499,8 @@ class FieldRegistry {
                         'remove'           => __('Remove', 'havenlytics'),
                         'imageSingular'    => __('Image', 'havenlytics'),
                         'imagePlural'      => __('Images', 'havenlytics'),
-                    ],
-                ]
+                    ),
+                )
             );
         }
 
@@ -508,16 +508,16 @@ class FieldRegistry {
             wp_localize_script(
                 'hvnly-file-field',
                 'HvnlyFileField',
-                [
-                    'i18n' => [
+                array(
+                    'i18n' => array(
                         'mediaUnavailable' => __('Media library is not available.', 'havenlytics'),
                         'selectImage'      => __('Select or Upload Image', 'havenlytics'),
                         'selectFile'       => __('Select or Upload File', 'havenlytics'),
                         'selectButton'     => __('Select File', 'havenlytics'),
                         'invalidPdf'       => __('Please select a valid PDF file.', 'havenlytics'),
                         'invalidImage'     => __('Please select a valid image file (JPG, PNG, GIF, WEBP, BMP).', 'havenlytics'),
-                    ],
-                ]
+                    ),
+                )
             );
         }
 
@@ -525,8 +525,8 @@ class FieldRegistry {
             wp_localize_script(
                 'hvnly-video-field',
                 'HvnlyVideoField',
-                [
-                    'i18n' => [
+                array(
+                    'i18n' => array(
                         'mediaUnavailable' => __('Media library is not available.', 'havenlytics'),
                         'selectImage'      => __('Select or Upload Image', 'havenlytics'),
                         'useThisImage'     => __('Use this image', 'havenlytics'),
@@ -540,8 +540,8 @@ class FieldRegistry {
                         'videoThumbnail'   => __('Video thumbnail', 'havenlytics'),
                         'propertyVideo'    => __('Property Video', 'havenlytics'),
                         'preview'          => __('Preview', 'havenlytics'),
-                    ],
-                ]
+                    ),
+                )
             );
         }
 
@@ -549,11 +549,11 @@ class FieldRegistry {
             wp_localize_script(
                 'hvnly-faq-field',
                 'HvnlyFaqField',
-                [
-                    'i18n' => [
+                array(
+                    'i18n' => array(
                         'newFaq' => __('New FAQ', 'havenlytics'),
-                    ],
-                ]
+                    ),
+                )
             );
         }
 
@@ -561,24 +561,24 @@ class FieldRegistry {
             wp_localize_script(
                 'hvnly-repeater-field',
                 'HvnlyRepeaterField',
-                [
-                    'i18n' => [
+                array(
+                    'i18n' => array(
                         'newRow' => __('New Row', 'havenlytics'),
-                    ],
-                ]
+                    ),
+                )
             );
         }
-        
+
         // Localize document field script with icons and strings.
         if (isset($this->js_assets['hvnly-document-field'])) {
             wp_localize_script(
                 'hvnly-document-field',
                 'HvnlyDocumentField',
-                [
+                array(
                     'ajaxUrl' => admin_url('admin-ajax.php'),
                     'nonce'   => wp_create_nonce('hvnly-document-field-nonce'),
                     'icons'   => $this->get_font_awesome_icons(),
-                    'strings' => [
+                    'strings' => array(
                         'confirmRemove'    => __('Remove this document?', 'havenlytics'),
                         'confirmRemoveAll' => __('Remove all documents? This will clear all data.', 'havenlytics'),
                         'uploadTitle'      => __('Select Document', 'havenlytics'),
@@ -593,60 +593,60 @@ class FieldRegistry {
                         'showInSidebar'    => __('Show in sidebar', 'havenlytics'),
                         'hideFromSidebar'  => __('Hide from sidebar', 'havenlytics'),
                         'mediaUnavailable' => __('Media uploader is not available.', 'havenlytics'),
-                    ],
-                    'urlTypes' => [
-                        'custom' => [
+                    ),
+                    'urlTypes' => array(
+                        'custom' => array(
                             'label'       => __('Custom URL', 'havenlytics'),
                             'placeholder' => 'https://example.com/document.pdf',
                             'hint'        => __('Enter any valid URL', 'havenlytics'),
-                        ],
-                        'pdf' => [
+                        ),
+                        'pdf' => array(
                             'label'       => __('PDF Document', 'havenlytics'),
                             'placeholder' => 'https://example.com/document.pdf',
                             'hint'        => __('Upload a PDF or enter a URL to a PDF file', 'havenlytics'),
-                        ],
-                        'youtube' => [
+                        ),
+                        'youtube' => array(
                             'label'       => __('YouTube Video', 'havenlytics'),
                             'placeholder' => 'https://youtu.be/xxxx or https://youtube.com/watch?v=xxxx',
                             'hint'        => __('Enter YouTube video URL', 'havenlytics'),
-                        ],
-                        'vimeo' => [
+                        ),
+                        'vimeo' => array(
                             'label'       => __('Vimeo Video', 'havenlytics'),
                             'placeholder' => 'https://vimeo.com/xxxx',
                             'hint'        => __('Enter Vimeo video URL', 'havenlytics'),
-                        ],
-                        'website' => [
+                        ),
+                        'website' => array(
                             'label'       => __('Website Link', 'havenlytics'),
                             'placeholder' => 'https://example.com',
                             'hint'        => __('Enter website URL', 'havenlytics'),
-                        ],
-                        'map' => [
+                        ),
+                        'map' => array(
                             'label'       => __('Google Maps', 'havenlytics'),
                             'placeholder' => 'https://maps.google.com/?q=...',
                             'hint'        => __('Enter Google Maps URL', 'havenlytics'),
-                        ],
-                        'virtual_tour' => [
+                        ),
+                        'virtual_tour' => array(
                             'label'       => __('Virtual Tour', 'havenlytics'),
                             'placeholder' => 'https://example.com/tour',
                             'hint'        => __('Enter virtual tour URL', 'havenlytics'),
-                        ],
-                        'floor_plan' => [
+                        ),
+                        'floor_plan' => array(
                             'label'       => __('Floor Plan', 'havenlytics'),
                             'placeholder' => 'https://example.com/floor-plan.pdf',
                             'hint'        => __('Enter floor plan image URL or PDF', 'havenlytics'),
-                        ],
-                        'image' => [
+                        ),
+                        'image' => array(
                             'label'       => __('Image', 'havenlytics'),
                             'placeholder' => 'https://example.com/image.jpg',
                             'hint'        => __('Upload an image or enter image URL', 'havenlytics'),
-                        ],
-                        'video' => [
+                        ),
+                        'video' => array(
                             'label'       => __('Video File', 'havenlytics'),
                             'placeholder' => 'https://example.com/video.mp4',
                             'hint'        => __('Upload a video file or enter video URL', 'havenlytics'),
-                        ],
-                    ],
-                ]
+                        ),
+                    ),
+                )
             );
         }
 
@@ -654,13 +654,13 @@ class FieldRegistry {
             wp_localize_script(
                 'hvnly-agents-section-field',
                 'hvnlyAgentsSectionField',
-                [
-                    'i18n' => [
+                array(
+                    'i18n' => array(
                         'remove'       => __('Remove', 'havenlytics'),
                         'primaryHint'  => __('Primary', 'havenlytics'),
                         'alreadyAdded' => __('This agent is already assigned.', 'havenlytics'),
-                    ],
-                ]
+                    ),
+                )
             );
         }
     }
@@ -674,11 +674,11 @@ class FieldRegistry {
      * @return array Associative array of icon names and labels.
      */
     private function get_font_awesome_icons() {
-        return [
+        return array(
             'file-pdf'       => __('PDF', 'havenlytics'),
             'file-word'      => __('Word', 'havenlytics'),
             'file-excel'     => __('Excel', 'havenlytics'),
-            'file-powerpoint'=> __('PowerPoint', 'havenlytics'),
+            'file-powerpoint' => __('PowerPoint', 'havenlytics'),
             'file-image'     => __('Image', 'havenlytics'),
             'file-video'     => __('Video', 'havenlytics'),
             'file-audio'     => __('Audio', 'havenlytics'),
@@ -695,9 +695,9 @@ class FieldRegistry {
             'download'       => __('Download', 'havenlytics'),
             'print'          => __('Print', 'havenlytics'),
             'copy'           => __('Copy', 'havenlytics'),
-        ];
+        );
     }
-    
+
     /**
      * Get field type handler instance.
      *
@@ -705,14 +705,14 @@ class FieldRegistry {
      * @param string $type Field type identifier.
      * @return object|null Field handler instance or null if not found.
      */
-    public function get_handler($type) {
+    public function get_handler( $type ) {
         if ( $type === 'image' ) {
             $type = 'file';
         }
 
-        return $this->field_types[$type] ?? $this->field_types['text'] ?? null;
+        return $this->field_types[ $type ] ?? $this->field_types['text'] ?? null;
     }
-    
+
     /**
      * Get all registered field type identifiers.
      *
@@ -722,7 +722,7 @@ class FieldRegistry {
     public function get_field_types() {
         return array_keys($this->field_types);
     }
-    
+
     /**
      * Get all registered field handlers.
      *
@@ -732,7 +732,7 @@ class FieldRegistry {
     public function get_all_handlers() {
         return $this->field_types;
     }
-    
+
     /**
      * Check if a field type is registered.
      *
@@ -740,7 +740,7 @@ class FieldRegistry {
      * @param string $type Field type identifier.
      * @return bool True if type exists, false otherwise.
      */
-    public function type_exists($type) {
-        return isset($this->field_types[$type]);
+    public function type_exists( $type ) {
+        return isset($this->field_types[ $type ]);
     }
 }

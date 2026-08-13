@@ -136,7 +136,7 @@ final class InquiryService {
 			$status = '';
 		}
 
-		$search = sanitize_text_field( (string) ( $query['search'] ?? '' ) );
+		$search    = sanitize_text_field( (string) ( $query['search'] ?? '' ) );
 		$date_from = sanitize_text_field( (string) ( $query['dateFrom'] ?? $query['date_from'] ?? '' ) );
 		$date_to   = sanitize_text_field( (string) ( $query['dateTo'] ?? $query['date_to'] ?? '' ) );
 
@@ -416,8 +416,8 @@ final class InquiryService {
 	 * @return array<string, mixed>
 	 */
 	private function serialize_detail( array $row ): array {
-		$item    = $this->serialize_list_item( $row );
-		$replies = $this->replies->list_for_inquiry( (int) ( $row['id'] ?? 0 ) );
+		$item     = $this->serialize_list_item( $row );
+		$replies  = $this->replies->list_for_inquiry( (int) ( $row['id'] ?? 0 ) );
 		$timeline = array();
 
 		$timeline[] = array(

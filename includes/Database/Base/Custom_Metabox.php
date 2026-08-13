@@ -10,14 +10,14 @@ namespace HvnlyNab\Database\Base;
 
 
 // Security check to prevent direct access
-if (! defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 /**
  * Custom_Metabox class
  */
-abstract class Custom_Metabox
-{
+abstract class Custom_Metabox {
+
 
 
 
@@ -28,9 +28,7 @@ abstract class Custom_Metabox
      *
      * @return void
      */
-    public function __construct()
-    {
-
+    public function __construct() {
 
         // Init Custom Post Type
         // Note: Child classes should register their own metaboxes
@@ -52,5 +50,5 @@ abstract class Custom_Metabox
      *
      * @return void
      */
-    abstract public function hvnly_save_dynamic_tabs_data($post_id);
+    abstract public function hvnly_save_dynamic_tabs_data( $post_id );
 }

@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-return [
+return array(
 	'(123) 456-7890' => true,
 	'0 Desert Vista Road' => true,
 	'0 Desert Vista Road, Phoenix, AZ 85086' => true,
@@ -354,4 +354,4 @@ return [
 	'Yes, financing options may be available through approved lenders.' => true,
 	'sq ft' => true,
 	'your.email@example.com' => true,
-];
+);

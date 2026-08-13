@@ -1,6 +1,6 @@
 <?php
 /**
- * Enhanced Property Single Renderer 
+ * Enhanced Property Single Renderer
  *
  * @package     Havenlytics
  * @subpackage  Frontend
@@ -30,7 +30,7 @@ class PropertySingleRenderer {
      *
      * @var array
      */
-    private $processed_groups = [];
+    private $processed_groups = array();
 
     /**
      * Debug mode flag
@@ -57,10 +57,10 @@ class PropertySingleRenderer {
      * Constructor
      */
     public function __construct() {
-        $this->debug_mode = function_exists( 'hvnly_is_debug_logging_enabled' )
+        $this->debug_mode         = function_exists( 'hvnly_is_debug_logging_enabled' )
             && hvnly_is_debug_logging_enabled();
-        $this->unified_meta_index = get_option( 'hvnly_unified_meta_index', [] );
-        $this->master_base_ids = get_option( 'hvnly_master_base_ids', [] );
+        $this->unified_meta_index = get_option( 'hvnly_unified_meta_index', array() );
+        $this->master_base_ids    = get_option( 'hvnly_master_base_ids', array() );
     }
 
     /**
@@ -87,12 +87,12 @@ class PropertySingleRenderer {
         if ( $this->master_base_ids !== null && ! empty( $this->master_base_ids ) ) {
             return $this->master_base_ids;
         }
-        
-        $master_ids = get_option( 'hvnly_master_base_ids', [] );
-        
+
+        $master_ids = get_option( 'hvnly_master_base_ids', array() );
+
         // If no master IDs exist, try to extract from builder config
         if ( empty( $master_ids ) ) {
-            $sections = get_option( $this->storage_key, [] );
+            $sections = get_option( $this->storage_key, array() );
             foreach ( $sections as $section ) {
                 if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
                     foreach ( $section['fields'] as $field ) {
@@ -114,7 +114,7 @@ class PropertySingleRenderer {
                 }
             }
         }
-        
+
         $this->master_base_ids = $master_ids;
         return $master_ids;
     }
@@ -127,13 +127,13 @@ class PropertySingleRenderer {
      */
     public function render_main_content( $property_id = null ) {
         $property_id = $property_id ?: get_the_ID();
-        
+
         // Debug: Log property ID
         if ( $this->debug_mode && current_user_can( 'manage_options' ) ) {
             $this->log_debug( '========== HAVENLYTICS DEBUG ==========' );
             $this->log_debug( 'Rendering property ID: ' . $property_id );
         }
-        
+
         // Default sections configuration (Sprint 31D: titles are visible
         // <h2> headings — they must be translatable).
         $default_sections = array(
@@ -159,7 +159,7 @@ class PropertySingleRenderer {
                 'priority' => 30,
             ),
         );
-        
+
         // Get all sections from database (dynamic sections from property builder)
         $dynamic_sections = get_option( $this->storage_key, array() );
 
@@ -170,49 +170,49 @@ class PropertySingleRenderer {
 
         // Start with default sections
         $all_sections = $default_sections;
-        
+
         // Merge with dynamic sections (they will override defaults if same keys exist)
         if ( ! empty( $dynamic_sections ) && is_array( $dynamic_sections ) ) {
             foreach ( $dynamic_sections as $section_id => $section_data ) {
                 if ( ! is_array( $section_data ) ) {
                     continue;
                 }
-                
+
                 // Skip required sections (like sec_basic_info) from frontend display
                 if ( isset( $section_data['required'] ) && $section_data['required'] ) {
                     continue;
                 }
-                
+
                 // Skip if no fields
                 if ( empty( $section_data['fields'] ) || ! is_array( $section_data['fields'] ) ) {
                     continue;
                 }
 
-                $canonical_section_id = $section_data['id'] ?? $section_id;
+                $canonical_section_id   = $section_data['id'] ?? $section_id;
                 $section_data['fields'] = $this->stamp_section_on_fields(
                     $section_data['fields'],
                     (string) $canonical_section_id
                 );
-                
+
                 $all_sections[ $section_id ] = $section_data;
             }
         }
-        
+
         // Sort sections by order
         $all_sections = $this->sort_sections_by_order( $all_sections );
-        
+
         // Reset processed groups for this property
         $this->processed_groups = array();
-        
+
         // Debug: Count video groups in all sections
         if ( $this->debug_mode && current_user_can( 'manage_options' ) ) {
             $total_video_groups = 0;
             foreach ( $all_sections as $section_id => $section ) {
                 if ( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
                     $video_groups_in_section = 0;
-                    $processed_group_ids = [];
+                    $processed_group_ids     = array();
                     foreach ( $section['fields'] as $field ) {
-                        $group_id = $field['group_id'] ?? null;
+                        $group_id   = $field['group_id'] ?? null;
                         $group_type = $field['group_type'] ?? '';
                         if ( $group_type === 'video' && $group_id && ! in_array( $group_id, $processed_group_ids ) ) {
                             $processed_group_ids[] = $group_id;
@@ -227,14 +227,14 @@ class PropertySingleRenderer {
             }
             $this->log_debug( 'TOTAL VIDEO GROUPS IN BUILDER: ' . $total_video_groups );
         }
-        
+
         // Render each section
         foreach ( $all_sections as $section_id => $section ) {
             // Skip if section is explicitly disabled
             if ( isset( $section['enabled'] ) && ! $section['enabled'] ) {
                 continue;
             }
-            
+
             // Check if this is a default section (has template) or dynamic section (has fields)
             if ( isset( $section['template'] ) ) {
                 // Default section - render directly
@@ -257,11 +257,11 @@ class PropertySingleRenderer {
     private function render_default_section( $section_id, $section, $property_id ) {
         $template = isset( $section['template'] ) ? $section['template'] : '';
         $title    = isset( $section['title'] ) ? $section['title'] : '';
-        
+
         if ( empty( $template ) ) {
             return;
         }
-        
+
         $section_class = 'hvnly-property-single__section-' . sanitize_title( $section_id );
 
         // Prepare template arguments
@@ -318,7 +318,7 @@ class PropertySingleRenderer {
 
         $section_title = isset( $section['title'] ) ? $section['title'] : '';
         $section_class = 'hvnly-property-single__section-' . sanitize_title( $section_id );
-        
+
         // Debug: Log section being rendered
         if ( $this->debug_mode && current_user_can( 'manage_options' ) ) {
             $this->log_debug( '--- Rendering section: ' . $section_title . ' ---' );
@@ -327,7 +327,7 @@ class PropertySingleRenderer {
         ob_start();
 
         // Sort fields by order and render in saved sequence (groups + standalone interleaved).
-        $fields = $this->sort_fields_by_order( $section['fields'] );
+        $fields             = $this->sort_fields_by_order( $section['fields'] );
         $rendered_group_ids = array();
 
         foreach ( $fields as $field ) {
@@ -340,7 +340,7 @@ class PropertySingleRenderer {
 
                 $group_type = $field['group_type'] ?? $this->detect_group_type( $field );
 
-                $group_fields = $this->get_group_fields( $fields, $group_id );
+                $group_fields     = $this->get_group_fields( $fields, $group_id );
                 $group_data_check = $this->get_group_field_values( $group_fields, $property_id );
 
                 $has_data = false;
@@ -401,7 +401,7 @@ class PropertySingleRenderer {
         echo '</div>';
         echo '</div>';
     }
-    
+
     /**
      * Get all values for a group's fields
      *
@@ -410,7 +410,7 @@ class PropertySingleRenderer {
      * @return array
      */
     private function get_group_field_values( $group_fields, $property_id ) {
-        $values = [];
+        $values = array();
         foreach ( $group_fields as $field ) {
             $metaKey = $field['metaKey'] ?? '';
             if ( $metaKey !== '' ) {
@@ -421,7 +421,7 @@ class PropertySingleRenderer {
         }
         return $values;
     }
-    
+
     /**
      * Get video field data using stored reference keys for a specific group
      *
@@ -559,7 +559,10 @@ class PropertySingleRenderer {
 
         $documents_field = ( $field_base['group_base_id'] ?? '' ) . '_documents';
         $documents_json  = function_exists( 'hvnly_resolve_field_meta' )
-            ? hvnly_resolve_field_meta( (int) $property_id, array_merge( $field_base, array( 'metaKey' => 'documents', 'name' => $documents_field ) ), $documents_field )
+            ? hvnly_resolve_field_meta( (int) $property_id, array_merge( $field_base, array(
+				'metaKey' => 'documents',
+				'name' => $documents_field,
+			) ), $documents_field )
             : '';
 
         if ( ! empty( $documents_json ) ) {
@@ -707,18 +710,18 @@ class PropertySingleRenderer {
      * @return array
      */
     private function identify_groups( $fields ) {
-        $groups = [];
-        
+        $groups = array();
+
         foreach ( $fields as $field ) {
             if ( ! empty( $field['group_id'] ) ) {
-                $groups[ $field['group_id'] ] = [
+                $groups[ $field['group_id'] ] = array(
                     'id' => $field['group_id'],
                     'type' => $field['group_type'] ?? $this->detect_group_type( $field ),
                     'base_id' => $field['group_base_id'] ?? null,
-                ];
+                );
             }
         }
-        
+
         return $groups;
     }
 
@@ -729,14 +732,14 @@ class PropertySingleRenderer {
      * @return string
      */
     private function detect_group_type( $field ) {
-        $type = $field['type'] ?? '';
-        $name = $field['name'] ?? $field['id'] ?? '';
+        $type       = $field['type'] ?? '';
+        $name       = $field['name'] ?? $field['id'] ?? '';
         $group_type = $field['group_type'] ?? '';
-        
+
         if ( ! empty( $group_type ) ) {
             return $group_type;
         }
-        
+
         if ( $type === 'map' || strpos( $name, 'map_' ) === 0 ) {
             return 'map';
         }
@@ -758,7 +761,7 @@ class PropertySingleRenderer {
         if ( $type === 'repeater' || strpos( $name, 'repeater_' ) === 0 ) {
             return 'repeater';
         }
-        
+
         return 'unknown';
     }
 
@@ -770,20 +773,20 @@ class PropertySingleRenderer {
      * @return array
      */
     private function get_group_fields( $fields, $group_id ) {
-        $group_fields = [];
-        
+        $group_fields = array();
+
         foreach ( $fields as $field ) {
             if ( ( $field['group_id'] ?? '' ) === $group_id ) {
                 $group_fields[] = $field;
             }
         }
-        
-        usort( $group_fields, function( $a, $b ) {
+
+        usort( $group_fields, function ( $a, $b ) {
             $a_pos = (int) ( $a['group_position'] ?? 0 );
             $b_pos = (int) ( $b['group_position'] ?? 0 );
             return $a_pos - $b_pos;
         });
-        
+
         return $group_fields;
     }
 
@@ -801,7 +804,7 @@ class PropertySingleRenderer {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -836,58 +839,58 @@ class PropertySingleRenderer {
         if ( empty( $group_fields ) ) {
             return;
         }
-        
+
         $first_field = $group_fields[0];
-        $group_type = $first_field['group_type'] ?? $this->detect_group_type( $first_field );
-        $group_name = $first_field['group_name'] ?? '';
+        $group_type  = $first_field['group_type'] ?? $this->detect_group_type( $first_field );
+        $group_name  = $first_field['group_name'] ?? '';
         if ( $group_name !== '' && function_exists( 'hvnly_translate_ui' ) ) {
             $group_name = hvnly_translate_ui( $group_name );
         }
         $group_base_id = $first_field['group_base_id'] ?? '';
-        $group_id = $first_field['group_id'] ?? '';
-        $section_id = $first_field['section_id'] ?? '';
+        $group_id      = $first_field['group_id'] ?? '';
+        $section_id    = $first_field['section_id'] ?? '';
 
         if ( class_exists( '\HvnlyNab\Core\GroupFieldIdentity' ) ) {
             \HvnlyNab\Core\GroupFieldIdentity::log_group_identity( $first_field, 'render_group:' . $group_type );
         }
-        
+
         // Extract ALL unique meta keys for this group
         $unique_keys = array();
         foreach ( $group_fields as $field ) {
             $meta_key = $field['name'] ?? $field['id'] ?? '';
-            $metaKey = $field['metaKey'] ?? '';
+            $metaKey  = $field['metaKey'] ?? '';
             if ( ! empty( $meta_key ) ) {
                 $unique_keys[ $metaKey ] = $meta_key;
             }
         }
-        
+
         // Get the actual stored values using the unique meta keys
         $values = array();
         foreach ( $group_fields as $field ) {
             $meta_key = $field['name'] ?? $field['id'] ?? '';
-            $metaKey = $field['metaKey'] ?? '';
+            $metaKey  = $field['metaKey'] ?? '';
             if ( ! empty( $meta_key ) ) {
                 $values[ $metaKey ] = function_exists( 'hvnly_resolve_field_meta' )
                     ? hvnly_resolve_field_meta( (int) $property_id, $field, $meta_key )
                     : get_post_meta( $property_id, $meta_key, true );
             }
         }
-        
+
         // Find the specific keys for this group
-        $title_key = '';
-        $url_key = '';
+        $title_key     = '';
+        $url_key       = '';
         $thumbnail_key = '';
-        $images_key = '';
-        $address_key = '';
-        $lat_key = '';
-        $lng_key = '';
-        $icon_key = '';
-        $label_key = '';
-        
+        $images_key    = '';
+        $address_key   = '';
+        $lat_key       = '';
+        $lng_key       = '';
+        $icon_key      = '';
+        $label_key     = '';
+
         foreach ( $group_fields as $field ) {
             $meta_key = $field['name'] ?? $field['id'] ?? '';
-            $metaKey = $field['metaKey'] ?? '';
-            
+            $metaKey  = $field['metaKey'] ?? '';
+
             if ( $metaKey === 'title' || strpos( $meta_key, '_title' ) !== false ) {
                 $title_key = $meta_key;
             }
@@ -916,7 +919,7 @@ class PropertySingleRenderer {
                 $label_key = $meta_key;
             }
         }
-        
+
         // Get show_in_sidebar setting
         $show_in_sidebar = true;
         foreach ( $group_fields as $field ) {
@@ -925,7 +928,7 @@ class PropertySingleRenderer {
                 break;
             }
         }
-        
+
         $group_data = array(
             'property_id' => $property_id,
             'fields' => $group_fields,
@@ -947,12 +950,12 @@ class PropertySingleRenderer {
             'label_key' => $label_key,
             'show_in_sidebar' => $show_in_sidebar,
         );
-        
+
         // Debug for video groups
         if ( $this->debug_mode && current_user_can( 'manage_options' ) && $group_type === 'video' ) {
             $this->log_debug( 'RENDER_GROUP - Video: base_id=' . $group_base_id . ', url_key=' . $url_key . ', url_value=' . ( $values['url'] ?? 'empty' ) );
         }
-        
+
         // Check if group has data and render appropriate template
         switch ( $group_type ) {
             case 'map':
@@ -961,23 +964,23 @@ class PropertySingleRenderer {
                     hvnly_get_template( 'single-property/location-card.php', $group_data );
                 }
                 break;
-                
+
             case 'video':
                 if ( ! empty( $values['url'] ) ) {
                     hvnly_get_template( 'single-property/video-card.php', $group_data );
                 }
                 break;
-                
+
             case 'gallery':
                 if ( ! empty( $values['images'] ) ) {
                     hvnly_get_template( 'single-property/gallery-card.php', $group_data );
                 }
                 break;
-                
+
             case 'property_docs':
                 // Get documents data for this specific group
-                $documents = array();
-                $docs_field_name = $group_base_id . '_documents';
+                $documents         = array();
+                $docs_field_name   = $group_base_id . '_documents';
                 $docs_field_config = $this->build_group_field_cfg(
                     array(
                         'section_id'    => $section_id,
@@ -988,17 +991,17 @@ class PropertySingleRenderer {
                     $docs_field_name,
                     'documents'
                 );
-                $docs_json = function_exists( 'hvnly_resolve_field_meta' )
+                $docs_json         = function_exists( 'hvnly_resolve_field_meta' )
                     ? hvnly_resolve_field_meta( (int) $property_id, $docs_field_config, $docs_field_name )
                     : get_post_meta( $property_id, $docs_field_name, true );
-                
+
                 if ( ! empty( $docs_json ) ) {
                     $decoded = json_decode( $docs_json, true );
                     if ( is_array( $decoded ) ) {
                         $documents = $decoded;
                     }
                 }
-                
+
                 // Also check individual fields for backward compatibility
                 if ( empty( $documents ) && ! empty( $icon_key ) && ! empty( $label_key ) && ! empty( $url_key ) ) {
                     $doc_identity = array(
@@ -1007,25 +1010,25 @@ class PropertySingleRenderer {
                         'group_base_id' => $group_base_id,
                         'group_id'      => $group_id,
                     );
-                    $icons  = function_exists( 'hvnly_resolve_field_meta' )
+                    $icons        = function_exists( 'hvnly_resolve_field_meta' )
                         ? hvnly_resolve_field_meta( (int) $property_id, $this->build_group_field_cfg( $doc_identity, $icon_key, 'icon' ), $icon_key )
                         : get_post_meta( $property_id, $icon_key, true );
-                    $labels = function_exists( 'hvnly_resolve_field_meta' )
+                    $labels       = function_exists( 'hvnly_resolve_field_meta' )
                         ? hvnly_resolve_field_meta( (int) $property_id, $this->build_group_field_cfg( $doc_identity, $label_key, 'label' ), $label_key )
                         : get_post_meta( $property_id, $label_key, true );
-                    $urls   = function_exists( 'hvnly_resolve_field_meta' )
+                    $urls         = function_exists( 'hvnly_resolve_field_meta' )
                         ? hvnly_resolve_field_meta( (int) $property_id, $this->build_group_field_cfg( $doc_identity, $url_key, 'url' ), $url_key )
                         : get_post_meta( $property_id, $url_key, true );
-                    
+
                     if ( ! empty( $labels ) && ! empty( $urls ) ) {
-                        $icon_array = is_array( $icons ) ? $icons : ( $icons ? array( $icons ) : array() );
+                        $icon_array  = is_array( $icons ) ? $icons : ( $icons ? array( $icons ) : array() );
                         $label_array = is_array( $labels ) ? $labels : ( $labels ? array( $labels ) : array() );
-                        $url_array = is_array( $urls ) ? $urls : ( $urls ? array( $urls ) : array() );
-                        
+                        $url_array   = is_array( $urls ) ? $urls : ( $urls ? array( $urls ) : array() );
+
                         $count = max( count( $label_array ), count( $url_array ) );
                         for ( $i = 0; $i < $count; $i++ ) {
                             $label = isset( $label_array[ $i ] ) ? $label_array[ $i ] : '';
-                            $url = isset( $url_array[ $i ] ) ? $url_array[ $i ] : '';
+                            $url   = isset( $url_array[ $i ] ) ? $url_array[ $i ] : '';
                             if ( ! empty( $label ) && ! empty( $url ) ) {
                                 $documents[] = array(
                                     'icon' => isset( $icon_array[ $i ] ) ? $icon_array[ $i ] : 'file-pdf',
@@ -1037,7 +1040,7 @@ class PropertySingleRenderer {
                         }
                     }
                 }
-                
+
                 if ( ! empty( $documents ) ) {
                     $group_data['documents'] = $documents;
                     hvnly_get_template( 'single-property/fields/group/property_docs.php', $group_data );
@@ -1055,8 +1058,8 @@ class PropertySingleRenderer {
                     $group_base_id . '_agents',
                     'agents'
                 );
-                $agent_ids = $this->parse_agents_group_ids( $values['agents'] ?? '', $group_base_id, $property_id, $agents_field_cfg );
-                $agents    = $this->resolve_agents_for_section( $agent_ids );
+                $agent_ids        = $this->parse_agents_group_ids( $values['agents'] ?? '', $group_base_id, $property_id, $agents_field_cfg );
+                $agents           = $this->resolve_agents_for_section( $agent_ids );
 
                 if ( ! empty( $agents ) ) {
                     $raw_title = isset( $values['title'] ) ? $values['title'] : '';
@@ -1096,7 +1099,7 @@ class PropertySingleRenderer {
                     hvnly_get_template( 'single-property/repeater-card.php', $group_data );
                 }
                 break;
-                
+
             default:
                 // For other groups, render individual fields
                 foreach ( $group_fields as $field ) {
@@ -1116,8 +1119,8 @@ class PropertySingleRenderer {
         if ( ! empty( $field['metaKey'] ) ) {
             return $field['metaKey'];
         }
-        
-        $id = $field['id'] ?? '';
+
+        $id    = $field['id'] ?? '';
         $parts = explode( '_', $id );
         return end( $parts );
     }
@@ -1148,18 +1151,18 @@ class PropertySingleRenderer {
      */
     private function get_field_template_name( $field ) {
         $field_type = $field['type'] ?? 'text';
-        $category = $this->get_field_category( $field );
+        $category   = $this->get_field_category( $field );
 
         if ( $category === 'group' ) {
             return $field['group_type'] ?? $field_type;
         }
 
         if ( $category === 'preset' ) {
-            $id = $field['id'] ?? '';
+            $id   = $field['id'] ?? '';
             $name = str_replace( 'preset_hvnly_property_field_', '', $id );
             $name = str_replace( '_', '-', $name );
-            
-            $preset_map = [
+
+            $preset_map = array(
                 'fullname' => 'fullname',
                 'email' => 'email',
                 'phone' => 'phone',
@@ -1174,9 +1177,9 @@ class PropertySingleRenderer {
                 'text-zipcode' => 'zipcode',
                 'checkbox-pool' => 'pool',
                 'checkbox-garden' => 'garden',
-                'checkbox-garage' => 'garage-checkbox'
-            ];
-            
+                'checkbox-garage' => 'garage-checkbox',
+            );
+
             return $preset_map[ $name ] ?? $name;
         }
 
@@ -1190,9 +1193,9 @@ class PropertySingleRenderer {
      * @return bool
      */
     private function template_exists( $template_path ) {
-        $theme_template = get_stylesheet_directory() . '/havenlytics/' . $template_path;
+        $theme_template  = get_stylesheet_directory() . '/havenlytics/' . $template_path;
         $plugin_template = HVNLYNAB_PATH . 'templates/' . $template_path;
-        
+
         return file_exists( $theme_template ) || file_exists( $plugin_template );
     }
 
@@ -1206,58 +1209,58 @@ class PropertySingleRenderer {
         if ( isset( $field['enabled'] ) && ! $field['enabled'] ) {
             return;
         }
-        
+
         $meta_key = $field['name'] ?? $field['id'] ?? '';
         if ( empty( $meta_key ) ) {
             return;
         }
-        
+
         $value = $this->get_field_value( $field, $property_id );
-        
+
         if ( ! $this->has_value( $value ) ) {
             return;
         }
-        
-        $category = $this->get_field_category( $field );
+
+        $category      = $this->get_field_category( $field );
         $template_name = $this->get_field_template_name( $field );
-        
+
         $is_checkbox_repeater = false;
-        
+
         if ( $field['type'] === 'checkbox' ) {
-            if ( is_array( $value ) && !empty( $value ) ) {
+            if ( is_array( $value ) && ! empty( $value ) ) {
                 $is_checkbox_repeater = true;
             } elseif ( is_string( $value ) ) {
                 $decoded = json_decode( $value, true );
-                if ( is_array( $decoded ) && !empty( $decoded ) ) {
+                if ( is_array( $decoded ) && ! empty( $decoded ) ) {
                     $is_checkbox_repeater = true;
-                    $value = $decoded;
+                    $value                = $decoded;
                 } elseif ( is_serialized( $value ) ) {
                     $unserialized = maybe_unserialize( $value );
-                    if ( is_array( $unserialized ) && !empty( $unserialized ) ) {
+                    if ( is_array( $unserialized ) && ! empty( $unserialized ) ) {
                         $is_checkbox_repeater = true;
-                        $value = $unserialized;
+                        $value                = $unserialized;
                     }
                 } elseif ( strpos( $value, ',' ) !== false ) {
                     $items = array_map( 'trim', explode( ',', $value ) );
                     $items = array_filter( $items );
                     if ( count( $items ) > 1 ) {
                         $is_checkbox_repeater = true;
-                        $value = $items;
+                        $value                = $items;
                     }
                 }
             }
         }
-        
+
         if ( $is_checkbox_repeater ) {
             $template_name = 'checkbox-repeater';
-            $category = 'preset';
+            $category      = 'preset';
         }
 
         if ( function_exists( 'hvnly_hydrate_select_field_options' ) ) {
             $field = hvnly_hydrate_select_field_options( $field );
         }
-        
-        $field_data = [
+
+        $field_data = array(
             'field'       => $field,
             'value'       => $value,
             'field_value' => $value,
@@ -1268,17 +1271,17 @@ class PropertySingleRenderer {
                 : ( $field['label'] ?? '' ),
             'field_type'  => $field['type'] ?? 'text',
             'category'    => $category,
-            'field_options' => isset( $field['options'] ) ? $field['options'] : [],
-        ];
-        
+            'field_options' => isset( $field['options'] ) ? $field['options'] : array(),
+        );
+
         $template_path = 'single-property/fields/' . $category . '/' . $template_name . '.php';
-        
+
         if ( $this->template_exists( $template_path ) ) {
             hvnly_get_template( $template_path, $field_data );
             return;
         }
-        
-        $old_template_map = [
+
+        $old_template_map = array(
             'text'     => 'text-field',
             'textarea' => 'textarea-field',
             'number'   => 'number-field',
@@ -1289,8 +1292,8 @@ class PropertySingleRenderer {
             'image'    => 'image-field',
             'file'     => 'file-field',
             'date'     => 'date-field',
-        ];
-        
+        );
+
         $old_template = $old_template_map[ $field['type'] ?? 'text' ] ?? 'fallback-field';
         hvnly_get_template( "single-property/fields/{$old_template}.php", $field_data );
     }
@@ -1304,7 +1307,7 @@ class PropertySingleRenderer {
      */
     private function get_field_value( $field, $property_id ) {
         $meta_key = $field['name'] ?? $field['id'] ?? '';
-        
+
         if ( empty( $meta_key ) ) {
             return null;
         }
@@ -1327,9 +1330,9 @@ class PropertySingleRenderer {
      * @return bool
      */
     private function is_document_field( $field ) {
-        return ( $field['group_type'] ?? '' ) === 'property_docs' || 
-               ( $field['type'] ?? '' ) === 'property_docs' ||
-               strpos( $field['name'] ?? '', 'property_docs_' ) === 0;
+        return ( $field['group_type'] ?? '' ) === 'property_docs' ||
+                ( $field['type'] ?? '' ) === 'property_docs' ||
+                strpos( $field['name'] ?? '', 'property_docs_' ) === 0;
     }
 
     /**
@@ -1339,9 +1342,9 @@ class PropertySingleRenderer {
      * @return bool
      */
     private function is_gallery_field( $field ) {
-        return ( $field['group_type'] ?? '' ) === 'gallery' || 
-               ( $field['type'] ?? '' ) === 'gallery' ||
-               strpos( $field['name'] ?? '', 'gallery_' ) === 0;
+        return ( $field['group_type'] ?? '' ) === 'gallery' ||
+                ( $field['type'] ?? '' ) === 'gallery' ||
+                strpos( $field['name'] ?? '', 'gallery_' ) === 0;
     }
 
     /**
@@ -1351,9 +1354,9 @@ class PropertySingleRenderer {
      * @return bool
      */
     private function is_video_field( $field ) {
-        return ( $field['group_type'] ?? '' ) === 'video' || 
-               ( $field['type'] ?? '' ) === 'video' ||
-               strpos( $field['name'] ?? '', 'video_' ) === 0;
+        return ( $field['group_type'] ?? '' ) === 'video' ||
+                ( $field['type'] ?? '' ) === 'video' ||
+                strpos( $field['name'] ?? '', 'video_' ) === 0;
     }
 
     /**
@@ -1590,9 +1593,9 @@ class PropertySingleRenderer {
      * @return bool
      */
     private function is_map_field( $field ) {
-        return ( $field['group_type'] ?? '' ) === 'map' || 
-               ( $field['type'] ?? '' ) === 'map' ||
-               strpos( $field['name'] ?? '', 'map_' ) === 0;
+        return ( $field['group_type'] ?? '' ) === 'map' ||
+                ( $field['type'] ?? '' ) === 'map' ||
+                strpos( $field['name'] ?? '', 'map_' ) === 0;
     }
 
     /**
@@ -1674,12 +1677,12 @@ class PropertySingleRenderer {
      * @return array
      */
     private function sort_sections_by_order( $sections ) {
-        uasort( $sections, function( $a, $b ) {
+        uasort( $sections, function ( $a, $b ) {
             $a_order = (int) ( $a['order'] ?? 999 );
             $b_order = (int) ( $b['order'] ?? 999 );
             return $a_order - $b_order;
         });
-        
+
         return $sections;
     }
 
@@ -1690,12 +1693,12 @@ class PropertySingleRenderer {
      * @return array
      */
     private function sort_fields_by_order( $fields ) {
-        usort( $fields, function( $a, $b ) {
+        usort( $fields, function ( $a, $b ) {
             $a_order = (int) ( $a['order'] ?? 999 );
             $b_order = (int) ( $b['order'] ?? 999 );
             return $a_order - $b_order;
         });
-        
+
         return $fields;
     }
 }

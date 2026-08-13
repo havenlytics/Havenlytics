@@ -48,7 +48,7 @@ final class AjaxController {
 		'hvnly_ie_import_cancel'   => 'import_cancel',
 		'hvnly_ie_import_report'   => 'import_report',
 		'hvnly_ie_job_status'      => 'job_status',
-		'hvnly_ie_migration_limits'=> 'migration_limits',
+		'hvnly_ie_migration_limits' => 'migration_limits',
 	);
 
 	/**
@@ -125,7 +125,10 @@ final class AjaxController {
 			self::error( 'hvnly_ie_job_missing', 'No active export job.', 404 );
 		}
 		if ( in_array( $job['status'], array( JobStateStore::STATUS_COMPLETED, JobStateStore::STATUS_FAILED, JobStateStore::STATUS_CANCELLED ), true ) ) {
-			self::ok( array( 'job' => JobStateStore::public_view( $job ), 'done' => true ) );
+			self::ok( array(
+				'job' => JobStateStore::public_view( $job ),
+				'done' => true,
+			) );
 		}
 
 		JobLock::heartbeat( (string) $job['id'] );
@@ -423,8 +426,8 @@ final class AjaxController {
 			);
 		}
 
-		$options = self::import_options_from_request();
-		$job     = JobStateStore::new_job( JobStateStore::TYPE_IMPORT, $options, get_current_user_id() );
+		$options               = self::import_options_from_request();
+		$job                   = JobStateStore::new_job( JobStateStore::TYPE_IMPORT, $options, get_current_user_id() );
 		$job['workdir']        = $pkg_workdir;
 		$job['upload_path']    = (string) ( $session['source_zip'] ?? '' );
 		$job['upload_workdir'] = (string) ( $session['workdir'] ?? '' );
@@ -455,7 +458,10 @@ final class AjaxController {
 			self::error( 'hvnly_ie_job_missing', 'No active import job.', 404 );
 		}
 		if ( in_array( $job['status'], array( JobStateStore::STATUS_COMPLETED, JobStateStore::STATUS_FAILED, JobStateStore::STATUS_CANCELLED ), true ) ) {
-			self::ok( array( 'job' => JobStateStore::public_view( $job ), 'done' => true ) );
+			self::ok( array(
+				'job' => JobStateStore::public_view( $job ),
+				'done' => true,
+			) );
 		}
 
 		JobLock::heartbeat( (string) $job['id'] );
@@ -491,7 +497,10 @@ final class AjaxController {
 		$job = self::cancel_job( $job );
 		$job = self::finalize_terminal_job( $job );
 		$store->save_job( $job );
-		self::ok( array( 'job' => JobStateStore::public_view( $job ), 'report' => $job['report'] ) );
+		self::ok( array(
+			'job' => JobStateStore::public_view( $job ),
+			'report' => $job['report'],
+		) );
 	}
 
 	/**
@@ -509,7 +518,10 @@ final class AjaxController {
 		$report = ! empty( $job['report'] ) && is_array( $job['report'] )
 			? $job['report']
 			: ReportBuilder::from_job( $job );
-		self::ok( array( 'report' => $report, 'job' => JobStateStore::public_view( $job ) ) );
+		self::ok( array(
+			'report' => $report,
+			'job' => JobStateStore::public_view( $job ),
+		) );
 	}
 
 	/**
@@ -524,7 +536,10 @@ final class AjaxController {
 		$store = new JobStateStore();
 		$job   = $store->get_job();
 		if ( ! $job ) {
-			self::ok( array( 'job' => null, 'locked' => JobLock::is_locked() ) );
+			self::ok( array(
+				'job' => null,
+				'locked' => JobLock::is_locked(),
+			) );
 		}
 		self::ok(
 			array(
@@ -540,11 +555,11 @@ final class AjaxController {
 	 * @return array
 	 */
 	private static function cancel_job( array $job ): array {
-		$job['status']       = JobStateStore::STATUS_CANCELLED;
-		$job['phase']        = 'cancelled';
-		$job['completed_at'] = gmdate( 'c' );
+		$job['status']              = JobStateStore::STATUS_CANCELLED;
+		$job['phase']               = 'cancelled';
+		$job['completed_at']        = gmdate( 'c' );
 		$job['progress']['message'] = 'Cancelled by user.';
-		$job['report']       = ReportBuilder::from_job( $job );
+		$job['report']              = ReportBuilder::from_job( $job );
 		return $job;
 	}
 
@@ -594,7 +609,7 @@ final class AjaxController {
 			'percent' => (int) ( $job['progress']['percent'] ?? 0 ),
 			'message' => 'Job failed unexpectedly.',
 		);
-		$job = JobStateStore::push_error(
+		$job                 = JobStateStore::push_error(
 			$job,
 			array(
 				'code'    => 'hvnly_ie_job_exception',

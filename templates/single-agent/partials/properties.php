@@ -63,7 +63,7 @@ if ( is_wp_error( $hvnly_department_terms ) ) {
 		<?php if ( ! empty( $hvnly_department_terms ) ) : ?>
 			<ul class="hvnly-agent-single__status-tabs" role="tablist" aria-label="<?php esc_attr_e( 'Filter listings by department', 'havenlytics' ); ?>">
 				<li>
-					<button type="button" class="hvnly-agent-single__status-tab is-active" data-dept="all" role="tab" aria-selected="true">
+					<button type="button" class="hvnly-ui-control hvnly-agent-single__status-tab is-active" data-dept="all" role="tab" aria-selected="true">
 						<?php esc_html_e( 'All', 'havenlytics' ); ?>
 					</button>
 				</li>
@@ -71,7 +71,7 @@ if ( is_wp_error( $hvnly_department_terms ) ) {
 					<li>
 						<button
 							type="button"
-							class="hvnly-agent-single__status-tab"
+							class="hvnly-ui-control hvnly-agent-single__status-tab"
 							data-dept="<?php echo esc_attr( (string) $hvnly_dept_term->term_id ); ?>"
 							role="tab"
 							aria-selected="false"

@@ -40,20 +40,19 @@ class Version236Handler implements MigrationInterface {
 
 
 
-    const BUILDER_KEY   = 'hvnly_property_builder.sections';
+    const BUILDER_KEY = 'hvnly_property_builder.sections';
 
-    const REMAP_OPTION  = 'hvnly_migration_236_remap';
+    const REMAP_OPTION = 'hvnly_migration_236_remap';
 
-    const BATCH_KEY     = 'hvnly_migration_236_offset';
+    const BATCH_KEY = 'hvnly_migration_236_offset';
 
-    const DONE_KEY      = 'hvnly_migration_236_done';
+    const DONE_KEY = 'hvnly_migration_236_done';
 
 
 
     public function get_version(): string {
 
         return '2.3.6';
-
     }
 
 
@@ -61,7 +60,6 @@ class Version236Handler implements MigrationInterface {
     public function get_description(): string {
 
         return 'Batched property meta remap after builder group_base_id changes (preserves all legacy keys)';
-
     }
 
 
@@ -77,7 +75,6 @@ class Version236Handler implements MigrationInterface {
         $remap = get_option( self::REMAP_OPTION, array() );
 
         return is_array( $remap ) && ! empty( $remap );
-
     }
 
 
@@ -94,8 +91,6 @@ class Version236Handler implements MigrationInterface {
 
         }
 
-
-
         $copied = 0;
 
         $result = \HvnlyNab\Core\DataPreservation\BatchProcessor::each_property(
@@ -103,14 +98,11 @@ class Version236Handler implements MigrationInterface {
             function ( int $post_id ) use ( $remap, &$copied ) {
 
                 $copied += BuilderMetaMigrator::remap_property_meta( $post_id, $remap );
-
             },
 
             self::BATCH_KEY
 
         );
-
-
 
         $this->log(
 
@@ -132,8 +124,6 @@ class Version236Handler implements MigrationInterface {
 
         );
 
-
-
         if ( $result['complete'] ) {
 
             delete_option( self::REMAP_OPTION );
@@ -146,10 +136,7 @@ class Version236Handler implements MigrationInterface {
 
         }
 
-
-
         return false;
-
     }
 
 
@@ -157,7 +144,6 @@ class Version236Handler implements MigrationInterface {
     public function down(): bool {
 
         return true;
-
     }
 
 
@@ -198,9 +184,5 @@ class Version236Handler implements MigrationInterface {
             unset( $completed['2.3.6'] );
             update_option( \HvnlyNab\Core\Migration\Migrator::COMPLETED_KEY, $completed, false );
         }
-
     }
-
 }
-
-

@@ -58,7 +58,7 @@ final class PropertyMediaController {
 	 * @return array<string, mixed>
 	 */
 	public function filter_localize( array $data ): array {
-		$rest = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
+		$rest                  = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
 		$rest['mediaMaxBytes'] = PropertyMediaService::MAX_BYTES;
 		$rest['mediaMime']     = PropertyMediaService::ALLOWED_MIME;
 		$data['rest']          = $rest;
@@ -232,7 +232,7 @@ final class PropertyMediaController {
 			PropertyMediaService::attach_to_gallery( (int) $post->ID, (int) $attachment_id );
 		}
 
-		$payload = PropertyMediaService::get_media( (int) $post->ID );
+		$payload             = PropertyMediaService::get_media( (int) $post->ID );
 		$payload['uploaded'] = PropertyMediaService::serialize_attachment( (int) $attachment_id );
 
 		return rest_ensure_response(

@@ -105,10 +105,10 @@ final class AgentDeleteWizardPage {
 		$state = $this->get_state( $agent_id );
 
 		if ( 'choose_target' === $action ) {
-			$mode      = isset( $_POST['transfer_mode'] ) ? sanitize_key( wp_unslash( (string) $_POST['transfer_mode'] ) ) : '';
-			$to_agent  = isset( $_POST['target_agent_id'] ) ? absint( $_POST['target_agent_id'] ) : 0;
-			$transfer  = new AgentOwnershipTransferService();
-			$target    = $transfer->resolve_target( $mode, $to_agent );
+			$mode     = isset( $_POST['transfer_mode'] ) ? sanitize_key( wp_unslash( (string) $_POST['transfer_mode'] ) ) : '';
+			$to_agent = isset( $_POST['target_agent_id'] ) ? absint( $_POST['target_agent_id'] ) : 0;
+			$transfer = new AgentOwnershipTransferService();
+			$target   = $transfer->resolve_target( $mode, $to_agent );
 			if ( is_wp_error( $target ) ) {
 				$this->redirect_notice( $agent_id, 'error', $target->get_error_message(), 2 );
 			}
@@ -208,7 +208,7 @@ final class AgentDeleteWizardPage {
 		$this->assert_admin();
 
 		$notice = isset( $_GET['hvnly_delete_notice'] ) ? sanitize_key( wp_unslash( (string) $_GET['hvnly_delete_notice'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$msg = '';
+		$msg    = '';
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Admin notice passthrough only.
 		$raw_msg = filter_input( INPUT_GET, 'hvnly_delete_msg', FILTER_UNSAFE_RAW );
 		if ( is_string( $raw_msg ) && '' !== $raw_msg ) {

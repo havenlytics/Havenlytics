@@ -1,7 +1,7 @@
 <?php
 /**
  * Base Field Type Interface
- * 
+ *
  * @package HvnlyNab\Database\FieldTypes
  * @since 2.0.0
  */
@@ -9,7 +9,7 @@
 namespace HvnlyNab\Database\FieldTypes;
 
 // Security check
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -19,58 +19,58 @@ if (!defined('ABSPATH')) {
 interface FieldTypeInterface {
     /**
      * Render field HTML
-     * 
+     *
      * @param array $field Field configuration
      * @param mixed $value Current field value
      * @param int $post_id Post ID
      * @return string HTML output
      */
-    public function render($field, $value, $post_id);
-    
+    public function render( $field, $value, $post_id );
+
     /**
      * Save field data
-     * 
+     *
      * @param int $post_id Post ID
      * @param string $field_name Field name
      * @param mixed $value Field value
      * @return void
      */
-    public function save($post_id, $field_name, $value);
-    
+    public function save( $post_id, $field_name, $value );
+
     /**
      * Sanitize field value
-     * 
+     *
      * @param mixed $value Field value
      * @return mixed Sanitized value
      */
-    public function sanitize($value);
-    
+    public function sanitize( $value );
+
     /**
      * Validate field value
-     * 
+     *
      * @param mixed $value Field value
      * @param array $field Field configuration
      * @return bool|WP_Error True if valid, WP_Error otherwise
      */
-    public function validate($value, $field);
-    
+    public function validate( $value, $field );
+
     /**
      * Get field type
-     * 
+     *
      * @return string Field type
      */
     public function get_type();
-    
+
     /**
      * Check if field requires assets
-     * 
+     *
      * @return bool True if requires assets
      */
     public function requires_assets();
-    
+
     /**
      * Enqueue field-specific assets
-     * 
+     *
      * @return void
      */
     public function enqueue_assets();
@@ -82,50 +82,50 @@ interface FieldTypeInterface {
 abstract class BaseFieldType implements FieldTypeInterface {
     protected $type;
     protected $requires_assets = false;
-    
-    public function __construct($type) {
+
+    public function __construct( $type ) {
         $this->type = $type;
     }
-    
+
     public function get_type() {
         return $this->type;
     }
-    
+
     public function requires_assets() {
         return $this->requires_assets;
     }
-    
+
     public function enqueue_assets() {
         // Default: no assets required
     }
-    
+
     /**
      * Get field wrapper class
-     * 
+     *
      * @param string $field_type Field type
      * @return string CSS class
      */
-    protected function get_wrapper_class($field_type) {
+    protected function get_wrapper_class( $field_type ) {
         return 'checkbox' === $field_type ? 'hvnly__dyamic_metabox_tab__checkbox' : '';
     }
-    
+
     /**
      * Render field label
-     * 
+     *
      * @param array $field Field configuration
      * @return string Label HTML
      */
-    protected function render_label($field) {
+    protected function render_label( $field ) {
         // Skip label for map fields - they handle their own labels
         if ($field['type'] === 'map') {
             return '';
         }
-        
+
         // Skip label for checkbox fields
         if ($field['type'] === 'checkbox') {
             return '';
         }
-        
+
         $required = isset($field['is_required']) && $field['is_required'] ? '<span class="required">*</span>' : '';
         $label    = isset( $field['label'] ) ? (string) $field['label'] : '';
         return sprintf(
@@ -134,18 +134,18 @@ abstract class BaseFieldType implements FieldTypeInterface {
             $required
         );
     }
-    
+
     /**
      * Render field description
-     * 
+     *
      * @param array $field Field configuration
      * @return string Description HTML
      */
-    protected function render_description($field) {
+    protected function render_description( $field ) {
         if (empty($field['description'])) {
             return '';
         }
-        
+
         return sprintf(
             '<p class="description">%s</p>',
             hvnly_esc_html_ui( (string) $field['description'] )

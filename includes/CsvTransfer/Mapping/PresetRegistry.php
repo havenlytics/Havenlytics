@@ -118,7 +118,7 @@ final class PresetRegistry {
 	 * @return array<string, mixed>
 	 */
 	private static function normalize( array $preset ): array {
-		$id = sanitize_key( (string) ( $preset['id'] ?? '' ) );
+		$id      = sanitize_key( (string) ( $preset['id'] ?? '' ) );
 		$mapping = array();
 		if ( isset( $preset['mapping'] ) && is_array( $preset['mapping'] ) ) {
 			foreach ( $preset['mapping'] as $header => $field_id ) {

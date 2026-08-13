@@ -93,14 +93,46 @@ final class AgentFields {
 				),
 			),
 			'social'       => array(
-				array( 'key' => AgentConstants::META_VIMEO, 'label' => __( 'Vimeo URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => AgentConstants::META_FACEBOOK, 'label' => __( 'Facebook URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => AgentConstants::META_TWITTER, 'label' => __( 'Twitter / X URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => AgentConstants::META_PINTEREST, 'label' => __( 'Pinterest URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => AgentConstants::META_INSTAGRAM, 'label' => __( 'Instagram URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => AgentConstants::META_YOUTUBE, 'label' => __( 'YouTube URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => AgentConstants::META_LINKEDIN, 'label' => __( 'LinkedIn URL', 'havenlytics' ), 'type' => 'url' ),
-				array( 'key' => AgentConstants::META_TIKTOK, 'label' => __( 'TikTok URL', 'havenlytics' ), 'type' => 'url' ),
+				array(
+					'key' => AgentConstants::META_VIMEO,
+					'label' => __( 'Vimeo URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => AgentConstants::META_FACEBOOK,
+					'label' => __( 'Facebook URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => AgentConstants::META_TWITTER,
+					'label' => __( 'Twitter / X URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => AgentConstants::META_PINTEREST,
+					'label' => __( 'Pinterest URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => AgentConstants::META_INSTAGRAM,
+					'label' => __( 'Instagram URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => AgentConstants::META_YOUTUBE,
+					'label' => __( 'YouTube URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => AgentConstants::META_LINKEDIN,
+					'label' => __( 'LinkedIn URL', 'havenlytics' ),
+					'type' => 'url',
+				),
+				array(
+					'key' => AgentConstants::META_TIKTOK,
+					'label' => __( 'TikTok URL', 'havenlytics' ),
+					'type' => 'url',
+				),
 			),
 		);
 	}
@@ -142,8 +174,8 @@ final class AgentFields {
 			'vimeo'    => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_VIMEO, true ) ),
 			'facebook' => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_FACEBOOK, true ) ),
 			'twitter'  => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_TWITTER, true ) ),
-			'pinterest'=> esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_PINTEREST, true ) ),
-			'instagram'=> esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_INSTAGRAM, true ) ),
+			'pinterest' => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_PINTEREST, true ) ),
+			'instagram' => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_INSTAGRAM, true ) ),
 			'youtube'  => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_YOUTUBE, true ) ),
 			'linkedin' => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_LINKEDIN, true ) ),
 			'tiktok'   => esc_url_raw( (string) get_post_meta( $post_id, AgentConstants::META_TIKTOK, true ) ),

@@ -61,18 +61,30 @@ final class RowImporter {
 		$title    = isset( $fields['title'] ) ? sanitize_text_field( (string) $fields['title'] ) : '';
 
 		if ( '' === $title ) {
-			return array( 'status' => self::STATUS_FAILED, 'post_id' => 0, 'warnings' => array( __( 'Row missing required Title value.', 'havenlytics' ) ) );
+			return array(
+				'status' => self::STATUS_FAILED,
+				'post_id' => 0,
+				'warnings' => array( __( 'Row missing required Title value.', 'havenlytics' ) ),
+			);
 		}
 
 		if ( ! post_type_exists( AgentConstants::PROPERTY_POST_TYPE ) ) {
-			return array( 'status' => self::STATUS_FAILED, 'post_id' => 0, 'warnings' => array( __( 'Property post type is not registered.', 'havenlytics' ) ) );
+			return array(
+				'status' => self::STATUS_FAILED,
+				'post_id' => 0,
+				'warnings' => array( __( 'Property post type is not registered.', 'havenlytics' ) ),
+			);
 		}
 
 		$policy   = DuplicateMatcher::normalize_policy( $duplicate_policy );
 		$existing = DuplicateMatcher::find( $fields );
 
 		if ( $existing > 0 && DuplicateMatcher::POLICY_SKIP === $policy ) {
-			return array( 'status' => self::STATUS_SKIPPED, 'post_id' => $existing, 'warnings' => $warnings );
+			return array(
+				'status' => self::STATUS_SKIPPED,
+				'post_id' => $existing,
+				'warnings' => $warnings,
+			);
 		}
 
 		$status = self::normalize_status( isset( $fields['status'] ) ? (string) $fields['status'] : 'publish' );
@@ -121,12 +133,20 @@ final class RowImporter {
 
 		if ( is_wp_error( $result ) ) {
 			$warnings[] = $result->get_error_message();
-			return array( 'status' => self::STATUS_FAILED, 'post_id' => 0, 'warnings' => $warnings );
+			return array(
+				'status' => self::STATUS_FAILED,
+				'post_id' => 0,
+				'warnings' => $warnings,
+			);
 		}
 
 		$post_id = absint( $result );
 		if ( $post_id <= 0 ) {
-			return array( 'status' => self::STATUS_FAILED, 'post_id' => 0, 'warnings' => array( __( 'Could not save property post.', 'havenlytics' ) ) );
+			return array(
+				'status' => self::STATUS_FAILED,
+				'post_id' => 0,
+				'warnings' => array( __( 'Could not save property post.', 'havenlytics' ) ),
+			);
 		}
 
 		self::write_flags( $post_id, $fields );
@@ -389,7 +409,10 @@ final class RowImporter {
 					if ( '' === $q && '' === $a ) {
 						continue;
 					}
-					$items[] = array( 'question' => $q, 'answer' => $a );
+					$items[] = array(
+						'question' => $q,
+						'answer' => $a,
+					);
 				}
 				$json = wp_json_encode( $items );
 				return $json ? $json : null;
@@ -407,7 +430,10 @@ final class RowImporter {
 			if ( '' === $q && '' === $a ) {
 				continue;
 			}
-			$items[] = array( 'question' => $q, 'answer' => $a );
+			$items[] = array(
+				'question' => $q,
+				'answer' => $a,
+			);
 		}
 		if ( empty( $items ) ) {
 			return null;
@@ -457,7 +483,11 @@ final class RowImporter {
 			if ( '' === $title && '' === $val ) {
 				continue;
 			}
-			$items[] = array( 'title' => $title, 'value' => $val, 'icon' => '' );
+			$items[] = array(
+				'title' => $title,
+				'value' => $val,
+				'icon' => '',
+			);
 		}
 		if ( empty( $items ) ) {
 			return null;

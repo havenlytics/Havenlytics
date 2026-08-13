@@ -68,7 +68,7 @@ final class PropertiesExporter {
 			$args['date_query'] = array( $date_query );
 		}
 
-		$query = new \WP_Query( $args );
+		$query    = new \WP_Query( $args );
 		$sections = class_exists( PropertyBuilderSchemaService::class )
 			? PropertyBuilderSchemaService::raw_sections()
 			: array();
@@ -84,7 +84,7 @@ final class PropertiesExporter {
 				continue;
 			}
 
-			$fields = $encoder->encode_property_fields( (int) $post->ID, $sections );
+			$fields    = $encoder->encode_property_fields( (int) $post->ID, $sections );
 			$field_map = class_exists( GroupFieldIdentity::class )
 				? GroupFieldIdentity::get_field_map( (int) $post->ID )
 				: array();
@@ -110,7 +110,7 @@ final class PropertiesExporter {
 				$author_email = (string) $author->user_email;
 			}
 
-			$thumb = get_post_thumbnail_id( $post->ID );
+			$thumb    = get_post_thumbnail_id( $post->ID );
 			$featured = $thumb ? $encoder->attachment_stub( (int) $thumb ) : null;
 
 			$row = array(
@@ -121,7 +121,7 @@ final class PropertiesExporter {
 				'status'            => (string) $post->post_status,
 				'post_date_gmt'     => (string) $post->post_date_gmt,
 				'post_modified_gmt' => (string) $post->post_modified_gmt,
-				'unique_property_id'=> (string) get_post_meta( $post->ID, '_hvnly_unique_property_id', true ),
+				'unique_property_id' => (string) get_post_meta( $post->ID, '_hvnly_unique_property_id', true ),
 				'mls_number'        => (string) get_post_meta( $post->ID, '_hvnly_property_mls_number', true ),
 				'reference_number'  => (string) get_post_meta( $post->ID, '_hvnly_property_reference_number', true ),
 				'featured'          => ( '1' === (string) get_post_meta( $post->ID, '_hvnly_property_featured', true ) ),

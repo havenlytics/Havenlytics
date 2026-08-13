@@ -65,7 +65,7 @@ final class CsvImportBatchRunner {
 		$stream  = '' !== $path ? CsvStream::open( $path, (string) ( $options['delimiter'] ?? '' ) ) : null;
 
 		if ( ! $stream ) {
-			$job['status'] = CsvJobStateStore::STATUS_FAILED;
+			$job['status']       = CsvJobStateStore::STATUS_FAILED;
 			$job['completed_at'] = gmdate( 'c' );
 			return CsvJobStateStore::push_error(
 				$job,
@@ -77,10 +77,16 @@ final class CsvImportBatchRunner {
 			);
 		}
 
-		$total          = $stream->count_rows();
-		$job['cursor']  = array( 'index' => 0, 'total' => $total );
-		$job['phase']   = $total > 0 ? 'rows' : ( ! empty( $options['fetch_media'] ) ? 'media' : 'finalize' );
-		$job['progress'] = array( 'percent' => 5, 'message' => __( 'Import prepared.', 'havenlytics' ) );
+		$total           = $stream->count_rows();
+		$job['cursor']   = array(
+			'index' => 0,
+			'total' => $total,
+		);
+		$job['phase']    = $total > 0 ? 'rows' : ( ! empty( $options['fetch_media'] ) ? 'media' : 'finalize' );
+		$job['progress'] = array(
+			'percent' => 5,
+			'message' => __( 'Import prepared.', 'havenlytics' ),
+		);
 		return $job;
 	}
 
@@ -89,16 +95,16 @@ final class CsvImportBatchRunner {
 	 * @return array
 	 */
 	private static function phase_rows( array $job ): array {
-		$options  = isset( $job['options'] ) && is_array( $job['options'] ) ? $job['options'] : array();
-		$mapping  = isset( $options['mapping'] ) && is_array( $options['mapping'] ) ? $options['mapping'] : array();
-		$policy   = (string) ( $options['duplicate_policy'] ?? 'skip' );
-		$path     = (string) ( $options['csv_path'] ?? '' );
-		$index    = isset( $job['cursor']['index'] ) ? (int) $job['cursor']['index'] : 0;
-		$total    = isset( $job['cursor']['total'] ) ? (int) $job['cursor']['total'] : 0;
+		$options = isset( $job['options'] ) && is_array( $job['options'] ) ? $job['options'] : array();
+		$mapping = isset( $options['mapping'] ) && is_array( $options['mapping'] ) ? $options['mapping'] : array();
+		$policy  = (string) ( $options['duplicate_policy'] ?? 'skip' );
+		$path    = (string) ( $options['csv_path'] ?? '' );
+		$index   = isset( $job['cursor']['index'] ) ? (int) $job['cursor']['index'] : 0;
+		$total   = isset( $job['cursor']['total'] ) ? (int) $job['cursor']['total'] : 0;
 
 		$stream = CsvStream::open( $path, (string) ( $options['delimiter'] ?? '' ) );
 		if ( ! $stream ) {
-			$job['status'] = CsvJobStateStore::STATUS_FAILED;
+			$job['status']       = CsvJobStateStore::STATUS_FAILED;
 			$job['completed_at'] = gmdate( 'c' );
 			return CsvJobStateStore::push_error(
 				$job,
@@ -150,16 +156,19 @@ final class CsvImportBatchRunner {
 					array(
 						'code'    => 'hvnly_csv_row_warning',
 						'message' => $warning,
-						'context' => array( 'row' => $row_number, 'post_id' => $result['post_id'] ),
+						'context' => array(
+							'row' => $row_number,
+							'post_id' => $result['post_id'],
+						),
 					)
 				);
 			}
 		}
 
-		$next_index = $index + count( $rows );
+		$next_index             = $index + count( $rows );
 		$job['cursor']['index'] = $next_index;
 
-		$pct = $total > 0 ? 10 + (int) floor( 70 * min( 1, $next_index / $total ) ) : 80;
+		$pct             = $total > 0 ? 10 + (int) floor( 70 * min( 1, $next_index / $total ) ) : 80;
 		$job['progress'] = array(
 			'percent' => $pct,
 			'message' => sprintf(
@@ -172,7 +181,10 @@ final class CsvImportBatchRunner {
 
 		if ( $next_index >= $total || empty( $rows ) ) {
 			$job['phase']  = ! empty( $options['fetch_media'] ) ? 'media' : 'finalize';
-			$job['cursor'] = array( 'index' => 0, 'total' => 0 );
+			$job['cursor'] = array(
+				'index' => 0,
+				'total' => 0,
+			);
 		}
 
 		return $job;
@@ -187,7 +199,10 @@ final class CsvImportBatchRunner {
 		$post_ids = RemoteMediaFetcher::find_pending_post_ids( 25, $job_id );
 		if ( empty( $post_ids ) ) {
 			$job['phase']    = 'finalize';
-			$job['progress'] = array( 'percent' => 95, 'message' => __( 'No media to fetch.', 'havenlytics' ) );
+			$job['progress'] = array(
+				'percent' => 95,
+				'message' => __( 'No media to fetch.', 'havenlytics' ),
+			);
 			return $job;
 		}
 
@@ -213,9 +228,9 @@ final class CsvImportBatchRunner {
 		}
 
 		$job['counts']['media_fetched'] = (int) ( $job['counts']['media_fetched'] ?? 0 ) + $consumed;
-		$remaining = RemoteMediaFetcher::find_pending_post_ids( 1, $job_id );
-		$job['phase'] = empty( $remaining ) ? 'finalize' : 'media';
-		$job['progress'] = array(
+		$remaining                      = RemoteMediaFetcher::find_pending_post_ids( 1, $job_id );
+		$job['phase']                   = empty( $remaining ) ? 'finalize' : 'media';
+		$job['progress']                = array(
 			'percent' => empty( $remaining ) ? 95 : 90,
 			'message' => __( 'Fetching remote media…', 'havenlytics' ),
 		);
@@ -230,7 +245,10 @@ final class CsvImportBatchRunner {
 	private static function phase_finalize( array $job ): array {
 		$job['status']       = CsvJobStateStore::STATUS_COMPLETED;
 		$job['phase']        = 'completed';
-		$job['progress']     = array( 'percent' => 100, 'message' => __( 'Import complete.', 'havenlytics' ) );
+		$job['progress']     = array(
+			'percent' => 100,
+			'message' => __( 'Import complete.', 'havenlytics' ),
+		);
 		$job['completed_at'] = gmdate( 'c' );
 		return $job;
 	}

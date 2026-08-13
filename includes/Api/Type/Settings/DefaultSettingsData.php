@@ -9,26 +9,26 @@
 namespace HvnlyNab\Api\Type\Settings;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
 /**
  * Default Settings Data Class
- * 
+ *
  * Provides default values for all plugin settings.
- * 
+ *
  * @since 2.0.3
  */
-class DefaultSettingsData
-{
+class DefaultSettingsData {
+
     /**
      * Singleton instance
      *
      * @var self|null
      */
     private static $instance = null;
-    
+
     /**
      * Cached defaults
      *
@@ -41,8 +41,7 @@ class DefaultSettingsData
      *
      * @return self
      */
-    public static function get_instance()
-    {
+    public static function get_instance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -55,36 +54,35 @@ class DefaultSettingsData
      * @since 2.2.0
      * @return array
      */
-    public static function get_default_map_settings()
-    {
-        return [
+    public static function get_default_map_settings() {
+        return array(
             // Map Provider Configuration
             'hvnly_map_provider' => 'leaflet',
             'hvnly_map_api_key' => '',
-            
+
             // Map Display Settings
             'hvnly_default_lat' => '51.514939',
             'hvnly_default_lng' => '-0.091839',
             'hvnly_map_zoom' => 12,
             'hvnly_map_style' => 'standard',
-            
+
             // Marker Settings
             'hvnly_cluster_markers' => true,
             'hvnly_custom_marker' => false,
             'hvnly_marker_color' => '#6C60FE',
-            
+
             // Map UI Settings
             'hvnly_show_fullscreen' => true,
             'hvnly_show_zoom_control' => true,
             'hvnly_show_scroll_wheel' => true,
-            
+
             // Google Maps Specific
             'hvnly_google_map_type' => 'roadmap',
 
             // OpenStreetMap Specific
             'hvnly_osm_tile_url' => 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             'hvnly_osm_attribution' => '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        ];
+        );
     }
 
     /**
@@ -92,8 +90,7 @@ class DefaultSettingsData
      *
      * @return array
      */
-    public static function get_default_settings()
-    {
+    public static function get_default_settings() {
         if (null !== self::$cached_defaults) {
             return self::$cached_defaults;
         }
@@ -111,45 +108,45 @@ class DefaultSettingsData
                 $building = false;
             }
         }
-        
+
         $schema_defaults = SettingsSchema::get_all_defaults();
-        
-        $legacy_defaults = [
+
+        $legacy_defaults = array(
             'general' => self::get_default_general_settings(),
             'design' => self::get_default_design_settings(),
             'search' => self::get_default_search_settings(),
             'properties' => self::get_default_properties_settings(),
             'shortcodes' => self::get_default_shortcodes_settings(),
             'property-details' => self::get_default_property_details_settings(),
-            'map' => self::get_default_map_settings(), 
+            'map' => self::get_default_map_settings(),
             'performance' => self::get_default_performance_settings(),
             'contact-agent' => self::get_default_contact_agent_settings(),
             'email' => self::get_default_email_settings(),
-        ];
-        
-        $merged_defaults = [];
-        $all_groups = array_unique(array_merge(array_keys($schema_defaults), array_keys($legacy_defaults)));
-        
+        );
+
+        $merged_defaults = array();
+        $all_groups      = array_unique(array_merge(array_keys($schema_defaults), array_keys($legacy_defaults)));
+
         foreach ($all_groups as $group) {
-            $merged_defaults[$group] = [];
-            
-            if (isset($legacy_defaults[$group])) {
-                $merged_defaults[$group] = $legacy_defaults[$group];
+            $merged_defaults[ $group ] = array();
+
+            if (isset($legacy_defaults[ $group ])) {
+                $merged_defaults[ $group ] = $legacy_defaults[ $group ];
             }
-            
-            if (isset($schema_defaults[$group])) {
-                $schema_for_merge = $schema_defaults[$group];
+
+            if (isset($schema_defaults[ $group ])) {
+                $schema_for_merge = $schema_defaults[ $group ];
                 if ('search' === $group) {
-                    foreach (array('hvnly_search_fields', 'hvnly_main_search_fields', 'hvnly_top_search_fields') as $search_fields_key) {
-                        unset($schema_for_merge[$search_fields_key]);
+                    foreach (array( 'hvnly_search_fields', 'hvnly_main_search_fields', 'hvnly_top_search_fields' ) as $search_fields_key) {
+                        unset($schema_for_merge[ $search_fields_key ]);
                     }
                 }
-                $merged_defaults[$group] = array_merge($merged_defaults[$group], $schema_for_merge);
+                $merged_defaults[ $group ] = array_merge($merged_defaults[ $group ], $schema_for_merge);
             }
         }
-        
+
         self::$cached_defaults = $merged_defaults;
-        
+
         return $merged_defaults;
     }
 
@@ -158,11 +155,10 @@ class DefaultSettingsData
      *
      * @return array
      */
-    public static function get_default_performance_settings()
-    {
-        return [
+    public static function get_default_performance_settings() {
+        return array(
             'hvnly_cache_enabled' => false,
-        ];
+        );
     }
 
     /**
@@ -171,9 +167,8 @@ class DefaultSettingsData
      * @since 3.0.2
      * @return array
      */
-    public static function get_default_contact_agent_settings()
-    {
-        return [
+    public static function get_default_contact_agent_settings() {
+        return array(
             'hvnly_contact_agent_enabled'           => true,
             'hvnly_contact_agent_notify_agent'      => true,
             'hvnly_contact_agent_notify_admin'      => true,
@@ -193,14 +188,14 @@ class DefaultSettingsData
             'hvnly_workspace_registration_mode'     => 'open',
             'hvnly_workspace_default_role'          => 'hvnly_agent',
             'hvnly_workspace_perm_create_property'  => true,
-            'hvnly_workspace_perm_edit_own_property'=> true,
+            'hvnly_workspace_perm_edit_own_property' => true,
             'hvnly_workspace_perm_delete_own_property' => true,
             'hvnly_workspace_perm_submit_property'  => true,
             'hvnly_workspace_perm_publish_property' => false,
             'hvnly_workspace_perm_upload_media'     => true,
             'hvnly_workspace_perm_edit_profile'     => true,
             'hvnly_workspace_perm_view_dashboard'   => true,
-            'hvnly_workspace_perm_receive_inquiries'=> true,
+            'hvnly_workspace_perm_receive_inquiries' => true,
             'hvnly_workspace_perm_reply_inquiries'  => true,
             'hvnly_workspace_email_registration'    => true,
             'hvnly_workspace_email_approval'        => true,
@@ -217,7 +212,7 @@ class DefaultSettingsData
             'hvnly_workspace_rest_debug'            => false,
             'hvnly_workspace_debug'                 => false,
             'hvnly_workspace_laravel_sync_enabled'  => false,
-        ];
+        );
     }
 
     /**
@@ -226,9 +221,8 @@ class DefaultSettingsData
      * @since 3.0.2
      * @return array
      */
-    public static function get_default_email_settings()
-    {
-        return [
+    public static function get_default_email_settings() {
+        return array(
             'hvnly_email_from_name'                    => '',
             'hvnly_email_from_address'                 => '',
             'hvnly_email_import_success_enabled'       => true,
@@ -236,7 +230,7 @@ class DefaultSettingsData
             // Legacy option keys stay unchanged for existing installations.
             'hvnly_email_import_success_subject'       => __('Property setup complete — {{site_name}}', 'havenlytics'),
             'hvnly_email_import_success_intro'         => __('Your property setup on {{site_name}} is complete. {{import_count}} listings are ready to review.', 'havenlytics'),
-        ];
+        );
     }
 
     /**
@@ -244,9 +238,8 @@ class DefaultSettingsData
      *
      * @return array
      */
-    public static function get_default_general_settings()
-    {
-        return [
+    public static function get_default_general_settings() {
+        return array(
             'hvnly_EnabledCurrencyFormat' => false,
             'hvnly_thousandSeparator' => ',',
             'hvnly_decimalSeparator' => '.',
@@ -258,15 +251,15 @@ class DefaultSettingsData
             'hvnly_currencyPositionType' => 'LEFT',
             'hvnly_priceOnCallText' => 'priceOnCallNone',
             'hvnly_priceFormat' => 'comma',
-            
+
             'hvnly_EnabledGutenbergEditor' => false,
             'hvnly_defaultCity' => 'Birmingham',
             'hvnly_defaultState' => 'Scotland',
             'hvnly_countryType' => 'GB',
-            'hvnly_hideLeftSearchBar' => false,  
-            'hvnly_hideTopSearchBar' => false,    
-            'hvnly_hideTopSearchTitle' => false,  
-        ];
+            'hvnly_hideLeftSearchBar' => false,
+            'hvnly_hideTopSearchBar' => false,
+            'hvnly_hideTopSearchTitle' => false,
+        );
     }
 
     /**
@@ -274,9 +267,8 @@ class DefaultSettingsData
      *
      * @return array
      */
-    public static function get_default_design_settings()
-    {
-        return [
+    public static function get_default_design_settings() {
+        return array(
             'hvnly_brandColor' => '#6C60FE',
             'hvnly_secondaryColor' => '#764ba2',
             'hvnly_linkColor' => '#1E1E2F',
@@ -284,7 +276,7 @@ class DefaultSettingsData
             'hvnly_titleColor' => '#1E1E2F',
             'hvnly_primaryTextColor' => '#1E1E2F',
             'hvnly_secondaryTextColor' => '#555555',
-        ];
+        );
     }
 
     /**
@@ -292,9 +284,8 @@ class DefaultSettingsData
      *
      * @return array
      */
-    public static function get_default_search_settings()
-    {
-        return [
+    public static function get_default_search_settings() {
+        return array(
             'hvnly_searchBarTitle' => __('Search Properties', 'havenlytics'),
             'hvnly_searchButtonText' => __('Search', 'havenlytics'),
             'hvnly_enableAjaxLoadMore' => true,
@@ -314,125 +305,123 @@ class DefaultSettingsData
             'hvnly_main_search_fields' => self::get_default_main_search_fields(),
             'hvnly_top_search_fields' => self::get_default_top_search_fields(),
             'hvnly_search_fields' => self::get_default_search_fields(),
-        ];
+        );
     }
-    
+
     /**
      * Get default main search fields configuration (Keyword, Property Type, Location)
      *
      * @since 2.1.0
      * @return array
      */
-    private static function get_default_main_search_fields()
-    {
-        return [
-            [
+    private static function get_default_main_search_fields() {
+        return array(
+            array(
                 'id' => 'keyword_search',
                 'title' => __('Keyword Search', 'havenlytics'),
                 'type' => 'text',
                 'enabled' => true,
                 'order' => 1,
                 'is_default' => true,
-                'config' => [
+                'config' => array(
                     'placeholder' => __('Search Address', 'havenlytics'),
                     'isAjax' => true,
-                ]
-            ],
-            [
+                ),
+            ),
+            array(
                 'id' => 'property_type',
                 'title' => __('Property Type', 'havenlytics'),
                 'type' => 'taxonomy',
                 'enabled' => true,
                 'order' => 2,
                 'is_default' => true,
-                'config' => [
+                'config' => array(
                     'taxonomy' => 'hvnly_prop_types',
                     'placeholder' => __('Property Type', 'havenlytics'),
                     'useTaxonomy' => true,
-                ]
-            ],
-            [
+                ),
+            ),
+            array(
                 'id' => 'location',
                 'title' => __('Location', 'havenlytics'),
                 'type' => 'taxonomy',
                 'enabled' => true,
                 'order' => 3,
                 'is_default' => true,
-                'config' => [
+                'config' => array(
                     'taxonomy' => 'hvnly_prop_locations',
                     'placeholder' => __('Search Location', 'havenlytics'),
                     'useTaxonomy' => true,
-                ]
-            ],
-        ];
+                ),
+            ),
+        );
     }
-    
+
     /**
      * Get default top search fields configuration
      *
      * @since 2.1.0
      * @return array
      */
-    private static function get_default_top_search_fields()
-    {
-        return [
-            [
+    private static function get_default_top_search_fields() {
+        return array(
+            array(
                 'id' => 'bedrooms',
                 'title' => __('Bedrooms', 'havenlytics'),
                 'type' => 'number',
                 'enabled' => true,
                 'order' => 1,
                 'is_default' => true,
-                'config' => [
+                'config' => array(
                     'placeholder' => __('Any', 'havenlytics'),
-                    'options' => ['1', '2', '3', '4', '5'],
+                    'options' => array( '1', '2', '3', '4', '5' ),
                     'min' => 1,
                     'max' => 10,
-                    'usePresetValues' => true
-                ]
-            ],
-            [
+                    'usePresetValues' => true,
+                ),
+            ),
+            array(
                 'id' => 'bathrooms',
                 'title' => __('Bathrooms', 'havenlytics'),
                 'type' => 'number',
                 'enabled' => true,
                 'order' => 2,
                 'is_default' => true,
-                'config' => [
+                'config' => array(
                     'placeholder' => __('Any', 'havenlytics'),
-                    'options' => ['1', '2', '3', '4', '5'],
+                    'options' => array( '1', '2', '3', '4', '5' ),
                     'min' => 1,
                     'max' => 10,
-                    'usePresetValues' => true
-                ]
-            ],
-            [
+                    'usePresetValues' => true,
+                ),
+            ),
+            array(
                 'id' => 'min_price',
                 'title' => __('Min Price', 'havenlytics'),
                 'type' => 'range',
                 'enabled' => true,
                 'order' => 3,
                 'is_default' => true,
-                'config' => [
+                'config' => array(
                     'placeholder' => __('Any', 'havenlytics'),
-                    'options' => ['50000', '75000', '100000', '200000', '300000', '400000', '500000'],
-                    'usePresetValues' => true
-                ]
-            ],
-            [
+                    'options' => array( '50000', '75000', '100000', '200000', '300000', '400000', '500000' ),
+                    'usePresetValues' => true,
+                ),
+            ),
+            array(
                 'id' => 'max_price',
                 'title' => __('Max Price', 'havenlytics'),
                 'type' => 'range',
                 'enabled' => true,
                 'order' => 4,
                 'is_default' => true,
-                'config' => [
+                'config' => array(
                     'placeholder' => __('Any', 'havenlytics'),
-                    'options' => ['500000', '600000', '700000', '800000', '900000', '1000000'],
-                    'usePresetValues' => true
-                ]
-            ]
-        ];
+                    'options' => array( '500000', '600000', '700000', '800000', '900000', '1000000' ),
+                    'usePresetValues' => true,
+                ),
+            ),
+        );
     }
 
     /**
@@ -441,10 +430,9 @@ class DefaultSettingsData
      * @since 2.1.0
      * @return array
      */
-    private static function get_default_search_fields()
-    {
-        return [
-            [
+    private static function get_default_search_fields() {
+        return array(
+            array(
                 'id' => 'price',
                 'title' => __('Price', 'havenlytics'),
                 'type' => 'range',
@@ -452,15 +440,15 @@ class DefaultSettingsData
                 'order' => 1,
                 'is_default' => true,
                 'is_locked' => false,
-                'config' => [
+                'config' => array(
                     'minPlaceholder' => __('Min Price', 'havenlytics'),
                     'maxPlaceholder' => __('Max Price', 'havenlytics'),
-                    'minOptions' => ['100000', '200000', '300000', '400000', '500000', '600000', '700000', '800000', '900000', '1000000'],
-                    'maxOptions' => ['200000', '300000', '400000', '500000', '600000', '700000', '800000', '900000', '1000000', '1500000'],
-                    'usePresetValues' => true
-                ]
-            ],
-            [
+                    'minOptions' => array( '100000', '200000', '300000', '400000', '500000', '600000', '700000', '800000', '900000', '1000000' ),
+                    'maxOptions' => array( '200000', '300000', '400000', '500000', '600000', '700000', '800000', '900000', '1000000', '1500000' ),
+                    'usePresetValues' => true,
+                ),
+            ),
+            array(
                 'id' => 'status',
                 'title' => __('Status', 'havenlytics'),
                 'type' => 'dropdown',
@@ -468,13 +456,13 @@ class DefaultSettingsData
                 'order' => 2,
                 'is_default' => true,
                 'is_locked' => false,
-                'config' => [
+                'config' => array(
                     'useTaxonomy' => true,
                     'taxonomy' => 'hvnly_prop_status',
-                    'placeholder' => __('Select Status', 'havenlytics')
-                ]
-            ],
-            [
+                    'placeholder' => __('Select Status', 'havenlytics'),
+                ),
+            ),
+            array(
                 'id' => 'bedrooms_bathrooms',
                 'title' => __('Bedrooms & Bathrooms', 'havenlytics'),
                 'type' => 'group',
@@ -482,28 +470,28 @@ class DefaultSettingsData
                 'order' => 3,
                 'is_default' => true,
                 'is_locked' => false,
-                'config' => [
-                    'subFields' => [
-                        [
-                            'id' => 'bedrooms', 
-                            'label' => __('Bedrooms', 'havenlytics'), 
+                'config' => array(
+                    'subFields' => array(
+                        array(
+                            'id' => 'bedrooms',
+                            'label' => __('Bedrooms', 'havenlytics'),
                             'type' => 'number',
                             'min' => 0,
                             'max' => 10,
-                            'options' => ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-                        ],
-                        [
-                            'id' => 'bathrooms', 
-                            'label' => __('Bathrooms', 'havenlytics'), 
+                            'options' => array( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10' ),
+                        ),
+                        array(
+                            'id' => 'bathrooms',
+                            'label' => __('Bathrooms', 'havenlytics'),
                             'type' => 'number',
                             'min' => 0,
                             'max' => 8,
-                            'options' => ['0', '1', '2', '3', '4', '5', '6', '7', '8']
-                        ]
-                    ]
-                ]
-            ],
-            [
+                            'options' => array( '0', '1', '2', '3', '4', '5', '6', '7', '8' ),
+                        ),
+                    ),
+                ),
+            ),
+            array(
                 'id' => 'reception_rooms',
                 'title' => __('Reception Rooms', 'havenlytics'),
                 'type' => 'number',
@@ -511,14 +499,14 @@ class DefaultSettingsData
                 'order' => 4,
                 'is_default' => true,
                 'is_locked' => false,
-                'config' => [
+                'config' => array(
                     'min' => 0,
                     'max' => 10,
                     'placeholder' => __('Any', 'havenlytics'),
-                    'options' => ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-                ]
-            ],
-            [
+                    'options' => array( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10' ),
+                ),
+            ),
+            array(
                 'id' => 'property_types',
                 'title' => __('Property Types', 'havenlytics'),
                 'type' => 'checkbox',
@@ -526,13 +514,13 @@ class DefaultSettingsData
                 'order' => 5,
                 'is_default' => true,
                 'is_locked' => false,
-                'config' => [
+                'config' => array(
                     'useTaxonomy' => true,
                     'taxonomy' => 'hvnly_prop_types',
-                    'selectAllOption' => true
-                ]
-            ],
-            [
+                    'selectAllOption' => true,
+                ),
+            ),
+            array(
                 'id' => 'locations',
                 'title' => __('Locations', 'havenlytics'),
                 'type' => 'dropdown',
@@ -540,13 +528,13 @@ class DefaultSettingsData
                 'order' => 6,
                 'is_default' => true,
                 'is_locked' => false,
-                'config' => [
+                'config' => array(
                     'useTaxonomy' => true,
                     'taxonomy' => 'hvnly_prop_locations',
-                    'placeholder' => __('Select Location', 'havenlytics')
-                ]
-            ],
-            [
+                    'placeholder' => __('Select Location', 'havenlytics'),
+                ),
+            ),
+            array(
                 'id' => 'features',
                 'title' => __('Features', 'havenlytics'),
                 'type' => 'checkbox',
@@ -554,13 +542,13 @@ class DefaultSettingsData
                 'order' => 7,
                 'is_default' => true,
                 'is_locked' => false,
-                'config' => [
+                'config' => array(
                     'useTaxonomy' => true,
                     'taxonomy' => 'hvnly_prop_features',
-                    'selectAllOption' => true
-                ]
-            ],
-            [
+                    'selectAllOption' => true,
+                ),
+            ),
+            array(
                 'id' => 'tags',
                 'title' => __('Tags', 'havenlytics'),
                 'type' => 'dropdown',
@@ -568,13 +556,13 @@ class DefaultSettingsData
                 'order' => 8,
                 'is_default' => true,
                 'is_locked' => false,
-                'config' => [
+                'config' => array(
                     'useTaxonomy' => true,
                     'taxonomy' => 'hvnly_prop_tags',
-                    'placeholder' => __('Select Tags', 'havenlytics')
-                ]
-            ],
-            [
+                    'placeholder' => __('Select Tags', 'havenlytics'),
+                ),
+            ),
+            array(
                 'id' => 'badges',
                 'title' => __('Badges', 'havenlytics'),
                 'type' => 'checkbox',
@@ -582,13 +570,13 @@ class DefaultSettingsData
                 'order' => 9,
                 'is_default' => true,
                 'is_locked' => false,
-                'config' => [
+                'config' => array(
                     'useTaxonomy' => true,
                     'taxonomy' => 'hvnly_prop_badges',
-                    'selectAllOption' => true
-                ]
-            ],
-            [
+                    'selectAllOption' => true,
+                ),
+            ),
+            array(
                 'id' => 'property_id',
                 'title' => __('Property ID', 'havenlytics'),
                 'type' => 'text',
@@ -596,13 +584,13 @@ class DefaultSettingsData
                 'order' => 10,
                 'is_default' => true,
                 'is_locked' => true,
-                'config' => [
+                'config' => array(
                     'isLocked' => true,
                     'cannotDelete' => true,
-                    'cannotEdit' => true
-                ]
-            ]
-        ];
+                    'cannotEdit' => true,
+                ),
+            ),
+        );
     }
 
     /**
@@ -610,9 +598,8 @@ class DefaultSettingsData
      *
      * @return array
      */
-    public static function get_default_properties_settings()
-    {
-        return [
+    public static function get_default_properties_settings() {
+        return array(
             'hvnly_container_width_xs' => '100%',
             'hvnly_container_width_sm' => '540px',
             'hvnly_container_width_md' => '720px',
@@ -627,7 +614,7 @@ class DefaultSettingsData
             'hvnly_propertyTabletView' => '2',
             'hvnly_propertySmallTabletView' => '2',
             'hvnly_propertyMobileTabletView' => '1',
-        ];
+        );
     }
 
     /**
@@ -635,14 +622,13 @@ class DefaultSettingsData
      *
      * @return array
      */
-    public static function get_default_property_details_settings()
-    {
-        return [
+    public static function get_default_property_details_settings() {
+        return array(
             'hvnly_EnableBreadcrumbs' => true,
             'hvnly_EnableBackToTop' => false,
             'hvnly_EnablePrintButton' => false,
             'hvnly_EnableSaveProperty' => false,
-        ];
+        );
     }
 
     /**
@@ -650,15 +636,14 @@ class DefaultSettingsData
      *
      * @return array
      */
-    public static function get_default_shortcodes_settings()
-    {
-        return [
+    public static function get_default_shortcodes_settings() {
+        return array(
             'hvnly_propertySearch' => '[hvnly_property_search]',
             'hvnly_propertyGrid' => '[hvnly_property_grid]',
             'hvnly_propertyLists' => '[hvnly_property_lists]',
             'hvnly_propertyAgents'   => '[hvnly_property_agents]',
             'hvnly_propertyAgencies' => '[hvnly_property_agencies]',
-        ];
+        );
     }
 
     /**
@@ -667,27 +652,25 @@ class DefaultSettingsData
      * @param string $group Group name
      * @return array
      */
-    public static function get_group_defaults($group)
-    {
+    public static function get_group_defaults( $group ) {
         $all_defaults = self::get_default_settings();
-        
-        if (isset($all_defaults[$group])) {
-            return $all_defaults[$group];
+
+        if (isset($all_defaults[ $group ])) {
+            return $all_defaults[ $group ];
         }
-        
+
         $method = 'get_default_' . str_replace('-', '_', $group) . '_settings';
         if (method_exists(__CLASS__, $method)) {
             return self::$method();
         }
-        
-        return [];
+
+        return array();
     }
 
     /**
      * Clear cached defaults
      */
-    public static function clear_cache()
-    {
+    public static function clear_cache() {
         self::$cached_defaults = null;
     }
 }

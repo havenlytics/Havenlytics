@@ -201,7 +201,10 @@ final class MimeGuard {
 			return PackageResult::failure(
 				'hvnly_ie_media_executable',
 				'Executable or script files are not allowed in packages.',
-				array( 'path' => $relative_path, 'extension' => $ext )
+				array(
+					'path' => $relative_path,
+					'extension' => $ext,
+				)
 			);
 		}
 
@@ -209,7 +212,10 @@ final class MimeGuard {
 			return PackageResult::failure(
 				'hvnly_ie_media_extension',
 				'Media file extension is not allowed.',
-				array( 'path' => $relative_path, 'extension' => $ext )
+				array(
+					'path' => $relative_path,
+					'extension' => $ext,
+				)
 			);
 		}
 

@@ -56,9 +56,9 @@ final class WorkspaceValidationService {
 		$debug    = array();
 
 		foreach ( $fields as $key => $message ) {
-			$key     = (string) $key;
-			$label   = WorkspaceErrorFormatter::label_for( $key, $index );
-			$clean   = WorkspaceErrorFormatter::clean_message( (string) $message );
+			$key   = (string) $key;
+			$label = WorkspaceErrorFormatter::label_for( $key, $index );
+			$clean = WorkspaceErrorFormatter::clean_message( (string) $message );
 			// Prefer label-based required phrasing when message is generic/noisy.
 			if ( self::looks_like_required( $clean ) ) {
 				$clean = WorkspaceErrorFormatter::required_message( $label );

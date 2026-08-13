@@ -9,16 +9,15 @@
 namespace HvnlyNab\Api\Type\Builders;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
-class DefaultTabSectionsData
-{
+class DefaultTabSectionsData {
+
     private static $instance = null;
 
-    public static function get_instance()
-    {
+    public static function get_instance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -32,14 +31,13 @@ class DefaultTabSectionsData
      * @param string $group_type Group type
      * @return string Unique base ID
      */
-    private static function generate_unique_group_base_id($group_type)
-    {
-        $microtime = microtime(true);
-        $timestamp = (int)$microtime;
-        $micro_suffix = substr(str_replace('.', '', (string)$microtime), -6);
-        $random = wp_rand(10000, 99999);
-        $unique_id = uniqid();
-        
+    private static function generate_unique_group_base_id( $group_type ) {
+        $microtime    = microtime(true);
+        $timestamp    = (int) $microtime;
+        $micro_suffix = substr(str_replace('.', '', (string) $microtime), -6);
+        $random       = wp_rand(10000, 99999);
+        $unique_id    = uniqid();
+
         switch ($group_type) {
             case 'video':
                 return "video_{$timestamp}_{$micro_suffix}_{$unique_id}_{$random}";
@@ -66,8 +64,7 @@ class DefaultTabSectionsData
      * Get default sections in DnDSections format with PROFESSIONAL IDs
      * Following pattern: sec_property_* for defaults, sec_custom_* for user tabs.
      */
-    public static function get_default_sections_for_dnd()
-    {
+    public static function get_default_sections_for_dnd() {
         static $building = false;
         if ( ! $building && function_exists( 'hvnly_with_english_ui' ) ) {
             $building = true;
@@ -81,24 +78,24 @@ class DefaultTabSectionsData
         }
 
         $metabox_tabs = self::hvnly_metabox_tabs_builder();
-        $dnd_sections = [];
+        $dnd_sections = array();
 
         foreach ($metabox_tabs as $index => $tab) {
             // Use the existing professional ID from the tab
             $section_id = $tab['id'] ?? \HvnlyNab\Core\SectionIdentity::generate_custom_section_id();
 
             // Mark required tabs
-            $is_required_tab = ($tab['hvnly__sectiontitle'] ?? '') === 'Basic Info';
+            $is_required_tab = ( $tab['hvnly__sectiontitle'] ?? '' ) === 'Basic Info';
 
-            $dnd_sections[$section_id] = [
+            $dnd_sections[ $section_id ] = array(
                 'id' => $section_id,
                 'title' => sanitize_text_field($tab['hvnly__sectiontitle'] ?? 'Untitled Section'),
                 'icon' => sanitize_text_field($tab['icon'] ?? 'fas fa-home'),
                 'order' => $index,
                 'collapsed' => false,
                 'required' => $is_required_tab,
-                'fields' => self::convert_fields_to_dnd_format_with_groups($tab['fields'] ?? [], $is_required_tab)
-            ];
+                'fields' => self::convert_fields_to_dnd_format_with_groups($tab['fields'] ?? array(), $is_required_tab),
+            );
         }
 
         return $dnd_sections;
@@ -108,58 +105,57 @@ class DefaultTabSectionsData
      * Convert metabox fields to DnDSections format with groups
      * GENERATES UNIQUE group_base_id for EVERY group (CRITICAL FIX)
      */
-    private static function convert_fields_to_dnd_format_with_groups($fields, $is_required_tab = false)
-    {
-        if (!is_array($fields)) {
-            return [];
+    private static function convert_fields_to_dnd_format_with_groups( $fields, $is_required_tab = false ) {
+        if ( ! is_array($fields)) {
+            return array();
         }
 
-        $dnd_fields = [];
-        $processed_groups = []; // Track processed groups by their original ID
-        
+        $dnd_fields       = array();
+        $processed_groups = array(); // Track processed groups by their original ID
+
         // First pass: Identify all groups and generate UNIQUE base IDs for EACH group
-        $group_base_map = [];
-        
+        $group_base_map = array();
+
         foreach ($fields as $field) {
-            $group_id = $field['group_id'] ?? null;
+            $group_id   = $field['group_id'] ?? null;
             $group_type = $field['group_type'] ?? '';
-            
-            if ($group_id && !empty($group_type) && !isset($group_base_map[$group_id])) {
+
+            if ($group_id && ! empty($group_type) && ! isset($group_base_map[ $group_id ])) {
                 // Generate a COMPLETELY UNIQUE group_base_id for THIS group
                 // Using microtime + random ensures uniqueness even for multiple groups in same request
-                $group_base_map[$group_id] = self::generate_unique_group_base_id($group_type);
+                $group_base_map[ $group_id ] = self::generate_unique_group_base_id($group_type);
             }
         }
-        
+
         // Second pass: Process fields using the mapped base IDs
         foreach ($fields as $index => $field) {
-            $field_id = $field['fieldid'] ?? 'fld_' . uniqid();
+            $field_id        = $field['fieldid'] ?? 'fld_' . uniqid();
             $is_locked_field = $is_required_tab && $index < 3;
-            $meta_key = $field['metaKey'] ?? '';
-            $group_id = $field['group_id'] ?? null;
-            $group_type = $field['group_type'] ?? '';
-            
+            $meta_key        = $field['metaKey'] ?? '';
+            $group_id        = $field['group_id'] ?? null;
+            $group_type      = $field['group_type'] ?? '';
+
             // Check if this is a video group
             if ($group_id && $group_type === 'video') {
-                $group_base_id = $group_base_map[$group_id] ?? self::generate_unique_group_base_id('video');
+                $group_base_id    = $group_base_map[ $group_id ] ?? self::generate_unique_group_base_id('video');
                 $current_group_id = $group_id;
-                
+
                 $field_type = self::map_field_type($field['input_type'] ?? 'text');
-                
-                if (($field['metaKey'] ?? '') === 'url') {
+
+                if (( $field['metaKey'] ?? '' ) === 'url') {
                     $field_type = 'video';
                 }
-                
+
                 $group_position = $field['group_position'] ?? 0;
-                $group_total = $field['group_total'] ?? 3;
-                
-                $dnd_field = [
+                $group_total    = $field['group_total'] ?? 3;
+
+                $dnd_field = array(
                     'id' => $group_base_id . '_' . $meta_key,
                     'name' => $group_base_id . '_' . $meta_key,
                     'type' => $field_type,
                     'label' => sanitize_text_field($field['label'] ?? ''),
                     'placeholder' => sanitize_text_field($field['placeholder'] ?? ''),
-                    'required' => !empty($field['is_required']),
+                    'required' => ! empty($field['is_required']),
                     'locked' => $is_locked_field,
                     'adminOnly' => false,
                     'enabled' => true,
@@ -172,29 +168,29 @@ class DefaultTabSectionsData
                     'group_base_id' => $group_base_id,
                     'metaKey' => $meta_key,
                     'hidden' => false,
-                    'group_collapsed' => false
-                ];
-                
+                    'group_collapsed' => false,
+                );
+
                 $group_key = $current_group_id . '_' . $meta_key;
-                if (!isset($processed_groups[$group_key])) {
-                    $processed_groups[$group_key] = true;
-                    $dnd_fields[] = $dnd_field;
+                if ( ! isset($processed_groups[ $group_key ])) {
+                    $processed_groups[ $group_key ] = true;
+                    $dnd_fields[]                   = $dnd_field;
                 }
-            } 
+            }
             // Check if this is a gallery group
             elseif ($group_id && $group_type === 'gallery') {
-                $group_base_id = $group_base_map[$group_id] ?? self::generate_unique_group_base_id('gallery');
+                $group_base_id    = $group_base_map[ $group_id ] ?? self::generate_unique_group_base_id('gallery');
                 $current_group_id = $group_id;
-                $group_position = $field['group_position'] ?? 0;
-                $group_total = $field['group_total'] ?? 2;
-                
-                $dnd_field = [
+                $group_position   = $field['group_position'] ?? 0;
+                $group_total      = $field['group_total'] ?? 2;
+
+                $dnd_field = array(
                     'id' => $group_base_id . '_' . $meta_key,
                     'name' => $group_base_id . '_' . $meta_key,
                     'type' => self::map_field_type($field['input_type'] ?? 'text'),
                     'label' => sanitize_text_field($field['label'] ?? ''),
                     'placeholder' => sanitize_text_field($field['placeholder'] ?? ''),
-                    'required' => !empty($field['is_required']),
+                    'required' => ! empty($field['is_required']),
                     'locked' => $is_locked_field,
                     'adminOnly' => false,
                     'enabled' => true,
@@ -207,30 +203,30 @@ class DefaultTabSectionsData
                     'group_base_id' => $group_base_id,
                     'metaKey' => $meta_key,
                     'hidden' => false,
-                    'group_collapsed' => false
-                ];
-                
+                    'group_collapsed' => false,
+                );
+
                 $group_key = $current_group_id . '_' . $meta_key;
-                if (!isset($processed_groups[$group_key])) {
-                    $processed_groups[$group_key] = true;
-                    $dnd_fields[] = $dnd_field;
+                if ( ! isset($processed_groups[ $group_key ])) {
+                    $processed_groups[ $group_key ] = true;
+                    $dnd_fields[]                   = $dnd_field;
                 }
-            } 
+            }
             // Check if this is a map group
             elseif ($group_id && $group_type === 'map') {
-                $group_base_id = $group_base_map[$group_id] ?? self::generate_unique_group_base_id('map');
+                $group_base_id    = $group_base_map[ $group_id ] ?? self::generate_unique_group_base_id('map');
                 $current_group_id = $group_id;
-                $is_hidden_field = in_array($meta_key, ['latitude', 'longitude']);
-                $group_position = $field['group_position'] ?? 0;
-                $group_total = $field['group_total'] ?? 4;
-                
-                $dnd_field = [
+                $is_hidden_field  = in_array($meta_key, array( 'latitude', 'longitude' ));
+                $group_position   = $field['group_position'] ?? 0;
+                $group_total      = $field['group_total'] ?? 4;
+
+                $dnd_field = array(
                     'id' => $group_base_id . '_' . $meta_key,
                     'name' => $group_base_id . '_' . $meta_key,
                     'type' => self::map_field_type($field['input_type'] ?? 'text'),
                     'label' => sanitize_text_field($field['label'] ?? ''),
                     'placeholder' => sanitize_text_field($field['placeholder'] ?? ''),
-                    'required' => !empty($field['is_required']),
+                    'required' => ! empty($field['is_required']),
                     'locked' => $is_locked_field,
                     'adminOnly' => false,
                     'enabled' => true,
@@ -243,38 +239,38 @@ class DefaultTabSectionsData
                     'group_base_id' => $group_base_id,
                     'metaKey' => $meta_key,
                     'hidden' => $is_hidden_field,
-                    'group_collapsed' => false
-                ];
-                
+                    'group_collapsed' => false,
+                );
+
                 if ($meta_key === 'preview') {
                     $dnd_field['address_field_name'] = $group_base_id . '_address';
-                    $dnd_field['lat_field_name'] = $group_base_id . '_latitude';
-                    $dnd_field['lng_field_name'] = $group_base_id . '_longitude';
-                    $dnd_field['map_field_name'] = $group_base_id . '_preview';
+                    $dnd_field['lat_field_name']     = $group_base_id . '_latitude';
+                    $dnd_field['lng_field_name']     = $group_base_id . '_longitude';
+                    $dnd_field['map_field_name']     = $group_base_id . '_preview';
                 }
-                
+
                 $group_key = $current_group_id . '_' . $meta_key;
-                if (!isset($processed_groups[$group_key])) {
-                    $processed_groups[$group_key] = true;
-                    $dnd_fields[] = $dnd_field;
+                if ( ! isset($processed_groups[ $group_key ])) {
+                    $processed_groups[ $group_key ] = true;
+                    $dnd_fields[]                   = $dnd_field;
                 }
             }
             // Check if this is a property_docs group
             elseif ($group_id && $group_type === 'property_docs') {
-                $group_base_id = $group_base_map[$group_id] ?? self::generate_unique_group_base_id('property_docs');
+                $group_base_id    = $group_base_map[ $group_id ] ?? self::generate_unique_group_base_id('property_docs');
                 $current_group_id = $group_id;
-                $group_position = $field['group_position'] ?? 0;
-                $group_total = $field['group_total'] ?? 3;
-                
+                $group_position   = $field['group_position'] ?? 0;
+                $group_total      = $field['group_total'] ?? 3;
+
                 $field_type = self::map_field_type($field['input_type'] ?? 'text');
-                
-                $dnd_field = [
+
+                $dnd_field = array(
                     'id' => $group_base_id . '_' . $meta_key,
                     'name' => $group_base_id . '_' . $meta_key,
                     'type' => $field_type,
                     'label' => sanitize_text_field($field['label'] ?? ''),
                     'placeholder' => sanitize_text_field($field['placeholder'] ?? ''),
-                    'required' => !empty($field['is_required']),
+                    'required' => ! empty($field['is_required']),
                     'locked' => $is_locked_field,
                     'adminOnly' => false,
                     'enabled' => true,
@@ -288,30 +284,30 @@ class DefaultTabSectionsData
                     'metaKey' => $meta_key,
                     'hidden' => false,
                     'group_collapsed' => false,
-                    'show_in_sidebar' => isset($field['show_in_sidebar']) ? (bool)$field['show_in_sidebar'] : true
-                ];
-                
+                    'show_in_sidebar' => isset($field['show_in_sidebar']) ? (bool) $field['show_in_sidebar'] : true,
+                );
+
                 $group_key = $current_group_id . '_' . $meta_key;
-                if (!isset($processed_groups[$group_key])) {
-                    $processed_groups[$group_key] = true;
-                    $dnd_fields[] = $dnd_field;
+                if ( ! isset($processed_groups[ $group_key ])) {
+                    $processed_groups[ $group_key ] = true;
+                    $dnd_fields[]                   = $dnd_field;
                 }
             }
             // Check if this is a faq group
             elseif ($group_id && $group_type === 'faq') {
-                $group_base_id = $group_base_map[$group_id] ?? self::generate_unique_group_base_id('faq');
+                $group_base_id    = $group_base_map[ $group_id ] ?? self::generate_unique_group_base_id('faq');
                 $current_group_id = $group_id;
-                $group_position = $field['group_position'] ?? 0;
-                $group_total = $field['group_total'] ?? 2;
-                $field_type = ($meta_key === 'faqs') ? 'faq' : self::map_field_type($field['input_type'] ?? 'text');
+                $group_position   = $field['group_position'] ?? 0;
+                $group_total      = $field['group_total'] ?? 2;
+                $field_type       = ( $meta_key === 'faqs' ) ? 'faq' : self::map_field_type($field['input_type'] ?? 'text');
 
-                $dnd_field = [
+                $dnd_field = array(
                     'id' => $group_base_id . '_' . $meta_key,
                     'name' => $group_base_id . '_' . $meta_key,
                     'type' => $field_type,
                     'label' => sanitize_text_field($field['label'] ?? ''),
                     'placeholder' => sanitize_text_field($field['placeholder'] ?? ''),
-                    'required' => !empty($field['is_required']),
+                    'required' => ! empty($field['is_required']),
                     'locked' => $is_locked_field,
                     'adminOnly' => false,
                     'enabled' => true,
@@ -326,29 +322,29 @@ class DefaultTabSectionsData
                     'hidden' => false,
                     'group_collapsed' => false,
                     'show_in_sidebar' => true,
-                ];
+                );
 
                 $group_key = $current_group_id . '_' . $meta_key;
-                if (!isset($processed_groups[$group_key])) {
-                    $processed_groups[$group_key] = true;
-                    $dnd_fields[] = $dnd_field;
+                if ( ! isset($processed_groups[ $group_key ])) {
+                    $processed_groups[ $group_key ] = true;
+                    $dnd_fields[]                   = $dnd_field;
                 }
             }
             // Check if this is a repeater group
             elseif ($group_id && $group_type === 'repeater') {
-                $group_base_id = $group_base_map[$group_id] ?? self::generate_unique_group_base_id('repeater');
+                $group_base_id    = $group_base_map[ $group_id ] ?? self::generate_unique_group_base_id('repeater');
                 $current_group_id = $group_id;
-                $group_position = $field['group_position'] ?? 0;
-                $group_total = $field['group_total'] ?? 2;
-                $field_type = ($meta_key === 'items') ? 'repeater' : self::map_field_type($field['input_type'] ?? 'text');
+                $group_position   = $field['group_position'] ?? 0;
+                $group_total      = $field['group_total'] ?? 2;
+                $field_type       = ( $meta_key === 'items' ) ? 'repeater' : self::map_field_type($field['input_type'] ?? 'text');
 
-                $dnd_field = [
+                $dnd_field = array(
                     'id' => $group_base_id . '_' . $meta_key,
                     'name' => $group_base_id . '_' . $meta_key,
                     'type' => $field_type,
                     'label' => sanitize_text_field($field['label'] ?? ''),
                     'placeholder' => sanitize_text_field($field['placeholder'] ?? ''),
-                    'required' => !empty($field['is_required']),
+                    'required' => ! empty($field['is_required']),
                     'locked' => $is_locked_field,
                     'adminOnly' => false,
                     'enabled' => true,
@@ -363,29 +359,29 @@ class DefaultTabSectionsData
                     'hidden' => false,
                     'group_collapsed' => false,
                     'show_in_sidebar' => true,
-                ];
+                );
 
                 $group_key = $current_group_id . '_' . $meta_key;
-                if (!isset($processed_groups[$group_key])) {
-                    $processed_groups[$group_key] = true;
-                    $dnd_fields[] = $dnd_field;
+                if ( ! isset($processed_groups[ $group_key ])) {
+                    $processed_groups[ $group_key ] = true;
+                    $dnd_fields[]                   = $dnd_field;
                 }
             }
             // Check if this is an agents group
             elseif ($group_id && $group_type === 'agents') {
-                $group_base_id = $group_base_map[$group_id] ?? self::generate_unique_group_base_id('agents');
+                $group_base_id    = $group_base_map[ $group_id ] ?? self::generate_unique_group_base_id('agents');
                 $current_group_id = $group_id;
-                $group_position = $field['group_position'] ?? 0;
-                $group_total = $field['group_total'] ?? 2;
-                $field_type = ($meta_key === 'agents') ? 'agents' : self::map_field_type($field['input_type'] ?? 'text');
+                $group_position   = $field['group_position'] ?? 0;
+                $group_total      = $field['group_total'] ?? 2;
+                $field_type       = ( $meta_key === 'agents' ) ? 'agents' : self::map_field_type($field['input_type'] ?? 'text');
 
-                $dnd_field = [
+                $dnd_field = array(
                     'id' => $group_base_id . '_' . $meta_key,
                     'name' => $group_base_id . '_' . $meta_key,
                     'type' => $field_type,
                     'label' => sanitize_text_field($field['label'] ?? ''),
                     'placeholder' => sanitize_text_field($field['placeholder'] ?? ''),
-                    'required' => !empty($field['is_required']),
+                    'required' => ! empty($field['is_required']),
                     'locked' => $is_locked_field,
                     'adminOnly' => false,
                     'enabled' => true,
@@ -400,28 +396,28 @@ class DefaultTabSectionsData
                     'hidden' => false,
                     'group_collapsed' => false,
                     'show_in_sidebar' => true,
-                ];
+                );
 
                 $group_key = $current_group_id . '_' . $meta_key;
-                if (!isset($processed_groups[$group_key])) {
-                    $processed_groups[$group_key] = true;
-                    $dnd_fields[] = $dnd_field;
+                if ( ! isset($processed_groups[ $group_key ])) {
+                    $processed_groups[ $group_key ] = true;
+                    $dnd_fields[]                   = $dnd_field;
                 }
             }
             // Check if this is a features group (checkbox list)
             elseif ($group_id && $group_type === 'features') {
-                $group_base_id = $group_base_map[$group_id] ?? self::generate_unique_group_base_id('features');
+                $group_base_id    = $group_base_map[ $group_id ] ?? self::generate_unique_group_base_id('features');
                 $current_group_id = $group_id;
-                $group_position = $field['group_position'] ?? 0;
-                $group_total = $field['group_total'] ?? 1;
+                $group_position   = $field['group_position'] ?? 0;
+                $group_total      = $field['group_total'] ?? 1;
 
-                $dnd_field = [
+                $dnd_field = array(
                     'id' => $group_base_id . '_' . $meta_key,
                     'name' => $group_base_id . '_' . $meta_key,
                     'type' => 'checkbox',
                     'label' => sanitize_text_field($field['label'] ?? ''),
                     'placeholder' => sanitize_text_field($field['placeholder'] ?? ''),
-                    'required' => !empty($field['is_required']),
+                    'required' => ! empty($field['is_required']),
                     'locked' => $is_locked_field,
                     'adminOnly' => false,
                     'enabled' => true,
@@ -436,28 +432,28 @@ class DefaultTabSectionsData
                     'hidden' => false,
                     'group_collapsed' => false,
                     'show_in_sidebar' => true,
-                ];
+                );
 
                 $group_key = $current_group_id . '_' . $meta_key;
-                if (!isset($processed_groups[$group_key])) {
-                    $processed_groups[$group_key] = true;
-                    $dnd_fields[] = $dnd_field;
+                if ( ! isset($processed_groups[ $group_key ])) {
+                    $processed_groups[ $group_key ] = true;
+                    $dnd_fields[]                   = $dnd_field;
                 }
             } else {
                 // Regular field (not in a group)
-                $dnd_field = [
+                $dnd_field    = array(
                     'id' => $field_id,
                     'name' => sanitize_text_field($field['name'] ?? $field_id),
                     'type' => self::map_field_type($field['input_type'] ?? 'text'),
                     'label' => sanitize_text_field($field['label'] ?? ''),
                     'placeholder' => sanitize_text_field($field['placeholder'] ?? ''),
-                    'required' => !empty($field['is_required']),
+                    'required' => ! empty($field['is_required']),
                     'locked' => $is_locked_field,
                     'adminOnly' => false,
                     'enabled' => true,
                     'order' => $index,
-                    'hidden' => false
-                ];
+                    'hidden' => false,
+                );
                 $dnd_fields[] = $dnd_field;
             }
         }
@@ -468,9 +464,8 @@ class DefaultTabSectionsData
     /**
      * Map old field types to new standardized types
      */
-    private static function map_field_type($old_type)
-    {
-        $type_mapping = [
+    private static function map_field_type( $old_type ) {
+        $type_mapping = array(
             'text' => 'text',
             'number' => 'number',
             'select' => 'select',
@@ -484,21 +479,20 @@ class DefaultTabSectionsData
             'agents' => 'agents',
             'textarea' => 'textarea',
             'image' => 'file',
-            'price_label' => 'price_label', 
-        ];
+            'price_label' => 'price_label',
+        );
 
-        return $type_mapping[$old_type] ?? 'text';
+        return $type_mapping[ $old_type ] ?? 'text';
     }
 
     /**
      * Get property documents group fields with UNIQUE group metadata
      * THREE FIELDS: icon, label, url
      */
-    private static function get_property_docs_group_fields()
-    {
-        $group_id = 'grp_property_docs_' . uniqid();
+    private static function get_property_docs_group_fields() {
+        $group_id      = 'grp_property_docs_' . uniqid();
         $group_base_id = self::generate_unique_group_base_id('property_docs');
-        
+
         // THREE FIELDS - icon, label, url
         return array(
             array(
@@ -554,12 +548,11 @@ class DefaultTabSectionsData
      * Get video group fields with UNIQUE group metadata
      * EACH CALL generates a UNIQUE group_base_id
      */
-    private static function get_video_group_fields()
-    {
+    private static function get_video_group_fields() {
         $group_id = 'grp_video_' . uniqid();
         // GENERATE UNIQUE base ID for this specific call (FIX)
         $group_base_id = self::generate_unique_group_base_id('video');
-        
+
         return array(
             array(
                 'fieldid'     => $group_base_id . '_title',
@@ -602,12 +595,11 @@ class DefaultTabSectionsData
      * Get gallery group fields with UNIQUE group metadata
      * EACH CALL generates a UNIQUE group_base_id
      */
-    private static function get_gallery_group_fields()
-    {
+    private static function get_gallery_group_fields() {
         $group_id = 'grp_gallery_' . uniqid();
         // GENERATE UNIQUE base ID for this specific call (FIX)
         $group_base_id = self::generate_unique_group_base_id('gallery');
-        
+
         return array(
             array(
                 'fieldid'     => $group_base_id . '_title',
@@ -638,17 +630,16 @@ class DefaultTabSectionsData
      * Get map group fields with UNIQUE group metadata
      * EACH CALL generates a UNIQUE group_base_id
      */
-    private static function get_map_group_fields()
-    {
+    private static function get_map_group_fields() {
         $group_id = 'grp_map_' . uniqid();
         // GENERATE UNIQUE base ID for this specific call (FIX)
         $group_base_id = self::generate_unique_group_base_id('map');
-        
-        $address_field_name = $group_base_id . '_address';
-        $latitude_field_name = $group_base_id . '_latitude';
+
+        $address_field_name   = $group_base_id . '_address';
+        $latitude_field_name  = $group_base_id . '_latitude';
         $longitude_field_name = $group_base_id . '_longitude';
-        $preview_field_name = $group_base_id . '_preview';
-        
+        $preview_field_name   = $group_base_id . '_preview';
+
         return array(
             array(
                 'fieldid'     => $address_field_name,
@@ -709,8 +700,7 @@ class DefaultTabSectionsData
      * Original metabox tabs data with professional IDs
      * Following pattern: sec_property_* for defaults, sec_custom_* for user tabs.
      */
-    public static function hvnly_metabox_tabs_builder()
-    {
+    public static function hvnly_metabox_tabs_builder() {
         $basic_info_id           = \HvnlyNab\Core\SectionIdentity::SEC_PROPERTY_OVERVIEW;
         $additional_info_id      = \HvnlyNab\Core\SectionIdentity::SEC_PROPERTY_DETAILS;
         $address_neighborhood_id = \HvnlyNab\Core\SectionIdentity::SEC_ADDRESS_NEIGHBORHOOD;
@@ -722,7 +712,7 @@ class DefaultTabSectionsData
         $repeater_id             = \HvnlyNab\Core\SectionIdentity::SEC_PROPERTY_REPEATER;
         $agents_id               = \HvnlyNab\Core\SectionIdentity::SEC_PROPERTY_AGENTS;
         $features_id             = \HvnlyNab\Core\SectionIdentity::SEC_PROPERTY_FEATURES;
-        
+
         return array(
             // SECTION 0: Basic Info
             array(
@@ -816,7 +806,7 @@ class DefaultTabSectionsData
                     ),
                 ),
             ),
-            
+
             // SECTION 1: Additional Information
             array(
                 'hvnly__sectiontitle' => __('Additional Information', 'havenlytics'),
@@ -893,7 +883,7 @@ class DefaultTabSectionsData
                     ),
                 ),
             ),
-            
+
             // SECTION 2: Address & Neighborhood
             array(
                 'hvnly__sectiontitle' => __('Address & Neighborhood', 'havenlytics'),
@@ -972,7 +962,7 @@ class DefaultTabSectionsData
                     ),
                 ),
             ),
-            
+
             // SECTION 3: Property Video - EACH CALL gets UNIQUE group_base_id
             array(
                 'hvnly__sectiontitle' => __('Property Video', 'havenlytics'),
@@ -980,7 +970,7 @@ class DefaultTabSectionsData
                 'icon'         => 'fas fa-video',
                 'fields'       => self::get_video_group_fields(),
             ),
-            
+
             // SECTION 4: Property Gallery - EACH CALL gets UNIQUE group_base_id
             array(
                 'hvnly__sectiontitle' => __('Property Gallery', 'havenlytics'),
@@ -988,7 +978,7 @@ class DefaultTabSectionsData
                 'icon'         => 'fas fa-images',
                 'fields'       => self::get_gallery_group_fields(),
             ),
-            
+
             // SECTION 5: Property Location - EACH CALL gets UNIQUE group_base_id
             array(
                 'hvnly__sectiontitle' => __('Property Location', 'havenlytics'),
@@ -996,7 +986,7 @@ class DefaultTabSectionsData
                 'icon'         => 'fas fa-map-marker-alt',
                 'fields'       => self::get_map_group_fields(),
             ),
-            
+
             // SECTION 6: Property Documents - EACH CALL gets UNIQUE group_base_id
             array(
                 'hvnly__sectiontitle' => __('Property Documents', 'havenlytics'),
@@ -1035,16 +1025,15 @@ class DefaultTabSectionsData
                 'id'           => $agents_id,
                 'icon'         => 'fas fa-user-tie',
                 'fields'       => self::get_agents_group_fields(),
-            )
+            ),
         );
     }
 
     /**
      * Get FAQ group fields with UNIQUE group metadata.
      */
-    private static function get_faq_group_fields()
-    {
-        $group_id = 'grp_faq_' . uniqid();
+    private static function get_faq_group_fields() {
+        $group_id      = 'grp_faq_' . uniqid();
         $group_base_id = self::generate_unique_group_base_id('faq');
 
         return array(
@@ -1079,9 +1068,8 @@ class DefaultTabSectionsData
     /**
      * Get repeater group fields with UNIQUE group metadata.
      */
-    private static function get_repeater_group_fields()
-    {
-        $group_id = 'grp_repeater_' . uniqid();
+    private static function get_repeater_group_fields() {
+        $group_id      = 'grp_repeater_' . uniqid();
         $group_base_id = self::generate_unique_group_base_id('repeater');
 
         return array(
@@ -1116,9 +1104,8 @@ class DefaultTabSectionsData
     /**
      * Get agents group fields with UNIQUE group metadata.
      */
-    private static function get_agents_group_fields()
-    {
-        $group_id = 'grp_agents_' . uniqid();
+    private static function get_agents_group_fields() {
+        $group_id      = 'grp_agents_' . uniqid();
         $group_base_id = self::generate_unique_group_base_id('agents');
 
         return array(
@@ -1153,9 +1140,8 @@ class DefaultTabSectionsData
     /**
      * Get property features group field (checkbox list).
      */
-    private static function get_features_group_fields()
-    {
-        $group_id = 'grp_features_' . uniqid();
+    private static function get_features_group_fields() {
+        $group_id      = 'grp_features_' . uniqid();
         $group_base_id = self::generate_unique_group_base_id('features');
 
         return array(
@@ -1177,8 +1163,7 @@ class DefaultTabSectionsData
     /**
      * Utility methods for options data
      */
-    public static function hvnly_get_property_locations()
-    {
+    public static function hvnly_get_property_locations() {
         return array(
             'urban' => __('Urban', 'havenlytics'),
             'suburban' => __('Suburban', 'havenlytics'),
@@ -1187,8 +1172,7 @@ class DefaultTabSectionsData
         );
     }
 
-    public static function hvnly_get_property_countries()
-    {
+    public static function hvnly_get_property_countries() {
         return array(
             'us' => __('United States', 'havenlytics'),
             'uk' => __('United Kingdom', 'havenlytics'),
@@ -1197,8 +1181,7 @@ class DefaultTabSectionsData
         );
     }
 
-    public static function get_cf7_forms()
-    {
+    public static function get_cf7_forms() {
         return array(
             '' => __('Select a Form', 'havenlytics'),
             'form1' => __('Contact Form 1', 'havenlytics'),

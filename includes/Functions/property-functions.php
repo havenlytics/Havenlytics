@@ -88,7 +88,7 @@ function hvnly_ensure_compare_beside_favorite( $sections ) {
 			continue;
 		}
 
-		$fields = $section['fields'];
+		$fields       = $section['fields'];
 		$has_favorite = false;
 		$has_compare  = false;
 
@@ -128,7 +128,7 @@ function hvnly_ensure_compare_beside_favorite( $sections ) {
 				'value' => array(),
 				'order' => $fav_order + 1,
 			);
-			$inserted = true;
+			$inserted     = true;
 		}
 
 		$sections[ $section_key ]['fields'] = $new_fields;
@@ -196,12 +196,12 @@ function hvnly_is_field_configured( $sections, $field_type ) {
 	if ( empty( $sections ) || ! is_array( $sections ) ) {
 		return false;
 	}
-	
+
 	// Special case: Check for avatar section
 	if ( 'avatar' === $field_type ) {
 		return hvnly_get_property_card_renderer()->has_avatar_section( $sections );
 	}
-	
+
 	foreach ( $sections as $section ) {
 		if ( ! empty( $section['fields'] ) && is_array( $section['fields'] ) ) {
 			foreach ( $section['fields'] as $field ) {
@@ -224,7 +224,7 @@ function hvnly_has_avatar_section( $sections ) {
 	if ( empty( $sections ) || ! is_array( $sections ) ) {
 		return false;
 	}
-	
+
 	foreach ( $sections as $section ) {
 		if ( isset( $section['id'] ) && 'avatar' === $section['id'] && ! empty( $section['fields'] ) ) {
 			return true;
@@ -254,7 +254,7 @@ function hvnly_render_field( $field_type, $property_id, $property_data = array()
 	}
 	// Build the template path
 	$template_path = 'archive/fields/' . $template_name;
-	
+
 	// Load the template
 	hvnly_get_template(
 		$template_path,
@@ -304,7 +304,7 @@ function hvnly_get_configured_field_types( $sections ) {
 if ( ! function_exists( 'hvnly_get_property_views' ) ) {
 	function hvnly_get_property_views( $property_id = null, $type = 'total' ) {
 		$property_id = $property_id ?: get_the_ID();
-		
+
 		if ( ! $property_id ) {
 			return 0;
 		}
@@ -365,7 +365,7 @@ if ( ! function_exists( 'hvnly_has_property_views' ) ) {
 if ( ! function_exists( 'hvnly_get_formatted_property_views' ) ) {
 	function hvnly_get_formatted_property_views( $property_id = null, $format_type = 'compact', $view_type = 'total', $format_args = array() ) {
 		$property_id = $property_id ?: get_the_ID();
-		
+
 		if ( ! $property_id ) {
 			return '0';
 		}
@@ -447,7 +447,7 @@ if ( ! function_exists( 'hvnly_get_smart_property_views' ) ) {
 if ( ! function_exists( 'hvnly_get_property_views_data' ) ) {
 	function hvnly_get_property_views_data( $property_id = null ) {
 		$property_id = $property_id ?: get_the_ID();
-		
+
 		if ( ! $property_id ) {
 			return array();
 		}
@@ -860,7 +860,7 @@ if ( ! function_exists( 'hvnly_get_property_image' ) ) {
 			'alt'   => $alt,
 			'class' => 'hvnly-property-placeholder-image',
 		);
-		$attr = wp_parse_args( $attr, $default_attr );
+		$attr         = wp_parse_args( $attr, $default_attr );
 
 		$html = '<img';
 		foreach ( $attr as $name => $value ) {
@@ -895,10 +895,10 @@ if ( ! function_exists( 'hvnly_get_property_types' ) ) {
 /**
  * Get property meta data
  */
-if (!function_exists('hvnly_get_property_meta')) {
-    function hvnly_get_property_meta($property_id = null) {
+if ( ! function_exists('hvnly_get_property_meta')) {
+    function hvnly_get_property_meta( $property_id = null ) {
         $property_id = $property_id ?: get_the_ID();
-        
+
         return array(
             'price' => get_post_meta($property_id, '_hvnly_property_price', true),
             'bedrooms' => get_post_meta($property_id, '_hvnly_property_bedrooms', true),
@@ -916,25 +916,25 @@ if (!function_exists('hvnly_get_property_meta')) {
 /**
  * Get property features list
  */
-if (!function_exists('hvnly_get_property_features_list')) {
-    function hvnly_get_property_features_list($property_id = null) {
-        $property_id = $property_id ?: get_the_ID();
+if ( ! function_exists('hvnly_get_property_features_list')) {
+    function hvnly_get_property_features_list( $property_id = null ) {
+        $property_id    = $property_id ?: get_the_ID();
         $features_terms = get_the_terms($property_id, 'property-feature');
-        
-        if (!$features_terms || is_wp_error($features_terms)) {
+
+        if ( ! $features_terms || is_wp_error($features_terms)) {
             return array();
         }
-        
+
         $features = array();
         foreach ($features_terms as $term) {
-            $icon = get_term_meta($term->term_id, 'hvnly_term_icon', true);
+            $icon       = get_term_meta($term->term_id, 'hvnly_term_icon', true);
             $features[] = array(
                 'name' => $term->name,
                 'icon' => $icon,
-                'slug' => $term->slug
+                'slug' => $term->slug,
             );
         }
-        
+
         return $features;
     }
 }
@@ -942,17 +942,17 @@ if (!function_exists('hvnly_get_property_features_list')) {
 /**
  * Get property amenities list
  */
-if (!function_exists('hvnly_get_property_amenities_list')) {
-    function hvnly_get_property_amenities_list($property_id = null) {
+if ( ! function_exists('hvnly_get_property_amenities_list')) {
+    function hvnly_get_property_amenities_list( $property_id = null ) {
         $property_id = $property_id ?: get_the_ID();
-        
+
         // Get from meta or use features as fallback
         $amenities = get_post_meta($property_id, '_hvnly_property_amenities', true);
-        
+
         if (empty($amenities)) {
             return hvnly_get_property_features_list($property_id);
         }
-        
+
         return is_array($amenities) ? $amenities : array();
     }
 }
@@ -960,11 +960,11 @@ if (!function_exists('hvnly_get_property_amenities_list')) {
 /**
  * Get property documents
  */
-if (!function_exists('hvnly_get_property_documents')) {
-    function hvnly_get_property_documents($property_id = null) {
+if ( ! function_exists('hvnly_get_property_documents')) {
+    function hvnly_get_property_documents( $property_id = null ) {
         $property_id = $property_id ?: get_the_ID();
-        $documents = array();
-        
+        $documents   = array();
+
         // Add your document meta fields here
         $document_fields = array(
             '_hvnly_property_floor_plan' => __('Floor Plan', 'havenlytics'),
@@ -974,17 +974,17 @@ if (!function_exists('hvnly_get_property_documents')) {
             '_hvnly_property_map' => __('Property Map', 'havenlytics'),
             '_hvnly_property_inspection_report' => __('Inspection Report', 'havenlytics'),
         );
-        
+
         foreach ($document_fields as $meta_key => $title) {
             $url = get_post_meta($property_id, $meta_key, true);
             if ($url) {
                 $documents[] = array(
                     'title' => $title,
-                    'url' => $url
+                    'url' => $url,
                 );
             }
         }
-        
+
         return $documents;
     }
 }
@@ -1036,7 +1036,7 @@ if ( ! function_exists( 'hvnly_get_author_review_count' ) ) {
     }
 }
 
-if (!function_exists('hvnly_get_property_agent')) {
+if ( ! function_exists('hvnly_get_property_agent')) {
     /**
      * Get the primary property agent profile.
      *
@@ -1045,25 +1045,25 @@ if (!function_exists('hvnly_get_property_agent')) {
      * @param int|null $property_id Property post ID.
      * @return array<string, mixed>
      */
-    function hvnly_get_property_agent($property_id = null) {
+    function hvnly_get_property_agent( $property_id = null ) {
         $property_id = $property_id ?: get_the_ID();
         $property_id = absint($property_id);
 
         if ($property_id > 0 && function_exists('hvnly_get_primary_property_agent')) {
             $agent = hvnly_get_primary_property_agent($property_id);
-            if (!empty($agent)) {
+            if ( ! empty($agent)) {
                 return $agent;
             }
         }
 
         $agent_id = get_post_meta($property_id, '_hvnly_property_agent', true);
-        
-        if (!$agent_id) {
+
+        if ( ! $agent_id) {
             $agent_id = get_post_field('post_author', $property_id);
         }
 
         $agent_id = absint($agent_id);
-        
+
         $agent_data = array(
             'id' => $agent_id,
             'type' => 'user',
@@ -1072,12 +1072,12 @@ if (!function_exists('hvnly_get_property_agent')) {
             'name' => get_the_author_meta('display_name', $agent_id),
             'email' => get_the_author_meta('email', $agent_id),
             'phone' => get_user_meta($agent_id, '_hvnly_agent_phone', true),
-            'avatar' => \HvnlyNab\Common\AvatarService::resolve_for_user((int) $agent_id, 200),
+            'avatar' => \HvnlyNab\Common\AvatarService::resolve_for_user( (int) $agent_id, 200),
             'position' => get_user_meta($agent_id, '_hvnly_agent_position', true) ?: __('Real Estate Agent', 'havenlytics'),
             'rating' => hvnly_get_author_property_ratings($agent_id),
-            'review_count' => hvnly_get_author_review_count($agent_id)
+            'review_count' => hvnly_get_author_review_count($agent_id),
         );
-        
+
         return $agent_data;
     }
 }
@@ -1102,7 +1102,7 @@ function hvnly_get_currency_settings() {
  * @param string $currency_code
  * @return string
  */
-function hvnly_get_currency_symbol($currency_code = 'USD') {
+function hvnly_get_currency_symbol( $currency_code = 'USD' ) {
     return HVNLY_NAB()->Helper->get_currency_symbol($currency_code);
 }
 
@@ -1133,7 +1133,7 @@ function hvnly_get_current_currency_code() {
  * @param int $decimals
  * @return string
  */
-function hvnly_format_number_with_separators($number, $thousand_separator = ',', $decimal_separator = '.', $decimals = 0) {
+function hvnly_format_number_with_separators( $number, $thousand_separator = ',', $decimal_separator = '.', $decimals = 0 ) {
     return HVNLY_NAB()->Helper->format_number_with_separators($number, $thousand_separator, $decimal_separator, $decimals);
 }
 
@@ -1147,7 +1147,7 @@ function hvnly_format_number_with_separators($number, $thousand_separator = ',',
  * @param bool $enabled
  * @return string
  */
-function hvnly_format_large_number_with_suffix($number, $thousand_text = 'K', $million_text = 'M', $billion_text = 'B', $enabled = true) {
+function hvnly_format_large_number_with_suffix( $number, $thousand_text = 'K', $million_text = 'M', $billion_text = 'B', $enabled = true ) {
     return HVNLY_NAB()->Helper->format_large_number_with_suffix($number, $thousand_text, $million_text, $billion_text, $enabled);
 }
 
@@ -1157,7 +1157,7 @@ function hvnly_format_large_number_with_suffix($number, $thousand_text = 'K', $m
  * @param mixed $price Price value to convert.
  * @return float Cleaned price as float.
  */
-function hvnly_safe_price_to_float($price) {
+function hvnly_safe_price_to_float( $price ) {
     return HVNLY_NAB()->Helper->safe_price_to_float($price);
 }
 
@@ -1168,7 +1168,7 @@ function hvnly_safe_price_to_float($price) {
  * @param mixed $price Price value to format.
  * @return string Formatted price string.
  */
-function hvnly_format_price($price) {
+function hvnly_format_price( $price ) {
     return HVNLY_NAB()->Helper->format_price($price);
 }
 
@@ -1289,4 +1289,3 @@ function hvnly_get_similar_properties( $property_id, $limit = 6 ) {
 	$filtered = apply_filters( 'hvnly_get_similar_properties', $out, $property_id, $limit );
 	return is_array( $filtered ) ? $filtered : $out;
 }
-

@@ -65,7 +65,10 @@ final class CsvExporter {
 
 		$handle = fopen( $path, $write_header ? 'w' : 'a' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		if ( ! $handle ) {
-			return array( 'written' => 0, 'done' => true );
+			return array(
+				'written' => 0,
+				'done' => true,
+			);
 		}
 
 		if ( $write_header ) {
@@ -278,7 +281,7 @@ final class CsvExporter {
 	 */
 	private static function document_urls( int $post_id ): string {
 		foreach ( array_filter( array( SchemaTargets::builder_key( 'property_docs', 'documents' ), SchemaTargets::legacy_key( 'property_docs', 'documents' ) ) ) as $key ) {
-			$raw = get_post_meta( $post_id, $key, true );
+			$raw  = get_post_meta( $post_id, $key, true );
 			$docs = is_string( $raw ) ? json_decode( $raw, true ) : $raw;
 			if ( ! is_array( $docs ) ) {
 				continue;

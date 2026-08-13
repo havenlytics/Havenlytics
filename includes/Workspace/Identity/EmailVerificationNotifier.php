@@ -155,15 +155,15 @@ final class EmailVerificationNotifier {
 			return;
 		}
 
-		$workspace_url = WorkspaceSettings::route_url( '' );
-		$context       = array_merge(
+		$workspace_url        = WorkspaceSettings::route_url( '' );
+		$context              = array_merge(
 			EmailBranding::context(),
 			array(
 				'email_type' => EmailConstants::TYPE_WS_EMAIL_VERIFIED,
 				'user_name'  => $user->display_name,
 				'title'      => __( 'Your email is verified', 'havenlytics' ),
 				'intro'      => __( 'Thanks — your email address has been verified and your Agent Workspace is now fully unlocked.', 'havenlytics' ),
-				'detail_rows'=> array(
+				'detail_rows' => array(
 					__( 'Email', 'havenlytics' )    => $user->user_email,
 					__( 'Verified', 'havenlytics' ) => date_i18n( (string) get_option( 'date_format' ) . ' ' . (string) get_option( 'time_format' ) ),
 				),

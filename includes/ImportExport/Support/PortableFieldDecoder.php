@@ -126,8 +126,8 @@ final class PortableFieldDecoder {
 				continue;
 			}
 
-			$dest_group_id = (string) $resolved['group_id'];
-			$dest_members  = $resolved['members'];
+			$dest_group_id             = (string) $resolved['group_id'];
+			$dest_members              = $resolved['members'];
 			$claimed[ $dest_group_id ] = true;
 
 			foreach ( $values as $suffix => $value ) {
@@ -277,12 +277,12 @@ final class PortableFieldDecoder {
 	 * }
 	 */
 	private static function build_schema_index(): array {
-		$by_name     = array();
-		$by_group    = array();
-		$by_portable = array();
+		$by_name      = array();
+		$by_group     = array();
+		$by_portable  = array();
 		$by_type_base = array();
-		$by_type     = array();
-		$group_meta  = array(); // group_id => {type, base, portable}
+		$by_type      = array();
+		$group_meta   = array(); // group_id => {type, base, portable}
 
 		if ( ! class_exists( PropertyBuilderSchemaService::class ) ) {
 			return array(
@@ -312,8 +312,8 @@ final class PortableFieldDecoder {
 			$by_group[ $group_id ][ $meta_key ] = $row;
 
 			if ( ! isset( $group_meta[ $group_id ] ) ) {
-				$g_type = (string) ( $row['groupType'] ?? '' );
-				$g_base = (string) ( $row['groupBaseId'] ?? '' );
+				$g_type                  = (string) ( $row['groupType'] ?? '' );
+				$g_base                  = (string) ( $row['groupBaseId'] ?? '' );
 				$group_meta[ $group_id ] = array(
 					'type'         => $g_type,
 					'base'         => $g_base,
@@ -469,7 +469,7 @@ final class PortableFieldDecoder {
 				// Keep a non-empty label so PropertyFormMapper::normalize_document_rows
 				// does not drop the row before Phase 6 restores the file URL.
 				if ( '' === $row['label'] ) {
-					$fname = isset( $item['media']['filename'] ) ? (string) $item['media']['filename'] : '';
+					$fname        = isset( $item['media']['filename'] ) ? (string) $item['media']['filename'] : '';
 					$row['label'] = '' !== $fname ? $fname : 'Document';
 				}
 			}

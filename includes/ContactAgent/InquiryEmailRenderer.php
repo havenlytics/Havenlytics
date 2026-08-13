@@ -54,9 +54,7 @@ class InquiryEmailRenderer {
 
 		$templates = ContactAgentConstants::email_templates();
 
-		$template  = isset( $templates[ $email_type ] ) ? (string) $templates[ $email_type ] : '';
-
-
+		$template = isset( $templates[ $email_type ] ) ? (string) $templates[ $email_type ] : '';
 
 		if ( '' === $template ) {
 
@@ -64,10 +62,7 @@ class InquiryEmailRenderer {
 
 		}
 
-
-
 		return $this->render_template( $template, $context, $email_type );
-
 	}
 
 
@@ -87,7 +82,6 @@ class InquiryEmailRenderer {
 	public function render_agent_body( array $context ): string {
 
 		return $this->render( ContactAgentConstants::EMAIL_TYPE_AGENT, $context );
-
 	}
 
 
@@ -107,7 +101,6 @@ class InquiryEmailRenderer {
 	public function render_admin_body( array $context ): string {
 
 		return $this->render( ContactAgentConstants::EMAIL_TYPE_ADMIN, $context );
-
 	}
 
 
@@ -127,7 +120,6 @@ class InquiryEmailRenderer {
 	public function render_sender_body( array $context ): string {
 
 		return $this->render( ContactAgentConstants::EMAIL_TYPE_SENDER, $context );
-
 	}
 
 
@@ -152,8 +144,6 @@ class InquiryEmailRenderer {
 
 		}
 
-
-
 		/**
 
 		 * Filter email template context before render.
@@ -174,11 +164,7 @@ class InquiryEmailRenderer {
 
 		$context = apply_filters( 'hvnly_contact_agent_email_render_context', $context, $template, $email_type );
 
-
-
 		$html = hvnly_get_template_html( $template, $context );
-
-
 
 		/**
 
@@ -201,9 +187,5 @@ class InquiryEmailRenderer {
 		 */
 
 		return (string) apply_filters( 'hvnly_contact_agent_email_html', $html, $template, $context, $email_type );
-
 	}
-
 }
-
-

@@ -109,12 +109,12 @@ final class CsvTempCleanup {
 		$paths = array();
 
 		if ( ! empty( $job['csv_path'] ) && is_string( $job['csv_path'] ) ) {
-			$paths[] = (string) $job['csv_path'];
+			$paths[]         = (string) $job['csv_path'];
 			$job['csv_path'] = '';
 		}
 
 		if ( isset( $job['options'] ) && is_array( $job['options'] ) && ! empty( $job['options']['csv_path'] ) ) {
-			$paths[] = (string) $job['options']['csv_path'];
+			$paths[]                    = (string) $job['options']['csv_path'];
 			$job['options']['csv_path'] = '';
 		}
 
@@ -179,10 +179,10 @@ final class CsvTempCleanup {
 			$retention = HOUR_IN_SECONDS;
 		}
 
-		$cutoff     = time() - $retention;
-		$protected  = self::protected_paths();
-		$removed    = 0;
-		$entries    = scandir( $base );
+		$cutoff    = time() - $retention;
+		$protected = self::protected_paths();
+		$removed   = 0;
+		$entries   = scandir( $base );
 
 		if ( ! is_array( $entries ) ) {
 			return 0;

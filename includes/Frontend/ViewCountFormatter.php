@@ -105,7 +105,7 @@ class ViewCountFormatter {
 	 */
 	private static function format_compact( $count, $args ) {
 		$format_config = self::$format_types['compact'];
-		
+
 		if ( $count < $format_config['threshold'] ) {
 			return self::format_number( $count, $args );
 		}
@@ -116,7 +116,7 @@ class ViewCountFormatter {
 		foreach ( $suffixes as $threshold => $suffix ) {
 			if ( $count >= $threshold ) {
 				$formatted = $count / $threshold;
-				
+
 				// Check if we should floor the value (e.g., 1.0K → 1K)
 				if ( $args['force_floor'] && floor( $formatted ) == $formatted ) {
 					$formatted = floor( $formatted );
@@ -141,7 +141,7 @@ class ViewCountFormatter {
 	 */
 	private static function format_readable( $count, $args ) {
 		$format_config = self::$format_types['readable'];
-		
+
 		if ( $count < $format_config['threshold'] ) {
 			return self::format_number( $count, $args );
 		}
@@ -152,7 +152,7 @@ class ViewCountFormatter {
 		foreach ( $suffixes as $threshold => $suffix ) {
 			if ( $count >= $threshold ) {
 				$formatted = $count / $threshold;
-				
+
 				if ( $args['force_floor'] && floor( $formatted ) == $formatted ) {
 					$formatted = floor( $formatted );
 				} else {
@@ -161,7 +161,7 @@ class ViewCountFormatter {
 
 				$number = self::format_number( $formatted, $args );
 				$suffix = self::get_localized_suffix( $suffix, $args['locale'] );
-				
+
 				return $number . $suffix;
 			}
 		}
@@ -193,15 +193,15 @@ class ViewCountFormatter {
 		if ( is_float( $number ) ) {
 			// For floats, we need custom formatting to avoid locale issues
 			$number = round( $number, $args['precision'] );
-			
+
 			// Check if it's a whole number after rounding
 			if ( floor( $number ) == $number ) {
 				return number_format_i18n( $number, 0 );
 			}
-			
+
 			return number_format_i18n( $number, $args['precision'] );
 		}
-		
+
 		return number_format_i18n( $number );
 	}
 
@@ -237,8 +237,8 @@ class ViewCountFormatter {
 			),
 		);
 
-		return isset( $localizations[ $locale ][ $suffix ] ) 
-			? $localizations[ $locale ][ $suffix ] 
+		return isset( $localizations[ $locale ][ $suffix ] )
+			? $localizations[ $locale ][ $suffix ]
 			: $suffix;
 	}
 
@@ -281,8 +281,8 @@ class ViewCountFormatter {
 	 * @since 2.0.0
 	 */
 	public static function get_format_config( $format_type ) {
-		return isset( self::$format_types[ $format_type ] ) 
-			? self::$format_types[ $format_type ] 
+		return isset( self::$format_types[ $format_type ] )
+			? self::$format_types[ $format_type ]
 			: null;
 	}
 }

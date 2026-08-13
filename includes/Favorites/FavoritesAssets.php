@@ -90,6 +90,11 @@ final class FavoritesAssets {
 		// Priority 25 so the plugin's own front-end registration (20) has
 		// already run and its handles can be inspected.
 		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue' ), 25 );
+		// Late pass: Elementor / Blocks often set the favorites filter AFTER
+		// priority 25. Re-check so toast + favorites assets stay identical
+		// on Archive, Single, Map, Elementor, and Gutenberg.
+		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue' ), 999 );
+		add_action( 'elementor/frontend/after_enqueue_styles', array( $this, 'maybe_enqueue' ), 30 );
 	}
 
 	/**
@@ -153,15 +158,13 @@ final class FavoritesAssets {
 			return;
 		}
 
-		self::register_toast_assets();
-		wp_enqueue_style( self::TOAST_STYLE_HANDLE );
-		wp_enqueue_script( self::TOAST_SCRIPT_HANDLE );
+		self::enqueue_toast_assets();
 
 		if ( ! wp_style_is( self::STYLE_HANDLE, 'registered' ) ) {
 			wp_register_style(
 				self::STYLE_HANDLE,
 				HVNLYNAB_ASSETS_URL . '/frontend/css/favorites/hvnly-favorites.css',
-				array(),
+				array( 'hvnly-frontend-components' ),
 				HVNLYNAB_VERSION
 			);
 		}
@@ -186,6 +189,43 @@ final class FavoritesAssets {
 	}
 
 	/**
+	 * Force-enqueue Favorite + toast stack for surfaces that opt in late
+	 * (Elementor widgets, Gutenberg blocks, map chrome).
+	 *
+	 * Idempotent. Prefer {@see maybe_enqueue()} on ordinary page loads.
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
+	public static function ensure_enqueued(): void {
+		$assets = new self();
+		$assets->enqueue();
+	}
+
+	/**
+	 * Register + enqueue the shared toast engine CSS/JS.
+	 *
+	 * Single entry point for every surface (Archive, Single, Map, Elementor,
+	 * Gutenberg, Workspace, future modules). Depends on Core components
+	 * (`.hvnly-btn` / `.hvnly-ui-control` paint live there).
+	 *
+	 * @since 3.7.5
+	 *
+	 * @return void
+	 */
+	public static function enqueue_toast_assets(): void {
+		self::register_toast_assets();
+
+		if ( wp_style_is( 'hvnly-frontend-components', 'registered' ) ) {
+			wp_enqueue_style( 'hvnly-frontend-components' );
+		}
+
+		wp_enqueue_style( self::TOAST_STYLE_HANDLE );
+		wp_enqueue_script( self::TOAST_SCRIPT_HANDLE );
+	}
+
+	/**
 	 * Register the shared toast manager (idempotent, no enqueue).
 	 *
 	 * Public and static so any module can depend on the same single engine:
@@ -197,13 +237,41 @@ final class FavoritesAssets {
 	 * @return void
 	 */
 	public static function register_toast_assets(): void {
+		if ( ! wp_style_is( 'hvnly-frontend-default', 'registered' ) ) {
+			wp_register_style(
+				'hvnly-frontend-default',
+				HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-default.css',
+				array(),
+				HVNLYNAB_VERSION
+			);
+		}
+
+		if ( ! wp_style_is( 'hvnly-frontend-components', 'registered' ) ) {
+			wp_register_style(
+				'hvnly-frontend-components',
+				HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-frontend-components.css',
+				array( 'hvnly-frontend-default' ),
+				HVNLYNAB_VERSION
+			);
+		}
+
 		if ( ! wp_style_is( self::TOAST_STYLE_HANDLE, 'registered' ) ) {
 			wp_register_style(
 				self::TOAST_STYLE_HANDLE,
 				HVNLYNAB_ASSETS_URL . '/frontend/css/hvnly-toast.css',
-				array(),
+				// Toast actions/dismiss consume `.hvnly-btn` / `.hvnly-ui-control`.
+				array( 'hvnly-frontend-components' ),
 				HVNLYNAB_VERSION
 			);
+		} elseif ( function_exists( 'wp_styles' ) ) {
+			// Idempotent: ensure components dep even if registered earlier with [].
+			$styles = wp_styles();
+			if ( isset( $styles->registered[ self::TOAST_STYLE_HANDLE ] ) ) {
+				$deps = $styles->registered[ self::TOAST_STYLE_HANDLE ]->deps;
+				if ( ! in_array( 'hvnly-frontend-components', $deps, true ) ) {
+					$styles->registered[ self::TOAST_STYLE_HANDLE ]->deps[] = 'hvnly-frontend-components';
+				}
+			}
 		}
 
 		if ( ! wp_script_is( self::TOAST_SCRIPT_HANDLE, 'registered' ) ) {

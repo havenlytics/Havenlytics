@@ -3,9 +3,9 @@ Contributors: havenlytics
 Donate link: https://havenlytics.com
 Tags: real estate, listings, agency, property, agents
 Requires at least: 6.3
-Tested up to: 7.0
+Tested up to: 7.0.4
 Requires PHP: 7.4
-Stable tag: 3.7.3
+Stable tag: 3.7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Real estate plugin with AJAX search, Migration Engine, CSV import/export, Gutenberg, Elementor, Agent Workspace, and Analytics.
@@ -21,9 +21,9 @@ Havenlytics works with **any WordPress theme**. The free [Havenlytics Realty](ht
 📘 Documentation: [https://havenlytics.com/documentation/](https://havenlytics.com/documentation/)
 🚀 Live Demo: [https://demo.havenlytics.com/](https://demo.havenlytics.com/)
 
-👤 Agent Workspace Demo: 
-🔐 Agent Login: [https://demo.havenlytics.com/agent-dashboard/login](https://demo.havenlytics.com/agent-dashboard/login) 
-📝 Agent Registration: [https://demo.havenlytics.com/agent-dashboard/register](https://demo.havenlytics.com/agent-dashboard/register) 
+👤 Agent Workspace Demo:
+🔐 Agent Login: [https://demo.havenlytics.com/agent-dashboard/login](https://demo.havenlytics.com/agent-dashboard/login)
+📝 Agent Registration: [https://demo.havenlytics.com/agent-dashboard/register](https://demo.havenlytics.com/agent-dashboard/register)
 🔑 Forgot Password: [https://demo.havenlytics.com/agent-dashboard/forgot-password](https://demo.havenlytics.com/agent-dashboard/forgot-password)
 
 🌐 Official Website: [https://havenlytics.com/](https://havenlytics.com/)
@@ -328,6 +328,10 @@ No additional configuration or migration is required.
 
 == Changelog ==
 
+= 3.7.4 - 2026-08-13 =
+
+* **Maintenance:** Version and release metadata updated to 3.7.4.
+
 = 3.7.3 - 2026-08-04 =
 
 **New**
@@ -533,6 +537,9 @@ No additional configuration or migration is required.
 
 For earlier versions, see the full history in CHANGELOG.md in the plugin package.
 == Upgrade Notice ==
+
+= 3.7.4 =
+Maintenance release: version and release metadata updated to 3.7.4. No functional changes.
 
 = 3.7.3 =
 Improves cache system reliability, statistics accuracy, and the Cache Management dashboard UI. No breaking changes to builders, search, REST, AJAX, Elementor, Gutenberg, or the database.

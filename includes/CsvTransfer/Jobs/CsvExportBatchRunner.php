@@ -81,9 +81,15 @@ final class CsvExportBatchRunner {
 		$filters = isset( $options['filters'] ) && is_array( $options['filters'] ) ? $options['filters'] : array();
 		$total   = CsvExporter::count( $filters );
 
-		$job['cursor']   = array( 'index' => 0, 'total' => $total );
+		$job['cursor']   = array(
+			'index' => 0,
+			'total' => $total,
+		);
 		$job['phase']    = 'rows';
-		$job['progress'] = array( 'percent' => 5, 'message' => __( 'Export prepared.', 'havenlytics' ) );
+		$job['progress'] = array(
+			'percent' => 5,
+			'message' => __( 'Export prepared.', 'havenlytics' ),
+		);
 		return $job;
 	}
 
@@ -107,11 +113,11 @@ final class CsvExportBatchRunner {
 			0 === $index
 		);
 
-		$next_index = $index + (int) $result['written'];
+		$next_index                = $index + (int) $result['written'];
 		$job['cursor']['index']    = $next_index;
 		$job['counts']['exported'] = $next_index;
 
-		$pct = $total > 0 ? 10 + (int) floor( 80 * min( 1, $next_index / $total ) ) : 90;
+		$pct             = $total > 0 ? 10 + (int) floor( 80 * min( 1, $next_index / $total ) ) : 90;
 		$job['progress'] = array(
 			'percent' => $pct,
 			'message' => sprintf(
@@ -136,7 +142,10 @@ final class CsvExportBatchRunner {
 	private static function phase_finalize( array $job ): array {
 		$job['status']       = CsvJobStateStore::STATUS_COMPLETED;
 		$job['phase']        = 'completed';
-		$job['progress']     = array( 'percent' => 100, 'message' => __( 'Export complete.', 'havenlytics' ) );
+		$job['progress']     = array(
+			'percent' => 100,
+			'message' => __( 'Export complete.', 'havenlytics' ),
+		);
 		$job['completed_at'] = gmdate( 'c' );
 		return $job;
 	}

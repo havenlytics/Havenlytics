@@ -174,8 +174,8 @@ final class ManifestValidator {
 			);
 		}
 
-		$major = (int) $m[1];
-		$minor = (int) $m[2];
+		$major    = (int) $m[1];
+		$minor    = (int) $m[2];
 		$warnings = array();
 
 		if ( $major > ManifestSchema::SCHEMA_MAJOR ) {

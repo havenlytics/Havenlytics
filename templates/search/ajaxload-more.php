@@ -101,7 +101,7 @@ if ( $hvnly_agency_term_id > 0 ) {
     ?>
     style="<?php echo esc_attr( $hvnly_load_more_style ); ?>">
 
-    <button id="<?php echo esc_attr( $hvnly_unique_button_id ); ?>" class="hvnly-property-load-more-btn"
+    <button id="<?php echo esc_attr( $hvnly_unique_button_id ); ?>" class="hvnly-ui-control hvnly-property-load-more-btn"
         data-instance-id="<?php echo esc_attr( $hvnly_instance_id ); ?>">
         <span class="hvnly-property-load-more-text"><?php echo esc_html( $hvnly_load_more_text ); ?></span>
         <i class="fas fa-plus"></i>

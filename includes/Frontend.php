@@ -13,20 +13,20 @@
 namespace HvnlyNab;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
 /**
  * Frontend Service Manager Class
- * 
+ *
  * Handles service registration, dependency management, and conditional loading.
  * Maintains full backward compatibility with existing code.
  *
  * @since 2.0.0
  */
-class Frontend
-{
+class Frontend {
+
     /**
      * Singleton instance
      *
@@ -39,7 +39,7 @@ class Frontend
      *
      * @var array
      */
-    private $services = [];
+    private $services = array();
 
     /**
      * Whether functions have been loaded
@@ -60,8 +60,7 @@ class Frontend
      *
      * @return self
      */
-    public static function get_instance()
-    {
+    public static function get_instance() {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -71,8 +70,7 @@ class Frontend
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         // Prevent recursive construction when helpers call get_instance() mid-bootstrap.
         if (self::$registering) {
             return;
@@ -94,11 +92,10 @@ class Frontend
      *
      * @return array
      */
-    public static function get_services()
-    {
+    public static function get_services() {
         /**
          * Filter: hvnly_frontend_services
-         * 
+         *
          * Allows 3rd party plugins to modify frontend services.
          */
         return apply_filters('hvnly_frontend_services', array(
@@ -107,8 +104,8 @@ class Frontend
             Frontend\AjaxHandler::class,
             Frontend\SidebarAjaxHandler::class,
             Frontend\PropertyViewTracker::class,
-            Frontend\PropertyCardRenderer::class, 
-            Frontend\PropertySingleRenderer::class, 
+            Frontend\PropertyCardRenderer::class,
+            Frontend\PropertySingleRenderer::class,
             Frontend\EnhancedTemplateLoader::class,
             Frontend\LayoutManager::class,
             Frontend\Shortcodes\PropertySearch::class,
@@ -134,19 +131,18 @@ class Frontend
     /**
      * Register services - EXACTLY LIKE ORIGINAL
      */
-    public static function register_services()
-    {
+    public static function register_services() {
         if (null === self::$instance) {
             return;
         }
 
         $instance = self::$instance;
         $services = self::get_services();
-        
+
         foreach ($services as $class) {
             // Skip Elementor integration if Elementor is not active
             if ($class === Integrations\Elementor\ElementorIntegration::class) {
-                if (!self::is_elementor_active()) {
+                if ( ! self::is_elementor_active()) {
                     continue;
                 }
             }
@@ -169,7 +165,7 @@ class Frontend
                 }
             }
         }
-        
+
         do_action('hvnly_frontend_services_registered');
     }
 
@@ -178,20 +174,19 @@ class Frontend
      *
      * @return bool
      */
-    private static function is_elementor_active(): bool
-    {
+    private static function is_elementor_active(): bool {
         if (did_action('elementor/loaded')) {
             return true;
         }
-        
+
         if (class_exists('\Elementor\Plugin')) {
             return true;
         }
-        
+
         if (defined('ELEMENTOR_VERSION')) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -201,12 +196,11 @@ class Frontend
      * @param string $class Class name.
      * @return object|null
      */
-    private function instantiate($class)
-    {
-        if (!class_exists($class)) {
+    private function instantiate( $class ) {
+        if ( ! class_exists($class)) {
             return null;
         }
-        
+
         // Special handling for LayoutManager to use singleton
         if ($class === Frontend\LayoutManager::class) {
             return Frontend\LayoutManager::instance();
@@ -214,44 +208,43 @@ class Frontend
 
         // Special handling for Query Manager to use singleton
         if ($class === Frontend\Query\PropertyQueryManager::class) {
-            $service = $class::get_instance();
-            $this->services[$class] = $service;
+            $service                  = $class::get_instance();
+            $this->services[ $class ] = $service;
             return $service;
         }
 
         // Special handling for ElementorIntegration to use get_instance()
         if ($class === Integrations\Elementor\ElementorIntegration::class) {
-            $service = $class::get_instance();
-            $this->services[$class] = $service;
+            $service                  = $class::get_instance();
+            $this->services[ $class ] = $service;
             return $service;
         }
 
         // Workspace must stay a singleton (admin Bootstrap may already have booted it).
         if ($class === Workspace\WorkspaceBootstrap::class) {
-            $service = $class::get_instance();
-            $this->services[$class] = $service;
+            $service                  = $class::get_instance();
+            $this->services[ $class ] = $service;
             return $service;
         }
-        
+
         // Prevent instantiating self recursively
         if ($class === self::class) {
             return null;
         }
-        
+
         $service = new $class();
-        
+
         // Store service for later retrieval
-        $this->services[$class] = $service;
-        
+        $this->services[ $class ] = $service;
+
         return $service;
     }
 
     /**
      * Initialize hooks - EXACTLY LIKE ORIGINAL
      */
-    private function init_hooks()
-    {
-        add_action('init', array($this, 'load_template_functions'));
+    private function init_hooks() {
+        add_action('init', array( $this, 'load_template_functions' ));
 
         if ( ! class_exists( '\HvnlyNab\Admin\Data\DemoContentLocalizer' ) ) {
             $localizer = HVNLYNAB_INCLUDES . '/Admin/Data/DemoContentLocalizer.php';
@@ -267,8 +260,7 @@ class Frontend
     /**
      * Load template functions - EXACTLY LIKE ORIGINAL
      */
-    public function load_template_functions()
-    {
+    public function load_template_functions() {
         if ($this->functions_loaded) {
             return;
         }
@@ -278,7 +270,7 @@ class Frontend
             $this->functions_loaded = true;
             return;
         }
-        
+
         $functions_files = array(
             'field-options.php',
             'template-functions.php',
@@ -307,7 +299,7 @@ class Frontend
         if ( function_exists( 'hvnly_register_template_function_fallbacks' ) ) {
             hvnly_register_template_function_fallbacks();
         }
-        
+
         $this->functions_loaded = true;
     }
 
@@ -317,9 +309,8 @@ class Frontend
      * @param string $class Class name
      * @return object|null
      */
-    public function get_service($class)
-    {
-        return $this->services[$class] ?? null;
+    public function get_service( $class ) {
+        return $this->services[ $class ] ?? null;
     }
 
     /**
@@ -327,8 +318,7 @@ class Frontend
      *
      * @return Frontend\EnhancedTemplateLoader|Frontend\TemplateLoader|null
      */
-    public function get_template_loader_service()
-    {
+    public function get_template_loader_service() {
         $loader = $this->get_service(Frontend\EnhancedTemplateLoader::class);
         if ( $loader ) {
             return $loader;
@@ -342,8 +332,7 @@ class Frontend
      *
      * @return Integrations\Elementor\ElementorIntegration|null
      */
-    public function get_elementor_integration()
-    {
+    public function get_elementor_integration() {
         return $this->get_service(Integrations\Elementor\ElementorIntegration::class);
     }
 
@@ -352,17 +341,15 @@ class Frontend
      *
      * @return Frontend\Query\PropertyQueryManager|null
      */
-    public function get_query_manager()
-    {
+    public function get_query_manager() {
         return $this->get_service(Frontend\Query\PropertyQueryManager::class);
     }
 
     /**
      * Magic method for backward compatibility
      */
-    public function __get($name)
-    {
-        $legacy_map = [
+    public function __get( $name ) {
+        $legacy_map = array(
             'template_loader' => Frontend\TemplateLoader::class,
             'assets' => Frontend\Assets::class,
             'ajax_handler' => Frontend\AjaxHandler::class,
@@ -373,21 +360,20 @@ class Frontend
             'layout_manager' => Frontend\LayoutManager::class,
             'query_manager' => Frontend\Query\PropertyQueryManager::class,
             'elementor_integration' => Integrations\Elementor\ElementorIntegration::class,
-        ];
-        
-        if (isset($legacy_map[$name])) {
-            return $this->get_service($legacy_map[$name]);
+        );
+
+        if (isset($legacy_map[ $name ])) {
+            return $this->get_service($legacy_map[ $name ]);
         }
-        
+
         return null;
     }
 
     /**
      * Magic isset for backward compatibility
      */
-    public function __isset($name)
-    {
-        $legacy_map = [
+    public function __isset( $name ) {
+        $legacy_map = array(
             'template_loader' => Frontend\TemplateLoader::class,
             'assets' => Frontend\Assets::class,
             'ajax_handler' => Frontend\AjaxHandler::class,
@@ -398,22 +384,22 @@ class Frontend
             'layout_manager' => Frontend\LayoutManager::class,
             'query_manager' => Frontend\Query\PropertyQueryManager::class,
             'elementor_integration' => Integrations\Elementor\ElementorIntegration::class,
-        ];
-        
-        return isset($legacy_map[$name]) && isset($this->services[$legacy_map[$name]]);
+        );
+
+        return isset($legacy_map[ $name ]) && isset($this->services[ $legacy_map[ $name ] ]);
     }
 }
 
 /**
  * Legacy instantiation for backward compatibility
  */
-if (!function_exists('hvnly_frontend_init')) {
+if ( ! function_exists('hvnly_frontend_init')) {
     function hvnly_frontend_init() {
         return Frontend::get_instance();
     }
 }
 
 // Initialize frontend
-if (!defined('HVNLY_FRONTEND_INITIALIZED')) {
+if ( ! defined('HVNLY_FRONTEND_INITIALIZED')) {
     define('HVNLY_FRONTEND_INITIALIZED', true);
 }

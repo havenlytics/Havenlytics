@@ -126,10 +126,10 @@ final class EmailVerificationFactor implements VerificationFactorInterface {
 	 * @inheritDoc
 	 */
 	public function state( int $user_id ): array {
-		$user  = $user_id > 0 ? get_userdata( $user_id ) : null;
-		$raw   = (string) get_user_meta( $user_id, self::META_VERIFIED, true );
-		$at    = (string) get_user_meta( $user_id, self::META_VERIFIED_AT, true );
-		$sent  = (int) get_user_meta( $user_id, self::META_SENT_AT, true );
+		$user = $user_id > 0 ? get_userdata( $user_id ) : null;
+		$raw  = (string) get_user_meta( $user_id, self::META_VERIFIED, true );
+		$at   = (string) get_user_meta( $user_id, self::META_VERIFIED_AT, true );
+		$sent = (int) get_user_meta( $user_id, self::META_SENT_AT, true );
 
 		return array(
 			'slug'       => self::SLUG,

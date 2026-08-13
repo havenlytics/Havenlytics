@@ -116,7 +116,7 @@ class AgentRepository implements AgentRepositoryInterface {
 			'post_status'    => 'publish',
 		);
 
-		$query_args = wp_parse_args( $args, $defaults );
+		$query_args              = wp_parse_args( $args, $defaults );
 		$query_args['post_type'] = AgentConstants::POST_TYPE;
 
 		$query = new \WP_Query( $query_args );

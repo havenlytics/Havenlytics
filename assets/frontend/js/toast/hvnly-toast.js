@@ -249,9 +249,26 @@
 			toast.actions.forEach( function ( action, index ) {
 				var button = document.createElement( 'button' );
 				button.type = 'button';
+				var variant = action.variant || ( index === 0 ? 'primary' : 'secondary' );
+				// Core UI variants only — never invent toast-only button paint.
+				var btnVariants = {
+					primary: 1,
+					secondary: 1,
+					ghost: 1,
+					outline: 1,
+					success: 1,
+					danger: 1,
+					warning: 1,
+					alert: 1,
+				};
+				var btnVariant = btnVariants[ variant ] ? variant : 'primary';
+				// Additive Core UI primitives — paint owned by hvnly-frontend-components.css.
+				// Keep legacy hvnly-toast__action* classes for layout / BC.
 				button.className =
-					'hvnly-toast__action hvnly-toast__action--' +
-					( action.variant || ( index === 0 ? 'primary' : 'secondary' ) );
+					'hvnly-btn hvnly-btn--sm hvnly-btn--' +
+					btnVariant +
+					' hvnly-toast__action hvnly-toast__action--' +
+					variant;
 				button.textContent = action.label;
 
 				button.addEventListener( 'click', function ( event ) {
@@ -275,7 +292,7 @@
 
 		var close = document.createElement( 'button' );
 		close.type = 'button';
-		close.className = 'hvnly-toast__dismiss';
+		close.className = 'hvnly-ui-control hvnly-toast__dismiss';
 		close.setAttribute( 'aria-label', toast.dismissLabel || ((window.hvnly_map_params && window.hvnly_map_params.i18n && window.hvnly_map_params.i18n.dismissNotification) || (window.hvnly_property_data && window.hvnly_property_data.i18n && window.hvnly_property_data.i18n.dismissNotification) || '') );
 		close.innerHTML = '&times;';
 		close.addEventListener( 'click', function () {

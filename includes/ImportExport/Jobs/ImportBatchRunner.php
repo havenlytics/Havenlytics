@@ -79,8 +79,8 @@ final class ImportBatchRunner {
 	 * @return array
 	 */
 	private static function phase_prepare( array $job ): array {
-		$options = isset( $job['options'] ) && is_array( $job['options'] ) ? $job['options'] : array();
-		$dir     = (string) ( $job['workdir'] ?? '' );
+		$options  = isset( $job['options'] ) && is_array( $job['options'] ) ? $job['options'] : array();
+		$dir      = (string) ( $job['workdir'] ?? '' );
 		$entities = JobWorkspace::read_json( $dir, 'entities.json', null );
 		if ( '' === $dir || ! is_array( $entities ) ) {
 			$job['status'] = JobStateStore::STATUS_FAILED;
@@ -123,13 +123,20 @@ final class ImportBatchRunner {
 			: ( ! empty( $options['include_media'] ) ? 'media_unpack' : 'finalize' ) ) ) );
 
 		$job['phase']    = $next;
-		$job['progress'] = array( 'percent' => 5, 'message' => 'Import prepared.' );
+		$job['progress'] = array(
+			'percent' => 5,
+			'message' => 'Import prepared.',
+		);
 		$job['counts']   = array(
 			'terms'      => self::empty_counts(),
 			'agencies'   => self::empty_counts(),
 			'agents'     => self::empty_counts(),
 			'properties' => self::empty_counts(),
-			'media'      => array( 'created' => 0, 'skipped' => 0, 'failed' => 0 ),
+			'media'      => array(
+				'created' => 0,
+				'skipped' => 0,
+				'failed' => 0,
+			),
 		);
 		return $job;
 	}
@@ -143,8 +150,8 @@ final class ImportBatchRunner {
 	 * @return array
 	 */
 	private static function run_support_phase( array $job, string $key, string $importer, string $next, int $percent ): array {
-		$options  = isset( $job['options'] ) && is_array( $job['options'] ) ? $job['options'] : array();
-		$include  = 'terms' === $key ? 'include_terms' : ( 'agencies' === $key ? 'include_agencies' : 'include_agents' );
+		$options = isset( $job['options'] ) && is_array( $job['options'] ) ? $job['options'] : array();
+		$include = 'terms' === $key ? 'include_terms' : ( 'agencies' === $key ? 'include_agencies' : 'include_agents' );
 		if ( empty( $options[ $include ] ) ) {
 			$job['phase'] = $next;
 			return $job;
@@ -178,7 +185,10 @@ final class ImportBatchRunner {
 		}
 		self::save_remapper( $job, $remapper );
 		$job['phase']    = $next;
-		$job['progress'] = array( 'percent' => $percent, 'message' => ucfirst( $key ) . ' imported.' );
+		$job['progress'] = array(
+			'percent' => $percent,
+			'message' => ucfirst( $key ) . ' imported.',
+		);
 		return $job;
 	}
 
@@ -191,7 +201,7 @@ final class ImportBatchRunner {
 		$reader  = self::reader( $job );
 
 		// Honor UI toggle: when apply_builder_policy is off, always Keep.
-		$apply = ! array_key_exists( 'apply_builder_policy', $options ) || ! empty( $options['apply_builder_policy'] );
+		$apply  = ! array_key_exists( 'apply_builder_policy', $options ) || ! empty( $options['apply_builder_policy'] );
 		$policy = $apply
 			? BuilderImportPolicy::normalize_policy( (string) ( $options['builder_policy'] ?? 'keep' ) )
 			: BuilderImportPolicy::POLICY_KEEP;
@@ -208,14 +218,17 @@ final class ImportBatchRunner {
 			return $job;
 		}
 
-		$data = $result->data();
-		$job['builder'] = is_array( $data ) ? $data : array();
+		$data                                   = $result->data();
+		$job['builder']                         = is_array( $data ) ? $data : array();
 		$job['builder']['apply_builder_policy'] = $apply;
-		$total = count( self::reader( $job )->read_section( 'properties' ) );
-		$job['cursor'] = array( 'index' => 0, 'total' => $total );
-		$job['phase']  = ! empty( $options['include_properties'] ) ? 'properties'
+		$total                                  = count( self::reader( $job )->read_section( 'properties' ) );
+		$job['cursor']                          = array(
+			'index' => 0,
+			'total' => $total,
+		);
+		$job['phase']                           = ! empty( $options['include_properties'] ) ? 'properties'
 			: ( ! empty( $options['include_media'] ) ? 'media_unpack' : 'finalize' );
-		$job['progress'] = array(
+		$job['progress']                        = array(
 			'percent' => 45,
 			'message' => sprintf( 'Builder policy applied (%s).', $policy ),
 		);
@@ -245,7 +258,7 @@ final class ImportBatchRunner {
 				'limit'  => self::BATCH_PROPERTIES,
 			)
 		);
-		$job = JobStateStore::merge_warnings( $job, $result->warnings() );
+		$job    = JobStateStore::merge_warnings( $job, $result->warnings() );
 		if ( ! $result->ok() ) {
 			$job['status'] = JobStateStore::STATUS_FAILED;
 			foreach ( $result->errors() as $error ) {
@@ -256,8 +269,8 @@ final class ImportBatchRunner {
 			return $job;
 		}
 
-		$data = $result->data();
-		$prev = isset( $job['counts']['properties'] ) && is_array( $job['counts']['properties'] )
+		$data                        = $result->data();
+		$prev                        = isset( $job['counts']['properties'] ) && is_array( $job['counts']['properties'] )
 			? $job['counts']['properties']
 			: self::empty_counts();
 		$job['counts']['properties'] = array(
@@ -267,11 +280,11 @@ final class ImportBatchRunner {
 			'failed'  => (int) $prev['failed'] + absint( $data['failed'] ?? 0 ),
 		);
 
-		$next_index = isset( $data['next'] ) ? (int) $data['next'] : ( $index + self::BATCH_PROPERTIES );
+		$next_index             = isset( $data['next'] ) ? (int) $data['next'] : ( $index + self::BATCH_PROPERTIES );
 		$job['cursor']['index'] = $next_index;
 		self::save_remapper( $job, $remapper );
 
-		$pct = $total > 0 ? 45 + (int) floor( 30 * min( 1, $next_index / $total ) ) : 75;
+		$pct             = $total > 0 ? 45 + (int) floor( 30 * min( 1, $next_index / $total ) ) : 75;
 		$job['progress'] = array(
 			'percent' => $pct,
 			'message' => sprintf( 'Imported properties %d / %d.', $next_index, $total ),
@@ -280,8 +293,8 @@ final class ImportBatchRunner {
 		if ( ! empty( $data['done'] ) || $next_index >= $total ) {
 			$failed = (int) ( $job['counts']['properties']['failed'] ?? 0 );
 			if ( $failed > 0 ) {
-				$job['status'] = JobStateStore::STATUS_FAILED;
-				$job           = JobStateStore::push_error(
+				$job['status']       = JobStateStore::STATUS_FAILED;
+				$job                 = JobStateStore::push_error(
 					$job,
 					array(
 						'code'    => 'hvnly_ie_property_remap_failed',
@@ -297,8 +310,11 @@ final class ImportBatchRunner {
 				$job['report']       = ReportBuilder::from_job( $job );
 				return $job;
 			}
-			$job['phase'] = ! empty( $options['include_media'] ) ? 'media_unpack' : 'finalize';
-			$job['cursor'] = array( 'index' => 0, 'total' => 0 );
+			$job['phase']  = ! empty( $options['include_media'] ) ? 'media_unpack' : 'finalize';
+			$job['cursor'] = array(
+				'index' => 0,
+				'total' => 0,
+			);
 		}
 		return $job;
 	}
@@ -313,16 +329,19 @@ final class ImportBatchRunner {
 		$files       = JobWorkspace::read_json( $dir, 'files.json', array() );
 		$files       = is_array( $files ) ? $files : array();
 		if ( ! is_array( $media_index ) || empty( $media_index['files'] ) ) {
-			$job['phase'] = 'finalize';
-			$job['progress'] = array( 'percent' => 90, 'message' => 'No media to unpack.' );
+			$job['phase']    = 'finalize';
+			$job['progress'] = array(
+				'percent' => 90,
+				'message' => 'No media to unpack.',
+			);
 			return $job;
 		}
-		$map     = JobWorkspace::read_json( $dir, 'media_map.json', array() );
-		$by_path = JobWorkspace::read_json( $dir, 'media_by_path.json', array() );
-		$map     = is_array( $map ) ? $map : array();
-		$by_path = is_array( $by_path ) ? $by_path : array();
-		$index   = isset( $job['cursor']['index'] ) ? (int) $job['cursor']['index'] : 0;
-		$total   = count( $media_index['files'] );
+		$map                    = JobWorkspace::read_json( $dir, 'media_map.json', array() );
+		$by_path                = JobWorkspace::read_json( $dir, 'media_by_path.json', array() );
+		$map                    = is_array( $map ) ? $map : array();
+		$by_path                = is_array( $by_path ) ? $by_path : array();
+		$index                  = isset( $job['cursor']['index'] ) ? (int) $job['cursor']['index'] : 0;
+		$total                  = count( $media_index['files'] );
 		$job['cursor']['total'] = $total;
 
 		$result = MediaUnpacker::unpack(
@@ -336,21 +355,25 @@ final class ImportBatchRunner {
 			$map,
 			$by_path
 		);
-		$job = JobStateStore::merge_warnings( $job, $result->warnings() );
-		$data = $result->data();
+		$job    = JobStateStore::merge_warnings( $job, $result->warnings() );
+		$data   = $result->data();
 		if ( is_array( $data ) ) {
 			JobWorkspace::write_json( $dir, 'media_map.json', isset( $data['map'] ) ? $data['map'] : $map );
 			JobWorkspace::write_json( $dir, 'media_by_path.json', isset( $data['by_path'] ) ? $data['by_path'] : $by_path );
-			$prev = isset( $job['counts']['media'] ) && is_array( $job['counts']['media'] ) ? $job['counts']['media'] : array( 'created' => 0, 'skipped' => 0, 'failed' => 0 );
+			$prev                   = isset( $job['counts']['media'] ) && is_array( $job['counts']['media'] ) ? $job['counts']['media'] : array(
+				'created' => 0,
+				'skipped' => 0,
+				'failed' => 0,
+			);
 			$job['counts']['media'] = array(
 				'created' => (int) $prev['created'] + absint( $data['created'] ?? 0 ),
 				'skipped' => (int) $prev['skipped'] + absint( $data['skipped'] ?? 0 ),
 				'failed'  => (int) $prev['failed'] + absint( $data['failed'] ?? 0 ),
 			);
-			$next = isset( $data['next'] ) ? (int) $data['next'] : ( $index + self::BATCH_MEDIA );
+			$next                   = isset( $data['next'] ) ? (int) $data['next'] : ( $index + self::BATCH_MEDIA );
 			$job['cursor']['index'] = $next;
-			$pct = $total > 0 ? 75 + (int) floor( 15 * min( 1, $next / $total ) ) : 90;
-			$job['progress'] = array(
+			$pct                    = $total > 0 ? 75 + (int) floor( 15 * min( 1, $next / $total ) ) : 90;
+			$job['progress']        = array(
 				'percent' => $pct,
 				'message' => sprintf( 'Unpacked media %d / %d.', $next, $total ),
 			);
@@ -373,14 +396,17 @@ final class ImportBatchRunner {
 		foreach ( $map as $key => $attachment_id ) {
 			$remapper->set_media( (string) $key, (int) $attachment_id );
 		}
-		$rewriter = new UrlRewriter( $map );
-		$result   = MediaRemapper::apply( $rewriter, self::reader( $job ), $remapper );
-		$job      = JobStateStore::merge_warnings( $job, $result->warnings() );
-		$data     = $result->data();
+		$rewriter     = new UrlRewriter( $map );
+		$result       = MediaRemapper::apply( $rewriter, self::reader( $job ), $remapper );
+		$job          = JobStateStore::merge_warnings( $job, $result->warnings() );
+		$data         = $result->data();
 		$job['media'] = is_array( $data ) ? $data : array();
 		self::save_remapper( $job, $remapper );
-		$job['phase'] = 'finalize';
-		$job['progress'] = array( 'percent' => 95, 'message' => 'Media remapped.' );
+		$job['phase']    = 'finalize';
+		$job['progress'] = array(
+			'percent' => 95,
+			'message' => 'Media remapped.',
+		);
 		return $job;
 	}
 
@@ -398,7 +424,10 @@ final class ImportBatchRunner {
 
 		$job['status']       = JobStateStore::STATUS_COMPLETED;
 		$job['phase']        = 'completed';
-		$job['progress']     = array( 'percent' => 100, 'message' => 'Import complete.' );
+		$job['progress']     = array(
+			'percent' => 100,
+			'message' => 'Import complete.',
+		);
 		$job['completed_at'] = gmdate( 'c' );
 		$job['report']       = ReportBuilder::from_job( $job );
 		return $job;
@@ -409,7 +438,7 @@ final class ImportBatchRunner {
 	 * @return EntityReader
 	 */
 	private static function reader( array $job ): EntityReader {
-		$dir = (string) ( $job['workdir'] ?? '' );
+		$dir      = (string) ( $job['workdir'] ?? '' );
 		$entities = JobWorkspace::read_json( $dir, 'entities.json', null );
 		if ( ! is_array( $entities ) && isset( $job['entities'] ) && is_array( $job['entities'] ) ) {
 			$entities = $job['entities'];

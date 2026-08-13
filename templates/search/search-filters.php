@@ -227,7 +227,7 @@ if ( function_exists( 'hvnly_get_search_button_text' ) ) {
 
             <!-- Filter Toggle Button -->
             <div class="hvnly-property-filter-toggle-wrapper">
-                <button type="button" class="hvnly-property-filter-toggle" id="hvnly-property-filter-toggle">
+                <button type="button" class="hvnly-ui-control hvnly-property-filter-toggle" id="hvnly-property-filter-toggle">
                     <span class="hvnly-filter-toggle-icon">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">

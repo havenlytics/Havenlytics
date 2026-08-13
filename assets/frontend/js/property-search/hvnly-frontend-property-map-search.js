@@ -2572,7 +2572,7 @@
                         </div>
                         <h3>${this.t('mapUnavailable')}</h3>
                         <p>${message}</p>
-                        <button class="hvnly-retry-map-btn" onclick="window.HavenlyticsPropertyMap.loadPropertyMap()">
+                        <button class="hvnly-ui-control hvnly-retry-map-btn" onclick="window.HavenlyticsPropertyMap.loadPropertyMap()">
                             <i class="fas fa-redo"></i> ${this.t('retry')}
                         </button>
                     </div>

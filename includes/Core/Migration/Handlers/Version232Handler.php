@@ -56,7 +56,6 @@ class Version232Handler implements MigrationInterface {
     public function get_version(): string {
 
         return '2.3.2';
-
     }
 
 
@@ -64,7 +63,6 @@ class Version232Handler implements MigrationInterface {
     public function get_description(): string {
 
         return 'Backfills _hvnly_field_map meta for all existing properties (batched).';
-
     }
 
 
@@ -98,18 +96,15 @@ class Version232Handler implements MigrationInterface {
         );
 
         return $count > 0;
-
     }
 
 
 
     public function up(): bool {
 
-        $page       = max( 1, (int) get_option( self::BATCH_KEY, 1 ) );
+        $page = max( 1, (int) get_option( self::BATCH_KEY, 1 ) );
 
         $batch_size = (int) ( defined( 'HVNLY_MIGRATION_BATCH_SIZE' ) ? HVNLY_MIGRATION_BATCH_SIZE : 100 );
-
-
 
         $this->log(
 
@@ -120,8 +115,6 @@ class Version232Handler implements MigrationInterface {
             '2.3.2'
 
         );
-
-
 
         $query = new \WP_Query(
 
@@ -163,8 +156,6 @@ class Version232Handler implements MigrationInterface {
 
         );
 
-
-
         if ( empty( $query->posts ) ) {
 
             delete_option( self::BATCH_KEY );
@@ -175,15 +166,11 @@ class Version232Handler implements MigrationInterface {
 
         }
 
+        $success = true;
 
-
-        $success       = true;
-
-        $written       = 0;
+        $written = 0;
 
         $skipped_empty = 0;
-
-
 
         foreach ( $query->posts as $post_id ) {
 
@@ -195,19 +182,13 @@ class Version232Handler implements MigrationInterface {
 
             }
 
-
-
             if ( get_post_meta( $post_id, '_hvnly_field_map', true ) !== '' ) {
 
                 continue;
 
             }
 
-
-
             $field_map = $this->build_field_map( $post_id );
-
-
 
             if ( empty( $field_map ) ) {
 
@@ -216,8 +197,6 @@ class Version232Handler implements MigrationInterface {
                 continue;
 
             }
-
-
 
             if ( ! $this->safe_add_post_meta( $post_id, '_hvnly_field_map', wp_json_encode( $field_map ) ) ) {
 
@@ -232,8 +211,6 @@ class Version232Handler implements MigrationInterface {
             }
 
         }
-
-
 
         $this->log(
 
@@ -259,8 +236,6 @@ class Version232Handler implements MigrationInterface {
 
         );
 
-
-
         if ( $page < (int) $query->max_num_pages ) {
 
             update_option( self::BATCH_KEY, $page + 1, false );
@@ -269,12 +244,9 @@ class Version232Handler implements MigrationInterface {
 
         }
 
-
-
         delete_option( self::BATCH_KEY );
 
         return $success;
-
     }
 
 
@@ -286,7 +258,6 @@ class Version232Handler implements MigrationInterface {
         $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_hvnly_field_map' ), array( '%s' ) );
 
         return true;
-
     }
 
 
@@ -301,13 +272,11 @@ class Version232Handler implements MigrationInterface {
 
     private function build_field_map( int $post_id ): array {
 
-        $all_meta  = get_post_meta( $post_id );
+        $all_meta = get_post_meta( $post_id );
 
         $meta_keys = array_keys( $all_meta );
 
         $field_map = array();
-
-
 
         foreach ( self::GROUP_DETECT_SUFFIX as $group_type => $suffix ) {
 
@@ -337,12 +306,6 @@ class Version232Handler implements MigrationInterface {
 
         }
 
-
-
         return $field_map;
-
     }
-
 }
-
-

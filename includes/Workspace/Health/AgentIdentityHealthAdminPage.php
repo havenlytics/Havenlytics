@@ -319,8 +319,8 @@ final class AgentIdentityHealthAdminPage {
 		if ( empty( $_GET['hvnly_notice'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			return;
 		}
-		$type = isset( $_GET['hvnly_notice_type'] ) ? sanitize_key( (string) $_GET['hvnly_notice_type'] ) : 'info'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$msg  = isset( $_GET['hvnly_notice'] ) ? sanitize_text_field( wp_unslash( (string) $_GET['hvnly_notice'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$type  = isset( $_GET['hvnly_notice_type'] ) ? sanitize_key( (string) $_GET['hvnly_notice_type'] ) : 'info'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$msg   = isset( $_GET['hvnly_notice'] ) ? sanitize_text_field( wp_unslash( (string) $_GET['hvnly_notice'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$class = 'notice-info';
 		if ( 'success' === $type ) {
 			$class = 'notice-success';

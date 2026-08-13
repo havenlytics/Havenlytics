@@ -83,44 +83,44 @@ class Hvnly_Featured_Properties_Widget extends \WP_Widget {
 		?>
 
 <div class="hvnly-property-single__featured-grid">
-    <?php
-			while ( $featured_query->have_posts() ) :
-				$featured_query->the_post();
-				$featured_id    = get_the_ID();
-				$featured_title = get_the_title();
-				$featured_permalink = get_permalink();
+		<?php
+		while ( $featured_query->have_posts() ) :
+			$featured_query->the_post();
+			$featured_id        = get_the_ID();
+			$featured_title     = get_the_title();
+			$featured_permalink = get_permalink();
 
-				// Initialize variables.
-				$featured_price = '';
-				$bedrooms       = '';
-				$bathrooms      = '';
-				$sqft           = '';
+			// Initialize variables.
+			$featured_price = '';
+			$bedrooms       = '';
+			$bathrooms      = '';
+			$sqft           = '';
 
-				if ( $show_price ) {
-					$price_value = get_post_meta( $featured_id, '_hvnly_property_price', true );
-					if ( ! empty( $price_value ) ) {
-						$featured_price = HVNLY_NAB()->Helper->format_price( $price_value );
-					}
+			if ( $show_price ) {
+				$price_value = get_post_meta( $featured_id, '_hvnly_property_price', true );
+				if ( ! empty( $price_value ) ) {
+					$featured_price = HVNLY_NAB()->Helper->format_price( $price_value );
 				}
+			}
 
-				if ( $show_bedrooms ) {
-					$bedrooms = get_post_meta( $featured_id, '_hvnly_property_bedrooms', true );
-				}
+			if ( $show_bedrooms ) {
+				$bedrooms = get_post_meta( $featured_id, '_hvnly_property_bedrooms', true );
+			}
 
-				if ( $show_bathrooms ) {
-					$bathrooms = get_post_meta( $featured_id, '_hvnly_property_bathrooms', true );
-				}
+			if ( $show_bathrooms ) {
+				$bathrooms = get_post_meta( $featured_id, '_hvnly_property_bathrooms', true );
+			}
 
-				if ( $show_sqft ) {
-					$sqft = get_post_meta( $featured_id, '_hvnly_property_sqft', true );
-				}
+			if ( $show_sqft ) {
+				$sqft = get_post_meta( $featured_id, '_hvnly_property_sqft', true );
+			}
 
-				// Get featured image.
-				$featured_image = '';
-				if ( has_post_thumbnail( $featured_id ) ) {
-					$featured_image = get_the_post_thumbnail_url( $featured_id, 'medium' );
-				}
-				?>
+			// Get featured image.
+			$featured_image = '';
+			if ( has_post_thumbnail( $featured_id ) ) {
+				$featured_image = get_the_post_thumbnail_url( $featured_id, 'medium' );
+			}
+			?>
     <div class="hvnly-property-single__featured-item">
         <a href="<?php echo esc_url( $featured_permalink ); ?>">
             <div class="hvnly-property-single__featured-image">
@@ -167,7 +167,7 @@ class Hvnly_Featured_Properties_Widget extends \WP_Widget {
     <?php endwhile; ?>
 </div>
 
-<?php
+		<?php
 		wp_reset_postdata();
 		echo wp_kses_post( $args['after_widget'] );
 	}
@@ -183,18 +183,18 @@ class Hvnly_Featured_Properties_Widget extends \WP_Widget {
 			'number'        => 4,
 			'show_price'    => '1',
 			'show_bedrooms' => '1',
-			'show_bathrooms'=> '1',
+			'show_bathrooms' => '1',
 			'show_sqft'     => '1',
 		);
 
 		$instance = WidgetInstanceHelpers::normalize_instance( wp_parse_args( (array) $instance, $defaults ) );
 
-		$title         = $instance['title'];
-		$number        = absint( $instance['number'] );
-		$show_price    = $instance['show_price'];
-		$show_bedrooms = $instance['show_bedrooms'];
-		$show_bathrooms= $instance['show_bathrooms'];
-		$show_sqft     = $instance['show_sqft'];
+		$title          = $instance['title'];
+		$number         = absint( $instance['number'] );
+		$show_price     = $instance['show_price'];
+		$show_bedrooms  = $instance['show_bedrooms'];
+		$show_bathrooms = $instance['show_bathrooms'];
+		$show_sqft      = $instance['show_sqft'];
 		?>
 
 <p>
@@ -249,7 +249,7 @@ class Hvnly_Featured_Properties_Widget extends \WP_Widget {
         <?php esc_html_e( 'Show square feet', 'havenlytics' ); ?>
     </label>
 </p>
-<?php
+		<?php
 	}
 
 	/**

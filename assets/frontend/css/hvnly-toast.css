@@ -185,7 +185,10 @@
 	transition: width 200ms ease;
 }
 
-/* Actions --------------------------------------------------------- */
+/* Actions ---------------------------------------------------------
+ * Paint + theme isolation: `.hvnly-btn` / `.hvnly-ui-control` (ui-controls).
+ * Toast CSS owns layout spacing only — do not redeclare button colors.
+ * -------------------------------------------------------------------- */
 
 .hvnly-toast__actions {
 	display: flex;
@@ -195,41 +198,13 @@
 }
 
 .hvnly-toast__action {
-	appearance: none;
-	border: 1px solid transparent;
+	/* Layout-only residuals; size comes from `.hvnly-btn--sm`. */
 	border-radius: 8px;
-	padding: 6px 12px;
-	font-family: inherit;
-	font-size: 13px;
-	font-weight: 600;
-	line-height: 1.2;
-	cursor: pointer;
-	transition: background-color 150ms ease, border-color 150ms ease,
-		color 150ms ease;
-}
-
-.hvnly-toast__action--primary {
-	background: var( --hvnly-toast-accent );
-	color: #ffffff;
-}
-
-.hvnly-toast__action--primary:hover {
-	filter: brightness( 1.08 );
-}
-
-.hvnly-toast__action--secondary {
-	background: transparent;
-	border-color: var( --hvnly-toast-border );
-	color: var( --hvnly-toast-title );
-}
-
-.hvnly-toast__action--secondary:hover {
-	background: rgba( 148, 163, 184, 0.14 );
 }
 
 .hvnly-toast__action:focus-visible,
 .hvnly-toast__dismiss:focus-visible {
-	outline: 2px solid var( --hvnly-toast-accent );
+	outline: 2px solid var( --hvnly-brand-primary, var( --hvnly-toast-accent ) );
 	outline-offset: 2px;
 }
 
@@ -237,20 +212,13 @@
 
 .hvnly-toast__dismiss {
 	flex: 0 0 auto;
-	appearance: none;
-	border: 0;
-	background: transparent;
-	color: var( --hvnly-toast-body );
 	font-size: 20px;
 	line-height: 1;
 	padding: 0 2px;
-	cursor: pointer;
 	border-radius: 6px;
-	transition: color 150ms ease;
-}
-
-.hvnly-toast__dismiss:hover {
-	color: var( --hvnly-toast-title );
+	min-width: 0;
+	width: auto;
+	height: auto;
 }
 
 /* Dark mode ------------------------------------------------------- */
@@ -348,4 +316,16 @@ body.hvnly-theme-light .hvnly-toast-region {
 	.hvnly-toast__progress > span {
 		transition: none;
 	}
+}
+
+/* Toast dismiss — icon chrome, paint sealed by .hvnly-ui-control */
+.hvnly-toast__dismiss {
+	--hvnly-ui-bg: transparent;
+	--hvnly-ui-fg: var(--hvnly-text-secondary, #64748b);
+	--hvnly-ui-border: transparent;
+	--hvnly-ui-bg-hover: transparent;
+	--hvnly-ui-fg-hover: var(--hvnly-text-primary, #0f172a);
+	--hvnly-ui-border-hover: transparent;
+	--hvnly-ui-border-width: 0;
+	--hvnly-ui-shadow: none;
 }

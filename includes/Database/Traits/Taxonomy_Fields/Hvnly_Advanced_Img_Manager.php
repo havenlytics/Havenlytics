@@ -2,77 +2,77 @@
 
 namespace HvnlyNab\Database\Traits\Taxonomy_Fields;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
 /**
  * Advanced Image Manager Trait for Taxonomy Terms
- * 
+ *
  * Provides reusable image upload functionality for custom taxonomies
  * Features: Media library integration, image preview, admin columns
- * 
+ *
  * @package Havenlytics
  * @since 2.0.0
  */
 trait Hvnly_Advanced_Img_Manager {
     /**
      * Taxonomy slug for image management
-     * 
+     *
      * @var string
      */
     protected $hvnly_taxonomy_slug;
     /**
      * Image manager configuration
-     * 
+     *
      * @var array Configuration settings for image upload functionality
      */
-    private $hvnly_term_img_config = [
+    private $hvnly_term_img_config = array(
         'meta_key' => '_hvnly_term_advanced_image_data',
         'field_name' => 'hvnly_term_advanced_image_selection',
-        'preview_size' => 'thumbnail'
-    ];
+        'preview_size' => 'thumbnail',
+    );
 
     /**
      * Initialize the advanced image manager for taxonomy
-     * 
+     *
      * @param string $taxonomy_slug The taxonomy slug to initialize image upload for
      * @return void
      */
-    public function hvnly_initialize_img_manager($taxonomy_slug) {
+    public function hvnly_initialize_img_manager( $taxonomy_slug ) {
         $this->hvnly_taxonomy_slug = $taxonomy_slug;
-        
+
         // Register all hooks for image management
         $this->hvnly_register_img_manager_hooks();
-        
+
         // Add admin column for images in taxonomy list
-        add_filter("manage_edit-{$taxonomy_slug}_columns", [$this, 'hvnly_add_img_admin_column']);
-        add_filter("manage_{$taxonomy_slug}_custom_column", [$this, 'hvnly_display_img_admin_column'], 10, 3);
+        add_filter("manage_edit-{$taxonomy_slug}_columns", array( $this, 'hvnly_add_img_admin_column' ));
+        add_filter("manage_{$taxonomy_slug}_custom_column", array( $this, 'hvnly_display_img_admin_column' ), 10, 3);
     }
 
     /**
      * Register all WordPress hooks for image management
-     * 
+     *
      * @return void
      */
     private function hvnly_register_img_manager_hooks() {
         $slug = $this->hvnly_taxonomy_slug;
-        
+
         // Form field hooks - Add image fields to taxonomy forms
-        add_action("{$slug}_add_form_fields", [$this, 'hvnly_render_img_selection_field']);
-        add_action("{$slug}_edit_form_fields", [$this, 'hvnly_render_img_editing_field'], 10, 2);
-        
+        add_action("{$slug}_add_form_fields", array( $this, 'hvnly_render_img_selection_field' ));
+        add_action("{$slug}_edit_form_fields", array( $this, 'hvnly_render_img_editing_field' ), 10, 2);
+
         // Data persistence hooks - Save image data when terms are created/updated
-        add_action("created_{$slug}", [$this, 'hvnly_persist_img_selection']);
-        add_action("edited_{$slug}", [$this, 'hvnly_update_img_selection']);
-        
+        add_action("created_{$slug}", array( $this, 'hvnly_persist_img_selection' ));
+        add_action("edited_{$slug}", array( $this, 'hvnly_update_img_selection' ));
+
         // Asset management hooks - Enqueue required scripts and styles
-        add_action('admin_enqueue_scripts', [$this, 'hvnly_enqueue_img_assets']);
+        add_action('admin_enqueue_scripts', array( $this, 'hvnly_enqueue_img_assets' ));
     }
 
     /**
      * Render image selection field for new term form
-     * 
+     *
      * @return void
      */
     public function hvnly_render_img_selection_field() {
@@ -85,10 +85,10 @@ trait Hvnly_Advanced_Img_Manager {
             
             <div class="hvnly-term-advanced-img-upload-container">
                 <input type="hidden" 
-                       id="<?php echo esc_attr($this->hvnly_term_img_config['field_name']); ?>" 
-                       name="<?php echo esc_attr($this->hvnly_term_img_config['field_name']); ?>" 
-                       value=""
-                       class="hvnly-term-img-id-input">
+                        id="<?php echo esc_attr($this->hvnly_term_img_config['field_name']); ?>" 
+                        name="<?php echo esc_attr($this->hvnly_term_img_config['field_name']); ?>" 
+                        value=""
+                        class="hvnly-term-img-id-input">
 
                 <div class="hvnly-term-img-selection-interface">
                     <div class="hvnly-term-img-preview-area" id="hvnly-term-img-preview-area">
@@ -127,22 +127,22 @@ trait Hvnly_Advanced_Img_Manager {
 
     /**
      * Render image editing field for existing term form
-     * 
+     *
      * @param object $term The term object being edited
      * @param string $taxonomy The taxonomy slug
      * @return void
      */
-    public function hvnly_render_img_editing_field($term, $taxonomy = '') {
+    public function hvnly_render_img_editing_field( $term, $taxonomy = '' ) {
         // Ensure we have the term object
-        if (!is_object($term)) {
+        if ( ! is_object($term)) {
             return;
         }
-        
+
         wp_nonce_field('hvnly_term_advanced_img_nonce', 'hvnly_term_advanced_img_nonce_field');
-        
+
         $img_data = $this->hvnly_retrieve_img_data($term->term_id);
-        $img_id = $img_data['id'] ?? '';
-        $img_url = $img_id ? wp_get_attachment_image_url($img_id, 'medium') : '';
+        $img_id   = $img_data['id'] ?? '';
+        $img_url  = $img_id ? wp_get_attachment_image_url($img_id, 'medium') : '';
         ?>
         <tr class="form-field hvnly-term-advanced-img-upload-wrap">
             <th scope="row">
@@ -153,14 +153,14 @@ trait Hvnly_Advanced_Img_Manager {
             <td>
                 <div class="hvnly-term-advanced-img-upload-container">
                     <input type="hidden" 
-                           id="<?php echo esc_attr($this->hvnly_term_img_config['field_name']); ?>" 
-                           name="<?php echo esc_attr($this->hvnly_term_img_config['field_name']); ?>" 
-                           value="<?php echo esc_attr($img_id); ?>"
-                           class="hvnly-term-img-id-input">
+                            id="<?php echo esc_attr($this->hvnly_term_img_config['field_name']); ?>" 
+                            name="<?php echo esc_attr($this->hvnly_term_img_config['field_name']); ?>" 
+                            value="<?php echo esc_attr($img_id); ?>"
+                            class="hvnly-term-img-id-input">
                     
                     <div class="hvnly-term-img-selection-interface">
                         <div class="hvnly-term-img-preview-area" id="hvnly-term-img-preview-area">
-                            <?php if ($img_url): ?>
+                            <?php if ($img_url) : ?>
                                 <div class="hvnly-term-img-selected">
                                     <img src="<?php echo esc_url($img_url); ?>" alt="<?php esc_attr_e('Upload Image', 'havenlytics'); ?>" />
                                     <div class="hvnly-term-img-overlay">
@@ -174,7 +174,7 @@ trait Hvnly_Advanced_Img_Manager {
                                         </div>
                                     </div>
                                 </div>
-                            <?php else: ?>
+                            <?php else : ?>
                                 <div class="hvnly-term-img-placeholder">
                                     <span class="dashicons dashicons-format-image"></span>
                                     <span><?php esc_html_e('No image selected', 'havenlytics'); ?></span>
@@ -212,52 +212,52 @@ trait Hvnly_Advanced_Img_Manager {
 
     /**
      * Save image selection when creating new term
-     * 
+     *
      * @param int $term_id The ID of the term being created
      * @return void
      */
-    public function hvnly_persist_img_selection($term_id) {
-        if (!$this->hvnly_verify_img_nonce()) {
+    public function hvnly_persist_img_selection( $term_id ) {
+        if ( ! $this->hvnly_verify_img_nonce()) {
             return;
         }
-        
+
         $this->hvnly_process_img_submission($term_id);
     }
 
     /**
      * Update image selection when editing term
-     * 
+     *
      * @param int $term_id The ID of the term being updated
      * @return void
      */
-    public function hvnly_update_img_selection($term_id) {
-        if (!$this->hvnly_verify_img_nonce()) {
+    public function hvnly_update_img_selection( $term_id ) {
+        if ( ! $this->hvnly_verify_img_nonce()) {
             return;
         }
-        
+
         $this->hvnly_process_img_submission($term_id);
     }
 
     /**
-     * Process image form submission data 
-     * 
+     * Process image form submission data
+     *
      * @param int $term_id The ID of the term
      * @return void
      */
-    private function hvnly_process_img_submission($term_id) {
+    private function hvnly_process_img_submission( $term_id ) {
         $field_name = $this->hvnly_term_img_config['field_name'];
-        
+
         //  Use filter_input for POST data
         $img_id_raw = filter_input(INPUT_POST, $field_name, FILTER_UNSAFE_RAW);
-        $img_id = $img_id_raw ? absint($img_id_raw) : 0;
-        
-        $img_data = [
+        $img_id     = $img_id_raw ? absint($img_id_raw) : 0;
+
+        $img_data = array(
             'id' => $img_id,
             'selected_at' => current_time('mysql'),
-            'version' => '1.0.0'
-        ];
-        
-        if (!empty($img_id)) {
+            'version' => '1.0.0',
+        );
+
+        if ( ! empty($img_id)) {
             update_term_meta($term_id, $this->hvnly_term_img_config['meta_key'], $img_data);
         } else {
             delete_term_meta($term_id, $this->hvnly_term_img_config['meta_key']);
@@ -265,75 +265,75 @@ trait Hvnly_Advanced_Img_Manager {
     }
 
     /**
-     * Verify nonce for security 
-     * 
+     * Verify nonce for security
+     *
      * @return bool True if nonce is valid, false otherwise
      */
     private function hvnly_verify_img_nonce() {
         $nonce_raw = filter_input(INPUT_POST, 'hvnly_term_advanced_img_nonce_field', FILTER_UNSAFE_RAW);
-        $nonce = $nonce_raw ? sanitize_text_field($nonce_raw) : '';
-        
+        $nonce     = $nonce_raw ? sanitize_text_field($nonce_raw) : '';
+
         return $nonce && wp_verify_nonce($nonce, 'hvnly_term_advanced_img_nonce');
     }
 
     /**
      * Retrieve image data for a term
-     * 
+     *
      * @param int $term_id The ID of the term
      * @return array Image data array
      */
-    private function hvnly_retrieve_img_data($term_id) {
+    private function hvnly_retrieve_img_data( $term_id ) {
         $img_data = get_term_meta($term_id, $this->hvnly_term_img_config['meta_key'], true);
-        return is_array($img_data) ? $img_data : [];
+        return is_array($img_data) ? $img_data : array();
     }
 
     /**
      * Enqueue required assets for image upload functionality
-     * 
+     *
      * @param string $hook The current admin page hook
      * @return void
      */
-    public function hvnly_enqueue_img_assets($hook) {
-        if (!$this->hvnly_is_taxonomy_admin_page()) {
+    public function hvnly_enqueue_img_assets( $hook ) {
+        if ( ! $this->hvnly_is_taxonomy_admin_page()) {
             return;
         }
 
         // Enqueue WordPress media uploader
         wp_enqueue_media();
         wp_enqueue_style('wp-admin');
-        
+
         // Enqueue our custom CSS
         wp_enqueue_style(
-            'hvnly-term-advanced-img-picker', 
+            'hvnly-term-advanced-img-picker',
             $this->hvnly_get_img_asset_url('css/hvnly-term-advanced-img-picker.css'),
-            [],
+            array(),
             HVNLYNAB_VERSION
         );
-        
+
         // Enqueue our custom JS
         wp_enqueue_script(
             'hvnly-term-advanced-img-picker',
             $this->hvnly_get_img_asset_url('js/hvnly-term-advanced-img-picker.js'),
-            ['jquery'],
+            array( 'jquery' ),
             HVNLYNAB_VERSION,
             true
         );
-        
+
         // Localize script with configuration
-        wp_localize_script('hvnly-term-advanced-img-picker', 'hvnlyTermAdvancedImgPicker', [
-            'i18n' => [
+        wp_localize_script('hvnly-term-advanced-img-picker', 'hvnlyTermAdvancedImgPicker', array(
+            'i18n' => array(
                 'selectImage' => __('Select Upload Image', 'havenlytics'),
                 'useThisImage' => __('Use This Image', 'havenlytics'),
                 'removeImage' => __('Remove Image', 'havenlytics'),
                 'noImageSelected' => __('No image selected', 'havenlytics'),
                 'changeImage' => __('Change Image', 'havenlytics'),
-            ]
-        ]);
+            ),
+        ));
     }
 
     /**
      * Check if current page is taxonomy admin page
-     * 
+     *
      * @return bool True if current page is taxonomy admin page
      */
     private function hvnly_is_taxonomy_admin_page() {
@@ -343,70 +343,70 @@ trait Hvnly_Advanced_Img_Manager {
 
     /**
      * Get asset URL with fallback
-     * 
+     *
      * @param string $path The asset path
      * @return string Full URL to the asset
      */
-    private function hvnly_get_img_asset_url($path) {
+    private function hvnly_get_img_asset_url( $path ) {
         return HVNLYNAB_ASSETS_URL . '/admin/img-picker/' . ltrim($path, '/');
     }
 
     /**
      * Add image column to taxonomy admin list
-     * 
+     *
      * @param array $columns Existing columns
      * @return array Modified columns with image column added
      */
-    public function hvnly_add_img_admin_column($columns) {
-        $new_columns = [];
-        
+    public function hvnly_add_img_admin_column( $columns ) {
+        $new_columns = array();
+
         foreach ($columns as $key => $value) {
-            $new_columns[$key] = $value;
+            $new_columns[ $key ] = $value;
             if ($key === 'cb') {
                 $new_columns['hvnly_term_img'] = __('Image', 'havenlytics');
             }
         }
-        
+
         return $new_columns;
     }
 
     /**
      * Display image in admin column
-     * 
+     *
      * @param string $content Column content
      * @param string $column_name Column name
      * @param int $term_id Term ID
      * @return string Modified column content
      */
-    public function hvnly_display_img_admin_column($content, $column_name, $term_id) {
+    public function hvnly_display_img_admin_column( $content, $column_name, $term_id ) {
         if ($column_name !== 'hvnly_term_img') {
             return $content;
         }
-        
+
         $img_data = $this->hvnly_retrieve_img_data($term_id);
-        $img_id = $img_data['id'] ?? '';
-        
-        if (!empty($img_id)) {
+        $img_id   = $img_data['id'] ?? '';
+
+        if ( ! empty($img_id)) {
             $img_url = wp_get_attachment_image_url($img_id, 'thumbnail');
             return $img_url ? '<img src="' . esc_url($img_url) . '" alt="' . esc_attr__('Upload Image', 'havenlytics') . '" style="max-width:50px;height:auto;border-radius:4px;" />' : '';
         }
-        
+
         return '<span class="dashicons dashicons-format-image" style="color:#ccc;font-size:32px;"></span>';
     }
 
     /**
      * Output image upload JavaScript
-     * 
+     *
      * @return void
      */
     private function hvnly_output_img_upload_js() {
         // Only output JS once per page load
         static $js_output = false;
-        
+
         if ($js_output) {
             return;
         }
-        
+
         $js_output = true;
         ?>
         <script type="text/javascript">

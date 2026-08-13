@@ -74,13 +74,13 @@ final class AnalyticsService {
 			return $cached;
 		}
 
-		$window     = $this->range_window( $range );
-		$counts     = $this->dashboard->property_counts( $user_id );
-		$views_7    = $this->dashboard->listing_views_series( $user_id, 7 );
-		$views_30   = $this->dashboard->listing_views_series( $user_id, 30 );
-		$views_rng  = $this->dashboard->listing_views_series( $user_id, (int) $window['days'] );
-		$inquiries  = $this->inquiry_metrics( $user_id, $window );
-		$created_30 = $this->listings_created_series( $user_id, 30 );
+		$window      = $this->range_window( $range );
+		$counts      = $this->dashboard->property_counts( $user_id );
+		$views_7     = $this->dashboard->listing_views_series( $user_id, 7 );
+		$views_30    = $this->dashboard->listing_views_series( $user_id, 30 );
+		$views_rng   = $this->dashboard->listing_views_series( $user_id, (int) $window['days'] );
+		$inquiries   = $this->inquiry_metrics( $user_id, $window );
+		$created_30  = $this->listings_created_series( $user_id, 30 );
 		$created_rng = $range === '30d'
 			? $created_30
 			: $this->listings_created_series( $user_id, (int) $window['days'] );
@@ -150,7 +150,7 @@ final class AnalyticsService {
 	 * @return string
 	 */
 	private function normalize_range( string $range ): string {
-		$range = sanitize_key( $range );
+		$range   = sanitize_key( $range );
 		$allowed = array( 'today', '7d', '30d', 'month', 'all' );
 		return in_array( $range, $allowed, true ) ? $range : '30d';
 	}
@@ -160,18 +160,18 @@ final class AnalyticsService {
 	 * @return array{days:int,label:string,date_from:string,date_to:string,all:bool}
 	 */
 	private function range_window( string $range ): array {
-		$now_ts = current_time( 'timestamp' );
+		$now_ts  = current_time( 'timestamp' );
 		$end_gmt = gmdate( 'Y-m-d 23:59:59', time() );
 
 		switch ( $range ) {
 			case 'today':
-				$days = 1;
-				$label = 'Today';
+				$days        = 1;
+				$label       = 'Today';
 				$start_local = wp_date( 'Y-m-d 00:00:00', $now_ts );
 				break;
 			case '7d':
-				$days = 7;
-				$label = 'Last 7 days';
+				$days        = 7;
+				$label       = 'Last 7 days';
 				$start_local = wp_date( 'Y-m-d 00:00:00', strtotime( '-6 days', $now_ts ) );
 				break;
 			case 'month':
@@ -181,21 +181,21 @@ final class AnalyticsService {
 				$start_local  = wp_date( 'Y-m-01 00:00:00', $now_ts );
 				break;
 			case 'all':
-				$days = 365;
-				$label = 'All time';
+				$days        = 365;
+				$label       = 'All time';
 				$start_local = '';
 				break;
 			case '30d':
 			default:
-				$days = 30;
-				$label = 'Last 30 days';
+				$days        = 30;
+				$label       = 'Last 30 days';
 				$start_local = wp_date( 'Y-m-d 00:00:00', strtotime( '-29 days', $now_ts ) );
 				break;
 		}
 
 		$date_from = '';
 		if ( '' !== $start_local ) {
-			$gmt = get_gmt_from_date( $start_local );
+			$gmt       = get_gmt_from_date( $start_local );
 			$date_from = is_string( $gmt ) && '' !== $gmt ? $gmt : $start_local;
 		}
 
@@ -275,7 +275,7 @@ final class AnalyticsService {
 	 * @return array<int, array{id:string,label:string,value:int,color:string}>
 	 */
 	private function status_slices( array $counts ): array {
-		$map = array(
+		$map    = array(
 			'published' => array( 'Published', 'var(--hvnly-brand-primary)' ),
 			'pending'   => array( 'Pending', 'var(--hvnly-brand-warning, #d97706)' ),
 			'draft'     => array( 'Draft', 'var(--hvnly-text-secondary)' ),
@@ -322,8 +322,8 @@ final class AnalyticsService {
 
 		$buckets = array();
 		for ( $i = $days - 1; $i >= 0; $i-- ) {
-			$ts   = strtotime( '-' . $i . ' days', current_time( 'timestamp' ) );
-			$date = wp_date( 'Y-m-d', $ts );
+			$ts               = strtotime( '-' . $i . ' days', current_time( 'timestamp' ) );
+			$date             = wp_date( 'Y-m-d', $ts );
 			$buckets[ $date ] = 0;
 		}
 
@@ -396,8 +396,8 @@ final class AnalyticsService {
 
 		update_meta_cache( 'post', $ids );
 
-		$days   = max( 1, absint( $window['days'] ?? 30 ) );
-		$dates  = array();
+		$days  = max( 1, absint( $window['days'] ?? 30 ) );
+		$dates = array();
 		for ( $i = $days - 1; $i >= 0; $i-- ) {
 			$ts      = strtotime( '-' . $i . ' days', current_time( 'timestamp' ) );
 			$dates[] = wp_date( 'Y-m-d', $ts );
@@ -426,7 +426,7 @@ final class AnalyticsService {
 				continue;
 			}
 
-			$item = PropertyFormMapper::list_item_from_post( $post );
+			$item   = PropertyFormMapper::list_item_from_post( $post );
 			$rows[] = array(
 				'id'           => (int) $item['id'],
 				'title'        => (string) $item['title'],
@@ -475,9 +475,9 @@ final class AnalyticsService {
 			if ( ! $post instanceof \WP_Post ) {
 				continue;
 			}
-			$item        = PropertyFormMapper::list_item_from_post( $post );
-			$created_ts  = WorkspaceDateTime::from_post_created( $post );
-			$items[]     = array(
+			$item       = PropertyFormMapper::list_item_from_post( $post );
+			$created_ts = WorkspaceDateTime::from_post_created( $post );
+			$items[]    = array(
 				'id'           => (int) $item['id'],
 				'title'        => (string) $item['title'],
 				'status'       => (string) $item['status'],

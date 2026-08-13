@@ -67,10 +67,10 @@ final class NotificationEventListener {
 			return;
 		}
 
-		$sender  = (string) ( $row['sender_name'] ?? '' );
+		$sender   = (string) ( $row['sender_name'] ?? '' );
 		$property = (string) ( $row['property_title'] ?? '' );
-		$title   = __( 'New inquiry', 'havenlytics' );
-		$body    = $property !== ''
+		$title    = __( 'New inquiry', 'havenlytics' );
+		$body     = $property !== ''
 			? sprintf(
 				/* translators: 1: sender name, 2: property title */
 				__( '%1$s asked about %2$s', 'havenlytics' ),

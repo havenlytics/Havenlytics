@@ -9,26 +9,25 @@
 
 namespace HvnlyNab\Admin\Data;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
 /**
  * Class DemoData
- * 
+ *
  * Provides demo property data for the import wizard
  */
-class DemoData
-{
+class DemoData {
+
     /**
      * Get demo properties data
-     * 
+     *
      * @return array Demo properties data
      */
-    public static function get_demo_properties_data(): array
-    {
-        return [
-            [
+    public static function get_demo_properties_data(): array {
+        return array(
+            array(
                 'title' => __('Modern Family Home with Pool', 'havenlytics'),
                 'content' => __('A stunning modern family home with an open floor plan, chef-inspired kitchen, hardwood floors throughout, and a landscaped backyard with a swimming pool. The perfect blend of luxury and everyday comfort.', 'havenlytics'),
                 'excerpt' => __('Beautiful 4-bedroom modern home with a pool and gourmet kitchen.', 'havenlytics'),
@@ -59,14 +58,14 @@ class DemoData
                 'floors' => '2',
                 'kitchens' => '1',
                 'tax_amount' => '9900',
-                'features' => [ 'pool', 'hardwood-floors', 'central-air', 'updated-kitchen', 'fireplace' ],
-                'property_types' => [ 'single-family' ],
-                'property_status' => [ 'for-sale' ],
-                'badges' => [ 'featured' ],
-                'tags' => [ 'house', 'family', 'pool' ],
+                'features' => array( 'pool', 'hardwood-floors', 'central-air', 'updated-kitchen', 'fireplace' ),
+                'property_types' => array( 'single-family' ),
+                'property_status' => array( 'for-sale' ),
+                'badges' => array( 'featured' ),
+                'tags' => array( 'house', 'family', 'pool' ),
                 'featured' => true,
-            ],
-            [
+            ),
+            array(
                 'title' => __('Downtown Luxury Apartment', 'havenlytics'),
                 'content' => __('A contemporary two-bedroom apartment with floor-to-ceiling windows, an open kitchen with stone worktops, in-unit laundry, and secure parking. Steps from restaurants, transit, and nightlife.', 'havenlytics'),
                 'excerpt' => __('Bright 2-bedroom apartment in the heart of downtown, available now.', 'havenlytics'),
@@ -97,13 +96,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'in-unit-laundry', 'stainless-appliances', 'parking', 'elevator', 'balcony' ],
-                'property_types' => [ 'apartment' ],
-                'property_status' => [ 'for-rent' ],
-                'badges' => [ 'new' ],
-                'tags' => [ 'apartment', 'city-centre', 'furnished' ],
-            ],
-            [
+                'features' => array( 'in-unit-laundry', 'stainless-appliances', 'parking', 'elevator', 'balcony' ),
+                'property_types' => array( 'apartment' ),
+                'property_status' => array( 'for-rent' ),
+                'badges' => array( 'new' ),
+                'tags' => array( 'apartment', 'city-centre', 'furnished' ),
+            ),
+            array(
                 'title' => __('Prime Downtown Office Suite', 'havenlytics'),
                 'content' => __('A professionally fitted office suite with open workspace, private meeting rooms, a kitchenette, and skyline views. Includes elevator access, on-site security, and covered parking. Ready for immediate occupancy.', 'havenlytics'),
                 'excerpt' => __('Turn-key office suite in a Class A downtown tower.', 'havenlytics'),
@@ -134,13 +133,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'high-ceilings', 'elevator', 'security', 'parking', 'air-conditioning' ],
-                'property_types' => [ 'office' ],
-                'property_status' => [ 'for-lease' ],
-                'badges' => [  ],
-                'tags' => [ 'office', 'commercial', 'city-centre' ],
-            ],
-            [
+                'features' => array( 'high-ceilings', 'elevator', 'security', 'parking', 'air-conditioning' ),
+                'property_types' => array( 'office' ),
+                'property_status' => array( 'for-lease' ),
+                'badges' => array(),
+                'tags' => array( 'office', 'commercial', 'city-centre' ),
+            ),
+            array(
                 'title' => __('Beachfront Holiday Villa', 'havenlytics'),
                 'content' => __('A sun-filled villa directly on the sand with a wraparound deck, ocean views from every room, and a fully equipped kitchen. Offered as a furnished seasonal holiday let, weekly rates.', 'havenlytics'),
                 'excerpt' => __('Fully furnished beachfront villa for weekly holiday stays.', 'havenlytics'),
@@ -171,13 +170,13 @@ class DemoData
                 'floors' => '2',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'furnished', 'waterfront', 'garden', 'parking', 'air-conditioning' ],
-                'property_types' => [ 'villa' ],
-                'property_status' => [ 'seasonal' ],
-                'badges' => [ 'featured' ],
-                'tags' => [ 'holiday', 'waterfront', 'sea-view' ],
-            ],
-            [
+                'features' => array( 'furnished', 'waterfront', 'garden', 'parking', 'air-conditioning' ),
+                'property_types' => array( 'villa' ),
+                'property_status' => array( 'seasonal' ),
+                'badges' => array( 'featured' ),
+                'tags' => array( 'holiday', 'waterfront', 'sea-view' ),
+            ),
+            array(
                 'title' => __('Contemporary City Townhouse', 'havenlytics'),
                 'content' => __('A sleek three-storey townhouse featuring an open living level, integrated appliances, a two-car garage, and a private rooftop terrace with city views. Walkable to parks, cafes, and transit.', 'havenlytics'),
                 'excerpt' => __('Three-storey townhouse with a private rooftop terrace.', 'havenlytics'),
@@ -208,13 +207,13 @@ class DemoData
                 'floors' => '3',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'rooftop-terrace', 'hardwood-floors', 'garage', 'central-air' ],
-                'property_types' => [ 'townhouse' ],
-                'property_status' => [ 'for-sale' ],
-                'badges' => [  ],
-                'tags' => [ 'townhouse', 'city-centre', 'garage' ],
-            ],
-            [
+                'features' => array( 'rooftop-terrace', 'hardwood-floors', 'garage', 'central-air' ),
+                'property_types' => array( 'townhouse' ),
+                'property_status' => array( 'for-sale' ),
+                'badges' => array(),
+                'tags' => array( 'townhouse', 'city-centre', 'garage' ),
+            ),
+            array(
                 'title' => __('Cozy Studio Loft', 'havenlytics'),
                 'content' => __('A bright, efficient studio loft with exposed brick, a compact modern kitchen, and large industrial windows. Furnished and move-in ready, with on-site laundry and bike storage.', 'havenlytics'),
                 'excerpt' => __('Efficient furnished studio in a walkable neighbourhood.', 'havenlytics'),
@@ -245,13 +244,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'furnished', 'in-unit-laundry', 'pet-friendly' ],
-                'property_types' => [ 'studio' ],
-                'property_status' => [ 'for-rent' ],
-                'badges' => [  ],
-                'tags' => [ 'studio', 'furnished', 'pet-friendly' ],
-            ],
-            [
+                'features' => array( 'furnished', 'in-unit-laundry', 'pet-friendly' ),
+                'property_types' => array( 'studio' ),
+                'property_status' => array( 'for-rent' ),
+                'badges' => array(),
+                'tags' => array( 'studio', 'furnished', 'pet-friendly' ),
+            ),
+            array(
                 'title' => __('Retail Storefront in the Arts District', 'havenlytics'),
                 'content' => __('A ground-floor retail storefront with full-height glazing, an open sales floor, a rear stockroom, and signage rights. Located on a busy Arts District corridor with strong pedestrian and cycle traffic.', 'havenlytics'),
                 'excerpt' => __('High-visibility retail unit with heavy foot traffic.', 'havenlytics'),
@@ -282,13 +281,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '0',
                 'tax_amount' => '0',
-                'features' => [ 'high-ceilings', 'air-conditioning', 'security' ],
-                'property_types' => [ 'retail' ],
-                'property_status' => [ 'for-lease' ],
-                'badges' => [ 'hot' ],
-                'tags' => [ 'retail', 'commercial', 'city-centre' ],
-            ],
-            [
+                'features' => array( 'high-ceilings', 'air-conditioning', 'security' ),
+                'property_types' => array( 'retail' ),
+                'property_status' => array( 'for-lease' ),
+                'badges' => array( 'hot' ),
+                'tags' => array( 'retail', 'commercial', 'city-centre' ),
+            ),
+            array(
                 'title' => __('Lakeside Log Cabin', 'havenlytics'),
                 'content' => __('A warm timber cabin steps from the water with a stone fireplace, a full kitchen, and a deck overlooking the lake. Offered furnished for weekly and seasonal holiday stays.', 'havenlytics'),
                 'excerpt' => __('Furnished lakeside cabin for seasonal getaways.', 'havenlytics'),
@@ -319,13 +318,13 @@ class DemoData
                 'floors' => '2',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'furnished', 'fireplace', 'waterfront', 'garden' ],
-                'property_types' => [ 'cabin' ],
-                'property_status' => [ 'seasonal' ],
-                'badges' => [  ],
-                'tags' => [ 'holiday', 'waterfront', 'cabin' ],
-            ],
-            [
+                'features' => array( 'furnished', 'fireplace', 'waterfront', 'garden' ),
+                'property_types' => array( 'cabin' ),
+                'property_status' => array( 'seasonal' ),
+                'badges' => array(),
+                'tags' => array( 'holiday', 'waterfront', 'cabin' ),
+            ),
+            array(
                 'title' => __('Investment Duplex', 'havenlytics'),
                 'content' => __('A well-maintained side-by-side duplex with two self-contained units, separate utilities, and off-street parking. An ideal owner-occupier or buy-to-let investment in a growing neighbourhood.', 'havenlytics'),
                 'excerpt' => __('Two-unit duplex with strong rental income potential.', 'havenlytics'),
@@ -356,13 +355,13 @@ class DemoData
                 'floors' => '2',
                 'kitchens' => '2',
                 'tax_amount' => '0',
-                'features' => [ 'fenced-yard', 'parking', 'updated-kitchen' ],
-                'property_types' => [ 'duplex' ],
-                'property_status' => [ 'for-sale' ],
-                'badges' => [  ],
-                'tags' => [ 'duplex', 'investment', 'multi-family' ],
-            ],
-            [
+                'features' => array( 'fenced-yard', 'parking', 'updated-kitchen' ),
+                'property_types' => array( 'duplex' ),
+                'property_status' => array( 'for-sale' ),
+                'badges' => array(),
+                'tags' => array( 'duplex', 'investment', 'multi-family' ),
+            ),
+            array(
                 'title' => __('Riverside One-Bedroom Flat', 'havenlytics'),
                 'content' => __('A stylish one-bedroom flat with an open-plan living area, a private balcony overlooking the river, and a fitted kitchen with stainless appliances. Includes gym access and secure entry.', 'havenlytics'),
                 'excerpt' => __('Modern one-bed flat with river views and a balcony.', 'havenlytics'),
@@ -393,13 +392,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'balcony', 'gym', 'stainless-appliances', 'pet-friendly' ],
-                'property_types' => [ 'flat' ],
-                'property_status' => [ 'for-rent' ],
-                'badges' => [ 'new' ],
-                'tags' => [ 'apartment', 'city-centre', 'pet-friendly' ],
-            ],
-            [
+                'features' => array( 'balcony', 'gym', 'stainless-appliances', 'pet-friendly' ),
+                'property_types' => array( 'flat' ),
+                'property_status' => array( 'for-rent' ),
+                'badges' => array( 'new' ),
+                'tags' => array( 'apartment', 'city-centre', 'pet-friendly' ),
+            ),
+            array(
                 'title' => __('Industrial Warehouse Unit', 'havenlytics'),
                 'content' => __('A versatile industrial warehouse offering clear-span storage, a drive-in loading dock, three-phase power, and a fitted front office. Excellent access to major freight routes and the port.', 'havenlytics'),
                 'excerpt' => __('Clear-span warehouse with loading dock and office.', 'havenlytics'),
@@ -430,13 +429,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '0',
                 'tax_amount' => '0',
-                'features' => [ 'loading-dock', 'high-ceilings', 'parking', 'security' ],
-                'property_types' => [ 'warehouse' ],
-                'property_status' => [ 'for-sale' ],
-                'badges' => [ 'exclusive' ],
-                'tags' => [ 'warehouse', 'industrial', 'commercial' ],
-            ],
-            [
+                'features' => array( 'loading-dock', 'high-ceilings', 'parking', 'security' ),
+                'property_types' => array( 'warehouse' ),
+                'property_status' => array( 'for-sale' ),
+                'badges' => array( 'exclusive' ),
+                'tags' => array( 'warehouse', 'industrial', 'commercial' ),
+            ),
+            array(
                 'title' => __('Mountain Chalet Retreat', 'havenlytics'),
                 'content' => __('A spacious alpine chalet with vaulted ceilings, a double-height stone fireplace, a hot tub, and ski-in access. Fully furnished and offered for premium weekly and seasonal holiday stays.', 'havenlytics'),
                 'excerpt' => __('Luxury ski chalet available for seasonal lets.', 'havenlytics'),
@@ -467,13 +466,13 @@ class DemoData
                 'floors' => '3',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'furnished', 'fireplace', 'garage', 'mountain-views' ],
-                'property_types' => [ 'villa' ],
-                'property_status' => [ 'seasonal' ],
-                'badges' => [ 'luxury' ],
-                'tags' => [ 'holiday', 'luxury', 'mountain' ],
-            ],
-            [
+                'features' => array( 'furnished', 'fireplace', 'garage', 'mountain-views' ),
+                'property_types' => array( 'villa' ),
+                'property_status' => array( 'seasonal' ),
+                'badges' => array( 'luxury' ),
+                'tags' => array( 'holiday', 'luxury', 'mountain' ),
+            ),
+            array(
                 'title' => __('Classic Colonial Family Home', 'havenlytics'),
                 'content' => __('A timeless colonial with formal living and dining rooms, a renovated kitchen, four generous bedrooms, and a private garden. Recently sold — a showcase of the kind of listing your site can feature.', 'havenlytics'),
                 'excerpt' => __('Elegant colonial home on a quiet tree-lined street.', 'havenlytics'),
@@ -504,13 +503,13 @@ class DemoData
                 'floors' => '2',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'fireplace', 'hardwood-floors', 'fenced-yard', 'updated-kitchen' ],
-                'property_types' => [ 'single-family' ],
-                'property_status' => [ 'sold' ],
-                'badges' => [  ],
-                'tags' => [ 'house', 'family', 'garden' ],
-            ],
-            [
+                'features' => array( 'fireplace', 'hardwood-floors', 'fenced-yard', 'updated-kitchen' ),
+                'property_types' => array( 'single-family' ),
+                'property_status' => array( 'sold' ),
+                'badges' => array(),
+                'tags' => array( 'house', 'family', 'garden' ),
+            ),
+            array(
                 'title' => __('City-View High-Rise Condo', 'havenlytics'),
                 'content' => __('A luxury high-rise condo with wall-to-wall glass, a designer kitchen, and a wraparound balcony overlooking the bay. Building amenities include a pool, gym, and 24-hour concierge.', 'havenlytics'),
                 'excerpt' => __('Furnished high-rise condo with panoramic bay views.', 'havenlytics'),
@@ -541,13 +540,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'pool-access', 'gym', 'balcony', 'elevator', 'air-conditioning' ],
-                'property_types' => [ 'condo' ],
-                'property_status' => [ 'for-rent' ],
-                'badges' => [  ],
-                'tags' => [ 'apartment', 'luxury', 'sea-view' ],
-            ],
-            [
+                'features' => array( 'pool-access', 'gym', 'balcony', 'elevator', 'air-conditioning' ),
+                'property_types' => array( 'condo' ),
+                'property_status' => array( 'for-rent' ),
+                'badges' => array(),
+                'tags' => array( 'apartment', 'luxury', 'sea-view' ),
+            ),
+            array(
                 'title' => __('Mixed-Use Development Building', 'havenlytics'),
                 'content' => __('A turnkey mixed-use building with two ground-floor retail units and four residential apartments above. Fully tenanted with strong yields, separate metering, and recent roof and facade upgrades.', 'havenlytics'),
                 'excerpt' => __('Retail-below, apartments-above mixed-use investment.', 'havenlytics'),
@@ -578,13 +577,13 @@ class DemoData
                 'floors' => '3',
                 'kitchens' => '2',
                 'tax_amount' => '0',
-                'features' => [ 'elevator', 'security', 'parking', 'air-conditioning' ],
-                'property_types' => [ 'mixed-use' ],
-                'property_status' => [ 'for-sale' ],
-                'badges' => [ 'featured' ],
-                'tags' => [ 'commercial', 'investment', 'retail' ],
-            ],
-            [
+                'features' => array( 'elevator', 'security', 'parking', 'air-conditioning' ),
+                'property_types' => array( 'mixed-use' ),
+                'property_status' => array( 'for-sale' ),
+                'badges' => array( 'featured' ),
+                'tags' => array( 'commercial', 'investment', 'retail' ),
+            ),
+            array(
                 'title' => __('Charming Garden Cottage', 'havenlytics'),
                 'content' => __('A picture-perfect cottage in the historic district with heart-pine floors, a cosy sitting room, and a walled garden. Offered furnished for short holiday lets, weekly rates.', 'havenlytics'),
                 'excerpt' => __('Furnished historic cottage with a private garden.', 'havenlytics'),
@@ -615,13 +614,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'furnished', 'garden', 'fireplace' ],
-                'property_types' => [ 'cottage' ],
-                'property_status' => [ 'for-rent' ],
-                'badges' => [  ],
-                'tags' => [ 'holiday', 'garden', 'cottage' ],
-            ],
-            [
+                'features' => array( 'furnished', 'garden', 'fireplace' ),
+                'property_types' => array( 'cottage' ),
+                'property_status' => array( 'for-rent' ),
+                'badges' => array(),
+                'tags' => array( 'holiday', 'garden', 'cottage' ),
+            ),
+            array(
                 'title' => __('Golf Course Villa', 'havenlytics'),
                 'content' => __('A resort-style villa with a great room, a chef kitchen, a primary suite with spa bath, and a covered patio with a pool overlooking the golf course. Currently under offer.', 'havenlytics'),
                 'excerpt' => __('Single-storey villa overlooking the 9th fairway.', 'havenlytics'),
@@ -652,13 +651,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'pool', 'central-air', 'garage', 'patio' ],
-                'property_types' => [ 'villa' ],
-                'property_status' => [ 'under-offer' ],
-                'badges' => [  ],
-                'tags' => [ 'villa', 'luxury', 'pool' ],
-            ],
-            [
+                'features' => array( 'pool', 'central-air', 'garage', 'patio' ),
+                'property_types' => array( 'villa' ),
+                'property_status' => array( 'under-offer' ),
+                'badges' => array(),
+                'tags' => array( 'villa', 'luxury', 'pool' ),
+            ),
+            array(
                 'title' => __('Modern Two-Bed Townhouse', 'havenlytics'),
                 'content' => __('A low-maintenance townhouse with an open living-dining area, two double bedrooms, a private patio, and an attached garage. Available unfurnished on a long-term let.', 'havenlytics'),
                 'excerpt' => __('Two-bed townhouse with an attached garage, to let.', 'havenlytics'),
@@ -689,13 +688,13 @@ class DemoData
                 'floors' => '2',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'garage', 'patio', 'central-air', 'pet-friendly' ],
-                'property_types' => [ 'townhouse' ],
-                'property_status' => [ 'for-rent' ],
-                'badges' => [  ],
-                'tags' => [ 'townhouse', 'family', 'garage' ],
-            ],
-            [
+                'features' => array( 'garage', 'patio', 'central-air', 'pet-friendly' ),
+                'property_types' => array( 'townhouse' ),
+                'property_status' => array( 'for-rent' ),
+                'badges' => array(),
+                'tags' => array( 'townhouse', 'family', 'garage' ),
+            ),
+            array(
                 'title' => __('Development Land Parcel', 'havenlytics'),
                 'content' => __('A level 2.5-acre development parcel with road frontage, utilities to the boundary, and flexible mixed-use zoning. Ideal for residential, retail, or a combined scheme. Plans and surveys available.', 'havenlytics'),
                 'excerpt' => __('Shovel-ready 2.5-acre parcel zoned for mixed use.', 'havenlytics'),
@@ -726,13 +725,13 @@ class DemoData
                 'floors' => '0',
                 'kitchens' => '0',
                 'tax_amount' => '0',
-                'features' => [ 'parking' ],
-                'property_types' => [ 'land' ],
-                'property_status' => [ 'for-sale' ],
-                'badges' => [  ],
-                'tags' => [ 'land', 'commercial', 'investment' ],
-            ],
-            [
+                'features' => array( 'parking' ),
+                'property_types' => array( 'land' ),
+                'property_status' => array( 'for-sale' ),
+                'badges' => array(),
+                'tags' => array( 'land', 'commercial', 'investment' ),
+            ),
+            array(
                 'title' => __('Wine Country Estate', 'havenlytics'),
                 'content' => __('A gated estate set among the vines with a pool, a chef kitchen, five en-suite bedrooms, and expansive terraces for entertaining. Offered furnished for premium weekly and seasonal holiday stays.', 'havenlytics'),
                 'excerpt' => __('Furnished vineyard estate for luxury seasonal lets.', 'havenlytics'),
@@ -763,13 +762,13 @@ class DemoData
                 'floors' => '2',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'furnished', 'pool', 'garden', 'fireplace', 'air-conditioning' ],
-                'property_types' => [ 'villa' ],
-                'property_status' => [ 'seasonal' ],
-                'badges' => [ 'luxury' ],
-                'tags' => [ 'holiday', 'luxury', 'pool' ],
-            ],
-            [
+                'features' => array( 'furnished', 'pool', 'garden', 'fireplace', 'air-conditioning' ),
+                'property_types' => array( 'villa' ),
+                'property_status' => array( 'seasonal' ),
+                'badges' => array( 'luxury' ),
+                'tags' => array( 'holiday', 'luxury', 'pool' ),
+            ),
+            array(
                 'title' => __('Mid-Century Modern Gem', 'havenlytics'),
                 'content' => __('An architect-designed mid-century home with clerestory windows, terrazzo floors, a breeze-block screen, and a private pool framed by mountain views. Recently reduced for a quick sale.', 'havenlytics'),
                 'excerpt' => __('Iconic mid-century home with walls of glass.', 'havenlytics'),
@@ -800,13 +799,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'pool', 'hardwood-floors', 'central-air', 'fireplace' ],
-                'property_types' => [ 'single-family' ],
-                'property_status' => [ 'for-sale' ],
-                'badges' => [ 'reduced' ],
-                'tags' => [ 'house', 'pool', 'luxury' ],
-            ],
-            [
+                'features' => array( 'pool', 'hardwood-floors', 'central-air', 'fireplace' ),
+                'property_types' => array( 'single-family' ),
+                'property_status' => array( 'for-sale' ),
+                'badges' => array( 'reduced' ),
+                'tags' => array( 'house', 'pool', 'luxury' ),
+            ),
+            array(
                 'title' => __('Penthouse Apartment Rental', 'havenlytics'),
                 'content' => __('A top-floor penthouse with three bedrooms, a chef kitchen, and a wraparound roof terrace with skyline views. Offered furnished with concierge, gym, and secure parking. Available immediately.', 'havenlytics'),
                 'excerpt' => __('Furnished penthouse with a private roof terrace.', 'havenlytics'),
@@ -837,13 +836,13 @@ class DemoData
                 'floors' => '1',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'rooftop-terrace', 'gym', 'parking', 'elevator', 'air-conditioning' ],
-                'property_types' => [ 'penthouse' ],
-                'property_status' => [ 'for-rent' ],
-                'badges' => [ 'exclusive' ],
-                'tags' => [ 'apartment', 'luxury', 'city-centre' ],
-            ],
-            [
+                'features' => array( 'rooftop-terrace', 'gym', 'parking', 'elevator', 'air-conditioning' ),
+                'property_types' => array( 'penthouse' ),
+                'property_status' => array( 'for-rent' ),
+                'badges' => array( 'exclusive' ),
+                'tags' => array( 'apartment', 'luxury', 'city-centre' ),
+            ),
+            array(
                 'title' => __('Corner Retail and Office Building', 'havenlytics'),
                 'content' => __('A prominent corner building offering ground-floor retail with wrap-around glazing and a fitted first-floor office suite. Excellent signage, on-street parking, and a dense daytime population.', 'havenlytics'),
                 'excerpt' => __('Corner unit with retail below and offices above.', 'havenlytics'),
@@ -874,13 +873,13 @@ class DemoData
                 'floors' => '2',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'high-ceilings', 'elevator', 'air-conditioning', 'parking' ],
-                'property_types' => [ 'retail', 'office' ],
-                'property_status' => [ 'for-lease' ],
-                'badges' => [  ],
-                'tags' => [ 'retail', 'office', 'commercial' ],
-            ],
-            [
+                'features' => array( 'high-ceilings', 'elevator', 'air-conditioning', 'parking' ),
+                'property_types' => array( 'retail', 'office' ),
+                'property_status' => array( 'for-lease' ),
+                'badges' => array(),
+                'tags' => array( 'retail', 'office', 'commercial' ),
+            ),
+            array(
                 'title' => __('Coastal Beach House', 'havenlytics'),
                 'content' => __('A breezy coastal house with an open living space, a sun deck, and an outdoor shower, moments from the beach. Offered furnished for weekly holiday lets throughout the season.', 'havenlytics'),
                 'excerpt' => __('Furnished beach house a short stroll from the sand.', 'havenlytics'),
@@ -911,13 +910,13 @@ class DemoData
                 'floors' => '2',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'furnished', 'garden', 'patio', 'parking' ],
-                'property_types' => [ 'house' ],
-                'property_status' => [ 'seasonal' ],
-                'badges' => [ 'featured' ],
-                'tags' => [ 'holiday', 'waterfront', 'sea-view' ],
-            ],
-            [
+                'features' => array( 'furnished', 'garden', 'patio', 'parking' ),
+                'property_types' => array( 'house' ),
+                'property_status' => array( 'seasonal' ),
+                'badges' => array( 'featured' ),
+                'tags' => array( 'holiday', 'waterfront', 'sea-view' ),
+            ),
+            array(
                 'title' => __('Restored Victorian Home', 'havenlytics'),
                 'content' => __('A three-storey Victorian blending period character with modern systems: ornate mouldings, bay windows, a chef kitchen, and a landscaped garden. Sale recently agreed and exchanged.', 'havenlytics'),
                 'excerpt' => __('Lovingly restored Victorian with period detail.', 'havenlytics'),
@@ -948,23 +947,22 @@ class DemoData
                 'floors' => '3',
                 'kitchens' => '1',
                 'tax_amount' => '0',
-                'features' => [ 'fireplace', 'hardwood-floors', 'garden', 'updated-kitchen' ],
-                'property_types' => [ 'single-family' ],
-                'property_status' => [ 'exchanged' ],
-                'badges' => [  ],
-                'tags' => [ 'house', 'family', 'garden' ],
-            ],
-        ];
+                'features' => array( 'fireplace', 'hardwood-floors', 'garden', 'updated-kitchen' ),
+                'property_types' => array( 'single-family' ),
+                'property_status' => array( 'exchanged' ),
+                'badges' => array(),
+                'tags' => array( 'house', 'family', 'garden' ),
+            ),
+        );
     }
 
     /**
      * Get property images for featured and gallery
-     * 
+     *
      * @return array Property image URLs
      */
-    public static function get_property_images(): array
-    {
-        return [
+    public static function get_property_images(): array {
+        return array(
             'https://demo.havenlytics.com/wp-content/uploads/2026/03/1.jpg',
             'https://demo.havenlytics.com/wp-content/uploads/2026/03/2.jpg',
             'https://demo.havenlytics.com/wp-content/uploads/2026/03/3.jpg',
@@ -985,72 +983,70 @@ class DemoData
             'https://demo.havenlytics.com/wp-content/uploads/2026/03/18.jpg',
             'https://demo.havenlytics.com/wp-content/uploads/2026/03/19.jpg',
             'https://demo.havenlytics.com/wp-content/uploads/2026/03/20.jpg',
-        ];
+        );
     }
 
     /**
      * Get department options for import wizard
-     * 
+     *
      * @return array Department options
      */
-    public static function get_department_options(): array
-    {
-        return [
+    public static function get_department_options(): array {
+        return array(
             'sale' => __('Sale', 'havenlytics'),
             'rent' => __('Rent', 'havenlytics'),
             'commercial' => __('Commercial', 'havenlytics'),
             'let' => __('Let', 'havenlytics'),
-        ];
+        );
     }
 
     /**
      * Get property types by department
-     * 
+     *
      * @return array Property types by department
      */
-    public static function get_property_types_by_department(): array
-    {
-        return [
-            'sale' => [
-                'types' => ['single-family', 'condo', 'townhouse', 'ranch', 'multi-family'],
-                'property_types' => ['cottage', 'duplex', 'flat', 'land', 'garage', 'mews', 'triplex'],
-                'status' => ['for-sale', 'pending', 'sold'],
-                'property_status' => ['for-sale', 'under-offer', 'exchanged'],
-                'badges' => ['featured', 'new', 'popular'],
-                'tags' => ['house', 'apartment', 'bungalow', 'commercial', 'cottage', 'duplex', 'flat', 'land', 'office', 'retail', 'studio', 'townhouse', 'warehouse'],
-                'locations' => ['new-york', 'los-angeles', 'chicago', 'miami', 'san-francisco', 'boston', 'seattle', 'dallas', 'austin'],
-                'features' => ['pool', 'hardwood-floors', 'central-air', 'updated-kitchen', 'fireplace', 'garage', 'basement', 'fenced-yard', 'deck', 'patio']
-            ],
-            'rent' => [
-                'types' => ['apartment', 'condo', 'townhouse', 'duplex'],
-                'property_types' => ['flat', 'duplex', 'triplex'],
-                'status' => ['for-rent'],
-                'property_status' => ['for-rent'],
-                'badges' => ['new', 'popular'],
-                'tags' => ['apartment', 'flat', 'studio', 'townhouse'],
-                'locations' => ['new-york', 'los-angeles', 'chicago', 'miami', 'san-francisco', 'boston', 'seattle', 'austin'],
-                'features' => ['pool-access', 'in-unit-laundry', 'stainless-appliances', 'pet-friendly', 'parking', 'gym', 'elevator', 'balcony']
-            ],
-            'commercial' => [
-                'types' => ['office', 'retail', 'industrial', 'warehouse', 'mixed-use'],
-                'property_types' => ['office', 'retail', 'industrial', 'warehouse'],
-                'status' => ['for-sale', 'for-lease'],
-                'property_status' => ['for-sale', 'for-lease'],
-                'badges' => ['featured', 'new'],
-                'tags' => ['commercial', 'office', 'retail', 'warehouse', 'industrial'],
-                'locations' => ['new-york', 'los-angeles', 'chicago', 'miami', 'san-francisco', 'boston', 'seattle', 'dallas', 'houston'],
-                'features' => ['high-ceilings', 'loading-dock', 'elevator', 'security', 'parking']
-            ],
-            'let' => [
-                'types' => ['apartment', 'house', 'townhouse', 'cottage'],
-                'property_types' => ['cottage', 'duplex', 'flat', 'house'],
-                'status' => ['for-rent', 'seasonal'],
-                'property_status' => ['for-rent'],
-                'badges' => ['new', 'popular'],
-                'tags' => ['house', 'cottage', 'bungalow', 'vacation-rental'],
-                'locations' => ['coastal', 'lakefront', 'mountain', 'rural', 'suburban'],
-                'features' => ['furnished', 'utilities-included', 'pet-friendly', 'pool', 'garden', 'parking', 'waterfront', 'mountain-views']
-            ],
-        ];
+    public static function get_property_types_by_department(): array {
+        return array(
+            'sale' => array(
+                'types' => array( 'single-family', 'condo', 'townhouse', 'ranch', 'multi-family' ),
+                'property_types' => array( 'cottage', 'duplex', 'flat', 'land', 'garage', 'mews', 'triplex' ),
+                'status' => array( 'for-sale', 'pending', 'sold' ),
+                'property_status' => array( 'for-sale', 'under-offer', 'exchanged' ),
+                'badges' => array( 'featured', 'new', 'popular' ),
+                'tags' => array( 'house', 'apartment', 'bungalow', 'commercial', 'cottage', 'duplex', 'flat', 'land', 'office', 'retail', 'studio', 'townhouse', 'warehouse' ),
+                'locations' => array( 'new-york', 'los-angeles', 'chicago', 'miami', 'san-francisco', 'boston', 'seattle', 'dallas', 'austin' ),
+                'features' => array( 'pool', 'hardwood-floors', 'central-air', 'updated-kitchen', 'fireplace', 'garage', 'basement', 'fenced-yard', 'deck', 'patio' ),
+            ),
+            'rent' => array(
+                'types' => array( 'apartment', 'condo', 'townhouse', 'duplex' ),
+                'property_types' => array( 'flat', 'duplex', 'triplex' ),
+                'status' => array( 'for-rent' ),
+                'property_status' => array( 'for-rent' ),
+                'badges' => array( 'new', 'popular' ),
+                'tags' => array( 'apartment', 'flat', 'studio', 'townhouse' ),
+                'locations' => array( 'new-york', 'los-angeles', 'chicago', 'miami', 'san-francisco', 'boston', 'seattle', 'austin' ),
+                'features' => array( 'pool-access', 'in-unit-laundry', 'stainless-appliances', 'pet-friendly', 'parking', 'gym', 'elevator', 'balcony' ),
+            ),
+            'commercial' => array(
+                'types' => array( 'office', 'retail', 'industrial', 'warehouse', 'mixed-use' ),
+                'property_types' => array( 'office', 'retail', 'industrial', 'warehouse' ),
+                'status' => array( 'for-sale', 'for-lease' ),
+                'property_status' => array( 'for-sale', 'for-lease' ),
+                'badges' => array( 'featured', 'new' ),
+                'tags' => array( 'commercial', 'office', 'retail', 'warehouse', 'industrial' ),
+                'locations' => array( 'new-york', 'los-angeles', 'chicago', 'miami', 'san-francisco', 'boston', 'seattle', 'dallas', 'houston' ),
+                'features' => array( 'high-ceilings', 'loading-dock', 'elevator', 'security', 'parking' ),
+            ),
+            'let' => array(
+                'types' => array( 'apartment', 'house', 'townhouse', 'cottage' ),
+                'property_types' => array( 'cottage', 'duplex', 'flat', 'house' ),
+                'status' => array( 'for-rent', 'seasonal' ),
+                'property_status' => array( 'for-rent' ),
+                'badges' => array( 'new', 'popular' ),
+                'tags' => array( 'house', 'cottage', 'bungalow', 'vacation-rental' ),
+                'locations' => array( 'coastal', 'lakefront', 'mountain', 'rural', 'suburban' ),
+                'features' => array( 'furnished', 'utilities-included', 'pet-friendly', 'pool', 'garden', 'parking', 'waterfront', 'mountain-views' ),
+            ),
+        );
     }
 }

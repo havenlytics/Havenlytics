@@ -53,7 +53,7 @@ final class PropertyFormMapper {
 			'propertyType'       => '',
 			'propertyDepartment' => '',
 			'propertyStatus'     => array(),
-			'propertyFeaturesTax'=> array(),
+			'propertyFeaturesTax' => array(),
 			'propertyLocations'  => array(),
 			'propertyTags'       => array(),
 			'propertyBadges'     => array(),
@@ -69,21 +69,21 @@ final class PropertyFormMapper {
 	 * @return array<string, mixed>
 	 */
 	public static function values_from_post( \WP_Post $post ): array {
-		$values               = self::empty_values();
-		$values['title']      = (string) $post->post_title;
-		$values['excerpt']    = (string) $post->post_excerpt;
+		$values                = self::empty_values();
+		$values['title']       = (string) $post->post_title;
+		$values['excerpt']     = (string) $post->post_excerpt;
 		$values['description'] = (string) $post->post_content;
-		$values['status']     = self::resolve_status_label( $post );
+		$values['status']      = self::resolve_status_label( $post );
 
-		$values['propertyType'] = self::get_term_slugs( $post->ID, self::TAX_TYPES, false );
-		$values['propertyDepartment'] = self::get_term_slugs( $post->ID, self::TAX_DEPTS, false );
-		$values['propertyStatus'] = self::get_term_slugs( $post->ID, 'hvnly_prop_status', true );
+		$values['propertyType']        = self::get_term_slugs( $post->ID, self::TAX_TYPES, false );
+		$values['propertyDepartment']  = self::get_term_slugs( $post->ID, self::TAX_DEPTS, false );
+		$values['propertyStatus']      = self::get_term_slugs( $post->ID, 'hvnly_prop_status', true );
 		$values['propertyFeaturesTax'] = self::get_term_slugs( $post->ID, 'hvnly_prop_features', true );
-		$values['propertyLocations'] = self::get_term_slugs( $post->ID, 'hvnly_prop_locations', true );
-		$values['propertyTags'] = self::get_term_slugs( $post->ID, 'hvnly_prop_tags', true );
-		$values['propertyBadges'] = self::get_term_slugs( $post->ID, 'hvnly_prop_badges', true );
-		$values['currency'] = self::current_currency_code();
-		$values['featuredImageId'] = (int) get_post_thumbnail_id( $post->ID );
+		$values['propertyLocations']   = self::get_term_slugs( $post->ID, 'hvnly_prop_locations', true );
+		$values['propertyTags']        = self::get_term_slugs( $post->ID, 'hvnly_prop_tags', true );
+		$values['propertyBadges']      = self::get_term_slugs( $post->ID, 'hvnly_prop_badges', true );
+		$values['currency']            = self::current_currency_code();
+		$values['featuredImageId']     = (int) get_post_thumbnail_id( $post->ID );
 
 		$schema = PropertyBuilderSchemaService::get_portal_schema();
 		foreach ( PropertyBuilderSchemaService::collect_storage_fields( $schema ) as $row ) {
@@ -93,7 +93,7 @@ final class PropertyFormMapper {
 			}
 			// Mirror wp-admin MapField / Havenlytics_Type: resolve via MetaResolver
 			// (primary → field-map storage base → legacy aliases), not bare get_post_meta.
-			$raw = self::resolve_builder_meta( (int) $post->ID, $row );
+			$raw                       = self::resolve_builder_meta( (int) $post->ID, $row );
 			$values['fields'][ $name ] = self::decode_field_value( $raw, $row );
 		}
 
@@ -161,7 +161,7 @@ final class PropertyFormMapper {
 				continue;
 			}
 			// META empty: keep Builder value if present (legacy Builder-only data).
-			$existing = $values['fields'][ $name ] ?? array();
+			$existing                  = $values['fields'][ $name ] ?? array();
 			$values['fields'][ $name ] = is_array( $existing ) ? array_values( $existing ) : array();
 
 			// Promote Builder-only agents into META SSOT so AccessGate/frontend stay consistent.
@@ -425,7 +425,7 @@ final class PropertyFormMapper {
 		$recorded = array();
 
 		foreach ( PropertyBuilderSchemaService::collect_storage_fields( $schema ) as $row ) {
-			$name = $row['name'];
+			$name      = $row['name'];
 			$value_key = null;
 			if ( array_key_exists( $name, $incoming ) ) {
 				$value_key = $name;
@@ -453,7 +453,7 @@ final class PropertyFormMapper {
 			}
 
 			if ( self::is_agents_storage_row( $row ) ) {
-				$ids = array();
+				$ids        = array();
 				$raw_agents = $incoming[ $value_key ];
 				if ( is_array( $raw_agents ) ) {
 					foreach ( $raw_agents as $id ) {
@@ -537,7 +537,7 @@ final class PropertyFormMapper {
 			'url'       => '_hvnly_property_youtube_video_url',
 			'thumbnail' => '_hvnly_property_youtube_video_thumbnail',
 		);
-		$meta = (string) ( $row['metaKey'] ?? '' );
+		$meta   = (string) ( $row['metaKey'] ?? '' );
 		if ( ! isset( $legacy[ $meta ] ) ) {
 			return;
 		}
@@ -663,7 +663,10 @@ final class PropertyFormMapper {
 	 * @return void
 	 */
 	private static function write_gallery_csv_keys( int $post_id, array $keys, string $csv, string $skip_name ): void {
-		$seen = array( $skip_name => true, self::META_GALLERY_LEGACY => true );
+		$seen = array(
+			$skip_name => true,
+			self::META_GALLERY_LEGACY => true,
+		);
 		foreach ( $keys as $key ) {
 			$key = (string) $key;
 			if ( '' === $key || isset( $seen[ $key ] ) ) {
@@ -840,8 +843,8 @@ final class PropertyFormMapper {
 					}
 				}
 			}
-			$meta = (string) ( $row['metaKey'] ?? '' );
-			$name = (string) ( $row['name'] ?? '' );
+			$meta    = (string) ( $row['metaKey'] ?? '' );
+			$name    = (string) ( $row['name'] ?? '' );
 			$is_docs = ( 'documents' === $comp )
 				|| ( 'documents' === $meta )
 				|| ( $name !== '' && substr( $name, -10 ) === '_documents' );

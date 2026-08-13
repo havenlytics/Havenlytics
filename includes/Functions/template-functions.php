@@ -1,10 +1,10 @@
 <?php
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
 /**
- * Property Template Functions for Havenlytics 
+ * Property Template Functions for Havenlytics
  *
  * @package     Havenlytics
  * @subpackage  Functions
@@ -70,11 +70,11 @@ function hvnly_get_template_loader() {
  * @param string $default_path Default path.
  * @return string
  */
-if (!function_exists('hvnly_locate_template')) {
-function hvnly_locate_template( $template_names, $template_path = '', $default_path = '' ) {
-	$template_loader = hvnly_get_template_loader();
-	return $template_loader->locate_template( $template_names, $template_path, $default_path );
-}
+if ( ! function_exists('hvnly_locate_template')) {
+	function hvnly_locate_template( $template_names, $template_path = '', $default_path = '' ) {
+		$template_loader = hvnly_get_template_loader();
+		return $template_loader->locate_template( $template_names, $template_path, $default_path );
+	}
 }
 
 /**
@@ -92,9 +92,9 @@ function hvnly_load_field_template( $template_name, $property_id, $property_data
 	if ( '.php' !== substr( $template_name, -4 ) ) {
 		$template_name .= '.php';
 	}
-	
+
 	$located = hvnly_locate_template( array( 'archive/fields/' . $template_name, $template_name ) );
-	
+
 	if ( $located && file_exists( $located ) ) {
 		$property_id   = $property_id;
 		$property_data = $property_data;
@@ -112,35 +112,35 @@ function hvnly_load_field_template( $template_name, $property_id, $property_data
  * @param string $template_path Template path (default: '').
  * @param string $default_path Default path (default: '').
  */
-if (!function_exists('hvnly_get_template')) {
+if ( ! function_exists('hvnly_get_template')) {
     function hvnly_get_template( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
         // Extract args if provided.
         if ( ! empty( $args ) && is_array( $args ) ) {
             extract( $args ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
         }
-        
+
         // Ensure template has .php extension
         if ( '.php' !== substr( $template_name, -4 ) ) {
             $template_name .= '.php';
         }
-        
+
         // Locate the template.
         $located = hvnly_locate_template( $template_name, $template_path, $default_path );
-        
+
         // Allow themes/plugins to filter the located template.
         $located = apply_filters( 'hvnly_get_template', $located, $template_name, $args, $template_path, $default_path );
-        
+
         // If template doesn't exist, return silently (no debug output)
         if ( ! $located || ! file_exists( $located ) ) {
             return;
         }
-        
+
         // Allow themes/plugins to filter before including.
         do_action( 'hvnly_before_template_part', $template_name, $template_path, $located, $args );
-        
+
         // Include the template.
         include $located;
-        
+
         // Allow themes/plugins to filter after including.
         do_action( 'hvnly_after_template_part', $template_name, $template_path, $located, $args );
     }
@@ -155,7 +155,7 @@ if (!function_exists('hvnly_get_template')) {
  * @param string $default_path Default path (default: '').
  * @return string
  */
-if (!function_exists('hvnly_get_template_html')) {
+if ( ! function_exists('hvnly_get_template_html')) {
     function hvnly_get_template_html( $template_name, $args = array(), $template_path = '', $default_path = '' ) {
         ob_start();
         hvnly_get_template( $template_name, $args, $template_path, $default_path );
@@ -171,15 +171,15 @@ if (!function_exists('hvnly_get_template_html')) {
  * @param string $sanitize_type Type of sanitization to apply
  * @return mixed Sanitized value
  */
-function hvnly_get_filter_input($key, $default = '', $sanitize_type = 'text') {
+function hvnly_get_filter_input( $key, $default = '', $sanitize_type = 'text' ) {
     // Check if key exists in $_GET
-    if (!isset($_GET[$key])) {
+    if ( ! isset($_GET[ $key ])) {
         return $default;
     }
-    
+
     // Unslash the value first
-    $value = wp_unslash($_GET[$key]);
-    
+    $value = wp_unslash($_GET[ $key ]);
+
     // Apply appropriate sanitization
     switch ($sanitize_type) {
         case 'text':
@@ -229,7 +229,7 @@ function hvnly_get_property_data( $property_id ) {
 	if ( isset( $property_data_cache[ $property_id ] ) ) {
 		return $property_data_cache[ $property_id ];
 	}
-	
+
 	// Basic property data
 	$property_data = array(
 		'id'               => $property_id,
@@ -247,30 +247,30 @@ function hvnly_get_property_data( $property_id ) {
 		'author_id'        => get_the_author_meta( 'ID' ),
 		'featured_image'   => get_the_post_thumbnail_url( $property_id, 'large' ),
 	);
-	
+
 	// Get gallery images
 	$property_data['gallery_image_ids'] = hvnly_get_property_gallery_ids( $property_id );
-	
+
 	// Alternating gallery display order
-	$property_id_int                    = absint( $property_id );
-	$property_data['gallery_order']     = ( $property_id_int % 2 == 0 ) ? 'ASC' : 'DESC';
-	
+	$property_id_int                = absint( $property_id );
+	$property_data['gallery_order'] = ( $property_id_int % 2 == 0 ) ? 'ASC' : 'DESC';
+
 	// Apply the order to gallery images
 	if ( ! empty( $property_data['gallery_image_ids'] ) && $property_data['gallery_order'] === 'DESC' ) {
 		$property_data['gallery_image_ids'] = array_reverse( $property_data['gallery_image_ids'] );
 	}
-	
+
 	// Get taxonomy terms
-	$property_data['locations']   = get_the_terms( $property_id, 'property-location' );
-	$property_data['categories']  = get_the_terms( $property_id, 'property_category' );
-	
+	$property_data['locations']  = get_the_terms( $property_id, 'property-location' );
+	$property_data['categories'] = get_the_terms( $property_id, 'property_category' );
+
 	// Get author URL
 	$property_data['author_posts_url'] = hvnly_property_author_url( $property_data['author_id'], get_post_type() );
-	
+
 	// Get current filters
 	$property_data['current_filters'] = hvnly_get_current_filters();
 	$property_data['view_type']       = $property_data['current_filters']['view_type'];
-	
+
 	$property_data_cache[ $property_id ] = apply_filters( 'hvnly_property_data', $property_data, $property_id );
 
 	return $property_data_cache[ $property_id ];
@@ -365,7 +365,7 @@ function hvnly_normalize_gallery_attachment_ids( array $gallery_image_ids ) {
  * @return array Gallery image IDs
  */
 function hvnly_get_property_gallery_ids( $property_id ) {
-	static $gallery_ids_cache      = array();
+	static $gallery_ids_cache       = array();
 	static $builder_sections_cache  = null;
 	static $builder_sections_loaded = false;
 
@@ -453,7 +453,7 @@ function hvnly_get_property_gallery_ids( $property_id ) {
 
 	// Method 3: Known gallery keys from the per-property field map (targeted lookups only).
 	if ( class_exists( '\HvnlyNab\Core\GroupFieldIdentity' ) ) {
-		$field_map = \HvnlyNab\Core\GroupFieldIdentity::get_field_map( $property_id );
+		$field_map   = \HvnlyNab\Core\GroupFieldIdentity::get_field_map( $property_id );
 		$known_bases = array();
 
 		if ( ! empty( $field_map['groups'] ) && is_array( $field_map['groups'] ) ) {
@@ -502,28 +502,28 @@ function hvnly_get_property_gallery_ids( $property_id ) {
 /**
  * Method hvnly_render_property_card
  */
-if (!function_exists('hvnly_render_property_card')) {
-function hvnly_render_property_card( $property_id = null ) {
-	$property_id   = $property_id ?: get_the_ID();
-	$property_data = hvnly_get_property_data( $property_id );
-	$renderer      = hvnly_get_property_card_renderer();
+if ( ! function_exists('hvnly_render_property_card')) {
+	function hvnly_render_property_card( $property_id = null ) {
+		$property_id   = $property_id ?: get_the_ID();
+		$property_data = hvnly_get_property_data( $property_id );
+		$renderer      = hvnly_get_property_card_renderer();
 
-	// Always use the new dynamic renderer
-	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	echo $renderer->render_property_card_dynamic( $property_id, $property_data );
-}
+		// Always use the new dynamic renderer
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $renderer->render_property_card_dynamic( $property_id, $property_data );
+	}
 }
 
 // Include all other template functions from the original file
-if (!function_exists('hvnly_get_map_container')) {
-    function hvnly_get_map_container($provider = 'google') {
-        $args = [
+if ( ! function_exists('hvnly_get_map_container')) {
+    function hvnly_get_map_container( $provider = 'google' ) {
+        $args = array(
             'provider' => $provider,
             'provider_class' => $provider === 'google' ? 'hvnly_google_map_property_search' : 'hvnly_leaflet_map_property_search',
             'fullscreen_btn_id' => $provider === 'google' ? 'hvnly-google-map-fullscreen-btn' : 'hvnly-leaflet-map-fullscreen-btn',
-            'fullscreen_btn_class' => $provider === 'google' ? 'hvnly-google-map-fullscreen-btn' : 'hvnly-leaflet-map-fullscreen-btn'
-        ];
-        
+            'fullscreen_btn_class' => $provider === 'google' ? 'hvnly-google-map-fullscreen-btn' : 'hvnly-leaflet-map-fullscreen-btn',
+        );
+
         return hvnly_get_template_part('map/map-container', null, $args);
     }
 }
@@ -531,13 +531,13 @@ if (!function_exists('hvnly_get_map_container')) {
 /**
  * Method hvnly_get_map_error
  */
-if (!function_exists('hvnly_get_map_error')) {
-    function hvnly_get_map_error($message = '', $show_retry = true) {
-        $args = [
+if ( ! function_exists('hvnly_get_map_error')) {
+    function hvnly_get_map_error( $message = '', $show_retry = true ) {
+        $args = array(
             'message' => $message ?: __('Map loading failed. Please try again.', 'havenlytics'),
-            'show_retry' => $show_retry
-        ];
-        
+            'show_retry' => $show_retry,
+        );
+
         return hvnly_get_template_part('map/map-error', null, $args);
     }
 }
@@ -545,47 +545,47 @@ if (!function_exists('hvnly_get_map_error')) {
 /**
  * Safe template loading with fallbacks
  */
-if (!function_exists('hvnly_get_property_popup')) {
-    function hvnly_get_property_popup($property_data = []) {
-        $defaults = [
+if ( ! function_exists('hvnly_get_property_popup')) {
+    function hvnly_get_property_popup( $property_data = array() ) {
+        $defaults = array(
             'title' => __('Untitled Property', 'havenlytics'),
             'price' => '',
             'address' => '',
             'bedrooms' => '',
             'bathrooms' => '',
             'thumbnail' => '',
-            'link' => '#'
-        ];
-        
-        $args = [
-            'property' => wp_parse_args($property_data, $defaults)
-        ];
-        
+            'link' => '#',
+        );
+
+        $args = array(
+            'property' => wp_parse_args($property_data, $defaults),
+        );
+
         // Use output buffering to capture template
         ob_start();
-        $template_found = hvnly_get_template_path(['map/property-popup.php'], true, false, $args);
-        
-        if (!$template_found) {
+        $template_found = hvnly_get_template_path(array( 'map/property-popup.php' ), true, false, $args);
+
+        if ( ! $template_found) {
             // Fallback simple popup HTML
             $property = $args['property'];
             ?>
 <div class="hvnly-property-popup-content fallback">
     <div class="hvnly-popup-image">
-        <?php if (!empty($property['thumbnail'])): ?>
+			<?php if ( ! empty($property['thumbnail'])) : ?>
         <img src="<?php echo esc_url($property['thumbnail']); ?>" alt="<?php echo esc_attr($property['title']); ?>">
         <?php endif; ?>
     </div>
     <div class="hvnly-popup-details">
         <h4><?php echo esc_html($property['title']); ?></h4>
-        <?php if (!empty($property['price'])): ?>
+			<?php if ( ! empty($property['price'])) : ?>
         <p class="price"><?php echo esc_html($property['price']); ?></p>
         <?php endif; ?>
         <a href="<?php echo esc_url($property['link']); ?>"><?php esc_html_e('View Details', 'havenlytics'); ?></a>
     </div>
 </div>
-<?php
+			<?php
         }
-        
+
         return ob_get_clean();
     }
 }
@@ -596,8 +596,7 @@ if (!function_exists('hvnly_get_property_popup')) {
  *
  * @return bool
  */
-function hvnly_is_elementor_canvas_context()
-{
+function hvnly_is_elementor_canvas_context() {
     if (isset($_GET['elementor-preview'])) {
         return true;
     }
@@ -606,7 +605,7 @@ function hvnly_is_elementor_canvas_context()
         return true;
     }
 
-    if (!empty($GLOBALS['hvnly_elementor_widget_active'])) {
+    if ( ! empty($GLOBALS['hvnly_elementor_widget_active'])) {
         return true;
     }
 
@@ -628,13 +627,13 @@ function hvnly_is_elementor_canvas_context()
 /**
  * Method hvnly_get_custom_marker
  */
-if (!function_exists('hvnly_get_custom_marker')) {
-    function hvnly_get_custom_marker($type = 'leaflet', $property_id = 0) {
-        $args = [
+if ( ! function_exists('hvnly_get_custom_marker')) {
+    function hvnly_get_custom_marker( $type = 'leaflet', $property_id = 0 ) {
+        $args = array(
             'type' => $type,
-            'property_id' => $property_id
-        ];
-        
+            'property_id' => $property_id,
+        );
+
         return hvnly_get_template_part('map/custom-marker', null, $args);
     }
 }
@@ -648,8 +647,8 @@ if (!function_exists('hvnly_get_custom_marker')) {
  * @return array
  * @since 2.0.0
  */
-if (!function_exists('hvnly_get_taxonomy_data')) {
-    function hvnly_get_taxonomy_data($taxonomy, $property_id = null, $args = []) {
+if ( ! function_exists('hvnly_get_taxonomy_data')) {
+    function hvnly_get_taxonomy_data( $taxonomy, $property_id = null, $args = array() ) {
         return hvnly_get_property_card_renderer()->get_taxonomy_terms_data($taxonomy, $property_id, $args);
     }
 }
@@ -662,8 +661,8 @@ if (!function_exists('hvnly_get_taxonomy_data')) {
  * @return bool
  * @since 2.0.0
  */
-if (!function_exists('hvnly_has_taxonomy_terms')) {
-    function hvnly_has_taxonomy_terms($taxonomy, $property_id = null) {
+if ( ! function_exists('hvnly_has_taxonomy_terms')) {
+    function hvnly_has_taxonomy_terms( $taxonomy, $property_id = null ) {
         return hvnly_get_property_card_renderer()->has_taxonomy_terms($taxonomy, $property_id);
     }
 }
@@ -676,8 +675,8 @@ if (!function_exists('hvnly_has_taxonomy_terms')) {
  * @return int
  * @since 2.0.0
  */
-if (!function_exists('hvnly_get_taxonomy_count')) {
-    function hvnly_get_taxonomy_count($taxonomy, $property_id = null) {
+if ( ! function_exists('hvnly_get_taxonomy_count')) {
+    function hvnly_get_taxonomy_count( $taxonomy, $property_id = null ) {
         return hvnly_get_property_card_renderer()->get_taxonomy_terms_count($taxonomy, $property_id);
     }
 }
@@ -690,8 +689,8 @@ if (!function_exists('hvnly_get_taxonomy_count')) {
  * @return bool
  * @since 2.0.0
  */
-if (!function_exists('hvnly_should_display_all_terms')) {
-    function hvnly_should_display_all_terms($taxonomy, $property_id = null) {
+if ( ! function_exists('hvnly_should_display_all_terms')) {
+    function hvnly_should_display_all_terms( $taxonomy, $property_id = null ) {
         return hvnly_get_property_card_renderer()->should_display_all_terms($taxonomy, $property_id);
     }
 }
@@ -704,8 +703,8 @@ if (!function_exists('hvnly_should_display_all_terms')) {
  * @return array|false
  * @since 2.0.0
  */
-if (!function_exists('hvnly_get_primary_taxonomy_term')) {
-    function hvnly_get_primary_taxonomy_term($taxonomy, $property_id = null) {
+if ( ! function_exists('hvnly_get_primary_taxonomy_term')) {
+    function hvnly_get_primary_taxonomy_term( $taxonomy, $property_id = null ) {
         return hvnly_get_property_card_renderer()->get_primary_taxonomy_term($taxonomy, $property_id);
     }
 }
@@ -718,8 +717,8 @@ if (!function_exists('hvnly_get_primary_taxonomy_term')) {
  * @return mixed
  * @since 2.0.0
  */
-if (!function_exists('hvnly_get_term_meta_data')) {
-    function hvnly_get_term_meta_data($term_id, $data_type = 'all') {
+if ( ! function_exists('hvnly_get_term_meta_data')) {
+    function hvnly_get_term_meta_data( $term_id, $data_type = 'all' ) {
         return hvnly_get_property_card_renderer()->get_term_meta_data($term_id, $data_type);
     }
 }
@@ -727,13 +726,13 @@ if (!function_exists('hvnly_get_term_meta_data')) {
 /**
  * Method hvnly_get_ajax_error
  */
-if (!function_exists('hvnly_get_ajax_error')) {
-    function hvnly_get_ajax_error($message = '', $type = 'general') {
-        $args = [
+if ( ! function_exists('hvnly_get_ajax_error')) {
+    function hvnly_get_ajax_error( $message = '', $type = 'general' ) {
+        $args = array(
             'message' => $message ?: __('An error occurred. Please try again.', 'havenlytics'),
-            'type' => $type
-        ];
-        
+            'type' => $type,
+        );
+
         return hvnly_get_template_part('ajax/error-message', null, $args);
     }
 }
@@ -741,8 +740,8 @@ if (!function_exists('hvnly_get_ajax_error')) {
 /**
  * Method hvnly_render_map_container
  */
-if (!function_exists('hvnly_render_map_container')) {
-    function hvnly_render_map_container($provider = 'google') {
+if ( ! function_exists('hvnly_render_map_container')) {
+    function hvnly_render_map_container( $provider = 'google' ) {
         hvnly_get_map_container($provider);
     }
 }
@@ -750,8 +749,8 @@ if (!function_exists('hvnly_render_map_container')) {
 /**
  * Method hvnly_render_map_error
  */
-if (!function_exists('hvnly_render_map_error')) {
-    function hvnly_render_map_error($message = '', $show_retry = true) {
+if ( ! function_exists('hvnly_render_map_error')) {
+    function hvnly_render_map_error( $message = '', $show_retry = true ) {
         hvnly_get_map_error($message, $show_retry);
     }
 }
@@ -759,8 +758,8 @@ if (!function_exists('hvnly_render_map_error')) {
 /**
  * Method hvnly_render_property_popup
  */
-if (!function_exists('hvnly_render_property_popup')) {
-    function hvnly_render_property_popup($property_data = []) {
+if ( ! function_exists('hvnly_render_property_popup')) {
+    function hvnly_render_property_popup( $property_data = array() ) {
         hvnly_get_property_popup($property_data);
     }
 }
@@ -768,8 +767,8 @@ if (!function_exists('hvnly_render_property_popup')) {
 /**
  * Method hvnly_render_ajax_error
  */
-if (!function_exists('hvnly_render_ajax_error')) {
-    function hvnly_render_ajax_error($message = '', $type = 'general') {
+if ( ! function_exists('hvnly_render_ajax_error')) {
+    function hvnly_render_ajax_error( $message = '', $type = 'general' ) {
         hvnly_get_ajax_error($message, $type);
     }
 }
@@ -777,9 +776,8 @@ if (!function_exists('hvnly_render_ajax_error')) {
 /**
  * Method hvnly_templates_location
  */
-if (!function_exists('hvnly_templates_location')) {
-    function hvnly_templates_location()
-    {
+if ( ! function_exists('hvnly_templates_location')) {
+    function hvnly_templates_location() {
         return apply_filters('hvnly_templates_location', HVNLYNAB_PATH . 'templates/');
     }
 }
@@ -791,26 +789,26 @@ if (!function_exists('hvnly_templates_location')) {
  * @param string $name Template name (default: '').
  * @param array  $args Template arguments.
  */
-if (!function_exists('hvnly_get_template_part')) {
+if ( ! function_exists('hvnly_get_template_part')) {
     function hvnly_get_template_part( $slug, $name = '', $args = array() ) {
         // Trigger action before loading template part.
         do_action( "hvnly_get_template_part_{$slug}", $slug, $name, $args );
-        
+
         $templates = array();
         $name      = (string) $name;
-        
+
         if ( '' !== $name ) {
             $templates[] = "{$slug}-{$name}.php";
         }
-        
+
         $templates[] = "{$slug}.php";
-        
+
         // Allow templates to be filtered.
         $templates = apply_filters( 'hvnly_get_template_part_templates', $templates, $slug, $name );
-        
+
         // Locate the template.
         $template = hvnly_locate_template( $templates );
-        
+
         // If template was found, load it.
         if ( $template ) {
             load_template( $template, false, $args );
@@ -828,28 +826,28 @@ if (!function_exists('hvnly_get_template_part')) {
  * @param array $args Template arguments.
  * @return string|bool
  */
-if (!function_exists('hvnly_get_template_path')) {
-    function hvnly_get_template_path($template_names, $load = false, $require_once = true, $args = array()) {
+if ( ! function_exists('hvnly_get_template_path')) {
+    function hvnly_get_template_path( $template_names, $load = false, $require_once = true, $args = array() ) {
         // For backward compatibility, handle both string and array
         $template_names = (array) $template_names;
-        $located = '';
-        
+        $located        = '';
+
         foreach ($template_names as $template_name) {
             // Ensure template name is a string
-            if (!is_string($template_name) || empty($template_name)) {
+            if ( ! is_string($template_name) || empty($template_name)) {
                 continue;
             }
-            
+
             $located = hvnly_locate_template($template_name);
             if ($located) {
                 break;
             }
         }
-        
+
         if ($load && $located) {
             load_template($located, $require_once, $args);
         }
-        
+
         return $located;
     }
 }
@@ -857,9 +855,8 @@ if (!function_exists('hvnly_get_template_path')) {
 /**
  * Method hvnly_output_content_wrapper_start
  */
-if (!function_exists('hvnly_output_content_wrapper_start')) {
-    function hvnly_output_content_wrapper_start()
-    {
+if ( ! function_exists('hvnly_output_content_wrapper_start')) {
+    function hvnly_output_content_wrapper_start() {
         hvnly_get_template_part('global/wrapper-start');
     }
 }
@@ -867,9 +864,8 @@ if (!function_exists('hvnly_output_content_wrapper_start')) {
 /**
  * Method hvnly_output_content_wrapper_end
  */
-if (!function_exists('hvnly_output_content_wrapper_end')) {
-    function hvnly_output_content_wrapper_end()
-    {
+if ( ! function_exists('hvnly_output_content_wrapper_end')) {
+    function hvnly_output_content_wrapper_end() {
         hvnly_get_template_part('global/wrapper-end');
     }
 }
@@ -877,7 +873,7 @@ if (!function_exists('hvnly_output_content_wrapper_end')) {
 /**
  * Method hvnly_get_property_price
  */
-if (!function_exists('hvnly_get_property_price')) {
+if ( ! function_exists('hvnly_get_property_price')) {
     /**
      * Get property price with safe type handling.
      *
@@ -885,17 +881,16 @@ if (!function_exists('hvnly_get_property_price')) {
      * @param bool     $format      Whether to format the price.
      * @return string|float Formatted price string or raw price float.
      */
-    function hvnly_get_property_price($property_id = null, $format = true)
-    {
+    function hvnly_get_property_price( $property_id = null, $format = true ) {
         $property_id = $property_id ?: get_the_ID();
-        $price = get_post_meta($property_id, '_hvnly_property_price', true);
+        $price       = get_post_meta($property_id, '_hvnly_property_price', true);
 
         return $format ? hvnly_format_price($price) : hvnly_safe_price_to_float($price);
     }
 }
 
 // NOTE: hvnly_format_price, hvnly_safe_price_to_float, hvnly_get_currency_symbol,
-// hvnly_get_currency_settings, hvnly_get_current_currency_symbol, 
+// hvnly_get_currency_settings, hvnly_get_current_currency_symbol,
 // hvnly_get_current_currency_code, hvnly_format_number_with_separators,
 // hvnly_format_large_number_with_suffix have been moved to Helpers class.
 // They are now defined in property-functions.php as wrapper functions for backward compatibility.
@@ -903,12 +898,11 @@ if (!function_exists('hvnly_get_property_price')) {
 /**
  * Method hvnly_get_property_meta
  */
-if (!function_exists('hvnly_get_property_meta')) {
-    function hvnly_get_property_meta($property_id = null)
-    {
+if ( ! function_exists('hvnly_get_property_meta')) {
+    function hvnly_get_property_meta( $property_id = null ) {
         $property_id = $property_id ?: get_the_ID();
 
-        $meta = [
+        $meta = array(
             'price' => get_post_meta($property_id, '_hvnly_property_price', true),
             'bedrooms' => get_post_meta($property_id, '_hvnly_property_bedrooms', true),
             'bathrooms' => get_post_meta($property_id, '_hvnly_property_bathrooms', true),
@@ -918,7 +912,7 @@ if (!function_exists('hvnly_get_property_meta')) {
             'address' => get_post_meta($property_id, '_hvnly_property_street', true),
             'is_featured' => get_post_meta($property_id, '_hvnly_property_action_tool_is_featured', true),
             'year_built' => get_post_meta($property_id, '_hvnly_property_year_built', true),
-        ];
+        );
 
         return apply_filters('hvnly_property_meta', $meta, $property_id);
     }
@@ -927,13 +921,12 @@ if (!function_exists('hvnly_get_property_meta')) {
 /**
  * Method hvnly_get_property_status
  */
-if (!function_exists('hvnly_get_property_status')) {
-    function hvnly_get_property_status($property_id = null)
-    {
+if ( ! function_exists('hvnly_get_property_status')) {
+    function hvnly_get_property_status( $property_id = null ) {
         $property_id = $property_id ?: get_the_ID();
-        $status = get_the_terms($property_id, 'property-status');
+        $status      = get_the_terms($property_id, 'property-status');
 
-        if ($status && !is_wp_error($status)) {
+        if ($status && ! is_wp_error($status)) {
             return $status[0];
         }
 
@@ -944,9 +937,8 @@ if (!function_exists('hvnly_get_property_status')) {
 /**
  * Method hvnly_property_author_url
  */
-if (!function_exists('hvnly_property_author_url')) {
-    function hvnly_property_author_url($author_id = 0, $post_type = '')
-    {
+if ( ! function_exists('hvnly_property_author_url')) {
+    function hvnly_property_author_url( $author_id = 0, $post_type = '' ) {
         if (empty($post_type)) {
             return '';
         }
@@ -960,9 +952,9 @@ if (!function_exists('hvnly_property_author_url')) {
         $author_posts_url = get_author_posts_url($author_id);
 
         if (preg_match('/author\/([a-zA-Z0-9\-_]+)/', $author_posts_url) && preg_match('/%postname%/', get_option('permalink_structure'))) {
-            return !empty($author_posts_url) ? trailingslashit($author_posts_url) . 'properties' : '';
+            return ! empty($author_posts_url) ? trailingslashit($author_posts_url) . 'properties' : '';
         } else {
-            return !empty($author_posts_url) ? add_query_arg('properties', 'yes', $author_posts_url) : '';
+            return ! empty($author_posts_url) ? add_query_arg('properties', 'yes', $author_posts_url) : '';
         }
     }
 }
@@ -970,9 +962,8 @@ if (!function_exists('hvnly_property_author_url')) {
 /**
  * Method hvnly_post_paged
  */
-if (!function_exists('hvnly_post_paged')) {
-    function hvnly_post_paged()
-    {
+if ( ! function_exists('hvnly_post_paged')) {
+    function hvnly_post_paged() {
         global $paged;
         if (get_query_var('paged')) {
             $post_page = get_query_var('paged');
@@ -992,20 +983,19 @@ if (!function_exists('hvnly_post_paged')) {
 /**
  * Method hvnly_post_pagination
  */
-if (!function_exists('hvnly_post_pagination')) {
-    function hvnly_post_pagination($query = null, $base_url = null, $current_num = null)
-    {
+if ( ! function_exists('hvnly_post_pagination')) {
+    function hvnly_post_pagination( $query = null, $base_url = null, $current_num = null ) {
         global $wp_query;
-        $big            = 999999999;
-        $base_url = !empty($base_url) ? trailingslashit($base_url) . '%_%' : str_replace($big, '%#%', get_pagenum_link($big));
+        $big      = 999999999;
+        $base_url = ! empty($base_url) ? trailingslashit($base_url) . '%_%' : str_replace($big, '%#%', get_pagenum_link($big));
 
-        $current_num =  !empty($current_num) ? max(1, $current_num) : max(1, get_query_var('paged'));
-        $formet =  !empty($current_num) ? 'page/%#%/' : '?paged=%#%';
+        $current_num = ! empty($current_num) ? max(1, $current_num) : max(1, get_query_var('paged'));
+        $formet      = ! empty($current_num) ? 'page/%#%/' : '?paged=%#%';
 
         $paginate_links = paginate_links(
             array(
                 'base'         => $base_url,
-                'total'        => ($query != null) ? $query->max_num_pages : $wp_query->max_num_pages,
+                'total'        => ( $query != null ) ? $query->max_num_pages : $wp_query->max_num_pages,
                 'current'      => $current_num,
                 'format'       => $formet,
                 'show_all'     => false,
@@ -1020,7 +1010,7 @@ if (!function_exists('hvnly_post_pagination')) {
             )
         );
 
-        if (!empty($paginate_links)) {
+        if ( ! empty($paginate_links)) {
             echo wp_kses_post($paginate_links);
         } else {
             echo '';
@@ -1031,11 +1021,10 @@ if (!function_exists('hvnly_post_pagination')) {
 /**
  * Method hvnly_get_current_page_url - FIXED with proper sanitization
  */
-if (!function_exists('hvnly_get_current_page_url')) {
-    function hvnly_get_current_page_url($query_arg = [], $remove = null)
-    {
+if ( ! function_exists('hvnly_get_current_page_url')) {
+    function hvnly_get_current_page_url( $query_arg = array(), $remove = null ) {
         global $wp;
-        
+
         // Fix for Line 959: Unslash and sanitize $_SERVER['QUERY_STRING']
         $querystring = '';
         if (isset($_SERVER['QUERY_STRING'])) {
@@ -1044,30 +1033,30 @@ if (!function_exists('hvnly_get_current_page_url')) {
             // Then sanitize
             $querystring = sanitize_text_field($querystring);
         }
-        
+
         $output = array();
-        if (!empty($querystring)) {
+        if ( ! empty($querystring)) {
             // Parse the sanitized query string
             wp_parse_str($querystring, $output);
             // Sanitize each parsed value
-            array_walk_recursive($output, function(&$value) {
+            array_walk_recursive($output, function ( &$value ) {
                 $value = sanitize_text_field($value);
             });
         }
-        
+
         // Ensure query_arg values are sanitized
         $sanitized_query_arg = array();
         foreach ($query_arg as $key => $value) {
-            $sanitized_query_arg[sanitize_key($key)] = sanitize_text_field($value);
+            $sanitized_query_arg[ sanitize_key($key) ] = sanitize_text_field($value);
         }
-        
+
         $queryArgs = wp_parse_args(array_filter($sanitized_query_arg), $output);
 
-        if (!empty($remove)) {
+        if ( ! empty($remove)) {
             return remove_query_arg($remove, add_query_arg($output, home_url($wp->request)));
         }
 
-        if (!empty($query_arg)) {
+        if ( ! empty($query_arg)) {
             return add_query_arg($queryArgs, home_url($wp->request));
         }
 
@@ -1078,9 +1067,8 @@ if (!function_exists('hvnly_get_current_page_url')) {
 /**
  * Method hvnly_get_base_page_url - FIXED
  */
-if (!function_exists('hvnly_get_base_page_url')) {
-    function hvnly_get_base_page_url($url = '')
-    {
+if ( ! function_exists('hvnly_get_base_page_url')) {
+    function hvnly_get_base_page_url( $url = '' ) {
         // Fix for Line 1120: Use wp_parse_url() instead of parse_url()
         $parsed_url = wp_parse_url($url);
 
@@ -1112,9 +1100,8 @@ if (!function_exists('hvnly_get_base_page_url')) {
 /**
  * Get current filter values with clean URL parameter names - FIXED
  */
-if (!function_exists('hvnly_get_current_filters')) {
-    function hvnly_get_current_filters()
-    {
+if ( ! function_exists('hvnly_get_current_filters')) {
+    function hvnly_get_current_filters() {
         // Using the helper function to fix all $_GET warnings
         $filters = array(
             'orderby' => hvnly_get_filter_input('sort', '') ?: hvnly_get_filter_input('orderby', ''),  // : Removed default 'date'
@@ -1128,29 +1115,29 @@ if (!function_exists('hvnly_get_current_filters')) {
             'reception_rooms' => hvnly_get_filter_input('reception', '') ?: hvnly_get_filter_input('reception_rooms', ''),
             'garages' => hvnly_get_filter_input('garage', '') ?: hvnly_get_filter_input('garages', ''),
             'amenities' => array(),
-            'paged' => max(1, absint(hvnly_get_filter_input('page', 1, 'int') ?: hvnly_get_filter_input('paged', 1, 'int')))
+            'paged' => max(1, absint(hvnly_get_filter_input('page', 1, 'int') ?: hvnly_get_filter_input('paged', 1, 'int'))),
         );
 
         // Handle property_ids from URL
         $property_ids = hvnly_get_filter_input('property_ids', '', 'array');
-        if (!empty($property_ids)) {
+        if ( ! empty($property_ids)) {
             $filters['property_ids'] = $property_ids;
         }
 
         // Handle property_type from URL
         $property_types = hvnly_get_filter_input('property_type', '', 'array');
-        if (!empty($property_types)) {
+        if ( ! empty($property_types)) {
             $filters['hvnly_prop_types'] = $property_types;
         }
 
         // Handle location from URL
         $locations = hvnly_get_filter_input('location', '', 'array');
-        if (!empty($locations)) {
+        if ( ! empty($locations)) {
             $filters['hvnly_prop_locations'] = $locations;
         }
 
         // FIXED: Handle the new clean URL parameters for taxonomies
-        $clean_taxonomy_params = [
+        $clean_taxonomy_params = array(
             'in_tag' => 'hvnly_prop_tags',
             'in_status' => 'hvnly_prop_status',
             'in_type' => 'hvnly_prop_types',
@@ -1158,22 +1145,22 @@ if (!function_exists('hvnly_get_current_filters')) {
             'in_feature' => 'hvnly_prop_features',
             'in_review' => 'hvnly_prop_reviews',
             'in_badge' => 'hvnly_prop_badges',
-        ];
+        );
 
         foreach ($clean_taxonomy_params as $clean_param => $taxonomy) {
             $param_value = hvnly_get_filter_input($clean_param, '');
-            if (!empty($param_value)) {
+            if ( ! empty($param_value)) {
                 // Handle both regular and URL-encoded commas
                 $param_value = str_replace('%2C', ',', $param_value);
-                $term_ids = array_map('absint', explode(',', $param_value));
-                $term_ids = array_filter($term_ids);
+                $term_ids    = array_map('absint', explode(',', $param_value));
+                $term_ids    = array_filter($term_ids);
 
-                if (!empty($term_ids)) {
-                    $filters[$taxonomy] = array();
+                if ( ! empty($term_ids)) {
+                    $filters[ $taxonomy ] = array();
                     foreach ($term_ids as $term_id) {
                         $term = get_term($term_id, $taxonomy);
-                        if ($term && !is_wp_error($term)) {
-                            $filters[$taxonomy][] = $term->slug;
+                        if ($term && ! is_wp_error($term)) {
+                            $filters[ $taxonomy ][] = $term->slug;
                         }
                     }
                 }
@@ -1181,7 +1168,7 @@ if (!function_exists('hvnly_get_current_filters')) {
         }
 
         // Handle comma-separated array parameters for clean URL names
-        $clean_array_params = [
+        $clean_array_params = array(
             'department' => 'hvnly_prop_depts',
             'location' => 'hvnly_prop_locations',
             'feature' => 'hvnly_prop_features',
@@ -1189,20 +1176,20 @@ if (!function_exists('hvnly_get_current_filters')) {
             'tag' => 'hvnly_prop_tags',
             'badge' => 'hvnly_prop_badges',
             'status' => 'hvnly_prop_status',
-            'amenity' => 'amenities'
-        ];
+            'amenity' => 'amenities',
+        );
 
         foreach ($clean_array_params as $clean_param => $internal_param) {
             $value = hvnly_get_filter_input($clean_param, '', 'array');
-            if (!empty($value)) {
-                $filters[$internal_param] = $value;
-            } elseif (!isset($filters[$internal_param])) {
-                $filters[$internal_param] = array();
+            if ( ! empty($value)) {
+                $filters[ $internal_param ] = $value;
+            } elseif ( ! isset($filters[ $internal_param ])) {
+                $filters[ $internal_param ] = array();
             }
         }
 
         // Also check for old parameter names for backward compatibility
-        $legacy_array_params = [
+        $legacy_array_params = array(
             'hvnly_prop_depts',
             'hvnly_prop_locations',
             'hvnly_prop_features',
@@ -1210,13 +1197,13 @@ if (!function_exists('hvnly_get_current_filters')) {
             'hvnly_prop_tags',
             'hvnly_prop_badges',
             'hvnly_prop_status',
-            'amenities'
-        ];
+            'amenities',
+        );
 
         foreach ($legacy_array_params as $param) {
             $value = hvnly_get_filter_input($param, '', 'array');
-            if (!empty($value) && empty($filters[$param])) {
-                $filters[$param] = $value;
+            if ( ! empty($value) && empty($filters[ $param ])) {
+                $filters[ $param ] = $value;
             }
         }
 
@@ -1358,10 +1345,9 @@ if ( ! function_exists( 'hvnly_canonicalize_search_filters' ) ) {
 /**
  * Generate clean URL parameters from filter data
  */
-if (!function_exists('hvnly_build_clean_url_params')) {
-    function hvnly_build_clean_url_params($data)
-    {
-        $params = [];
+if ( ! function_exists('hvnly_build_clean_url_params')) {
+    function hvnly_build_clean_url_params( $data ) {
+        $params = array();
 
         // Always include essential parameters
         if (isset($data['paged']) && $data['paged'] > 1) {
@@ -1377,7 +1363,7 @@ if (!function_exists('hvnly_build_clean_url_params')) {
         }
 
         // Handle clean URL parameters for taxonomies
-        $clean_url_mappings = [
+        $clean_url_mappings = array(
             'hvnly_prop_types' => 'property_type',
             'hvnly_prop_locations' => 'location',
             'hvnly_prop_features' => 'feature',
@@ -1386,20 +1372,20 @@ if (!function_exists('hvnly_build_clean_url_params')) {
             'hvnly_prop_badges' => 'badge',
             'hvnly_prop_status' => 'status',
             'amenities' => 'amenity',
-            'hvnly_prop_depts' => 'department'
-        ];
+            'hvnly_prop_depts' => 'department',
+        );
 
         foreach ($clean_url_mappings as $internal_key => $url_key) {
-            if (!empty($data[$internal_key]) && is_array($data[$internal_key])) {
-                $clean_value = implode(',', array_filter($data[$internal_key]));
-                if (!empty($clean_value)) {
-                    $params[$url_key] = $clean_value;
+            if ( ! empty($data[ $internal_key ]) && is_array($data[ $internal_key ])) {
+                $clean_value = implode(',', array_filter($data[ $internal_key ]));
+                if ( ! empty($clean_value)) {
+                    $params[ $url_key ] = $clean_value;
                 }
             }
         }
 
         // Handle standard parameters
-        $standard_params = [
+        $standard_params = array(
             'address_keyword',
             'department',
             'min_price',
@@ -1407,12 +1393,12 @@ if (!function_exists('hvnly_build_clean_url_params')) {
             'bedrooms',
             'bathrooms',
             'reception_rooms',
-            'garages'
-        ];
+            'garages',
+        );
 
         foreach ($standard_params as $param) {
-            if (!empty($data[$param]) && $data[$param] !== '') {
-                $params[$param] = $data[$param];
+            if ( ! empty($data[ $param ]) && $data[ $param ] !== '') {
+                $params[ $param ] = $data[ $param ];
             }
         }
 
@@ -1454,7 +1440,7 @@ function hvnly_remove_old_single_property_hooks() {
 			'hvnly_single_property_location_card' => 60,
 			'hvnly_single_property_stats' => 70,
 		);
-		
+
 		foreach ( $removed_actions as $action => $priority ) {
 			remove_action( 'hvnly_single_property_main_content', $action, $priority );
 		}
@@ -1464,12 +1450,12 @@ add_action( 'init', 'hvnly_remove_old_single_property_hooks' );
 
 /**
  * Get current pagination type
- * 
+ *
  * @param string $default Default pagination type
  * @return string
  */
-if (!function_exists('hvnly_get_pagination_type')) {
-    function hvnly_get_pagination_type($default = 'load-more') {
+if ( ! function_exists('hvnly_get_pagination_type')) {
+    function hvnly_get_pagination_type( $default = 'load-more' ) {
         if (function_exists('hvnly_is_ajax_load_more_enabled')) {
             $pagination_type = hvnly_is_ajax_load_more_enabled() ? 'load-more' : 'traditional';
         } else {
@@ -1497,8 +1483,8 @@ if (!function_exists('hvnly_get_pagination_type')) {
  * }
  * @return void
  */
-if (!function_exists('hvnly_render_property_listing_pagination')) {
-    function hvnly_render_property_listing_pagination($args = array()) {
+if ( ! function_exists('hvnly_render_property_listing_pagination')) {
+    function hvnly_render_property_listing_pagination( $args = array() ) {
         $defaults = array(
             'current_page'          => max(1, (int) get_query_var('paged')),
             'max_pages'             => 0,
@@ -1533,7 +1519,7 @@ if (!function_exists('hvnly_render_property_listing_pagination')) {
 
             printf(
                 '<div id="%s">',
-                esc_attr((string) $args['pagination_wrapper_id'])
+                esc_attr( (string) $args['pagination_wrapper_id'])
             );
 
             if (function_exists('hvnly_get_template_part')) {
@@ -1555,10 +1541,10 @@ if (!function_exists('hvnly_render_property_listing_pagination')) {
             return;
         }
 
-        if ($args['wrap_load_more'] && !empty($args['load_more_wrapper_id'])) {
+        if ($args['wrap_load_more'] && ! empty($args['load_more_wrapper_id'])) {
             printf(
                 '<div id="%s" class="hvnly-load-more-wrapper">',
-                esc_attr((string) $args['load_more_wrapper_id'])
+                esc_attr( (string) $args['load_more_wrapper_id'])
             );
         }
 
@@ -1579,7 +1565,7 @@ if (!function_exists('hvnly_render_property_listing_pagination')) {
             );
         }
 
-        if ($args['wrap_load_more'] && !empty($args['load_more_wrapper_id'])) {
+        if ($args['wrap_load_more'] && ! empty($args['load_more_wrapper_id'])) {
             echo '</div>';
         }
     }
@@ -1593,8 +1579,8 @@ if (!function_exists('hvnly_render_property_listing_pagination')) {
  * @param array $args Additional arguments
  * @return void
  */
-if (!function_exists('hvnly_render_map_container')) {
-    function hvnly_render_map_container($args = array()) {
+if ( ! function_exists('hvnly_render_map_container')) {
+    function hvnly_render_map_container( $args = array() ) {
         $defaults = array(
             'provider' => function_exists('hvnly_get_map_provider') ? hvnly_get_map_provider() : 'leaflet',
             'show_fullscreen' => function_exists('hvnly_is_fullscreen_enabled') ? hvnly_is_fullscreen_enabled() : true,
@@ -1602,7 +1588,7 @@ if (!function_exists('hvnly_render_map_container')) {
             'show_scroll_wheel' => function_exists('hvnly_is_scroll_wheel_enabled') ? hvnly_is_scroll_wheel_enabled() : true,
             'zoom_level' => function_exists('hvnly_get_map_zoom') ? hvnly_get_map_zoom() : 12,
         );
-        $args = wp_parse_args($args, $defaults);
+        $args     = wp_parse_args($args, $defaults);
         hvnly_get_template_part('map/map-container', null, $args);
     }
 }
@@ -1613,8 +1599,8 @@ if (!function_exists('hvnly_render_map_container')) {
  * @param array $args Additional arguments
  * @return string
  */
-if (!function_exists('hvnly_get_map_container_html')) {
-    function hvnly_get_map_container_html($args = array()) {
+if ( ! function_exists('hvnly_get_map_container_html')) {
+    function hvnly_get_map_container_html( $args = array() ) {
         ob_start();
         hvnly_render_map_container($args);
         return ob_get_clean();
@@ -1624,9 +1610,9 @@ if (!function_exists('hvnly_get_map_container_html')) {
 
 
 /**
- * Archive page title 
+ * Archive page title
  */
-if (!function_exists('hvnly_page_title')) {
+if ( ! function_exists('hvnly_page_title')) {
 
     /**
      * hvnly_page_title function.
@@ -1635,11 +1621,11 @@ if (!function_exists('hvnly_page_title')) {
      * @param  boolean $echo
      * @return string
      */
-    function hvnly_page_title($echo = true) {
+    function hvnly_page_title( $echo = true ) {
         global $post, $hvnly_has_shortcode;
 
         // If this page is being rendered by our shortcode, skip the title
-        if (!empty($hvnly_has_shortcode)) {
+        if ( ! empty($hvnly_has_shortcode)) {
             if ($echo) {
                 return;
             }
@@ -1679,13 +1665,13 @@ if (!function_exists('hvnly_page_title')) {
 
             // Get custom title from settings
             $custom_title = hvnly_get_search_bar_title();
-            
+
             // Use custom title if set, otherwise fallback
-            if (!empty($custom_title)) {
+            if ( ! empty($custom_title)) {
                 $page_title = $custom_title;
             } else {
                 $properties_page_id = get_option('hvnly_properties_page_id');
-                $page_title = $properties_page_id
+                $page_title         = $properties_page_id
                     ? get_the_title($properties_page_id)
                     : esc_html__('Property Search', 'havenlytics');
             }

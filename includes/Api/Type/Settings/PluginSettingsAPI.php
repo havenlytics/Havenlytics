@@ -123,29 +123,29 @@ class PluginSettingsAPI {
 				'permission_callback' => array( $this, 'check_permission' ),
 			)
 		);
-        
+
         // Route for syncing view type (GRID/LIST)
         register_rest_route(
             $this->namespace,
             '/' . $this->route_base . '/sync-view-type',
             array(
                 'methods'             => 'POST',
-                'callback'            => array($this, 'sync_view_type'),
-                'permission_callback' => array($this, 'check_permission'),
+                'callback'            => array( $this, 'sync_view_type' ),
+                'permission_callback' => array( $this, 'check_permission' ),
             )
         );
-        
+
         // Route for syncing AJAX Load More status with Preloader
         register_rest_route(
             $this->namespace,
             '/' . $this->route_base . '/sync-ajax-load-more',
             array(
                 'methods'             => 'POST',
-                'callback'            => array($this, 'sync_ajax_load_more'),
-                'permission_callback' => array($this, 'check_permission'),
+                'callback'            => array( $this, 'sync_ajax_load_more' ),
+                'permission_callback' => array( $this, 'check_permission' ),
             )
         );
-        
+
 		// PARAMETERIZED ROUTES.
 		register_rest_route(
 			$this->namespace,
@@ -244,9 +244,9 @@ class PluginSettingsAPI {
 			hvnly_maybe_migrate_legacy_settings();
 		}
 
-		$settings      = get_option( $this->storage_key, array() );
-		$has_defaults  = false;
-		$needs_update  = false;
+		$settings     = get_option( $this->storage_key, array() );
+		$has_defaults = false;
+		$needs_update = false;
 
 		if ( empty( $settings ) || ! is_array( $settings ) ) {
 			if ( class_exists( 'HvnlyNab\Api\Type\Settings\DefaultSettingsData' ) ) {
@@ -270,7 +270,7 @@ class PluginSettingsAPI {
 				$default_search = DefaultSettingsData::get_default_search_settings();
 				if ( isset( $default_search['hvnly_search_fields'] ) ) {
 					$settings['search']['hvnly_search_fields'] = $default_search['hvnly_search_fields'];
-					$needs_update = true;
+					$needs_update                              = true;
 				}
 			}
 		}
@@ -306,20 +306,20 @@ class PluginSettingsAPI {
 	 * @param WP_REST_Request $request
 	 * @return WP_REST_Response|WP_Error
 	 */
-	public function get_settings_by_group($request) {
-		$group = $request->get_param('group');
-		$settings = get_option($this->storage_key, []);
-		
-		if (!is_array($settings)) {
-			$settings = [];
+	public function get_settings_by_group( $request ) {
+		$group    = $request->get_param('group');
+		$settings = get_option($this->storage_key, array());
+
+		if ( ! is_array($settings)) {
+			$settings = array();
 		}
-		
+
 		// Special handling for search group - ensure fields exist
 		if ($group === 'search') {
-			if (!isset($settings['search']) || !is_array($settings['search'])) {
-				$settings['search'] = [];
+			if ( ! isset($settings['search']) || ! is_array($settings['search'])) {
+				$settings['search'] = array();
 			}
-			
+
 			// Ensure hvnly_search_fields exist (left sidebar filter fields)
 			if (empty($settings['search']['hvnly_search_fields'])) {
 				if (class_exists('HvnlyNab\Api\Type\Settings\DefaultSettingsData')) {
@@ -330,7 +330,7 @@ class PluginSettingsAPI {
 					}
 				}
 			}
-			
+
 			// Ensure hvnly_top_search_fields exist (top search additional fields)
 			if (empty($settings['search']['hvnly_top_search_fields'])) {
 				if (class_exists('HvnlyNab\Api\Type\Settings\DefaultSettingsData')) {
@@ -344,7 +344,7 @@ class PluginSettingsAPI {
 		}
 		// Special handling for map group - ensure defaults exist
 		if ($group === 'map') {
-			if (!isset($settings['map']) || !is_array($settings['map']) || empty($settings['map'])) {
+			if ( ! isset($settings['map']) || ! is_array($settings['map']) || empty($settings['map'])) {
 				if (class_exists('HvnlyNab\Api\Type\Settings\DefaultSettingsData')) {
 					$settings['map'] = DefaultSettingsData::get_default_map_settings();
 					update_option($this->storage_key, $settings);
@@ -368,48 +368,48 @@ class PluginSettingsAPI {
 			}
 		}
 		if ('performance' === $group) {
-			if (!isset($settings['performance']) || !is_array($settings['performance'])) {
+			if ( ! isset($settings['performance']) || ! is_array($settings['performance'])) {
 				$settings['performance'] = array();
 			}
 			$settings['performance']['hvnly_cache_enabled'] = function_exists('hvnly_is_cache_enabled')
 				? \hvnly_is_cache_enabled()
 				: (bool) get_option('hvnly_cache_enabled', 0);
 
-			return rest_ensure_response([
+			return rest_ensure_response(array(
 				'success' => true,
 				'data' => $settings['performance'],
-			]);
+			));
 		}
 		// If settings exist for this group, return them
-		if (isset($settings[$group])) {
-			return rest_ensure_response([
+		if (isset($settings[ $group ])) {
+			return rest_ensure_response(array(
 				'success' => true,
-				'data' => $settings[$group]
-			]);
+				'data' => $settings[ $group ],
+			));
 		}
-		
+
 		// No settings exist, return defaults
-		$default_data = [];
-		
+		$default_data = array();
+
 		if (class_exists('HvnlyNab\Api\Type\Settings\SettingsSchema')) {
 			$default_data = SettingsSchema::get_default_group($group);
 		}
-		
+
 		if (empty($default_data) && class_exists('HvnlyNab\Api\Type\Settings\DefaultSettingsData')) {
 			$method = 'get_default_' . str_replace('-', '_', $group) . '_settings';
 			if (method_exists('HvnlyNab\Api\Type\Settings\DefaultSettingsData', $method)) {
 				$default_data = DefaultSettingsData::$method();
 			}
 		}
-		
-		if (!empty($default_data)) {
-			return rest_ensure_response([
+
+		if ( ! empty($default_data)) {
+			return rest_ensure_response(array(
 				'success' => true,
 				'data' => $default_data,
-			]);
+			));
 		}
-		
-		return new WP_Error('invalid_group', 'Invalid settings group', ['status' => 400]);
+
+		return new WP_Error('invalid_group', 'Invalid settings group', array( 'status' => 400 ));
 	}
 
 	/**
@@ -418,72 +418,72 @@ class PluginSettingsAPI {
 	 * @param WP_REST_Request $request
 	 * @return WP_REST_Response|WP_Error
 	 */
-	public function update_settings_group($request) {
-		$group = $request->get_param('group');
+	public function update_settings_group( $request ) {
+		$group  = $request->get_param('group');
 		$params = $request->get_json_params();
-		
+
 		if (empty($params)) {
-			return new WP_Error('invalid_data', 'Settings data is required', ['status' => 400]);
+			return new WP_Error('invalid_data', 'Settings data is required', array( 'status' => 400 ));
 		}
-		
+
 		// Convert boolean values properly
 		foreach ($params as $key => $value) {
 			if (in_array($key, $this->boolean_fields, true)) {
 				if (is_bool($value)) {
-					$params[$key] = $value;
+					$params[ $key ] = $value;
 				} elseif (is_string($value)) {
-					$params[$key] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+					$params[ $key ] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
 				} else {
-					$params[$key] = (bool) $value;
+					$params[ $key ] = (bool) $value;
 				}
 			}
 		}
-		
-		$all_settings = get_option($this->storage_key, []);
-		if (!is_array($all_settings)) {
-			$all_settings = [];
+
+		$all_settings = get_option($this->storage_key, array());
+		if ( ! is_array($all_settings)) {
+			$all_settings = array();
 		}
-		
+
 		// For search group, merge the fields properly
 		if ($group === 'search') {
-			if (!isset($all_settings[$group]) || !is_array($all_settings[$group])) {
-				$all_settings[$group] = [];
+			if ( ! isset($all_settings[ $group ]) || ! is_array($all_settings[ $group ])) {
+				$all_settings[ $group ] = array();
 			}
-			
+
 			// Handle hvnly_search_fields (left sidebar filter fields)
 			if (isset($params['hvnly_search_fields'])) {
-				$all_settings[$group]['hvnly_search_fields'] = $params['hvnly_search_fields'];
+				$all_settings[ $group ]['hvnly_search_fields'] = $params['hvnly_search_fields'];
 			}
-			
+
 			// Handle hvnly_top_search_fields (top search additional fields)
 			if (isset($params['hvnly_top_search_fields'])) {
-				$all_settings[$group]['hvnly_top_search_fields'] = $params['hvnly_top_search_fields'];
+				$all_settings[ $group ]['hvnly_top_search_fields'] = $params['hvnly_top_search_fields'];
 			}
 
 			// Handle hvnly_main_search_fields (main search bar fields)
 			if (isset($params['hvnly_main_search_fields'])) {
-				$all_settings[$group]['hvnly_main_search_fields'] = $params['hvnly_main_search_fields'];
+				$all_settings[ $group ]['hvnly_main_search_fields'] = $params['hvnly_main_search_fields'];
 			}
-			
+
 			// Merge other fields (non-array fields)
 			foreach ($params as $key => $value) {
-				if (!in_array($key, ['hvnly_search_fields', 'hvnly_top_search_fields', 'hvnly_main_search_fields'], true)) {
-					$all_settings[$group][$key] = $value;
+				if ( ! in_array($key, array( 'hvnly_search_fields', 'hvnly_top_search_fields', 'hvnly_main_search_fields' ), true)) {
+					$all_settings[ $group ][ $key ] = $value;
 				}
 			}
 		} elseif ($group === 'map') {
 			// For map group, initialize if not exists
-			if (!isset($all_settings[$group]) || !is_array($all_settings[$group])) {
-				$all_settings[$group] = array();
+			if ( ! isset($all_settings[ $group ]) || ! is_array($all_settings[ $group ])) {
+				$all_settings[ $group ] = array();
 			}
-			
+
 			// Update all map settings
 			foreach ($params as $key => $value) {
 				// Cast zoom to integer
 				if ($key === 'hvnly_map_zoom') {
-					$all_settings[$group][$key] = (int) $value;
+					$all_settings[ $group ][ $key ] = (int) $value;
 				} else {
-					$all_settings[$group][$key] = $value;
+					$all_settings[ $group ][ $key ] = $value;
 				}
 			}
 		} elseif ( $group === 'contact-agent' ) {
@@ -542,12 +542,12 @@ class PluginSettingsAPI {
 
 			$all_settings[ $group ] = $saved;
 		} elseif ($group === 'performance') {
-			if (!isset($all_settings[$group]) || !is_array($all_settings[$group])) {
-				$all_settings[$group] = array();
+			if ( ! isset($all_settings[ $group ]) || ! is_array($all_settings[ $group ])) {
+				$all_settings[ $group ] = array();
 			}
 
 			foreach ($params as $key => $value) {
-				$all_settings[$group][$key] = $value;
+				$all_settings[ $group ][ $key ] = $value;
 			}
 
 			if ( array_key_exists( 'hvnly_cache_enabled', $params ) ) {
@@ -561,7 +561,7 @@ class PluginSettingsAPI {
 					);
 				}
 			}
-		}else {
+		} else {
 			// For non-search groups, deep-merge with existing settings.
 			if ( isset( $all_settings[ $group ] ) && is_array( $all_settings[ $group ] ) ) {
 				if ( function_exists( 'hvnly_deep_merge_settings' ) ) {
@@ -577,20 +577,20 @@ class PluginSettingsAPI {
 		if ( class_exists( 'HvnlyNab\Api\Type\Settings\SettingsSchema' ) && isset( $all_settings[ $group ] ) && is_array( $all_settings[ $group ] ) ) {
 			$all_settings[ $group ] = SettingsSchema::validate_group( $group, $all_settings[ $group ] );
 		}
-		
+
 		update_option($this->storage_key, $all_settings);
-		
-		do_action('hvnly_settings_updated', $group, $all_settings[$group]);
-		
-		return rest_ensure_response([
+
+		do_action('hvnly_settings_updated', $group, $all_settings[ $group ]);
+
+		return rest_ensure_response(array(
 			'success' => true,
-			'data' => $all_settings[$group],
+			'data' => $all_settings[ $group ],
 			'message' => sprintf(
 				/* translators: %s: Settings group name (e.g., General, Design, Search) */
 				__('%s settings saved successfully', 'havenlytics'),
 				ucfirst($group)
-			)
-		]);
+			),
+		));
 	}
 
 	/**
@@ -807,34 +807,34 @@ class PluginSettingsAPI {
      * @param WP_REST_Request $request Request object.
      * @return WP_REST_Response|WP_Error Response object or error.
      */
-    public function sync_view_type($request) {
+    public function sync_view_type( $request ) {
         $params = $request->get_json_params();
-        
-        if (empty($params) || !isset($params['view_type'])) {
+
+        if (empty($params) || ! isset($params['view_type'])) {
             return new WP_Error(
                 'invalid_data',
                 __('View type is required', 'havenlytics'),
-                array('status' => 400)
+                array( 'status' => 400 )
             );
         }
-        
-        $view_type = sanitize_text_field($params['view_type']);
-        $allowed_views = array('GRID', 'LIST');
-        
-        if (!in_array($view_type, $allowed_views, true)) {
+
+        $view_type     = sanitize_text_field($params['view_type']);
+        $allowed_views = array( 'GRID', 'LIST' );
+
+        if ( ! in_array($view_type, $allowed_views, true)) {
             return new WP_Error(
                 'invalid_view_type',
                 __('Invalid view type. Must be GRID or LIST.', 'havenlytics'),
-                array('status' => 400)
+                array( 'status' => 400 )
             );
         }
-        
+
         $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
-        $synced = $settings_manager->sync_property_view_type($view_type);
-        
+        $synced           = $settings_manager->sync_property_view_type($view_type);
+
         // Get updated settings after sync
         $all_settings = get_option('hvnly_plugin_settings', array());
-        
+
         return rest_ensure_response(array(
             'success' => true,
             'synced' => $synced,
@@ -848,7 +848,7 @@ class PluginSettingsAPI {
             ),
         ));
     }
-    
+
 	/**
 	 * Sync AJAX Load More status in search settings.
 	 *
@@ -856,36 +856,36 @@ class PluginSettingsAPI {
 	 * @param WP_REST_Request $request Request object.
 	 * @return WP_REST_Response|WP_Error Response object or error.
 	 */
-	public function sync_ajax_load_more($request) {
+	public function sync_ajax_load_more( $request ) {
 		$params = $request->get_json_params();
-		
-		if (empty($params) || !isset($params['ajax_load_more_enabled'])) {
+
+		if (empty($params) || ! isset($params['ajax_load_more_enabled'])) {
 			return new WP_Error(
 				'invalid_data',
 				__('AJAX Load More status is required', 'havenlytics'),
-				array('status' => 400)
+				array( 'status' => 400 )
 			);
 		}
-		
+
 		$ajax_load_more_enabled = (bool) $params['ajax_load_more_enabled'];
-		
+
 		$settings = get_option('hvnly_plugin_settings', array());
-		if (!is_array($settings)) {
+		if ( ! is_array($settings)) {
 			$settings = array();
 		}
-		
-		if (!isset($settings['search']) || !is_array($settings['search'])) {
+
+		if ( ! isset($settings['search']) || ! is_array($settings['search'])) {
 			$settings['search'] = array();
 		}
-		
+
 		$settings['search']['hvnly_enableAjaxLoadMore'] = $ajax_load_more_enabled;
 		update_option('hvnly_plugin_settings', $settings);
-		
+
 		$settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
 		$settings_manager->clear_cache();
-		
+
 		$all_settings = get_option('hvnly_plugin_settings', array());
-		
+
 		return rest_ensure_response(array(
 			'success' => true,
 			'synced' => true,
@@ -897,5 +897,4 @@ class PluginSettingsAPI {
 				: __('AJAX Load More disabled', 'havenlytics'),
 		));
 	}
-
 }

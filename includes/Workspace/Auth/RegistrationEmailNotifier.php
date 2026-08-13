@@ -269,7 +269,7 @@ final class RegistrationEmailNotifier {
 		);
 
 		// Sprint 24C: written to sound like a person, not a state machine.
-		$intros = array(
+		$intros           = array(
 			EmailConstants::TYPE_WS_REG_APPROVED  => __( 'Good news — your workspace has been approved. You can sign in now and start adding listings.', 'havenlytics' ),
 			EmailConstants::TYPE_WS_REG_REJECTED  => __( 'We were not able to approve your workspace registration. If you think this is a mistake, reply to this email or get in touch with the team.', 'havenlytics' ),
 			EmailConstants::TYPE_WS_REG_SUSPENDED => __( 'Your workspace access has been paused, so you will not be able to sign in for now. Get in touch and we will sort it out with you.', 'havenlytics' ),
@@ -317,8 +317,8 @@ final class RegistrationEmailNotifier {
 	 * @return string
 	 */
 	private function resolve_subject( string $email_type, array $context ): string {
-		$site = (string) ( $context['site_name'] ?? get_bloginfo( 'name' ) );
-		$map  = array(
+		$site    = (string) ( $context['site_name'] ?? get_bloginfo( 'name' ) );
+		$map     = array(
 			EmailConstants::TYPE_WS_REG_APPROVED     => sprintf( /* translators: %s: site name. */ __( 'Your workspace is ready — %s', 'havenlytics' ), $site ),
 			EmailConstants::TYPE_WS_REG_REJECTED     => sprintf( /* translators: %s: site name. */ __( 'About your registration — %s', 'havenlytics' ), $site ),
 			EmailConstants::TYPE_WS_REG_SUSPENDED    => sprintf( /* translators: %s: site name. */ __( 'Your account has been paused — %s', 'havenlytics' ), $site ),
@@ -398,7 +398,7 @@ final class RegistrationEmailNotifier {
 
 		$agent_name = (string) ( $context['user_name'] ?? '' );
 
-		$admin_context = array_merge(
+		$admin_context              = array_merge(
 			$context,
 			array(
 				'email_type'  => EmailConstants::TYPE_WS_REG_ADMIN_ALERT,

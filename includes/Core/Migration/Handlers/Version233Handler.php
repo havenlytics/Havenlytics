@@ -33,7 +33,7 @@ class Version233Handler implements MigrationInterface {
     }
 
     public function is_needed(): bool {
-        $config = get_option( self::PROPERTY_BUILDER_KEY, [] );
+        $config = get_option( self::PROPERTY_BUILDER_KEY, array() );
         if ( empty( $config ) || ! is_array( $config ) ) {
             return false;
         }
@@ -42,7 +42,7 @@ class Version233Handler implements MigrationInterface {
     }
 
     public function up(): bool {
-        $config = get_option( self::PROPERTY_BUILDER_KEY, [] );
+        $config = get_option( self::PROPERTY_BUILDER_KEY, array() );
         if ( empty( $config ) || ! is_array( $config ) ) {
             $this->log( 'No builder config to update', 'info', '2.3.3' );
             return true;
@@ -72,7 +72,7 @@ class Version233Handler implements MigrationInterface {
      */
     private function config_has_map_name_mismatch( array $config ): bool {
         foreach ( $config as $section ) {
-            foreach ( $section['fields'] ?? [] as $field ) {
+            foreach ( $section['fields'] ?? array() as $field ) {
                 if ( ( $field['group_type'] ?? '' ) !== 'map' ) {
                     continue;
                 }
@@ -106,10 +106,10 @@ class Version233Handler implements MigrationInterface {
                 if ( $base_id === '' ) {
                     continue;
                 }
-                $field['address_field_name'] = $base_id . '_address';
-                $field['lat_field_name']     = $base_id . '_latitude';
-                $field['lng_field_name']     = $base_id . '_longitude';
-                $field['map_field_name']     = $base_id . '_preview';
+                $field['address_field_name']       = $base_id . '_address';
+                $field['lat_field_name']           = $base_id . '_latitude';
+                $field['lng_field_name']           = $base_id . '_longitude';
+                $field['map_field_name']           = $base_id . '_preview';
                 $section['fields'][ $field_index ] = $field;
             }
         }

@@ -50,12 +50,12 @@ final class ImportJob {
 			);
 		}
 
-		$workdir      = '';
-		$warnings     = array();
-		$entities     = null;
-		$manifest     = null;
-		$media_index  = null;
-		$files        = array();
+		$workdir     = '';
+		$warnings    = array();
+		$entities    = null;
+		$manifest    = null;
+		$media_index = null;
+		$files       = array();
 
 		if ( ! empty( $options['entities'] ) && is_array( $options['entities'] ) ) {
 			$entities = $options['entities'];
@@ -141,9 +141,18 @@ final class ImportJob {
 		);
 
 		$support = array(
-			'terms'    => array( 'enabled' => ! empty( $options['include_terms'] ), 'importer' => TermsImporter::class ),
-			'agencies' => array( 'enabled' => ! empty( $options['include_agencies'] ), 'importer' => AgenciesImporter::class ),
-			'agents'   => array( 'enabled' => ! empty( $options['include_agents'] ), 'importer' => AgentsImporter::class ),
+			'terms'    => array(
+				'enabled' => ! empty( $options['include_terms'] ),
+				'importer' => TermsImporter::class,
+			),
+			'agencies' => array(
+				'enabled' => ! empty( $options['include_agencies'] ),
+				'importer' => AgenciesImporter::class,
+			),
+			'agents'   => array(
+				'enabled' => ! empty( $options['include_agents'] ),
+				'importer' => AgentsImporter::class,
+			),
 		);
 
 		foreach ( $support as $key => $section ) {
@@ -237,7 +246,7 @@ final class ImportJob {
 			}
 			$data = $media_run->data();
 			if ( is_array( $data ) ) {
-				$media_result = array(
+				$media_result    = array(
 					'created' => absint( $data['created'] ?? 0 ),
 					'skipped' => absint( $data['skipped'] ?? 0 ),
 					'failed'  => absint( $data['failed'] ?? 0 ),
@@ -290,7 +299,7 @@ final class ImportJob {
 			'check_capability'     => true,
 		);
 
-		$merged = array_merge( $defaults, $options );
+		$merged                         = array_merge( $defaults, $options );
 		$merged['duplicate_policy']     = DuplicateDetector::normalize_policy( (string) $merged['duplicate_policy'] );
 		$merged['builder_policy']       = BuilderImportPolicy::normalize_policy( (string) $merged['builder_policy'] );
 		$merged['include_terms']        = (bool) $merged['include_terms'];

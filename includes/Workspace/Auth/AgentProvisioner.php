@@ -76,7 +76,7 @@ final class AgentProvisioner {
 	 * @return mixed
 	 */
 	public static function with_authorized_link_write( callable $callback ) {
-		$prev                 = self::$allow_link_write;
+		$prev                   = self::$allow_link_write;
 		self::$allow_link_write = true;
 		try {
 			return $callback();
@@ -93,7 +93,7 @@ final class AgentProvisioner {
 	 * @param array<string, mixed> $args    Optional: display_name, user_email, status (publish|pending).
 	 * @return int|WP_Error Agent post ID.
 	 */
-	public function ensure_agent_for_user( int $user_id, array $args = [] ) {
+	public function ensure_agent_for_user( int $user_id, array $args = array() ) {
 		$user_id = absint( $user_id );
 		if ( $user_id <= 0 ) {
 			return new WP_Error(
@@ -246,7 +246,10 @@ final class AgentProvisioner {
 			return $linked;
 		}
 
-		$this->sync_defaults( $agent_id, $user_id, $user, array_merge( $args, array( 'force_registered_at' => true, 'skip_link' => true ) ) );
+		$this->sync_defaults( $agent_id, $user_id, $user, array_merge( $args, array(
+			'force_registered_at' => true,
+			'skip_link' => true,
+		) ) );
 
 		if ( $email !== '' ) {
 			update_post_meta( $agent_id, AgentConstants::META_EMAIL, $email );
@@ -302,7 +305,7 @@ final class AgentProvisioner {
 				array(
 					'status'           => 409,
 					'current_user_id'  => $current,
-					'requested_user_id'=> $user_id,
+					'requested_user_id' => $user_id,
 				)
 			);
 		}
@@ -328,7 +331,7 @@ final class AgentProvisioner {
 						),
 						array(
 							'status'           => 409,
-							'existing_agent_id'=> (int) $owner_id,
+							'existing_agent_id' => (int) $owner_id,
 						)
 					);
 				}
@@ -481,7 +484,7 @@ final class AgentProvisioner {
 	 * @return mixed
 	 */
 	public static function without_auto_agent_provision( callable $callback ) {
-		$prev = self::$suppress_auto_agent_provision;
+		$prev                                = self::$suppress_auto_agent_provision;
 		self::$suppress_auto_agent_provision = true;
 		try {
 			return $callback();
@@ -497,7 +500,7 @@ final class AgentProvisioner {
 	 * @return mixed
 	 */
 	public static function without_auto_user_provision( callable $callback ) {
-		$prev = self::$suppress_auto_user_provision;
+		$prev                               = self::$suppress_auto_user_provision;
 		self::$suppress_auto_user_provision = true;
 		try {
 			return $callback();

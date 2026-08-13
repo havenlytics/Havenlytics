@@ -30,16 +30,16 @@ final class DuplicateDetector {
 	public const POLICY_OVERWRITE  = 'overwrite';
 	public const POLICY_CREATE_NEW = 'create_new';
 
-	public const META_UNIQUE_ID  = '_hvnly_unique_property_id';
-	public const META_MLS        = '_hvnly_property_mls_number';
-	public const META_REFERENCE  = '_hvnly_property_reference_number';
+	public const META_UNIQUE_ID = '_hvnly_unique_property_id';
+	public const META_MLS       = '_hvnly_property_mls_number';
+	public const META_REFERENCE = '_hvnly_property_reference_number';
 
 	/**
 	 * @param string $policy Policy string.
 	 * @return string Normalized policy.
 	 */
 	public static function normalize_policy( string $policy ): string {
-		$policy = strtolower( trim( $policy ) );
+		$policy  = strtolower( trim( $policy ) );
 		$allowed = array(
 			self::POLICY_SKIP,
 			self::POLICY_UPDATE,

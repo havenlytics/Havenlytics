@@ -210,8 +210,8 @@ final class InquiryBlockEditorSupport {
 
 		global $wpdb;
 
-		$like     = '%' . $wpdb->esc_like( trim( $term ) ) . '%';
-		$meta_in  = implode(
+		$like    = '%' . $wpdb->esc_like( trim( $term ) ) . '%';
+		$meta_in = implode(
 			',',
 			array_map(
 				static function ( $key ) use ( $wpdb ) {
@@ -220,7 +220,7 @@ final class InquiryBlockEditorSupport {
 				self::PROPERTY_SEARCH_META
 			)
 		);
-		$exists = $wpdb->prepare(
+		$exists  = $wpdb->prepare(
 			" EXISTS (
 				SELECT 1 FROM {$wpdb->postmeta} hvnly_picker_pm
 				WHERE hvnly_picker_pm.post_id = {$wpdb->posts}.ID

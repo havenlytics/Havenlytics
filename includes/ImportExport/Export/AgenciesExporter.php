@@ -86,7 +86,7 @@ final class AgenciesExporter {
 			foreach ( self::META_KEYS as $key ) {
 				$val = get_term_meta( (int) $term->term_id, $key, true );
 				if ( '' !== (string) $val && false !== $val ) {
-					$short           = preg_replace( '/^hvnly_agency_/', '', $key );
+					$short          = preg_replace( '/^hvnly_agency_/', '', $key );
 					$meta[ $short ] = $val;
 				}
 			}

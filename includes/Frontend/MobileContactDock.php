@@ -237,7 +237,7 @@ class MobileContactDock {
 		if ( ! empty( $settings['show_directions'] ) ) {
 			$coords = self::resolve_coordinates( $property_id );
 			if ( ! empty( $coords['lat'] ) && ! empty( $coords['lng'] ) ) {
-				$query = rawurlencode( $coords['lat'] . ',' . $coords['lng'] );
+				$query                 = rawurlencode( $coords['lat'] . ',' . $coords['lng'] );
 				$catalog['directions'] = array(
 					'id'     => 'directions',
 					'label'  => __( 'Directions', 'havenlytics' ),

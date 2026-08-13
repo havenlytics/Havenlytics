@@ -49,7 +49,7 @@ $hvnly_toast_data = function_exists('hvnly_get_favorite_toast_data')
 
         <?php if ($hvnly_save_enabled && $hvnly_property_id > 0) : ?>
         <button type="button"
-            class="hvnly-property-single__action-btn hvnly-property-single__save-btn hvnly-property--grid-list--favorite<?php echo $hvnly_is_favorited ? ' is-favorited' : ''; ?>"
+            class="hvnly-action-toggle hvnly-action-toggle--labeled hvnly-property-single__action-btn hvnly-property-single__save-btn hvnly-property--grid-list--favorite<?php echo $hvnly_is_favorited ? ' is-favorited' : ''; ?>"
             data-hvnly-favorite="1"
             data-property-id="<?php echo esc_attr($hvnly_property_id); ?>"
             data-property-title="<?php echo esc_attr($hvnly_toast_data['title']); ?>"
@@ -71,7 +71,7 @@ $hvnly_toast_data = function_exists('hvnly_get_favorite_toast_data')
         ?>
 
         <?php if ($hvnly_print_enabled) : ?>
-        <button type="button" class="hvnly-property-single__action-btn hvnly-property-single__print-btn"
+        <button type="button" class="hvnly-ui-control hvnly-property-single__action-btn hvnly-property-single__print-btn"
             onclick="window.print();" aria-label="<?php esc_attr_e('Print this property', 'havenlytics'); ?>">
             <svg class="hvnly-icon" aria-hidden="true"><use xlink:href="#hvnly-print"></use></svg>
             <span class="hvnly-action-text"><?php esc_html_e('Print', 'havenlytics'); ?></span>

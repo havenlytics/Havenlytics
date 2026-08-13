@@ -18,7 +18,7 @@ $hvnly_agent_type     = isset( $args['agent_type'] ) ? sanitize_key( (string) $a
 $hvnly_agent_avatar   = isset( $args['agent_avatar'] ) ? (string) $args['agent_avatar'] : '';
 $hvnly_agent_position = isset( $args['agent_position'] ) ? (string) $args['agent_position'] : '';
 $hvnly_button_label   = isset( $args['label'] ) ? (string) $args['label'] : __( 'Contact Agent', 'havenlytics' );
-$hvnly_button_class   = isset( $args['class'] ) ? (string) $args['class'] : 'hvnly-property-single__agent-btn hvnly-property-single__agent-btn--contact';
+$hvnly_button_class   = isset( $args['class'] ) ? (string) $args['class'] : 'hvnly-btn hvnly-btn--primary hvnly-property-single__agent-btn hvnly-property-single__agent-btn--contact hvnly-contact-agent__open-btn';
 $hvnly_availability   = isset( $args['agent_availability'] ) ? sanitize_key( (string) $args['agent_availability'] ) : '';
 $hvnly_accepts        = ! isset( $args['agent_accepts_inquiries'] ) || ! empty( $args['agent_accepts_inquiries'] );
 

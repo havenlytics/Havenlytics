@@ -70,7 +70,7 @@ final class ProfileController {
 	 * @return array<string, mixed>
 	 */
 	public function filter_localize( array $data ): array {
-		$rest = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
+		$rest            = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
 		$rest['profile'] = esc_url_raw( rest_url( WorkspaceConstants::REST_NAMESPACE . '/profile' ) );
 		$data['rest']    = $rest;
 		return $data;

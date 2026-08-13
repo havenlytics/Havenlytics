@@ -78,11 +78,11 @@ final class SidebarWidgetInstaller {
 			++$instance_id;
 		}
 
-		$defaults = PropertyAgentWidgetRenderer::get_defaults();
+		$defaults          = PropertyAgentWidgetRenderer::get_defaults();
 		$defaults['title'] = __( 'Contact Agent', 'havenlytics' );
 
 		$instances[ $instance_id ] = $defaults;
-		$instances['_multiwidget']   = 1;
+		$instances['_multiwidget'] = 1;
 
 		update_option( $option_key, $instances );
 

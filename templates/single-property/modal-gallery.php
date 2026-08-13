@@ -20,17 +20,17 @@ if (!defined('ABSPATH')) {
 <!-- New Fancybox Gallery Popup -->
 <?php // Sprint 31D: controls were <span>s — no keyboard access, no accessible name. ?>
 <div class="hvnly-property-single__fancybox-popup" id="hvnlyPropertySingleFancyboxGallery">
-    <button type="button" class="hvnly-property-single__fancybox-close" aria-label="<?php esc_attr_e('Close gallery', 'havenlytics'); ?>">
+    <button type="button" class="hvnly-ui-control hvnly-property-single__fancybox-close" aria-label="<?php esc_attr_e('Close gallery', 'havenlytics'); ?>">
         <svg class="hvnly-icon hvnly-icon-thin" aria-hidden="true"><use xlink:href="#hvnly-times"></use></svg>
     </button>
-    <button type="button" class="hvnly-property-single__fancybox-fullscreen" aria-label="<?php esc_attr_e('Toggle fullscreen', 'havenlytics'); ?>">
+    <button type="button" class="hvnly-ui-control hvnly-property-single__fancybox-fullscreen" aria-label="<?php esc_attr_e('Toggle fullscreen', 'havenlytics'); ?>">
         <svg class="hvnly-icon hvnly-expand" aria-hidden="true"><use xlink:href="#hvnly-expand"></use></svg>
         <svg class="hvnly-icon hvnly-compress" aria-hidden="true"><use xlink:href="#hvnly-compress"></use></svg>
     </button>
-    <button type="button" class="hvnly-property-single__fancybox-nav hvnly-property-single__fancybox-nav--prev" aria-label="<?php esc_attr_e('Previous image', 'havenlytics'); ?>">
+    <button type="button" class="hvnly-ui-control hvnly-property-single__fancybox-nav hvnly-property-single__fancybox-nav--prev" aria-label="<?php esc_attr_e('Previous image', 'havenlytics'); ?>">
         <svg class="hvnly-icon hvnly-icon-thin" aria-hidden="true"><use xlink:href="#hvnly-chevron-left"></use></svg>
     </button>
-    <button type="button" class="hvnly-property-single__fancybox-nav hvnly-property-single__fancybox-nav--next" aria-label="<?php esc_attr_e('Next image', 'havenlytics'); ?>">
+    <button type="button" class="hvnly-ui-control hvnly-property-single__fancybox-nav hvnly-property-single__fancybox-nav--next" aria-label="<?php esc_attr_e('Next image', 'havenlytics'); ?>">
         <svg class="hvnly-icon hvnly-icon-thin" aria-hidden="true"><use xlink:href="#hvnly-chevron-right"></use></svg>
     </button>
     <div class="hvnly-property-single__fancybox-counter">1 / 5</div>

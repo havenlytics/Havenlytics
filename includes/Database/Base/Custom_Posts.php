@@ -3,13 +3,13 @@
 /**
  * Base Abstract Class for Registering Custom Post Types
  *
- * This abstract class provides a reusable foundation for creating 
+ * This abstract class provides a reusable foundation for creating
  * custom post types in WordPress. It includes:
  * - Default label generation
  * - Default settings (archive, menu, supports, etc.)
  * - Registration of an additional custom post status ("expired")
  *
- * Extend this class and implement `register_custom_post_type()` 
+ * Extend this class and implement `register_custom_post_type()`
  * in child classes for specific post types.
  *
  * @package HvnlyNab\Database\Base
@@ -18,15 +18,15 @@
 
 namespace HvnlyNab\Database\Base;
 
-if (! defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit; // Prevent direct access
 }
 
 /**
  * Abstract Class Custom_Posts
  */
-abstract class Custom_Posts
-{
+abstract class Custom_Posts {
+
 
     /**
      * @var string $name Internal post type name/slug.
@@ -49,9 +49,8 @@ abstract class Custom_Posts
      * Automatically hooks into WordPress to register the custom post type
      * when WordPress initializes.
      */
-    public function __construct()
-    {
-        add_action('init', [$this, 'register_custom_post_type'], 0);
+    public function __construct() {
+        add_action('init', array( $this, 'register_custom_post_type' ), 0);
     }
 
     /**
@@ -74,11 +73,10 @@ abstract class Custom_Posts
      *
      * @return void
      */
-    public function init($type, $singular_label, $plural_label, $settings = [], $labels = [])
-    {
+    public function init( $type, $singular_label, $plural_label, $settings = array(), $labels = array() ) {
 
         // Default labels for the post type
-        $default_labels = [
+        $default_labels = array(
             'name'          => esc_html($plural_label),
             'singular_name' => esc_html($singular_label),
 
@@ -110,28 +108,28 @@ abstract class Custom_Posts
             'parent_item_colon'  => sprintf(__('Parent %s:', 'havenlytics'), esc_html($singular_label)),
 
             'menu_name' => esc_html($plural_label),
-        ];
+        );
 
         // Default settings for the post type
-        $default_settings = [
+        $default_settings = array(
             'labels'        => array_merge($default_labels, $labels),
             'public'        => true,
             'has_archive'   => true,
             'menu_icon'     => '', // Customize icon if needed
             'menu_position' => 2,
-            'supports'      => ['title', 'editor', 'thumbnail'],
-            'rewrite'       => [
+            'supports'      => array( 'title', 'editor', 'thumbnail' ),
+            'rewrite'       => array(
                 // Example: Generate slug from label → use text_to_slug helper if available
                 // 'slug'       => HVNLY_NAB()->Helper->text_to_slug( sanitize_text_field( $plural_label ) ),
                 'with_front' => false,
-            ],
-        ];
+            ),
+        );
 
         // Register the custom post type
         register_post_type($type, array_merge($default_settings, $settings));
 
         // Register custom post status "Expired"
-        register_post_status('expired', [
+        register_post_status('expired', array(
             'label'                     => _x('Expired', 'post status', 'havenlytics'),
             'public'                    => true,
             'exclude_from_search'       => false,
@@ -139,7 +137,7 @@ abstract class Custom_Posts
             'show_in_admin_status_list' => true,
             /* translators: %s: number of expired posts */
             'label_count' => _n_noop('Expired (%s)', 'Expired (%s)', 'havenlytics'),
-        ]);
+        ));
     }
 
     /**
@@ -151,13 +149,12 @@ abstract class Custom_Posts
      * @return bool True if Gutenberg editor should be enabled, false otherwise.
      * @since 2.0.0
      */
-    protected function is_gutenberg_enabled()
-    {
+    protected function is_gutenberg_enabled() {
         // Try to get settings from SettingsManager if available.
         if (class_exists('\HvnlyNab\Core\SettingsManager')) {
             $settings_manager = \HvnlyNab\Core\SettingsManager::get_instance();
             $general_settings = $settings_manager->get_general_settings();
-            
+
             // Check if Gutenberg editor is enabled in settings.
             if (isset($general_settings['hvnly_EnabledGutenbergEditor'])) {
                 return ! empty( $general_settings['hvnly_EnabledGutenbergEditor'] );
@@ -166,7 +163,7 @@ abstract class Custom_Posts
 
         // Fallback: Check option directly.
         $settings = get_option('hvnly_plugin_settings', array());
-        
+
         if (isset($settings['general']['hvnly_EnabledGutenbergEditor'])) {
             return ! empty( $settings['general']['hvnly_EnabledGutenbergEditor'] );
         }

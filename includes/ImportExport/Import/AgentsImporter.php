@@ -71,7 +71,7 @@ final class AgentsImporter {
 		}
 
 		foreach ( $rows as $row ) {
-			$result = self::upsert( $row, $detector, $remapper, $policy );
+			$result   = self::upsert( $row, $detector, $remapper, $policy );
 			$created += $result['created'];
 			$updated += $result['updated'];
 			$skipped += $result['skipped'];
@@ -155,7 +155,7 @@ final class AgentsImporter {
 			$insert_slug = self::unique_slug( $slug );
 		}
 
-		$status = sanitize_key( (string) ( $row['status'] ?? 'publish' ) );
+		$status         = sanitize_key( (string) ( $row['status'] ?? 'publish' ) );
 		$allowed_status = array( 'publish', 'draft', 'pending', 'private' );
 		if ( ! in_array( $status, $allowed_status, true ) ) {
 			$status = 'publish';
@@ -189,7 +189,10 @@ final class AgentsImporter {
 			$out['warnings'][] = array(
 				'code'    => 'hvnly_ie_agent_insert_failed',
 				'message' => $post_id->get_error_message(),
-				'context' => array( 'slug' => $slug, 'email' => $email ),
+				'context' => array(
+					'slug' => $slug,
+					'email' => $email,
+				),
 			);
 			return $out;
 		}
@@ -215,7 +218,7 @@ final class AgentsImporter {
 	 * @return bool
 	 */
 	private static function update_agent( int $post_id, array $row, IdRemapper $remapper, array &$warnings ): bool {
-		$status = sanitize_key( (string) ( $row['status'] ?? 'publish' ) );
+		$status         = sanitize_key( (string) ( $row['status'] ?? 'publish' ) );
 		$allowed_status = array( 'publish', 'draft', 'pending', 'private' );
 		if ( ! in_array( $status, $allowed_status, true ) ) {
 			$status = 'publish';
@@ -527,7 +530,7 @@ final class AgentsImporter {
 			$term_id = $remapper->get_agency( $agency_slug );
 			if ( $term_id <= 0 ) {
 				// Fall back to live lookup if remapper missed (e.g. agency section skipped).
-				$term = get_term_by( 'slug', $agency_slug, AgentConstants::TAXONOMY_AGENCY );
+				$term    = get_term_by( 'slug', $agency_slug, AgentConstants::TAXONOMY_AGENCY );
 				$term_id = ( $term instanceof \WP_Term ) ? (int) $term->term_id : 0;
 			}
 			if ( $term_id <= 0 ) {

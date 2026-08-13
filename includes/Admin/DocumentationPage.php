@@ -77,11 +77,11 @@ final class DocumentationPage {
 			wp_die( esc_html__( 'You do not have permission to access this page.', 'havenlytics' ) );
 		}
 
-		$system   = self::get_system_information();
-		$help     = self::get_quick_help_cards();
-		$videos   = self::get_video_cards();
-		$support  = self::get_support_cards();
-		$links    = self::get_useful_links();
+		$system  = self::get_system_information();
+		$help    = self::get_quick_help_cards();
+		$videos  = self::get_video_cards();
+		$support = self::get_support_cards();
+		$links   = self::get_useful_links();
 		?>
 		<div class="wrap hvnly-docs-wrap">
 			<section class="hvnly-docs-hero" aria-labelledby="hvnly-docs-hero-title">

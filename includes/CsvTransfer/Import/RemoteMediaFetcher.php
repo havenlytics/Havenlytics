@@ -142,7 +142,10 @@ final class RemoteMediaFetcher {
 	public static function process_post( int $post_id, int $budget, string $job_id = '' ): array {
 		$pending = get_post_meta( $post_id, RowImporter::META_PENDING_MEDIA, true );
 		if ( ! is_array( $pending ) || empty( $pending ) || $budget <= 0 ) {
-			return array( 'consumed' => 0, 'warnings' => array() );
+			return array(
+				'consumed' => 0,
+				'warnings' => array(),
+			);
 		}
 
 		$pending_job = isset( $pending['job_id'] ) ? (string) $pending['job_id'] : '';
@@ -151,7 +154,10 @@ final class RemoteMediaFetcher {
 			if ( '' === $pending_job ) {
 				delete_post_meta( $post_id, RowImporter::META_PENDING_MEDIA );
 			}
-			return array( 'consumed' => 0, 'warnings' => array() );
+			return array(
+				'consumed' => 0,
+				'warnings' => array(),
+			);
 		}
 
 		self::require_media_includes();
@@ -243,7 +249,10 @@ final class RemoteMediaFetcher {
 			update_post_meta( $post_id, RowImporter::META_PENDING_MEDIA, $pending );
 		}
 
-		return array( 'consumed' => $consumed, 'warnings' => $warnings );
+		return array(
+			'consumed' => $consumed,
+			'warnings' => $warnings,
+		);
 	}
 
 	/**
@@ -368,8 +377,8 @@ final class RemoteMediaFetcher {
 		}
 
 		// Drop query / fragment.
-		$path = isset( $parts['path'] ) ? (string) $parts['path'] : '';
-		$base = ( isset( $parts['scheme'] ) ? $parts['scheme'] . '://' : 'https://' )
+		$path       = isset( $parts['path'] ) ? (string) $parts['path'] : '';
+		$base       = ( isset( $parts['scheme'] ) ? $parts['scheme'] . '://' : 'https://' )
 			. $parts['host']
 			. ( isset( $parts['port'] ) ? ':' . $parts['port'] : '' )
 			. $path;
@@ -396,7 +405,7 @@ final class RemoteMediaFetcher {
 			return 0;
 		}
 
-		$baseurl = untrailingslashit( (string) $uploads['baseurl'] );
+		$baseurl    = untrailingslashit( (string) $uploads['baseurl'] );
 		$candidates = array( $baseurl );
 		if ( 0 === strpos( $baseurl, 'http://' ) ) {
 			$candidates[] = 'https://' . substr( $baseurl, 7 );
@@ -613,7 +622,7 @@ final class RemoteMediaFetcher {
 	 * @return void
 	 */
 	private static function write_gallery_ids( int $post_id, array $ids ): void {
-		$csv = implode( ',', array_map( 'absint', $ids ) );
+		$csv  = implode( ',', array_map( 'absint', $ids ) );
 		$keys = array_filter(
 			array(
 				SchemaTargets::builder_key( 'gallery', 'images' ),
@@ -667,7 +676,7 @@ final class RemoteMediaFetcher {
 	 */
 	private static function write_documents( int $post_id, array $documents ): void {
 		// Deduplicate by URL.
-		$seen = array();
+		$seen  = array();
 		$clean = array();
 		foreach ( $documents as $doc ) {
 			if ( ! is_array( $doc ) ) {

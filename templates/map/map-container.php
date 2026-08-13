@@ -31,7 +31,7 @@ $hvnly_map_zoom = isset($args['zoom_level']) ? $args['zoom_level'] : (function_e
 
 $hvnly_map_id = 'hvnly-properties-map';
 $hvnly_fullscreen_btn_id = 'hvnly-' . $hvnly_provider . '-map-fullscreen-btn';
-$hvnly_fullscreen_btn_class = 'hvnly-map-fullscreen-btn hvnly-' . $hvnly_provider . '-map-fullscreen-btn';
+$hvnly_fullscreen_btn_class = 'hvnly-ui-control hvnly-map-fullscreen-btn hvnly-' . $hvnly_provider . '-map-fullscreen-btn';
 
 // Debug output disabled for production
 // if ($hvnly_debug) {

@@ -11,17 +11,17 @@
 
 namespace HvnlyNab\Frontend\Query;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
 class PropertyQueryBuilder {
 
-    private $args = [];
-    private $tax_queries = [];
-    private $meta_queries = [];
+    private $args         = array();
+    private $tax_queries  = array();
+    private $meta_queries = array();
 
-    private $defaults = [
+    private $defaults = array(
         'post_type'              => 'hvnly_property',
         'post_status'            => 'publish',
         'posts_per_page'         => 12,
@@ -32,40 +32,40 @@ class PropertyQueryBuilder {
         'ignore_sticky_posts'    => true,
         'update_post_meta_cache' => true,
         'update_post_term_cache' => true,
-    ];
+    );
 
-    public function __construct($initial_args = []) {
+    public function __construct( $initial_args = array() ) {
         $this->args = wp_parse_args($initial_args, $this->defaults);
         $this->reset();
     }
 
     private function reset() {
-        $this->tax_queries = [];
-        $this->meta_queries = [];
+        $this->tax_queries  = array();
+        $this->meta_queries = array();
     }
 
-    public function set_posts_per_page($per_page) {
+    public function set_posts_per_page( $per_page ) {
         $this->args['posts_per_page'] = max(1, absint($per_page));
         return $this;
     }
 
-    public function set_page($page) {
+    public function set_page( $page ) {
         $this->args['paged'] = max(1, absint($page));
         return $this;
     }
 
-    public function set_featured_only($featured_only = true) {
+    public function set_featured_only( $featured_only = true ) {
         if ($featured_only) {
-            $this->meta_queries[] = [
+            $this->meta_queries[] = array(
                 'key'   => '_hvnly_property_featured',
                 'value' => '1',
                 'compare' => '=',
-            ];
+            );
         }
         return $this;
     }
 
-    public function set_order($orderby, $order = 'DESC') {
+    public function set_order( $orderby, $order = 'DESC' ) {
         $orderby = sanitize_key($orderby);
         $order   = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
 
@@ -121,12 +121,12 @@ class PropertyQueryBuilder {
         return $this;
     }
 
-    public function add_taxonomy_filter($taxonomy, $terms, $field = 'slug', $operator = 'IN') {
+    public function add_taxonomy_filter( $taxonomy, $terms, $field = 'slug', $operator = 'IN' ) {
         if (empty($terms)) {
             return $this;
         }
 
-        if (!is_array($terms)) {
+        if ( ! is_array($terms)) {
             $terms = explode(',', (string) $terms);
         }
 
@@ -137,17 +137,17 @@ class PropertyQueryBuilder {
             return $this;
         }
 
-        if (!taxonomy_exists($taxonomy)) {
+        if ( ! taxonomy_exists($taxonomy)) {
             return $this;
         }
 
-        $valid_terms = [];
+        $valid_terms = array();
         foreach ($terms as $term_value) {
             $term = get_term_by('slug', $term_value, $taxonomy);
-            if (!$term || is_wp_error($term)) {
+            if ( ! $term || is_wp_error($term)) {
                 $term = get_term_by('name', $term_value, $taxonomy);
             }
-            if ($term && !is_wp_error($term)) {
+            if ($term && ! is_wp_error($term)) {
                 $valid_terms[] = $term->slug;
             } else {
                 $valid_terms[] = $term_value;
@@ -158,68 +158,68 @@ class PropertyQueryBuilder {
             return $this;
         }
 
-        $this->tax_queries[] = [
+        $this->tax_queries[] = array(
             'taxonomy' => $taxonomy,
             'field'    => $field,
             'terms'    => $valid_terms,
             'operator' => $operator,
-        ];
+        );
 
         return $this;
     }
 
-    public function add_meta_query($query) {
-        if (!empty($query)) {
+    public function add_meta_query( $query ) {
+        if ( ! empty($query)) {
             $this->meta_queries[] = $query;
         }
         return $this;
     }
 
-    public function add_price_range($min, $max) {
+    public function add_price_range( $min, $max ) {
         $min = is_numeric($min) ? floatval($min) : null;
         $max = is_numeric($max) ? floatval($max) : null;
 
         if ($min !== null && $max !== null && $min <= $max) {
-            $this->meta_queries[] = [
+            $this->meta_queries[] = array(
                 'key'     => '_hvnly_property_price',
-                'value'   => [$min, $max],
+                'value'   => array( $min, $max ),
                 'type'    => 'NUMERIC',
                 'compare' => 'BETWEEN',
-            ];
+            );
         } elseif ($min !== null) {
-            $this->meta_queries[] = [
+            $this->meta_queries[] = array(
                 'key'     => '_hvnly_property_price',
                 'value'   => $min,
                 'type'    => 'NUMERIC',
                 'compare' => '>=',
-            ];
+            );
         } elseif ($max !== null) {
-            $this->meta_queries[] = [
+            $this->meta_queries[] = array(
                 'key'     => '_hvnly_property_price',
                 'value'   => $max,
                 'type'    => 'NUMERIC',
                 'compare' => '<=',
-            ];
+            );
         }
         return $this;
     }
 
     public function build() {
         $query_args = $this->args;
-        
-        if (!empty($this->tax_queries)) {
+
+        if ( ! empty($this->tax_queries)) {
             if (count($this->tax_queries) === 1) {
                 $query_args['tax_query'] = $this->tax_queries[0];
             } else {
-                $query_args['tax_query'] = array_merge($this->tax_queries, ['relation' => 'AND']);
+                $query_args['tax_query'] = array_merge($this->tax_queries, array( 'relation' => 'AND' ));
             }
         }
 
-        if (!empty($this->meta_queries)) {
+        if ( ! empty($this->meta_queries)) {
             if (count($this->meta_queries) === 1) {
                 $query_args['meta_query'] = $this->meta_queries[0];
             } else {
-                $query_args['meta_query'] = array_merge($this->meta_queries, ['relation' => 'AND']);
+                $query_args['meta_query'] = array_merge($this->meta_queries, array( 'relation' => 'AND' ));
             }
         }
 
@@ -235,7 +235,7 @@ class PropertyQueryBuilder {
 
     public function run() {
         $query_args = $this->build();
-        $query = new \WP_Query($query_args);
+        $query      = new \WP_Query($query_args);
         $this->reset();
         return $query;
     }

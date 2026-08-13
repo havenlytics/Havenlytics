@@ -71,10 +71,10 @@ if ('gate' === $hvnly_context) :
                     <p class="hvnly-block-saved__gate-text"><?php esc_html_e('Sign in to see the properties you have saved.', 'havenlytics'); ?></p>
                     <div class="hvnly-block-saved__gate-actions">
                         <?php if ('' !== $hvnly_login_url) : ?>
-                            <a class="hvnly-block-saved__btn hvnly-block-saved__btn--primary" href="<?php echo esc_url($hvnly_login_url); ?>"><?php esc_html_e('Sign in', 'havenlytics'); ?></a>
+                            <a class="hvnly-btn hvnly-btn--primary hvnly-block-saved__btn hvnly-block-saved__btn--primary" href="<?php echo esc_url($hvnly_login_url); ?>"><?php esc_html_e('Sign in', 'havenlytics'); ?></a>
                         <?php endif; ?>
                         <?php if ('' !== $hvnly_register_url) : ?>
-                            <a class="hvnly-block-saved__btn hvnly-block-saved__btn--ghost" href="<?php echo esc_url($hvnly_register_url); ?>"><?php esc_html_e('Register', 'havenlytics'); ?></a>
+                            <a class="hvnly-btn hvnly-btn--ghost hvnly-block-saved__btn hvnly-block-saved__btn--ghost" href="<?php echo esc_url($hvnly_register_url); ?>"><?php esc_html_e('Register', 'havenlytics'); ?></a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -189,10 +189,10 @@ if (function_exists('get_option')) {
 			</p>
             <div class="hvnly-block-saved__toolbar-actions">
 				<div class="hvnly-block-saved__view-toggle" data-hvnly-saved-view-toggle>
-					<button type="button" class="hvnly-block-saved__view-btn<?php echo 'list' !== $hvnly_layout ? ' is-active' : ''; ?>" data-view="grid" aria-pressed="<?php echo 'list' !== $hvnly_layout ? 'true' : 'false'; ?>">
+					<button type="button" class="hvnly-ui-control hvnly-block-saved__view-btn<?php echo 'list' !== $hvnly_layout ? ' is-active' : ''; ?>" data-view="grid" aria-pressed="<?php echo 'list' !== $hvnly_layout ? 'true' : 'false'; ?>">
 						<?php esc_html_e('Grid', 'havenlytics'); ?>
 					</button>
-					<button type="button" class="hvnly-block-saved__view-btn<?php echo 'list' === $hvnly_layout ? ' is-active' : ''; ?>" data-view="list" aria-pressed="<?php echo 'list' === $hvnly_layout ? 'true' : 'false'; ?>">
+					<button type="button" class="hvnly-ui-control hvnly-block-saved__view-btn<?php echo 'list' === $hvnly_layout ? ' is-active' : ''; ?>" data-view="list" aria-pressed="<?php echo 'list' === $hvnly_layout ? 'true' : 'false'; ?>">
 						<?php esc_html_e('List', 'havenlytics'); ?>
 					</button>
 				</div>
@@ -201,11 +201,11 @@ if (function_exists('get_option')) {
 						<?php esc_html_e('Compare', 'havenlytics'); ?>
 					</a>
 				<?php endif; ?>
-				<button type="button" class="hvnly-block-saved__btn hvnly-block-saved__btn--ghost hvnly-block-saved__btn--sm" data-hvnly-saved-clear>
+				<button type="button" class="hvnly-btn hvnly-btn--ghost hvnly-btn--sm hvnly-block-saved__btn hvnly-block-saved__btn--ghost hvnly-block-saved__btn--sm" data-hvnly-saved-clear>
 					<?php esc_html_e('Clear All', 'havenlytics'); ?>
 				</button>
 				<?php if ('' !== $hvnly_browse_url) : ?>
-					<a class="hvnly-block-saved__btn hvnly-block-saved__btn--primary hvnly-block-saved__btn--sm" href="<?php echo esc_url($hvnly_browse_url); ?>"><?php esc_html_e('Find More Homes', 'havenlytics'); ?></a>
+					<a class="hvnly-btn hvnly-btn--primary hvnly-btn--sm hvnly-block-saved__btn hvnly-block-saved__btn--primary hvnly-block-saved__btn--sm" href="<?php echo esc_url($hvnly_browse_url); ?>"><?php esc_html_e('Find More Homes', 'havenlytics'); ?></a>
 				<?php endif; ?>
 			</div>
         </div>
@@ -220,7 +220,7 @@ if (function_exists('get_option')) {
             <h3 class="hvnly-block-saved__empty-title"><?php esc_html_e('No saved properties yet', 'havenlytics'); ?></h3>
             <p class="hvnly-block-saved__empty-text"><?php esc_html_e('Select the heart on any listing to save it here for later.', 'havenlytics'); ?></p>
             <?php if ('' !== $hvnly_browse_url && '' !== $hvnly_empty_btn) : ?>
-                <a class="hvnly-block-saved__btn hvnly-block-saved__btn--primary" href="<?php echo esc_url($hvnly_browse_url); ?>"><?php echo esc_html($hvnly_empty_btn); ?></a>
+                <a class="hvnly-btn hvnly-btn--primary hvnly-block-saved__btn hvnly-block-saved__btn--primary" href="<?php echo esc_url($hvnly_browse_url); ?>"><?php echo esc_html($hvnly_empty_btn); ?></a>
             <?php endif; ?>
         </div>
 

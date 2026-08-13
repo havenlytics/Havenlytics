@@ -452,7 +452,7 @@ final class NotificationRepository {
 	 * @return array<string, mixed>
 	 */
 	private function parse_args( array $args ): array {
-		$parsed = wp_parse_args(
+		$parsed             = wp_parse_args(
 			$args,
 			array(
 				'status'   => '',

@@ -27,7 +27,7 @@ $hvnly_show_retry = $args['show_retry'] ?? true;
     <h3><?php esc_html_e('Map Unavailable', 'havenlytics'); ?></h3>
     <p><?php echo esc_html($hvnly_message); ?></p>
     <?php if ($hvnly_show_retry): ?>
-        <button class="hvnly-retry-map-btn" data-action="retry-map">
+        <button type="button" class="hvnly-ui-control hvnly-retry-map-btn" data-action="retry-map">
             <i class="fas fa-redo"></i> <?php esc_html_e('Retry', 'havenlytics'); ?>
         </button>
     <?php endif; ?>

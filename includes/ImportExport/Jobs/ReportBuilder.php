@@ -37,7 +37,7 @@ final class ReportBuilder {
 			'progress'     => isset( $job['progress'] ) && is_array( $job['progress'] ) ? $job['progress'] : array(),
 			'warnings'     => isset( $job['warnings'] ) && is_array( $job['warnings'] ) ? $job['warnings'] : array(),
 			'errors'       => isset( $job['errors'] ) && is_array( $job['errors'] ) ? $job['errors'] : array(),
-			'warning_count'=> isset( $job['warnings'] ) && is_array( $job['warnings'] ) ? count( $job['warnings'] ) : 0,
+			'warning_count' => isset( $job['warnings'] ) && is_array( $job['warnings'] ) ? count( $job['warnings'] ) : 0,
 			'error_count'  => isset( $job['errors'] ) && is_array( $job['errors'] ) ? count( $job['errors'] ) : 0,
 			'builder'      => isset( $job['builder'] ) && is_array( $job['builder'] ) ? $job['builder'] : null,
 			'media'        => isset( $job['media'] ) && is_array( $job['media'] ) ? $job['media'] : null,

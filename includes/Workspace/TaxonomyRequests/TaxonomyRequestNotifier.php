@@ -162,5 +162,4 @@ final class TaxonomyRequestNotifier {
 			return false;
 		}
 	}
-
 }

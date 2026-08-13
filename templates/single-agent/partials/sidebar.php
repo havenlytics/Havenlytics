@@ -311,7 +311,7 @@ $hvnly_property_count      = count( $hvnly_assigned_properties );
 
 				<div class="hvnly-agent-single__form-actions">
 
-					<button type="submit" class="hvnly-agent-single__submit js-hvnly-contact-agent-submit"<?php echo ! $hvnly_accepts_inquiries ? ' disabled' : ''; ?>>
+					<button type="submit" class="hvnly-btn hvnly-btn--primary hvnly-agent-single__submit js-hvnly-contact-agent-submit"<?php echo ! $hvnly_accepts_inquiries ? ' disabled' : ''; ?>>
 
 						<i class="fas fa-paper-plane" aria-hidden="true"></i>
 

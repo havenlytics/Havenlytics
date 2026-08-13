@@ -1,7 +1,7 @@
 <?php
 /**
  * Property Departments
- * 
+ *
  * @package HvnlyNab\Database\Custom_Taxonomy
  * @since 2.0.0
  */
@@ -11,14 +11,14 @@ use HvnlyNab\Database\Base\Custom_Taxonomy;
 use HvnlyNab\Database\Traits\Taxonomy_Permalink_Manager;
 
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 /**
  * Property_Departments class
  */
-class Property_Departments extends Custom_Taxonomy
-{
+class Property_Departments extends Custom_Taxonomy {
+
 
     use Taxonomy_Permalink_Manager;
 
@@ -30,10 +30,9 @@ class Property_Departments extends Custom_Taxonomy
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
-        
+
         // Initialize permalink manager
         $this->hvnly_initialize_permalink_manager($this->slug);
     }
@@ -43,8 +42,7 @@ class Property_Departments extends Custom_Taxonomy
      *
      * @return void
      */
-    public function register_custom_taxonomy()
-    {
+    public function register_custom_taxonomy() {
 
         // init taxonomy Settings
         $this->init(
@@ -57,10 +55,10 @@ class Property_Departments extends Custom_Taxonomy
                 'public' => true,
                 'publicly_queryable' => true, // KEEP THIS TRUE
                 'query_var' => true,
-                'rewrite' => [
+                'rewrite' => array(
                     'slug' => $this->slug,
                     'with_front' => false,
-                ],
+                ),
             )
         );
     }

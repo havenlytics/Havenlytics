@@ -121,7 +121,7 @@
     align-items: center;
 }
 
-.hvnly-property-search-form .hvnly-property-filter-toggle {
+.hvnly-property-search-form button.hvnly-property-filter-toggle {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -147,10 +147,16 @@
     color: var(--hvnly-color-white);
 }
 
+/* Beat theme-isolation `button … svg { transform: none }` ((0,4,2)) so open state rotates. */
+body.hvnly-plugin-active .hvnly-property-search-form button.hvnly-ui-control.hvnly-property-filter-toggle.active .hvnly-filter-toggle-icon svg,
+body.hvnly-property-archive .hvnly-property-search-form button.hvnly-ui-control.hvnly-property-filter-toggle.active .hvnly-filter-toggle-icon svg,
+.hvnly-content-wrapper .hvnly-property-search-form button.hvnly-ui-control.hvnly-property-filter-toggle.active .hvnly-filter-toggle-icon svg,
+.hvnly-property-search-form button.hvnly-ui-control.hvnly-property-filter-toggle.active .hvnly-filter-toggle-icon svg,
 .hvnly-property-search-form .hvnly-property-filter-toggle.active .hvnly-filter-toggle-icon svg {
     transform: rotate(180deg);
 }
 
+body.hvnly-plugin-active .hvnly-property-search-form button.hvnly-ui-control.hvnly-property-filter-toggle .hvnly-filter-toggle-icon svg,
 .hvnly-property-search-form .hvnly-filter-toggle-icon svg,
 .hvnly-property-search-form .hvnly-search-icon svg {
     transition: transform 0.3s ease;
@@ -180,8 +186,8 @@
     border: 1px solid #e9ecef;
 }
 
-.hvnly-property-search-form 
-.hvnly-property-additional-filters-grid 
+.hvnly-property-search-form
+.hvnly-property-additional-filters-grid
 .hvnly-property-additional-field-item select{
     width: 100%;
     padding: 0.75rem 1rem;
@@ -382,7 +388,7 @@
 /* ======================
     MAIN CONTENT LAYOUT
 ======================= */
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids {
     display: grid;
@@ -394,7 +400,7 @@
 /* ======================
     FILTER SIDEBAR STYLES
 ======================= */
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-sidebar {
     background: var(--hvnly-card-bg);
@@ -407,7 +413,7 @@
     max-height: calc(100vh - 4rem);
     overflow-y: auto;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-header {
     display: flex;
@@ -417,41 +423,41 @@
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--hvnly-border-color);
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-header .hvnly-property-reset-filters-btn {
     background: transparent;
     border: transparent;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-title {
     font-size: 1.25rem;
     font-weight: var(--hvnly-font-weight-regular);
     margin: 0;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-group {
     margin-bottom: 1.5rem;
     border-bottom: 1px solid var(--hvnly-border-color);
     padding-bottom: 1rem;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-group-content .hvnly-property-filter-group {
     margin-bottom: 0;
     border-bottom: 0px solid var(--hvnly-border-color);
     padding-bottom: 0;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-group:last-child {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-group-header {
     display: flex;
@@ -460,7 +466,7 @@
     cursor: pointer;
     padding: 0.5rem 0;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-group-title {
     font-size: 1rem;
@@ -468,31 +474,31 @@
     color: var(--hvnly-text-primary);
     margin: 0;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-group-toggle {
     color: var(--hvnly-text-secondary);
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-group-toggle i {
     font-size: 14px;
     transition: transform 0.3s ease;
     transform: rotate(0deg);
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-group.collapsed .hvnly-property-filter-group-toggle i {
     transform: rotate(180deg);
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-group-content {
     margin-top: 1rem;
     transition: all 0.3s ease;
     overflow: hidden;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-group.collapsed .hvnly-property-filter-group-content {
     margin-top: 0;
@@ -500,7 +506,7 @@
     opacity: 0;
     display: none;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 .hvnly-with-sidebar__contents__grids .hvnly-property-filter-label {
     display: block;
     font-size: var(--hvnly-font-size-label);
@@ -508,7 +514,7 @@
     margin-bottom: 0.35rem;
     color: var(--hvnly-text-primary);
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 .hvnly-with-sidebar__contents__grids .hvnly-property-form-select {
     width: 100%;
     padding: 0.75rem 1rem;
@@ -738,7 +744,7 @@
     CHECKBOX LAYOUT — visuals live in hvnly-frontend-components.css
     (.checked + :checked share one design system surface)
 ======================= */
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 .hvnly-property-filter-sidebar
 .hvnly-property-filter-group
 .hvnly-property-checkbox-group {
@@ -746,7 +752,7 @@
     flex-direction: column;
     gap: 0.75rem;
 }
-.hvnly-content-wrapper 
+.hvnly-content-wrapper
 .hvnly-property-filter-sidebar
 .hvnly-property-filter-group
 .hvnly-property-checkbox-label {
@@ -886,10 +892,12 @@
     margin: 2rem 0;
 }
 
+button.hvnly-ui-control.hvnly-property-load-more-btn,
 .hvnly-property-load-more-btn {
     padding: 0.8rem 2.25rem;
-    background: var(--hvnly-brand-primary);
-    color: var(--hvnly-color-white);
+    background: var(--hvnly-primary-color);
+    background-color: var(--hvnly-primary-color);
+    color: var(--hvnly-button-color, var(--hvnly-color-white));
     border-radius: var(--hvnly-button-radius);
     font-weight: var(--hvnly-font-weight-semibold);
     font-size: 0.95rem;
@@ -899,13 +907,17 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    border: none;
+    border: 1px solid var(--hvnly-primary-color);
     box-shadow: 0 1px 3px rgba(30, 30, 47, 0.16);
 }
 
 /* Sprint 31E: response-to-user glow instead of the button jumping upward. */
+button.hvnly-ui-control.hvnly-property-load-more-btn:is(:hover, :focus-visible, :active):not(:disabled),
 .hvnly-property-load-more-btn:hover {
-    background: var(--hvnly-button-bg-hover);
+    background: var(--hvnly-secondary-color);
+    background-color: var(--hvnly-secondary-color);
+    border-color: var(--hvnly-secondary-color);
+    color: var(--hvnly-button-color, var(--hvnly-color-white));
     box-shadow: 0 4px 14px -4px rgba(var(--hvnly-primary-rgb), 0.5);
 }
 
@@ -914,10 +926,19 @@
     box-shadow: 0 0 0 3px rgba(var(--hvnly-primary-rgb), 0.28);
 }
 
-.hvnly-property-load-more-btn.loading {
+/* Loading + disabled must stay branded (ui-control:disabled used light grey). */
+button.hvnly-ui-control.hvnly-property-load-more-btn.loading,
+button.hvnly-ui-control.hvnly-property-load-more-btn:disabled,
+button.hvnly-ui-control.hvnly-property-load-more-btn.loading:disabled,
+.hvnly-property-load-more-btn.loading,
+.hvnly-property-load-more-btn:disabled {
     pointer-events: none;
     opacity: 0.85;
     box-shadow: none;
+    background: var(--hvnly-secondary-color);
+    background-color: var(--hvnly-secondary-color);
+    border-color: var(--hvnly-secondary-color);
+    color: var(--hvnly-button-color, var(--hvnly-color-white));
 }
 
 .hvnly-load-more-spinner {
@@ -997,8 +1018,10 @@
     display: flex;
     gap: 0.5rem;
 }
-.hvnly-property-view-options
-.hvnly-property-view-btn {
+
+/* Normal — layout only; paint states sealed below (and in late isolation). */
+.hvnly-property-view-options .hvnly-property-view-btn,
+button.hvnly-ui-control.hvnly-property-view-btn {
     width: 40px;
     height: 40px;
     border-radius: var(--hvnly-input-radius);
@@ -1006,6 +1029,7 @@
     align-items: center;
     justify-content: center;
     background: var(--hvnly-card-bg);
+    background-color: var(--hvnly-card-bg);
     border: 1px solid var(--hvnly-border-color);
     color: var(--hvnly-text-secondary);
     transition: all var(--hvnly-transition-time);
@@ -1013,15 +1037,56 @@
     padding: 0;
 }
 
-.hvnly-property-view-btn.active {
-    background: var(--hvnly-brand-primary);
-    border-color: var(--hvnly-brand-primary);
-    color: var(--hvnly-color-white);
+/*
+ * View Switch paint — .active ONLY (JS toggles .active, not aria-pressed).
+ * Body-scoped to beat Hello `button:focus/hover` and ui-control :focus paint.
+ */
+body.hvnly-plugin-active button.hvnly-ui-control.hvnly-property-view-btn.active,
+body.hvnly-property-archive button.hvnly-ui-control.hvnly-property-view-btn.active,
+.hvnly-content-wrapper button.hvnly-ui-control.hvnly-property-view-btn.active,
+.hvnly-property-display-shortcode button.hvnly-ui-control.hvnly-property-view-btn.active,
+.hvnly-all-properties-widget button.hvnly-ui-control.hvnly-property-view-btn.active,
+button.hvnly-ui-control.hvnly-property-view-btn.active {
+    background: var(--hvnly-primary-color);
+    background-color: var(--hvnly-primary-color);
+    border-color: var(--hvnly-primary-color);
+    color: var(--hvnly-button-color, var(--hvnly-color-white));
 }
-.hvnly-property-view-options
-.hvnly-property-view-btn:hover i{color: var(--hvnly-color-white);}
+
+body.hvnly-plugin-active button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible),
+body.hvnly-property-archive button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible),
+.hvnly-content-wrapper button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible),
+.hvnly-property-display-shortcode button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible),
+.hvnly-all-properties-widget button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible),
+button.hvnly-ui-control.hvnly-property-view-btn.active:is(:hover, :focus, :active, :focus-visible) {
+    background: var(--hvnly-primary-color);
+    background-color: var(--hvnly-primary-color);
+    border-color: var(--hvnly-primary-color);
+    color: var(--hvnly-button-color, var(--hvnly-color-white));
+}
+
+body.hvnly-plugin-active button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active),
+body.hvnly-property-archive button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active),
+.hvnly-content-wrapper button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active),
+.hvnly-property-display-shortcode button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active),
+.hvnly-all-properties-widget button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active),
+button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible, :active):not(.active),
 .hvnly-property-view-btn:hover:not(.active) {
-    background: var(--hvnly-brand-secondary);
+    background: var(--hvnly-secondary-color);
+    background-color: var(--hvnly-secondary-color);
+    border-color: var(--hvnly-secondary-color);
+    color: var(--hvnly-button-color, var(--hvnly-color-white));
+}
+
+.hvnly-property-view-options .hvnly-property-view-btn:hover i,
+button.hvnly-ui-control.hvnly-property-view-btn:is(:hover, :focus-visible) i,
+button.hvnly-ui-control.hvnly-property-view-btn.active i {
+    color: var(--hvnly-button-color, var(--hvnly-color-white));
+}
+
+button.hvnly-ui-control.hvnly-property-view-btn:focus-visible {
+    outline: 2px solid var(--hvnly-brand-primary, var(--hvnly-primary-color));
+    outline-offset: 2px;
 }
 
 /* ======================
@@ -1060,13 +1125,13 @@
     }
     .hvnly-property-search-tab {
         padding: var(--hvnly-space-md) var(--hvnly-space-lg);
-       
+
     }
     .hvnly-property-form-group-fields-main {
         flex-direction: column;
     }
 
-    .hvnly-property-form-group-fields-main 
+    .hvnly-property-form-group-fields-main
     .hvnly-property-form-item {
         width: 100%;
     }
@@ -1074,11 +1139,11 @@
     .hvnly-property-search-tabs {
         display: flex;
     }
-    .hvnly-property-search-form 
+    .hvnly-property-search-form
     .hvnly-property-filter-toggle-wrapper {
         width: 100%;
     }
-    .hvnly-property-search-form 
+    .hvnly-property-search-form
     .hvnly-property-filter-toggle {
         width: 100%;
     }
@@ -1150,10 +1215,14 @@
     font-size: 14px;
 }
 
-/* Loading states */
+/* Loading states — keep secondary brand (not ui-control grey). */
+button.hvnly-ui-control.hvnly-property-load-more-btn:disabled,
 .hvnly-property-load-more-btn:disabled {
-    opacity: 0.6;
+    opacity: 0.85;
     cursor: not-allowed;
+    background-color: var(--hvnly-secondary-color);
+    border-color: var(--hvnly-secondary-color);
+    color: var(--hvnly-button-color, var(--hvnly-color-white));
 }
 
 .hvnly-property-pagination-item.active {

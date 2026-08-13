@@ -56,7 +56,7 @@ final class MediaIndexer {
 			$attachment = isset( $stub['source_attachment_id'] ) ? (int) $stub['source_attachment_id'] : 0;
 
 			if ( '' === $export_key || $attachment <= 0 ) {
-				$skipped[] = array(
+				$skipped[]  = array(
 					'export_key' => $export_key,
 					'reason'     => 'invalid_stub',
 				);
@@ -70,7 +70,7 @@ final class MediaIndexer {
 
 			$file = get_attached_file( $attachment );
 			if ( ! is_string( $file ) || '' === $file || ! is_file( $file ) || ! is_readable( $file ) ) {
-				$skipped[] = array(
+				$skipped[]  = array(
 					'export_key' => $export_key,
 					'reason'     => 'missing_file',
 				);
@@ -89,7 +89,7 @@ final class MediaIndexer {
 			$base_cmp        = strtolower( rtrim( $uploads_base, '/' ) );
 			$file_cmp        = strtolower( $normalized_file );
 			if ( $file_cmp !== $base_cmp && 0 !== strpos( $file_cmp, $base_cmp . '/' ) ) {
-				$skipped[] = array(
+				$skipped[]  = array(
 					'export_key' => $export_key,
 					'reason'     => 'outside_uploads',
 				);
@@ -109,7 +109,7 @@ final class MediaIndexer {
 				$ext = strtolower( pathinfo( $normalized_file, PATHINFO_EXTENSION ) );
 			}
 			if ( '' === $ext ) {
-				$skipped[] = array(
+				$skipped[]  = array(
 					'export_key' => $export_key,
 					'reason'     => 'extension_missing',
 				);
@@ -159,7 +159,7 @@ final class MediaIndexer {
 				continue;
 			}
 
-			$checksum = (string) $hash->data();
+			$checksum  = (string) $hash->data();
 			$pack_path = $archive_path;
 			$shared    = false;
 
@@ -178,7 +178,7 @@ final class MediaIndexer {
 				'source'       => $normalized_file,
 				'checksum'     => $checksum,
 				'size'         => (int) filesize( $normalized_file ),
-				'shared_binary'=> $shared,
+				'shared_binary' => $shared,
 				'status'       => 'pack',
 			);
 		}

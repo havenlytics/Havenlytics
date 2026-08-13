@@ -97,7 +97,7 @@ if ( $hvnly_current_page >= $hvnly_actual_max_pages - 1 ) {
     ?>
     <div class="hvnly-property-pagination-list" role="navigation" aria-label="<?php esc_attr_e( 'Properties pagination', 'havenlytics' ); ?>">
         <?php if ( $hvnly_current_page > 1 ) : ?>
-        <button type="button" class="hvnly-property-pagination-item hvnly-property-pagination-prev"
+        <button type="button" class="hvnly-ui-control hvnly-property-pagination-item hvnly-property-pagination-prev"
             data-page="<?php echo esc_attr( $hvnly_current_page - 1 ); ?>"
             aria-label="<?php esc_attr_e( 'Previous page', 'havenlytics' ); ?>"
             <?php if ( $hvnly_instance_id ) : ?>
@@ -110,7 +110,7 @@ if ( $hvnly_current_page >= $hvnly_actual_max_pages - 1 ) {
         <?php for ( $hvnly_i = $hvnly_start_page; $hvnly_i <= $hvnly_end_page; $hvnly_i++ ) :
             $hvnly_active = ( $hvnly_i === $hvnly_current_page ) ? 'active' : '';
             ?>
-        <button type="button" class="hvnly-property-pagination-item <?php echo esc_attr( $hvnly_active ); ?>"
+        <button type="button" class="hvnly-ui-control hvnly-property-pagination-item <?php echo esc_attr( $hvnly_active ); ?>"
             data-page="<?php echo esc_attr( $hvnly_i ); ?>"
             <?php if ( $hvnly_active ) : ?>
             aria-current="page"
@@ -123,7 +123,7 @@ if ( $hvnly_current_page >= $hvnly_actual_max_pages - 1 ) {
         <?php endfor; ?>
 
         <?php if ( $hvnly_current_page < $hvnly_actual_max_pages ) : ?>
-        <button type="button" class="hvnly-property-pagination-item hvnly-property-pagination-next"
+        <button type="button" class="hvnly-ui-control hvnly-property-pagination-item hvnly-property-pagination-next"
             data-page="<?php echo esc_attr( $hvnly_current_page + 1 ); ?>"
             aria-label="<?php esc_attr_e( 'Next page', 'havenlytics' ); ?>"
             <?php if ( $hvnly_instance_id ) : ?>

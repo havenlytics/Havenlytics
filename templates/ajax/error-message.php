@@ -29,7 +29,7 @@ $hvnly_type = $args['type'] ?? 'general'; // 'general', 'search', 'map'
         <p><?php echo esc_html($hvnly_message); ?></p>
     </div>
     <?php if ($hvnly_type === 'search'): ?>
-        <button class="hvnly-ajax-retry-btn" data-action="retry-search">
+        <button type="button" class="hvnly-ui-control hvnly-ajax-retry-btn" data-action="retry-search">
             <i class="fas fa-redo"></i> <?php esc_html_e('Try Again', 'havenlytics'); ?>
         </button>
     <?php endif; ?>

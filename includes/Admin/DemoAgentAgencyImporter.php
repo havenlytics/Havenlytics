@@ -28,8 +28,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class DemoAgentAgencyImporter {
 
 	public const ECOSYSTEM_VERSION_KEY = 'hvnly_demo_agent_ecosystem_version';
-	public const AGENT_MAP_OPTION        = 'hvnly_demo_agent_slug_map';
-	public const ECOSYSTEM_VERSION       = '3.0.5';
+	public const AGENT_MAP_OPTION      = 'hvnly_demo_agent_slug_map';
+	public const ECOSYSTEM_VERSION     = '3.0.5';
 
 	/** @var callable|null */
 	private $image_downloader;
@@ -68,7 +68,7 @@ final class DemoAgentAgencyImporter {
 	 * @return array<string, int> Agent slug => post ID map.
 	 */
 	public function import_ecosystem( bool $include_images = true ): array {
-		$prev_suppress = isset( $GLOBALS['hvnly_suppress_workflow_notifications'] )
+		$prev_suppress                                    = isset( $GLOBALS['hvnly_suppress_workflow_notifications'] )
 			? $GLOBALS['hvnly_suppress_workflow_notifications']
 			: null;
 		$GLOBALS['hvnly_suppress_workflow_notifications'] = true;

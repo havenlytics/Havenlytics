@@ -61,7 +61,7 @@ final class AgentIdentityService {
 			return $this->cache[ $user_id ];
 		}
 
-		$identity = $this->build_identity( $user_id );
+		$identity                = $this->build_identity( $user_id );
 		$this->cache[ $user_id ] = $identity;
 
 		/**

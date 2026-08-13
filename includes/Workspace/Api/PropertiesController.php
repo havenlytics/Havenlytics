@@ -86,10 +86,10 @@ final class PropertiesController {
 	 * @return array<string, mixed>
 	 */
 	public function filter_localize( array $data ): array {
-		$rest = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
-		$rest['properties'] = esc_url_raw( rest_url( WorkspaceConstants::REST_NAMESPACE . '/properties' ) );
+		$rest                   = isset( $data['rest'] ) && is_array( $data['rest'] ) ? $data['rest'] : array();
+		$rest['properties']     = esc_url_raw( rest_url( WorkspaceConstants::REST_NAMESPACE . '/properties' ) );
 		$rest['propertySchema'] = esc_url_raw( rest_url( WorkspaceConstants::REST_NAMESPACE . '/properties/schema' ) );
-		$data['rest']       = $rest;
+		$data['rest']           = $rest;
 		return $data;
 	}
 
@@ -480,7 +480,7 @@ final class PropertiesController {
 			'date'     => 'date',
 			'title'    => 'title',
 		);
-		$orderby = isset( $orderby_map[ $orderby ] ) ? $orderby_map[ $orderby ] : 'modified';
+		$orderby     = isset( $orderby_map[ $orderby ] ) ? $orderby_map[ $orderby ] : 'modified';
 
 		$args = array(
 			'post_type'              => PropertyFormMapper::POST_TYPE,
@@ -881,7 +881,10 @@ final class PropertiesController {
 		return rest_ensure_response(
 			array(
 				'success' => true,
-				'data'    => array( 'id' => $id, 'deleted' => true ),
+				'data'    => array(
+					'id' => $id,
+					'deleted' => true,
+				),
 				'message' => __( 'Property permanently deleted.', 'havenlytics' ),
 			)
 		);

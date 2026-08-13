@@ -454,7 +454,7 @@ final class AgentAgencyTaxonomy {
 	 * @return string
 	 */
 	public function term_column_content( string $content, string $column_name, $term_id ): string {
-		$term_id = absint( $term_id );
+		$term_id  = absint( $term_id );
 		$rendered = $this->render_term_column( $column_name, $term_id );
 
 		return '' !== $rendered ? $rendered : $content;

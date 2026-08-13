@@ -106,7 +106,7 @@ $hvnly_build_page_url = static function ( string $base_url, int $page, array $qu
 
         <div class="hvnly-property-pagination-list">
             <?php if ( $hvnly_current_page > 1 ) : ?>
-            <a class="hvnly-property--archive__pagination-item hvnly-property-pagination-item hvnly-property-pagination-prev"
+            <a class="hvnly-ui-control hvnly-property--archive__pagination-item hvnly-property-pagination-item hvnly-property-pagination-prev"
                 href="<?php echo esc_url( $hvnly_build_page_url( $hvnly_base_url, $hvnly_current_page - 1, $hvnly_query_args ) ); ?>"
                 aria-label="<?php esc_attr_e( 'Previous page', 'havenlytics' ); ?>">
                 <i class="fas fa-chevron-left" aria-hidden="true"></i>
@@ -120,7 +120,7 @@ $hvnly_build_page_url = static function ( string $base_url, int $page, array $qu
 					<?php echo esc_html( (string) $hvnly_i ); ?>
             </span>
             <?php else : ?>
-            <a class="hvnly-property--archive__pagination-item hvnly-property-pagination-item"
+            <a class="hvnly-ui-control hvnly-property--archive__pagination-item hvnly-property-pagination-item"
                 href="<?php echo esc_url( $hvnly_build_page_url( $hvnly_base_url, $hvnly_i, $hvnly_query_args ) ); ?>">
                 <?php echo esc_html( (string) $hvnly_i ); ?>
             </a>
@@ -128,7 +128,7 @@ $hvnly_build_page_url = static function ( string $base_url, int $page, array $qu
             <?php endfor; ?>
 
             <?php if ( $hvnly_current_page < $hvnly_max_pages ) : ?>
-            <a class="hvnly-property--archive__pagination-item hvnly-property-pagination-item hvnly-property-pagination-next"
+            <a class="hvnly-ui-control hvnly-property--archive__pagination-item hvnly-property-pagination-item hvnly-property-pagination-next"
                 href="<?php echo esc_url( $hvnly_build_page_url( $hvnly_base_url, $hvnly_current_page + 1, $hvnly_query_args ) ); ?>"
                 aria-label="<?php esc_attr_e( 'Next page', 'havenlytics' ); ?>">
                 <i class="fas fa-chevron-right" aria-hidden="true"></i>

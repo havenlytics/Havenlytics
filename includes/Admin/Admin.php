@@ -2,7 +2,7 @@
 
 namespace HvnlyNab\Admin;
 
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
@@ -13,13 +13,12 @@ if (!defined('ABSPATH')) {
  *
  * @package HvnlyNab\Admin
  */
-final class Admin
-{
+final class Admin {
+
     /**
      * Constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         static::register_services();
     }
 
@@ -28,9 +27,8 @@ final class Admin
      *
      * @return class-string[] List of service class names.
      */
-    public static function get_services(): array
-    {
-        $services = [
+    public static function get_services(): array {
+        $services = array(
             Menu::class,
             Assets::class,
             DocumentationPage::class,
@@ -39,7 +37,7 @@ final class Admin
             SetupWizardNotice::class,
             ThemeRecommendationNotice::class,
             \HvnlyNab\ContactAgent\Admin\InquiryAdminPage::class,
-        ];
+        );
 
         /**
          * Filter the list of admin services.
@@ -54,10 +52,9 @@ final class Admin
      *
      * @return void
      */
-    public static function register_services(): void
-    {
+    public static function register_services(): void {
         array_map(
-            static function (string $class): void {
+            static function ( string $class ): void {
                 $instance = static::instantiate($class);
 
                 if ($instance && method_exists($instance, 'register')) {
@@ -74,8 +71,7 @@ final class Admin
      * @param string $class Class name.
      * @return object|null Instance of the class, or null if class does not exist.
      */
-    private static function instantiate(string $class): ?object
-    {
+    private static function instantiate( string $class ): ?object {
         if (class_exists($class)) {
             return new $class();
         }

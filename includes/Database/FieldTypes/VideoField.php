@@ -1,7 +1,7 @@
 <?php
 /**
  * Video Field Handler - FIXED to prevent duplicate rendering
- * 
+ *
  * @package HvnlyNab\Database\FieldTypes
  * @since 2.0.0
  */
@@ -15,8 +15,8 @@ class VideoField extends BaseFieldType {
         parent::__construct('video');
         $this->requires_assets = true;
     }
-    
-    public function render($field, $value, $post_id) {
+
+    public function render( $field, $value, $post_id ) {
         $field = $this->prepare_group_field( $field, 'VideoField' );
 
         // $value is the URL already resolved (and gate-checked) by
@@ -38,9 +38,9 @@ class VideoField extends BaseFieldType {
         $url_value       = $this->resolve_video_subfield_value( $post_id, $field, $field_base, 'url', $url_field, $value );
         $thumbnail_value = $this->resolve_video_subfield_value( $post_id, $field, $field_base, 'thumbnail', $thumbnail_field );
 
-        $youtube_id      = ! empty( $url_value ) ? $this->extract_youtube_id( $url_value ) : null;
-        $hero_image_url  = '';
-        $hero_source     = 'empty';
+        $youtube_id     = ! empty( $url_value ) ? $this->extract_youtube_id( $url_value ) : null;
+        $hero_image_url = '';
+        $hero_source    = 'empty';
 
         if ( ! empty( $thumbnail_value ) ) {
             $hero_image_url = $thumbnail_value;
@@ -50,10 +50,10 @@ class VideoField extends BaseFieldType {
             $hero_source    = 'youtube';
         }
 
-        $has_hero     = '' !== $hero_image_url;
-        $can_preview  = (bool) $youtube_id;
-        $has_custom   = ! empty( $thumbnail_value );
-        $embed_title  = $title_value ? $title_value : __( 'Property Video', 'havenlytics' );
+        $has_hero    = '' !== $hero_image_url;
+        $can_preview = (bool) $youtube_id;
+        $has_custom  = ! empty( $thumbnail_value );
+        $embed_title = $title_value ? $title_value : __( 'Property Video', 'havenlytics' );
 
         ob_start();
         ?>
@@ -192,10 +192,10 @@ class VideoField extends BaseFieldType {
         <div class="hvnly-video-preview" data-role="embed" data-embed-title="<?php echo esc_attr( $embed_title ); ?>"></div>
     </div>
 </div>
-<?php
+		<?php
         return ob_get_clean();
     }
-    
+
     /**
      * Derive the shared base name for this video group's three sub-fields.
      *
@@ -205,16 +205,16 @@ class VideoField extends BaseFieldType {
      *     the field's meta-key name using a suffix (not substr_replace) so that
      *     the suffix is matched at the END of the string only.
      */
-    private function get_field_base_name($field) {
+    private function get_field_base_name( $field ) {
         // Priority 1 — group_base_id is always the most reliable source.
-        if (!empty($field['group_base_id'])) {
+        if ( ! empty($field['group_base_id'])) {
             return $field['group_base_id'];
         }
 
         // Priority 2 — strip known suffix from field name.
         $field_name = $field['name'] ?? '';
-        if (!empty($field_name)) {
-            foreach (['_url', '_title', '_thumbnail'] as $suffix) {
+        if ( ! empty($field_name)) {
+            foreach (array( '_url', '_title', '_thumbnail' ) as $suffix) {
                 $len = strlen($suffix);
                 if (substr($field_name, -$len) === $suffix) {
                     return substr($field_name, 0, -$len);
@@ -289,33 +289,35 @@ class VideoField extends BaseFieldType {
         $direct = get_post_meta( $post_id, $primary_key, true );
         return '' === $direct || false === $direct || null === $direct;
     }
-    
+
     /**
      * Extract YouTube video ID from URL
      */
-    private function extract_youtube_id($url) {
-        if (empty($url)) return null;
-        
-        $patterns = [
+    private function extract_youtube_id( $url ) {
+        if (empty($url)) {
+			return null;
+        }
+
+        $patterns = array(
             '/(?:youtube\.com\/watch\?v=)([^&]+)/',
             '/(?:youtu\.be\/)([^?]+)/',
             '/(?:youtube\.com\/embed\/)([^?]+)/',
-            '/(?:youtube\.com\/v\/)([^?]+)/'
-        ];
-        
+            '/(?:youtube\.com\/v\/)([^?]+)/',
+        );
+
         foreach ($patterns as $pattern) {
             if (preg_match($pattern, $url, $matches)) {
                 return $matches[1];
             }
         }
-        
+
         return null;
     }
-    
-    public function save($post_id, $field_name, $value, $extra = null) {
+
+    public function save( $post_id, $field_name, $value, $extra = null ) {
         // Determine the field base from the field name
         $field_base = '';
-        
+
         if (strpos($field_name, '_url') !== false) {
             $field_base = str_replace('_url', '', $field_name);
         } elseif (strpos($field_name, '_title') !== false) {
@@ -323,8 +325,8 @@ class VideoField extends BaseFieldType {
         } elseif (strpos($field_name, '_thumbnail') !== false) {
             $field_base = str_replace('_thumbnail', '', $field_name);
         }
-        
-        if (!empty($field_base)) {
+
+        if ( ! empty($field_base)) {
             $field_probe = array(
                 'group_base_id' => $field_base,
                 'group_type'    => 'video',
@@ -332,24 +334,24 @@ class VideoField extends BaseFieldType {
             );
 
             // Get all three values from POST
-            $title_value = filter_input(INPUT_POST, $field_base . '_title', FILTER_UNSAFE_RAW);
-            $url_value = filter_input(INPUT_POST, $field_base . '_url', FILTER_UNSAFE_RAW);
+            $title_value     = filter_input(INPUT_POST, $field_base . '_title', FILTER_UNSAFE_RAW);
+            $url_value       = filter_input(INPUT_POST, $field_base . '_url', FILTER_UNSAFE_RAW);
             $thumbnail_value = filter_input(INPUT_POST, $field_base . '_thumbnail', FILTER_UNSAFE_RAW);
-            
+
             if ($title_value !== null && $title_value !== false) {
                 $title_value = (string) $title_value;
                 if ( '' !== trim( $title_value ) || ! $this->compatibility_value_exists( $post_id, $field_base, 'title', $field_probe ) ) {
                     update_post_meta($post_id, $field_base . '_title', sanitize_text_field($title_value));
                 }
             }
-            
+
             if ($url_value !== null && $url_value !== false) {
                 $url_value = (string) $url_value;
                 if ( '' !== trim( $url_value ) || ! $this->compatibility_value_exists( $post_id, $field_base, 'url', $field_probe ) ) {
                     update_post_meta($post_id, $field_base . '_url', sanitize_text_field($url_value));
                 }
             }
-            
+
             if ($thumbnail_value !== null && $thumbnail_value !== false) {
                 $thumbnail_value = (string) $thumbnail_value;
                 if ( '' !== trim( $thumbnail_value ) || ! $this->compatibility_value_exists( $post_id, $field_base, 'thumbnail', $field_probe ) ) {
@@ -361,12 +363,12 @@ class VideoField extends BaseFieldType {
             update_post_meta($post_id, $field_name, sanitize_text_field($value));
         }
     }
-    
-    public function sanitize($value) {
+
+    public function sanitize( $value ) {
         return sanitize_text_field($value);
     }
-    
-    public function validate($value, $field) {
+
+    public function validate( $value, $field ) {
         if (empty($field['is_required'])) {
             return true;
         }
@@ -374,7 +376,7 @@ class VideoField extends BaseFieldType {
         $field_base = $this->get_field_base_name($field);
         $url        = '';
 
-        if (!empty($field_base)) {
+        if ( ! empty($field_base)) {
             $url_raw = filter_input(INPUT_POST, $field_base . '_url', FILTER_UNSAFE_RAW);
             $url     = is_string($url_raw) ? trim($url_raw) : '';
         } elseif (is_string($value)) {
@@ -394,7 +396,7 @@ class VideoField extends BaseFieldType {
 
         return true;
     }
-    
+
     public function enqueue_assets() {
         wp_enqueue_media();
 
@@ -404,11 +406,11 @@ class VideoField extends BaseFieldType {
             array( 'hvnly-admin-metabox' ),
             HVNLYNAB_VERSION
         );
-        
+
         wp_enqueue_script(
             'hvnly-video-field',
             HVNLYNAB_ASSETS_URL . '/admin/js/hvnly-video-field.js',
-            ['jquery'],
+            array( 'jquery' ),
             HVNLYNAB_VERSION,
             true
         );

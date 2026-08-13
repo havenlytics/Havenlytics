@@ -10,7 +10,7 @@
 namespace HvnlyNab\Frontend\Shortcodes;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -33,7 +33,7 @@ class FeaturedProperties extends PropertyGrid {
      *
      * @var array
      */
-    protected $default_atts = [
+    protected $default_atts = array(
         'posts_per_page'       => 6,
         'columns'              => 3,
         'orderby'              => 'date',
@@ -50,7 +50,7 @@ class FeaturedProperties extends PropertyGrid {
         'class'                => '',
         'id'                   => '',
         'cache'                => 'yes',
-    ];
+    );
 
     /**
      * Render shortcode
@@ -59,13 +59,13 @@ class FeaturedProperties extends PropertyGrid {
      * @param string $content Shortcode content
      * @return string
      */
-    public function render($atts, $content = '') {
+    public function render( $atts, $content = '' ) {
         // Force featured_only to yes
-        if (!is_array($atts)) {
-            $atts = [];
+        if ( ! is_array($atts)) {
+            $atts = array();
         }
         $atts['featured_only'] = 'yes';
-        
+
         // Use parent render method
         return parent::render($atts, $content);
     }

@@ -38,11 +38,11 @@ if ( ! $hvnly_properties_query instanceof WP_Query || ! $hvnly_properties_query-
 			</p>
 		</div>
 		<div class="hvnly-property-single__carousel-controls">
-			<button class="hvnly-property-single__carousel-btn" id="hvnlyPropertySingleCarouselPrev"
+			<button type="button" class="hvnly-ui-control hvnly-property-single__carousel-btn" id="hvnlyPropertySingleCarouselPrev"
 				aria-label="<?php esc_attr_e( 'Previous properties', 'havenlytics' ); ?>" disabled>
 				<i class="fas fa-chevron-left" aria-hidden="true"></i>
 			</button>
-			<button class="hvnly-property-single__carousel-btn" id="hvnlyPropertySingleCarouselNext"
+			<button type="button" class="hvnly-ui-control hvnly-property-single__carousel-btn" id="hvnlyPropertySingleCarouselNext"
 				aria-label="<?php esc_attr_e( 'Next properties', 'havenlytics' ); ?>">
 				<i class="fas fa-chevron-right" aria-hidden="true"></i>
 			</button>

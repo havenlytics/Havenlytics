@@ -16,7 +16,7 @@ namespace HvnlyNab\Integrations\Blocks;
 use HvnlyNab\I18n\ScriptTranslations;
 
 // Exit if accessed directly.
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH')) {
     exit;
 }
 
@@ -49,19 +49,19 @@ final class BlockRegistrar {
      *
      * @var array<string, callable>
      */
-    private const RENDERERS = [
-        'havenlytics/property-archive'    => [PropertyArchiveBlockRenderer::class, 'render'],
-        'havenlytics/property-search'     => [PropertySearchBlockRenderer::class, 'render'],
-        'havenlytics/agents'              => [AgentsBlockRenderer::class, 'render'],
-        'havenlytics/agency'              => [AgencyBlockRenderer::class, 'render'],
-        'havenlytics/featured-properties' => [FeaturedPropertiesBlockRenderer::class, 'render'],
-        'havenlytics/property-carousel'   => [PropertyCarouselBlockRenderer::class, 'render'],
-        'havenlytics/property-map'        => [PropertyMapBlockRenderer::class, 'render'],
-        'havenlytics/authentication'      => [AuthenticationBlockRenderer::class, 'render'],
-        'havenlytics/dashboard'           => [DashboardBlockRenderer::class, 'render'],
-        'havenlytics/saved-properties'    => [SavedPropertiesBlockRenderer::class, 'render'],
-        'havenlytics/property-inquiry'    => [PropertyInquiryBlockRenderer::class, 'render'],
-    ];
+    private const RENDERERS = array(
+        'havenlytics/property-archive'    => array( PropertyArchiveBlockRenderer::class, 'render' ),
+        'havenlytics/property-search'     => array( PropertySearchBlockRenderer::class, 'render' ),
+        'havenlytics/agents'              => array( AgentsBlockRenderer::class, 'render' ),
+        'havenlytics/agency'              => array( AgencyBlockRenderer::class, 'render' ),
+        'havenlytics/featured-properties' => array( FeaturedPropertiesBlockRenderer::class, 'render' ),
+        'havenlytics/property-carousel'   => array( PropertyCarouselBlockRenderer::class, 'render' ),
+        'havenlytics/property-map'        => array( PropertyMapBlockRenderer::class, 'render' ),
+        'havenlytics/authentication'      => array( AuthenticationBlockRenderer::class, 'render' ),
+        'havenlytics/dashboard'           => array( DashboardBlockRenderer::class, 'render' ),
+        'havenlytics/saved-properties'    => array( SavedPropertiesBlockRenderer::class, 'render' ),
+        'havenlytics/property-inquiry'    => array( PropertyInquiryBlockRenderer::class, 'render' ),
+    );
 
     /**
      * Singleton instance.
@@ -96,9 +96,9 @@ final class BlockRegistrar {
     private function __construct() {
         $this->build_dir = trailingslashit(HVNLYNAB_PATH) . 'build/blocks/';
 
-        add_filter('block_categories_all', [$this, 'register_category'], 10, 1);
-        add_filter('allowed_block_types_all', [$this, 'filter_allowed_block_types_for_widgets'], 10, 2);
-        add_action('init', [$this, 'register_blocks']);
+        add_filter('block_categories_all', array( $this, 'register_category' ), 10, 1);
+        add_filter('allowed_block_types_all', array( $this, 'filter_allowed_block_types_for_widgets' ), 10, 2);
+        add_action('init', array( $this, 'register_blocks' ));
 
         // Frontend + editor asset loading (reuses the existing pipeline).
         BlockAssets::get_instance();
@@ -133,18 +133,18 @@ final class BlockRegistrar {
      * @param \WP_Block_Editor_Context    $editor_context       Current editor context.
      * @return bool|string[]
      */
-    public function filter_allowed_block_types_for_widgets($allowed_block_types, $editor_context) {
-        if (!is_object($editor_context) || empty($editor_context->name)) {
+    public function filter_allowed_block_types_for_widgets( $allowed_block_types, $editor_context ) {
+        if ( ! is_object($editor_context) || empty($editor_context->name)) {
             return $allowed_block_types;
         }
 
-        $widget_contexts = ['core/edit-widgets', 'core/customize-widgets'];
-        if (!in_array((string) $editor_context->name, $widget_contexts, true)) {
+        $widget_contexts = array( 'core/edit-widgets', 'core/customize-widgets' );
+        if ( ! in_array( (string) $editor_context->name, $widget_contexts, true)) {
             return $allowed_block_types;
         }
 
         $hvnly_blocks = self::get_block_names();
-        if ($hvnly_blocks === []) {
+        if ($hvnly_blocks === array()) {
             return $allowed_block_types;
         }
 
@@ -153,7 +153,7 @@ final class BlockRegistrar {
             $allowed_block_types = array_keys(\WP_Block_Type_Registry::get_instance()->get_all_registered());
         }
 
-        if (!is_array($allowed_block_types)) {
+        if ( ! is_array($allowed_block_types)) {
             return $allowed_block_types;
         }
 
@@ -169,7 +169,7 @@ final class BlockRegistrar {
      * @param array $categories Existing block categories.
      * @return array
      */
-    public function register_category(array $categories): array {
+    public function register_category( array $categories ): array {
         foreach ($categories as $category) {
             if (isset($category['slug']) && $category['slug'] === self::CATEGORY) {
                 return $categories;
@@ -178,11 +178,11 @@ final class BlockRegistrar {
 
         array_unshift(
             $categories,
-            [
+            array(
                 'slug'  => self::CATEGORY,
                 'title' => __('Havenlytics', 'havenlytics'),
                 'icon'  => null,
-            ]
+            )
         );
 
         return $categories;
@@ -199,7 +199,7 @@ final class BlockRegistrar {
      * @return void
      */
     public function register_blocks(): void {
-        if (!function_exists('register_block_type')) {
+        if ( ! function_exists('register_block_type')) {
             return;
         }
 
@@ -210,7 +210,7 @@ final class BlockRegistrar {
         foreach ($this->discover_block_dirs() as $dir) {
             $name = $this->read_block_name($dir);
 
-            if ($name === '' || !isset(self::RENDERERS[$name])) {
+            if ($name === '' || ! isset(self::RENDERERS[ $name ])) {
                 continue;
             }
 
@@ -222,9 +222,9 @@ final class BlockRegistrar {
 
             register_block_type(
                 $dir,
-                [
-                    'render_callback' => self::RENDERERS[$name],
-                ]
+                array(
+                    'render_callback' => self::RENDERERS[ $name ],
+                )
             );
         }
     }
@@ -240,11 +240,11 @@ final class BlockRegistrar {
      * @return array<int, string> Absolute directory paths containing block.json.
      */
     private function discover_block_dirs(): array {
-        $found = [];
+        $found = array();
 
-        foreach (['*/block.json', 'blocks/*/block.json'] as $pattern) {
-            foreach ((array) glob($this->build_dir . $pattern) as $file) {
-                $found[dirname($file)] = dirname($file);
+        foreach (array( '*/block.json', 'blocks/*/block.json' ) as $pattern) {
+            foreach ( (array) glob($this->build_dir . $pattern) as $file) {
+                $found[ dirname($file) ] = dirname($file);
             }
         }
 
@@ -257,16 +257,16 @@ final class BlockRegistrar {
      * @param string $dir Directory containing block.json.
      * @return string Block name, or '' if unreadable.
      */
-    private function read_block_name(string $dir): string {
+    private function read_block_name( string $dir ): string {
         $file = $dir . '/block.json';
 
-        if (!is_readable($file)) {
+        if ( ! is_readable($file)) {
             return '';
         }
 
         $json = file_get_contents($file);
 
-        if (!is_string($json)) {
+        if ( ! is_string($json)) {
             return '';
         }
 
@@ -291,7 +291,7 @@ final class BlockRegistrar {
 
         $asset_file = $this->build_dir . 'blocks.asset.php';
 
-        if (!file_exists($asset_file)) {
+        if ( ! file_exists($asset_file)) {
             return;
         }
 
@@ -299,9 +299,9 @@ final class BlockRegistrar {
 
         $dependencies = isset($asset['dependencies']) && is_array($asset['dependencies'])
             ? $asset['dependencies']
-            : [];
-        $version = isset($asset['version']) ? (string) $asset['version'] : HVNLYNAB_VERSION;
-        $script  = isset($asset['script']) ? (string) $asset['script'] : '0.js';
+            : array();
+        $version      = isset($asset['version']) ? (string) $asset['version'] : HVNLYNAB_VERSION;
+        $script       = isset($asset['script']) ? (string) $asset['script'] : '0.js';
 
         wp_register_script(
             self::EDITOR_HANDLE,
@@ -318,7 +318,7 @@ final class BlockRegistrar {
             wp_register_style(
                 self::EDITOR_HANDLE,
                 trailingslashit(HVNLYNAB_URL) . 'build/blocks/' . (string) $asset['style'],
-                [],
+                array(),
                 $version
             );
         }
